@@ -377,5 +377,11 @@
   "cherryPickBumpVersionHint": { "message": "Incrementer la version dans la branche cible dans le meme commit de repli" },
   "cherryPickFallbackUsed": { "message": "Repli utilise pour: $1", "placeholders": { "1": { "content": "$1" } } },
   "cardCherryPickTitle": { "message": "Cherry-pick vers des branches" },
-  "cardCherryPickDesc": { "message": "Cherry-pick de n'importe quel commit vers plusieurs branches avec statut en temps reel. Si le cherry-pick echoue a cause d'un conflit avec le fichier de version, l'extension retente automatiquement — elle rejoue les modifications sans le fichier de version et peut incrementer la version, le tout en un seul commit en preservant l'auteur original." }
+  "cardCherryPickDesc": { "message": "Cherry-pick de n'importe quel commit vers plusieurs branches avec statut en temps reel. Si le cherry-pick echoue a cause d'un conflit avec le fichier de version, l'extension retente automatiquement — elle rejoue les modifications sans le fichier de version et peut incrementer la version, le tout en un seul commit en preservant l'auteur original." },
+
+  "updateBannerText": { "message": "Nouvelle version disponible ! Découvrez les nouveautés :" },
+  "updateChangelog": { "message": "Journal des modifications" },
+  "updateInstall": { "message": "Mettre à jour" },
+  "updateReviewAsk": { "message": "Vous aimez l'extension ?" },
+  "updateReviewLink": { "message": "Laisser un avis" }
 }

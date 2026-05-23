@@ -995,6 +995,30 @@ document.addEventListener('DOMContentLoaded', function() {
       // Apply i18n to static elements
       document.getElementById('howLink').textContent = t('howItWorks');
 
+      // Show update banner if extension was just updated
+      chrome.storage.sync.get({ update_version: '', update_dismissed: '' }, function(ud) {
+        if (!ud.update_version) return;
+        if (ud.update_dismissed === ud.update_version) return;
+        var banner = document.getElementById('updateBanner');
+        var changelogUrl = 'https://github.com/termyanen/gitlab-actions/blob/main/CHANGELOG.md';
+        var reviewUrl = 'https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak/reviews';
+        banner.innerHTML =
+          '<button class="update-close" id="updateClose">&times;</button>' +
+          '<span class="update-version">v' + escHtml(ud.update_version) + '</span><br>' +
+          escHtml(t('updateBannerText')) +
+          '<br><a href="' + changelogUrl + '" target="_blank">' + escHtml(t('updateChangelog')) + '</a>' +
+          '<span class="update-review">' + escHtml(t('updateReviewAsk')) + ' ' +
+          '<a href="' + reviewUrl + '" target="_blank">' + escHtml(t('updateReviewLink')) + '</a></span>';
+        banner.style.display = 'block';
+        document.getElementById('updateClose').addEventListener('click', function() {
+          banner.style.display = 'none';
+          chrome.storage.sync.set({ update_dismissed: ud.update_version });
+          chrome.action.setBadgeText({ text: '' });
+        });
+        // Clear badge when popup is opened
+        chrome.action.setBadgeText({ text: '' });
+      });
+
       detectCurrentProject().then(function() {
         chrome.storage.sync.get(Object.keys(DEFAULTS), function(data) {
           allData = data;

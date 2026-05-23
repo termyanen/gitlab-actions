@@ -362,5 +362,11 @@
   "cherryPickBumpVersionHint": { "message": "Version im Zielbranch im selben Fallback-Commit erhoehen" },
   "cherryPickFallbackUsed": { "message": "Fallback verwendet fuer: $1", "placeholders": { "1": { "content": "$1" } } },
   "cardCherryPickTitle": { "message": "Cherry-pick in Branches" },
-  "cardCherryPickDesc": { "message": "Jeden Commit in mehrere Branches cherry-picken mit Echtzeit-Status. Wenn ein Cherry-pick wegen Versionsdatei-Konflikten fehlschlaegt, wiederholt die Erweiterung automatisch — ohne Versionsdatei, optional mit Versionsanhebung, alles in einem Commit unter Beibehaltung des urspruenglichen Autors." }
+  "cardCherryPickDesc": { "message": "Jeden Commit in mehrere Branches cherry-picken mit Echtzeit-Status. Wenn ein Cherry-pick wegen Versionsdatei-Konflikten fehlschlaegt, wiederholt die Erweiterung automatisch — ohne Versionsdatei, optional mit Versionsanhebung, alles in einem Commit unter Beibehaltung des urspruenglichen Autors." },
+
+  "updateBannerText": { "message": "Neue Version verfügbar! Sehen Sie, was es Neues gibt:" },
+  "updateChangelog": { "message": "Änderungsprotokoll" },
+  "updateInstall": { "message": "Aktualisieren" },
+  "updateReviewAsk": { "message": "Gefällt Ihnen die Erweiterung?" },
+  "updateReviewLink": { "message": "Bewertung abgeben" }
 }

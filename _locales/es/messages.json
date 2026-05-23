@@ -377,5 +377,11 @@
   "cherryPickBumpVersionHint": { "message": "Subir la version en la rama destino dentro del mismo commit de respaldo" },
   "cherryPickFallbackUsed": { "message": "Respaldo usado para: $1", "placeholders": { "1": { "content": "$1" } } },
   "cardCherryPickTitle": { "message": "Cherry-pick a ramas" },
-  "cardCherryPickDesc": { "message": "Cherry-pick de cualquier commit a multiples ramas con estado en tiempo real. Si falla por conflicto con el archivo de version, la extension reintenta automaticamente — replica los cambios sin el archivo de version y opcionalmente sube la version, todo en un solo commit preservando el autor original." }
+  "cardCherryPickDesc": { "message": "Cherry-pick de cualquier commit a multiples ramas con estado en tiempo real. Si falla por conflicto con el archivo de version, la extension reintenta automaticamente — replica los cambios sin el archivo de version y opcionalmente sube la version, todo en un solo commit preservando el autor original." },
+
+  "updateBannerText": { "message": "¡Nueva versión disponible! Vea las novedades:" },
+  "updateChangelog": { "message": "Registro de cambios" },
+  "updateInstall": { "message": "Actualizar" },
+  "updateReviewAsk": { "message": "¿Le gusta la extensión?" },
+  "updateReviewLink": { "message": "Dejar una reseña" }
 }

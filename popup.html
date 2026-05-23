@@ -68,6 +68,15 @@
     .how-link { font-size: 11px; color: #1f75cb; text-decoration: none; font-weight: 400; margin-left: 8px; }
     .how-link:hover { text-decoration: underline; }
 
+    .update-banner { background: #f0f7ff; border: 1px solid #cce0f5; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; position: relative; display: none; }
+    .update-banner .update-version { font-weight: 600; color: #1f75cb; }
+    .update-banner a { color: #1f75cb; text-decoration: none; }
+    .update-banner a:hover { text-decoration: underline; }
+    .update-banner .update-close { position: absolute; top: 6px; right: 8px; background: none; border: none; color: #999; cursor: pointer; font-size: 16px; padding: 0; margin: 0; width: auto; line-height: 1; }
+    .update-banner .update-close:hover { color: #666; }
+    .update-banner .update-review { display: block; margin-top: 6px; color: #666; }
+    .update-banner .update-review a { color: #e67e22; }
+
     @media (prefers-color-scheme: dark) {
       body { background: #1e1e1e; color: #ddd; }
       h4 { color: #aaa; }
@@ -103,11 +112,20 @@
       .status.saved { background: #2ea043; }
       .status.unsaved { background: #b35c14; }
       select { background: #2a2a2a !important; border-color: #444 !important; color: #ddd !important; }
+      .update-banner { background: #1a2332; border-color: #2d4a6f; }
+      .update-banner .update-version { color: #6cb2f7; }
+      .update-banner a { color: #6cb2f7; }
+      .update-banner .update-close { color: #666; }
+      .update-banner .update-close:hover { color: #aaa; }
+      .update-banner .update-review { color: #aaa; }
+      .update-banner .update-review a { color: #e6a04c; }
     }
   </style>
 </head>
 <body>
   <h3 id="popupTitle">GitLab MR Actions <a href="welcome.html" target="_blank" class="how-link" id="howLink">How it works</a></h3>
+
+  <div class="update-banner" id="updateBanner"></div>
 
   <div class="tabs" id="tabs">
     <div class="tab active" data-tab="default">Default</div>

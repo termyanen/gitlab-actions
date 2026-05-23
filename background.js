@@ -26,6 +26,16 @@ chrome.runtime.onInstalled.addListener(function(details) {
     // Open welcome page
     chrome.tabs.create({ url: 'welcome.html' });
   }
+
+  if (details.reason === 'update') {
+    var currentVersion = chrome.runtime.getManifest().version;
+    chrome.storage.sync.set({
+      update_version: currentVersion,
+      update_previous: details.previousVersion || ''
+    });
+    chrome.action.setBadgeText({ text: 'NEW' });
+    chrome.action.setBadgeBackgroundColor({ color: '#1f75cb' });
+  }
 });
 
 // =========================================================================

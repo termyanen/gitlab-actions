@@ -377,5 +377,11 @@
   "cherryPickBumpVersionHint": { "message": "在回退的同一个提交中升级目标分支的版本号" },
   "cherryPickFallbackUsed": { "message": "已使用回退方案: $1", "placeholders": { "1": { "content": "$1" } } },
   "cardCherryPickTitle": { "message": "Cherry-pick 到分支" },
-  "cardCherryPickDesc": { "message": "一键将任意提交 Cherry-pick 到多个分支，实时查看状态。如果因版本文件冲突导致 Cherry-pick 失败，扩展会自动重试——排除版本文件重新提交，可选升级版本号，全部在一个提交中完成并保留原始作者。" }
+  "cardCherryPickDesc": { "message": "一键将任意提交 Cherry-pick 到多个分支，实时查看状态。如果因版本文件冲突导致 Cherry-pick 失败，扩展会自动重试——排除版本文件重新提交，可选升级版本号，全部在一个提交中完成并保留原始作者。" },
+
+  "updateBannerText": { "message": "新版本已发布！查看更新内容：" },
+  "updateChangelog": { "message": "更新日志" },
+  "updateInstall": { "message": "更新" },
+  "updateReviewAsk": { "message": "喜欢这个扩展吗？" },
+  "updateReviewLink": { "message": "留下评价" }
 }
