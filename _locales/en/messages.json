@@ -298,6 +298,11 @@
   "cardApprovalTitle": { "message": "My approval indicator" },
   "cardApprovalDesc": { "message": "Shows whether you have approved each MR on the list page. Distinguishes your approval from approvals by others." },
 
+  "showBranches": { "message": "Show source and target branches on MR list" },
+  "showBranchesLinks": { "message": "Make branch names clickable (open branch tree)" },
+  "cardBranchesTitle": { "message": "Branch names on MR list" },
+  "cardBranchesDesc": { "message": "Displays source and target branch names on each MR in the list, so you can see where the code is coming from and where it merges into." },
+
   "cardCopyMrListTitle": { "message": "Copy MR from list" },
   "cardCopyMrListDesc": { "message": "Adds a copy button to each MR on the list page. Copies the MR title and link to clipboard with one click." },
 

@@ -492,6 +492,49 @@ li.gl-mr-ext-threads-badge {
 
 /* My approval indicator — text only, inherits native GitLab badge styling */
 
+/* Branch badges in MR list */
+.gl-mr-ext-branch-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.gl-mr-ext-branch-badge .ref-name {
+  max-width: 480px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Fallback for GitLab versions without ref-name styles (<=12.x) */
+  font-family: var(--gl-monospace-font, 'Menlo', 'DejaVu Sans Mono', 'Consolas', monospace);
+  font-size: 12px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--gl-background-color-subtle, #f0f0f0);
+  color: var(--gl-text-color-secondary, #666);
+}
+
+/* .gl-mr-ext-branch-badge a.ref-name:hover {
+  text-decoration: underline;
+  color: var(--gl-link-color, #1068bf);
+} */
+
+.gl-mr-ext-branch-arrow {
+  color: var(--gl-text-color-subtle, #999);
+}
+
+.gl-mr-ext-branch-loader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  height: 18px;
+}
+
+.gl-mr-ext-branch-loader .gl-jira-loader {
+  margin-left: 0;
+  height: 14px;
+}
+
 /* Jira ticket group wrapper */
 .gl-jira-ticket-group {
   display: inline-flex;

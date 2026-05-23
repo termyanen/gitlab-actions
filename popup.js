@@ -91,6 +91,8 @@ var DEFAULTS = Object.assign({}, BUTTON_DEFAULTS, {
   show_size_badge: false,
   show_conflicts_badge: false,
   show_approval_badge: false,
+  show_branches: true,
+  show_branches_links: false,
   // show_group_by_author: false,
   collapse_bars: false,
   hide_right_sidebar: false,
@@ -240,6 +242,8 @@ function renderDefaultTab(container) {
     '<div class="toggle"><input type="checkbox" id="show_size_badge"><label for="show_size_badge">' + escHtml(t('showSizeBadge')) + '</label></div>' +
     '<div class="toggle"><input type="checkbox" id="show_conflicts_badge"><label for="show_conflicts_badge">' + escHtml(t('showConflictsBadge')) + '</label></div>' +
     '<div class="toggle"><input type="checkbox" id="show_approval_badge"><label for="show_approval_badge">' + escHtml(t('showApprovalBadge')) + '</label></div>' +
+    '<div class="toggle"><input type="checkbox" id="show_branches"><label for="show_branches">' + escHtml(t('showBranches')) + '</label></div>' +
+    '<div class="toggle" style="margin-left:18px"><input type="checkbox" id="show_branches_links"><label for="show_branches_links">' + escHtml(t('showBranchesLinks')) + '</label></div>' +
     // '<div class="toggle"><input type="checkbox" id="show_group_by_author"><label for="show_group_by_author">' + escHtml(t('showGroupByAuthor')) + '</label></div>' +
     '<div class="sep"></div>' +
     '<h4>' + escHtml(t('uiCustomization')) + '</h4>' +
@@ -328,6 +332,8 @@ function renderDefaultTab(container) {
   document.getElementById('show_size_badge').checked = allData.show_size_badge || false;
   document.getElementById('show_conflicts_badge').checked = allData.show_conflicts_badge || false;
   document.getElementById('show_approval_badge').checked = allData.show_approval_badge || false;
+  document.getElementById('show_branches').checked = allData.show_branches !== false;
+  document.getElementById('show_branches_links').checked = allData.show_branches_links || false;
   // document.getElementById('show_group_by_author').checked = allData.show_group_by_author || false;
   document.getElementById('collapse_bars').checked = allData.collapse_bars || false;
   document.getElementById('hide_right_sidebar').checked = allData.hide_right_sidebar || false;
@@ -855,6 +861,8 @@ function saveDefaultTab() {
   settings.show_size_badge = document.getElementById('show_size_badge').checked;
   settings.show_conflicts_badge = document.getElementById('show_conflicts_badge').checked;
   settings.show_approval_badge = document.getElementById('show_approval_badge').checked;
+  settings.show_branches = document.getElementById('show_branches').checked;
+  settings.show_branches_links = document.getElementById('show_branches_links').checked;
   // settings.show_group_by_author = document.getElementById('show_group_by_author').checked;
   settings.collapse_bars = document.getElementById('collapse_bars').checked;
   settings.hide_right_sidebar = document.getElementById('hide_right_sidebar').checked;

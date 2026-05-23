@@ -270,6 +270,11 @@
   "cardApprovalTitle": { "message": "Indicador de mi aprobación" },
   "cardApprovalDesc": { "message": "Muestra si has aprobado cada MR en la lista. Distingue tu aprobación de las aprobaciones de otros." },
 
+  "showBranches": { "message": "Mostrar ramas de origen y destino en la lista de MR" },
+  "showBranchesLinks": { "message": "Hacer los nombres de ramas clicables (abrir árbol de la rama)" },
+  "cardBranchesTitle": { "message": "Nombres de ramas en la lista de MR" },
+  "cardBranchesDesc": { "message": "Muestra los nombres de las ramas de origen y destino en cada MR de la lista para ver de dónde viene el código y adónde se fusiona." },
+
   "showThreadsBadge": { "message": "Cantidad de hilos sin resolver en la lista de MR" },
   "showSizeBadge": { "message": "Etiquetas de tamaño de MR (S/M/L/XL) en la lista" },
   "showConflictsBadge": { "message": "Mostrar indicador de conflictos en la lista de MR" },

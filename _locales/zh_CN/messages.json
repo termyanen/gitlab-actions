@@ -270,6 +270,11 @@
   "cardApprovalTitle": { "message": "我的审批指示器" },
   "cardApprovalDesc": { "message": "在MR列表中显示您是否已批准每个MR。区分您的审批和其他人的审批。" },
 
+  "showBranches": { "message": "在 MR 列表中显示源分支和目标分支" },
+  "showBranchesLinks": { "message": "点击分支名称可跳转到分支目录" },
+  "cardBranchesTitle": { "message": "MR 列表中的分支名称" },
+  "cardBranchesDesc": { "message": "在列表中的每个 MR 上显示源分支和目标分支名称，一目了然地看到代码从哪里来、合并到哪里去。" },
+
   "showThreadsBadge": { "message": "MR列表显示未解决讨论数" },
   "showSizeBadge": { "message": "MR列表显示大小标签 (S/M/L/XL)" },
   "showConflictsBadge": { "message": "在MR列表中显示冲突指示器" },

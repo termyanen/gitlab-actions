@@ -270,6 +270,11 @@
   "cardApprovalTitle": { "message": "Indicateur de mon approbation" },
   "cardApprovalDesc": { "message": "Affiche si vous avez approuvé chaque MR dans la liste. Distingue votre approbation de celles des autres." },
 
+  "showBranches": { "message": "Afficher les branches source et cible dans la liste des MR" },
+  "showBranchesLinks": { "message": "Rendre les noms de branches cliquables (ouvrir l'arborescence)" },
+  "cardBranchesTitle": { "message": "Noms des branches dans la liste MR" },
+  "cardBranchesDesc": { "message": "Affiche les noms des branches source et cible sur chaque MR de la liste pour voir d'où vient le code et où il est fusionné." },
+
   "showThreadsBadge": { "message": "Nombre de discussions non résolues dans la liste MR" },
   "showSizeBadge": { "message": "Labels de taille MR (S/M/L/XL) dans la liste" },
   "showConflictsBadge": { "message": "Afficher l'indicateur de conflits dans la liste MR" },

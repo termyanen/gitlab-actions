@@ -51,7 +51,7 @@
     "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.7.2",
+    "softwareVersion": "1.7.3",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -637,6 +637,13 @@
         </div>
       </div>
       <div class="feature-item">
+        <div class="feature-dot" style="background:var(--blue)"></div>
+        <div>
+          <h4 data-i18n="fBranchesTitle">Branch Names</h4>
+          <p data-i18n="fBranchesDesc">Shows source and target branch names on each MR in the list. See at a glance where the code comes from and where it merges into.</p>
+        </div>
+      </div>
+      <div class="feature-item">
         <div class="feature-dot" style="background:var(--cyan)"></div>
         <div>
           <h4 data-i18n="fAgeTitle">MR Age Badge</h4>
@@ -832,6 +839,8 @@
         fConflictsDesc: 'Red CONFLICTS badge on MR list and detail pages when the branch has merge conflicts that need to be resolved.',
         fApprovalTitle: 'My Approval Indicator',
         fApprovalDesc: 'Shows whether you approved each MR on the list page. Green icon when you approved, grey when approved by others only.',
+        fBranchesTitle: 'Branch Names',
+        fBranchesDesc: 'Shows source and target branch names on each MR in the list. See at a glance where the code comes from and where it merges into.',
         fAgeTitle: 'MR Age Badge',
         fAgeDesc: 'Shows time elapsed since the MR was created. Quickly spot stale merge requests that need attention.',
         fConfirmTitle: 'Skip Confirmations',
@@ -925,6 +934,8 @@
         fConflictsDesc: 'Красный бейдж КОНФЛИКТЫ в списке и на странице MR, когда в ветке есть конфликты слияния.',
         fApprovalTitle: 'Индикатор моего аппрува',
         fApprovalDesc: 'Показывает, одобрили ли вы каждый MR в списке. Зелёная иконка при вашем аппруве, серая — при аппруве других.',
+        fBranchesTitle: 'Названия веток',
+        fBranchesDesc: 'Показывает исходную и целевую ветки на каждом MR в списке. Сразу видно, откуда и куда мерджится код.',
         fAgeTitle: 'Возраст MR',
         fAgeDesc: 'Показывает время с момента создания MR. Быстро находите застоявшиеся merge requests.',
         fConfirmTitle: 'Пропуск подтверждений',

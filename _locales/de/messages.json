@@ -255,6 +255,11 @@
   "cardApprovalTitle": { "message": "Eigene Genehmigungsanzeige" },
   "cardApprovalDesc": { "message": "Zeigt in der MR-Liste an, ob Sie jeden MR genehmigt haben. Unterscheidet Ihre Genehmigung von Genehmigungen anderer." },
 
+  "showBranches": { "message": "Quell- und Ziel-Branch in MR-Liste anzeigen" },
+  "showBranchesLinks": { "message": "Branch-Namen anklickbar machen (Branch-Baum öffnen)" },
+  "cardBranchesTitle": { "message": "Branch-Namen in MR-Liste" },
+  "cardBranchesDesc": { "message": "Zeigt Quell- und Ziel-Branch-Namen bei jedem MR in der Liste an — so sehen Sie, woher der Code kommt und wohin er gemergt wird." },
+
   "showThreadsBadge": { "message": "Ungelöste Diskussionen in MR-Liste anzeigen" },
   "showSizeBadge": { "message": "MR-Größenlabels (S/M/L/XL) in Liste anzeigen" },
   "showConflictsBadge": { "message": "Konfliktanzeige in MR-Liste anzeigen" },

@@ -270,6 +270,11 @@
   "cardApprovalTitle": { "message": "自分の承認インジケーター" },
   "cardApprovalDesc": { "message": "MRリストで各MRを承認済みかどうかを表示します。自分の承認と他のユーザーの承認を区別します。" },
 
+  "showBranches": { "message": "MR一覧にソースブランチとターゲットブランチを表示" },
+  "showBranchesLinks": { "message": "ブランチ名をクリックでブランチツリーに移動" },
+  "cardBranchesTitle": { "message": "MR一覧のブランチ名" },
+  "cardBranchesDesc": { "message": "一覧の各MRにソースブランチとターゲットブランチの名前を表示します。コードの出所とマージ先が一目でわかります。" },
+
   "showThreadsBadge": { "message": "MRリストに未解決スレッド数を表示" },
   "showSizeBadge": { "message": "MRリストにサイズラベル (S/M/L/XL) を表示" },
   "showConflictsBadge": { "message": "MR一覧にコンフリクト表示" },

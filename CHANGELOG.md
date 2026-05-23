@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.3
+
+### New features
+- **Branch names on MR list** — displays source and target branch names on each MR in the list, so you can see at a glance where the code is coming from and where it merges into.
+
+---
+
 ## 1.7.2
 
 ### New features

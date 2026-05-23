@@ -35,6 +35,8 @@
     filterBar: '.filter-dropdown-container, .vue-filtered-search-bar-container, [data-testid="filtered-search-input"], .gl-search-box-by-type',
     // List container for MutationObserver
     listContainer: '[data-testid="issuable-list"], [data-testid="issuable-container"], .issuable-list, .merge-requests-holder, .content-list',
+    // Issuable info (metadata row below title: author, dates, etc.)
+    issuableInfo: '[data-testid="issuable-info"], .issuable-info, .issuable-meta, .issuable-authored',
     // Commit page: SHA button group
     commitShaGroup: '.commit-sha-group, .commit-actions .btn-group',
     // Commit page: SHA element with hash value
@@ -1455,6 +1457,54 @@
     insertAfterSafe(titleContainer, badge, sizeBadge || titleEl);
   }
 
+  function renderBranchBadge(mrItem, sourceBranch, targetBranch, clickable) {
+    if (mrItem.querySelector('.gl-mr-ext-branch-badge')) return;
+    if (!sourceBranch) return;
+    var loader = mrItem.querySelector('.gl-mr-ext-branch-loader');
+    if (loader) loader.remove();
+    var infoRow = q(mrItem, SEL.issuableInfo);
+    if (!infoRow) return;
+
+    var projectBase = '';
+    if (clickable) {
+      var titleEl = q(mrItem, SEL.titleLink);
+      if (titleEl && titleEl.href) {
+        var m = titleEl.href.match(/^(https?:\/\/[^/]+\/.+?)\/-\/merge_requests\//);
+        if (m) projectBase = m[1] + '/-/tree/';
+      }
+    }
+
+    var wrap = document.createElement('div');
+    wrap.className = 'gl-mr-ext-branch-badge';
+
+    function makeBranchEl(branch) {
+      var el;
+      if (projectBase) {
+        el = document.createElement('a');
+        el.href = projectBase + encodeURIComponent(branch);
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
+        el.className = 'ref-name';
+      } else {
+        el = document.createElement('span');
+        el.className = 'ref-name';
+      }
+      el.textContent = branch;
+      el.title = branch;
+      return el;
+    }
+
+    wrap.appendChild(makeBranchEl(sourceBranch));
+    if (targetBranch) {
+      var arrow = document.createElement('span');
+      arrow.className = 'gl-mr-ext-branch-arrow';
+      arrow.innerHTML = '&#x2192;';
+      wrap.appendChild(arrow);
+      wrap.appendChild(makeBranchEl(targetBranch));
+    }
+    infoRow.parentNode.insertBefore(wrap, infoRow.nextSibling);
+  }
+
   function renderApprovalIndicator(mrItem, approvedBy, username) {
     if (mrItem.querySelector('.gl-mr-ext-approval-done')) return;
     if (!approvedBy || !approvedBy.length) return;
@@ -1515,7 +1565,7 @@
     controlsUl.insertBefore(li, controlsUl.firstChild);
   }
 
-  function fetchAndRenderMrMeta(showThreads, showSize, showConflicts, showApprovals, username) {
+  function fetchAndRenderMrMeta(showThreads, showSize, showConflicts, showApprovals, showBranches, showBranchesLinks, username) {
     if (_mrMetaFetching) return;
 
     var mrItems = qAll(document, SEL.mrItem);
@@ -1535,6 +1585,7 @@
         if (showSize) renderSizeBadge(item, cached.changesLines, cached.changesFiles);
         if (showConflicts && cached.conflicts) renderConflictBadge(item);
         if (showApprovals && cached.approvedBy) renderApprovalIndicator(item, cached.approvedBy, username);
+        if (showBranches) renderBranchBadge(item, cached.sourceBranch, cached.targetBranch, showBranchesLinks);
         _jiraRenderingBadges = false;
         return;
       }
@@ -1546,6 +1597,32 @@
 
     if (!toFetch.length) return;
     _mrMetaFetching = true;
+
+    // Show branch skeleton loaders for items about to be fetched
+    if (showBranches) {
+      _jiraRenderingBadges = true;
+      toFetch.forEach(function(entry) {
+        if (entry.item.querySelector('.gl-mr-ext-branch-badge, .gl-mr-ext-branch-loader')) return;
+        var infoRow = q(entry.item, SEL.issuableInfo);
+        if (!infoRow) return;
+        var loader = document.createElement('div');
+        loader.className = 'gl-mr-ext-branch-loader';
+        var s1 = document.createElement('span');
+        s1.className = 'gl-jira-loader';
+        s1.style.width = '100px';
+        var arrow = document.createElement('span');
+        arrow.className = 'gl-mr-ext-branch-arrow';
+        arrow.innerHTML = '&#x2192;';
+        var s2 = document.createElement('span');
+        s2.className = 'gl-jira-loader';
+        s2.style.width = '60px';
+        loader.appendChild(s1);
+        loader.appendChild(arrow);
+        loader.appendChild(s2);
+        infoRow.parentNode.insertBefore(loader, infoRow.nextSibling);
+      });
+      _jiraRenderingBadges = false;
+    }
 
     var BATCH_SIZE = 5;
 
@@ -1579,15 +1656,16 @@
               }
             });
           }
-          return { threads: unresolvedCount, changesLines: changesLines, changesFiles: changesFiles, conflicts: conflicts, approvedBy: approvedBy };
+          return { threads: unresolvedCount, changesLines: changesLines, changesFiles: changesFiles, conflicts: conflicts, approvedBy: approvedBy, sourceBranch: mr.source_branch || '', targetBranch: mr.target_branch || '' };
         })
         .then(function(meta) {
-          _mrMetaCache[entry.href] = { threads: meta.threads, changesLines: meta.changesLines, changesFiles: meta.changesFiles, conflicts: meta.conflicts, approvedBy: meta.approvedBy, ts: Date.now() };
+          _mrMetaCache[entry.href] = { threads: meta.threads, changesLines: meta.changesLines, changesFiles: meta.changesFiles, conflicts: meta.conflicts, approvedBy: meta.approvedBy, sourceBranch: meta.sourceBranch, targetBranch: meta.targetBranch, ts: Date.now() };
           _jiraRenderingBadges = true;
           if (showThreads) renderThreadsBadge(entry.item, meta.threads);
           if (showSize) renderSizeBadge(entry.item, meta.changesLines, meta.changesFiles);
           if (showConflicts && meta.conflicts) renderConflictBadge(entry.item);
           if (showApprovals && meta.approvedBy) renderApprovalIndicator(entry.item, meta.approvedBy, username);
+          if (showBranches) renderBranchBadge(entry.item, meta.sourceBranch, meta.targetBranch, showBranchesLinks);
           _jiraRenderingBadges = false;
         })
         .catch(function() {});
@@ -1612,7 +1690,7 @@
   // =========================================================================
 
   if (isMrListPage()) {
-    var listDefaults = { dim_drafts: false, highlight_own_mrs: false, show_only_mine: false, show_needs_review: false, show_copy_mr: false, show_reviewer_badge: false, show_threads_badge: false, show_size_badge: false, show_conflicts_badge: false, show_approval_badge: false, show_jira_details: false, skip_confirmations: false, jira_url: '', jira_ticket_regex: '' };
+    var listDefaults = { dim_drafts: false, highlight_own_mrs: false, show_only_mine: false, show_needs_review: false, show_copy_mr: false, show_reviewer_badge: false, show_threads_badge: false, show_size_badge: false, show_conflicts_badge: false, show_approval_badge: false, show_branches: true, show_branches_links: false, show_jira_details: false, skip_confirmations: false, jira_url: '', jira_ticket_regex: '' };
     try {
       chrome.storage.sync.get(listDefaults, function(s) {
         if (chrome.runtime.lastError) return;
@@ -1629,8 +1707,8 @@
             if (s.show_reviewer_badge && username) {
               fetchAndRenderReviewerBadges(username);
             }
-            if (s.show_threads_badge || s.show_size_badge || s.show_conflicts_badge || s.show_approval_badge) {
-              fetchAndRenderMrMeta(s.show_threads_badge, s.show_size_badge, s.show_conflicts_badge, s.show_approval_badge, username);
+            if (s.show_threads_badge || s.show_size_badge || s.show_conflicts_badge || s.show_approval_badge || s.show_branches) {
+              fetchAndRenderMrMeta(s.show_threads_badge, s.show_size_badge, s.show_conflicts_badge, s.show_approval_badge, s.show_branches, s.show_branches_links, username);
             }
             if (s.jira_url) {
               setJiraTicketRegex(s.jira_ticket_regex);
@@ -1686,7 +1764,7 @@
             _observerTimer = setTimeout(function() {
               if (s.jira_url) fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
               if (s.show_reviewer_badge && username) fetchAndRenderReviewerBadges(username);
-              if (s.show_threads_badge || s.show_size_badge || s.show_conflicts_badge || s.show_approval_badge) fetchAndRenderMrMeta(s.show_threads_badge, s.show_size_badge, s.show_conflicts_badge, s.show_approval_badge, username);
+              if (s.show_threads_badge || s.show_size_badge || s.show_conflicts_badge || s.show_approval_badge || s.show_branches) fetchAndRenderMrMeta(s.show_threads_badge, s.show_size_badge, s.show_conflicts_badge, s.show_approval_badge, s.show_branches, s.show_branches_links, username);
               if (s.show_only_mine || s.show_needs_review) injectListToggles(username, s);
             }, 1000);
           });
