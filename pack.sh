@@ -14,6 +14,7 @@ zip -r "$ZIPNAME" . \
   -x "CLAUDE.md" \
   -x "README.md" \
   -x "CHANGELOG.md" \
+  -x "CHANGELOG_RU.md" \
   -x "ROADMAP.md" \
   -x "PRIVACY_POLICY.md" \
   -x "LICENSE" \

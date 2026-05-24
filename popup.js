@@ -1004,7 +1004,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!ud.update_version) return;
         if (ud.update_dismissed === ud.update_version) return;
         var banner = document.getElementById('updateBanner');
-        var changelogUrl = 'https://github.com/termyanen/gitlab-actions/blob/main/CHANGELOG.md';
+        var isRu = (langData.language === 'ru') || (!langData.language || langData.language === 'auto') && (chrome.i18n.getUILanguage() || '').startsWith('ru');
+        var changelogUrl = 'https://github.com/termyanen/gitlab-actions/blob/main/' + (isRu ? 'CHANGELOG_RU.md' : 'CHANGELOG.md');
         var reviewUrl = 'https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak/reviews';
         banner.innerHTML =
           '<button class="update-close" id="updateClose">&times;</button>' +

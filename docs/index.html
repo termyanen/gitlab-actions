@@ -876,7 +876,7 @@
         secScreenLabel: 'Screenshots', secScreenTitle: 'See it in action',
         secChangeLabel: 'Changelog', secChangeTitle: "What's new",
         changelogLoading: 'Loading changelog...',
-        changelogFeatures: 'New features', changelogTechnical: 'Technical', changelogImprovements: 'Improvements',
+        changelogFeatures: 'New features', changelogTechnical: 'Technical', changelogImprovements: 'Improvements', changelogBugfixes: 'Bug fixes',
 
         ctaTitle: 'Stop clicking through GitLab UI',
         ctaSub: 'Join developers who save time on every merge request. Free, open source, privacy-first. No data leaves your browser.',
@@ -971,7 +971,7 @@
         secScreenLabel: 'Скриншоты', secScreenTitle: 'Как это выглядит',
         secChangeLabel: 'Изменения', secChangeTitle: 'Что нового',
         changelogLoading: 'Загрузка...',
-        changelogFeatures: 'Новые возможности', changelogTechnical: 'Техническое', changelogImprovements: 'Улучшения',
+        changelogFeatures: 'Новые возможности', changelogTechnical: 'Техническое', changelogImprovements: 'Улучшения', changelogBugfixes: 'Исправления',
 
         ctaTitle: 'Хватит кликать по GitLab UI',
         ctaSub: 'Присоединяйтесь к разработчикам, которые экономят время на каждом merge request. Бесплатно, open source, приватно.',
@@ -1000,11 +1000,13 @@
 
     document.getElementById('langToggle').addEventListener('click', function() {
       applyLang(currentLang === 'en' ? 'ru' : 'en');
+      if (typeof loadChangelog === 'function') loadChangelog();
     });
     document.getElementById('langToggle').addEventListener('keydown', function(e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         applyLang(currentLang === 'en' ? 'ru' : 'en');
+        if (typeof loadChangelog === 'function') loadChangelog();
       }
     });
 
@@ -1124,22 +1126,23 @@
       if (!container) return;
       container.innerHTML = '';
       var sectionNames = {
-        en: { 'New features': 'changelogFeatures', 'Technical': 'changelogTechnical', 'Improvements': 'changelogImprovements' },
-        ru: { 'New features': 'changelogFeatures', 'Technical': 'changelogTechnical', 'Improvements': 'changelogImprovements' }
+        'New features': 'changelogFeatures', 'Technical': 'changelogTechnical', 'Improvements': 'changelogImprovements', 'Bug fixes': 'changelogBugfixes',
+        'Новые функции': 'changelogFeatures', 'Техническое': 'changelogTechnical', 'Улучшения': 'changelogImprovements', 'Исправления': 'changelogBugfixes'
       };
+      var latestText = currentLang === 'ru' ? 'Новое' : 'Latest';
       versions.forEach(function(v, i) {
         var div = document.createElement('div');
         div.className = 'changelog-version' + (i === 0 ? ' open' : '');
         var tagClass = i === 0 ? 'changelog-version-tag' : 'changelog-version-tag old';
-        var tagText = i === 0 ? 'Latest' : '';
+        var tagText = i === 0 ? latestText : '';
         var tagHtml = tagText ? '<span class="' + tagClass + '">' + tagText + '</span>' : '';
         var headerHtml = '<div class="changelog-version-header">' +
           '<h3>' + v.version + ' ' + tagHtml + '</h3>' +
           '<span class="changelog-arrow">&#9660;</span></div>';
         var bodyHtml = '<div class="changelog-version-body">';
         v.sections.forEach(function(sec) {
-          var titleKey = sectionNames.en[sec.title] || '';
-          var isTech = sec.title === 'Technical' || sec.title === 'Improvements';
+          var titleKey = sectionNames[sec.title] || '';
+          var isTech = sec.title === 'Technical' || sec.title === 'Improvements' || sec.title === 'Техническое' || sec.title === 'Улучшения';
           var localTitle = titleKey && LANG[currentLang][titleKey] ? LANG[currentLang][titleKey] : sec.title;
           bodyHtml += '<div class="changelog-section-title' + (isTech ? ' tech' : '') + '">' + localTitle + '</div>';
           sec.items.forEach(function(item) {
@@ -1157,13 +1160,20 @@
       });
     }
 
-    fetch('https://raw.githubusercontent.com/termyanen/gitlab-actions/main/CHANGELOG.md')
-      .then(function(r) { return r.ok ? r.text() : Promise.reject(); })
-      .then(function(md) { renderChangelog(parseChangelog(md)); })
-      .catch(function() {
-        var c = document.getElementById('changelogContent');
-        if (c) c.innerHTML = '<div class="changelog-loading">Could not load changelog. <a href="https://github.com/termyanen/gitlab-actions/blob/main/CHANGELOG.md" target="_blank" style="color:var(--accent)">View on GitHub</a></div>';
-      });
+    function loadChangelog() {
+      var file = currentLang === 'ru' ? 'CHANGELOG_RU.md' : 'CHANGELOG.md';
+      var container = document.getElementById('changelogContent');
+      if (container) container.innerHTML = '<div class="changelog-loading">' + (LANG[currentLang].changelogLoading || 'Loading...') + '</div>';
+      fetch('https://raw.githubusercontent.com/termyanen/gitlab-actions/main/' + file)
+        .then(function(r) { return r.ok ? r.text() : Promise.reject(); })
+        .then(function(md) { renderChangelog(parseChangelog(md)); })
+        .catch(function() {
+          var c = document.getElementById('changelogContent');
+          if (c) c.innerHTML = '<div class="changelog-loading">Could not load changelog. <a href="https://github.com/termyanen/gitlab-actions/blob/main/' + file + '" target="_blank" style="color:var(--accent)">View on GitHub</a></div>';
+        });
+    }
+
+    loadChangelog();
   </script>
   <script data-goatcounter="https://gitlab-actions.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
