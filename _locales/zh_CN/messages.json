@@ -314,6 +314,7 @@
 
   "showCmdPalette": { "message": "命令面板 (Cmd+K / Ctrl+K)" },
   "showStandup": { "message": "每日活动报告" },
+  "standupJiraEnrich": { "message": "在报告中显示Jira工单标题" },
   "cmdPlaceholder": { "message": "输入命令..." },
   "cmdFooterNavigate": { "message": "导航" },
   "cmdFooterSelect": { "message": "选择" },

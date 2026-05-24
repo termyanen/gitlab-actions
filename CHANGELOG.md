@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.4
+
+### New features
+- **Jira ticket titles in daily activity report** — when Jira integration is configured, the daily activity report automatically enriches MR entries with Jira ticket titles extracted from MR names. Toggle in settings under the daily activity report option.
+
+---
+
 ## 1.7.3
 
 ### New features

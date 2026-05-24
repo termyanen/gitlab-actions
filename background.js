@@ -726,7 +726,77 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
           lines.push('No activity for this day.');
         }
 
-        sendResponse({ text: lines.join('\n') });
+        // Enrich lines with Jira ticket titles if configured
+        chrome.storage.sync.get({ jira_url: '', jira_ticket_regex: '', standup_jira_enrich: true }, function(jiraSettings) {
+          var jiraUrl = (jiraSettings.jira_url || '').replace(/\/+$/, '');
+          if (!jiraUrl || jiraSettings.standup_jira_enrich === false) {
+            sendResponse({ text: lines.join('\n') });
+            return;
+          }
+          var ticketPattern;
+          try {
+            ticketPattern = jiraSettings.jira_ticket_regex ? new RegExp(jiraSettings.jira_ticket_regex, 'g') : /[A-Z][A-Z0-9]+-\d+/g;
+          } catch(e) {
+            ticketPattern = /[A-Z][A-Z0-9]+-\d+/g;
+          }
+          // Collect unique tickets from all lines
+          var allText = lines.join('\n');
+          var ticketSet = {};
+          var m;
+          while ((m = ticketPattern.exec(allText)) !== null) {
+            ticketSet[m[0]] = true;
+          }
+          var tickets = Object.keys(ticketSet);
+          if (!tickets.length) {
+            sendResponse({ text: lines.join('\n') });
+            return;
+          }
+          // Fetch Jira summaries (up to 5 concurrent)
+          var ticketSummaries = {};
+          var fetchQueue = tickets.slice();
+          function fetchNextBatch() {
+            if (!fetchQueue.length) return Promise.resolve();
+            var batch = fetchQueue.splice(0, 5);
+            return Promise.all(batch.map(function(ticket) {
+              return jiraApi(jiraUrl, '/rest/api/2/issue/' + ticket + '?fields=summary')
+                .then(function(data) {
+                  if (data && data.fields && data.fields.summary) {
+                    ticketSummaries[ticket] = data.fields.summary;
+                  }
+                }).catch(function() {});
+            })).then(function() {
+              return fetchNextBatch();
+            });
+          }
+          fetchNextBatch().then(function() {
+            // Annotate lines: append Jira summary after ticket ID
+            if (Object.keys(ticketSummaries).length) {
+              for (var i = 0; i < lines.length; i++) {
+                var line = lines[i];
+                if (line.indexOf('  - ') !== 0) continue;
+                // Reset regex for each line
+                var lp;
+                try {
+                  lp = jiraSettings.jira_ticket_regex ? new RegExp(jiraSettings.jira_ticket_regex, 'g') : /[A-Z][A-Z0-9]+-\d+/g;
+                } catch(e2) {
+                  lp = /[A-Z][A-Z0-9]+-\d+/g;
+                }
+                var lineTickets = [];
+                var lm;
+                while ((lm = lp.exec(line)) !== null) {
+                  if (ticketSummaries[lm[0]] && lineTickets.indexOf(lm[0]) === -1) {
+                    lineTickets.push(lm[0]);
+                  }
+                }
+                if (lineTickets.length) {
+                  var annotations = lineTickets.map(function(t) { return '[' + t + ': ' + ticketSummaries[t] + ']'; });
+                  lines[i] = line + '\n    ' + annotations.join(' ');
+                }
+              }
+            }
+            sendResponse({ text: lines.join('\n') });
+          });
+        });
       }); // end projectIds resolve
       }); // end main Promise.all
     }).catch(function(err) {

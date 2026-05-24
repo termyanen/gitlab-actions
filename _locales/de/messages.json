@@ -299,6 +299,7 @@
 
   "showCmdPalette": { "message": "Befehlspalette (Cmd+K / Ctrl+K)" },
   "showStandup": { "message": "Taeglicher Aktivitaetsbericht" },
+  "standupJiraEnrich": { "message": "Jira-Tickettitel im Bericht anzeigen" },
   "cmdPlaceholder": { "message": "Befehl eingeben..." },
   "cmdFooterNavigate": { "message": "navigieren" },
   "cmdFooterSelect": { "message": "auswaehlen" },

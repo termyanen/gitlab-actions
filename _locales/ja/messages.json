@@ -314,6 +314,7 @@
 
   "showCmdPalette": { "message": "コマンドパレット (Cmd+K / Ctrl+K)" },
   "showStandup": { "message": "日次アクティビティレポート" },
+  "standupJiraEnrich": { "message": "レポートにJiraチケット名を表示" },
   "cmdPlaceholder": { "message": "コマンドを入力..." },
   "cmdFooterNavigate": { "message": "移動" },
   "cmdFooterSelect": { "message": "選択" },

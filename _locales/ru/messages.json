@@ -317,6 +317,7 @@
 
   "showCmdPalette": { "message": "Командная палитра (Cmd+K / Ctrl+K)" },
   "showStandup": { "message": "Отчёт по дневной активности" },
+  "standupJiraEnrich": { "message": "Показывать названия задач Jira в отчёте" },
 
   "cmdPlaceholder": { "message": "Введите команду..." },
   "cmdFooterNavigate": { "message": "навигация" },

@@ -314,6 +314,7 @@
 
   "showCmdPalette": { "message": "Paleta de comandos (Cmd+K / Ctrl+K)" },
   "showStandup": { "message": "Informe de actividad diaria" },
+  "standupJiraEnrich": { "message": "Mostrar títulos de tickets Jira en el informe" },
   "cmdPlaceholder": { "message": "Escribe un comando..." },
   "cmdFooterNavigate": { "message": "navegar" },
   "cmdFooterSelect": { "message": "seleccionar" },

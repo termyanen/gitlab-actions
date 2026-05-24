@@ -98,6 +98,7 @@ var DEFAULTS = Object.assign({}, BUTTON_DEFAULTS, {
   hide_right_sidebar: false,
   show_cmd_palette: true,
   show_standup: true,
+  standup_jira_enrich: true,
   show_cherry_pick: true,
   cherry_pick_branches: [],
   cherry_pick_create_mr: true,
@@ -251,6 +252,7 @@ function renderDefaultTab(container) {
     '<div class="toggle"><input type="checkbox" id="hide_right_sidebar"><label for="hide_right_sidebar">' + escHtml(t('hideRightSidebar')) + '</label></div>' +
     '<div class="toggle"><input type="checkbox" id="show_cmd_palette"><label for="show_cmd_palette">' + escHtml(t('showCmdPalette')) + '</label></div>' +
     '<div class="toggle"><input type="checkbox" id="show_standup"><label for="show_standup">' + escHtml(t('showStandup')) + '</label></div>' +
+    '<div class="toggle sub-toggle"><input type="checkbox" id="standup_jira_enrich"><label for="standup_jira_enrich">' + escHtml(t('standupJiraEnrich')) + '</label></div>' +
     '<div class="toggle"><input type="checkbox" id="show_cherry_pick"><label for="show_cherry_pick">' + escHtml(t('showCherryPick')) + '</label></div>' +
     '<div class="sep"></div>' +
     '<h4>' + escHtml(t('cherryPickBranches')) + '</h4>' +
@@ -339,6 +341,7 @@ function renderDefaultTab(container) {
   document.getElementById('hide_right_sidebar').checked = allData.hide_right_sidebar || false;
   document.getElementById('show_cmd_palette').checked = allData.show_cmd_palette !== false;
   document.getElementById('show_standup').checked = allData.show_standup !== false;
+  document.getElementById('standup_jira_enrich').checked = allData.standup_jira_enrich !== false;
   document.getElementById('show_cherry_pick').checked = allData.show_cherry_pick !== false;
   document.getElementById('cherry_pick_create_mr').checked = allData.cherry_pick_create_mr !== false;
   document.getElementById('cherry_pick_smart_fallback').checked = allData.cherry_pick_smart_fallback !== false;
@@ -868,6 +871,7 @@ function saveDefaultTab() {
   settings.hide_right_sidebar = document.getElementById('hide_right_sidebar').checked;
   settings.show_cmd_palette = document.getElementById('show_cmd_palette').checked;
   settings.show_standup = document.getElementById('show_standup').checked;
+  settings.standup_jira_enrich = document.getElementById('standup_jira_enrich').checked;
   settings.show_cherry_pick = document.getElementById('show_cherry_pick').checked;
   settings.cherry_pick_create_mr = document.getElementById('cherry_pick_create_mr').checked;
   settings.cherry_pick_smart_fallback = document.getElementById('cherry_pick_smart_fallback').checked;

@@ -317,6 +317,7 @@
 
   "showCmdPalette": { "message": "Command palette (Cmd+K / Ctrl+K)" },
   "showStandup": { "message": "Daily activity report" },
+  "standupJiraEnrich": { "message": "Show Jira ticket titles in report" },
 
   "cmdPlaceholder": { "message": "Type a command..." },
   "cmdFooterNavigate": { "message": "navigate" },
