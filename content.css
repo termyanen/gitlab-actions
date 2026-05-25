@@ -576,6 +576,17 @@ li.gl-mr-ext-threads-badge {
   height: 18px;
   line-height: 18px;
   white-space: nowrap;
+  outline: none;
+}
+.gl-jira-ticket-group:active,
+.gl-jira-ticket-group:focus {
+  outline: none;
+}
+.gl-link:has(.gl-jira-badge):active,
+.gl-link:has(.gl-jira-badge):focus,
+a:has(.gl-jira-badge):active,
+a:has(.gl-jira-badge):focus {
+  outline: none !important;
 }
 
 .gl-jira-badge.jira-done {
