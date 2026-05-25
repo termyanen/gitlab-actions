@@ -361,6 +361,7 @@
   "cherryPickBranchesHint": { "message": "Cherry-pick 的默认目标分支。您可以在弹窗中添加或删除分支。" },
   "cherryPickBranchAdd": { "message": "添加分支" },
   "cherryPickTitle": { "message": "Cherry-pick" },
+  "cherryPickToBranches": { "message": "Cherry-pick 到多个分支" },
   "cherryPickStart": { "message": "Cherry-pick" },
   "cherryPickClose": { "message": "关闭" },
   "cherryPickSuccess": { "message": "成功" },

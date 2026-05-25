@@ -370,6 +370,7 @@
   "cherryPickBranchesHint": { "message": "Default target branches for cherry-pick. You can add or remove branches in the modal." },
   "cherryPickBranchAdd": { "message": "Add branch" },
   "cherryPickTitle": { "message": "Cherry-pick" },
+  "cherryPickToBranches": { "message": "Cherry-pick to branches" },
   "cherryPickStart": { "message": "Cherry-pick" },
   "cherryPickClose": { "message": "Close" },
   "cherryPickSuccess": { "message": "Success" },

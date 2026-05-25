@@ -361,6 +361,7 @@
   "cherryPickBranchesHint": { "message": "Ramas destino por defecto para cherry-pick. Puedes agregar o eliminar ramas en el modal." },
   "cherryPickBranchAdd": { "message": "Agregar rama" },
   "cherryPickTitle": { "message": "Cherry-pick" },
+  "cherryPickToBranches": { "message": "Cherry-pick a ramas" },
   "cherryPickStart": { "message": "Cherry-pick" },
   "cherryPickClose": { "message": "Cerrar" },
   "cherryPickSuccess": { "message": "Éxito" },

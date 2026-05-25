@@ -361,6 +361,7 @@
   "cherryPickBranchesHint": { "message": "Cherry-pick のデフォルトターゲットブランチ。モーダルでブランチの追加・削除が可能です。" },
   "cherryPickBranchAdd": { "message": "ブランチを追加" },
   "cherryPickTitle": { "message": "Cherry-pick" },
+  "cherryPickToBranches": { "message": "ブランチへのcherry-pick" },
   "cherryPickStart": { "message": "Cherry-pick" },
   "cherryPickClose": { "message": "閉じる" },
   "cherryPickSuccess": { "message": "成功" },

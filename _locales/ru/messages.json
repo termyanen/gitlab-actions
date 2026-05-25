@@ -370,6 +370,7 @@
   "cherryPickBranchesHint": { "message": "Ветки по умолчанию для cherry-pick. Вы можете добавлять и удалять ветки в модальном окне." },
   "cherryPickBranchAdd": { "message": "Добавить ветку" },
   "cherryPickTitle": { "message": "Cherry-pick" },
+  "cherryPickToBranches": { "message": "Cherry-pick в ветки" },
   "cherryPickStart": { "message": "Cherry-pick" },
   "cherryPickClose": { "message": "Закрыть" },
   "cherryPickSuccess": { "message": "Успешно" },

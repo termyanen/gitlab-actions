@@ -1965,7 +1965,12 @@
     return /\/-\/commits\//.test(window.location.pathname) || /\/-\/repository\/commits\//.test(window.location.pathname);
   }
 
-  if (isCommitsPage()) {
+  function isCommitDetailPage() {
+    // Matches /-/commit/<sha> (modern) and /commit/<sha> (legacy GitLab < 12.x)
+    return /\/commit\/[0-9a-f]{7,40}\b/.test(window.location.pathname) && !/\/commits\//.test(window.location.pathname);
+  }
+
+  if (isCommitsPage() || isCommitDetailPage()) {
     try {
       chrome.storage.sync.get({ show_cherry_pick: true, cherry_pick_branches: [], cherry_pick_create_mr: true, cherry_pick_smart_fallback: true, cherry_pick_bump_version: false, versionFile: 'package.json', versionPath: 'version', versionStrategy: 'patch', versionCommitTemplate: 'fix: bump version to {version}' }, function(s) {
         if (chrome.runtime.lastError || s.show_cherry_pick === false) return;
@@ -2388,16 +2393,112 @@
           setTimeout(function() { try { toast.remove(); } catch(e) {} }, 5000);
         }
 
-        // Inject immediately + observe for SPA navigation
-        injectCherryPickButtons();
+        if (isCommitDetailPage()) {
+          // Single commit page — inject button in page header next to Options dropdown
 
-        var _cpTimer = null;
-        var cpObserver = new MutationObserver(function() {
-          clearTimeout(_cpTimer);
-          _cpTimer = setTimeout(injectCherryPickButtons, 300);
-        });
-        cpObserver.observe(document.body, { childList: true, subtree: true });
-        window.addEventListener('beforeunload', function() { cpObserver.disconnect(); });
+          function findCommitHeaderContainer() {
+            // Strategy 1: page-content-header (modern GitLab 15+)
+            var header = document.querySelector('.page-content-header');
+            if (header) return header;
+
+            // Strategy 2: tree-controls (GitLab 13-14, holds Browse files + Options)
+            var treeControls = document.querySelector('.tree-controls');
+            if (treeControls) return treeControls;
+
+            // Strategy 3: commit-actions area
+            var commitActions = document.querySelector('.commit-actions');
+            if (commitActions) return commitActions;
+
+            // Strategy 4: detail-page-header actions (generic GitLab header)
+            var detailHeader = document.querySelector('.detail-page-header .detail-page-header-actions, .detail-page-header');
+            if (detailHeader) return detailHeader;
+
+            // Strategy 5: find the Options dropdown button and use its parent
+            var optionsBtn = document.querySelector(
+              '.dropdown-toggle[data-toggle="dropdown"], ' +
+              '.gl-new-dropdown-toggle, ' +
+              'button.dropdown-toggle'
+            );
+            if (optionsBtn) {
+              var group = optionsBtn.closest('.btn-group, .gl-button-group, .dropdown');
+              return (group && group.parentElement) ? group.parentElement : null;
+            }
+
+            return null;
+          }
+
+          function injectCherryPickHeaderBtn() {
+            if (document.querySelector('.gl-cherry-pick-detail-btn')) return;
+
+            var container = findCommitHeaderContainer();
+            if (!container) return;
+
+            // Extract SHA from URL (supports /-/commit/ and legacy /commit/)
+            var shaMatch = window.location.pathname.match(/\/commit\/([0-9a-f]{7,40})\b/);
+            var sha = shaMatch ? shaMatch[1] : '';
+            if (!sha) return;
+
+            // Extract commit message from page
+            var commitMsgEl = document.querySelector(
+              '.commit-title, [data-testid="commit-title"], .page-title, ' +
+              '.commit-box .commit-title, .page-title-holder .title'
+            );
+            var commitMsg = commitMsgEl ? commitMsgEl.textContent.trim() : '';
+
+            var btn = document.createElement('button');
+            btn.className = 'gl-cherry-pick-detail-btn gl-button btn btn-default btn-md';
+            btn.type = 'button';
+            btn.title = msg('cherryPickToBranches');
+            btn.innerHTML =
+              '<svg class="s16 gl-icon gl-button-icon" viewBox="0 0 16 16">' +
+                '<circle cx="8" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/>' +
+                '<circle cx="8" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/>' +
+                '<path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" d="M8 6v4"/>' +
+                '<path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" d="M4 8h8"/>' +
+              '</svg>' +
+              '<span class="gl-button-text">' + escHtml(msg('cherryPickToBranches')) + '</span>';
+            btn.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              openCherryPickModal(sha, commitMsg, s);
+            });
+
+            container.appendChild(btn);
+          }
+
+          // Header may be rendered by Vue, observe + retry
+          var _cpDetailTimer = null;
+          var _cpDetailAttempts = 0;
+          var cpDetailObserver = new MutationObserver(function() {
+            if (document.querySelector('.gl-cherry-pick-detail-btn')) return;
+            clearTimeout(_cpDetailTimer);
+            _cpDetailTimer = setTimeout(injectCherryPickHeaderBtn, 200);
+          });
+          cpDetailObserver.observe(document.body, { childList: true, subtree: true });
+          window.addEventListener('beforeunload', function() { cpDetailObserver.disconnect(); });
+
+          // Retry polling for slow-rendering pages (up to 3s)
+          (function pollHeader() {
+            if (document.querySelector('.gl-cherry-pick-detail-btn') || _cpDetailAttempts > 6) return;
+            _cpDetailAttempts++;
+            if (!findCommitHeaderContainer()) {
+              setTimeout(pollHeader, 500);
+            } else {
+              injectCherryPickHeaderBtn();
+            }
+          })();
+        } else {
+          // Commits list page — inject buttons next to each commit SHA
+          injectCherryPickButtons();
+
+          var _cpTimer = null;
+          var cpObserver = new MutationObserver(function() {
+            clearTimeout(_cpTimer);
+            _cpTimer = setTimeout(injectCherryPickButtons, 300);
+          });
+          cpObserver.observe(document.body, { childList: true, subtree: true });
+          window.addEventListener('beforeunload', function() { cpObserver.disconnect(); });
+        }
       });
     } catch(e) {}
   }

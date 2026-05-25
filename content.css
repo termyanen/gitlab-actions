@@ -1681,6 +1681,16 @@ a:has(.gl-jira-badge):focus {
 /* Cherry-pick button — native GitLab classes on the element itself */
 .gl-cherry-pick-btn.gl-button svg { pointer-events: none; }
 
+/* Cherry-pick button on commit detail page header */
+.gl-cherry-pick-detail-btn {
+  margin-left: 8px;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.gl-cherry-pick-detail-btn svg { pointer-events: none; }
+
 /* Overlay — reuse GitLab modal backdrop pattern */
 .gl-cherry-pick-overlay {
   position: fixed;
