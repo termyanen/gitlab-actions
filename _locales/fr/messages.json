@@ -378,6 +378,8 @@
   "cherryPickBumpVersion": { "message": "Incrementer la version lors du repli" },
   "cherryPickBumpVersionHint": { "message": "Incrementer la version dans la branche cible dans le meme commit de repli" },
   "cherryPickFallbackUsed": { "message": "Repli utilise pour: $1", "placeholders": { "1": { "content": "$1" } } },
+  "commitsJiraField": { "message": "Champ Jira pour les badges de commits" },
+  "commitsJiraFieldHint": { "message": "Nom du champ Jira à afficher en badges sur la page des commits (ex. fixVersions, status, labels, components). URL Jira requise." },
   "cardCherryPickTitle": { "message": "Cherry-pick vers des branches" },
   "cardCherryPickDesc": { "message": "Cherry-pick de n'importe quel commit vers plusieurs branches avec statut en temps reel. Si le cherry-pick echoue a cause d'un conflit avec le fichier de version, l'extension retente automatiquement — elle rejoue les modifications sans le fichier de version et peut incrementer la version, le tout en un seul commit en preservant l'auteur original." },
 

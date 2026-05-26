@@ -387,6 +387,8 @@
   "cherryPickBumpVersion": { "message": "Поднять версию при фолбэке" },
   "cherryPickBumpVersionHint": { "message": "Поднять версию в целевой ветке в том же коммите при фолбэке" },
   "cherryPickFallbackUsed": { "message": "Использован фолбэк для: $1", "placeholders": { "1": { "content": "$1" } } },
+  "commitsJiraField": { "message": "Поле Jira для бейджей коммитов" },
+  "commitsJiraFieldHint": { "message": "Имя поля Jira для отображения на странице коммитов (напр. fixVersions, status, labels, components). Требуется URL Jira." },
   "cardCherryPickTitle": { "message": "Cherry-pick в несколько веток" },
   "cardCherryPickDesc": { "message": "Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит — перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора." },
 

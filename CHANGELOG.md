@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.5
+
+### New features
+- **Jira field badges on commits page** — shows configurable Jira field values (e.g. Fix Version/s, status, labels) as badges next to each commit on the branch commits page. Set the field name in the cherry-pick settings section (default: fixVersions). Requires Jira URL.
+
+### Fixes
+- **Cherry-pick modal** — now shows the full commit title (uses title attribute fallback for truncated messages) and allows text wrapping instead of truncating long messages.
+
+---
+
 ## 1.7.4
 
 ### New features

@@ -1736,9 +1736,7 @@ a:has(.gl-jira-badge):focus {
   padding: var(--gl-spacing-4, 0.75rem) var(--gl-spacing-5, 1rem);
   color: var(--gl-text-color-secondary, #666);
   border-bottom: 1px solid var(--gl-border-color-default, #dcdcde);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 /* Input row */

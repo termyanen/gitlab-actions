@@ -104,6 +104,7 @@ var DEFAULTS = Object.assign({}, BUTTON_DEFAULTS, {
   cherry_pick_create_mr: true,
   cherry_pick_smart_fallback: true,
   cherry_pick_bump_version: false,
+  commits_jira_field: 'fixVersions',
   jira_url: '',
   jira_ticket_regex: '',
   quickComments: [],
@@ -271,6 +272,7 @@ function renderDefaultTab(container) {
     '<div class="toggle" style="margin-bottom:8px"><input type="checkbox" id="show_jira_details"><label for="show_jira_details">' + escHtml(t('showJiraDetails')) + '</label></div>' +
     '<div class="field"><label>' + escHtml(t('jiraQuickActions')) + '</label><div class="hint">' + escHtml(t('jiraQuickActionsHint')) + '</div><div id="jiraQuickActionsList"></div>' +
     '<button type="button" id="addJiraQuickAction" class="add-btn">+ ' + escHtml(t('jiraQuickActionsAdd')) + '</button></div>' +
+    '<div class="field"><label>' + escHtml(t('commitsJiraField')) + '</label><input type="text" id="commits_jira_field" placeholder="fixVersions"><div class="hint">' + escHtml(t('commitsJiraFieldHint')) + '</div></div>' +
     '<div class="sep"></div>' +
     '<h4>' + escHtml(t('versionBump')) + '</h4>' +
     '<div class="field"><label>' + escHtml(t('filePath')) + '</label>' +
@@ -346,6 +348,7 @@ function renderDefaultTab(container) {
   document.getElementById('cherry_pick_create_mr').checked = allData.cherry_pick_create_mr !== false;
   document.getElementById('cherry_pick_smart_fallback').checked = allData.cherry_pick_smart_fallback !== false;
   document.getElementById('cherry_pick_bump_version').checked = allData.cherry_pick_bump_version || false;
+  document.getElementById('commits_jira_field').value = allData.commits_jira_field || 'fixVersions';
   renderCherryPickBranches(allData.cherry_pick_branches || []);
   document.getElementById('addCherryPickBranch').addEventListener('click', function() {
     addCherryPickBranchRow('');
@@ -876,6 +879,7 @@ function saveDefaultTab() {
   settings.cherry_pick_create_mr = document.getElementById('cherry_pick_create_mr').checked;
   settings.cherry_pick_smart_fallback = document.getElementById('cherry_pick_smart_fallback').checked;
   settings.cherry_pick_bump_version = document.getElementById('cherry_pick_bump_version').checked;
+  settings.commits_jira_field = (document.getElementById('commits_jira_field').value || '').trim() || 'fixVersions';
   settings.cherry_pick_branches = getCherryPickBranchesFromUI();
   var newJiraUrl = (document.getElementById('jira_url').value || '').trim().replace(/\/+$/, '');
   if (newJiraUrl && newJiraUrl !== allData.jira_url) {

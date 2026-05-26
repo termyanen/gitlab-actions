@@ -378,6 +378,8 @@
   "cherryPickBumpVersion": { "message": "フォールバック時にバージョンを上げる" },
   "cherryPickBumpVersionHint": { "message": "フォールバック時に同じコミット内でターゲットブランチのバージョンを上げます" },
   "cherryPickFallbackUsed": { "message": "フォールバックを使用: $1", "placeholders": { "1": { "content": "$1" } } },
+  "commitsJiraField": { "message": "コミットページのJiraフィールドバッジ" },
+  "commitsJiraFieldHint": { "message": "コミットページにバッジとして表示するJiraフィールド名（例：fixVersions、status、labels、components）。Jira URLが必要です。" },
   "cardCherryPickTitle": { "message": "ブランチへ Cherry-pick" },
   "cardCherryPickDesc": { "message": "任意のコミットを複数のブランチに一括で Cherry-pick。リアルタイムでステータスを確認できます。バージョンファイルのコンフリクトで失敗した場合、バージョンファイルを除外して自動的に再試行し、必要に応じてバージョンを上げます。オリジナルの作者を保持した1つのコミットで完了します。" },
 

@@ -42,9 +42,9 @@
     // Commit page: SHA element with hash value
     commitSha: '[data-clipboard-text], .label-monospace, .commit-sha',
     // Commit page: row/container for a single commit
-    commitRow: '.commit, [data-testid="commit-item"], .commit-content, li',
+    commitRow: '.commit, [data-testid="commit-item"], li.commit-header, li[data-testid], .commit-content',
     // Commit page: commit message element
-    commitMsg: '.commit-row-message, .item-title a, .commit-title'
+    commitMsg: '.commit-row-message, .item-title, .commit-title'
   };
 
   // Try querySelector against a multi-selector string; returns first match or null.
@@ -2017,8 +2017,19 @@
             if (!sha || !/^[0-9a-f]{7,40}$/.test(sha)) return;
 
             var row = qUp(group, SEL.commitRow) || group.parentElement;
-            var msgEl = row ? q(row, SEL.commitMsg) : null;
-            var commitMsg = msgEl ? msgEl.textContent.trim() : '';
+            var commitMsg = '';
+            if (row) {
+              var msgEls = qAll(row, SEL.commitMsg);
+              if (msgEls.length > 1) {
+                // GitLab splits message into multiple <a> when it contains issue references
+                for (var mi = 0; mi < msgEls.length; mi++) {
+                  commitMsg += msgEls[mi].textContent || '';
+                }
+                commitMsg = commitMsg.trim();
+              } else if (msgEls.length === 1) {
+                commitMsg = (msgEls[0].textContent || msgEls[0].getAttribute('title') || '').trim();
+              }
+            }
 
             var btn = document.createElement('button');
             btn.className = 'gl-cherry-pick-btn gl-button btn btn-icon btn-md btn-default';
@@ -2443,7 +2454,7 @@
               '.commit-title, [data-testid="commit-title"], .page-title, ' +
               '.commit-box .commit-title, .page-title-holder .title'
             );
-            var commitMsg = commitMsgEl ? commitMsgEl.textContent.trim() : '';
+            var commitMsg = commitMsgEl ? (commitMsgEl.textContent || commitMsgEl.getAttribute('title') || '').trim() : '';
 
             var btn = document.createElement('button');
             btn.className = 'gl-cherry-pick-detail-btn gl-button btn btn-default btn-md';
@@ -2499,6 +2510,157 @@
           cpObserver.observe(document.body, { childList: true, subtree: true });
           window.addEventListener('beforeunload', function() { cpObserver.disconnect(); });
         }
+      });
+    } catch(e) {}
+  }
+
+  // =========================================================================
+  // Jira field badges on commits page
+  // =========================================================================
+
+  if (isCommitsPage()) {
+    try {
+      chrome.storage.sync.get({ jira_url: '', jira_ticket_regex: '', commits_jira_field: 'fixVersions' }, function(s) {
+        if (chrome.runtime.lastError || !s.jira_url || !s.commits_jira_field) return;
+        setJiraTicketRegex(s.jira_ticket_regex);
+        var jiraUrl = s.jira_url;
+        var jiraFields = s.commits_jira_field.split(',').map(function(f) { return f.trim(); }).filter(Boolean);
+        if (!jiraFields.length) return;
+        var _commitJiraCache = {};
+        var _commitJiraFetching = false;
+
+        function injectCommitJiraBadges() {
+          if (_commitJiraFetching) return;
+
+          // Find commit rows via SHA groups (same reliable strategy as cherry-pick buttons)
+          var shaGroups = qAll(document, SEL.commitShaGroup);
+          if (!shaGroups.length) {
+            // Fallback: clipboard buttons with SHA pattern
+            var clipEls = qAll(document, '[data-clipboard-text]');
+            for (var ci = 0; ci < clipEls.length; ci++) {
+              var cv = clipEls[ci].getAttribute('data-clipboard-text') || '';
+              if (/^[0-9a-f]{7,40}$/.test(cv)) {
+                var g = clipEls[ci].closest('.btn-group, .commit-sha-group, .gl-button-group') || clipEls[ci].parentElement;
+                if (g && shaGroups.indexOf(g) === -1) shaGroups.push(g);
+              }
+            }
+          }
+          if (!shaGroups.length) return;
+
+          var ticketMap = [];
+          var allTickets = [];
+          var seen = [];
+
+          for (var i = 0; i < shaGroups.length; i++) {
+            var row = qUp(shaGroups[i], SEL.commitRow) || shaGroups[i].parentElement;
+            if (!row || seen.indexOf(row) !== -1) continue;
+            seen.push(row);
+            if (row.querySelector('.gl-commit-jira-badge')) continue; // already rendered
+            var msgEls = qAll(row, SEL.commitMsg);
+            if (!msgEls.length) continue;
+            var text = '';
+            for (var j = 0; j < msgEls.length; j++) { text += msgEls[j].textContent || ''; }
+            text = text.trim();
+            var tickets = parseTickets(text);
+            if (!tickets.length) continue;
+            // Find last commit message element for badge insertion
+            var lastMsgEl = msgEls[msgEls.length - 1];
+            ticketMap.push({ row: row, lastMsgEl: lastMsgEl, tickets: tickets });
+            tickets.forEach(function(t) {
+              if (allTickets.indexOf(t) === -1) allTickets.push(t);
+            });
+          }
+
+          if (!allTickets.length) return;
+
+          // Render from cache first
+          var uncached = [];
+          allTickets.forEach(function(t) {
+            if (_commitJiraCache[t] && (Date.now() - _commitJiraCache[t].ts) < 5 * 60 * 1000) return;
+            uncached.push(t);
+          });
+
+          // Render cached badges immediately
+          ticketMap.forEach(function(entry) {
+            renderCommitJiraBadges(entry);
+          });
+
+          if (!uncached.length) return;
+
+          // Fetch uncached — one request per field, batches of 5 tickets
+          _commitJiraFetching = true;
+          var fieldIdx = 0;
+          function fetchNextField() {
+            if (fieldIdx >= jiraFields.length) {
+              _commitJiraFetching = false;
+              ticketMap.forEach(function(entry) { renderCommitJiraBadges(entry); });
+              return;
+            }
+            var field = jiraFields[fieldIdx];
+            var batch = uncached.slice(0, 5);
+            chrome.runtime.sendMessage({
+              type: 'fetch-jira-field-values',
+              jiraUrl: jiraUrl,
+              tickets: batch,
+              field: field
+            }, function(resp) {
+              if (resp && !resp._error) {
+                var data = resp.values || {};
+                var now = Date.now();
+                for (var t in data) {
+                  if (!_commitJiraCache[t]) _commitJiraCache[t] = { ts: now };
+                  _commitJiraCache[t][field] = data[t].values || [];
+                  if (data[t].categoryKey) _commitJiraCache[t]._categoryKey = data[t].categoryKey;
+                  _commitJiraCache[t].ts = now;
+                }
+                batch.forEach(function(t) {
+                  if (!_commitJiraCache[t]) _commitJiraCache[t] = { ts: now };
+                  if (!_commitJiraCache[t][field]) _commitJiraCache[t][field] = [];
+                });
+              }
+              fieldIdx++;
+              fetchNextField();
+            });
+          }
+          fetchNextField();
+        }
+
+        function renderCommitJiraBadges(entry) {
+          if (entry.row.querySelector('.gl-commit-jira-badge')) return;
+          var badges = [];
+          entry.tickets.forEach(function(t) {
+            var cached = _commitJiraCache[t];
+            if (!cached) return;
+            jiraFields.forEach(function(field) {
+              var vals = cached[field];
+              if (!vals || !vals.length) return;
+              vals.forEach(function(v) {
+                var existing = badges.some(function(b) { return b.val === v; });
+                if (!existing) badges.push({ val: v, field: field, categoryKey: cached._categoryKey || '' });
+              });
+            });
+          });
+          if (!badges.length) return;
+          var anchor = entry.lastMsgEl;
+          var wrap = anchor.parentNode;
+          var ref = anchor.nextSibling;
+          badges.forEach(function(b) {
+            var badge = document.createElement('span');
+            badge.className = 'gl-jira-badge gl-commit-jira-badge ' + (b.field === 'status' ? getJiraCategoryClass(b.categoryKey, b.val) : 'jira-new');
+            badge.textContent = b.val;
+            wrap.insertBefore(badge, ref);
+          });
+        }
+
+        injectCommitJiraBadges();
+
+        var _cjTimer = null;
+        var cjObserver = new MutationObserver(function() {
+          clearTimeout(_cjTimer);
+          _cjTimer = setTimeout(injectCommitJiraBadges, 500);
+        });
+        cjObserver.observe(document.body, { childList: true, subtree: true });
+        window.addEventListener('beforeunload', function() { cjObserver.disconnect(); });
       });
     } catch(e) {}
   }

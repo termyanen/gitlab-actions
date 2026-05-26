@@ -378,6 +378,8 @@
   "cherryPickBumpVersion": { "message": "Subir version en el respaldo" },
   "cherryPickBumpVersionHint": { "message": "Subir la version en la rama destino dentro del mismo commit de respaldo" },
   "cherryPickFallbackUsed": { "message": "Respaldo usado para: $1", "placeholders": { "1": { "content": "$1" } } },
+  "commitsJiraField": { "message": "Campo Jira para insignias de commits" },
+  "commitsJiraFieldHint": { "message": "Nombre del campo Jira para mostrar como insignias en la página de commits (ej. fixVersions, status, labels, components). Se requiere URL de Jira." },
   "cardCherryPickTitle": { "message": "Cherry-pick a ramas" },
   "cardCherryPickDesc": { "message": "Cherry-pick de cualquier commit a multiples ramas con estado en tiempo real. Si falla por conflicto con el archivo de version, la extension reintenta automaticamente — replica los cambios sin el archivo de version y opcionalmente sube la version, todo en un solo commit preservando el autor original." },
 

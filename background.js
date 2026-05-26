@@ -392,6 +392,46 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     return true;
   }
 
+  if (msg.type === 'fetch-jira-field-values') {
+    // msg.jiraUrl, msg.tickets (array), msg.field (string, e.g. 'fixVersions')
+    var field = msg.field || 'fixVersions';
+    // For status field, also fetch statusCategory for color coding
+    var apiFields = field === 'status' ? 'status' : field;
+    var results = {};
+    function fetchField(i) {
+      if (i >= msg.tickets.length) return Promise.resolve(results);
+      var ticket = msg.tickets[i];
+      return jiraApi(msg.jiraUrl, '/rest/api/2/issue/' + ticket + '?fields=' + apiFields)
+        .then(function(data) {
+          var val = data && data.fields ? data.fields[field] : null;
+          var values = [];
+          var categoryKey = '';
+          if (Array.isArray(val)) {
+            val.forEach(function(v) {
+              values.push(typeof v === 'object' && v.name ? v.name : String(v));
+            });
+          } else if (val && typeof val === 'object' && val.name) {
+            values.push(val.name);
+            if (val.statusCategory) categoryKey = val.statusCategory.key || '';
+          } else if (val) {
+            values.push(String(val));
+          }
+          if (values.length) {
+            results[ticket] = { values: values };
+            if (categoryKey) results[ticket].categoryKey = categoryKey;
+          }
+        })
+        .catch(function() {})
+        .then(function() { return fetchField(i + 1); });
+    }
+    fetchField(0).then(function() {
+      sendResponse({ values: results });
+    }).catch(function(err) {
+      sendResponse({ _error: err.message });
+    });
+    return true;
+  }
+
   if (msg.type === 'search-jira-assignable') {
     jiraApi(msg.jiraUrl, '/rest/api/2/user/assignable/search?issueKey=' + encodeURIComponent(msg.ticket) + '&username=' + encodeURIComponent(msg.query) + '&maxResults=10')
       .then(function(users) {

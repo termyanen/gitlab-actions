@@ -51,7 +51,7 @@
     "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.7.4",
+    "softwareVersion": "1.7.5",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -633,7 +633,7 @@
         <div class="feature-dot" style="background:var(--green)"></div>
         <div>
           <h4 data-i18n="fApprovalTitle">My Approval Indicator</h4>
-          <p data-i18n="fApprovalDesc">Shows whether you approved each MR on the list page. Green icon when you approved, grey when approved by others only.</p>
+          <p data-i18n="fApprovalDesc">Enhances the approval badge on the MR list. Shows "You +N" when you approved, or the total count when approved by others only.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -817,7 +817,7 @@
         fStandupTitle: 'Daily Activity Report',
         fStandupDesc: 'Generate a daily activity report from GitLab: MRs created, merged, reviewed, and in progress. With Jira integration, ticket titles are automatically added to MR entries. Copy-paste ready for Slack or Jira.',
         fCherryPickTitle: 'Cherry-pick to branches',
-        fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author.',
+        fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit.',
         fTrackerTitle: 'Background Job Tracker',
         fTrackerDesc: 'Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.',
 
@@ -838,7 +838,7 @@
         fConflictsTitle: 'Conflicts Indicator',
         fConflictsDesc: 'Red CONFLICTS badge on MR list and detail pages when the branch has merge conflicts that need to be resolved.',
         fApprovalTitle: 'My Approval Indicator',
-        fApprovalDesc: 'Shows whether you approved each MR on the list page. Green icon when you approved, grey when approved by others only.',
+        fApprovalDesc: 'Enhances the approval badge on the MR list. Shows \u201cYou +N\u201d when you approved, or the total count when approved by others only.',
         fBranchesTitle: 'Branch Names',
         fBranchesDesc: 'Shows source and target branch names on each MR in the list. See at a glance where the code comes from and where it merges into.',
         fAgeTitle: 'MR Age Badge',
@@ -912,7 +912,7 @@
         fStandupTitle: 'Отчёт по дневной активности',
         fStandupDesc: 'Сгенерируйте отчёт по активности за день: созданные, смёрженные и отревьюенные MR. При интеграции с Jira к записям автоматически добавляются названия задач. Готов для вставки в Slack или Jira.',
         fCherryPickTitle: 'Cherry-pick в ветки',
-        fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора.',
+        fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора. Рядом с каждым коммитом можно показать бейджи Jira-полей (напр. Fix Version).',
         fTrackerTitle: 'Трекер фоновых задач',
         fTrackerDesc: 'Долгие операции (Ship, Rebase + Auto-merge) выполняются в фоновом service worker. Плавающая панель показывает прогресс в реальном времени с визуализацией шагов и кнопкой отмены. Работает на всех вкладках GitLab.',
 
@@ -933,7 +933,7 @@
         fConflictsTitle: 'Индикатор конфликтов',
         fConflictsDesc: 'Красный бейдж КОНФЛИКТЫ в списке и на странице MR, когда в ветке есть конфликты слияния.',
         fApprovalTitle: 'Индикатор моего аппрува',
-        fApprovalDesc: 'Показывает, одобрили ли вы каждый MR в списке. Зелёная иконка при вашем аппруве, серая — при аппруве других.',
+        fApprovalDesc: 'Дополняет бейдж аппрува в списке MR. Показывает \u00abВы +N\u00bb при вашем аппруве или общее число, если аппрувнули другие.',
         fBranchesTitle: 'Названия веток',
         fBranchesDesc: 'Показывает исходную и целевую ветки на каждом MR в списке. Сразу видно, откуда и куда мерджится код.',
         fAgeTitle: 'Возраст MR',

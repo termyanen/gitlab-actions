@@ -363,6 +363,8 @@
   "cherryPickBumpVersion": { "message": "Version beim Fallback erhoehen" },
   "cherryPickBumpVersionHint": { "message": "Version im Zielbranch im selben Fallback-Commit erhoehen" },
   "cherryPickFallbackUsed": { "message": "Fallback verwendet fuer: $1", "placeholders": { "1": { "content": "$1" } } },
+  "commitsJiraField": { "message": "Jira-Feld für Commit-Badges" },
+  "commitsJiraFieldHint": { "message": "Jira-Feldname für Badges auf der Commit-Seite (z.B. fixVersions, status, labels, components). Jira-URL erforderlich." },
   "cardCherryPickTitle": { "message": "Cherry-pick in Branches" },
   "cardCherryPickDesc": { "message": "Jeden Commit in mehrere Branches cherry-picken mit Echtzeit-Status. Wenn ein Cherry-pick wegen Versionsdatei-Konflikten fehlschlaegt, wiederholt die Erweiterung automatisch — ohne Versionsdatei, optional mit Versionsanhebung, alles in einem Commit unter Beibehaltung des urspruenglichen Autors." },
 

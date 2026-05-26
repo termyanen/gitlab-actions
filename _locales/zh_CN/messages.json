@@ -378,6 +378,8 @@
   "cherryPickBumpVersion": { "message": "回退时升级版本" },
   "cherryPickBumpVersionHint": { "message": "在回退的同一个提交中升级目标分支的版本号" },
   "cherryPickFallbackUsed": { "message": "已使用回退方案: $1", "placeholders": { "1": { "content": "$1" } } },
+  "commitsJiraField": { "message": "提交页面的 Jira 字段徽章" },
+  "commitsJiraFieldHint": { "message": "在提交页面显示为徽章的 Jira 字段名称（如 fixVersions、status、labels、components）。需要配置 Jira URL。" },
   "cardCherryPickTitle": { "message": "Cherry-pick 到分支" },
   "cardCherryPickDesc": { "message": "一键将任意提交 Cherry-pick 到多个分支，实时查看状态。如果因版本文件冲突导致 Cherry-pick 失败，扩展会自动重试——排除版本文件重新提交，可选升级版本号，全部在一个提交中完成并保留原始作者。" },
 
