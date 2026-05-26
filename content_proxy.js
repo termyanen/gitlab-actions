@@ -2192,6 +2192,10 @@
             renderBranches();
 
             // Fallback: replay commit via Commits API, excluding version file
+            // Only works when the sole conflict is in the version file.
+            // For modified files, verifies the target branch hasn't diverged from
+            // the commit's parent — otherwise the full-file copy would overwrite
+            // unrelated changes in the target branch.
             function doFallbackCommit(commitBranch, targetForBump) {
               return Promise.all([
                 api('GET', '/projects/' + encodedProject + '/repository/commits/' + sha),
@@ -2201,28 +2205,126 @@
                 var diffs = results[1];
                 var versionFile = settings.versionFile || 'package.json';
 
+                // Verify the version file is actually in the diff — if not,
+                // the conflict is in another file and fallback cannot help
+                var hasVersionFile = diffs.some(function(d) { return d.new_path === versionFile || d.old_path === versionFile; });
+                if (!hasVersionFile) throw new Error(msg('cherryPickFallbackNoVersionFile') || 'Smart fallback only handles version file conflicts. Conflict is in another file');
+
                 // Filter out version file
                 var filtered = diffs.filter(function(d) { return d.new_path !== versionFile && d.old_path !== versionFile; });
                 if (!filtered.length) throw new Error('No files left after excluding ' + versionFile);
 
-                // Build actions from diffs
-                var filePromises = filtered.map(function(d) {
-                  if (d.deleted_file) {
-                    return Promise.resolve({ action: 'delete', file_path: d.new_path });
+                var parentSha = commitInfo.parent_ids && commitInfo.parent_ids[0];
+                if (!parentSha) throw new Error('Cannot determine parent commit');
+
+                // Verify that the version file diff contains ONLY a version change.
+                // If other fields were also modified (e.g. dependencies), dropping
+                // the file would silently lose those changes.
+                var vPath = settings.versionPath || 'version';
+                var isToml = versionFile.indexOf('.toml') !== -1;
+                var isPlainText = versionFile.indexOf('.txt') !== -1;
+
+                var versionOnlyCheck = Promise.all([
+                  api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + parentSha).catch(function() { return null; }),
+                  api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + sha).catch(function() { return null; })
+                ]).then(function(pair) {
+                  var parentVFile = pair[0];
+                  var commitVFile = pair[1];
+                  if (!parentVFile || !commitVFile) return; // new or deleted version file — skip check
+
+                  var parentContent = decodeURIComponent(escape(atob(parentVFile.content)));
+                  var commitContent = decodeURIComponent(escape(atob(commitVFile.content)));
+
+                  if (isPlainText) {
+                    // Plain text version files contain only the version — always safe
+                    return;
                   }
-                  // For new or updated files, get content from the original commit
-                  return api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + sha)
-                    .then(function(file) {
-                      return {
-                        action: d.new_file ? 'create' : 'update',
-                        file_path: d.new_path,
-                        content: file.content,
-                        encoding: 'base64'
-                      };
-                    });
+                  if (isToml) {
+                    var parentParsed = parseToml(parentContent);
+                    var parentV = getNestedValue(parentParsed, vPath);
+                    // Replace version in commit content with parent version and compare
+                    var normalized = updateTomlVersion(commitContent, vPath, parentV);
+                    if (normalized !== parentContent) {
+                      throw new Error(msg('cherryPickFallbackVersionFileHasOtherChanges') || 'Version file contains changes beyond version — cannot safely skip it');
+                    }
+                  } else {
+                    // JSON — compare parsed objects to avoid formatting sensitivity
+                    var parentJson = JSON.parse(parentContent);
+                    var commitJson = JSON.parse(commitContent);
+                    var parentVersion = getNestedValue(parentJson, vPath);
+                    // Set version in commit JSON to parent's version, then compare objects
+                    setNestedValue(commitJson, vPath, parentVersion);
+                    if (JSON.stringify(parentJson) !== JSON.stringify(commitJson)) {
+                      throw new Error(msg('cherryPickFallbackVersionFileHasOtherChanges') || 'Version file contains changes beyond version — cannot safely skip it');
+                    }
+                  }
                 });
 
-                return Promise.all(filePromises).then(function(actions) {
+                return versionOnlyCheck.then(function() {
+
+                // Build actions from diffs, verifying target branch safety
+                var filePromises = filtered.map(function(d) {
+                  if (d.deleted_file) {
+                    // For deletes, verify the file in target matches the parent
+                    // (i.e. target hasn't modified the file independently)
+                    return Promise.all([
+                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.old_path) + '?ref=' + parentSha).catch(function() { return null; }),
+                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.old_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; })
+                    ]).then(function(pair) {
+                      var parentFile = pair[0];
+                      var targetFile = pair[1];
+                      // File already absent in target — nothing to delete, skip
+                      if (!targetFile) return null;
+                      if (parentFile && parentFile.content !== targetFile.content) {
+                        throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.old_path);
+                      }
+                      return { action: 'delete', file_path: d.old_path };
+                    });
+                  }
+                  if (d.new_file) {
+                    // New file — verify it doesn't already exist in target branch
+                    return Promise.all([
+                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + sha),
+                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; })
+                    ]).then(function(pair) {
+                      var sourceFile = pair[0];
+                      var targetFile = pair[1];
+                      if (targetFile) {
+                        throw new Error((msg('cherryPickFallbackDiverged') || 'File already exists in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
+                      }
+                      return { action: 'create', file_path: d.new_path, content: sourceFile.content, encoding: 'base64' };
+                    });
+                  }
+                  // Modified files: compare parent version with target branch version
+                  // If they differ, the file was changed in target independently — unsafe
+                  return Promise.all([
+                    api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + parentSha).catch(function() { return null; }),
+                    api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; }),
+                    api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + sha)
+                  ]).then(function(triple) {
+                    var parentFile = triple[0];
+                    var targetFile = triple[1];
+                    var sourceFile = triple[2];
+                    // Cannot verify safety without a baseline from parent
+                    if (!parentFile) {
+                      throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
+                    }
+                    // File missing in target — it was deleted there independently
+                    if (!targetFile) {
+                      throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
+                    }
+                    // If parent and target content differ, target has independent changes
+                    if (parentFile.content !== targetFile.content) {
+                      throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
+                    }
+                    return { action: 'update', file_path: d.new_path, content: sourceFile.content, encoding: 'base64' };
+                  });
+                });
+
+                return Promise.all(filePromises).then(function(rawActions) {
+                  // Filter out nulls (e.g. files already deleted in target)
+                  var actions = rawActions.filter(function(a) { return a !== null; });
+                  if (!actions.length && !bumpCheckbox.checked) throw new Error('No applicable file changes for target branch');
                   // Optionally bump version in the same commit
                   if (!bumpCheckbox.checked) {
                     var commitMsg = (commitInfo.message || '') + '\n\n(cherry picked from commit ' + sha + ')';
@@ -2283,6 +2385,7 @@
                       });
                     });
                 });
+                }); // versionOnlyCheck.then
               });
             }
 
