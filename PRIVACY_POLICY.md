@@ -1,6 +1,6 @@
 # Privacy Policy — GitLab MR Actions
 
-**Last updated:** May 2026
+**Last updated:** May 31, 2026
 
 ## Overview
 
@@ -10,17 +10,17 @@ GitLab MR Actions is a browser extension that adds one-click action buttons and 
 
 **This extension does not collect, store, or transmit any personal data to third parties.**
 
-No analytics, telemetry, tracking, or advertising is included.
+No analytics, telemetry, tracking, advertising, or third-party scripts are included.
 
-## Data Usage
+## What Data the Extension Accesses
 
-### GitLab API
+### GitLab Session Cookies
 
-The extension communicates exclusively with your GitLab instance (the one you are currently browsing). It uses your existing browser session cookies to authenticate API requests — the same cookies your browser already sends when you use GitLab normally. No API tokens are required or stored.
+The extension communicates exclusively with your GitLab instance (the one you are currently browsing). It uses your existing browser session cookies to authenticate API requests — the same cookies your browser already sends when you use GitLab normally. No API tokens are required or stored. No credentials are read, stored, or transmitted externally.
 
 API calls are made to perform actions you explicitly trigger (rebase, merge, version bump, etc.) and to read MR metadata displayed in the UI.
 
-### Jira API (Optional)
+### Jira Session Cookies (Optional)
 
 If you configure a Jira URL in settings, the extension reads your Jira session cookies via the `chrome.cookies` API to fetch ticket statuses and details. This data is:
 - Fetched directly from your Jira instance
@@ -29,17 +29,25 @@ If you configure a Jira URL in settings, the extension reads your Jira session c
 
 You must explicitly grant host permission for your Jira domain before this feature activates.
 
-### Local Storage
+### Extension Settings
 
-The extension uses `chrome.storage.sync` to save your settings (button toggles, version bump config, Jira URL, etc.). This data syncs across your Chrome browsers via your Google account, as is standard for Chrome extensions. No other data is stored persistently.
+The extension uses `chrome.storage.sync` to save your settings (button toggles, version bump config, Jira URL, etc.). This data may be synced across your Chrome browsers via your Google account if you have Chrome Sync enabled. The extension developer does not operate any servers and has no access to your stored data.
 
-### Cookies
+## What Data the Extension Does NOT Access
 
-The extension reads cookies only for:
-- **GitLab**: Session cookies on the GitLab page you are visiting (via standard `credentials: 'same-origin'` fetch)
-- **Jira**: Session cookies for the Jira domain you configure (via `chrome.cookies` API, requires explicit permission grant)
+- No browsing history
+- No personally identifiable information
+- No analytics or telemetry
+- No tracking pixels or third-party scripts
+- No advertising
 
-Cookies are read for authentication purposes only and are never copied, stored, or transmitted to any third party.
+## Third-Party Services
+
+The extension communicates only with:
+- **Your GitLab instance** — the self-hosted or cloud GitLab server you are logged into
+- **Your Jira instance** (optional) — only if you configure Jira integration
+
+No data is sent to any other third-party services, analytics platforms, or external servers.
 
 ## Permissions Explained
 
@@ -47,13 +55,17 @@ Cookies are read for authentication purposes only and are never copied, stored, 
 |-----------|---------|
 | `storage` | Save your extension settings |
 | `notifications` | Show desktop notifications when background jobs complete |
-| `tabs` | Relay API calls between background worker and content scripts |
-| `cookies` | Read Jira session cookies for authentication (Jira integration only) |
-| `optional_host_permissions` | Access Jira API on the domain you specify (granted on demand) |
+| `tabs` | Communicate between content scripts and the background service worker |
+| `cookies` | Read session cookies for GitLab/Jira API authentication |
+| `optional_host_permissions` | Requested on-demand when you configure Jira, so the extension can access your Jira domain |
 
-## Data Sharing
+## Children's Privacy
 
-No data is shared with third parties. All communication happens exclusively between your browser and your own GitLab/Jira instances.
+This extension is a developer productivity tool and is not directed at children under 13.
+
+## Changes to This Policy
+
+If this policy is updated, the changes will be posted on this page with an updated date. Since the extension collects no data, significant changes are unlikely.
 
 ## Open Source
 
@@ -61,4 +73,4 @@ This extension is open source. You can review the full source code to verify the
 
 ## Contact
 
-If you have questions about this privacy policy, please open an issue on the GitHub repository.
+If you have questions about this privacy policy, please open an issue on the [GitHub repository](https://github.com/termyanen/gitlab-actions/issues).

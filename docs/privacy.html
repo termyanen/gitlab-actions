@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - GitLab Actions Chrome Extension</title>
+  <meta name="description" content="Privacy Policy for the GitLab Actions Chrome extension. No data collection, no tracking, no third-party sharing.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://termyanen.github.io/gitlab-actions/privacy">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #18171d;
+      --bg-alt: #28272d;
+      --surface: #28272d;
+      --border: #3a383f;
+      --text: #ffffff;
+      --text-sec: #ececef;
+      --accent: #FC6D26;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --max-w: 800px;
+      --radius: 12px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); background: var(--bg); color: var(--text);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: var(--max-w); margin: 0 auto; padding: 60px 24px 80px;
+    }
+    .back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; color: var(--text-sec); margin-bottom: 40px;
+    }
+    .back:hover { color: var(--accent); text-decoration: none; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin-bottom: 8px;
+    }
+    .updated {
+      font-size: 14px; color: var(--text-sec); margin-bottom: 40px;
+    }
+    h2 {
+      font-size: 20px; font-weight: 600; margin: 36px 0 12px;
+      color: var(--accent);
+    }
+    p, ul { margin-bottom: 16px; color: var(--text-sec); }
+    ul { padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    strong { color: var(--text); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; margin: 24px 0;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    .lang-switch {
+      display: flex; gap: 8px; margin-bottom: 40px;
+    }
+    .lang-switch button {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text-sec); padding: 6px 14px; border-radius: 6px;
+      font-family: var(--font); font-size: 13px; cursor: pointer;
+    }
+    .lang-switch button.active {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+    }
+    .lang-switch button:hover { border-color: var(--accent); }
+    [data-lang="ru"] { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="./" class="back">&larr; <span data-i18n="back">Back to GitLab Actions</span></a>
+
+    <h1 data-i18n="title">Privacy Policy</h1>
+    <p class="updated" data-i18n="updated">Last updated: May 31, 2026</p>
+
+    <div class="lang-switch">
+      <button class="active" onclick="switchLang('en')">English</button>
+      <button onclick="switchLang('ru')">Русский</button>
+    </div>
+
+    <!-- ═══ ENGLISH ═══ -->
+    <div data-lang="en">
+      <div class="card">
+        <p><strong>GitLab Actions</strong> does not collect, transmit, or share any personal data. All information stays on your device and is never sent to any external servers controlled by the developer.</p>
+      </div>
+
+      <h2>What data the extension accesses</h2>
+      <ul>
+        <li><strong>GitLab session cookies</strong> — used solely to authenticate API requests to your own GitLab instance (rebase, merge, pipelines, etc.). The extension acts on your behalf using your existing browser session. No credentials are read, stored, or transmitted externally.</li>
+        <li><strong>Jira session cookies</strong> — if you optionally configure Jira integration, cookies for your Jira domain are used to fetch issue details. This requires you to explicitly grant host permission. No cookies are stored or sent anywhere other than your Jira instance.</li>
+        <li><strong>Extension settings</strong> — your preferences (button toggles, version bump config, Jira URL, custom jobs, etc.) are stored in <code>chrome.storage.sync</code>, which is Chrome's built-in synced storage tied to your Google account. The extension developer has no access to this data.</li>
+      </ul>
+
+      <h2>What data the extension does NOT access</h2>
+      <ul>
+        <li>No browsing history</li>
+        <li>No personally identifiable information</li>
+        <li>No analytics or telemetry</li>
+        <li>No tracking pixels or third-party scripts</li>
+        <li>No advertising</li>
+      </ul>
+
+      <h2>Data storage</h2>
+      <p>All data is stored locally on your device via <code>chrome.storage.sync</code>. This data may be synced across your Chrome browsers by Google if you have Chrome Sync enabled. The extension developer does not operate any servers and has no access to your stored data.</p>
+
+      <h2>Third-party services</h2>
+      <p>The extension communicates only with:</p>
+      <ul>
+        <li><strong>Your GitLab instance</strong> — the self-hosted or cloud GitLab server you are logged into</li>
+        <li><strong>Your Jira instance</strong> (optional) — only if you configure Jira integration</li>
+      </ul>
+      <p>No data is sent to any other third-party services, analytics platforms, or external servers.</p>
+
+      <h2>Permissions explained</h2>
+      <ul>
+        <li><strong>storage</strong> — save your extension settings</li>
+        <li><strong>cookies</strong> — read session cookies for GitLab/Jira API authentication</li>
+        <li><strong>tabs</strong> — communicate between content scripts and the background service worker</li>
+        <li><strong>notifications</strong> — show desktop notifications when background jobs complete</li>
+        <li><strong>optional host permissions</strong> — requested on-demand when you configure Jira, so the extension can access your Jira domain</li>
+      </ul>
+
+      <h2>Children's privacy</h2>
+      <p>This extension is a developer productivity tool and is not directed at children under 13.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If this policy is updated, the changes will be posted on this page with an updated date. Since the extension collects no data, significant changes are unlikely.</p>
+
+      <h2>Contact</h2>
+      <p>If you have questions about this privacy policy, please open an issue on <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub</a>.</p>
+    </div>
+
+    <!-- ═══ RUSSIAN ═══ -->
+    <div data-lang="ru">
+      <div class="card">
+        <p><strong>GitLab Actions</strong> не собирает, не передает и не предоставляет третьим лицам никаких персональных данных. Вся информация остается на вашем устройстве и никогда не отправляется на внешние серверы разработчика.</p>
+      </div>
+
+      <h2>Какие данные использует расширение</h2>
+      <ul>
+        <li><strong>Сессионные cookie GitLab</strong> — используются исключительно для аутентификации API-запросов к вашему GitLab-серверу (rebase, merge, пайплайны и т.д.). Расширение действует от вашего имени, используя существующую сессию браузера. Учетные данные не считываются, не сохраняются и не передаются.</li>
+        <li><strong>Сессионные cookie Jira</strong> — если вы настроите интеграцию с Jira, cookie вашего домена Jira используются для получения информации о задачах. Для этого вы явно предоставляете разрешение на доступ к домену. Cookie не сохраняются и не отправляются никуда, кроме вашего Jira-сервера.</li>
+        <li><strong>Настройки расширения</strong> — ваши настройки (переключатели кнопок, конфигурация версий, URL Jira, пользовательские задачи и т.д.) хранятся в <code>chrome.storage.sync</code> — встроенном хранилище Chrome, привязанном к вашему аккаунту Google. Разработчик расширения не имеет доступа к этим данным.</li>
+      </ul>
+
+      <h2>Какие данные расширение НЕ использует</h2>
+      <ul>
+        <li>Не собирает историю просмотров</li>
+        <li>Не собирает персональные данные</li>
+        <li>Не использует аналитику или телеметрию</li>
+        <li>Не содержит трекеров или сторонних скриптов</li>
+        <li>Не содержит рекламы</li>
+      </ul>
+
+      <h2>Хранение данных</h2>
+      <p>Все данные хранятся локально на вашем устройстве через <code>chrome.storage.sync</code>. Эти данные могут синхронизироваться между вашими браузерами Chrome через Google, если у вас включена синхронизация Chrome. Разработчик расширения не управляет никакими серверами и не имеет доступа к вашим данным.</p>
+
+      <h2>Сторонние сервисы</h2>
+      <p>Расширение взаимодействует только с:</p>
+      <ul>
+        <li><strong>Вашим GitLab-сервером</strong> — self-hosted или облачный GitLab, в котором вы авторизованы</li>
+        <li><strong>Вашим Jira-сервером</strong> (опционально) — только если вы настроите интеграцию с Jira</li>
+      </ul>
+      <p>Никакие данные не отправляются в сторонние сервисы, аналитические платформы или внешние серверы.</p>
+
+      <h2>Разрешения</h2>
+      <ul>
+        <li><strong>storage</strong> — сохранение настроек расширения</li>
+        <li><strong>cookies</strong> — чтение сессионных cookie для аутентификации в API GitLab/Jira</li>
+        <li><strong>tabs</strong> — связь между контент-скриптами и фоновым сервис-воркером</li>
+        <li><strong>notifications</strong> — уведомления о завершении фоновых задач</li>
+        <li><strong>optional host permissions</strong> — запрашиваются при настройке Jira для доступа к вашему домену</li>
+      </ul>
+
+      <h2>Конфиденциальность детей</h2>
+      <p>Это расширение — инструмент для разработчиков. Оно не предназначено для детей младше 13 лет.</p>
+
+      <h2>Изменения политики</h2>
+      <p>При обновлении политики изменения будут опубликованы на этой странице с обновленной датой. Поскольку расширение не собирает данных, существенные изменения маловероятны.</p>
+
+      <h2>Контакты</h2>
+      <p>Если у вас есть вопросы, создайте issue на <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    function switchLang(lang) {
+      var btns = document.querySelectorAll('.lang-switch button');
+      for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+      var sections = document.querySelectorAll('[data-lang]');
+      for (var j = 0; j < sections.length; j++) {
+        sections[j].style.display = sections[j].getAttribute('data-lang') === lang ? 'block' : 'none';
+      }
+      if (lang === 'en') btns[0].classList.add('active');
+      if (lang === 'ru') btns[1].classList.add('active');
+      var titles = { en: 'Privacy Policy', ru: 'Политика конфиденциальности' };
+      var backs = { en: 'Back to GitLab Actions', ru: 'Назад к GitLab Actions' };
+      var dates = { en: 'Last updated: May 31, 2026', ru: 'Последнее обновление: 31 мая 2026' };
+      document.querySelector('[data-i18n="title"]').textContent = titles[lang];
+      document.querySelector('[data-i18n="back"] span, [data-i18n="back"]').lastChild.textContent = ' ' + backs[lang];
+      document.querySelector('[data-i18n="updated"]').textContent = dates[lang];
+    }
+  </script>
+</body>
+</html>
