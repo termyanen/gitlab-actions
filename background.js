@@ -246,7 +246,11 @@ function jiraApi(jiraUrl, path) {
       },
     });
   }).then(function(r) {
-    if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+    if (!r.ok) {
+      var err = new Error(r.status + ' ' + r.statusText);
+      err.httpStatus = r.status;
+      throw err;
+    }
     return r.json();
   });
 }
@@ -254,9 +258,10 @@ function jiraApi(jiraUrl, path) {
 function fetchJiraStatuses(jiraUrl, tickets, showDetails) {
   var results = {};
   var fields = showDetails ? 'status,priority,issuetype' : 'status';
+  var authFailed = false;
 
   function fetchOne(i) {
-    if (i >= tickets.length) return Promise.resolve(results);
+    if (i >= tickets.length || authFailed) return Promise.resolve(results);
     var ticket = tickets[i];
     return jiraApi(jiraUrl, '/rest/api/2/issue/' + ticket + '?fields=' + fields)
       .then(function(data) {
@@ -275,7 +280,13 @@ function fetchJiraStatuses(jiraUrl, tickets, showDetails) {
           results[ticket] = r;
         }
       })
-      .catch(function() {})
+      .catch(function(err) {
+        var status = err.httpStatus || 0;
+        if (status === 401 || status === 403) {
+          authFailed = true;
+          results._authError = status;
+        }
+      })
       .then(function() { return fetchOne(i + 1); });
   }
 
@@ -398,8 +409,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     // For status field, also fetch statusCategory for color coding
     var apiFields = field === 'status' ? 'status' : field;
     var results = {};
+    var authFailed = false;
     function fetchField(i) {
-      if (i >= msg.tickets.length) return Promise.resolve(results);
+      if (i >= msg.tickets.length || authFailed) return Promise.resolve(results);
       var ticket = msg.tickets[i];
       return jiraApi(msg.jiraUrl, '/rest/api/2/issue/' + ticket + '?fields=' + apiFields)
         .then(function(data) {
@@ -421,7 +433,13 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             if (categoryKey) results[ticket].categoryKey = categoryKey;
           }
         })
-        .catch(function() {})
+        .catch(function(err) {
+          var status = err.httpStatus || 0;
+          if (status === 401 || status === 403) {
+            authFailed = true;
+            results._authError = status;
+          }
+        })
         .then(function() { return fetchField(i + 1); });
     }
     fetchField(0).then(function() {

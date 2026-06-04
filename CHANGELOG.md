@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.6
+
+### Fixes
+- **Jira auth error handling** — when Jira access tokens expire or become invalid (HTTP 401/403), the extension now stops all subsequent Jira requests instead of retrying endlessly. Reload the page after re-login to resume Jira integration.
+
+---
+
 ## 1.7.5
 
 ### New features
