@@ -477,6 +477,7 @@
   var _jiraFetching = false;
   var _jiraRenderingBadges = false;
   var _jiraUrlStored = '';
+  var _jiraAuthFailed = false; // stops all Jira requests when 401/403 received
   var _skipConfirmations = false;
 
   var _jiraTicketRegex = /[A-Z][A-Z0-9]+-\d+/g;
@@ -676,8 +677,12 @@
       ticket: ticket
     }, function(resp) {
       if (!resp || resp._error) {
+        var errMsg = resp ? resp._error : 'No response';
+        if (resp && resp._error && /^(401|403)\s/.test(resp._error)) {
+          _jiraAuthFailed = true;
+        }
         sidebar.querySelector('.gl-jira-sidebar-body').innerHTML =
-          '<div class="gl-jira-sidebar-error">' + escHtml(resp ? resp._error : 'No response') + '</div>';
+          '<div class="gl-jira-sidebar-error">' + escHtml(errMsg) + '</div>';
         return;
       }
       renderJiraSidebarContent(sidebar, resp, jiraUrl);
@@ -1181,7 +1186,7 @@
 
   function fetchAndRenderJiraStatuses(jiraUrl, showDetails) {
     _showJiraDetails = !!showDetails;
-    if (_jiraFetching) return;
+    if (_jiraFetching || _jiraAuthFailed) return;
     _jiraUrlStored = jiraUrl;
 
     var mrItems = qAll(document, SEL.mrItem);
@@ -1247,6 +1252,13 @@
       _jiraRenderingBadges = false;
       if (chrome.runtime.lastError || !resp || resp._error) return;
       var statuses = resp.statuses || {};
+
+      // Stop all Jira requests if auth failed (401/403)
+      if (statuses._authError) {
+        _jiraAuthFailed = true;
+        console.warn('[GitLab Actions] Jira auth failed (' + statuses._authError + '), stopping Jira requests. Reload page after re-login.');
+        return;
+      }
 
       // Update cache
       var fetchedNow = Date.now();
@@ -1813,6 +1825,7 @@
   }
 
   function injectMrDetailJiraBadges(jiraUrl) {
+    if (_jiraAuthFailed) return;
     var titleEl = document.querySelector('.title-container .title, .detail-page-header .title, [data-testid="title-content"]');
     if (!titleEl) {
       // SPA — retry after short delay
@@ -1835,6 +1848,11 @@
     }, function(resp) {
       if (!resp || resp._error || !resp.statuses) return;
       var statuses = resp.statuses;
+      if (statuses._authError) {
+        _jiraAuthFailed = true;
+        console.warn('[GitLab Actions] Jira auth failed (' + statuses._authError + '), stopping Jira requests. Reload page after re-login.');
+        return;
+      }
       tickets.forEach(function(ticket) {
         var status = statuses[ticket];
         if (!status) return;
@@ -2688,7 +2706,7 @@
             renderCommitJiraBadges(entry);
           });
 
-          if (!uncached.length) return;
+          if (!uncached.length || _jiraAuthFailed) return;
 
           // Fetch uncached — one request per field, batches of 5 tickets
           _commitJiraFetching = true;
@@ -2709,6 +2727,12 @@
             }, function(resp) {
               if (resp && !resp._error) {
                 var data = resp.values || {};
+                if (data._authError) {
+                  _jiraAuthFailed = true;
+                  _commitJiraFetching = false;
+                  console.warn('[GitLab Actions] Jira auth failed (' + data._authError + '), stopping Jira requests. Reload page after re-login.');
+                  return;
+                }
                 var now = Date.now();
                 for (var t in data) {
                   if (!_commitJiraCache[t]) _commitJiraCache[t] = { ts: now };
