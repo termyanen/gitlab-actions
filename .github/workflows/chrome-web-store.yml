@@ -1,0 +1,99 @@
+name: Chrome Web Store
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'upload'
+        type: choice
+        options:
+          - upload
+          - publish
+
+jobs:
+  chrome-web-store:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build zip
+        run: |
+          zip -r extension.zip . \
+            -x "pack.sh" \
+            -x ".*" \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x ".idea/*" \
+            -x ".vscode/*" \
+            -x "_metadata/*" \
+            -x "CLAUDE.md" \
+            -x "README.md" \
+            -x "CHANGELOG.md" \
+            -x "CHANGELOG_RU.md" \
+            -x "ROADMAP.md" \
+            -x "PRIVACY_POLICY.md" \
+            -x "LICENSE" \
+            -x "screenshots/*" \
+            -x "docs/*" \
+            -x "promo/*" \
+            -x "*.crx" \
+            -x "*.pem" \
+            -x "*.zip"
+
+      - name: Get access token
+        id: token
+        run: |
+          RESPONSE=$(curl -s -X POST "https://oauth2.googleapis.com/token" \
+            -d "client_id=${{ secrets.CWS_CLIENT_ID }}" \
+            -d "client_secret=${{ secrets.CWS_CLIENT_SECRET }}" \
+            -d "refresh_token=${{ secrets.CWS_REFRESH_TOKEN }}" \
+            -d "grant_type=refresh_token")
+          TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
+          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
+            echo "Failed to get access token"
+            echo "$RESPONSE"
+            exit 1
+          fi
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to Chrome Web Store
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X PUT \
+            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
+            -H "x-goog-api-version: 2" \
+            -T extension.zip \
+            "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${{ secrets.CWS_EXTENSION_ID }}")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "$BODY"
+          STATUS=$(echo "$BODY" | jq -r '.uploadState')
+          if [ "$HTTP_CODE" != "200" ] || [ "$STATUS" != "SUCCESS" ]; then
+            echo "Upload failed (HTTP $HTTP_CODE, status: $STATUS)"
+            exit 1
+          fi
+          echo "Upload successful"
+
+      - name: Publish to Chrome Web Store
+        if: >-
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'publish')
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
+            -H "x-goog-api-version: 2" \
+            -H "Content-Length: 0" \
+            "https://www.googleapis.com/chromewebstore/v1.1/items/${{ secrets.CWS_EXTENSION_ID }}/publish")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "$BODY"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Publish failed (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+          echo "Published — submitted for review"
