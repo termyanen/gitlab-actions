@@ -1,6 +1,6 @@
 {
-  "extName": { "message": "GitLab MR Actions - Auto-merge, Version Bump, Jira & CI Tools" },
-  "extDescription": { "message": "Acciones con un clic para MRs de GitLab: auto-merge, incremento de versión, force merge, jobs CI personalizados. Sin tokens. Integración con Jira." },
+  "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira & CI/CD Tools" },
+  "extDescription": { "message": "Automatización de merge requests para GitLab: auto-merge, version bump, integración con Jira, control de CI/CD. Sin tokens." },
 
   "popupTitle": { "message": "GitLab MR Actions" },
   "howItWorks": { "message": "Cómo funciona" },

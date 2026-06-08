@@ -1,6 +1,6 @@
 {
-  "extName": { "message": "GitLab MR Actions - Auto-merge, Version Bump, Jira & CI Tools" },
-  "extDescription": { "message": "GitLab MR 一键操作：自动合并、版本号递增、强制合并、自定义 CI 任务。无需令牌，集成 Jira。" },
+  "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira & CI/CD Tools" },
+  "extDescription": { "message": "GitLab 一键合并请求自动化：auto-merge、版本升级、Jira 集成、CI/CD 控制，无需 token。" },
 
   "popupTitle": { "message": "GitLab MR Actions" },
   "howItWorks": { "message": "使用说明" },

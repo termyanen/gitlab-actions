@@ -1,6 +1,6 @@
 {
-  "extName": { "message": "GitLab MR Actions - Auto-merge, Version Bump, Jira & CI Tools" },
-  "extDescription": { "message": "GitLab MR のワンクリック操作：自動マージ、バージョンバンプ、強制マージ、カスタム CI ジョブ。トークン不要。Jira 連携対応。" },
+  "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira & CI/CD Tools" },
+  "extDescription": { "message": "GitLabのmerge requestを1クリックで自動化：auto-merge、version bump、Jira連携、CI/CDコントロール。APIトークン不要。" },
 
   "popupTitle": { "message": "GitLab MR Actions" },
   "howItWorks": { "message": "使い方" },

@@ -8,6 +8,7 @@ zip -r "$ZIPNAME" . \
   -x "pack.sh" \
   -x ".*" \
   -x ".git/*" \
+  -x ".github/*" \
   -x ".idea/*" \
   -x ".vscode/*" \
   -x "_metadata/*" \
@@ -20,6 +21,7 @@ zip -r "$ZIPNAME" . \
   -x "LICENSE" \
   -x "screenshots/*" \
   -x "docs/*" \
+  -x "promo/*" \
   -x "*.crx" \
   -x "*.pem" \
   -x "*.zip"
