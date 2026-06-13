@@ -474,6 +474,37 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     return true;
   }
 
+  if (msg.type === 'fetch-jira-versions') {
+    var projectKey = msg.ticket.replace(/-\d+$/, '');
+    jiraApi(msg.jiraUrl, '/rest/api/2/project/' + projectKey + '/versions')
+      .then(function(versions) {
+        var list = (versions || []).filter(function(v) { return !v.archived; })
+          .map(function(v) { return { name: v.name, released: !!v.released }; });
+        sendResponse({ versions: list });
+      })
+      .catch(function(err) { sendResponse({ _error: err.message }); });
+    return true;
+  }
+
+  if (msg.type === 'set-jira-fix-versions') {
+    var fvUrl = msg.jiraUrl + '/rest/api/2/issue/' + msg.ticket;
+    chrome.cookies.getAll({ url: msg.jiraUrl }).then(function(cookies) {
+      var cookieStr = cookies.map(function(c) { return c.name + '=' + c.value; }).join('; ');
+      return fetch(fvUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Cookie': cookieStr },
+        body: JSON.stringify({ fields: { fixVersions: msg.versions.map(function(v) { return { name: v }; }) } })
+      });
+    }).then(function(r) {
+      if (r.status === 204 || r.ok) {
+        sendResponse({ success: true });
+      } else {
+        return r.text().then(function(text) { throw new Error(r.status + ' ' + text); });
+      }
+    }).catch(function(err) { sendResponse({ _error: err.message }); });
+    return true;
+  }
+
   if (msg.type === 'set-jira-assignee') {
     var url = msg.jiraUrl + '/rest/api/2/issue/' + msg.ticket;
     chrome.cookies.getAll({ url: msg.jiraUrl }).then(function(cookies) {

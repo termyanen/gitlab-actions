@@ -907,7 +907,8 @@ a:has(.gl-jira-badge):focus {
   padding: 4px 0 8px 88px;
 }
 
-.gl-jira-sidebar-assignee-input {
+.gl-jira-sidebar-assignee-input,
+.gl-jira-sidebar-fixversions-filter {
   width: 100%;
   padding: 6px 8px;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
@@ -918,10 +919,15 @@ a:has(.gl-jira-badge):focus {
   box-sizing: border-box;
 }
 
-.gl-jira-sidebar-assignee-input:focus {
+.gl-jira-sidebar-assignee-input:focus,
+.gl-jira-sidebar-fixversions-filter:focus {
   outline: none;
   border-color: #1f75cb;
   box-shadow: 0 0 0 2px rgba(31, 117, 203, 0.2);
+}
+
+.gl-jira-sidebar-fixversions-filter {
+  margin-bottom: 4px;
 }
 
 .gl-jira-sidebar-assignee-results {
@@ -975,6 +981,52 @@ a:has(.gl-jira-badge):focus {
   background: #dd2b0e;
   border-color: #dd2b0e;
   color: #fff;
+}
+
+/* Fix Versions editor */
+.gl-jira-sidebar-fixversions {
+  cursor: pointer;
+}
+
+.gl-jira-sidebar-fixversions:hover {
+  color: #1f75cb;
+}
+
+.gl-jira-sidebar-fixversions:hover .gl-jira-sidebar-edit-icon {
+  opacity: 1;
+}
+
+.gl-jira-sidebar-fixversions-dropdown {
+  padding: 4px 0 8px 88px;
+}
+
+.gl-jira-sidebar-fixversions-list {
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--gl-border-color-default, #dcdcde);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.gl-jira-sidebar-version-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--gl-text-color-default, #333);
+}
+
+.gl-jira-sidebar-version-item:hover {
+  background: var(--gl-background-color-subtle, #f5f5f5);
+}
+
+.gl-jira-sidebar-fixversions-error {
+  color: #dd2b0e;
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 .gl-jira-sidebar-desc-label {

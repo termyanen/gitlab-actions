@@ -51,7 +51,7 @@
     "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.9.0",
+    "softwareVersion": "1.10.0",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -557,7 +557,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 17v-3a2 2 0 012-2h1M15 17v-3a2 2 0 00-2-2h-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fCherryPickTitle">Cherry-pick to branches</h3>
-        <p data-i18n="fCherryPickDesc">Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries &mdash; it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author.</p>
+        <p data-i18n="fCherryPickDesc">Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries &mdash; it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit and open the full Jira ticket sidebar when clicked.</p>
       </div>
       <!-- Background tracker -->
       <div class="bento-card">
@@ -691,7 +691,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 6h8M6 10h5M6 14h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fSidebarTitle">Full Ticket Sidebar</h3>
-        <p data-i18n="fSidebarDesc">Click any Jira badge to open a detailed sidebar: summary, status, resolution, type, priority, assignee, reporter, labels, epic link, sprint, components, versions, fix versions, dates, and description with rendered wiki markup. Attachments with image/video lightbox. Read, post, and delete your own comments without leaving GitLab.</p>
+        <p data-i18n="fSidebarDesc">Click any Jira badge to open a detailed sidebar: summary, status, resolution, type, priority, assignee, reporter, labels, epic link, sprint, components, versions, fix versions (editable, pick from the project's available versions), dates, and description with rendered wiki markup. Attachments with image/video lightbox. Read, post, and delete your own comments without leaving GitLab.</p>
       </div>
       <div class="bento-card">
         <div class="bento-icon icon-green">
@@ -833,7 +833,7 @@
         fStandupTitle: 'Daily Activity Report',
         fStandupDesc: 'Generate a daily activity report from GitLab: MRs created, merged, reviewed, and in progress. With Jira integration, ticket titles are automatically added to MR entries. Copy-paste ready for Slack or Jira.',
         fCherryPickTitle: 'Cherry-pick to branches',
-        fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit.',
+        fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit and open the full Jira ticket sidebar when clicked.',
         fTrackerTitle: 'Background Job Tracker',
         fTrackerDesc: 'Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.',
         fSensitiveTitle: 'Sensitive File Warning',
@@ -873,7 +873,7 @@
         secJiraLabel: 'Jira Integration', secJiraTitle: 'Jira context without leaving GitLab',
         secJiraSub: 'See ticket status, change assignee, transition workflows \u2014 all from the merge request page. Uses session cookies, no API tokens.',
         fSidebarTitle: 'Full Ticket Sidebar',
-        fSidebarDesc: 'Click any Jira badge to open a detailed sidebar: summary, status, resolution, type, priority, assignee, reporter, labels, epic link, sprint, components, versions, fix versions, dates, and description with rendered wiki markup. Attachments with image/video lightbox. Read, post, and delete your own comments without leaving GitLab.',
+        fSidebarDesc: 'Click any Jira badge to open a detailed sidebar: summary, status, resolution, type, priority, assignee, reporter, labels, epic link, sprint, components, versions, fix versions (editable, pick from the project\'s available versions), dates, and description with rendered wiki markup. Attachments with image/video lightbox. Read, post, and delete your own comments without leaving GitLab.',
         fBadgesTitle: 'Status Badges',
         fBadgesDesc: 'Color-coded Jira status badges on MR list and detail pages. Parses ticket IDs from MR titles via configurable regex. Green for Done, blue for In Progress, yellow for In Review.',
         fIconsTitle: 'Type & Priority Icons',
@@ -932,7 +932,7 @@
         fStandupTitle: 'Отчёт по дневной активности',
         fStandupDesc: 'Сгенерируйте отчёт по активности за день: созданные, смёрженные и отревьюенные MR. При интеграции с Jira к записям автоматически добавляются названия задач. Готов для вставки в Slack или Jira.',
         fCherryPickTitle: 'Cherry-pick в ветки',
-        fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора. Рядом с каждым коммитом можно показать бейджи Jira-полей (напр. Fix Version).',
+        fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора. Рядом с каждым коммитом можно показать бейджи Jira-полей (напр. Fix Version) — клик по бейджу открывает полноценный сайдбар тикета Jira.',
         fTrackerTitle: 'Трекер фоновых задач',
         fTrackerDesc: 'Долгие операции (Ship, Rebase + Auto-merge) выполняются в фоновом service worker. Плавающая панель показывает прогресс в реальном времени с визуализацией шагов и кнопкой отмены. Работает на всех вкладках GitLab.',
         fSensitiveTitle: 'Предупреждение о чувствительных файлах',
@@ -972,7 +972,7 @@
         secJiraLabel: 'Интеграция с Jira', secJiraTitle: 'Контекст Jira без выхода из GitLab',
         secJiraSub: 'Статусы тикетов, смена ответственного, переходы по воркфлоу \u2014 всё со страницы merge request. Через session cookies, без API-токенов.',
         fSidebarTitle: 'Полный сайдбар тикета',
-        fSidebarDesc: 'Клик по любому Jira-бейджу открывает сайдбар: тема, статус, резолюция, тип, приоритет, исполнитель, автор, метки, эпик, спринт, компоненты, версии, даты и описание с рендером wiki-разметки. Вложения с лайтбоксом для картинок и видео. Чтение, отправка и удаление своих комментариев без выхода из GitLab.',
+        fSidebarDesc: 'Клик по любому Jira-бейджу открывает сайдбар: тема, статус, резолюция, тип, приоритет, исполнитель, автор, метки, эпик, спринт, компоненты, версии, fix versions (редактируемо, выбор из доступных версий проекта), даты и описание с рендером wiki-разметки. Вложения с лайтбоксом для картинок и видео. Чтение, отправка и удаление своих комментариев без выхода из GitLab.',
         fBadgesTitle: 'Статусные бейджи',
         fBadgesDesc: 'Цветные бейджи статусов Jira на списке и странице MR. Парсит ID тикетов из заголовков MR через настраиваемое регулярное выражение.',
         fIconsTitle: 'Иконки типа и приоритета',

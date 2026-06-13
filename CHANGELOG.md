@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.0
+
+### New features
+- **Clickable Jira badges on commits page** — Jira field badges shown next to commits (`fixVersions`, `status`, etc.) now open the full Jira ticket sidebar when clicked, with skeleton loaders while data is being fetched, just like the MR list.
+- **Editable Fix Versions in Jira sidebar** — pick fix versions from the project's available (non-archived) versions directly in the sidebar, even when none is set yet, with a search box to quickly find a version. Changes are saved to Jira instantly.
+
+---
+
 ## 1.9.0
 
 ### New features

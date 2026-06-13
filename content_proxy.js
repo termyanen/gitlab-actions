@@ -690,6 +690,7 @@
         loadJiraTransitions(sidebar, resp.key, jiraUrl, s.jiraQuickActions || []);
       });
       initAssigneeEditor(sidebar, resp.key, jiraUrl);
+      initFixVersionsEditor(sidebar, resp.key, jiraUrl, resp.fixVersions || []);
     });
   }
 
@@ -933,6 +934,109 @@
           searchBox.style.display = 'none';
         }
         input.disabled = false;
+      });
+    });
+  }
+
+  function initFixVersionsEditor(sidebar, ticket, jiraUrl, currentVersions) {
+    var valueEl = sidebar.querySelector('#gl-jira-sidebar-fixversions');
+    var dropdown = sidebar.querySelector('#gl-jira-sidebar-fixversions-dropdown');
+    var listEl = sidebar.querySelector('#gl-jira-sidebar-fixversions-list');
+    var errorEl = sidebar.querySelector('#gl-jira-sidebar-fixversions-error');
+    var filterInput = sidebar.querySelector('#gl-jira-sidebar-fixversions-filter');
+    var selected = currentVersions.slice();
+
+    function filterList() {
+      var query = filterInput.value.trim().toLowerCase();
+      var items = listEl.querySelectorAll('.gl-jira-sidebar-version-item');
+      for (var i = 0; i < items.length; i++) {
+        var name = (items[i].textContent || '').trim().toLowerCase();
+        items[i].style.display = (!query || name.indexOf(query) !== -1) ? '' : 'none';
+      }
+    }
+
+    function renderTags() {
+      var tagsHtml = selected.map(function(v) {
+        return '<span class="gl-jira-sidebar-label-tag">' + escHtml(v) + '</span>';
+      }).join(' ');
+      valueEl.innerHTML = (tagsHtml || '<span style="opacity:0.5">' + escHtml(chrome.i18n.getMessage('jiraSidebarNoFixVersions') || 'None') + '</span>') +
+        ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
+    }
+
+    function loadVersions() {
+      listEl.innerHTML = '<div class="gl-jira-sidebar-assignee-loading">...</div>';
+      chrome.runtime.sendMessage({
+        type: 'fetch-jira-versions',
+        jiraUrl: jiraUrl,
+        ticket: ticket
+      }, function(resp) {
+        if (!resp || resp._error || !resp.versions) {
+          listEl.innerHTML = '';
+          return;
+        }
+        if (!resp.versions.length) {
+          listEl.innerHTML = '<div class="gl-jira-sidebar-assignee-empty">' +
+            escHtml(chrome.i18n.getMessage('jiraSidebarNoVersions') || 'No versions found') + '</div>';
+        } else {
+          listEl.innerHTML = resp.versions.map(function(v) {
+            var checked = selected.indexOf(v.name) !== -1;
+            return '<label class="gl-jira-sidebar-version-item">' +
+              '<input type="checkbox" data-name="' + escHtml(v.name) + '"' + (checked ? ' checked' : '') + '>' +
+              '<span>' + escHtml(v.name) + '</span>' +
+            '</label>';
+          }).join('');
+          filterList();
+        }
+        listEl.dataset.loaded = '1';
+      });
+    }
+
+    valueEl.addEventListener('click', function() {
+      var isOpen = dropdown.style.display !== 'none';
+      dropdown.style.display = isOpen ? 'none' : 'block';
+      if (!isOpen) {
+        if (!listEl.dataset.loaded) {
+          loadVersions();
+        } else {
+          filterInput.value = '';
+          filterList();
+        }
+        filterInput.focus();
+      }
+    });
+
+    dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+
+    filterInput.addEventListener('input', filterList);
+
+    listEl.addEventListener('change', function(e) {
+      var cb = e.target.closest('input[type="checkbox"]');
+      if (!cb) return;
+      var name = cb.dataset.name;
+      var newSelected = selected.slice();
+      if (cb.checked) {
+        if (newSelected.indexOf(name) === -1) newSelected.push(name);
+      } else {
+        var idx = newSelected.indexOf(name);
+        if (idx !== -1) newSelected.splice(idx, 1);
+      }
+      cb.disabled = true;
+      errorEl.style.display = 'none';
+      chrome.runtime.sendMessage({
+        type: 'set-jira-fix-versions',
+        jiraUrl: jiraUrl,
+        ticket: ticket,
+        versions: newSelected
+      }, function(resp) {
+        cb.disabled = false;
+        if (!resp || resp._error) {
+          cb.checked = !cb.checked;
+          errorEl.textContent = chrome.i18n.getMessage('jiraSidebarFixVersionsError') || 'Failed to update fix versions';
+          errorEl.style.display = 'block';
+          return;
+        }
+        selected = newSelected;
+        renderTags();
       });
     });
   }
@@ -1303,15 +1407,22 @@
       '</div>';
     }
 
-    // Fix Versions
-    if (data.fixVersions && data.fixVersions.length) {
-      rows += '<div class="gl-jira-sidebar-row">' +
-        '<span class="gl-jira-sidebar-label">' + escHtml(chrome.i18n.getMessage('jiraSidebarFixVersions') || 'Fix ver.') + '</span>' +
-        '<span class="gl-jira-sidebar-value">' + data.fixVersions.map(function(v) {
-          return '<span class="gl-jira-sidebar-label-tag">' + escHtml(v) + '</span>';
-        }).join(' ') + '</span>' +
-      '</div>';
-    }
+    // Fix Versions (editable)
+    var fixVersionsTags = (data.fixVersions || []).map(function(v) {
+      return '<span class="gl-jira-sidebar-label-tag">' + escHtml(v) + '</span>';
+    }).join(' ');
+    rows += '<div class="gl-jira-sidebar-row">' +
+      '<span class="gl-jira-sidebar-label">' + escHtml(chrome.i18n.getMessage('jiraSidebarFixVersions') || 'Fix ver.') + '</span>' +
+      '<span class="gl-jira-sidebar-value gl-jira-sidebar-fixversions" id="gl-jira-sidebar-fixversions">' +
+        (fixVersionsTags || '<span style="opacity:0.5">' + escHtml(chrome.i18n.getMessage('jiraSidebarNoFixVersions') || 'None') + '</span>') +
+        ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>' +
+      '</span>' +
+    '</div>' +
+    '<div class="gl-jira-sidebar-fixversions-dropdown" id="gl-jira-sidebar-fixversions-dropdown" style="display:none">' +
+      '<input type="text" class="gl-jira-sidebar-fixversions-filter" id="gl-jira-sidebar-fixversions-filter" placeholder="' + escHtml(chrome.i18n.getMessage('jiraSidebarSearchVersions') || 'Search versions...') + '">' +
+      '<div class="gl-jira-sidebar-fixversions-list" id="gl-jira-sidebar-fixversions-list"></div>' +
+      '<div class="gl-jira-sidebar-fixversions-error" id="gl-jira-sidebar-fixversions-error" style="display:none"></div>' +
+    '</div>';
 
     // Created / Updated
     if (data.created) {
@@ -2921,6 +3032,12 @@
 
           if (!uncached.length || _jiraAuthFailed) return;
 
+          // Show skeleton loaders for rows pending Jira data
+          ticketMap.forEach(function(entry) {
+            var needsFetch = entry.tickets.some(function(t) { return uncached.indexOf(t) !== -1; });
+            if (needsFetch) renderCommitJiraLoader(entry);
+          });
+
           // Fetch uncached — one request per field, batches of 5 tickets
           _commitJiraFetching = true;
           var fieldIdx = 0;
@@ -2943,6 +3060,7 @@
                 if (data._authError) {
                   _jiraAuthFailed = true;
                   _commitJiraFetching = false;
+                  ticketMap.forEach(function(entry) { removeCommitJiraLoader(entry); });
                   console.warn('[GitLab Actions] Jira auth failed (' + data._authError + '), stopping Jira requests. Reload page after re-login.');
                   return;
                 }
@@ -2965,7 +3083,21 @@
           fetchNextField();
         }
 
+        function renderCommitJiraLoader(entry) {
+          if (entry.row.querySelector('.gl-commit-jira-badge, .gl-commit-jira-loader')) return;
+          var anchor = entry.lastMsgEl;
+          var loader = document.createElement('span');
+          loader.className = 'gl-jira-loader gl-commit-jira-loader';
+          anchor.parentNode.insertBefore(loader, anchor.nextSibling);
+        }
+
+        function removeCommitJiraLoader(entry) {
+          var loader = entry.row.querySelector('.gl-commit-jira-loader');
+          if (loader) loader.remove();
+        }
+
         function renderCommitJiraBadges(entry) {
+          removeCommitJiraLoader(entry);
           if (entry.row.querySelector('.gl-commit-jira-badge')) return;
           var badges = [];
           entry.tickets.forEach(function(t) {
@@ -2976,7 +3108,7 @@
               if (!vals || !vals.length) return;
               vals.forEach(function(v) {
                 var existing = badges.some(function(b) { return b.val === v; });
-                if (!existing) badges.push({ val: v, field: field, categoryKey: cached._categoryKey || '' });
+                if (!existing) badges.push({ val: v, field: field, categoryKey: cached._categoryKey || '', ticket: t });
               });
             });
           });
@@ -2988,6 +3120,12 @@
             var badge = document.createElement('span');
             badge.className = 'gl-jira-badge gl-commit-jira-badge ' + (b.field === 'status' ? getJiraCategoryClass(b.categoryKey, b.val) : 'jira-new');
             badge.textContent = b.val;
+            badge.title = b.ticket;
+            badge.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              openJiraSidebar(b.ticket, jiraUrl);
+            });
             wrap.insertBefore(badge, ref);
           });
         }
