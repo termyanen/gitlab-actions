@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0
+
+### New features
+- **Jira comments in sidebar** — read recent comments, post new ones, and delete your own directly from the Jira ticket sidebar, without leaving GitLab. Comments load 5 at a time with a "Show more" button for older ones.
+
+---
+
 ## 1.8.0
 
 ### New features

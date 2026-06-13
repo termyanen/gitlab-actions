@@ -973,16 +973,14 @@
     return d.toLocaleDateString();
   }
 
-  function renderJiraSidebarContent(sidebar, data, jiraUrl) {
-    var statusClass = getJiraCategoryClass(data.statusCategoryKey, data.status);
-    var desc = data.description || '';
-    var attachments = data.attachments || {};
-    // Truncate long descriptions (but keep image markup intact)
-    if (desc.length > 3000) desc = desc.substring(0, 3000) + '...';
+  // Render Jira wiki markup (images, videos, links, bare URLs) as HTML.
+  // `attachments` maps filename -> URL, used to resolve !file! image/video markup.
+  function formatJiraWikiText(text, attachments) {
+    attachments = attachments || {};
     // Simple formatting: escape HTML first, then replace wiki markup
-    var descHtml = escHtml(desc).replace(/\n/g, '<br>');
+    var html = escHtml(text).replace(/\n/g, '<br>');
     // Replace Jira wiki image markup: !filename|params! or !filename!
-    descHtml = descHtml.replace(/!([^|!]+?)(?:\|[^!]*)?\!/g, function(match, filename) {
+    html = html.replace(/!([^|!]+?)(?:\|[^!]*)?\!/g, function(match, filename) {
       var url = attachments[filename];
       if (!url) return match;
       var ext = filename.split('.').pop().toLowerCase();
@@ -992,16 +990,214 @@
       return '<img src="' + escHtml(url) + '" alt="' + escHtml(filename) + '" class="gl-jira-sidebar-img">';
     });
     // Replace Jira wiki links: [text|url] or [url]
-    descHtml = descHtml.replace(/\[([^|\]\n]+)\|([^\]\n]+?)(?:\|[^\]\n]*)?\]/g, function(m, text, url) {
+    html = html.replace(/\[([^|\]\n]+)\|([^\]\n]+?)(?:\|[^\]\n]*)?\]/g, function(m, text, url) {
       return '<a href="' + escHtml(url) + '" target="_blank" class="gl-jira-sidebar-inline-link">' + text + '</a>';
     });
-    descHtml = descHtml.replace(/\[(https?:\/\/[^\]\n]+)\]/g, function(m, url) {
+    html = html.replace(/\[(https?:\/\/[^\]\n]+)\]/g, function(m, url) {
       return '<a href="' + escHtml(url) + '" target="_blank" class="gl-jira-sidebar-inline-link">' + url + '</a>';
     });
     // Auto-link bare URLs not already inside href or <a> tags
-    descHtml = descHtml.replace(/(^|[^"=])(https?:\/\/[^\s<]+)/g, function(m, prefix, url) {
+    html = html.replace(/(^|[^"=])(https?:\/\/[^\s<]+)/g, function(m, prefix, url) {
       return prefix + '<a href="' + url + '" target="_blank" class="gl-jira-sidebar-inline-link">' + url + '</a>';
     });
+    return html;
+  }
+
+  // Cache of current Jira user id per Jira instance, used to detect "own" comments
+  var _jiraMyselfCache = {};
+
+  function getJiraMyself(jiraUrl, cb) {
+    if (_jiraMyselfCache[jiraUrl] !== undefined) {
+      cb(_jiraMyselfCache[jiraUrl]);
+      return;
+    }
+    chrome.runtime.sendMessage({ type: 'fetch-jira-myself', jiraUrl: jiraUrl }, function(resp) {
+      var id = (resp && !resp._error) ? resp.id : '';
+      _jiraMyselfCache[jiraUrl] = id;
+      cb(id);
+    });
+  }
+
+  function renderJiraComment(c, currentUserId) {
+    var body = c.body || '';
+    if (body.length > 3000) body = body.substring(0, 3000) + '...';
+    var bodyHtml = formatJiraWikiText(body, {});
+    var canDelete = !!(currentUserId && c.authorId && c.authorId === currentUserId);
+    return '<div class="gl-jira-sidebar-comment" data-comment-id="' + escHtml(String(c.id)) + '">' +
+      (c.avatarUrl ? '<img class="gl-jira-sidebar-comment-avatar" src="' + escHtml(c.avatarUrl) + '" alt="">' : '<div class="gl-jira-sidebar-comment-avatar"></div>') +
+      '<div class="gl-jira-sidebar-comment-main">' +
+        '<div class="gl-jira-sidebar-comment-header">' +
+          '<span class="gl-jira-sidebar-comment-author">' + escHtml(c.author) + '</span>' +
+          '<span class="gl-jira-sidebar-comment-date" title="' + escHtml(c.created ? new Date(c.created).toLocaleString() : '') + '">' + escHtml(formatJiraDate(c.created)) + '</span>' +
+          (canDelete ? '<button type="button" class="gl-jira-sidebar-comment-delete" title="' + escHtml(chrome.i18n.getMessage('jiraSidebarCommentDelete') || 'Delete') + '">&times;</button>' : '') +
+        '</div>' +
+        '<div class="gl-jira-sidebar-comment-body">' + bodyHtml + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function fetchAndRenderJiraComments(sidebar, ticket, jiraUrl, startAt) {
+    var listEl = sidebar.querySelector('#gl-jira-sidebar-comments-list');
+    if (!listEl) return;
+    var lm = listEl.querySelector('.gl-jira-sidebar-load-more');
+    if (startAt === 0) {
+      listEl.innerHTML = '<div class="gl-jira-sidebar-comments-loading"><div class="gl-jira-sidebar-spinner"></div></div>';
+    } else if (lm) {
+      lm.disabled = true;
+      lm.classList.add('is-loading');
+      lm.innerHTML = '<span class="gl-jira-sidebar-spinner-sm"></span>';
+    }
+    getJiraMyself(jiraUrl, function(currentUserId) {
+      chrome.runtime.sendMessage({
+        type: 'fetch-jira-comments',
+        jiraUrl: jiraUrl,
+        ticket: ticket,
+        startAt: startAt,
+        maxResults: 5
+      }, function(resp) {
+        if (!resp || resp._error) {
+          if (startAt === 0) {
+            listEl.innerHTML = '<div class="gl-jira-sidebar-comments-empty">' + escHtml(chrome.i18n.getMessage('jiraSidebarCommentError') || 'Failed to load comments') + '</div>';
+          } else if (lm) {
+            lm.disabled = false;
+            lm.classList.remove('is-loading');
+            lm.textContent = chrome.i18n.getMessage('jiraSidebarLoadMoreComments') || 'Show more comments';
+          }
+          return;
+        }
+        var headerEl = sidebar.querySelector('#gl-jira-sidebar-comments-header');
+        if (headerEl) {
+          headerEl.textContent = (chrome.i18n.getMessage('jiraSidebarComments') || 'Comments') + ' (' + resp.total + ')';
+        }
+        if (startAt === 0) {
+          listEl.innerHTML = '';
+          if (!resp.total) {
+            listEl.innerHTML = '<div class="gl-jira-sidebar-comments-empty">' + escHtml(chrome.i18n.getMessage('jiraSidebarNoComments') || 'No comments yet') + '</div>';
+          }
+        } else if (lm) {
+          lm.remove();
+        }
+        resp.comments.forEach(function(c) {
+          listEl.insertAdjacentHTML('beforeend', renderJiraComment(c, currentUserId));
+        });
+        var loaded = startAt + resp.comments.length;
+        if (loaded < resp.total) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'gl-jira-sidebar-load-more';
+          btn.textContent = chrome.i18n.getMessage('jiraSidebarLoadMoreComments') || 'Show more comments';
+          btn.addEventListener('click', function() {
+            fetchAndRenderJiraComments(sidebar, ticket, jiraUrl, loaded);
+          });
+          listEl.appendChild(btn);
+        }
+      });
+    });
+  }
+
+  function wireJiraCommentForm(sidebar, ticket, jiraUrl) {
+    var input = sidebar.querySelector('#gl-jira-sidebar-comment-input');
+    var submitBtn = sidebar.querySelector('#gl-jira-sidebar-comment-submit');
+    var errorEl = sidebar.querySelector('#gl-jira-sidebar-comment-error');
+    if (!input || !submitBtn) return;
+
+    input.addEventListener('input', function() {
+      submitBtn.disabled = !input.value.trim();
+      errorEl.style.display = 'none';
+    });
+
+    function submitComment() {
+      var text = input.value.trim();
+      if (!text) return;
+      submitBtn.disabled = true;
+      errorEl.style.display = 'none';
+      chrome.runtime.sendMessage({
+        type: 'post-jira-comment',
+        jiraUrl: jiraUrl,
+        ticket: ticket,
+        text: text
+      }, function(resp) {
+        if (!resp || resp._error) {
+          errorEl.textContent = chrome.i18n.getMessage('jiraSidebarCommentError') || 'Failed to post comment';
+          errorEl.style.display = 'block';
+          submitBtn.disabled = false;
+          return;
+        }
+        var listEl = sidebar.querySelector('#gl-jira-sidebar-comments-list');
+        var empty = listEl.querySelector('.gl-jira-sidebar-comments-empty');
+        if (empty) empty.remove();
+        // A freshly posted comment is always our own — force the delete button to show
+        listEl.insertAdjacentHTML('afterbegin', renderJiraComment(resp.comment, resp.comment.authorId));
+        var headerEl = sidebar.querySelector('#gl-jira-sidebar-comments-header');
+        if (headerEl) {
+          var m = headerEl.textContent.match(/\((\d+)\)/);
+          var newTotal = (m ? parseInt(m[1], 10) : 0) + 1;
+          headerEl.textContent = (chrome.i18n.getMessage('jiraSidebarComments') || 'Comments') + ' (' + newTotal + ')';
+        }
+        input.value = '';
+        submitBtn.disabled = true;
+      });
+    }
+
+    submitBtn.addEventListener('click', submitComment);
+    input.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        submitComment();
+      }
+    });
+  }
+
+  function wireJiraCommentDelete(sidebar, ticket, jiraUrl) {
+    var listEl = sidebar.querySelector('#gl-jira-sidebar-comments-list');
+    var errorEl = sidebar.querySelector('#gl-jira-sidebar-comment-error');
+    if (!listEl) return;
+
+    listEl.addEventListener('click', function(e) {
+      var btn = e.target.closest('.gl-jira-sidebar-comment-delete');
+      if (!btn || btn.disabled) return;
+      var commentEl = btn.closest('.gl-jira-sidebar-comment');
+      var commentId = commentEl.dataset.commentId;
+
+      if (!_skipConfirmations && !confirm(chrome.i18n.getMessage('jiraSidebarCommentDeleteConfirm') || 'Delete this comment?')) return;
+
+      btn.disabled = true;
+      if (errorEl) errorEl.style.display = 'none';
+      chrome.runtime.sendMessage({
+        type: 'delete-jira-comment',
+        jiraUrl: jiraUrl,
+        ticket: ticket,
+        commentId: commentId
+      }, function(resp) {
+        if (!resp || resp._error) {
+          btn.disabled = false;
+          if (errorEl) {
+            errorEl.textContent = chrome.i18n.getMessage('jiraSidebarCommentDeleteError') || 'Failed to delete comment';
+            errorEl.style.display = 'block';
+          }
+          return;
+        }
+        commentEl.remove();
+        var headerEl = sidebar.querySelector('#gl-jira-sidebar-comments-header');
+        if (headerEl) {
+          var m = headerEl.textContent.match(/\((\d+)\)/);
+          var newTotal = Math.max(0, (m ? parseInt(m[1], 10) : 1) - 1);
+          headerEl.textContent = (chrome.i18n.getMessage('jiraSidebarComments') || 'Comments') + ' (' + newTotal + ')';
+          if (!newTotal && !listEl.querySelector('.gl-jira-sidebar-comment')) {
+            listEl.innerHTML = '<div class="gl-jira-sidebar-comments-empty">' + escHtml(chrome.i18n.getMessage('jiraSidebarNoComments') || 'No comments yet') + '</div>';
+          }
+        }
+      });
+    });
+  }
+
+  function renderJiraSidebarContent(sidebar, data, jiraUrl) {
+    var statusClass = getJiraCategoryClass(data.statusCategoryKey, data.status);
+    var desc = data.description || '';
+    var attachments = data.attachments || {};
+    // Truncate long descriptions (but keep image markup intact)
+    if (desc.length > 3000) desc = desc.substring(0, 3000) + '...';
+    var descHtml = formatJiraWikiText(desc, attachments);
 
     var rows = '';
 
@@ -1177,8 +1373,25 @@
       bodyHtml += '</div>';
     }
 
+    // Comments
+    bodyHtml += '<div class="gl-jira-sidebar-sep"></div>' +
+      '<div class="gl-jira-sidebar-desc-label" id="gl-jira-sidebar-comments-header">' + escHtml(chrome.i18n.getMessage('jiraSidebarComments') || 'Comments') + '</div>' +
+      '<div class="gl-jira-sidebar-comments-list" id="gl-jira-sidebar-comments-list">' +
+        '<div class="gl-jira-sidebar-comments-loading"><div class="gl-jira-sidebar-spinner"></div></div>' +
+      '</div>' +
+      '<div class="gl-jira-sidebar-comment-form">' +
+        '<textarea class="gl-jira-sidebar-comment-input" id="gl-jira-sidebar-comment-input" placeholder="' + escHtml(chrome.i18n.getMessage('jiraSidebarCommentPlaceholder') || 'Add a comment...') + '"></textarea>' +
+        '<div class="gl-jira-sidebar-comment-error" id="gl-jira-sidebar-comment-error" style="display:none"></div>' +
+        '<div class="gl-jira-sidebar-comment-actions">' +
+          '<button type="button" class="gl-jira-sidebar-comment-submit" id="gl-jira-sidebar-comment-submit" disabled>' + escHtml(chrome.i18n.getMessage('jiraSidebarCommentSubmit') || 'Comment') + '</button>' +
+        '</div>' +
+      '</div>';
 
     sidebar.querySelector('.gl-jira-sidebar-body').innerHTML = bodyHtml;
+
+    fetchAndRenderJiraComments(sidebar, data.key, jiraUrl, 0);
+    wireJiraCommentForm(sidebar, data.key, jiraUrl);
+    wireJiraCommentDelete(sidebar, data.key, jiraUrl);
   }
   // ── End Jira sidebar ────────────────────────────────────────────
 

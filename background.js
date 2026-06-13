@@ -255,6 +255,17 @@ function jiraApi(jiraUrl, path) {
   });
 }
 
+function mapJiraComment(c) {
+  return {
+    id: c.id,
+    author: c.author ? c.author.displayName : '',
+    authorId: c.author ? (c.author.accountId || c.author.key || c.author.name || '') : '',
+    avatarUrl: c.author && c.author.avatarUrls ? c.author.avatarUrls['24x24'] : '',
+    body: c.body || '',
+    created: c.created || ''
+  };
+}
+
 function fetchJiraStatuses(jiraUrl, tickets, showDetails) {
   var results = {};
   var fields = showDetails ? 'status,priority,issuetype' : 'status';
@@ -498,6 +509,73 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
       .catch(function(err) {
         sendResponse({ _error: err.message });
       });
+    return true;
+  }
+
+  if (msg.type === 'fetch-jira-comments') {
+    var startAt = msg.startAt || 0;
+    var maxResults = msg.maxResults || 5;
+    jiraApi(msg.jiraUrl, '/rest/api/2/issue/' + msg.ticket + '/comment?orderBy=-created&startAt=' + startAt + '&maxResults=' + maxResults)
+      .then(function(data) {
+        var comments = (data.comments || []).map(mapJiraComment);
+        sendResponse({ comments: comments, total: data.total || 0 });
+      })
+      .catch(function(err) {
+        sendResponse({ _error: err.message });
+      });
+    return true;
+  }
+
+  if (msg.type === 'fetch-jira-myself') {
+    jiraApi(msg.jiraUrl, '/rest/api/2/myself')
+      .then(function(data) {
+        sendResponse({ id: data.accountId || data.key || data.name || '' });
+      })
+      .catch(function(err) {
+        sendResponse({ _error: err.message });
+      });
+    return true;
+  }
+
+  if (msg.type === 'delete-jira-comment') {
+    var deleteUrl = msg.jiraUrl + '/rest/api/2/issue/' + msg.ticket + '/comment/' + msg.commentId;
+    chrome.cookies.getAll({ url: msg.jiraUrl }).then(function(cookies) {
+      var cookieStr = cookies.map(function(c) { return c.name + '=' + c.value; }).join('; ');
+      return fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: { 'Cookie': cookieStr, 'X-Atlassian-Token': 'no-check' }
+      });
+    }).then(function(r) {
+      if (r.status === 204 || r.ok) {
+        sendResponse({ success: true });
+      } else {
+        return r.text().then(function(text) { throw new Error(r.status + ' ' + text); });
+      }
+    }).catch(function(err) {
+      sendResponse({ _error: err.message });
+    });
+    return true;
+  }
+
+  if (msg.type === 'post-jira-comment') {
+    var commentUrl = msg.jiraUrl + '/rest/api/2/issue/' + msg.ticket + '/comment';
+    chrome.cookies.getAll({ url: msg.jiraUrl }).then(function(cookies) {
+      var cookieStr = cookies.map(function(c) { return c.name + '=' + c.value; }).join('; ');
+      return fetch(commentUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Cookie': cookieStr, 'X-Atlassian-Token': 'no-check' },
+        body: JSON.stringify({ body: msg.text })
+      });
+    }).then(function(r) {
+      if (!r.ok) {
+        return r.text().then(function(text) { throw new Error(r.status + ' ' + text); });
+      }
+      return r.json();
+    }).then(function(c) {
+      sendResponse({ comment: mapJiraComment(c) });
+    }).catch(function(err) {
+      sendResponse({ _error: err.message });
+    });
     return true;
   }
 
