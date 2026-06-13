@@ -1056,6 +1056,8 @@
     skip_confirmations: false,
     dim_drafts: false,
     highlight_own_mrs: false,
+    show_sensitive_warning: false,
+    show_git_commands: false,
     reviewersList: '',
     reviewersJob: 'get-reviewers',
     quickComments: [],
@@ -1303,6 +1305,17 @@
 
       // Failed job quick view
       injectFailedJobView(mr, s, widgetSection);
+
+      // Sensitive file warning (#13)
+      if (s.show_sensitive_warning) {
+        injectSensitiveWarning(mr);
+      }
+
+      // Git command generator (#12) — injected into description block, not action bar
+      if (s.show_git_commands) {
+        // Delay slightly to let Vue render description
+        setTimeout(function() { injectGitCommands(mr); }, 500);
+      }
     }).catch(function() {}).finally(function() { _injecting = false; });
   }
 
@@ -1482,6 +1495,109 @@
         });
       })
       .catch(function() {});
+  }
+
+  // =========================================================================
+  // Sensitive file warning (#13)
+  // =========================================================================
+
+  var SENSITIVE_PATTERNS = [
+    /^\.env(\..*)?$/i,
+    /^Dockerfile(\..*)?$/i,
+    /^docker-compose[^/]*\.ya?ml$/i,
+    /^\.gitlab-ci\.yml$/i,
+    /^\.github\/workflows\//i,
+    /^Jenkinsfile$/i,
+    /credentials/i,
+    /secrets?\.(json|ya?ml|toml|xml|properties|cfg|conf|ini)$/i,
+    /^\.ssh\//i,
+    /^\.npmrc$/i,
+    /^\.pypirc$/i,
+    /^\.htpasswd$/i,
+    /^\.pgpass$/i,
+    /^id_rsa/i,
+    /\.pem$/i,
+    /\.key$/i
+  ];
+
+  function isSensitiveFile(filepath) {
+    var name = filepath.replace(/^.*\//, '');
+    for (var i = 0; i < SENSITIVE_PATTERNS.length; i++) {
+      if (SENSITIVE_PATTERNS[i].test(name) || SENSITIVE_PATTERNS[i].test(filepath)) return true;
+    }
+    return false;
+  }
+
+  function injectSensitiveWarning(mr) {
+    if (document.querySelector('.gl-mr-ext-sensitive-warning')) return;
+
+    api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/diffs?per_page=100')
+      .then(function(diffs) {
+        if (!diffs || !diffs.length) return;
+        var sensitiveFiles = [];
+        for (var i = 0; i < diffs.length; i++) {
+          var path = diffs[i].new_path || diffs[i].old_path;
+          if (path && isSensitiveFile(path)) {
+            sensitiveFiles.push(path);
+          }
+        }
+        if (!sensitiveFiles.length) return;
+        if (document.querySelector('.gl-mr-ext-sensitive-warning')) return;
+
+        var container = document.querySelector('.gl-mr-actions-ext');
+        if (!container) return;
+
+        var badge = document.createElement('span');
+        badge.className = 'gl-mr-ext-sensitive-warning';
+        badge.textContent = t('sensitiveWarningBadge', [sensitiveFiles.length]);
+        badge.title = t('sensitiveWarningHint') + '\n' + sensitiveFiles.join('\n');
+        container.insertBefore(badge, container.firstChild);
+      })
+      .catch(function() {});
+  }
+
+  // =========================================================================
+  // Git command generator (#12)
+  // =========================================================================
+
+  function injectGitCommands(mr) {
+    if (document.querySelector('.gl-mr-ext-git-commands')) return;
+
+    var descBlock = document.querySelector('.detail-page-description, .js-detail-page-description');
+    if (!descBlock) return;
+
+    var branch = mr.source_branch;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'gl-mr-ext-git-commands';
+
+    var commands = [
+      { key: 'gitCmdCheckout', cmd: 'git fetch origin ' + branch + ' && git checkout ' + branch },
+      { key: 'gitCmdPull', cmd: 'git checkout ' + branch + ' && git pull origin ' + branch },
+      { key: 'gitCmdReset', cmd: 'git checkout ' + branch + ' && git fetch origin ' + branch + ' && git reset --hard origin/' + branch }
+    ];
+
+    for (var i = 0; i < commands.length; i++) {
+      (function(c) {
+        var btn = document.createElement('button');
+        btn.className = 'gl-mr-ext-git-cmd-btn';
+        btn.textContent = t(c.key);
+        btn.title = c.cmd;
+        btn.addEventListener('click', function() {
+          copyToClipboard(c.cmd, btn);
+        });
+        wrapper.appendChild(btn);
+      })(commands[i]);
+    }
+
+    descBlock.appendChild(wrapper);
+  }
+
+  function copyToClipboard(text, btn) {
+    navigator.clipboard.writeText(text).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = '\u2713';
+      setTimeout(function() { btn.textContent = orig; }, 2000);
+    }).catch(function() {});
   }
 
   // =========================================================================

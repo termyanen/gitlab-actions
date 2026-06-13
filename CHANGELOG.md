@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.0
+
+### New features
+- **Sensitive file warning** — shows an orange warning badge when the MR modifies security-sensitive files like `.env`, `Dockerfile`, CI configs, or credential files. Enable in settings.
+- **Git command buttons** — checkout / pull / reset buttons below the MR description that copy ready-to-run git commands for the MR's source branch with one click. Enable in settings.
+
+---
+
 ## 1.7.6
 
 ### Fixes

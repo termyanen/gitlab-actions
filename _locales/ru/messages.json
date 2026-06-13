@@ -395,6 +395,20 @@
   "cardCherryPickTitle": { "message": "Cherry-pick в несколько веток" },
   "cardCherryPickDesc": { "message": "Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит — перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора." },
 
+  "mrDetailEnhancements": { "message": "Улучшения страницы MR" },
+  "showSensitiveWarning": { "message": "Предупреждение о чувствительных файлах" },
+  "showGitCommands": { "message": "Кнопки git-команд (checkout, pull, reset)" },
+  "sensitiveWarningBadge": { "message": "ВНИМАНИЕ: $1 файл(ов)", "placeholders": { "1": { "content": "$1" } } },
+  "sensitiveWarningHint": { "message": "Этот MR изменяет чувствительные файлы:" },
+  "gitCmdCheckout": { "message": "checkout" },
+  "gitCmdPull": { "message": "pull" },
+  "gitCmdReset": { "message": "reset" },
+
+  "cardSensitiveTitle": { "message": "Предупреждение о чувствительных файлах" },
+  "cardSensitiveDesc": { "message": "Показывает предупреждение, когда MR изменяет файлы безопасности: .env, Dockerfile, CI-конфиги, файлы с ключами." },
+  "cardGitCommandsTitle": { "message": "Кнопки git-команд" },
+  "cardGitCommandsDesc": { "message": "Копирование готовых git-команд checkout, pull и hard reset для ветки MR одним кликом. Удобно для локального тестирования." },
+
   "updateBannerText": { "message": "Вышла новая версия! Посмотрите, что нового:" },
   "updateChangelog": { "message": "Список изменений" },
   "updateInstall": { "message": "Обновить" },

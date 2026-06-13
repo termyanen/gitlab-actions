@@ -567,6 +567,22 @@
         <h3 data-i18n="fTrackerTitle">Background Job Tracker</h3>
         <p data-i18n="fTrackerDesc">Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.</p>
       </div>
+      <!-- Sensitive file warning -->
+      <div class="bento-card">
+        <div class="bento-icon icon-orange">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3L2 17h16L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 9v3M10 14v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3 data-i18n="fSensitiveTitle">Sensitive File Warning</h3>
+        <p data-i18n="fSensitiveDesc">Warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.</p>
+      </div>
+      <!-- Git commands -->
+      <div class="bento-card">
+        <div class="bento-icon icon-green">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 10h2l1-2 2 4 1-2h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 data-i18n="fGitCmdTitle">Git Command Buttons</h3>
+        <p data-i18n="fGitCmdDesc">Copy ready-to-run checkout, pull, and hard-reset commands for the MR's source branch with one click. Handy for local testing and code review.</p>
+      </div>
     </div>
   </section>
 
@@ -820,6 +836,10 @@
         fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit.',
         fTrackerTitle: 'Background Job Tracker',
         fTrackerDesc: 'Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.',
+        fSensitiveTitle: 'Sensitive File Warning',
+        fSensitiveDesc: 'Warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.',
+        fGitCmdTitle: 'Git Command Buttons',
+        fGitCmdDesc: 'Copy ready-to-run checkout, pull, and hard-reset commands for the MR\'s source branch with one click. Handy for local testing and code review.',
 
         secListLabel: 'MR List Page', secListTitle: 'Smarter merge request list',
         secListSub: 'Enhancements that help you find, filter, and manage merge requests faster.',
@@ -915,6 +935,10 @@
         fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора. Рядом с каждым коммитом можно показать бейджи Jira-полей (напр. Fix Version).',
         fTrackerTitle: 'Трекер фоновых задач',
         fTrackerDesc: 'Долгие операции (Ship, Rebase + Auto-merge) выполняются в фоновом service worker. Плавающая панель показывает прогресс в реальном времени с визуализацией шагов и кнопкой отмены. Работает на всех вкладках GitLab.',
+        fSensitiveTitle: 'Предупреждение о чувствительных файлах',
+        fSensitiveDesc: 'Бейдж-предупреждение, когда MR изменяет файлы безопасности: .env, Dockerfile, CI-конфиги, файлы с ключами.',
+        fGitCmdTitle: 'Кнопки git-команд',
+        fGitCmdDesc: 'Копирование готовых команд checkout, pull и hard reset для ветки MR одним кликом. Удобно для локального тестирования и ревью.',
 
         secListLabel: 'Список MR', secListTitle: 'Улучшенный список merge requests',
         secListSub: 'Фичи, которые помогают быстрее находить, фильтровать и управлять merge requests.',

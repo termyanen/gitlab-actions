@@ -1845,3 +1845,56 @@ a:has(.gl-jira-badge):focus {
   padding: var(--gl-spacing-4, 0.75rem) var(--gl-spacing-5, 1rem);
   border-top: 1px solid var(--gl-border-color-default, #dcdcde);
 }
+
+/* Sensitive file warning (#13) */
+.gl-mr-ext-sensitive-warning {
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: #c27400;
+  border: 1px solid #a86300;
+  cursor: default;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+/* Git command buttons (#12) */
+.gl-mr-ext-git-commands {
+  display: flex;
+  gap: 6px;
+  padding-left: 0.5em;
+  flex-wrap: wrap;
+}
+.gl-mr-ext-git-cmd-btn {
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid var(--gl-border-color-default, #dcdcde);
+  border-radius: var(--gl-border-radius-base, 4px);
+  background: var(--gl-background-color-default, #fff);
+  color: var(--gl-text-color-secondary, #737278);
+  font-size: 12px;
+  font-family: var(--gl-monospace-font, ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.gl-mr-ext-git-cmd-btn:hover {
+  border-color: var(--gl-border-color-strong, #868686);
+  color: var(--gl-text-color, #303030);
+}
+.gl-dark .gl-mr-ext-git-cmd-btn {
+  background: var(--gl-background-color-default, #1f1f1f);
+  color: var(--gl-text-color-secondary, #999);
+  border-color: var(--gl-border-color-default, #404040);
+}
+.gl-dark .gl-mr-ext-git-cmd-btn:hover {
+  color: var(--gl-text-color, #e0e0e0);
+  border-color: var(--gl-border-color-strong, #666);
+}

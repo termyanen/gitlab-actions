@@ -395,6 +395,20 @@
   "cardCherryPickTitle": { "message": "Cherry-pick to branches" },
   "cardCherryPickDesc": { "message": "Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries — it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author." },
 
+  "mrDetailEnhancements": { "message": "MR detail enhancements" },
+  "showSensitiveWarning": { "message": "Sensitive file warning in diff" },
+  "showGitCommands": { "message": "Git command buttons (checkout, pull, reset)" },
+  "sensitiveWarningBadge": { "message": "SENSITIVE: $1 file(s)", "placeholders": { "1": { "content": "$1" } } },
+  "sensitiveWarningHint": { "message": "This MR modifies security-sensitive files:" },
+  "gitCmdCheckout": { "message": "checkout" },
+  "gitCmdPull": { "message": "pull" },
+  "gitCmdReset": { "message": "reset" },
+
+  "cardSensitiveTitle": { "message": "Sensitive file warning" },
+  "cardSensitiveDesc": { "message": "Shows a warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files." },
+  "cardGitCommandsTitle": { "message": "Git command buttons" },
+  "cardGitCommandsDesc": { "message": "Copy ready-to-run checkout, pull, and hard-reset git commands for the MR's source branch with one click. Useful for local testing." },
+
   "updateBannerText": { "message": "New version is available! See what's new:" },
   "updateChangelog": { "message": "Changelog" },
   "updateInstall": { "message": "Update" },
