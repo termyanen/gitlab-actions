@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.10.2
+
+### Fixes
+- **Source branch deletion bug** — `should_remove_source_branch` was always forced to `true`, deleting the source branch after merge even when the MR setting and project setting both said not to. Now respects MR and project settings correctly.
+- **Failed job view on GitLab 18.x** — failed job log panel was invisible when `head_pipeline` didn't populate in time. Now falls back to the pipelines API to find the failed pipeline, so the panel always appears after a pipeline fails.
+- **Widget section selector** — added four fallback selectors for the MR widget container so button injection survives GitLab DOM changes.
+- **Git commands selector** — added `data-testid` fallbacks for the MR description block where git command buttons are injected.
+- **Auto-merge abort on 405** — when GitLab returns 405 Method Not Allowed for a merge attempt (MR not ready), the extension now stops retrying immediately instead of waiting 2 minutes.
+
+---
+
+## 1.10.1
+
+### Fixes
+- **GitLab 18.x compatibility** — fixed rebase, version bump, and Ship/Force Ship flows broken after GitLab 18.x changed how `sha`/`diff_head_sha` fields update on the MR API. The extension now checks both fields and falls back to the commits API if neither updates in time.
+- **Rebase error visibility** — rebase failures (conflicts, closed MR) were silently ignored; real errors now surface to the user instead of falsely reporting success.
+- **Pipeline wait robustness** — added support for new GitLab 18 pipeline statuses (`waiting_for_resource`, `preparing`, `scheduled`) and fallback to the pipelines API when `head_pipeline` lags on the MR response.
+- **Rebase polling timeout** — added a 2-minute cap to rebase polling so it no longer hangs indefinitely if `rebase_in_progress` never clears.
+
+---
+
 ## 1.10.0
 
 ### New features

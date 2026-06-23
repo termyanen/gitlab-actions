@@ -134,19 +134,26 @@
     return api('PUT', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/rebase',
       skipCI ? { skip_ci: true } : {}
     ).then(function() {
-      return pollRebase();
+      return pollRebase(0);
     }).catch(function(err) {
-      // Rebase not needed or already in progress — not fatal
-      // Rebase not needed or already in progress
-      return getMR();
+      var msg = (err.message || '').toLowerCase();
+      // 403/405 = rebase not supported for this project merge method — skip silently
+      if (msg.indexOf('403') !== -1 || msg.indexOf('forbidden') !== -1 ||
+          msg.indexOf('405') !== -1) {
+        return getMR();
+      }
+      // Re-throw real errors (conflict, closed MR, API changes) so user sees them
+      throw err;
     });
   }
 
-  function pollRebase() {
+  function pollRebase(attempt) {
+    attempt = (attempt || 0) + 1;
+    if (attempt > 60) throw new Error('Timeout waiting for rebase to complete');
     return sleep(2000).then(function() {
       return getMR();
     }).then(function(mr) {
-      if (mr.rebase_in_progress) return pollRebase();
+      if (mr.rebase_in_progress) return pollRebase(attempt);
       if (mr.merge_error) throw new Error('Rebase failed: ' + mr.merge_error);
       return mr;
     });
@@ -755,7 +762,7 @@
     return getMR().then(function(mr) {
       return {
         squash: !!mr.squash,
-        should_remove_source_branch: mr.force_remove_source_branch || mr.should_remove_source_branch || true,
+        should_remove_source_branch: !!(mr.force_remove_source_branch || mr.should_remove_source_branch),
       };
     });
   }
@@ -767,27 +774,35 @@
       return api('PUT', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/merge', {
         merge_when_pipeline_succeeds: true,
         squash: !!mr.squash,
-        should_remove_source_branch: mr.force_remove_source_branch || mr.should_remove_source_branch || true,
+        should_remove_source_branch: !!(mr.force_remove_source_branch || mr.should_remove_source_branch),
       });
     });
   }
 
   function waitForBranchInMR(branch, maxAttempts) {
-    maxAttempts = maxAttempts || 30;
+    maxAttempts = maxAttempts || 40;
     // Step 1: get actual branch HEAD from repository API
     return api('GET', '/projects/' + PROJECT_ID + '/repository/branches/' + encodeURIComponent(branch))
       .then(function(branchData) {
         var expectedSha = branchData.commit.id;
         // Step 2: poll MR until sha matches
+        // GitLab 18.x: check both sha and diff_head_sha — either may update first
         var attempt = 0;
         function check() {
           attempt++;
-          if (attempt > maxAttempts) throw new Error('Timeout waiting for MR to sync with branch HEAD');
+          if (attempt > maxAttempts) {
+            // GitLab 18.x bug: sha fields may lag — verify via MR commits API as fallback
+            return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/commits')
+              .then(function(commits) {
+                if (commits && commits.length && commits[0].id === expectedSha) return getMR();
+                throw new Error('Timeout waiting for MR to sync with branch HEAD');
+              });
+          }
           return sleep(3000).then(function() {
             return getMR();
           }).then(function(mr) {
             showToast(t('toastWaitingMrSync', [String(attempt), String(maxAttempts)]), 'success');
-            if (mr.sha === expectedSha) return mr;
+            if (mr.sha === expectedSha || mr.diff_head_sha === expectedSha) return mr;
             return check();
           });
         }
@@ -797,6 +812,7 @@
 
   function waitForNewPipeline(oldSha, maxAttempts) {
     maxAttempts = maxAttempts || 15;
+    var activePipelineStatuses = ['running', 'pending', 'created', 'waiting_for_resource', 'preparing', 'scheduled'];
     var attempt = 0;
     function check() {
       attempt++;
@@ -804,11 +820,13 @@
       return sleep(3000).then(function() {
         return getMR();
       }).then(function(mr) {
-        if (mr.sha === oldSha) return check();
+        // GitLab 18.x: check both sha fields
+        var currentSha = mr.sha || mr.diff_head_sha;
+        if (currentSha === oldSha) return check();
         // SHA changed, now check pipeline
         return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
           .then(function(pipelines) {
-            if (pipelines.length > 0 && ['running', 'pending', 'created'].indexOf(pipelines[0].status) !== -1) {
+            if (pipelines.length > 0 && activePipelineStatuses.indexOf(pipelines[0].status) !== -1) {
               return mr;
             }
             return check();
@@ -824,7 +842,7 @@
     var attempt = 0;
     var _mergeOpts = null;
     // Errors that mean "stop retrying, it won't help"
-    var fatalPatterns = ['has_conflicts', 'conflict', 'you don\'t have permissions'];
+    var fatalPatterns = ['has_conflicts', 'conflict', 'you don\'t have permissions', '405', 'method not allowed'];
     function isFatal(msg) {
       var lower = msg.toLowerCase();
       return fatalPatterns.some(function(p) { return lower.indexOf(p) !== -1; });
@@ -850,8 +868,9 @@
   }
 
   function waitMRReady(maxAttempts) {
-    // Wait until GitLab processes the new commit: SHA updated + pipeline exists
-    maxAttempts = maxAttempts || 30;
+    // Wait until GitLab processes the new commit: pipeline started
+    maxAttempts = maxAttempts || 40;
+    var activePipelineStatuses = ['running', 'pending', 'created', 'waiting_for_resource', 'preparing', 'scheduled'];
     var attempt = 0;
     function check() {
       attempt++;
@@ -859,12 +878,15 @@
       return sleep(3000).then(function() {
         return getMR();
       }).then(function(mr) {
-        var hp = mr.head_pipeline;
         showToast(t('toastWaitingPipeline') + ' (' + attempt + '/' + maxAttempts + ')', 'success');
-        if (hp && hp.status && ['running', 'pending', 'created'].indexOf(hp.status) !== -1) {
-          return mr;
-        }
-        return check();
+        var hp = mr.head_pipeline;
+        if (hp && hp.status && activePipelineStatuses.indexOf(hp.status) !== -1) return mr;
+        // GitLab 18.x: head_pipeline may lag — check pipelines API directly
+        return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
+          .then(function(pipelines) {
+            if (pipelines.length > 0 && activePipelineStatuses.indexOf(pipelines[0].status) !== -1) return mr;
+            return check();
+          });
       });
     }
     return check();
@@ -886,7 +908,7 @@
       return waitForBranchInMR(result.branch);
     }).then(function() {
       showToast(t('toastWaitingPipeline'), 'success');
-      return waitMRReady(30);
+      return waitMRReady();
     }).then(function() {
       showToast(t('toastEnablingAutomerge'), 'success');
       return doAutoMergeWithRetry(40, 3000);
@@ -1128,7 +1150,10 @@
       if (stateText === 'merged' || stateText === 'closed') return;
     }
 
-    var widgetSection = document.querySelector('[data-testid="mr-widget-content"].mr-widget-section');
+    var widgetSection = document.querySelector('[data-testid="mr-widget-content"].mr-widget-section') ||
+                        document.querySelector('[data-testid="mr-widget-content"]') ||
+                        document.querySelector('.mr-widget-content') ||
+                        document.querySelector('.mr-widget-section');
     if (!widgetSection) return;
 
     _injecting = true;
@@ -1400,101 +1425,111 @@
 
   function injectFailedJobView(mr, s, widgetSection) {
     if (s.show_failed_job_view === false) return;
-    if (!mr.head_pipeline || mr.head_pipeline.status !== 'failed') return;
     if (document.querySelector('.gl-mr-actions-failed-jobs')) return;
 
-    var pipelineId = mr.head_pipeline.id;
+    function renderForPipeline(pipelineId) {
+      api('GET', '/projects/' + PROJECT_ID + '/pipelines/' + pipelineId + '/jobs?scope[]=failed&per_page=10')
+        .then(function(jobs) {
+          if (!jobs || !jobs.length) return;
+          if (document.querySelector('.gl-mr-actions-failed-jobs')) return;
 
-    api('GET', '/projects/' + PROJECT_ID + '/pipelines/' + pipelineId + '/jobs?scope[]=failed&per_page=10')
-      .then(function(jobs) {
-        if (!jobs || !jobs.length) return;
-        if (document.querySelector('.gl-mr-actions-failed-jobs')) return;
+          var wrapper = document.createElement('div');
+          wrapper.className = 'gl-mr-actions-failed-jobs';
 
-        var wrapper = document.createElement('div');
-        wrapper.className = 'gl-mr-actions-failed-jobs';
+          var header = document.createElement('div');
+          header.className = 'gl-mr-actions-failed-jobs-header';
+          header.innerHTML = '<span class="gl-mr-actions-failed-jobs-title">' +
+            escHtml(t('failedJobsCount', [jobs.length])) +
+            '</span>' +
+            '<span class="gl-mr-actions-failed-jobs-toggle">' + CHEVRON_SVG + '</span>';
+          wrapper.appendChild(header);
 
-        var header = document.createElement('div');
-        header.className = 'gl-mr-actions-failed-jobs-header';
-        header.innerHTML = '<span class="gl-mr-actions-failed-jobs-title">' +
-          escHtml(t('failedJobsCount', [jobs.length])) +
-          '</span>' +
-          '<span class="gl-mr-actions-failed-jobs-toggle">' + CHEVRON_SVG + '</span>';
-        wrapper.appendChild(header);
+          var list = document.createElement('div');
+          list.className = 'gl-mr-actions-failed-jobs-list';
+          wrapper.appendChild(list);
 
-        var list = document.createElement('div');
-        list.className = 'gl-mr-actions-failed-jobs-list';
-        wrapper.appendChild(list);
-
-        header.addEventListener('click', function() {
-          var visible = list.style.display !== 'none';
-          list.style.display = visible ? 'none' : '';
-          wrapper.classList.toggle('collapsed', visible);
-        });
-
-        // Limit to 5 jobs for trace fetching
-        var displayJobs = jobs.slice(0, 5);
-        var tracePromises = displayJobs.map(function(job) {
-          return fetchJobTrace(job.id).then(function(trace) {
-            return { job: job, trace: trace };
+          header.addEventListener('click', function() {
+            var visible = list.style.display !== 'none';
+            list.style.display = visible ? 'none' : '';
+            wrapper.classList.toggle('collapsed', visible);
           });
-        });
 
-        Promise.all(tracePromises).then(function(results) {
-          results.forEach(function(r, i) {
-            var item = document.createElement('div');
-            item.className = 'gl-mr-actions-failed-job-item';
+          var displayJobs = jobs.slice(0, 5);
+          var tracePromises = displayJobs.map(function(job) {
+            return fetchJobTrace(job.id).then(function(trace) {
+              return { job: job, trace: trace };
+            });
+          });
 
-            var jobUrl = GITLAB_URL + '/' + PROJECT_PATH + '/-/jobs/' + r.job.id;
-            var nameRow = document.createElement('div');
-            nameRow.className = 'gl-mr-actions-failed-job-name';
-            nameRow.innerHTML = '<a href="' + escHtml(jobUrl) + '" target="_blank">' + escHtml(r.job.name) + '</a>' +
-              (r.job.stage ? ' <span class="gl-mr-actions-failed-job-stage">' + escHtml(r.job.stage) + '</span>' : '') +
-              '<span class="gl-mr-actions-failed-job-expand">' + CHEVRON_SVG + '</span>';
-            item.appendChild(nameRow);
+          Promise.all(tracePromises).then(function(results) {
+            results.forEach(function(r, i) {
+              var item = document.createElement('div');
+              item.className = 'gl-mr-actions-failed-job-item';
 
-            var trace = document.createElement('pre');
-            trace.className = 'gl-mr-actions-failed-job-trace';
-            trace.innerHTML = r.trace;
-            if (i !== 0) {
-              trace.style.display = 'none';
-              item.classList.add('collapsed');
-            }
-            item.appendChild(trace);
+              var jobUrl = GITLAB_URL + '/' + PROJECT_PATH + '/-/jobs/' + r.job.id;
+              var nameRow = document.createElement('div');
+              nameRow.className = 'gl-mr-actions-failed-job-name';
+              nameRow.innerHTML = '<a href="' + escHtml(jobUrl) + '" target="_blank">' + escHtml(r.job.name) + '</a>' +
+                (r.job.stage ? ' <span class="gl-mr-actions-failed-job-stage">' + escHtml(r.job.stage) + '</span>' : '') +
+                '<span class="gl-mr-actions-failed-job-expand">' + CHEVRON_SVG + '</span>';
+              item.appendChild(nameRow);
 
-            nameRow.addEventListener('click', function(e) {
-              if (e.target.closest('a')) return;
-              var visible = trace.style.display !== 'none';
-              trace.style.display = visible ? 'none' : '';
-              item.classList.toggle('collapsed', visible);
-              if (!visible) {
-                requestAnimationFrame(function() {
-                  requestAnimationFrame(function() { trace.scrollTop = trace.scrollHeight; });
-                });
+              var trace = document.createElement('pre');
+              trace.className = 'gl-mr-actions-failed-job-trace';
+              trace.innerHTML = r.trace;
+              if (i !== 0) {
+                trace.style.display = 'none';
+                item.classList.add('collapsed');
               }
+              item.appendChild(trace);
+
+              nameRow.addEventListener('click', function(e) {
+                if (e.target.closest('a')) return;
+                var visible = trace.style.display !== 'none';
+                trace.style.display = visible ? 'none' : '';
+                item.classList.toggle('collapsed', visible);
+                if (!visible) {
+                  requestAnimationFrame(function() {
+                    requestAnimationFrame(function() { trace.scrollTop = trace.scrollHeight; });
+                  });
+                }
+              });
+
+              list.appendChild(item);
             });
 
-            list.appendChild(item);
-          });
-
-          if (jobs.length > 5) {
-            var more = document.createElement('div');
-            more.className = 'gl-mr-actions-failed-jobs-more';
-            more.textContent = t('failedJobsMore', [jobs.length - 5]);
-            list.appendChild(more);
-          }
-
-          widgetSection.appendChild(wrapper);
-          requestAnimationFrame(function() {
-            var traces = wrapper.querySelectorAll('.gl-mr-actions-failed-job-trace');
-            for (var i = 0; i < traces.length; i++) {
-              if (traces[i].style.display !== 'none') {
-                traces[i].scrollTop = traces[i].scrollHeight;
-              }
+            if (jobs.length > 5) {
+              var more = document.createElement('div');
+              more.className = 'gl-mr-actions-failed-jobs-more';
+              more.textContent = t('failedJobsMore', [jobs.length - 5]);
+              list.appendChild(more);
             }
+
+            widgetSection.appendChild(wrapper);
+            requestAnimationFrame(function() {
+              var traces = wrapper.querySelectorAll('.gl-mr-actions-failed-job-trace');
+              for (var i = 0; i < traces.length; i++) {
+                if (traces[i].style.display !== 'none') {
+                  traces[i].scrollTop = traces[i].scrollHeight;
+                }
+              }
+            });
           });
-        });
-      })
-      .catch(function() {});
+        })
+        .catch(function() {});
+    }
+
+    if (mr.head_pipeline && mr.head_pipeline.status === 'failed') {
+      renderForPipeline(mr.head_pipeline.id);
+    } else {
+      // GitLab 18.x: head_pipeline may lag or be absent — check pipelines API directly
+      api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines?per_page=1')
+        .then(function(pipelines) {
+          if (pipelines && pipelines.length && pipelines[0].status === 'failed') {
+            renderForPipeline(pipelines[0].id);
+          }
+        }).catch(function() {});
+    }
   }
 
   // =========================================================================
@@ -1563,7 +1598,7 @@
   function injectGitCommands(mr) {
     if (document.querySelector('.gl-mr-ext-git-commands')) return;
 
-    var descBlock = document.querySelector('.detail-page-description, .js-detail-page-description');
+    var descBlock = document.querySelector('.detail-page-description, .js-detail-page-description, [data-testid="description-content"], [data-testid="merge-request-description"]');
     if (!descBlock) return;
 
     var branch = mr.source_branch;
