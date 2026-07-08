@@ -42,21 +42,67 @@ chrome.runtime.onInstalled.addListener(function(details) {
 // API proxy — relay calls through content script on a GitLab tab
 // =========================================================================
 
+// tabs.sendMessage that cannot hang: a frozen/discarded tab whose content
+// script never calls sendResponse would otherwise leave the promise pending forever
+function sendMessageWithTimeout(tabId, msg, timeoutMs) {
+  return new Promise(function(resolve, reject) {
+    var done = false;
+    var timer = setTimeout(function() {
+      if (done) return;
+      done = true;
+      reject(new Error('api-proxy tab timeout'));
+    }, timeoutMs);
+    chrome.tabs.sendMessage(tabId, msg).then(function(resp) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve(resp);
+    }, function(err) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
+}
+
 function api(task, method, path, body) {
   var msg = { type: 'api-proxy', method: method, path: path, body: body };
+  var isGet = method === 'GET';
 
   // Try tabs one by one — content script only exists on MR pages
   return chrome.tabs.query({ url: task.gitlabUrl + '/*' }).then(function(tabs) {
-    if (!tabs.length) throw new Error('No GitLab tab open — keep at least one GitLab tab open.');
+    var tabIds = tabs.map(function(t) { return t.id; });
+    if (!tabIds.length) throw new Error('No GitLab tab open — keep at least one GitLab tab open.');
+    // Prefer the tab that initiated the task — its content script is proven alive.
+    // Only if it still matches the GitLab origin (the user may have navigated away).
+    var initIdx = task._tabId ? tabIds.indexOf(task._tabId) : -1;
+    if (initIdx > 0) {
+      tabIds.splice(initIdx, 1);
+      tabIds.unshift(task._tabId);
+    }
+
+    // Message provably never reached a content script — safe to retry on any method
+    function isUndeliveredError(message) {
+      return message.indexOf('establish connection') !== -1 ||
+        message.indexOf('No tab with id') !== -1;
+    }
+    // The content script may have received the message and started the request.
+    // Retrying a mutating request (job play/retry) here could execute it twice,
+    // so only idempotent GETs move on to the next tab.
+    function isAmbiguousError(message) {
+      return message.indexOf('message port closed') !== -1 ||
+        message.indexOf('api-proxy tab timeout') !== -1;
+    }
 
     function tryTab(i) {
-      if (i >= tabs.length) throw new Error('No GitLab tab with content script found. Open any MR page.');
-      return chrome.tabs.sendMessage(tabs[i].id, msg).then(function(resp) {
+      if (i >= tabIds.length) throw new Error('No GitLab tab with content script found. Open any MR page.');
+      return sendMessageWithTimeout(tabIds[i], msg, isGet ? 20000 : 60000).then(function(resp) {
         if (resp && resp._error) throw new Error(resp._error);
         return resp;
       }).catch(function(err) {
-        // "Could not establish connection" = no content script in this tab
-        if (err.message && err.message.indexOf('establish connection') !== -1) {
+        var emsg = err.message || '';
+        if (isUndeliveredError(emsg) || (isGet && isAmbiguousError(emsg))) {
           return tryTab(i + 1);
         }
         throw err;
@@ -676,7 +722,19 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 
   if (msg.type === 'generate-standup') {
     var standupUrl = msg.gitlabUrl;
-    var fakeTask = { gitlabUrl: standupUrl };
+    var fakeTask = { gitlabUrl: standupUrl, _tabId: sender.tab ? sender.tab.id : null };
+
+    // Guarantee exactly one response so the modal never spins forever
+    var standupDone = false;
+    var standupWatchdog = setTimeout(function() {
+      standupRespond({ _error: 'Timed out generating the report (180s). Check that GitLab is reachable and reload the tab.' });
+    }, 180000);
+    function standupRespond(payload) {
+      if (standupDone) return;
+      standupDone = true;
+      clearTimeout(standupWatchdog);
+      try { sendResponse(payload); } catch (e) {}
+    }
 
     // Get current user
     api(fakeTask, 'GET', '/user').then(function(user) {
@@ -893,11 +951,13 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
           lines.push('No activity for this day.');
         }
 
-        // Enrich lines with Jira ticket titles if configured
+        // Enrich lines with Jira ticket titles if configured.
+        // Any failure here must degrade to the plain report, never to a hang.
         chrome.storage.sync.get({ jira_url: '', jira_ticket_regex: '', standup_jira_enrich: true }, function(jiraSettings) {
+          try {
           var jiraUrl = (jiraSettings.jira_url || '').replace(/\/+$/, '');
           if (!jiraUrl || jiraSettings.standup_jira_enrich === false) {
-            sendResponse({ text: lines.join('\n') });
+            standupRespond({ text: lines.join('\n') });
             return;
           }
           var ticketPattern;
@@ -911,11 +971,13 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
           var ticketSet = {};
           var m;
           while ((m = ticketPattern.exec(allText)) !== null) {
-            ticketSet[m[0]] = true;
+            if (m[0]) ticketSet[m[0]] = true;
+            // A custom regex matching the empty string would never advance lastIndex
+            if (m.index === ticketPattern.lastIndex) ticketPattern.lastIndex++;
           }
           var tickets = Object.keys(ticketSet);
           if (!tickets.length) {
-            sendResponse({ text: lines.join('\n') });
+            standupRespond({ text: lines.join('\n') });
             return;
           }
           // Fetch Jira summaries (up to 5 concurrent)
@@ -938,6 +1000,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
           fetchNextBatch().then(function() {
             // Annotate lines: append Jira summary after ticket ID
             if (Object.keys(ticketSummaries).length) {
+              try {
               for (var i = 0; i < lines.length; i++) {
                 var line = lines[i];
                 if (line.indexOf('  - ') !== 0) continue;
@@ -954,20 +1017,28 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
                   if (ticketSummaries[lm[0]] && lineTickets.indexOf(lm[0]) === -1) {
                     lineTickets.push(lm[0]);
                   }
+                  if (lm.index === lp.lastIndex) lp.lastIndex++;
                 }
                 if (lineTickets.length) {
                   var annotations = lineTickets.map(function(t) { return '[' + t + ': ' + ticketSummaries[t] + ']'; });
                   lines[i] = line + '\n    ' + annotations.join(' ');
                 }
               }
+              } catch(annotateErr) { /* keep un-annotated lines */ }
             }
-            sendResponse({ text: lines.join('\n') });
+            standupRespond({ text: lines.join('\n') });
+          }).catch(function() {
+            standupRespond({ text: lines.join('\n') });
           });
+          } catch(enrichErr) {
+            // Jira enrichment is optional — fall back to the plain report
+            standupRespond({ text: lines.join('\n') });
+          }
         });
       }); // end projectIds resolve
       }); // end main Promise.all
     }).catch(function(err) {
-      sendResponse({ _error: err.message || String(err) });
+      standupRespond({ _error: err.message || String(err) });
     });
     return true;
   }

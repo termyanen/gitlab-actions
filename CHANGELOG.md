@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.10.3
+
+### Fixes
+- **Daily Activity Report infinite loader** — the report could spin forever if a background GitLab tab was frozen/unresponsive (Chrome Memory Saver) or its content script never answered. API relay now prefers the tab that opened the report, applies a per-tab timeout (20s for reads), and skips dead tabs instead of hanging on them.
+- **Report watchdog** — report generation is now capped at 180 seconds; on timeout a clear error message is shown instead of an endless spinner.
+- **Jira enrichment resilience** — any Jira enrichment failure (bad Jira URL, unreachable Jira, malformed custom ticket regex) now falls back to the plain report instead of hanging. A custom ticket regex that matches an empty string can no longer freeze the extension.
+- **API relay robustness** — the same tab-preference + timeout logic applies to all background API calls (rebase, ship, job chains), so a stale GitLab tab can no longer stall them. Mutating requests (job play/retry) are never re-sent to another tab when delivery is ambiguous, so a slow request can't run a job twice; they fail with a clear error after 60s instead.
+
+---
+
 ## 1.10.2
 
 ### Fixes

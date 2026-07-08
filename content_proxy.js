@@ -3734,8 +3734,10 @@
           bodyEl.innerHTML = '<div class="gl-standup-loading"><div class="gl-standup-spinner"></div></div>';
           actionsEl.style.display = 'none';
           chrome.runtime.sendMessage({ type: 'generate-standup', gitlabUrl: GITLAB_URL, date: dateStr }, function(resp) {
-            if (!resp || resp._error) {
-              bodyEl.innerHTML = '<div class="gl-standup-error">' + escHtml(resp ? resp._error : 'No response') + '</div>';
+            var lastErr = chrome.runtime.lastError;
+            if (lastErr || !resp || resp._error) {
+              var errText = (resp && resp._error) ? resp._error : (lastErr && lastErr.message ? lastErr.message : 'No response');
+              bodyEl.innerHTML = '<div class="gl-standup-error">' + escHtml(errText) + '</div>';
               return;
             }
             currentText = resp.text || '';
