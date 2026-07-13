@@ -370,6 +370,11 @@
   "cardStandupDesc": { "message": "GitLab のアクティビティから日次レポートを生成。作成済み、マージ済み、レビュー済みの MR を表示。Slack や Jira にコピー＆ペースト。" },
 
   "showCherryPick": { "message": "ブランチへ Cherry-pick" },
+  "showGroupPlay": { "message": "パイプラインのグループ実行ボタン（残りの手動ジョブを実行）" },
+  "groupPlayTooltip": { "message": "このグループの残りの手動ジョブを実行" },
+  "groupPlayError": { "message": "一部のジョブを開始できませんでした" },
+  "cardGroupPlayTitle": { "message": "グループ実行ボタン" },
+  "cardGroupPlayDesc": { "message": "パイプライングラフのジョブグループ横の実行ボタンで、残りの手動ジョブをまとめて実行できます。グループ内の一部ジョブが開始済みで GitLab 標準のボタンが消えた後でも使えます。" },
   "cherryPickBranches": { "message": "Cherry-pick ブランチ" },
   "cherryPickBranchesHint": { "message": "Cherry-pick のデフォルトターゲットブランチ。モーダルでブランチの追加・削除が可能です。" },
   "cherryPickBranchAdd": { "message": "ブランチを追加" },

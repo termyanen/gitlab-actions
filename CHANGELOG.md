@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0
+
+### New features
+- **Group play button on pipeline graph** — GitLab's own "Run all manual" button on a stage disappears as soon as any job in the stage starts. The extension now shows its own play button in the stage header whenever manual jobs remain; one click runs all remaining manual jobs, skipping the ones already running, succeeded, or failed. Works for downstream (child) pipeline stages expanded on the same page, too. Toggle: "Group play button in pipeline" in settings (on by default).
+
+---
+
 ## 1.10.3
 
 ### Fixes
