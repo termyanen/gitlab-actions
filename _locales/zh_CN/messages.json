@@ -370,6 +370,11 @@
   "cardStandupDesc": { "message": "根据您的 GitLab 活动生成每日活动报告。显示已创建、已合并和已审阅的 MR。可复制粘贴到 Slack 或 Jira。" },
 
   "showCherryPick": { "message": "Cherry-pick 到分支" },
+  "showGroupPlay": { "message": "流水线中的分组运行按钮（运行剩余的手动作业）" },
+  "groupPlayTooltip": { "message": "运行该组中剩余的手动作业" },
+  "groupPlayError": { "message": "部分作业启动失败" },
+  "cardGroupPlayTitle": { "message": "分组运行按钮" },
+  "cardGroupPlayDesc": { "message": "在流水线图中，作业组旁边的运行按钮可启动所有剩余的手动作业——即使组内部分作业已经启动、GitLab 自带按钮消失后依然可用。" },
   "cherryPickBranches": { "message": "Cherry-pick 分支" },
   "cherryPickBranchesHint": { "message": "Cherry-pick 的默认目标分支。您可以在弹窗中添加或删除分支。" },
   "cherryPickBranchAdd": { "message": "添加分支" },

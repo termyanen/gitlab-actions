@@ -81,7 +81,7 @@
     <a href="./" class="back">&larr; <span data-i18n="back">Back to GitLab Actions</span></a>
 
     <h1 data-i18n="title">Privacy Policy</h1>
-    <p class="updated" data-i18n="updated">Last updated: May 31, 2026</p>
+    <p class="updated" data-i18n="updated">Last updated: July 13, 2026</p>
 
     <div class="lang-switch">
       <button class="active" onclick="switchLang('en')">English</button>
@@ -91,37 +91,54 @@
     <!-- ═══ ENGLISH ═══ -->
     <div data-lang="en">
       <div class="card">
-        <p><strong>GitLab Actions</strong> does not collect, transmit, or share any personal data. All information stays on your device and is never sent to any external servers controlled by the developer.</p>
+        <p><strong>GitLab Actions</strong> processes all data locally in your browser. The developer does not operate any servers and never receives, collects, sells, or shares your data. Data is transferred only to the GitLab and (optionally) Jira servers that you yourself use.</p>
       </div>
 
-      <h2>What data the extension accesses</h2>
+      <h2>1. What data is collected</h2>
+      <p>The extension accesses the following categories of data, strictly to provide its features:</p>
       <ul>
-        <li><strong>GitLab session cookies</strong> — used solely to authenticate API requests to your own GitLab instance (rebase, merge, pipelines, etc.). The extension acts on your behalf using your existing browser session. No credentials are read, stored, or transmitted externally.</li>
-        <li><strong>Jira session cookies</strong> — if you optionally configure Jira integration, cookies for your Jira domain are used to fetch issue details. This requires you to explicitly grant host permission. No cookies are stored or sent anywhere other than your Jira instance.</li>
-        <li><strong>Extension settings</strong> — your preferences (button toggles, version bump config, Jira URL, custom jobs, etc.) are stored in <code>chrome.storage.sync</code>, which is Chrome's built-in synced storage tied to your Google account. The extension developer has no access to this data.</li>
+        <li><strong>Authentication information (session cookies)</strong> — your existing browser session cookies for your GitLab instance and, if you enable the optional Jira integration, for your Jira domain. Cookies are read only to authenticate API requests on your behalf. Passwords, tokens, and other credentials are never read or requested.</li>
+        <li><strong>Website content</strong> — merge request titles and metadata, pipeline/job names and statuses, commit messages, and Jira issue fields (summary, status, assignee, comments, attachments) from the GitLab/Jira pages you visit and their APIs.</li>
+        <li><strong>Extension settings</strong> — your configuration: enabled buttons and their order, version bump settings, Jira URL, custom jobs, quick comments, per-project profiles, language.</li>
+      </ul>
+      <p>The extension does <strong>not</strong> collect browsing history, keystrokes, personally identifiable information beyond the above, and contains no analytics, telemetry, tracking pixels, third-party scripts, or advertising.</p>
+
+      <h2>2. How data is used (processing)</h2>
+      <ul>
+        <li>Session cookies are attached by the browser to API requests to your own GitLab/Jira servers to perform actions you explicitly trigger (rebase, merge, run jobs, post comments) and to read metadata displayed in the UI (badges, statuses, reports).</li>
+        <li>Website content is processed locally in your browser to render UI enhancements (badges, buttons, panels, reports).</li>
+        <li>Settings are used solely to configure the extension's behavior.</li>
+      </ul>
+      <p>Data is never used for advertising, profiling, credit assessment, or any purpose unrelated to the extension's single purpose. Use of data obtained through Chrome APIs complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
+
+      <h2>3. How data is stored</h2>
+      <ul>
+        <li><strong>Settings</strong> are stored in <code>chrome.storage.sync</code> on your device and are kept until you change them or uninstall the extension. If Chrome Sync is enabled, Google may sync them across your browsers under your Google account.</li>
+        <li><strong>GitLab/Jira data</strong> (statuses, issue details) is cached in memory for up to 5 minutes to reduce API load and is discarded when the page is closed. It is never written to persistent storage.</li>
+        <li><strong>Cookies</strong> are never stored by the extension — they remain in the browser's cookie store and are only attached to requests to their own origin.</li>
+        <li>The developer operates no servers; nothing is stored outside your browser.</li>
       </ul>
 
-      <h2>What data the extension does NOT access</h2>
+      <h2>4. Who data is transferred to (recipients)</h2>
+      <p>Data leaves your browser only towards the following recipients:</p>
       <ul>
-        <li>No browsing history</li>
-        <li>No personally identifiable information</li>
-        <li>No analytics or telemetry</li>
-        <li>No tracking pixels or third-party scripts</li>
-        <li>No advertising</li>
+        <li><strong>Your GitLab server</strong> — the self-hosted or cloud GitLab instance you are logged into and browsing (API requests with your session cookies).</li>
+        <li><strong>Your Jira server</strong> (optional) — only if you configure the Jira integration and explicitly grant host permission for that domain.</li>
+        <li><strong>Google Chrome Sync</strong> (optional) — extension settings only, if you have Chrome Sync enabled in your browser.</li>
+      </ul>
+      <p>Data is <strong>never</strong> transferred to the developer, analytics providers, advertising networks, data brokers, or any other third party. Data is never sold. No data is transferred for purposes unrelated to the extension's functionality.</p>
+
+      <h2>5. Security</h2>
+      <p>All communication with your GitLab/Jira servers uses the same origin and transport security (HTTPS) as your normal browser session. The extension adds no additional endpoints and requests no credentials.</p>
+
+      <h2>6. Your choices and data deletion</h2>
+      <ul>
+        <li>Uninstalling the extension removes all its settings from <code>chrome.storage.sync</code>.</li>
+        <li>The Jira integration is off by default and can be disabled at any time by removing the Jira URL and revoking the host permission.</li>
+        <li>In-memory caches are cleared automatically when tabs are closed.</li>
       </ul>
 
-      <h2>Data storage</h2>
-      <p>All data is stored locally on your device via <code>chrome.storage.sync</code>. This data may be synced across your Chrome browsers by Google if you have Chrome Sync enabled. The extension developer does not operate any servers and has no access to your stored data.</p>
-
-      <h2>Third-party services</h2>
-      <p>The extension communicates only with:</p>
-      <ul>
-        <li><strong>Your GitLab instance</strong> — the self-hosted or cloud GitLab server you are logged into</li>
-        <li><strong>Your Jira instance</strong> (optional) — only if you configure Jira integration</li>
-      </ul>
-      <p>No data is sent to any other third-party services, analytics platforms, or external servers.</p>
-
-      <h2>Permissions explained</h2>
+      <h2>7. Permissions explained</h2>
       <ul>
         <li><strong>storage</strong> — save your extension settings</li>
         <li><strong>cookies</strong> — read session cookies for GitLab/Jira API authentication</li>
@@ -130,50 +147,67 @@
         <li><strong>optional host permissions</strong> — requested on-demand when you configure Jira, so the extension can access your Jira domain</li>
       </ul>
 
-      <h2>Children's privacy</h2>
+      <h2>8. Children's privacy</h2>
       <p>This extension is a developer productivity tool and is not directed at children under 13.</p>
 
-      <h2>Changes to this policy</h2>
-      <p>If this policy is updated, the changes will be posted on this page with an updated date. Since the extension collects no data, significant changes are unlikely.</p>
+      <h2>9. Changes to this policy</h2>
+      <p>If this policy is updated, the changes will be posted on this page with an updated date.</p>
 
-      <h2>Contact</h2>
+      <h2>10. Contact</h2>
       <p>If you have questions about this privacy policy, please open an issue on <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub</a>.</p>
     </div>
 
     <!-- ═══ RUSSIAN ═══ -->
     <div data-lang="ru">
       <div class="card">
-        <p><strong>GitLab Actions</strong> не собирает, не передает и не предоставляет третьим лицам никаких персональных данных. Вся информация остается на вашем устройстве и никогда не отправляется на внешние серверы разработчика.</p>
+        <p><strong>GitLab Actions</strong> обрабатывает все данные локально в вашем браузере. Разработчик не управляет никакими серверами и никогда не получает, не собирает, не продает и не передает ваши данные. Данные передаются только на серверы GitLab и (опционально) Jira, которыми пользуетесь вы сами.</p>
       </div>
 
-      <h2>Какие данные использует расширение</h2>
+      <h2>1. Какие данные собираются</h2>
+      <p>Расширение получает доступ к следующим категориям данных — исключительно для работы своих функций:</p>
       <ul>
-        <li><strong>Сессионные cookie GitLab</strong> — используются исключительно для аутентификации API-запросов к вашему GitLab-серверу (rebase, merge, пайплайны и т.д.). Расширение действует от вашего имени, используя существующую сессию браузера. Учетные данные не считываются, не сохраняются и не передаются.</li>
-        <li><strong>Сессионные cookie Jira</strong> — если вы настроите интеграцию с Jira, cookie вашего домена Jira используются для получения информации о задачах. Для этого вы явно предоставляете разрешение на доступ к домену. Cookie не сохраняются и не отправляются никуда, кроме вашего Jira-сервера.</li>
-        <li><strong>Настройки расширения</strong> — ваши настройки (переключатели кнопок, конфигурация версий, URL Jira, пользовательские задачи и т.д.) хранятся в <code>chrome.storage.sync</code> — встроенном хранилище Chrome, привязанном к вашему аккаунту Google. Разработчик расширения не имеет доступа к этим данным.</li>
+        <li><strong>Аутентификационные данные (сессионные cookie)</strong> — существующие сессионные cookie вашего GitLab-сервера и, если вы включите опциональную интеграцию с Jira, вашего домена Jira. Cookie считываются только для аутентификации API-запросов от вашего имени. Пароли, токены и другие учетные данные не считываются и не запрашиваются.</li>
+        <li><strong>Содержимое страниц</strong> — заголовки и метаданные merge request'ов, названия и статусы пайплайнов/джоб, сообщения коммитов, поля задач Jira (название, статус, исполнитель, комментарии, вложения) со страниц GitLab/Jira, которые вы посещаете, и их API.</li>
+        <li><strong>Настройки расширения</strong> — ваша конфигурация: включенные кнопки и их порядок, настройки версий, URL Jira, пользовательские джобы, быстрые комментарии, профили проектов, язык.</li>
+      </ul>
+      <p>Расширение <strong>не</strong> собирает историю просмотров, нажатия клавиш и иные персональные данные, кроме перечисленных, и не содержит аналитики, телеметрии, трекеров, сторонних скриптов и рекламы.</p>
+
+      <h2>2. Как данные используются (обработка)</h2>
+      <ul>
+        <li>Сессионные cookie прикрепляются браузером к API-запросам к вашим собственным серверам GitLab/Jira для выполнения действий, которые вы явно запускаете (rebase, merge, запуск джоб, комментарии), и для чтения метаданных, отображаемых в интерфейсе (бейджи, статусы, отчеты).</li>
+        <li>Содержимое страниц обрабатывается локально в браузере для отрисовки улучшений интерфейса (бейджи, кнопки, панели, отчеты).</li>
+        <li>Настройки используются только для конфигурации поведения расширения.</li>
+      </ul>
+      <p>Данные никогда не используются для рекламы, профилирования, оценки кредитоспособности или любых целей, не связанных с единственным назначением расширения. Использование данных, полученных через Chrome API, соответствует политике данных пользователей Chrome Web Store, включая требования Limited Use.</p>
+
+      <h2>3. Как данные хранятся</h2>
+      <ul>
+        <li><strong>Настройки</strong> хранятся в <code>chrome.storage.sync</code> на вашем устройстве до их изменения или удаления расширения. При включенной синхронизации Chrome Google может синхронизировать их между вашими браузерами в рамках вашего аккаунта Google.</li>
+        <li><strong>Данные GitLab/Jira</strong> (статусы, детали задач) кэшируются в памяти до 5 минут для снижения нагрузки на API и удаляются при закрытии страницы. Они никогда не записываются в постоянное хранилище.</li>
+        <li><strong>Cookie</strong> расширением не сохраняются — они остаются в хранилище cookie браузера и прикрепляются только к запросам к их собственному домену.</li>
+        <li>Разработчик не управляет серверами; ничего не хранится за пределами вашего браузера.</li>
       </ul>
 
-      <h2>Какие данные расширение НЕ использует</h2>
+      <h2>4. Кому передаются данные (получатели)</h2>
+      <p>Данные покидают ваш браузер только в адрес следующих получателей:</p>
       <ul>
-        <li>Не собирает историю просмотров</li>
-        <li>Не собирает персональные данные</li>
-        <li>Не использует аналитику или телеметрию</li>
-        <li>Не содержит трекеров или сторонних скриптов</li>
-        <li>Не содержит рекламы</li>
+        <li><strong>Ваш GitLab-сервер</strong> — self-hosted или облачный GitLab, в котором вы авторизованы и который просматриваете (API-запросы с вашими сессионными cookie).</li>
+        <li><strong>Ваш Jira-сервер</strong> (опционально) — только если вы настроите интеграцию с Jira и явно предоставите разрешение на доступ к этому домену.</li>
+        <li><strong>Синхронизация Google Chrome</strong> (опционально) — только настройки расширения, если у вас включена синхронизация Chrome.</li>
+      </ul>
+      <p>Данные <strong>никогда</strong> не передаются разработчику, аналитическим платформам, рекламным сетям, брокерам данных или любым другим третьим лицам. Данные никогда не продаются. Данные не передаются для целей, не связанных с функциональностью расширения.</p>
+
+      <h2>5. Безопасность</h2>
+      <p>Все взаимодействие с вашими серверами GitLab/Jira использует те же домены и защиту транспорта (HTTPS), что и ваша обычная сессия браузера. Расширение не добавляет дополнительных эндпоинтов и не запрашивает учетные данные.</p>
+
+      <h2>6. Ваш выбор и удаление данных</h2>
+      <ul>
+        <li>Удаление расширения удаляет все его настройки из <code>chrome.storage.sync</code>.</li>
+        <li>Интеграция с Jira выключена по умолчанию; её можно отключить в любой момент, удалив URL Jira и отозвав разрешение на домен.</li>
+        <li>Кэши в памяти очищаются автоматически при закрытии вкладок.</li>
       </ul>
 
-      <h2>Хранение данных</h2>
-      <p>Все данные хранятся локально на вашем устройстве через <code>chrome.storage.sync</code>. Эти данные могут синхронизироваться между вашими браузерами Chrome через Google, если у вас включена синхронизация Chrome. Разработчик расширения не управляет никакими серверами и не имеет доступа к вашим данным.</p>
-
-      <h2>Сторонние сервисы</h2>
-      <p>Расширение взаимодействует только с:</p>
-      <ul>
-        <li><strong>Вашим GitLab-сервером</strong> — self-hosted или облачный GitLab, в котором вы авторизованы</li>
-        <li><strong>Вашим Jira-сервером</strong> (опционально) — только если вы настроите интеграцию с Jira</li>
-      </ul>
-      <p>Никакие данные не отправляются в сторонние сервисы, аналитические платформы или внешние серверы.</p>
-
-      <h2>Разрешения</h2>
+      <h2>7. Разрешения</h2>
       <ul>
         <li><strong>storage</strong> — сохранение настроек расширения</li>
         <li><strong>cookies</strong> — чтение сессионных cookie для аутентификации в API GitLab/Jira</li>
@@ -182,13 +216,13 @@
         <li><strong>optional host permissions</strong> — запрашиваются при настройке Jira для доступа к вашему домену</li>
       </ul>
 
-      <h2>Конфиденциальность детей</h2>
+      <h2>8. Конфиденциальность детей</h2>
       <p>Это расширение — инструмент для разработчиков. Оно не предназначено для детей младше 13 лет.</p>
 
-      <h2>Изменения политики</h2>
-      <p>При обновлении политики изменения будут опубликованы на этой странице с обновленной датой. Поскольку расширение не собирает данных, существенные изменения маловероятны.</p>
+      <h2>9. Изменения политики</h2>
+      <p>При обновлении политики изменения будут опубликованы на этой странице с обновленной датой.</p>
 
-      <h2>Контакты</h2>
+      <h2>10. Контакты</h2>
       <p>Если у вас есть вопросы, создайте issue на <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub</a>.</p>
     </div>
   </div>
@@ -205,7 +239,7 @@
       if (lang === 'ru') btns[1].classList.add('active');
       var titles = { en: 'Privacy Policy', ru: 'Политика конфиденциальности' };
       var backs = { en: 'Back to GitLab Actions', ru: 'Назад к GitLab Actions' };
-      var dates = { en: 'Last updated: May 31, 2026', ru: 'Последнее обновление: 31 мая 2026' };
+      var dates = { en: 'Last updated: July 13, 2026', ru: 'Последнее обновление: 13 июля 2026' };
       document.querySelector('[data-i18n="title"]').textContent = titles[lang];
       document.querySelector('[data-i18n="back"] span, [data-i18n="back"]').lastChild.textContent = ' ' + backs[lang];
       document.querySelector('[data-i18n="updated"]').textContent = dates[lang];

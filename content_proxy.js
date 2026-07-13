@@ -44,7 +44,21 @@
     // Commit page: row/container for a single commit
     commitRow: '.commit, [data-testid="commit-item"], li.commit-header, li[data-testid], .commit-content',
     // Commit page: commit message element
-    commitMsg: '.commit-row-message, .item-title, .commit-title'
+    commitMsg: '.commit-row-message, .item-title, .commit-title',
+    // Pipeline graph: stage column root (title + job list)
+    pipelineStageColumn: '[data-testid="stage-column"], .stage-column',
+    // Pipeline graph: stage column title bar (holds stage name + native action button)
+    pipelineStageTitle: '[data-testid="stage-column-title"], .stage-column-title',
+    // Pipeline graph: links to job pages inside a stage column (used to map a
+    // stage column to the pipeline — parent or child — its jobs belong to)
+    pipelineJobLink: 'a[href*="/-/jobs/"], a[href*="/builds/"]',
+    // Pipeline graph: native stage action button ("Run all manual") — when present, we skip
+    pipelineStageAction: '[data-testid="ci-action-button"], .js-stage-action, .js-ci-action',
+    // Pipeline graph: root container (for MutationObserver)
+    pipelineGraph: '[data-testid="pipeline-graph"], .js-pipeline-graph, .pipeline-graph, [data-testid="pipeline-tabs"]',
+    // Pipeline graph: expanded upstream/downstream (child) pipeline graph wrapper —
+    // stages inside belong to a different pipeline id, skip them
+    pipelineLinkedGraph: '.pipeline-show-container, .linked-pipelines-column, [data-testid="linked-pipeline-container"]'
   };
 
   // Try querySelector against a multi-selector string; returns first match or null.
@@ -3193,6 +3207,262 @@
       }
     });
   } catch(e) {}
+
+  // =========================================================================
+  // Group play button on pipeline graph
+  // GitLab's native stage action ("Run all manual") disappears once any job
+  // in the stage runs; this button appears in its place as long as the stage
+  // still has jobs in "manual" status, and plays only those.
+  // =========================================================================
+
+  function isPipelinePage() {
+    return /\/-\/pipelines\/\d+/.test(window.location.pathname);
+  }
+
+  if (isPipelinePage()) {
+    try {
+      chrome.storage.sync.get({ show_group_play: true }, function(s) {
+        if (chrome.runtime.lastError || s.show_group_play === false) return;
+
+        var pathMatch = window.location.pathname.match(/^\/(.+?)\/-\/pipelines\/(\d+)/);
+        if (!pathMatch) return;
+        var encodedProject = encodeURIComponent(pathMatch[1]);
+        var pipelineId = pathMatch[2];
+
+        var GROUP_JOBS_TTL = 10 * 1000; // graph statuses change often — short cache
+        var _pipelinesCache = null;     // { list: [pipeline entry], at: timestamp }
+        var _pipelinesPromise = null;
+
+        function fetchPaged(path, page, acc) {
+          page = page || 1;
+          acc = acc || [];
+          return api('GET', path + '?per_page=100&page=' + page).then(function(items) {
+            if (!items || !items.length) return acc;
+            acc = acc.concat(items);
+            if (items.length === 100 && page < 20) return fetchPaged(path, page + 1, acc);
+            return acc;
+          });
+        }
+
+        // Pipeline entry: { projectRef, stages: {stageName: [job]}, jobIds: {id: true} }
+        function buildPipelineEntry(projectRef, jobs) {
+          var entry = { projectRef: projectRef, stages: {}, jobIds: {} };
+          for (var i = 0; i < jobs.length; i++) {
+            var st = jobs[i].stage || '';
+            if (!entry.stages[st]) entry.stages[st] = [];
+            entry.stages[st].push(jobs[i]);
+            entry.jobIds[jobs[i].id] = true;
+          }
+          return entry;
+        }
+
+        // Parent pipeline + downstream (child) pipelines triggered by bridges —
+        // their graphs render on the same page when expanded, with their own ids
+        function getPipelines() {
+          if (_pipelinesCache && Date.now() - _pipelinesCache.at < GROUP_JOBS_TTL) {
+            return Promise.resolve(_pipelinesCache.list);
+          }
+          if (_pipelinesPromise) return _pipelinesPromise;
+          var base = '/projects/' + encodedProject + '/pipelines/' + pipelineId;
+          _pipelinesPromise = Promise.all([
+            fetchPaged(base + '/jobs'),
+            fetchPaged(base + '/bridges').catch(function() { return []; })
+          ]).then(function(res) {
+            var children = [];
+            for (var i = 0; i < res[1].length; i++) {
+              var dp = res[1][i].downstream_pipeline;
+              if (!dp || !dp.id) continue;
+              // project path from web_url — bridges API has no project_id field
+              var ref = encodedProject;
+              try {
+                var pm = new URL(dp.web_url).pathname.match(/^\/(.+?)\/-\/pipelines\/\d+/);
+                if (pm) ref = encodeURIComponent(pm[1]);
+              } catch(e) {}
+              children.push({ id: dp.id, ref: ref });
+            }
+            return Promise.all(children.map(function(child) {
+              return fetchPaged('/projects/' + child.ref + '/pipelines/' + child.id + '/jobs').then(function(jobs) {
+                return buildPipelineEntry(child.ref, jobs);
+              }).catch(function() { return null; });
+            })).then(function(childEntries) {
+              var list = [buildPipelineEntry(encodedProject, res[0])];
+              for (var i = 0; i < childEntries.length; i++) {
+                if (childEntries[i]) list.push(childEntries[i]);
+              }
+              _pipelinesCache = { list: list, at: Date.now() };
+              _pipelinesPromise = null;
+              return list;
+            });
+          });
+          _pipelinesPromise.then(null, function() { _pipelinesPromise = null; });
+          return _pipelinesPromise;
+        }
+
+        // Which pipeline does this stage column belong to? Match a job link
+        // inside the column against the fetched job ids. Falls back to the
+        // parent pipeline only when the column is not inside a child graph.
+        function pipelineEntryFor(titleEl, list) {
+          var scope = qUp(titleEl, SEL.pipelineStageColumn) || titleEl.parentElement;
+          var links = qAll(scope, SEL.pipelineJobLink);
+          for (var i = 0; i < links.length; i++) {
+            var m = (links[i].getAttribute('href') || '').match(/\/(?:jobs|builds)\/(\d+)/);
+            if (!m) continue;
+            var jid = Number(m[1]);
+            for (var p = 0; p < list.length; p++) {
+              if (list[p].jobIds[jid]) return list[p];
+            }
+            return null; // job from a pipeline we didn't fetch (deeper nesting) — don't guess
+          }
+          if (!qUp(titleEl, SEL.pipelineLinkedGraph)) return list[0];
+          return null;
+        }
+
+        function manualJobsOf(jobs) {
+          var manual = [];
+          for (var i = 0; i < jobs.length; i++) {
+            if (jobs[i].status === 'manual') manual.push(jobs[i]);
+          }
+          return manual;
+        }
+
+        // Stage name from the column title: prefer the span[title] GitLab renders
+        function stageNameFromEl(titleEl) {
+          var nameEl = q(titleEl, 'span[title]');
+          if (nameEl) return (nameEl.getAttribute('title') || nameEl.textContent || '').trim();
+          nameEl = q(titleEl, 'span');
+          return ((nameEl || titleEl).textContent || '').trim();
+        }
+
+        var PLAY_SVG = '<svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M4.5 3.1c0-.9 1-1.5 1.8-1L13 6.9c.8.5.8 1.7 0 2.2l-6.7 4.8c-.8.5-1.8-.1-1.8-1V3.1z"/></svg>';
+        var CHECK_SVG = '<svg viewBox="0 0 16 16" width="12" height="12"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 8.5l3.5 3.5L13 4.5"/></svg>';
+
+        function playGroup(titleEl, stageName, btn) {
+          if (btn._glBusy) return;
+          btn._glBusy = true;
+          btn.classList.add('gl-group-play-busy');
+          getPipelines().then(function(list) {
+            var entry = pipelineEntryFor(titleEl, list);
+            var manual = entry ? manualJobsOf(entry.stages[stageName] || []) : [];
+            var chain = Promise.resolve();
+            var failed = 0;
+            manual.forEach(function(job) {
+              chain = chain.then(function() {
+                return api('POST', '/projects/' + entry.projectRef + '/jobs/' + job.id + '/play').catch(function() { failed++; });
+              });
+            });
+            return chain.then(function() {
+              _pipelinesCache = null;
+              btn.classList.remove('gl-group-play-busy');
+              if (failed > 0 && failed === manual.length) {
+                btn.classList.add('gl-group-play-error');
+                btn.title = msg('groupPlayError');
+                btn._glBusy = false;
+              } else {
+                btn.classList.add('gl-group-play-done');
+                btn.innerHTML = CHECK_SVG;
+                btn.title = failed ? msg('groupPlayError') : '';
+              }
+            });
+          }).catch(function() {
+            btn.classList.remove('gl-group-play-busy');
+            btn.classList.add('gl-group-play-error');
+            btn.title = msg('groupPlayError');
+            btn._glBusy = false;
+          });
+        }
+
+        function injectGroupPlayButtons() {
+          var titles = qAll(document, SEL.pipelineStageTitle);
+          if (!titles.length) return;
+          getPipelines().then(function(list) {
+            for (var i = 0; i < titles.length; i++) {
+              var titleEl = titles[i];
+              var ourBtn = titleEl.querySelector('.gl-group-play-btn');
+              var nativeBtn = q(titleEl, SEL.pipelineStageAction);
+              var name = stageNameFromEl(titleEl);
+              var entry = pipelineEntryFor(titleEl, list);
+              var jobs = entry ? entry.stages[name] : null;
+              var manual = jobs ? manualJobsOf(jobs) : [];
+              // Show only while GitLab's own "Run all manual" is gone and manual jobs remain
+              var shouldShow = !nativeBtn && manual.length > 0;
+
+              if (!shouldShow) {
+                if (ourBtn && !ourBtn._glBusy && ourBtn.parentNode) ourBtn.parentNode.removeChild(ourBtn);
+                continue;
+              }
+              if (ourBtn) {
+                if (!ourBtn._glBusy) ourBtn.title = msg('groupPlayTooltip') + ' (' + manual.length + ')';
+                continue;
+              }
+
+              var btn = document.createElement('button');
+              btn.className = 'gl-group-play-btn';
+              btn.type = 'button';
+              btn.title = msg('groupPlayTooltip') + ' (' + manual.length + ')';
+              btn.setAttribute('aria-label', msg('groupPlayTooltip'));
+              btn.innerHTML = PLAY_SVG;
+              btn.addEventListener('click', (function(tEl, stName, b) {
+                return function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  playGroup(tEl, stName, b);
+                };
+              })(titleEl, name, btn));
+              titleEl.appendChild(btn);
+            }
+          }).catch(function() {});
+        }
+
+        var _injectTimer = null;
+        function scheduleInject() {
+          if (_injectTimer) clearTimeout(_injectTimer);
+          _injectTimer = setTimeout(function() {
+            _injectTimer = null;
+            injectGroupPlayButtons();
+          }, 300);
+        }
+
+        // Mutation is "ours" only when it purely adds our button(s) — everything
+        // else (incl. Vue re-renders that silently drop our buttons) must re-inject
+        function isOwnMutation(m) {
+          if (m.type !== 'childList') return false;
+          if (m.removedNodes.length || !m.addedNodes.length) return false;
+          for (var j = 0; j < m.addedNodes.length; j++) {
+            var n = m.addedNodes[j];
+            if (!(n.nodeType === 1 && n.classList && n.classList.contains('gl-group-play-btn'))) return false;
+          }
+          return true;
+        }
+
+        function startGroupPlay() {
+          injectGroupPlayButtons();
+
+          // GitLab polls the graph and re-renders nodes; native stage actions
+          // appear/disappear as statuses change. Re-check periodically as a
+          // safety net (jobs API is cached, so ~1 request per 10s at most).
+          setInterval(function() {
+            if (!document.hidden) scheduleInject();
+          }, 3000);
+
+          var target = q(document, SEL.pipelineGraph) || document.body;
+          var mo = new MutationObserver(function(mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+              if (isOwnMutation(mutations[i])) continue;
+              scheduleInject();
+              return;
+            }
+          });
+          mo.observe(target, { childList: true, subtree: true });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', startGroupPlay);
+        } else {
+          startGroupPlay();
+        }
+      });
+    } catch(e) {}
+  }
 
   // =========================================================================
   // Command Palette (Cmd+K)
