@@ -2121,3 +2121,66 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color, #e0e0e0);
   border-color: var(--gl-border-color-strong, #666);
 }
+
+/* ===== Group play button on pipeline graph (stage column title) ===== */
+.gl-group-play-btn {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  align-self: center;
+  margin-left: auto;
+  margin-right: 8px;
+  padding: 0;
+  border: 1px solid var(--gl-border-color-strong, #89888d);
+  border-radius: 50%;
+  background: var(--gl-background-color-default, #fff);
+  color: var(--gl-text-color, #333238);
+  cursor: pointer;
+  z-index: 2;
+}
+.gl-group-play-btn:hover {
+  background: var(--gl-background-color-subtle, #ececef);
+  border-color: currentColor;
+}
+.gl-group-play-btn svg {
+  pointer-events: none;
+  display: block;
+}
+.gl-group-play-btn.gl-group-play-busy {
+  pointer-events: none;
+}
+.gl-group-play-btn.gl-group-play-busy svg {
+  display: none;
+}
+.gl-group-play-btn.gl-group-play-busy::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: gl-group-play-spin 0.8s linear infinite;
+}
+@keyframes gl-group-play-spin {
+  to { transform: rotate(360deg); }
+}
+.gl-group-play-btn.gl-group-play-done {
+  color: var(--green-500, #108548);
+  border-color: currentColor;
+  pointer-events: none;
+}
+.gl-group-play-btn.gl-group-play-error {
+  color: var(--red-500, #dd2b0e);
+  border-color: currentColor;
+}
+.gl-dark .gl-group-play-btn {
+  background: var(--gl-background-color-default, #28272d);
+  color: var(--gl-text-color, #ececef);
+  border-color: var(--gl-border-color-strong, #737278);
+}
+.gl-dark .gl-group-play-btn:hover {
+  background: var(--gl-background-color-subtle, #333238);
+}

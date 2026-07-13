@@ -51,7 +51,7 @@
     "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.10.0",
+    "softwareVersion": "1.11.0",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -551,6 +551,14 @@
         <h3 data-i18n="fStandupTitle">Daily Activity Report</h3>
         <p data-i18n="fStandupDesc">Generate a daily activity report from GitLab: MRs created, merged, reviewed, and in progress. Copy-paste ready for Slack or Jira.</p>
       </div>
+      <!-- Group play button -->
+      <div class="bento-card">
+        <div class="bento-icon icon-green">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7.5l4 2.5-4 2.5v-5z" fill="currentColor"/></svg>
+        </div>
+        <h3 data-i18n="fGroupPlayTitle">Group play button</h3>
+        <p data-i18n="fGroupPlayDesc">GitLab's own "run group" button disappears once any job in a manual group starts. This one stays: on the pipeline graph it runs all remaining manual jobs in the group with one click, skipping jobs already running, succeeded, or failed.</p>
+      </div>
       <!-- Cherry-pick -->
       <div class="bento-card">
         <div class="bento-icon icon-purple">
@@ -832,6 +840,8 @@
         fCmdPaletteDesc: 'Press Cmd+K (Mac) or Ctrl+K (Win) on any GitLab page. Navigate, run MR actions, search files by name and open them in the repo. Keyboard navigation, contextual commands.',
         fStandupTitle: 'Daily Activity Report',
         fStandupDesc: 'Generate a daily activity report from GitLab: MRs created, merged, reviewed, and in progress. With Jira integration, ticket titles are automatically added to MR entries. Copy-paste ready for Slack or Jira.',
+        fGroupPlayTitle: 'Group play button',
+        fGroupPlayDesc: 'GitLab\'s own "run group" button disappears once any job in a manual group starts. This one stays: on the pipeline graph it runs all remaining manual jobs in the group with one click, skipping jobs already running, succeeded, or failed.',
         fCherryPickTitle: 'Cherry-pick to branches',
         fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit and open the full Jira ticket sidebar when clicked.',
         fTrackerTitle: 'Background Job Tracker',
@@ -931,6 +941,8 @@
         fCmdPaletteDesc: 'Нажмите Cmd+K (Mac) или Ctrl+K (Win) на любой странице GitLab. Навигация, действия MR, поиск файлов по имени и открытие в репозитории.',
         fStandupTitle: 'Отчёт по дневной активности',
         fStandupDesc: 'Сгенерируйте отчёт по активности за день: созданные, смёрженные и отревьюенные MR. При интеграции с Jira к записям автоматически добавляются названия задач. Готов для вставки в Slack или Jira.',
+        fGroupPlayTitle: 'Кнопка запуска группы',
+        fGroupPlayDesc: 'Родная кнопка запуска группы у GitLab пропадает, как только стартует хоть одна джоба из manual-группы. Эта кнопка остаётся: в графе пайплайна она одним кликом запускает все оставшиеся manual-джобы группы, пропуская уже запущенные, выполненные и упавшие.',
         fCherryPickTitle: 'Cherry-pick в ветки',
         fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора. Рядом с каждым коммитом можно показать бейджи Jira-полей (напр. Fix Version) — клик по бейджу открывает полноценный сайдбар тикета Jira.',
         fTrackerTitle: 'Трекер фоновых задач',

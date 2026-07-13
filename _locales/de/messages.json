@@ -355,6 +355,11 @@
   "cardStandupDesc": { "message": "Erstellen Sie einen taeglichen Aktivitaetsbericht aus Ihrer GitLab-Aktivitaet. Zeigt erstellte, gemergte und reviewte MRs. Kopieren und in Slack oder Jira einfuegen." },
 
   "showCherryPick": { "message": "Cherry-pick in Branches" },
+  "showGroupPlay": { "message": "Gruppen-Start-Button in der Pipeline (startet verbleibende manuelle Jobs)" },
+  "groupPlayTooltip": { "message": "Verbleibende manuelle Jobs dieser Gruppe starten" },
+  "groupPlayError": { "message": "Einige Jobs konnten nicht gestartet werden" },
+  "cardGroupPlayTitle": { "message": "Gruppen-Start-Button" },
+  "cardGroupPlayDesc": { "message": "Im Pipeline-Graphen startet ein Play-Button neben einer Job-Gruppe alle verbleibenden manuellen Jobs — auch wenn einige Jobs der Gruppe bereits laufen und der GitLab-eigene Button verschwunden ist." },
   "cherryPickBranches": { "message": "Cherry-pick-Branches" },
   "cherryPickBranchesHint": { "message": "Standard-Zielbranches fuer Cherry-pick. Sie koennen Branches im Modal hinzufuegen oder entfernen." },
   "cherryPickBranchAdd": { "message": "Branch hinzufuegen" },
