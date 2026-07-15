@@ -102,6 +102,7 @@ var DEFAULTS = Object.assign({}, BUTTON_DEFAULTS, {
   show_sensitive_warning: false,
   show_git_commands: false,
   show_cherry_pick: true,
+  show_commit_version: false,
   show_group_play: true,
   cherry_pick_branches: [],
   cherry_pick_create_mr: true,
@@ -258,6 +259,8 @@ function renderDefaultTab(container) {
     '<div class="toggle"><input type="checkbox" id="show_standup"><label for="show_standup">' + escHtml(t('showStandup')) + '</label></div>' +
     '<div class="toggle sub-toggle"><input type="checkbox" id="standup_jira_enrich"><label for="standup_jira_enrich">' + escHtml(t('standupJiraEnrich')) + '</label></div>' +
     '<div class="toggle"><input type="checkbox" id="show_cherry_pick"><label for="show_cherry_pick">' + escHtml(t('showCherryPick')) + '</label></div>' +
+    '<div class="toggle"><input type="checkbox" id="show_commit_version"><label for="show_commit_version">' + escHtml(t('showCommitVersion')) + '</label></div>' +
+    '<div class="hint" style="margin-bottom:8px">' + escHtml(t('showCommitVersionHint')) + '</div>' +
     '<div class="toggle"><input type="checkbox" id="show_group_play"><label for="show_group_play">' + escHtml(t('showGroupPlay')) + '</label></div>' +
     '<div class="sep"></div>' +
     '<h4>' + escHtml(t('mrDetailEnhancements')) + '</h4>' +
@@ -353,6 +356,7 @@ function renderDefaultTab(container) {
   document.getElementById('show_standup').checked = allData.show_standup !== false;
   document.getElementById('standup_jira_enrich').checked = allData.standup_jira_enrich !== false;
   document.getElementById('show_cherry_pick').checked = allData.show_cherry_pick !== false;
+  document.getElementById('show_commit_version').checked = allData.show_commit_version || false;
   document.getElementById('show_group_play').checked = allData.show_group_play !== false;
   document.getElementById('show_sensitive_warning').checked = allData.show_sensitive_warning || false;
   document.getElementById('show_git_commands').checked = allData.show_git_commands || false;
@@ -887,6 +891,7 @@ function saveDefaultTab() {
   settings.show_standup = document.getElementById('show_standup').checked;
   settings.standup_jira_enrich = document.getElementById('standup_jira_enrich').checked;
   settings.show_cherry_pick = document.getElementById('show_cherry_pick').checked;
+  settings.show_commit_version = document.getElementById('show_commit_version').checked;
   settings.show_group_play = document.getElementById('show_group_play').checked;
   settings.show_sensitive_warning = document.getElementById('show_sensitive_warning').checked;
   settings.show_git_commands = document.getElementById('show_git_commands').checked;

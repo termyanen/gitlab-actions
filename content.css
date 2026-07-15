@@ -643,6 +643,43 @@ a:has(.gl-jira-badge):focus {
   text-transform: uppercase;
 }
 
+/* Version badge on commits page */
+.gl-commit-version-badge {
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-weight: 500;
+  font-family: var(--gl-font-family-monospace, "GitLab Mono", "JetBrains Mono", Menlo, Consolas, monospace);
+  padding: 0 6px;
+  border-radius: 3px;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+  height: 18px;
+  line-height: 16px;
+  white-space: nowrap;
+  color: var(--gl-text-color-secondary, #737278);
+  border: 1px solid var(--gl-border-color-default, #dcdcde);
+  background: transparent;
+}
+
+.gl-commit-version-badge.gl-commit-version-changed {
+  font-weight: 600;
+  color: var(--gl-color-blue-700, #1068bf);
+  background: var(--gl-color-blue-50, #e9f3fc);
+  border-color: var(--gl-color-blue-200, #9dc7f1);
+}
+
+.gl-dark .gl-commit-version-badge.gl-commit-version-changed {
+  color: var(--gl-color-blue-300, #9dc7f1);
+  background: rgba(66, 143, 220, 0.16);
+  border-color: rgba(66, 143, 220, 0.4);
+}
+
+.gl-commit-version-loader {
+  width: 44px;
+  margin: 0 8px 0 0;
+}
+
 /* Jira loading skeleton */
 .gl-jira-loader {
   display: inline-block;

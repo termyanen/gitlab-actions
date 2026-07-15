@@ -2992,7 +2992,7 @@
           if (_commitJiraFetching) return;
 
           // Find commit rows via SHA groups (same reliable strategy as cherry-pick buttons)
-          var shaGroups = qAll(document, SEL.commitShaGroup);
+          var shaGroups = Array.prototype.slice.call(qAll(document, SEL.commitShaGroup));
           if (!shaGroups.length) {
             // Fallback: clipboard buttons with SHA pattern
             var clipEls = qAll(document, '[data-clipboard-text]');
@@ -3014,7 +3014,8 @@
             var row = qUp(shaGroups[i], SEL.commitRow) || shaGroups[i].parentElement;
             if (!row || seen.indexOf(row) !== -1) continue;
             seen.push(row);
-            if (row.querySelector('.gl-commit-jira-badge')) continue; // already rendered
+            // Rows with badges are still collected: a row may have rendered
+            // only its cached tickets while others were not fetched yet
             var msgEls = qAll(row, SEL.commitMsg);
             if (!msgEls.length) continue;
             var text = '';
@@ -3112,35 +3113,59 @@
 
         function renderCommitJiraBadges(entry) {
           removeCommitJiraLoader(entry);
-          if (entry.row.querySelector('.gl-commit-jira-badge')) return;
-          var badges = [];
+          // One group per ticket (like the MR list), values deduped within a
+          // ticket only — two tickets with the same status both keep their badge
+          var groups = [];
           entry.tickets.forEach(function(t) {
             var cached = _commitJiraCache[t];
             if (!cached) return;
+            var vals = [];
             jiraFields.forEach(function(field) {
-              var vals = cached[field];
-              if (!vals || !vals.length) return;
-              vals.forEach(function(v) {
-                var existing = badges.some(function(b) { return b.val === v; });
-                if (!existing) badges.push({ val: v, field: field, categoryKey: cached._categoryKey || '', ticket: t });
+              var fieldVals = cached[field];
+              if (!fieldVals || !fieldVals.length) return;
+              fieldVals.forEach(function(v) {
+                var existing = vals.some(function(b) { return b.val === v; });
+                if (!existing) vals.push({ val: v, field: field });
               });
             });
+            if (vals.length) groups.push({ ticket: t, categoryKey: cached._categoryKey || '', badges: vals });
           });
-          if (!badges.length) return;
+          if (!groups.length) return;
+
+          // Idempotent re-render: skip when this exact badge set is already in
+          // the DOM; rebuild when more tickets resolved (partial render before)
+          var key = groups.map(function(g) {
+            return g.ticket + ':' + g.badges.map(function(b) { return b.field + '=' + b.val; }).join('|');
+          }).join(',');
+          if (entry.row.dataset.glCommitJiraBadges === key && entry.row.querySelector('.gl-commit-jira-badge')) return;
+          entry.row.dataset.glCommitJiraBadges = key;
+          var stale = entry.row.querySelectorAll('.gl-commit-jira-badge, .gl-jira-ticket-group, .gl-jira-ticket-sep');
+          for (var si = 0; si < stale.length; si++) stale[si].remove();
+
           var anchor = entry.lastMsgEl;
           var wrap = anchor.parentNode;
           var ref = anchor.nextSibling;
-          badges.forEach(function(b) {
-            var badge = document.createElement('span');
-            badge.className = 'gl-jira-badge gl-commit-jira-badge ' + (b.field === 'status' ? getJiraCategoryClass(b.categoryKey, b.val) : 'jira-new');
-            badge.textContent = b.val;
-            badge.title = b.ticket;
-            badge.addEventListener('click', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              openJiraSidebar(b.ticket, jiraUrl);
+          groups.forEach(function(g, idx) {
+            if (idx > 0) {
+              var sep = document.createElement('span');
+              sep.className = 'gl-jira-ticket-sep';
+              wrap.insertBefore(sep, ref);
+            }
+            var groupEl = document.createElement('span');
+            groupEl.className = 'gl-jira-ticket-group';
+            g.badges.forEach(function(b) {
+              var badge = document.createElement('span');
+              badge.className = 'gl-jira-badge gl-commit-jira-badge ' + (b.field === 'status' ? getJiraCategoryClass(g.categoryKey, b.val) : 'jira-new');
+              badge.textContent = b.val;
+              badge.title = g.ticket;
+              badge.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openJiraSidebar(g.ticket, jiraUrl);
+              });
+              groupEl.appendChild(badge);
             });
-            wrap.insertBefore(badge, ref);
+            wrap.insertBefore(groupEl, ref);
           });
         }
 
@@ -3153,6 +3178,193 @@
         });
         cjObserver.observe(document.body, { childList: true, subtree: true });
         window.addEventListener('beforeunload', function() { cjObserver.disconnect(); });
+      });
+    } catch(e) {}
+  }
+
+  // =========================================================================
+  // Version badge on commits page
+  // Shows the version-file version at each commit. Muted everywhere; commits
+  // where the version changed vs the previous (older) commit are highlighted.
+  // SHA is immutable, so results are cached permanently in storage.local.
+  // =========================================================================
+
+  if (isCommitsPage()) {
+    try {
+      chrome.storage.sync.get({ show_commit_version: false, versionFile: 'package.json', versionPath: 'version' }, function(s) {
+        if (chrome.runtime.lastError || !s.show_commit_version) return;
+
+        var projectPath = (function() {
+          var m = window.location.pathname.match(/^\/([^/]+(?:\/[^/]+)*?)\/-\//);
+          return m ? m[1] : null;
+        })();
+        if (!projectPath) return;
+        var encodedProject = encodeURIComponent(projectPath);
+
+        var versionFile = s.versionFile || 'package.json';
+        var versionPath = s.versionPath || 'version';
+        var isToml = versionFile.indexOf('.toml') !== -1;
+        var isPlainText = versionFile.indexOf('.txt') !== -1;
+
+        // Cache keys are scoped by project + file + path so a settings change
+        // never serves stale versions. SHA content is immutable — no TTL.
+        var cacheScope = projectPath + '|' + versionFile + '|' + versionPath + '|';
+        var _versionCache = {}; // sha -> version string ('' = file missing / unparsable)
+        var _cvFetching = false;
+
+        function parseVersionFromContent(content) {
+          try {
+            if (isPlainText) return content.trim();
+            if (isToml) return String(getNestedValue(parseToml(content), versionPath) || '');
+            return String(getNestedValue(JSON.parse(content), versionPath) || '');
+          } catch(e) { return ''; }
+        }
+
+        function collectCommitEntries() {
+          var shaGroups = qAll(document, SEL.commitShaGroup);
+          shaGroups = Array.prototype.slice.call(shaGroups);
+          if (!shaGroups.length) {
+            var clipEls = qAll(document, '[data-clipboard-text]');
+            for (var ci = 0; ci < clipEls.length; ci++) {
+              var cv = clipEls[ci].getAttribute('data-clipboard-text') || '';
+              if (/^[0-9a-f]{7,40}$/.test(cv)) {
+                var g = clipEls[ci].closest('.btn-group, .commit-sha-group, .gl-button-group') || clipEls[ci].parentElement;
+                if (g && shaGroups.indexOf(g) === -1) shaGroups.push(g);
+              }
+            }
+          }
+          var entries = [];
+          var seenRows = [];
+          for (var i = 0; i < shaGroups.length; i++) {
+            var shaEl = q(shaGroups[i], SEL.commitSha);
+            var sha = shaEl ? (shaEl.getAttribute('data-clipboard-text') || shaEl.textContent.trim()) : '';
+            if (!sha || !/^[0-9a-f]{7,40}$/.test(sha)) continue;
+            var row = qUp(shaGroups[i], SEL.commitRow) || shaGroups[i].parentElement;
+            if (!row || seenRows.indexOf(row) !== -1) continue;
+            seenRows.push(row);
+            entries.push({ row: row, group: shaGroups[i], sha: sha });
+          }
+          return entries; // DOM order = newest first
+        }
+
+        function persistVersions(map) {
+          chrome.storage.local.get({ gl_commit_versions: {} }, function(res) {
+            if (chrome.runtime.lastError) return;
+            var store = res.gl_commit_versions || {};
+            var now = Date.now();
+            var sha;
+            for (sha in map) {
+              store[cacheScope + sha] = { v: map[sha], ts: now };
+            }
+            // Cap the store; evict oldest entries first
+            var keys = Object.keys(store);
+            if (keys.length > 1000) {
+              keys.sort(function(a, b) { return (store[a].ts || 0) - (store[b].ts || 0); });
+              for (var i = 0; i < keys.length - 1000; i++) delete store[keys[i]];
+            }
+            chrome.storage.local.set({ gl_commit_versions: store }, function() {
+              if (chrome.runtime.lastError) { /* quota exceeded — cache write skipped, feature still works */ }
+            });
+          });
+        }
+
+        function renderCommitVersionBadges(entries) {
+          for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            var loader = entry.row.querySelector('.gl-commit-version-loader');
+            if (loader) loader.remove();
+            if (entry.row.querySelector('.gl-commit-version-badge')) continue;
+            var version = _versionCache[entry.sha];
+            if (!version) continue; // unknown or file absent at this commit
+            // Highlight when the version differs from the next older commit on the page
+            var changed = false;
+            if (i + 1 < entries.length) {
+              var olderVersion = _versionCache[entries[i + 1].sha];
+              changed = !!olderVersion && olderVersion !== version;
+            }
+            if (!entry.group.parentNode) continue; // detached by a Vue re-render
+            var badge = document.createElement('span');
+            badge.className = 'gl-commit-version-badge' + (changed ? ' gl-commit-version-changed' : '');
+            badge.textContent = version;
+            badge.title = versionFile;
+            entry.group.parentNode.insertBefore(badge, entry.group);
+          }
+        }
+
+        function injectCommitVersionBadges() {
+          if (_cvFetching) return;
+          var entries = collectCommitEntries();
+          if (!entries.length) return;
+
+          var uncached = [];
+          for (var i = 0; i < entries.length; i++) {
+            if (_versionCache[entries[i].sha] === undefined && uncached.indexOf(entries[i].sha) === -1) {
+              uncached.push(entries[i].sha);
+            }
+          }
+
+          if (!uncached.length) {
+            renderCommitVersionBadges(entries);
+            return;
+          }
+
+          // Skeleton loaders while fetching (render happens once all versions
+          // are known — highlight needs the older neighbour's version)
+          entries.forEach(function(entry) {
+            if (_versionCache[entry.sha] !== undefined) return;
+            if (entry.row.querySelector('.gl-commit-version-badge, .gl-commit-version-loader')) return;
+            if (!entry.group.parentNode) return;
+            var loader = document.createElement('span');
+            loader.className = 'gl-jira-loader gl-commit-version-loader';
+            entry.group.parentNode.insertBefore(loader, entry.group);
+          });
+
+          _cvFetching = true;
+          var fetched = {}; // only successfully resolved (incl. 404) — persisted
+          var idx = 0;
+          function fetchNextBatch() {
+            if (idx >= uncached.length) {
+              _cvFetching = false;
+              persistVersions(fetched);
+              renderCommitVersionBadges(collectCommitEntries());
+              return;
+            }
+            var batch = uncached.slice(idx, idx + 5);
+            idx += 5;
+            Promise.all(batch.map(function(sha) {
+              return api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + sha)
+                .then(function(f) {
+                  var version = parseVersionFromContent(decodeURIComponent(escape(atob(f.content))));
+                  _versionCache[sha] = version;
+                  fetched[sha] = version;
+                })
+                .catch(function(err) {
+                  // 404 = file absent at this commit — permanent, safe to persist.
+                  // Other errors (network, auth) stay session-only to avoid poisoning the cache.
+                  _versionCache[sha] = '';
+                  if (err && /404|not found/i.test(err.message || '')) fetched[sha] = '';
+                });
+            })).then(fetchNextBatch);
+          }
+          fetchNextBatch();
+        }
+
+        chrome.storage.local.get({ gl_commit_versions: {} }, function(res) {
+          var store = (!chrome.runtime.lastError && res.gl_commit_versions) || {};
+          for (var k in store) {
+            if (k.indexOf(cacheScope) === 0) _versionCache[k.substring(cacheScope.length)] = store[k].v;
+          }
+
+          injectCommitVersionBadges();
+
+          var _cvTimer = null;
+          var cvObserver = new MutationObserver(function() {
+            clearTimeout(_cvTimer);
+            _cvTimer = setTimeout(injectCommitVersionBadges, 500);
+          });
+          cvObserver.observe(document.body, { childList: true, subtree: true });
+          window.addEventListener('beforeunload', function() { cvObserver.disconnect(); });
+        });
       });
     } catch(e) {}
   }
