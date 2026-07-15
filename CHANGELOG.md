@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.12.0
+
+### New features
+- **Version badge on commits page** — each commit on the branch commits page shows the project version from the version file (the one configured in Version bump settings) as it was at that commit. Badges are muted; commits where the version changed are highlighted, so you can see at a glance which commits went into which release. Versions are cached permanently per commit SHA (immutable), so repeat visits cost zero API requests. Toggle: "Version badge on commits page" in settings (off by default).
+
+### Fixes
+- **Jira badges on commits page: multiple tickets per commit** — when a commit message mentions two or more Jira tickets, badges are now rendered per ticket with a separator between groups (same layout as the MR list). Previously identical values were merged into one badge, and a ticket whose data arrived after a partial render was silently dropped — so only one ticket's status/fix versions were shown.
+- **Jira badges on commits page: legacy DOM fallback** — on GitLab versions where the primary commit selectors find nothing, the clipboard-button fallback crashed with a TypeError (push on a NodeList) instead of rendering badges. Fallback now works.
+
+---
+
 ## 1.11.0
 
 ### New features
