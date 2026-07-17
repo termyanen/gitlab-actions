@@ -2313,6 +2313,106 @@
     throw new Error('Could not find "' + path + '" in TOML file');
   }
 
+  // Strictly apply a unified diff (GitLab commit diff format) to file content.
+  // Throws on ANY uncertainty: unknown line types, hunk context not found,
+  // ambiguous match position (context found in more than one place),
+  // out-of-order hunks, trailing-newline mismatches. Caller must verify the
+  // result against a known-good reference (apply to the commit's parent and
+  // compare with the commit's own file) before trusting it on other content.
+  function applyUnifiedDiff(content, diffText) {
+    var srcLines = content.split('\n');
+    var hadTrailingNewline = false;
+    if (srcLines.length && srcLines[srcLines.length - 1] === '') {
+      hadTrailingNewline = true;
+      srcLines.pop();
+    }
+
+    var diffLines = diffText.split('\n');
+    var hunks = [];
+    var cur = null;
+    var oldNoNewline = false;
+    var newNoNewline = false;
+    var i, j;
+    for (i = 0; i < diffLines.length; i++) {
+      var line = diffLines[i];
+      if (line === '' && i === diffLines.length - 1) break; // diff's own trailing newline
+      if (line.indexOf('@@') === 0) {
+        if (!/^@@ -\d+(,\d+)? \+\d+(,\d+)? @@/.test(line)) throw new Error('Bad hunk header');
+        cur = { oldLines: [], newLines: [], lastSide: '' };
+        hunks.push(cur);
+        continue;
+      }
+      if (!cur) {
+        // Only ---/+++ file headers are allowed before the first hunk
+        if (line.indexOf('--- ') === 0 || line.indexOf('+++ ') === 0) continue;
+        throw new Error('Unexpected diff line');
+      }
+      var ch = line.charAt(0);
+      var text = line.slice(1);
+      if (ch === ' ' || line === '') {
+        // Context line; a bare empty line is an empty context line
+        cur.oldLines.push(line === '' ? '' : text);
+        cur.newLines.push(line === '' ? '' : text);
+        cur.lastSide = 'both';
+      } else if (ch === '-') {
+        cur.oldLines.push(text);
+        cur.lastSide = 'old';
+      } else if (ch === '+') {
+        cur.newLines.push(text);
+        cur.lastSide = 'new';
+      } else if (ch === '\\') {
+        // "\ No newline at end of file" — refers to the preceding line's side
+        if (cur.lastSide === 'old') oldNoNewline = true;
+        else if (cur.lastSide === 'new') newNoNewline = true;
+        else { oldNoNewline = true; newNoNewline = true; }
+      } else {
+        throw new Error('Unexpected diff line');
+      }
+    }
+    if (!hunks.length) throw new Error('Empty diff');
+
+    var out = [];
+    var pos = 0;
+    var hunkEnd = 0;
+    for (i = 0; i < hunks.length; i++) {
+      var h = hunks[i];
+      var found = -1;
+      if (!h.oldLines.length) {
+        // Pure addition with zero context — unambiguous only for an empty file
+        if (!srcLines.length && hunks.length === 1) found = 0;
+        else throw new Error('Ambiguous hunk position');
+      } else {
+        for (var s = pos; s <= srcLines.length - h.oldLines.length; s++) {
+          var match = true;
+          for (j = 0; j < h.oldLines.length; j++) {
+            if (srcLines[s + j] !== h.oldLines[j]) { match = false; break; }
+          }
+          if (match) {
+            if (found !== -1) throw new Error('Ambiguous hunk position');
+            found = s;
+          }
+        }
+        if (found === -1) throw new Error('Hunk context not found');
+      }
+      while (pos < found) { out.push(srcLines[pos]); pos++; }
+      for (j = 0; j < h.newLines.length; j++) out.push(h.newLines[j]);
+      pos = found + h.oldLines.length;
+      hunkEnd = pos;
+    }
+    // The old side lacking a trailing newline means the last hunk must reach
+    // EOF and the content must not end with a newline either
+    if (oldNoNewline && (hadTrailingNewline || hunkEnd !== srcLines.length)) {
+      throw new Error('Trailing newline mismatch');
+    }
+    if (newNoNewline && hunkEnd !== srcLines.length) {
+      throw new Error('Trailing newline mismatch');
+    }
+    while (pos < srcLines.length) { out.push(srcLines[pos]); pos++; }
+
+    var trailing = newNoNewline ? false : (oldNoNewline ? true : hadTrailingNewline);
+    return out.join('\n') + (trailing ? '\n' : '');
+  }
+
   // =========================================================================
   // Cherry-pick to multiple branches (commits page)
   // =========================================================================
@@ -2552,10 +2652,21 @@
             // For modified files, verifies the target branch hasn't diverged from
             // the commit's parent — otherwise the full-file copy would overwrite
             // unrelated changes in the target branch.
+            // Commit diff endpoint is paginated (20 files by default) — a
+            // partial diff would silently replay only part of the commit
+            function fetchCommitDiffs(page, acc) {
+              return api('GET', '/projects/' + encodedProject + '/repository/commits/' + sha + '/diff?per_page=100&page=' + page).then(function(chunk) {
+                var all = acc.concat(chunk);
+                if (chunk.length < 100) return all;
+                if (page >= 10) throw new Error('Commit has too many files for smart fallback');
+                return fetchCommitDiffs(page + 1, all);
+              });
+            }
+
             function doFallbackCommit(commitBranch, targetForBump) {
               return Promise.all([
                 api('GET', '/projects/' + encodedProject + '/repository/commits/' + sha),
-                api('GET', '/projects/' + encodedProject + '/repository/commits/' + sha + '/diff')
+                fetchCommitDiffs(1, [])
               ]).then(function(results) {
                 var commitInfo = results[0];
                 var diffs = results[1];
@@ -2566,9 +2677,10 @@
                 var hasVersionFile = diffs.some(function(d) { return d.new_path === versionFile || d.old_path === versionFile; });
                 if (!hasVersionFile) throw new Error(msg('cherryPickFallbackNoVersionFile') || 'Smart fallback only handles version file conflicts. Conflict is in another file');
 
-                // Filter out version file
+                // Filter out version file. An empty result is fine when the
+                // version bump is enabled — the commit becomes a bump-only one
                 var filtered = diffs.filter(function(d) { return d.new_path !== versionFile && d.old_path !== versionFile; });
-                if (!filtered.length) throw new Error('No files left after excluding ' + versionFile);
+                if (!filtered.length && !bumpCheckbox.checked) throw new Error('No files left after excluding ' + versionFile);
 
                 var parentSha = commitInfo.parent_ids && commitInfo.parent_ids[0];
                 if (!parentSha) throw new Error('Cannot determine parent commit');
@@ -2651,8 +2763,13 @@
                       return { action: 'create', file_path: d.new_path, content: sourceFile.content, encoding: 'base64' };
                     });
                   }
-                  // Modified files: compare parent version with target branch version
-                  // If they differ, the file was changed in target independently — unsafe
+                  // Modified files: if the file in target is identical to the
+                  // commit's parent, copy the source content verbatim (exact
+                  // replay, works for any file type). If target diverged
+                  // elsewhere in the file, strictly re-apply the commit's own
+                  // hunks onto the target content — any context mismatch or
+                  // ambiguity means a real divergence at the changed lines,
+                  // so we refuse rather than guess
                   return Promise.all([
                     api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + parentSha).catch(function() { return null; }),
                     api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; }),
@@ -2661,19 +2778,39 @@
                     var parentFile = triple[0];
                     var targetFile = triple[1];
                     var sourceFile = triple[2];
+                    var divergedMsg = (msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path;
                     // Cannot verify safety without a baseline from parent
-                    if (!parentFile) {
-                      throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
-                    }
+                    // (also covers renames — parent has no file at new_path)
+                    if (!parentFile) throw new Error(divergedMsg);
                     // File missing in target — it was deleted there independently
-                    if (!targetFile) {
-                      throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
+                    if (!targetFile) throw new Error(divergedMsg);
+                    if (parentFile.content === targetFile.content) {
+                      return { action: 'update', file_path: d.new_path, content: sourceFile.content, encoding: 'base64' };
                     }
-                    // If parent and target content differ, target has independent changes
-                    if (parentFile.content !== targetFile.content) {
-                      throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.new_path);
+                    // Binary or mode-only changes carry no text diff — with a
+                    // diverged target there is nothing safe to apply
+                    if (!d.diff) throw new Error(divergedMsg);
+                    var parentText, targetText, sourceText, patchedParent, patchedTarget;
+                    try {
+                      parentText = decodeURIComponent(escape(atob(parentFile.content)));
+                      targetText = decodeURIComponent(escape(atob(targetFile.content)));
+                      sourceText = decodeURIComponent(escape(atob(sourceFile.content)));
+                      patchedParent = applyUnifiedDiff(parentText, d.diff);
+                    } catch (e) {
+                      throw new Error(divergedMsg);
                     }
-                    return { action: 'update', file_path: d.new_path, content: sourceFile.content, encoding: 'base64' };
+                    // Self-check: the diff applied to the commit's parent must
+                    // reproduce the commit's file byte-for-byte. If not, our
+                    // applier does not fully understand this diff — refuse
+                    if (patchedParent !== sourceText) {
+                      throw new Error('Cannot verify commit diff for: ' + d.new_path);
+                    }
+                    try {
+                      patchedTarget = applyUnifiedDiff(targetText, d.diff);
+                    } catch (e2) {
+                      throw new Error(divergedMsg);
+                    }
+                    return { action: 'update', file_path: d.new_path, content: btoa(unescape(encodeURIComponent(patchedTarget))), encoding: 'base64' };
                   });
                 });
 

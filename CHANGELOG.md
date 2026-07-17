@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.12.1
+
+### Fixes
+- **Cherry-pick smart fallback: file diverged elsewhere no longer blocks the pick** — the fallback used to require every changed file to be byte-identical between the commit's parent and the target branch, so it refused cases git itself merges cleanly (the target had unrelated edits elsewhere in the same file). Now the commit's own diff hunks are strictly re-applied onto the target content: every hunk's context must match byte-for-byte in exactly one place, the diff is first verified by replaying it against the parent (must reproduce the commit exactly), and any mismatch, ambiguity, binary file, or rename still refuses. Only the version-file conflict case got wider — nothing is ever guessed.
+- **Cherry-pick smart fallback: version-only commits** — a commit that changed nothing but the version file failed with "No files left"; with version bump enabled it now produces a clean bump-only commit.
+- **Cherry-pick smart fallback: commits with 20+ files** — the commit diff is now fetched with pagination; previously only the first 20 files were replayed, silently dropping the rest.
+
+---
+
 ## 1.12.0
 
 ### New features
