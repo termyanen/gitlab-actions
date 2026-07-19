@@ -2407,6 +2407,13 @@
     if (newNoNewline && hunkEnd !== srcLines.length) {
       throw new Error('Trailing newline mismatch');
     }
+    // Symmetric case: the last hunk reaches EOF and the old side DOES end with
+    // a newline (no "\" marker) — then the content must end with one too.
+    // A last line that matches textually but lacks the newline is a real
+    // divergence in the changed region (git would conflict on it)
+    if (!oldNoNewline && hunkEnd === srcLines.length && !hadTrailingNewline) {
+      throw new Error('Trailing newline mismatch');
+    }
     while (pos < srcLines.length) { out.push(srcLines[pos]); pos++; }
 
     var trailing = newNoNewline ? false : (oldNoNewline ? true : hadTrailingNewline);
@@ -2671,6 +2678,16 @@
                 var commitInfo = results[0];
                 var diffs = results[1];
                 var versionFile = settings.versionFile || 'package.json';
+
+                // A server that mishandles per_page/page params could return
+                // overlapping pages; duplicate actions must never reach the
+                // Commits API, so refuse on any repeated path
+                var seenPaths = {};
+                for (var di = 0; di < diffs.length; di++) {
+                  var dupKey = diffs[di].new_path || diffs[di].old_path;
+                  if (seenPaths[dupKey]) throw new Error('Duplicate diff entries for: ' + dupKey);
+                  seenPaths[dupKey] = true;
+                }
 
                 // Verify the version file is actually in the diff — if not,
                 // the conflict is in another file and fallback cannot help
