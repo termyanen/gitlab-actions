@@ -136,7 +136,10 @@
         if (!r.ok) {
           var msg = (data && (data.message || data.error)) || (r.status + ' ' + r.statusText);
           if (typeof msg === 'object') msg = JSON.stringify(msg);
-          throw new Error(msg);
+          var err = new Error(msg);
+          err.httpStatus = r.status;
+          err.errorCode = data && data.error_code;
+          throw err;
         }
         return data || {};
       });
@@ -2656,9 +2659,15 @@
 
             // Fallback: replay commit via Commits API, excluding version file
             // Only works when the sole conflict is in the version file.
-            // For modified files, verifies the target branch hasn't diverged from
-            // the commit's parent — otherwise the full-file copy would overwrite
-            // unrelated changes in the target branch.
+            // Modified files must match the parent or accept the exact diff hunks.
+            // Never interpret permission/network failures as an absent file.
+            function readOptionalFile(filePath, ref) {
+              return api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(filePath) + '?ref=' + encodeURIComponent(ref)).catch(function(err) {
+                if (err.httpStatus === 404) return null;
+                throw err;
+              });
+            }
+
             // Commit diff endpoint is paginated (20 files by default) — a
             // partial diff would silently replay only part of the commit
             function fetchCommitDiffs(page, acc) {
@@ -2670,7 +2679,7 @@
               });
             }
 
-            function doFallbackCommit(commitBranch, targetForBump) {
+            function doFallbackCommit(commitBranch, requireFileChanges) {
               return Promise.all([
                 api('GET', '/projects/' + encodedProject + '/repository/commits/' + sha),
                 fetchCommitDiffs(1, [])
@@ -2694,10 +2703,10 @@
                 var hasVersionFile = diffs.some(function(d) { return d.new_path === versionFile || d.old_path === versionFile; });
                 if (!hasVersionFile) throw new Error(msg('cherryPickFallbackNoVersionFile') || 'Smart fallback only handles version file conflicts. Conflict is in another file');
 
-                // Filter out version file. An empty result is fine when the
-                // version bump is enabled — the commit becomes a bump-only one
+                // A confirmed conflict can become a bump-only commit. Legacy
+                // ambiguous errors also require verifiable non-version changes.
                 var filtered = diffs.filter(function(d) { return d.new_path !== versionFile && d.old_path !== versionFile; });
-                if (!filtered.length && !bumpCheckbox.checked) throw new Error('No files left after excluding ' + versionFile);
+                if (!filtered.length && (requireFileChanges || !bumpCheckbox.checked)) throw new Error('No files left after excluding ' + versionFile);
 
                 var parentSha = commitInfo.parent_ids && commitInfo.parent_ids[0];
                 if (!parentSha) throw new Error('Cannot determine parent commit');
@@ -2710,12 +2719,11 @@
                 var isPlainText = versionFile.indexOf('.txt') !== -1;
 
                 var versionOnlyCheck = Promise.all([
-                  api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + parentSha).catch(function() { return null; }),
-                  api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + sha).catch(function() { return null; })
+                  api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + parentSha),
+                  api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(versionFile) + '?ref=' + sha)
                 ]).then(function(pair) {
                   var parentVFile = pair[0];
                   var commitVFile = pair[1];
-                  if (!parentVFile || !commitVFile) return; // new or deleted version file — skip check
 
                   var parentContent = decodeURIComponent(escape(atob(parentVFile.content)));
                   var commitContent = decodeURIComponent(escape(atob(commitVFile.content)));
@@ -2753,24 +2761,24 @@
                     // For deletes, verify the file in target matches the parent
                     // (i.e. target hasn't modified the file independently)
                     return Promise.all([
-                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.old_path) + '?ref=' + parentSha).catch(function() { return null; }),
-                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.old_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; })
+                      readOptionalFile(d.old_path, parentSha),
+                      readOptionalFile(d.old_path, commitBranch)
                     ]).then(function(pair) {
                       var parentFile = pair[0];
                       var targetFile = pair[1];
                       // File already absent in target — nothing to delete, skip
                       if (!targetFile) return null;
-                      if (parentFile && parentFile.content !== targetFile.content) {
+                      if (!parentFile || parentFile.content !== targetFile.content) {
                         throw new Error((msg('cherryPickFallbackDiverged') || 'File was modified in target branch — cannot safely cherry-pick') + ': ' + d.old_path);
                       }
-                      return { action: 'delete', file_path: d.old_path };
+                      return { action: 'delete', file_path: d.old_path, last_commit_id: targetFile.last_commit_id };
                     });
                   }
                   if (d.new_file) {
                     // New file — verify it doesn't already exist in target branch
                     return Promise.all([
                       api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + sha),
-                      api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; })
+                      readOptionalFile(d.new_path, commitBranch)
                     ]).then(function(pair) {
                       var sourceFile = pair[0];
                       var targetFile = pair[1];
@@ -2788,8 +2796,8 @@
                   // ambiguity means a real divergence at the changed lines,
                   // so we refuse rather than guess
                   return Promise.all([
-                    api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + parentSha).catch(function() { return null; }),
-                    api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + encodeURIComponent(commitBranch)).catch(function() { return null; }),
+                    readOptionalFile(d.new_path, parentSha),
+                    readOptionalFile(d.new_path, commitBranch),
                     api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(d.new_path) + '?ref=' + sha)
                   ]).then(function(triple) {
                     var parentFile = triple[0];
@@ -2801,8 +2809,14 @@
                     if (!parentFile) throw new Error(divergedMsg);
                     // File missing in target — it was deleted there independently
                     if (!targetFile) throw new Error(divergedMsg);
+                    // Legacy GitLab cannot distinguish conflicts from empty
+                    // cherry-picks. Require a real, not-yet-applied file change.
+                    if (requireFileChanges) {
+                      if (parentFile.content === sourceFile.content) throw new Error(divergedMsg);
+                      if (targetFile.content === sourceFile.content) return null;
+                    }
                     if (parentFile.content === targetFile.content) {
-                      return { action: 'update', file_path: d.new_path, content: sourceFile.content, encoding: 'base64' };
+                      return { action: 'update', file_path: d.new_path, content: sourceFile.content, encoding: 'base64', last_commit_id: targetFile.last_commit_id };
                     }
                     // Binary or mode-only changes carry no text diff — with a
                     // diverged target there is nothing safe to apply
@@ -2827,14 +2841,14 @@
                     } catch (e2) {
                       throw new Error(divergedMsg);
                     }
-                    return { action: 'update', file_path: d.new_path, content: btoa(unescape(encodeURIComponent(patchedTarget))), encoding: 'base64' };
+                    return { action: 'update', file_path: d.new_path, content: btoa(unescape(encodeURIComponent(patchedTarget))), encoding: 'base64', last_commit_id: targetFile.last_commit_id };
                   });
                 });
 
                 return Promise.all(filePromises).then(function(rawActions) {
                   // Filter out nulls (e.g. files already deleted in target)
                   var actions = rawActions.filter(function(a) { return a !== null; });
-                  if (!actions.length && !bumpCheckbox.checked) throw new Error('No applicable file changes for target branch');
+                  if (!actions.length && (requireFileChanges || !bumpCheckbox.checked)) throw new Error('No applicable file changes for target branch');
                   // Optionally bump version in the same commit
                   if (!bumpCheckbox.checked) {
                     var commitMsg = (commitInfo.message || '') + '\n\n(cherry picked from commit ' + sha + ')';
@@ -2851,7 +2865,7 @@
                   var vPath = settings.versionPath || 'version';
                   var strategy = settings.versionStrategy || 'patch';
 
-                  return api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(vFile) + '?ref=' + encodeURIComponent(targetForBump))
+                  return api('GET', '/projects/' + encodedProject + '/repository/files/' + encodeURIComponent(vFile) + '?ref=' + encodeURIComponent(commitBranch))
                     .then(function(file) {
                       var rawContent = decodeURIComponent(escape(atob(file.content)));
                       var currentVersion, newContent, newVersion;
@@ -2882,7 +2896,8 @@
                         action: 'update',
                         file_path: vFile,
                         content: btoa(unescape(encodeURIComponent(newContent))),
-                        encoding: 'base64'
+                        encoding: 'base64',
+                        last_commit_id: file.last_commit_id
                       });
 
                       var commitMsg = (commitInfo.message || '') + '\n\n(cherry picked from commit ' + sha + ')';
@@ -2924,60 +2939,85 @@
               branches[idx].status = 'in_progress';
               renderBranches();
 
-              var createMr = mrCheckbox.checked;
               var useFallback = fallbackCheckbox.checked;
-              var targetBranch = branches[idx].name;
-              var currentIdx = idx;
-
-              // Determine the branch to commit into
-              var commitBranch = targetBranch;
-              var mrBranch = null;
-              if (createMr) {
-                mrBranch = 'cherry-pick-' + shortSha + '-into-' + targetBranch.replace(/\//g, '-');
-                commitBranch = mrBranch;
+              var branchState = branches[idx];
+              var targetBranch = branchState.name;
+              // Retain completed steps for retries in this modal. In particular,
+              // an MR creation error must not replay or discard a successful pick.
+              // Changing MR mode explicitly selects a different destination.
+              if (!branchState.operation || branchState.operation.createMr !== mrCheckbox.checked) {
+                branchState.operation = {
+                  createMr: mrCheckbox.checked,
+                  commitBranch: mrCheckbox.checked ? 'cherry-pick-' + shortSha + '-into-' + targetBranch.replace(/\//g, '-') : targetBranch,
+                  branchCreated: false,
+                  commitApplied: false,
+                  mrAttempted: false
+                };
               }
+              var operation = branchState.operation;
+              var createMr = operation.createMr;
+              var commitBranch = operation.commitBranch;
 
               // Step 1: create branch if MR mode
-              var branchPromise = createMr
-                ? api('POST', '/projects/' + encodedProject + '/repository/branches', { branch: mrBranch, ref: targetBranch })
+              var branchPromise = createMr && !operation.branchCreated
+                ? api('POST', '/projects/' + encodedProject + '/repository/branches', { branch: commitBranch, ref: targetBranch })
+                    .then(function() { operation.branchCreated = true; })
                 : Promise.resolve();
 
               branchPromise.then(function() {
+                if (operation.commitApplied) return;
                 // Step 2: try cherry-pick
                 return api('POST', '/projects/' + encodedProject + '/repository/commits/' + sha + '/cherry_pick', {
                   branch: commitBranch
-                });
-              }).catch(function(cherryPickErr) {
-                // Cherry-pick failed — try fallback if enabled
-                if (!useFallback) throw cherryPickErr;
-
-                // If MR mode and branch was already created, delete it and recreate
-                var cleanupPromise = createMr
-                  ? api('DELETE', '/projects/' + encodedProject + '/repository/branches/' + encodeURIComponent(mrBranch)).catch(function() {})
-                      .then(function() { return api('POST', '/projects/' + encodedProject + '/repository/branches', { branch: mrBranch, ref: targetBranch }); })
-                  : Promise.resolve();
-
-                return cleanupPromise.then(function() {
-                  return doFallbackCommit(commitBranch, targetBranch);
+                }).catch(function(cherryPickErr) {
+                  // GitLab 10.x used this same message for conflicts and empty
+                  // picks, without error_code. In that case verify actual file
+                  // changes before allowing a commit (never a bump-only replay).
+                  var legacyFailure = cherryPickErr.httpStatus === 400 && !cherryPickErr.errorCode &&
+                    (cherryPickErr.message || '').replace(/\s+/g, ' ').trim() ===
+                    'Sorry, we cannot cherry-pick this commit automatically. This commit may already have been cherry-picked, or a more recent commit may have updated some of its content.';
+                  // Network/unknown failures may follow an applied commit;
+                  // explicit "empty" means there is nothing to replay.
+                  if (!useFallback || (cherryPickErr.errorCode !== 'conflict' && !legacyFailure)) throw cherryPickErr;
+                  return doFallbackCommit(commitBranch, legacyFailure);
+                }).then(function() {
+                  operation.commitApplied = true;
                 });
               }).then(function() {
                 // Step 3: create MR if requested
                 if (!createMr) return;
-                return api('POST', '/projects/' + encodedProject + '/merge_requests', {
-                  source_branch: mrBranch,
-                  target_branch: targetBranch,
-                  title: 'Cherry-pick ' + shortSha + ' into ' + targetBranch,
-                  remove_source_branch: true
+                // A previous MR response may have been lost after creation.
+                var existingMr = operation.mrAttempted
+                  ? api('GET', '/projects/' + encodedProject + '/merge_requests?state=opened&source_branch=' + encodeURIComponent(commitBranch) + '&target_branch=' + encodeURIComponent(targetBranch))
+                      .then(function(mrs) {
+                        for (var mi = 0; mi < mrs.length; mi++) {
+                          var mr = mrs[mi];
+                          // Project MR lists can also contain requests from forks.
+                          if (mr.source_branch === commitBranch && mr.target_branch === targetBranch &&
+                              mr.source_project_id != null && mr.source_project_id === mr.target_project_id) return mr;
+                        }
+                        return null;
+                      })
+                  : Promise.resolve(null);
+                return existingMr.then(function(mr) {
+                  if (mr) return mr;
+                  operation.mrAttempted = true;
+                  return api('POST', '/projects/' + encodedProject + '/merge_requests', {
+                    source_branch: commitBranch,
+                    target_branch: targetBranch,
+                    title: 'Cherry-pick ' + shortSha + ' into ' + targetBranch,
+                    remove_source_branch: true
+                  });
                 });
               }).then(function(mr) {
-                branches[currentIdx].status = 'success';
-                if (mr && mr.web_url) branches[currentIdx].mrUrl = mr.web_url;
+                branchState.status = 'success';
+                if (mr && mr.web_url) branchState.mrUrl = mr.web_url;
                 renderBranches();
                 idx++;
                 processNext();
               }).catch(function(err) {
-                branches[currentIdx].status = 'error';
-                branches[currentIdx].error = err.message || String(err);
+                branchState.status = 'error';
+                branchState.error = err.message || String(err);
                 renderBranches();
                 idx++;
                 processNext();

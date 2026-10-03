@@ -96,7 +96,9 @@
         if (!r.ok) {
           var msg = (data && (data.message || data.error)) || (r.status + ' ' + r.statusText);
           if (typeof msg === 'object') msg = JSON.stringify(msg);
-          throw new Error(msg);
+          var err = new Error(msg);
+          err.httpStatus = r.status;
+          throw err;
         }
         return data || {};
       });
@@ -255,31 +257,39 @@
 
       return getMR().then(function(mr) {
         var branch = mr.source_branch;
-        var readRef = settings.version_from_target ? mr.target_branch : branch;
-        return api('GET', '/projects/' + PROJECT_ID + '/repository/files/' + encodeURIComponent(filePath) + '?ref=' + encodeURIComponent(readRef))
-          .then(function(file) {
+        var fileUrl = '/projects/' + PROJECT_ID + '/repository/files/' + encodeURIComponent(filePath);
+        // Always edit the source file. The target supplies only the version
+        // number, never dependencies or other contents to copy into the MR.
+        var sourceFilePromise = api('GET', fileUrl + '?ref=' + encodeURIComponent(branch));
+        var versionFilePromise = settings.version_from_target && mr.target_branch !== branch
+          ? api('GET', fileUrl + '?ref=' + encodeURIComponent(mr.target_branch))
+          : sourceFilePromise;
+        return Promise.all([sourceFilePromise, versionFilePromise])
+          .then(function(files) {
+            var file = files[0];
             var rawContent = decodeURIComponent(escape(atob(file.content)));
+            var versionContent = decodeURIComponent(escape(atob(files[1].content)));
             var newVersion;
             var newRawContent;
 
             if (filePath.match(/\.json$/i)) {
               // JSON file (package.json, composer.json, etc.)
               var jsonObj = JSON.parse(rawContent);
-              var currentVersion = getNestedValue(jsonObj, versionPath);
+              var currentVersion = getNestedValue(JSON.parse(versionContent), versionPath);
               if (!currentVersion) throw new Error('Version field "' + versionPath + '" not found in ' + filePath);
               newVersion = bumpVersion(currentVersion, strategy);
               setNestedValue(jsonObj, versionPath, newVersion);
               newRawContent = JSON.stringify(jsonObj, null, 2) + '\n';
             } else if (filePath.match(/\.toml$/i)) {
               // TOML file (pyproject.toml, Cargo.toml, etc.)
-              var tomlObj = parseToml(rawContent);
+              var tomlObj = parseToml(versionContent);
               var currentVersion = getNestedValue(tomlObj, versionPath);
               if (!currentVersion) throw new Error('Version field "' + versionPath + '" not found in ' + filePath);
               newVersion = bumpVersion(currentVersion, strategy);
               newRawContent = updateTomlVersion(rawContent, versionPath, newVersion);
             } else {
               // Plain text file (version.txt, VERSION, etc.)
-              var currentVersion = rawContent.trim();
+              var currentVersion = versionContent.trim();
               if (!currentVersion.match(/^\d+(\.\d+)*$/)) throw new Error('Invalid version format in ' + filePath + ': "' + currentVersion + '"');
               newVersion = bumpVersion(currentVersion, strategy);
               newRawContent = newVersion + '\n';
@@ -293,6 +303,8 @@
               content: newContent,
               encoding: 'base64',
               commit_message: commitMessage,
+              // Reject an outdated write if the source file changed meanwhile.
+              last_commit_id: file.last_commit_id,
             }).then(function() {
               return { version: newVersion, branch: branch };
             });
@@ -841,10 +853,12 @@
     interval = interval || 3000;
     var attempt = 0;
     var _mergeOpts = null;
-    // Errors that mean "stop retrying, it won't help"
-    var fatalPatterns = ['has_conflicts', 'conflict', 'you don\'t have permissions', '405', 'method not allowed'];
-    function isFatal(msg) {
-      var lower = msg.toLowerCase();
+    // GitLab also returns 405 while mergeability is being calculated. Keep
+    // retrying it within the normal limit, as with 406/422 readiness responses.
+    var fatalPatterns = ['has_conflicts', 'conflict', 'you don\'t have permissions'];
+    function isFatal(err) {
+      if ([401, 403, 404].indexOf(err.httpStatus) !== -1) return true;
+      var lower = (err.message || '').toLowerCase();
       return fatalPatterns.some(function(p) { return lower.indexOf(p) !== -1; });
     }
     function tryMerge() {
@@ -855,7 +869,7 @@
         squash: _mergeOpts.squash,
         should_remove_source_branch: _mergeOpts.should_remove_source_branch,
       }).catch(function(err) {
-        if (attempt < maxRetries && !isFatal(err.message)) {
+        if (attempt < maxRetries && !isFatal(err)) {
           return sleep(interval).then(tryMerge);
         }
         throw err;
