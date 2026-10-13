@@ -492,7 +492,7 @@
   var _jiraCache = {}; // { ticket: { name, categoryKey, ts } }
   var JIRA_CACHE_TTL = 2 * 60 * 1000; // 2 minutes
   var _jiraFetching = false;
-  var _jiraRenderingBadges = false;
+  var _jiraRefreshPending = false;
   var _jiraUrlStored = '';
   var _jiraAuthFailed = false; // stops all Jira requests when 401/403 received
   var _skipConfirmations = false;
@@ -546,7 +546,6 @@
 
     var title = titleEl.textContent.trim();
     var tickets = parseTickets(title);
-    if (!tickets.length) return;
 
     var titleContainer = qUp(titleEl, SEL.titleWrap) || titleEl.parentNode;
 
@@ -556,7 +555,10 @@
       return s ? t + ':' + s.name + ':' + (s.type || '') + ':' + (s.priority || '') + ':' + (_showJiraDetails ? '1' : '0') : '';
     }).join(',');
 
-    if (mrItem.dataset.glJiraBadges === badgeKey) return;
+    // Vue can replace the title subtree while preserving the row and its data
+    // attributes. Only skip a cached render if the badges are still present.
+    var badgeCount = tickets.filter(function(t) { return !!statuses[t]; }).length;
+    if (mrItem.dataset.glJiraBadges === badgeKey && titleContainer.querySelectorAll('.gl-jira-badge').length === badgeCount) return;
     mrItem.dataset.glJiraBadges = badgeKey;
 
     // Remove old badges and icons
@@ -1527,7 +1529,11 @@
 
   function fetchAndRenderJiraStatuses(jiraUrl, showDetails) {
     _showJiraDetails = !!showDetails;
-    if (_jiraFetching || _jiraAuthFailed) return;
+    if (_jiraAuthFailed) return;
+    if (_jiraFetching) {
+      _jiraRefreshPending = true;
+      return;
+    }
     _jiraUrlStored = jiraUrl;
 
     var mrItems = qAll(document, SEL.mrItem);
@@ -1545,6 +1551,9 @@
         tickets.forEach(function(t) {
           if (allTickets.indexOf(t) === -1) allTickets.push(t);
         });
+      } else {
+        // A reused row may now represent an MR without a Jira ticket.
+        renderJiraBadges(item, {});
       }
     });
 
@@ -1563,21 +1572,17 @@
       }
     });
 
-    // Render cached ones immediately (inside flag to suppress observer)
+    // Render cached ones immediately
     if (Object.keys(cachedStatuses).length) {
-      _jiraRenderingBadges = true;
       itemTicketMap.forEach(function(entry) {
         renderJiraBadges(entry.item, cachedStatuses);
       });
-      _jiraRenderingBadges = false;
     }
 
     if (!ticketsToFetch.length) return;
 
     // Show loaders for items that don't have badges yet
-    _jiraRenderingBadges = true;
     renderJiraLoaders(itemTicketMap);
-    _jiraRenderingBadges = false;
 
     // Fetch remaining from Jira via background
     _jiraFetching = true;
@@ -1588,35 +1593,40 @@
       showDetails: _showJiraDetails,
     }, function(resp) {
       _jiraFetching = false;
-      _jiraRenderingBadges = true;
-      removeJiraLoaders();
-      _jiraRenderingBadges = false;
-      if (chrome.runtime.lastError || !resp || resp._error) return;
-      var statuses = resp.statuses || {};
+      try {
+        removeJiraLoaders();
+        if (chrome.runtime.lastError || !resp || resp._error) return;
+        var statuses = resp.statuses || {};
 
-      // Stop all Jira requests if auth failed (401/403)
-      if (statuses._authError) {
-        _jiraAuthFailed = true;
-        console.warn('[GitLab Actions] Jira auth failed (' + statuses._authError + '), stopping Jira requests. Reload page after re-login.');
-        return;
+        // Stop all Jira requests if auth failed (401/403)
+        if (statuses._authError) {
+          _jiraAuthFailed = true;
+          console.warn('[GitLab Actions] Jira auth failed (' + statuses._authError + '), stopping Jira requests. Reload page after re-login.');
+          return;
+        }
+
+        // Update cache
+        var fetchedNow = Date.now();
+        for (var t in statuses) {
+          _jiraCache[t] = { name: statuses[t].name, categoryKey: statuses[t].categoryKey, priority: statuses[t].priority, priorityIcon: statuses[t].priorityIcon, type: statuses[t].type, typeIcon: statuses[t].typeIcon, ts: fetchedNow };
+        }
+
+        // Merge with cached
+        var merged = {};
+        for (var k in cachedStatuses) merged[k] = cachedStatuses[k];
+        for (var k2 in statuses) merged[k2] = statuses[k2];
+
+        itemTicketMap.forEach(function(entry) {
+          if (entry.item.isConnected) renderJiraBadges(entry.item, merged);
+        });
+      } finally {
+        // Pagination may have happened while this batch was in flight. Rescan
+        // the current DOM, including after an error, instead of losing that run.
+        if (_jiraRefreshPending) {
+          _jiraRefreshPending = false;
+          if (isMrListPage()) fetchAndRenderJiraStatuses(jiraUrl, showDetails);
+        }
       }
-
-      // Update cache
-      var fetchedNow = Date.now();
-      for (var t in statuses) {
-        _jiraCache[t] = { name: statuses[t].name, categoryKey: statuses[t].categoryKey, priority: statuses[t].priority, priorityIcon: statuses[t].priorityIcon, type: statuses[t].type, typeIcon: statuses[t].typeIcon, ts: fetchedNow };
-      }
-
-      // Merge with cached
-      var merged = {};
-      for (var k in cachedStatuses) merged[k] = cachedStatuses[k];
-      for (var k2 in statuses) merged[k2] = statuses[k2];
-
-      _jiraRenderingBadges = true;
-      itemTicketMap.forEach(function(entry) {
-        renderJiraBadges(entry.item, merged);
-      });
-      _jiraRenderingBadges = false;
     });
   }
 
@@ -1627,6 +1637,7 @@
   var _reviewerCache = {}; // { mrUrl: { isReviewer: bool, ts: number } }
   var REVIEWER_CACHE_TTL = 5 * 60 * 1000;
   var _reviewerFetching = false;
+  var _reviewerRefreshPending = false;
 
   function parseMrPath(href) {
     var m = href.match(/^https?:\/\/[^/]+\/(.+?)\/-\/merge_requests\/(\d+)/);
@@ -1665,7 +1676,10 @@
   }
 
   function fetchAndRenderReviewerBadges(username) {
-    if (_reviewerFetching) return;
+    if (_reviewerFetching) {
+      _reviewerRefreshPending = true;
+      return;
+    }
 
     var mrItems = qAll(document, SEL.mrItem);
     if (!mrItems.length) return;
@@ -1679,9 +1693,7 @@
       var href = titleEl.href;
       var cached = _reviewerCache[href];
       if (cached && (now - cached.ts) < REVIEWER_CACHE_TTL) {
-        _jiraRenderingBadges = true;
         renderReviewerBadge(item, cached.isReviewer);
-        _jiraRenderingBadges = false;
         return;
       }
       var parsed = parseMrPath(href);
@@ -1693,7 +1705,6 @@
     if (!toFetch.length) return;
 
     // Show loaders
-    _jiraRenderingBadges = true;
     toFetch.forEach(function(entry) {
       if (entry.item.querySelector('.gl-reviewer-badge, .gl-reviewer-loader')) return;
       var titleEl = q(entry.item, SEL.titleLink);
@@ -1703,17 +1714,18 @@
       loader.className = 'gl-reviewer-loader gl-jira-loader';
       titleContainer.appendChild(loader);
     });
-    _jiraRenderingBadges = false;
 
     _reviewerFetching = true;
 
     function fetchOne(i) {
       if (i >= toFetch.length) {
         _reviewerFetching = false;
-        _jiraRenderingBadges = true;
         var loaders = document.querySelectorAll('.gl-reviewer-loader');
         loaders.forEach(function(el) { el.remove(); });
-        _jiraRenderingBadges = false;
+        if (_reviewerRefreshPending) {
+          _reviewerRefreshPending = false;
+          if (isMrListPage()) fetchAndRenderReviewerBadges(username);
+        }
         return;
       }
       var entry = toFetch[i];
@@ -1721,9 +1733,7 @@
         .then(function(notes) {
           var isReviewer = checkReviewerInNotes(notes || [], username);
           _reviewerCache[entry.href] = { isReviewer: isReviewer, ts: Date.now() };
-          _jiraRenderingBadges = true;
           renderReviewerBadge(entry.item, isReviewer);
-          _jiraRenderingBadges = false;
         })
         .catch(function() {})
         .then(function() { fetchOne(i + 1); });
@@ -1739,6 +1749,7 @@
   var _mrMetaCache = {}; // { href: { threads, changes, ts } }
   var MR_META_CACHE_TTL = 5 * 60 * 1000;
   var _mrMetaFetching = false;
+  var _mrMetaRefreshPending = false;
 
   function renderThreadsBadge(mrItem, count) {
     if (mrItem.querySelector('.gl-mr-ext-threads-badge')) return;
@@ -1919,7 +1930,10 @@
   }
 
   function fetchAndRenderMrMeta(showThreads, showSize, showConflicts, showApprovals, showBranches, showBranchesLinks, username) {
-    if (_mrMetaFetching) return;
+    if (_mrMetaFetching) {
+      _mrMetaRefreshPending = true;
+      return;
+    }
 
     var mrItems = qAll(document, SEL.mrItem);
     if (!mrItems.length) return;
@@ -1933,13 +1947,11 @@
       var href = titleEl.href;
       var cached = _mrMetaCache[href];
       if (cached && (now - cached.ts) < MR_META_CACHE_TTL) {
-        _jiraRenderingBadges = true;
         if (showThreads) renderThreadsBadge(item, cached.threads);
         if (showSize) renderSizeBadge(item, cached.changesLines, cached.changesFiles);
         if (showConflicts && cached.conflicts) renderConflictBadge(item);
         if (showApprovals && cached.approvedBy) renderApprovalIndicator(item, cached.approvedBy, username);
         if (showBranches) renderBranchBadge(item, cached.sourceBranch, cached.targetBranch, showBranchesLinks);
-        _jiraRenderingBadges = false;
         return;
       }
       var parsed = parseMrPath(href);
@@ -1953,7 +1965,6 @@
 
     // Show branch skeleton loaders for items about to be fetched
     if (showBranches) {
-      _jiraRenderingBadges = true;
       toFetch.forEach(function(entry) {
         if (entry.item.querySelector('.gl-mr-ext-branch-badge, .gl-mr-ext-branch-loader')) return;
         var infoRow = q(entry.item, SEL.issuableInfo);
@@ -1974,7 +1985,6 @@
         loader.appendChild(s2);
         infoRow.parentNode.insertBefore(loader, infoRow.nextSibling);
       });
-      _jiraRenderingBadges = false;
     }
 
     var BATCH_SIZE = 5;
@@ -2013,13 +2023,11 @@
         })
         .then(function(meta) {
           _mrMetaCache[entry.href] = { threads: meta.threads, changesLines: meta.changesLines, changesFiles: meta.changesFiles, conflicts: meta.conflicts, approvedBy: meta.approvedBy, sourceBranch: meta.sourceBranch, targetBranch: meta.targetBranch, ts: Date.now() };
-          _jiraRenderingBadges = true;
           if (showThreads) renderThreadsBadge(entry.item, meta.threads);
           if (showSize) renderSizeBadge(entry.item, meta.changesLines, meta.changesFiles);
           if (showConflicts && meta.conflicts) renderConflictBadge(entry.item);
           if (showApprovals && meta.approvedBy) renderApprovalIndicator(entry.item, meta.approvedBy, username);
           if (showBranches) renderBranchBadge(entry.item, meta.sourceBranch, meta.targetBranch, showBranchesLinks);
-          _jiraRenderingBadges = false;
         })
         .catch(function() {});
     }
@@ -2027,6 +2035,10 @@
     function fetchBatch(start) {
       if (start >= toFetch.length) {
         _mrMetaFetching = false;
+        if (_mrMetaRefreshPending) {
+          _mrMetaRefreshPending = false;
+          if (isMrListPage()) fetchAndRenderMrMeta(showThreads, showSize, showConflicts, showApprovals, showBranches, showBranchesLinks, username);
+        }
         return;
       }
       var batch = toFetch.slice(start, start + BATCH_SIZE);
@@ -2054,6 +2066,7 @@
 
         usernamePromise.then(function(username) {
           function runAllListFeatures() {
+            if (!isMrListPage()) return;
             if (s.dim_drafts || s.highlight_own_mrs || s.show_copy_mr) {
               applyMrListEnhancements(s, username);
             }
@@ -2067,82 +2080,36 @@
               setJiraTicketRegex(s.jira_ticket_regex);
               fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
             }
+            if (s.show_only_mine || s.show_needs_review) injectListToggles(username, s);
           }
 
-          // Run immediately; if DOM not ready yet, retry a few times
-          var mrItems = qAll(document, SEL.mrItem);
-          if (mrItems.length) {
-            runAllListFeatures();
-          } else {
-            // Vue list may not be rendered yet — poll up to 3s
-            var _retryCount = 0;
-            var _retryInterval = setInterval(function() {
-              _retryCount++;
-              if (qAll(document, SEL.mrItem).length) {
-                clearInterval(_retryInterval);
-                runAllListFeatures();
-              } else if (_retryCount >= 6) {
-                clearInterval(_retryInterval);
-              }
-            }, 500);
+          // Watch a stable ancestor: pagination/filtering can replace the entire
+          // list, leaving an observer attached to its old, detached container.
+          // Filter actual records because MutationObserver runs asynchronously;
+          // a synchronous "rendering" flag cannot suppress our own badge writes.
+          var listContentSelector = SEL.mrItem + ', ' + SEL.listContainer + ', ' + SEL.titleLink + ', ' + SEL.filterBar + ', .top-area, .issues-filters, .nav-controls';
+          function isListMutation(mutation) {
+            var target = mutation.target.nodeType === 1 ? mutation.target : mutation.target.parentElement;
+            if (qUp(target, SEL.titleLink)) return true;
+            if (mutation.type !== 'childList') return false;
+            return Array.prototype.some.call(mutation.addedNodes, isListContent) ||
+              Array.prototype.some.call(mutation.removedNodes, isListContent);
           }
-
-          // Inject filter toggles (with retry if filter bar not rendered yet)
-          if (s.show_only_mine || s.show_needs_review) {
-            var toggleOk = injectListToggles(username, s);
-            if (!toggleOk) {
-              var _toggleRetry = 0;
-              var _toggleTimer = setInterval(function() {
-                _toggleRetry++;
-                if (injectListToggles(username, s) || _toggleRetry >= 6) {
-                  clearInterval(_toggleTimer);
-                }
-              }, 500);
-            }
+          function isListContent(node) {
+            return node.nodeType === 1 && (node.matches(listContentSelector) || !!q(node, listContentSelector));
           }
-
-          // Re-run on dynamic content (Vue list updates)
           var _observerTimer = null;
-          var _enhanceTimer = null;
-          var listObserver = new MutationObserver(function() {
-            if (_jiraRenderingBadges) return;
-
-            if (s.dim_drafts || s.highlight_own_mrs || s.show_copy_mr) {
-              clearTimeout(_enhanceTimer);
-              _enhanceTimer = setTimeout(function() {
-                applyMrListEnhancements(s, username);
-              }, 200);
-            }
+          var listObserver = new MutationObserver(function(mutations) {
+            if (!isMrListPage() || !mutations.some(isListMutation)) return;
             clearTimeout(_observerTimer);
-            _observerTimer = setTimeout(function() {
-              if (s.jira_url) fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
-              if (s.show_reviewer_badge && username) fetchAndRenderReviewerBadges(username);
-              if (s.show_threads_badge || s.show_size_badge || s.show_conflicts_badge || s.show_approval_badge || s.show_branches) fetchAndRenderMrMeta(s.show_threads_badge, s.show_size_badge, s.show_conflicts_badge, s.show_approval_badge, s.show_branches, s.show_branches_links, username);
-              if (s.show_only_mine || s.show_needs_review) injectListToggles(username, s);
-            }, 1000);
+            _observerTimer = setTimeout(runAllListFeatures, 200);
           });
-
-          // Observe list container (with retry if not found immediately)
-          function startListObserver() {
-            var listContainer = q(document, SEL.listContainer);
-            if (listContainer) {
-              listObserver.observe(listContainer, { childList: true, subtree: true });
-              return true;
-            }
-            return false;
-          }
-          if (!startListObserver()) {
-            // Fallback: observe body until list appears
-            var _bodyObs = new MutationObserver(function() {
-              if (startListObserver()) {
-                _bodyObs.disconnect();
-              }
-            });
-            _bodyObs.observe(document.body, { childList: true, subtree: true });
-            // Clean up after 10s if list never appears
-            setTimeout(function() { _bodyObs.disconnect(); }, 10000);
-          }
-          window.addEventListener('beforeunload', function() { listObserver.disconnect(); });
+          listObserver.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['href'] });
+          runAllListFeatures();
+          window.addEventListener('beforeunload', function() {
+            listObserver.disconnect();
+            clearTimeout(_observerTimer);
+          });
         });
       });
     } catch(e) {}

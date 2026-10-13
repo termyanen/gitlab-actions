@@ -19,6 +19,7 @@ No npm dependencies or install step are needed. Packaging checks also use Bash,
 | Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, and a simulated fresh worker |
 | GitLab API relay | Originating tab preference, frozen tabs, no open tabs, API errors, no replay of ambiguously delivered mutations |
 | Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors |
+| MR list lifecycle | Replacement of the list container or rows, pagination during Jira/reviewer/metadata requests, late list rendering, cached and partially cached tickets, title changes and replacement, missing tickets and failed responses without request loops, authentication failures, observer cleanup |
 | Cherry-pick diff helper | Clean/shifted/multiple hunks, preservation of unrelated changes, newline handling, rejecting missing/ambiguous context and malformed/binary diffs |
 | Cherry-pick flow | Direct/MR modes and mode changes after failure, multiple branches, duplicate clicks, existing branches, modern/legacy conflict responses vs ambiguous failures, paginated/overlapping/oversized diffs, create/update/delete actions, JSON/TOML/text bump in the fallback commit, original author, unsafe reads, concurrent edits, partial failures, retrying MR creation and recognizing an existing MR |
 | Install/update | Fresh-install defaults and welcome page, update version notice without resetting settings, missing previous version, browser-only update |
@@ -38,6 +39,12 @@ promise chains, diff replay and version parsers run unchanged. This fixture does
 not test HTML layout or GitLab selectors. Requests assert the GitLab
 [commit API contract](https://docs.gitlab.com/api/commits/) for explicit conflict
 codes and per-file commit guards.
+
+MR list tests run the original list initializer and rendering code against a
+small DOM fixture with asynchronous mutation delivery and detached-subtree
+handling. They cover the existing modern and legacy selector shapes in the
+fixture, but do not establish compatibility with every live GitLab version or
+replace browser checks of native DOM behavior.
 
 Assertions check observable results and API requests rather than snapshots of
 the implementation. New bug fixes should first add a regression that fails with
@@ -87,7 +94,7 @@ still need tests; their absence does not establish a bug.
 | --- | --- | --- |
 | Next | Real browser lifecycle | Actual Chrome worker suspension/restart, offline request completion and page reloads. The fresh-VM test confirms existing behavior: tasks live in worker memory, become `not_found` after restart, and are not automatically replayed. Automatic recovery is not implemented. Cherry-pick retry checkpoints last only while its modal remains open. |
 | Next | Popup/settings | Debounced autosave, profile switching, button reordering, language changes and permission approval/denial in Chrome. |
-| Next | GitLab DOM and navigation | Selector fallbacks across GitLab versions, SPA navigation, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and list/sidebar badges. |
+| Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
 | Next | Group play | Parent/child pipelines with matching stage names, pagination, status changes while starting a group and partial API failures. |
 | Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog, Jira enrichment failures and malformed/empty-matching ticket regexes. |
 | Next | Jira sidebar and quick actions | Full issue/custom-field mapping, comment pagination, multi-step quick actions with partial failures, attachments/media and real cookie sessions. Current API-handler tests cover selected reads and mutations. |
@@ -125,3 +132,8 @@ For a release, use a disposable GitLab project and load the unpacked extension:
    a recent deployment, recording their exact versions. Confirm selectors, API
    responses, and that an explicit new chain can target a newer pipeline while
    the older chain continues on its original pipeline.
+9. With Jira status/details enabled, paginate the MR list forward and back, change
+   a filter, and switch pages before Jira finishes loading. The visible page must
+   receive its statuses and icons without a reload, duplicates, or repeated
+   requests caused by badge rendering. Repeat with reviewer and branch badges
+   enabled, and with an empty list followed by results.
