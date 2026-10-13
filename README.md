@@ -119,6 +119,32 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 4. Test on a GitLab MR page
 5. Submit a pull request
 
+## Testing
+
+Run `npm test` with Node.js 18.18+; no dependency installation is required. The
+regression suite covers version bumps, MR actions, CI job chains, API relay, Jira
+handlers, cherry-pick flows and diff helpers, locales, and release packaging. Tests run in
+CI and before Chrome Web Store uploads. See [test coverage and browser checks](tests/README.md)
+for details and the remaining end-to-end coverage gaps.
+
+## Preparing a release
+
+`manifest.json` is the source of truth for the extension version. For each patch
+release:
+
+1. Increment the patch component in `manifest.json`.
+2. Add or promote the release section in both `CHANGELOG.md` and `CHANGELOG_RU.md`;
+   describe fixes and relevant technical changes, keeping older entries unchanged.
+3. Update `softwareVersion` in `docs/index.html` to match. The website loads release
+   notes from the changelogs; the extension's update notice reads the manifest.
+4. Run `npm test` and the applicable [browser checks](tests/README.md). CI checks
+   version consistency, update behavior, and both ZIP packaging paths.
+5. Package with `bash pack.sh` when needed; the archive name comes from the manifest.
+   If creating a GitHub release, use the same version in its tag and release notes.
+
+The private `package.json` exists only to run tests and has no separate release
+version. Both packaging paths exclude it and the test/development files.
+
 ## License
 
 MIT

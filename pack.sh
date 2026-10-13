@@ -22,6 +22,10 @@ zip -r "$ZIPNAME" . \
   -x "screenshots/*" \
   -x "docs/*" \
   -x "promo/*" \
+  -x "tests/*" \
+  -x "node_modules/*" \
+  -x "package.json" \
+  -x "package-lock.json" \
   -x "*.crx" \
   -x "*.pem" \
   -x "*.zip"

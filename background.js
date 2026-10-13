@@ -5,6 +5,7 @@
 // API calls are proxied through content scripts (they have session cookies).
 
 var tasks = {};
+var taskSequence = 0;
 
 // =========================================================================
 // First install — set smart defaults
@@ -67,6 +68,7 @@ function sendMessageWithTimeout(tabId, msg, timeoutMs) {
 }
 
 function api(task, method, path, body) {
+  if (task._cancelled) return Promise.reject(new Error('Cancelled by user'));
   var msg = { type: 'api-proxy', method: method, path: path, body: body };
   var isGet = method === 'GET';
 
@@ -96,6 +98,7 @@ function api(task, method, path, body) {
     }
 
     function tryTab(i) {
+      if (task._cancelled) throw new Error('Cancelled by user');
       if (i >= tabIds.length) throw new Error('No GitLab tab with content script found. Open any MR page.');
       return sendMessageWithTimeout(tabIds[i], msg, isGet ? 20000 : 60000).then(function(resp) {
         if (resp && resp._error) throw new Error(resp._error);
@@ -118,10 +121,20 @@ function api(task, method, path, body) {
 // =========================================================================
 
 function findJobByName(task, jobName) {
-  return api(task, 'GET', '/projects/' + task.projectId + '/merge_requests/' + task.mrIid + '/pipelines')
-    .then(function(pipelines) {
-      if (!pipelines.length) return null;
-      return api(task, 'GET', '/projects/' + task.projectId + '/pipelines/' + pipelines[0].id + '/jobs?per_page=100');
+  // Resolve once per chain. A new push/pipeline must not redirect a running
+  // chain to another pipeline, including while waiting for or retrying a job.
+  var pipelinePromise = task.pipelineId
+    ? Promise.resolve(task.pipelineId)
+    : api(task, 'GET', '/projects/' + task.projectId + '/merge_requests/' + task.mrIid + '/pipelines')
+      .then(function(pipelines) {
+        if (!pipelines.length) return null;
+        task.pipelineId = pipelines[0].id;
+        return task.pipelineId;
+      });
+  return pipelinePromise
+    .then(function(pipelineId) {
+      if (!pipelineId) return null;
+      return api(task, 'GET', '/projects/' + task.projectId + '/pipelines/' + pipelineId + '/jobs?per_page=100');
     })
     .then(function(jobs) {
       if (!jobs) return null;
@@ -193,15 +206,12 @@ function waitForJobComplete(task, jobName, maxAttempts) {
 
 function runJobChain(taskId) {
   var task = tasks[taskId];
-  if (!task || task.currentIndex >= task.jobs.length) {
-    if (task) {
-      task.status = 'done';
-      notifyResult(taskId, true, 'All jobs completed: ' + task.jobs.join(' → '));
-    }
+  if (!task || task._cancelled) return;
+  if (task.currentIndex >= task.jobs.length) {
+    task.status = 'done';
+    notifyResult(taskId, true, 'All jobs completed: ' + task.jobs.join(' → '));
     return;
   }
-
-  if (task._cancelled) return;
 
   var jobName = task.jobs[task.currentIndex];
   task.status = 'running: ' + jobName;
@@ -209,14 +219,17 @@ function runJobChain(taskId) {
 
   startJobByName(task, jobName)
     .then(function(result) {
+      if (task._cancelled) return;
       if (result && result.skipped) return;
       return waitForJobComplete(task, jobName);
     })
     .then(function() {
+      if (task._cancelled) return;
       task.currentIndex++;
       runJobChain(taskId);
     })
     .catch(function(err) {
+      if (task._cancelled) return;
       task.status = 'error';
       task.error = err.message;
       notifyResult(taskId, false, 'Job chain failed at "' + jobName + '": ' + err.message);
@@ -680,13 +693,15 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   }
 
   if (msg.type === 'start-job-chain') {
-    var taskId = 'task-' + Date.now();
+    // Each explicit start can target a new pipeline, even for the same MR/jobs.
+    var taskId = 'task-' + Date.now() + '-' + (++taskSequence);
     tasks[taskId] = {
       jobs: msg.jobs,
       currentIndex: 0,
       gitlabUrl: msg.gitlabUrl,
       projectId: msg.projectId,
       mrIid: msg.mrIid,
+      pipelineId: null,
       mrTitle: msg.mrTitle || ('!' + msg.mrIid),
       status: 'starting',
       error: null,

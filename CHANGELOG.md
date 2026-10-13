@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.12.2
+
+### Fixes
+- **Version bump from the target branch preserves source changes** — only the base version is read from the target branch; the source file's dependencies and other fields are retained. Updates include the source file's last commit ID so concurrent file edits are rejected instead of overwritten.
+- **CI job chains stay on their original pipeline** — the pipeline is selected once per chain. New pushes or pipelines no longer redirect polling, retries, or subsequent jobs to another pipeline; retried jobs within the original pipeline are still followed.
+- **Cancelling running chains stops subsequent actions** — cancellation during tab lookup, job lookup, play/retry, or polling prevents further requests and cannot be overwritten by a late success/error. Explicit starts remain independent, including when a newer pipeline appears for the same MR; task IDs stay distinct even within the same millisecond.
+- **Safer cherry-pick fallback and retries** — existing branches are never deleted on failure. Fallback rejects unverifiable file reads and guards updates/deletes against concurrent edits. GitLab's explicit conflict response is supported, as is the known legacy response without an error code when real non-version changes can be verified; ambiguous legacy failures cannot create bump-only commits. Retrying MR creation reuses the successful commit and checks for an already-created MR without repeating the version bump. Changing MR mode after failure selects the requested destination.
+- **Auto-merge distinguishes permanent errors from merge readiness** — authentication, permission and missing-MR responses stop retries even when the message omits the status code. GitLab's 405, 406 and 422 readiness responses use bounded retries; the existing auto-merge request parameters are retained for older servers.
+
+### Technical
+- Added dependency-free regression tests and CI checks for version bumps, MR workflows, CI chains, API relay, Jira handlers, cherry-pick diff helpers, locales, and packaging. Test/development files are excluded from extension ZIP archives.
+- Release checks keep the manifest, website metadata, and both changelogs in sync. Install/update tests verify that updating the extension preserves user settings and announces the current version.
+- Expanded regression coverage for full cherry-pick orchestration, pagination and partial failures, cancellation races, tab closure, simulated worker restart, and Ship/rebase delays, timeouts and retry limits. Browser behavior and automatic task recovery after worker restart remain outside this suite.
+- Checked changed API behavior against historical and current GitLab sources, added response-variant tests, and compared unchanged workflows against extension 1.12.1. This is API contract coverage, not certification on live GitLab installations.
+
+---
+
 ## 1.12.1
 
 ### Fixes
