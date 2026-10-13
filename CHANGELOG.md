@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.3
+
+### Fixes
+- **Jira badges follow MR list pagination** — statuses, issue types and priorities reload when GitLab replaces the list or updates its titles. Switching pages during an active request queues a refresh of the current page; reviewer and MR metadata requests follow the same behavior. Cached badges are restored after title re-renders, and badge rendering no longer triggers repeated requests for missing tickets or failed responses.
+
+---
+
 ## 1.12.2
 
 ### Fixes
