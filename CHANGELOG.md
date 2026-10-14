@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.13.0
+
+- **AI-assisted review workflow** — New review, Fix review findings, Prepare replies and Follow-up review tabs cover initial review, code corrections, ready-to-post answers and verification after further commits or force pushes. Fix tasks can generate replies in the same run; this option is enabled by default.
+- **Copy MR and issue feedback** — export a single comment, a whole discussion, selected feedback or all discussions with context, links and available code excerpts. Unresolved discussions are selected initially; general comments are optional. Pagination, legacy GitLab APIs, unpublished draft selection and explicit loading limitations cover context missing from the page.
+- **Compact review and file scope** — fresh and repeat tasks use local Git by default, with optional attached code changes, remembered description inclusion and include/exclude file filters. Follow-up review compares the current MR with an explicitly selected version or SHA, includes all intervening changes and supports a full-review fallback.
+- **Editable AI instructions** — five independent task prompts and 31 automatic instruction blocks can be configured in settings. Every automatic block starts enabled and can be edited, disabled, cleared or reset separately, including local repository/worktree rules, reply style and output guidance. Seven response languages are selectable independently of the UI language; complete tasks can be previewed before copying.
+- **Review import with editable preview** — paste AI findings and replies as JSON, inspect their file lines or original discussions, edit text, exclude items and add general comments. New findings are checked against the current diff; replies retain discussion targets across later pushes. Import offers new-review and unresolved-reply prompts plus a format-only reference.
+- **Controlled publication** — publish selected items or save them as review drafts. Replies can optionally resolve an open discussion after confirmed publication; resolution is off by default and never runs for drafts. Revision/account checks, quick-action rejection, duplicate detection, cross-tab send locking and separate delivery outcomes protect interrupted or concurrent imports. Deleted confirmed comments and drafts can be reimported after verification.
+- **Manual AI sharing and privacy** — no AI provider connection, API key or automatic code upload. No review history or source snapshots are saved; local hashed delivery records protect against duplicate sends. Prompts, instruction preferences and filters use Chrome Sync settings. Extension permissions are unchanged.
+- **Interface and usage guide** — outline icon buttons with tooltips, task summaries, responsive dialogs, keyboard navigation, background scroll locking and optional close confirmation (off by default). An English/Russian guide covers authors, reviewers and teams and is linked from settings, the welcome screen and GitHub Pages.
+- **Jira commit badges** — new installations use `fixVersions, status` as the default fields; existing saved configurations are retained.
+
+---
+
 ## 1.12.3
 
 ### Fixes

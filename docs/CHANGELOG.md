@@ -1,0 +1,253 @@
+# Changelog
+
+## 1.13.0
+
+- **AI-assisted review workflow** — New review, Fix review findings, Prepare replies and Follow-up review tabs cover initial review, code corrections, ready-to-post answers and verification after further commits or force pushes. Fix tasks can generate replies in the same run; this option is enabled by default.
+- **Copy MR and issue feedback** — export a single comment, a whole discussion, selected feedback or all discussions with context, links and available code excerpts. Unresolved discussions are selected initially; general comments are optional. Pagination, legacy GitLab APIs, unpublished draft selection and explicit loading limitations cover context missing from the page.
+- **Compact review and file scope** — fresh and repeat tasks use local Git by default, with optional attached code changes, remembered description inclusion and include/exclude file filters. Follow-up review compares the current MR with an explicitly selected version or SHA, includes all intervening changes and supports a full-review fallback.
+- **Editable AI instructions** — five independent task prompts and 31 automatic instruction blocks can be configured in settings. Every automatic block starts enabled and can be edited, disabled, cleared or reset separately, including local repository/worktree rules, reply style and output guidance. Seven response languages are selectable independently of the UI language; complete tasks can be previewed before copying.
+- **Review import with editable preview** — paste AI findings and replies as JSON, inspect their file lines or original discussions, edit text, exclude items and add general comments. New findings are checked against the current diff; replies retain discussion targets across later pushes. Import offers new-review and unresolved-reply prompts plus a format-only reference.
+- **Controlled publication** — publish selected items or save them as review drafts. Replies can optionally resolve an open discussion after confirmed publication; resolution is off by default and never runs for drafts. Revision/account checks, quick-action rejection, duplicate detection, cross-tab send locking and separate delivery outcomes protect interrupted or concurrent imports. Deleted confirmed comments and drafts can be reimported after verification.
+- **Manual AI sharing and privacy** — no AI provider connection, API key or automatic code upload. No review history or source snapshots are saved; local hashed delivery records protect against duplicate sends. Prompts, instruction preferences and filters use Chrome Sync settings. Extension permissions are unchanged.
+- **Interface and usage guide** — outline icon buttons with tooltips, task summaries, responsive dialogs, keyboard navigation, background scroll locking and optional close confirmation (off by default). An English/Russian guide covers authors, reviewers and teams and is linked from settings, the welcome screen and GitHub Pages.
+- **Jira commit badges** — new installations use `fixVersions, status` as the default fields; existing saved configurations are retained.
+
+---
+
+## 1.12.3
+
+### Fixes
+- **Jira badges follow MR list pagination** — statuses, issue types and priorities reload when GitLab replaces the list or updates its titles. Switching pages during an active request queues a refresh of the current page; reviewer and MR metadata requests follow the same behavior. Cached badges are restored after title re-renders, and badge rendering no longer triggers repeated requests for missing tickets or failed responses.
+
+---
+
+## 1.12.2
+
+### Fixes
+- **Version bump from the target branch preserves source changes** — only the base version is read from the target branch; the source file's dependencies and other fields are retained. Updates include the source file's last commit ID so concurrent file edits are rejected instead of overwritten.
+- **CI job chains stay on their original pipeline** — the pipeline is selected once per chain. New pushes or pipelines no longer redirect polling, retries, or subsequent jobs to another pipeline; retried jobs within the original pipeline are still followed.
+- **Cancelling running chains stops subsequent actions** — cancellation during tab lookup, job lookup, play/retry, or polling prevents further requests and cannot be overwritten by a late success/error. Explicit starts remain independent, including when a newer pipeline appears for the same MR; task IDs stay distinct even within the same millisecond.
+- **Safer cherry-pick fallback and retries** — existing branches are never deleted on failure. Fallback rejects unverifiable file reads and guards updates/deletes against concurrent edits. GitLab's explicit conflict response is supported, as is the known legacy response without an error code when real non-version changes can be verified; ambiguous legacy failures cannot create bump-only commits. Retrying MR creation reuses the successful commit and checks for an already-created MR without repeating the version bump. Changing MR mode after failure selects the requested destination.
+- **Auto-merge distinguishes permanent errors from merge readiness** — authentication, permission and missing-MR responses stop retries even when the message omits the status code. GitLab's 405, 406 and 422 readiness responses use bounded retries; the existing auto-merge request parameters are retained for older servers.
+
+### Technical
+- Added dependency-free regression tests and CI checks for version bumps, MR workflows, CI chains, API relay, Jira handlers, cherry-pick diff helpers, locales, and packaging. Test/development files are excluded from extension ZIP archives.
+- Release checks keep the manifest, website metadata, and both changelogs in sync. Install/update tests verify that updating the extension preserves user settings and announces the current version.
+- Expanded regression coverage for full cherry-pick orchestration, pagination and partial failures, cancellation races, tab closure, simulated worker restart, and Ship/rebase delays, timeouts and retry limits. Browser behavior and automatic task recovery after worker restart remain outside this suite.
+- Checked changed API behavior against historical and current GitLab sources, added response-variant tests, and compared unchanged workflows against extension 1.12.1. This is API contract coverage, not certification on live GitLab installations.
+
+---
+
+## 1.12.1
+
+### Fixes
+- **Cherry-pick smart fallback: file diverged elsewhere no longer blocks the pick** — the fallback used to require every changed file to be byte-identical between the commit's parent and the target branch, so it refused cases git itself merges cleanly (the target had unrelated edits elsewhere in the same file). Now the commit's own diff hunks are strictly re-applied onto the target content: every hunk's context must match byte-for-byte in exactly one place, the diff is first verified by replaying it against the parent (must reproduce the commit exactly), and any mismatch, ambiguity, binary file, or rename still refuses. Only the version-file conflict case got wider — nothing is ever guessed.
+- **Cherry-pick smart fallback: version-only commits** — a commit that changed nothing but the version file failed with "No files left"; with version bump enabled it now produces a clean bump-only commit.
+- **Cherry-pick smart fallback: commits with 20+ files** — the commit diff is now fetched with pagination; previously only the first 20 files were replayed, silently dropping the rest.
+
+---
+
+## 1.12.0
+
+### New features
+- **Version badge on commits page** — each commit on the branch commits page shows the project version from the version file (the one configured in Version bump settings) as it was at that commit. Badges are muted; commits where the version changed are highlighted, so you can see at a glance which commits went into which release. Versions are cached permanently per commit SHA (immutable), so repeat visits cost zero API requests. Toggle: "Version badge on commits page" in settings (off by default).
+
+### Fixes
+- **Jira badges on commits page: multiple tickets per commit** — when a commit message mentions two or more Jira tickets, badges are now rendered per ticket with a separator between groups (same layout as the MR list). Previously identical values were merged into one badge, and a ticket whose data arrived after a partial render was silently dropped — so only one ticket's status/fix versions were shown.
+- **Jira badges on commits page: legacy DOM fallback** — on GitLab versions where the primary commit selectors find nothing, the clipboard-button fallback crashed with a TypeError (push on a NodeList) instead of rendering badges. Fallback now works.
+
+---
+
+## 1.11.0
+
+### New features
+- **Group play button on pipeline graph** — GitLab's own "Run all manual" button on a stage disappears as soon as any job in the stage starts. The extension now shows its own play button in the stage header whenever manual jobs remain; one click runs all remaining manual jobs, skipping the ones already running, succeeded, or failed. Works for downstream (child) pipeline stages expanded on the same page, too. Toggle: "Group play button in pipeline" in settings (on by default).
+
+---
+
+## 1.10.3
+
+### Fixes
+- **Daily Activity Report infinite loader** — the report could spin forever if a background GitLab tab was frozen/unresponsive (Chrome Memory Saver) or its content script never answered. API relay now prefers the tab that opened the report, applies a per-tab timeout (20s for reads), and skips dead tabs instead of hanging on them.
+- **Report watchdog** — report generation is now capped at 180 seconds; on timeout a clear error message is shown instead of an endless spinner.
+- **Jira enrichment resilience** — any Jira enrichment failure (bad Jira URL, unreachable Jira, malformed custom ticket regex) now falls back to the plain report instead of hanging. A custom ticket regex that matches an empty string can no longer freeze the extension.
+- **API relay robustness** — the same tab-preference + timeout logic applies to all background API calls (rebase, ship, job chains), so a stale GitLab tab can no longer stall them. Mutating requests (job play/retry) are never re-sent to another tab when delivery is ambiguous, so a slow request can't run a job twice; they fail with a clear error after 60s instead.
+
+---
+
+## 1.10.2
+
+### Fixes
+- **Source branch deletion bug** — `should_remove_source_branch` was always forced to `true`, deleting the source branch after merge even when the MR setting and project setting both said not to. Now respects MR and project settings correctly.
+- **Failed job view on GitLab 18.x** — failed job log panel was invisible when `head_pipeline` didn't populate in time. Now falls back to the pipelines API to find the failed pipeline, so the panel always appears after a pipeline fails.
+- **Widget section selector** — added four fallback selectors for the MR widget container so button injection survives GitLab DOM changes.
+- **Git commands selector** — added `data-testid` fallbacks for the MR description block where git command buttons are injected.
+- **Auto-merge abort on 405** — when GitLab returns 405 Method Not Allowed for a merge attempt (MR not ready), the extension now stops retrying immediately instead of waiting 2 minutes.
+
+---
+
+## 1.10.1
+
+### Fixes
+- **GitLab 18.x compatibility** — fixed rebase, version bump, and Ship/Force Ship flows broken after GitLab 18.x changed how `sha`/`diff_head_sha` fields update on the MR API. The extension now checks both fields and falls back to the commits API if neither updates in time.
+- **Rebase error visibility** — rebase failures (conflicts, closed MR) were silently ignored; real errors now surface to the user instead of falsely reporting success.
+- **Pipeline wait robustness** — added support for new GitLab 18 pipeline statuses (`waiting_for_resource`, `preparing`, `scheduled`) and fallback to the pipelines API when `head_pipeline` lags on the MR response.
+- **Rebase polling timeout** — added a 2-minute cap to rebase polling so it no longer hangs indefinitely if `rebase_in_progress` never clears.
+
+---
+
+## 1.10.0
+
+### New features
+- **Clickable Jira badges on commits page** — Jira field badges shown next to commits (`fixVersions`, `status`, etc.) now open the full Jira ticket sidebar when clicked, with skeleton loaders while data is being fetched, just like the MR list.
+- **Editable Fix Versions in Jira sidebar** — pick fix versions from the project's available (non-archived) versions directly in the sidebar, even when none is set yet, with a search box to quickly find a version. Changes are saved to Jira instantly.
+
+---
+
+## 1.9.0
+
+### New features
+- **Jira comments in sidebar** — read recent comments, post new ones, and delete your own directly from the Jira ticket sidebar, without leaving GitLab. Comments load 5 at a time with a "Show more" button for older ones.
+
+---
+
+## 1.8.0
+
+### New features
+- **Sensitive file warning** — shows an orange warning badge when the MR modifies security-sensitive files like `.env`, `Dockerfile`, CI configs, or credential files. Enable in settings.
+- **Git command buttons** — checkout / pull / reset buttons below the MR description that copy ready-to-run git commands for the MR's source branch with one click. Enable in settings.
+
+---
+
+## 1.7.6
+
+### Fixes
+- **Jira auth error handling** — when Jira access tokens expire or become invalid (HTTP 401/403), the extension now stops all subsequent Jira requests instead of retrying endlessly. Reload the page after re-login to resume Jira integration.
+
+---
+
+## 1.7.5
+
+### New features
+- **Jira field badges on commits page** — shows configurable Jira field values (e.g. Fix Version/s, status, labels) as badges next to each commit on the branch commits page. Set the field name in the cherry-pick settings section (default: fixVersions). Requires Jira URL.
+
+### Fixes
+- **Cherry-pick modal** — now shows the full commit title (uses title attribute fallback for truncated messages) and allows text wrapping instead of truncating long messages.
+
+---
+
+## 1.7.4
+
+### New features
+- **Jira ticket titles in daily activity report** — when Jira integration is configured, the daily activity report automatically enriches MR entries with Jira ticket titles extracted from MR names. Toggle in settings under the daily activity report option.
+
+---
+
+## 1.7.3
+
+### New features
+- **Branch names on MR list** — displays source and target branch names on each MR in the list, so you can see at a glance where the code is coming from and where it merges into.
+
+---
+
+## 1.7.2
+
+### New features
+- **My approval indicator** — shows whether you have approved each MR on the list page. Green person+check icon when you approved, grey icon when approved by others only. Restores the distinction that GitLab removed in recent updates.
+
+---
+
+## 1.7.1
+
+### Bug fixes
+- **GitLab 17.11 compatibility** — fixed broken selectors after GitLab migrated MR list and commits pages to Vue components. Cherry-pick buttons, size badges, conflict indicators, "Only mine" / "Needs my review" toggles, and Jira badges now work on GitLab 17.11+.
+- **Cross-version support** — all GitLab DOM selectors are now centralized (`SEL` object) with multiple fallbacks: `data-testid` attributes (stable GitLab API) as primary, legacy CSS classes as secondary. Supports GitLab 16.x through 17.11+.
+- **Robust cherry-pick detection** — commit SHA groups are now found via two strategies: CSS selectors first, then fallback to clipboard buttons with SHA hex pattern. Works even if GitLab changes all class names.
+- **Vue rendering timing** — added retry/polling for cases where Vue hasn't rendered the MR list or filter bar when the extension runs. List observer falls back to watching `document.body` until the list container appears.
+- **Badge insertion fix** — fixed `insertBefore` crash when title link is nested deeper inside the title container (new GitLab DOM structure).
+
+---
+
+## 1.7.0
+
+### New features
+- **Cherry-pick to multiple branches** — cherry-pick any commit to multiple branches at once from the commits page. Button next to each commit SHA. Modal with branch selection, real-time status per branch (success/conflict). Option to create a merge request for each cherry-pick (like native GitLab). Save default target branches in settings.
+- **Smart cherry-pick fallback** — when cherry-pick fails due to version file conflicts, automatically replays the commit via Commits API excluding the version file, preserving original author. Optional version bump in the target branch after cherry-pick. Both features configurable per-operation and in settings.
+- **File search in command palette** — type a filename in Cmd+K palette to search project files and open them in the repository.
+
+---
+
+## 1.6.0
+
+### New features
+- **Command palette (Cmd+K)** — press Cmd+K (Mac) or Ctrl+K (Win) on any GitLab page to open a command palette with navigation, MR actions, and extension commands. Contextual: shows MR actions on MR detail pages, navigation commands on all pages.
+- **Daily activity report** — generate a summary of your GitLab activity for the day (MRs created, merged, commented, approved, in progress). Copy and paste into Slack or Jira. Available via command palette or extension settings.
+
+---
+
+## 1.5.0
+
+### New features
+- **Failed job quick view** — when a pipeline fails, shows failed job names and last lines of the error log directly on the MR page. Collapsible per job, first job expanded by default. Up to 5 jobs with trace preview.
+- **Conflicts indicator** — red CONFLICTS badge on MR detail page and MR list when the branch has merge conflicts. List badge is togglable in settings.
+- **Unresolved threads count** — red badge on MR list showing the number of unresolved discussion threads per MR. Fetches via API with 5 min cache.
+- **MR size labels** — color-coded S/M/L/XL badges on MR list based on changed lines count (S: 1-50, M: 51-200, L: 201-500, XL: 500+). Falls back to file count on older GitLab versions.
+- **Quick comments** — configurable template comment buttons on MR detail page. Instantly posts a general comment to the MR with one click. Configure in popup settings.
+- **Collapse top bars** — button to collapse/expand GitLab top navigation bars. State persisted per session.
+- **Hide right sidebar** — toggle in settings to hide the right sidebar on MR pages for full-width content.
+- **Version from target branch** — option to read the current version from the target branch (e.g. main) instead of the source branch. Prevents stale versions when using merge commit strategy.
+- **Smart rebase button visibility** — rebase and rebase+version buttons are now hidden when the project merge method does not require rebase (merge commit strategy).
+
+### Improvements
+- **Jira multi-ticket separation** — visual separators between Jira ticket badge groups when MR title contains multiple tickets.
+- **Parallel API fetching** — MR metadata (size, threads, conflicts) fetched in batches of 5 instead of sequentially.
+
+---
+
+## 1.4.0
+
+### New features
+- **Jira ticket sidebar** — click any Jira badge to open a sidebar with full ticket details: summary, status, resolution, type, priority, assignee, reporter, labels, epic, components, versions, fix versions, dates, and description. Renders Jira wiki markup — images, videos, links. Close with × or Escape.
+- **Attachments in sidebar** — view images, videos, and files attached to Jira tickets directly in the sidebar. Images and videos open in a fullscreen lightbox, other files open in a new tab.
+- **Jira badges on MR detail page** — Jira ticket status badges are shown in the MR title on the detail page. Click to open the sidebar with full ticket details.
+- **Custom Jira ticket regex** — configurable regular expression for parsing ticket IDs from MR titles. Useful when your project uses non-standard ticket prefixes.
+- **Change Jira status from sidebar** — transition buttons below the current status show only available workflow transitions. Change ticket status without leaving GitLab.
+- **Change Jira assignee from sidebar** — click the assignee name to search and reassign. Autocomplete with avatars, searches only users assignable to the ticket. Unassign button to remove assignee.
+- **Jira quick actions** — configure composite actions in settings: change status + assign user in one click. Buttons appear in the sidebar only when the target transition is available from the current status.
+- **Issue type & priority icons** — show native Jira icons for issue type and priority next to status badges on MR list and detail pages. Enable in Jira settings.
+- **Sprint field in sidebar** — displays the current sprint name in the Jira ticket sidebar.
+- **Clickable Epic Link** — Epic Link in sidebar opens the epic in Jira in a new tab.
+
+---
+
+## 1.3.0
+
+### New features
+- **Jira integration** — shows Jira ticket statuses as colored badges on the MR list page. Parses ticket IDs (e.g. `CCS-1111`) from MR titles and fetches status via Jira REST API using session cookies. Color-coded: green (Done), blue (In Progress), purple (QA), yellow (In Review), gray (To Do). Skeleton loaders while fetching.
+- **Copy MR from list** — copy button in the controls bar of each MR on the list page. Copies title + link to clipboard with one click. Always visible, icon turns green on success.
+- **"Needs my review" toggle** — filter button on MR list page to show only MRs where you are assigned as a reviewer. Works via GitLab's `reviewer_username` parameter.
+- **"Your review" badge** — scans first 10 comments of each MR for "Reviewer(s): @you" pattern and shows an orange badge. For teams that assign reviewers via comments instead of GitLab's built-in feature. Results cached for 5 min.
+
+### Technical
+- Uses `chrome.cookies` API for Jira auth (same session cookie approach as GitLab)
+- Status caching (5 min TTL) to minimize API calls
+- Sequential ticket fetching to avoid overloading Jira
+- Added `cookies` permission and `optional_host_permissions` to manifest
+
+---
+
+## 1.2.10
+
+### New features
+- **Rebase** button — rebase branch without merging
+- **Rebase + Version** button — rebase and bump version without merging
+- **Copy MR** button — copy MR title and link to clipboard with one click
+- **Dim Draft MRs** — visually dim Draft MRs on the merge requests list page
+- **Highlight your MRs** — highlight your own MRs on the list page with a blue border
+- **Skip confirmations** setting — disable all confirmation dialogs for one-click workflow
+- **"Only mine"** toggle on MR list page — hide all MRs except yours
+
+
+### Improvements
+- New "MR list enhancements" settings section for list page UX features
+- Current username detection via GitLab API with local caching

@@ -1,249 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - GitLab Actions Chrome Extension</title>
-  <meta name="description" content="Privacy Policy for the GitLab Actions Chrome extension. No data collection, no tracking, no third-party sharing.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://termyanen.github.io/gitlab-actions/privacy">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #18171d;
-      --bg-alt: #28272d;
-      --surface: #28272d;
-      --border: #3a383f;
-      --text: #ffffff;
-      --text-sec: #ececef;
-      --accent: #FC6D26;
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --max-w: 800px;
-      --radius: 12px;
-    }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font); background: var(--bg); color: var(--text);
-      line-height: 1.7; -webkit-font-smoothing: antialiased;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .container {
-      max-width: var(--max-w); margin: 0 auto; padding: 60px 24px 80px;
-    }
-    .back {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 14px; color: var(--text-sec); margin-bottom: 40px;
-    }
-    .back:hover { color: var(--accent); text-decoration: none; }
-    h1 {
-      font-size: 32px; font-weight: 700; margin-bottom: 8px;
-    }
-    .updated {
-      font-size: 14px; color: var(--text-sec); margin-bottom: 40px;
-    }
-    h2 {
-      font-size: 20px; font-weight: 600; margin: 36px 0 12px;
-      color: var(--accent);
-    }
-    p, ul { margin-bottom: 16px; color: var(--text-sec); }
-    ul { padding-left: 24px; }
-    li { margin-bottom: 8px; }
-    strong { color: var(--text); }
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 24px; margin: 24px 0;
-    }
-    .card p:last-child { margin-bottom: 0; }
-    .lang-switch {
-      display: flex; gap: 8px; margin-bottom: 40px;
-    }
-    .lang-switch button {
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text-sec); padding: 6px 14px; border-radius: 6px;
-      font-family: var(--font); font-size: 13px; cursor: pointer;
-    }
-    .lang-switch button.active {
-      background: var(--accent); border-color: var(--accent); color: #fff;
-    }
-    .lang-switch button:hover { border-color: var(--accent); }
-    [data-lang="ru"] { display: none; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <a href="./" class="back">&larr; <span data-i18n="back">Back to GitLab Actions</span></a>
-
-    <h1 data-i18n="title">Privacy Policy</h1>
-    <p class="updated" data-i18n="updated">Last updated: July 13, 2026</p>
-
-    <div class="lang-switch">
-      <button class="active" onclick="switchLang('en')">English</button>
-      <button onclick="switchLang('ru')">Русский</button>
-    </div>
-
-    <!-- ═══ ENGLISH ═══ -->
-    <div data-lang="en">
-      <div class="card">
-        <p><strong>GitLab Actions</strong> processes all data locally in your browser. The developer does not operate any servers and never receives, collects, sells, or shares your data. Data is transferred only to the GitLab and (optionally) Jira servers that you yourself use.</p>
-      </div>
-
-      <h2>1. What data is collected</h2>
-      <p>The extension accesses the following categories of data, strictly to provide its features:</p>
-      <ul>
-        <li><strong>Authentication information (session cookies)</strong> — your existing browser session cookies for your GitLab instance and, if you enable the optional Jira integration, for your Jira domain. Cookies are read only to authenticate API requests on your behalf. Passwords, tokens, and other credentials are never read or requested.</li>
-        <li><strong>Website content</strong> — merge request titles and metadata, pipeline/job names and statuses, commit messages, and Jira issue fields (summary, status, assignee, comments, attachments) from the GitLab/Jira pages you visit and their APIs.</li>
-        <li><strong>Extension settings</strong> — your configuration: enabled buttons and their order, version bump settings, Jira URL, custom jobs, quick comments, per-project profiles, language.</li>
-      </ul>
-      <p>The extension does <strong>not</strong> collect browsing history, keystrokes, personally identifiable information beyond the above, and contains no analytics, telemetry, tracking pixels, third-party scripts, or advertising.</p>
-
-      <h2>2. How data is used (processing)</h2>
-      <ul>
-        <li>Session cookies are attached by the browser to API requests to your own GitLab/Jira servers to perform actions you explicitly trigger (rebase, merge, run jobs, post comments) and to read metadata displayed in the UI (badges, statuses, reports).</li>
-        <li>Website content is processed locally in your browser to render UI enhancements (badges, buttons, panels, reports).</li>
-        <li>Settings are used solely to configure the extension's behavior.</li>
-      </ul>
-      <p>Data is never used for advertising, profiling, credit assessment, or any purpose unrelated to the extension's single purpose. Use of data obtained through Chrome APIs complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
-
-      <h2>3. How data is stored</h2>
-      <ul>
-        <li><strong>Settings</strong> are stored in <code>chrome.storage.sync</code> on your device and are kept until you change them or uninstall the extension. If Chrome Sync is enabled, Google may sync them across your browsers under your Google account.</li>
-        <li><strong>GitLab/Jira data</strong> (statuses, issue details) is cached in memory for up to 5 minutes to reduce API load and is discarded when the page is closed. It is never written to persistent storage.</li>
-        <li><strong>Cookies</strong> are never stored by the extension — they remain in the browser's cookie store and are only attached to requests to their own origin.</li>
-        <li>The developer operates no servers; nothing is stored outside your browser.</li>
-      </ul>
-
-      <h2>4. Who data is transferred to (recipients)</h2>
-      <p>Data leaves your browser only towards the following recipients:</p>
-      <ul>
-        <li><strong>Your GitLab server</strong> — the self-hosted or cloud GitLab instance you are logged into and browsing (API requests with your session cookies).</li>
-        <li><strong>Your Jira server</strong> (optional) — only if you configure the Jira integration and explicitly grant host permission for that domain.</li>
-        <li><strong>Google Chrome Sync</strong> (optional) — extension settings only, if you have Chrome Sync enabled in your browser.</li>
-      </ul>
-      <p>Data is <strong>never</strong> transferred to the developer, analytics providers, advertising networks, data brokers, or any other third party. Data is never sold. No data is transferred for purposes unrelated to the extension's functionality.</p>
-
-      <h2>5. Security</h2>
-      <p>All communication with your GitLab/Jira servers uses the same origin and transport security (HTTPS) as your normal browser session. The extension adds no additional endpoints and requests no credentials.</p>
-
-      <h2>6. Your choices and data deletion</h2>
-      <ul>
-        <li>Uninstalling the extension removes all its settings from <code>chrome.storage.sync</code>.</li>
-        <li>The Jira integration is off by default and can be disabled at any time by removing the Jira URL and revoking the host permission.</li>
-        <li>In-memory caches are cleared automatically when tabs are closed.</li>
-      </ul>
-
-      <h2>7. Permissions explained</h2>
-      <ul>
-        <li><strong>storage</strong> — save your extension settings</li>
-        <li><strong>cookies</strong> — read session cookies for GitLab/Jira API authentication</li>
-        <li><strong>tabs</strong> — communicate between content scripts and the background service worker</li>
-        <li><strong>notifications</strong> — show desktop notifications when background jobs complete</li>
-        <li><strong>optional host permissions</strong> — requested on-demand when you configure Jira, so the extension can access your Jira domain</li>
-      </ul>
-
-      <h2>8. Children's privacy</h2>
-      <p>This extension is a developer productivity tool and is not directed at children under 13.</p>
-
-      <h2>9. Changes to this policy</h2>
-      <p>If this policy is updated, the changes will be posted on this page with an updated date.</p>
-
-      <h2>10. Contact</h2>
-      <p>If you have questions about this privacy policy, please open an issue on <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub</a>.</p>
-    </div>
-
-    <!-- ═══ RUSSIAN ═══ -->
-    <div data-lang="ru">
-      <div class="card">
-        <p><strong>GitLab Actions</strong> обрабатывает все данные локально в вашем браузере. Разработчик не управляет никакими серверами и никогда не получает, не собирает, не продает и не передает ваши данные. Данные передаются только на серверы GitLab и (опционально) Jira, которыми пользуетесь вы сами.</p>
-      </div>
-
-      <h2>1. Какие данные собираются</h2>
-      <p>Расширение получает доступ к следующим категориям данных — исключительно для работы своих функций:</p>
-      <ul>
-        <li><strong>Аутентификационные данные (сессионные cookie)</strong> — существующие сессионные cookie вашего GitLab-сервера и, если вы включите опциональную интеграцию с Jira, вашего домена Jira. Cookie считываются только для аутентификации API-запросов от вашего имени. Пароли, токены и другие учетные данные не считываются и не запрашиваются.</li>
-        <li><strong>Содержимое страниц</strong> — заголовки и метаданные merge request'ов, названия и статусы пайплайнов/джоб, сообщения коммитов, поля задач Jira (название, статус, исполнитель, комментарии, вложения) со страниц GitLab/Jira, которые вы посещаете, и их API.</li>
-        <li><strong>Настройки расширения</strong> — ваша конфигурация: включенные кнопки и их порядок, настройки версий, URL Jira, пользовательские джобы, быстрые комментарии, профили проектов, язык.</li>
-      </ul>
-      <p>Расширение <strong>не</strong> собирает историю просмотров, нажатия клавиш и иные персональные данные, кроме перечисленных, и не содержит аналитики, телеметрии, трекеров, сторонних скриптов и рекламы.</p>
-
-      <h2>2. Как данные используются (обработка)</h2>
-      <ul>
-        <li>Сессионные cookie прикрепляются браузером к API-запросам к вашим собственным серверам GitLab/Jira для выполнения действий, которые вы явно запускаете (rebase, merge, запуск джоб, комментарии), и для чтения метаданных, отображаемых в интерфейсе (бейджи, статусы, отчеты).</li>
-        <li>Содержимое страниц обрабатывается локально в браузере для отрисовки улучшений интерфейса (бейджи, кнопки, панели, отчеты).</li>
-        <li>Настройки используются только для конфигурации поведения расширения.</li>
-      </ul>
-      <p>Данные никогда не используются для рекламы, профилирования, оценки кредитоспособности или любых целей, не связанных с единственным назначением расширения. Использование данных, полученных через Chrome API, соответствует политике данных пользователей Chrome Web Store, включая требования Limited Use.</p>
-
-      <h2>3. Как данные хранятся</h2>
-      <ul>
-        <li><strong>Настройки</strong> хранятся в <code>chrome.storage.sync</code> на вашем устройстве до их изменения или удаления расширения. При включенной синхронизации Chrome Google может синхронизировать их между вашими браузерами в рамках вашего аккаунта Google.</li>
-        <li><strong>Данные GitLab/Jira</strong> (статусы, детали задач) кэшируются в памяти до 5 минут для снижения нагрузки на API и удаляются при закрытии страницы. Они никогда не записываются в постоянное хранилище.</li>
-        <li><strong>Cookie</strong> расширением не сохраняются — они остаются в хранилище cookie браузера и прикрепляются только к запросам к их собственному домену.</li>
-        <li>Разработчик не управляет серверами; ничего не хранится за пределами вашего браузера.</li>
-      </ul>
-
-      <h2>4. Кому передаются данные (получатели)</h2>
-      <p>Данные покидают ваш браузер только в адрес следующих получателей:</p>
-      <ul>
-        <li><strong>Ваш GitLab-сервер</strong> — self-hosted или облачный GitLab, в котором вы авторизованы и который просматриваете (API-запросы с вашими сессионными cookie).</li>
-        <li><strong>Ваш Jira-сервер</strong> (опционально) — только если вы настроите интеграцию с Jira и явно предоставите разрешение на доступ к этому домену.</li>
-        <li><strong>Синхронизация Google Chrome</strong> (опционально) — только настройки расширения, если у вас включена синхронизация Chrome.</li>
-      </ul>
-      <p>Данные <strong>никогда</strong> не передаются разработчику, аналитическим платформам, рекламным сетям, брокерам данных или любым другим третьим лицам. Данные никогда не продаются. Данные не передаются для целей, не связанных с функциональностью расширения.</p>
-
-      <h2>5. Безопасность</h2>
-      <p>Все взаимодействие с вашими серверами GitLab/Jira использует те же домены и защиту транспорта (HTTPS), что и ваша обычная сессия браузера. Расширение не добавляет дополнительных эндпоинтов и не запрашивает учетные данные.</p>
-
-      <h2>6. Ваш выбор и удаление данных</h2>
-      <ul>
-        <li>Удаление расширения удаляет все его настройки из <code>chrome.storage.sync</code>.</li>
-        <li>Интеграция с Jira выключена по умолчанию; её можно отключить в любой момент, удалив URL Jira и отозвав разрешение на домен.</li>
-        <li>Кэши в памяти очищаются автоматически при закрытии вкладок.</li>
-      </ul>
-
-      <h2>7. Разрешения</h2>
-      <ul>
-        <li><strong>storage</strong> — сохранение настроек расширения</li>
-        <li><strong>cookies</strong> — чтение сессионных cookie для аутентификации в API GitLab/Jira</li>
-        <li><strong>tabs</strong> — связь между контент-скриптами и фоновым сервис-воркером</li>
-        <li><strong>notifications</strong> — уведомления о завершении фоновых задач</li>
-        <li><strong>optional host permissions</strong> — запрашиваются при настройке Jira для доступа к вашему домену</li>
-      </ul>
-
-      <h2>8. Конфиденциальность детей</h2>
-      <p>Это расширение — инструмент для разработчиков. Оно не предназначено для детей младше 13 лет.</p>
-
-      <h2>9. Изменения политики</h2>
-      <p>При обновлении политики изменения будут опубликованы на этой странице с обновленной датой.</p>
-
-      <h2>10. Контакты</h2>
-      <p>Если у вас есть вопросы, создайте issue на <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub</a>.</p>
-    </div>
-  </div>
-
-  <script>
-    function switchLang(lang) {
-      var btns = document.querySelectorAll('.lang-switch button');
-      for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
-      var sections = document.querySelectorAll('[data-lang]');
-      for (var j = 0; j < sections.length; j++) {
-        sections[j].style.display = sections[j].getAttribute('data-lang') === lang ? 'block' : 'none';
-      }
-      if (lang === 'en') btns[0].classList.add('active');
-      if (lang === 'ru') btns[1].classList.add('active');
-      var titles = { en: 'Privacy Policy', ru: 'Политика конфиденциальности' };
-      var backs = { en: 'Back to GitLab Actions', ru: 'Назад к GitLab Actions' };
-      var dates = { en: 'Last updated: July 13, 2026', ru: 'Последнее обновление: 13 июля 2026' };
-      document.querySelector('[data-i18n="title"]').textContent = titles[lang];
-      document.querySelector('[data-i18n="back"] span, [data-i18n="back"]').lastChild.textContent = ' ' + backs[lang];
-      document.querySelector('[data-i18n="updated"]').textContent = dates[lang];
-    }
-  </script>
-</body>
-</html>
+<!-- Generated by docs/build_pages.py from the linked Markdown sources. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — GitLab MR Actions — GitLab Actions</title>
+<meta name="description" content="How the extension uses GitLab data, local storage, clipboard export and optional integrations.">
+<meta name="referrer" content="no-referrer">
+<link rel="canonical" href="https://termyanen.github.io/gitlab-actions/privacy.html">
+<link rel="icon" href="favicon-32.png"><link rel="stylesheet" href="guide.css"><script src="guide.js" defer></script>
+</head><body data-title-en="Privacy Policy — GitLab MR Actions" data-title-ru="Политика конфиденциальности GitLab MR Actions">
+<a class="skip-link" href="#main">Skip to content / К содержимому</a>
+<nav class="top-nav" aria-label="Main"><a href="./" class="brand"><img src="icon.png" width="28" height="28" alt="">GitLab Actions</a><div class="nav-actions"><a href="review-guide.html" data-en="Review guide" data-ru="Гайд по ревью">Review guide</a><button type="button" data-switch="en" aria-pressed="true">EN</button><button type="button" data-switch="ru" aria-pressed="false">RU</button></div></nav>
+<main id="main"><div data-language="en">
+<header class="page-intro"><p class="eyebrow">GitLab MR Actions · Privacy</p><h1>Privacy Policy — GitLab MR Actions</h1><p class="summary">How the extension uses GitLab data, local storage, clipboard export and optional integrations.</p></header>
+<div class="reading-layout"><aside><nav aria-label="Contents"><p class="toc-title">Contents</p><ol><li><a href="#en-section-1">Overview</a></li>
+<li><a href="#en-section-2">1. Data the extension accesses</a></li>
+<li><a href="#en-section-3">2. How review data is used</a></li>
+<li><a href="#en-section-4">3. Storage and retention</a></li>
+<li><a href="#en-section-5">4. Recipients</a></li>
+<li><a href="#en-section-6">5. Security and permissions</a></li>
+<li><a href="#en-section-7">6. Your choices and deletion</a></li>
+<li><a href="#en-section-8">7. Children, updates and contact</a></li></ol></nav></aside><article><p><strong>Last updated:</strong> October 13, 2026</p>
+<h2 id="en-section-1">Overview</h2>
+<p>GitLab MR Actions adds merge request actions, review tools and optional Jira integration to GitLab. The extension processes content in your browser and communicates with the GitLab instance you are using and, when configured, your Jira server. The developer operates no backend for the extension and receives no repository content, review text or credentials from it. There is no analytics, advertising or telemetry in the extension.</p>
+<h2 id="en-section-2">1. Data the extension accesses</h2>
+<ul>
+<li><strong>Session information:</strong> existing browser sessions and page CSRF tokens used to authenticate requests to your GitLab/Jira servers. The extension does not ask for passwords, personal access tokens or AI API keys.</li>
+<li><strong>GitLab content:</strong> MR and issue metadata, authors and usernames, discussions, replies, your review drafts, commit identifiers and messages, file paths, diffs, selected repository content, pipeline/job results and logs needed by enabled features.</li>
+<li><strong>Jira content, when enabled:</strong> issue fields, users, comments, attachments and available workflow actions from your configured server.</li>
+<li><strong>Settings and entered text:</strong> enabled features, project profiles, URLs, quick comments, review prompts, file filters, language and AI responses you paste for import.</li>
+</ul>
+<p>Access is used for the extension's visible features, not to build a browsing history or profile. The extension does not monitor the clipboard; copy actions write only the text you request. Pasted review responses are processed as data, never executed as code.</p>
+<h2 id="en-section-3">2. How review data is used</h2>
+<p>Copying a review fetches the relevant GitLab context and prepares editable instructions or a text preview locally. The extension does not contact an AI provider, upload code to an AI service, or run an AI model. You choose whether and where to paste the copied text. Any service you paste it into then processes it under its own terms and privacy policy.</p>
+<p>Importing an AI response checks the MR revision, code locations and existing discussions using your GitLab server. Previewing and editing do not publish comments. Choosing <strong>Publish selected</strong> or <strong>Add to review</strong> sends the selected comment text and necessary location/discussion identifiers to that GitLab instance, as published comments or your review drafts respectively. These actions use your signed-in GitLab account and permissions.</p>
+<p>Other enabled features read metadata and perform actions you trigger, such as merge, rebase, pipeline operations and Jira updates. Data is not used for advertising, profiling, sale or unrelated purposes. Use of information obtained through Chrome APIs adheres to the Chrome Web Store User Data Policy, including its Limited Use requirements.</p>
+<p>Optional discussion resolution is sent to the same GitLab only when you explicitly select it for a reply and publish that reply successfully. Drafts do not resolve discussions.</p>
+<h2 id="en-section-4">3. Storage and retention</h2>
+<ul>
+<li><strong>Preferences:</strong> <code>chrome.storage.sync</code> stores settings, including custom review prompts, automatic instruction text and enabled states, and file filters, until changed or the extension is uninstalled. If Chrome Sync is enabled, Google may synchronize these preferences between your browsers. Do not put secrets or repository content into saved prompts or instructions if you do not want them in synchronized settings.</li>
+<li><strong>Local caches:</strong> <code>chrome.storage.local</code> stores a GitLab username cache and commit-version badge results, including project/file identifiers and commit hashes. Version results are capped at 1,000 entries. These caches remain until replaced, evicted where applicable, or extension data is removed. Other loaded content and UI state use memory or browser session storage.</li>
+<li><strong>Duplicate-send protection:</strong> review import stores a local digest identifier, delivery status, timestamp and, after confirmation, comment ID. These records prevent accidental reposting after interruptions and remain until extension data is removed. They contain no comment body, code, prompt or review transcript and are not a review history. They are not stored in Chrome Sync.</li>
+<li><strong>Review content:</strong> fetched discussions/code and pasted import text remain in page memory while the feature is in use. The extension does not save a persistent review transcript or snapshots. Closing the page clears that page's memory. Clipboard text remains under browser/operating-system control until replaced or cleared; clipboard synchronization tools are outside the extension's control.</li>
+<li><strong>Credentials:</strong> the extension does not persist session cookies or CSRF tokens; browser cookies remain in the browser's cookie store.</li>
+</ul>
+<h2 id="en-section-5">4. Recipients</h2>
+<ul>
+<li><strong>Your GitLab instance:</strong> API reads and user-triggered changes, including publishing selected review comments and drafts.</li>
+<li><strong>Your configured Jira server:</strong> optional integration after you grant host access.</li>
+<li><strong>Google Chrome Sync:</strong> preferences only, when enabled in your browser.</li>
+<li><strong>A destination you choose:</strong> copying places text on the clipboard; you decide whether to paste it into an AI tool or another application. There is no automatic AI recipient.</li>
+</ul>
+<p>No extension data is sent to a developer-operated server, analytics service, advertising network or data broker. Opening a documentation, GitHub or store link is ordinary browser navigation; the destination may receive normal web request information. The extension does not append MR content or credentials to those links. The public documentation site is hosted by GitHub Pages and is separate from the extension.</p>
+<h2 id="en-section-6">5. Security and permissions</h2>
+<p>The extension runs bundled JavaScript and does not download executable code or execute imported AI text. Review API requests stay on the current GitLab origin; redirects are rejected. Sensitive API operations use your existing session and the page's CSRF token where required.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+  <th>Permission</th>
+  <th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>storage</code></td>
+  <td>Preferences, local caches and duplicate-send protection</td>
+</tr>
+<tr>
+  <td><code>notifications</code></td>
+  <td>Completion notifications for background jobs</td>
+</tr>
+<tr>
+  <td><code>tabs</code></td>
+  <td>Communicate with GitLab tabs and locate tabs needed for user-triggered work</td>
+</tr>
+<tr>
+  <td><code>cookies</code></td>
+  <td>Existing GitLab/Jira session authentication used by integration features</td>
+</tr>
+<tr>
+  <td>Optional HTTPS host access</td>
+  <td>Requested for the configured Jira domain</td>
+</tr>
+<tr>
+  <td>Content scripts on HTTPS pages</td>
+  <td>Recognize self-hosted GitLab installations on different domains and provide GitLab features there</td>
+</tr>
+</tbody>
+</table></div>
+<p>AI review adds no new extension permissions. The browser controls site access; you can restrict it through the extension's site-access settings.</p>
+<h2 id="en-section-7">6. Your choices and deletion</h2>
+<p>You can disable AI review controls or other features, edit/reset saved prompts and filters, and remove Jira configuration or its host permission. Removing the extension deletes its local and synchronized extension storage on that browser; Chrome controls synchronization across devices. Session UI state can be cleared by closing the relevant tab or clearing site session storage.</p>
+<p>Clearing extension data does not delete comments or drafts already saved in GitLab, data pasted into another application, or clipboard contents. Manage those in the relevant application. Clearing duplicate-send records also removes the extension's local protection against retrying submissions with an uncertain result.</p>
+<h2 id="en-section-8">7. Children, updates and contact</h2>
+<p>This developer tool is not directed at children under 13. Policy updates are posted with a new date. The source is available for inspection in the <a href="https://github.com/termyanen/gitlab-actions">GitHub repository</a>. For questions, open a <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub issue</a>.</p>
+</article></div></div><div data-language="ru" hidden>
+<header class="page-intro"><p class="eyebrow">GitLab MR Actions · Приватность</p><h1>Политика конфиденциальности GitLab MR Actions</h1><p class="summary">Как расширение использует данные GitLab, локальное хранилище, буфер обмена и опциональные интеграции.</p></header>
+<div class="reading-layout"><aside><nav aria-label="Оглавление"><p class="toc-title">Оглавление</p><ol><li><a href="#ru-section-1">Общее описание</a></li>
+<li><a href="#ru-section-2">Данные для работы функций</a></li>
+<li><a href="#ru-section-3">Использование данных ревью</a></li>
+<li><a href="#ru-section-4">Хранение и сроки</a></li>
+<li><a href="#ru-section-5">Получатели</a></li>
+<li><a href="#ru-section-6">Безопасность и разрешения</a></li>
+<li><a href="#ru-section-7">Ваш выбор и удаление</a></li>
+<li><a href="#ru-section-8">Дети, обновления и связь</a></li></ol></nav></aside><article><p><strong>Дата обновления:</strong> 13 октября 2026 года</p>
+<h2 id="ru-section-1">Общее описание</h2>
+<p>GitLab MR Actions добавляет действия с merge request, инструменты ревью и опциональную интеграцию с Jira. Расширение обрабатывает содержимое в браузере и обращается к используемому экземпляру GitLab, а при настройке Jira — к вашему серверу Jira. Разработчик не предоставляет серверную часть расширения и не получает из него содержимое репозиториев, тексты ревью или учётные данные. В расширении нет аналитики, рекламы и телеметрии.</p>
+<h2 id="ru-section-2">Данные для работы функций</h2>
+<ul>
+<li><strong>Сведения о сессии:</strong> текущие сессии браузера и CSRF-токены страниц для аутентификации запросов к GitLab/Jira. Расширение не просит пароли, персональные токены доступа или ключи API ИИ.</li>
+<li><strong>Содержимое GitLab:</strong> метаданные MR и issue, авторы и имена пользователей, обсуждения, ответы, ваши черновики ревью, идентификаторы и сообщения коммитов, пути файлов, diff, выбранный код, результаты и журналы пайплайнов/джоб, необходимые включённым функциям.</li>
+<li><strong>Содержимое Jira при включённой интеграции:</strong> поля задач, пользователи, комментарии, вложения и доступные переходы статусов с настроенного сервера.</li>
+<li><strong>Настройки и введённый текст:</strong> включённые функции, профили проектов, адреса, быстрые комментарии, промпты ревью, фильтры файлов, язык и ответы ИИ, вставленные для импорта.</li>
+</ul>
+<p>Доступ нужен для видимых функций, а не для сбора истории посещений или построения профиля. Расширение не следит за буфером обмена: копирование записывает только запрошенный текст. Вставленные ответы ИИ обрабатываются как данные и не исполняются как код.</p>
+<h2 id="ru-section-3">Использование данных ревью</h2>
+<p>Копирование загружает контекст из GitLab и локально готовит задание или предпросмотр. Расширение не обращается к провайдерам ИИ, не загружает код в ИИ-сервисы и не запускает модель. Вы решаете, копировать ли текст и куда его вставить. Сервис, в который вы вставите текст, обрабатывает его по своим условиям и политике конфиденциальности.</p>
+<p>Импорт сверяет версию MR, строки кода и обсуждения через ваш GitLab. Предпросмотр и редактирование не публикуют комментарии. Кнопки <strong>«Опубликовать выбранные»</strong> и <strong>«Добавить в ревью»</strong> отправляют выбранный текст и необходимые идентификаторы мест в коде или обсуждений в этот GitLab — как опубликованные комментарии или ваши черновики. Используется текущая учётная запись GitLab и её права.</p>
+<p>Другие включённые функции читают метаданные и выполняют запущенные вами действия: merge, rebase, операции с пайплайнами и Jira. Данные не используются для рекламы, профилирования, продажи или посторонних целей. Использование информации, полученной через Chrome API, соответствует Chrome Web Store User Data Policy, включая требования Limited Use.</p>
+<p>Необязательный запрос закрытия обсуждения отправляется в тот же GitLab, только если вы явно включили его для ответа и этот ответ успешно опубликован. Черновики не закрывают обсуждения.</p>
+<h2 id="ru-section-4">Хранение и сроки</h2>
+<ul>
+<li><strong>Настройки:</strong> <code>chrome.storage.sync</code> хранит конфигурацию, включая пользовательские промпты, тексты и состояния автоматических инструкций и фильтры файлов, до изменения или удаления расширения. При включённом Chrome Sync Google может синхронизировать эти настройки между браузерами. Не включайте секреты или код в сохранённые промпты и инструкции, если не хотите сохранять их в синхронизируемых настройках.</li>
+<li><strong>Локальные кэши:</strong> <code>chrome.storage.local</code> хранит имя пользователя GitLab и результаты определения версий по коммитам, включая идентификаторы проекта/файла и SHA. Кэш версий ограничен 1000 записями. Кэши остаются до замены, вытеснения там, где оно предусмотрено, или удаления данных расширения. Остальные загруженные данные и состояние интерфейса используют память или хранилище сессии браузера.</li>
+<li><strong>Защита от повторной отправки:</strong> импорт сохраняет локально хеш-идентификатор операции, статус доставки, время и после подтверждения — ID комментария. Записи остаются до удаления данных расширения и помогают не повторять отправку после сбоев. Они не содержат текста комментария, кода, промпта или переписки ревью, не являются историей ревью и не синхронизируются через Chrome Sync.</li>
+<li><strong>Содержимое ревью:</strong> обсуждения, код и вставленный ответ находятся в памяти страницы во время использования. Расширение не сохраняет постоянную историю ревью или снимки кода. Закрытие страницы очищает её память. Скопированный текст остаётся под управлением браузера и операционной системы до замены или очистки; сторонняя синхронизация буфера не контролируется расширением.</li>
+<li><strong>Учётные данные:</strong> расширение не сохраняет сессионные cookie или CSRF-токены; cookie остаются в хранилище браузера.</li>
+</ul>
+<h2 id="ru-section-5">Получатели</h2>
+<ul>
+<li><strong>Ваш GitLab:</strong> API-запросы и действия пользователя, включая выбранные комментарии и черновики.</li>
+<li><strong>Настроенный сервер Jira:</strong> опциональная интеграция после предоставления доступа к домену.</li>
+<li><strong>Google Chrome Sync:</strong> только настройки, если синхронизация включена.</li>
+<li><strong>Выбранное вами приложение:</strong> копирование помещает текст в буфер, после чего вы решаете, вставлять ли его в ИИ или другое приложение. Автоматического получателя среди ИИ-сервисов нет.</li>
+</ul>
+<p>Расширение не отправляет данные на сервер разработчика, в аналитику, рекламную сеть или брокерам данных. Переход по ссылке документации, GitHub или магазина — обычная навигация браузера: сайт может получить стандартные сведения веб-запроса. Расширение не добавляет к этим ссылкам содержимое MR или учётные данные. Сайт документации размещён на GitHub Pages и отделён от расширения.</p>
+<h2 id="ru-section-6">Безопасность и разрешения</h2>
+<p>Расширение выполняет встроенный JavaScript, не загружает исполняемый код и не исполняет текст ИИ. API-запросы ревью остаются на текущем домене GitLab, перенаправления отклоняются. Операции используют текущую сессию и CSRF-токен страницы там, где это требуется.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица сценариев"><table>
+<thead>
+<tr>
+  <th>Разрешение</th>
+  <th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>storage</code></td>
+  <td>Настройки, локальные кэши и защита от повторной отправки</td>
+</tr>
+<tr>
+  <td><code>notifications</code></td>
+  <td>Уведомления о завершении фоновых задач</td>
+</tr>
+<tr>
+  <td><code>tabs</code></td>
+  <td>Связь с вкладками GitLab и поиск вкладок для действий пользователя</td>
+</tr>
+<tr>
+  <td><code>cookies</code></td>
+  <td>Текущая аутентификация GitLab/Jira для функций интеграции</td>
+</tr>
+<tr>
+  <td>Опциональный доступ к HTTPS-домену</td>
+  <td>Запрашивается для настроенного домена Jira</td>
+</tr>
+<tr>
+  <td>Скрипты на HTTPS-страницах</td>
+  <td>Распознавание self-hosted GitLab на разных доменах и работа функций GitLab</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ревью с ИИ не добавляет новых разрешений. Доступом к сайтам управляет браузер; его можно ограничить в настройках доступа расширения.</p>
+<h2 id="ru-section-7">Ваш выбор и удаление</h2>
+<p>Можно отключить инструменты ревью и другие функции, изменить или сбросить промпты и фильтры, удалить настройки Jira или отозвать доступ к её домену. Удаление расширения удаляет его локальное и синхронизируемое хранилище в этом браузере; синхронизацией между устройствами управляет Chrome. Сессионное состояние можно очистить закрытием вкладки или очисткой сессионного хранилища сайта.</p>
+<p>Удаление данных расширения не удаляет комментарии и черновики в GitLab, текст в других приложениях или буфер обмена. Управляйте ими в соответствующем приложении. Удаление записей защиты от повторной отправки также убирает локальную защиту от повторов операций с неопределённым результатом.</p>
+<h2 id="ru-section-8">Дети, обновления и связь</h2>
+<p>Инструмент предназначен для разработчиков и не ориентирован на детей до 13 лет. Изменения политики публикуются с новой датой. Код доступен в <a href="https://github.com/termyanen/gitlab-actions">репозитории GitHub</a>. По вопросам откройте <a href="https://github.com/termyanen/gitlab-actions/issues">GitHub issue</a>.</p>
+</article></div></div></main>
+<footer><a href="./" data-en="← All features" data-ru="← Все возможности">← All features</a><a href="https://github.com/termyanen/gitlab-actions" rel="noreferrer">GitHub</a><span>GitLab MR Actions · 1.13.0</span></footer>
+</body></html>

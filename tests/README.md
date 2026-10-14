@@ -20,6 +20,12 @@ No npm dependencies or install step are needed. Packaging checks also use Bash,
 | GitLab API relay | Originating tab preference, frozen tabs, no open tabs, API errors, no replay of ambiguously delivered mutations |
 | Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors |
 | MR list lifecycle | Replacement of the list container or rows, pagination during Jira/reviewer/metadata requests, late list rendering, cached and partially cached tickets, title changes and replacement, missing tickets and failed responses without request loops, authentication failures, observer cleanup |
+| AI review export | Modern/legacy/project Work Item routes, relative URL roots, all discussion pages and replies, missing pagination headers, duplicate/malformed records, partial failures, Notes API fallback, timeout/cancellation, explicit comment/thread/description selection, Markdown boundaries, fork and renamed-file context pinned to commit SHAs, old anchors, Unicode file fallback, oversized/binary/image files, attachment and snippet limitations |
+| Public documentation | Landing-page EN/RU key parity, guide/privacy anchors and assets, repeated language switching, local changelog synchronization and inline script parsing |
+| Fresh MR review | Compact default without commit/diff requests, optional code inclusion, all paginated commits and cumulative changed files, legacy changes fallback, pinned revision checks, bounded diff context and explicit omissions, explicit task tabs, empty-selection safeguards, missing-note safeguards, independent prompts/settings and language-neutral output instructions |
+| AI review picker and settings | Real picker handlers in a DOM fixture: note/thread/subset/all selection, unresolved-only defaults with optional general comments, filter/checkbox refresh behavior, preservation of manual selections, preview invalidation, missing notes, live note IDs after DOM reuse, newly posted ordinary-comment recovery, separate draft IDs/API and old-server page fallback, draft publication transitions, delayed load/export/clipboard responses, legacy and Work Items wrappers, repeated rendering, system-note exclusion, relative URL roots, clipboard fallback, five independent saved prompts and resets, shared/fallback default parity, prompt quota validation and saved/error status |
+| Repeat review and file scope | Selected-thread scope, whole-thread context, empty selection as code-only without discussion requests, missing selected threads, no local review-history writes, explicit GitLab version/manual SHA selection, headerless/unsupported version APIs, direct snapshot comparison after rewritten history, source forks and relative roots, resolved discussions, missing/truncated comparisons, changing refs and cancellation; include/exclude precedence, renames/deletions, legacy diffs, settings quotas and temporary scope overrides |
+| AI review import | Versioned JSON and MR identity, current revision and exact diff-line validation, renamed/deleted/context lines, general comments, legacy diff fallback, duplicate detection, editable preview with explicit publication/draft actions, cancellation and per-comment outcomes; text revisions preserve private source, destinations and manual exclusions, added general comments, edit cancellation and delayed responses; targeted replies and original-comment preview, selected-thread reply prompts versus all-unresolved import prompts, thread counts, empty selection and stale selection cancellation, live saved instructions in both prompt buttons in the copy picker, duplicate prompt actions in import preserving input focus, entered JSON and selections, prompt storage errors and cancellation, thread-scoped duplicate detection; controls follow navigation and stale previews cannot send |
 | Cherry-pick diff helper | Clean/shifted/multiple hunks, preservation of unrelated changes, newline handling, rejecting missing/ambiguous context and malformed/binary diffs |
 | Cherry-pick flow | Direct/MR modes and mode changes after failure, multiple branches, duplicate clicks, existing branches, modern/legacy conflict responses vs ambiguous failures, paginated/overlapping/oversized diffs, create/update/delete actions, JSON/TOML/text bump in the fallback commit, original author, unsafe reads, concurrent edits, partial failures, retrying MR creation and recognizing an existing MR |
 | Install/update | Fresh-install defaults and welcome page, update version notice without resetting settings, missing previous version, browser-only update |
@@ -84,6 +90,69 @@ EXTENSION_TEST_SOURCE_DIR=/absolute/path/to/baseline \
 Without this optional environment variable, `npm test` uses only workspace
 runtime sources. CI does not depend on Git history or downloaded server code.
 
+## Review-copy compatibility audit (2026-10-13)
+
+Review copying reads the GitLab API when the picker opens, so its contents do not
+depend on which discussion pages, replies, or diff files the browser has rendered.
+An individually copied draft can fall back to its saved page content on older
+servers without the draft endpoint, with an explicit incomplete-context warning.
+The source checks below establish particular contracts, not compatibility with
+every GitLab release. No live old/new GitLab servers were used for this audit.
+
+| Contract | Implementation decision | Primary sources |
+| --- | --- | --- |
+| Discussions are paginated; their nested notes are serialized together. Read access can filter the notes after discussion IDs are paginated. | Follow pagination, retain all readable replies, and probe for more pages when headers are absent. Report interrupted or inconsistent pagination as incomplete. | [GitLab 13.12.15 Discussions API source](https://github.com/gitlabhq/gitlabhq/blob/v13.12.15/lib/api/discussions.rb), [GitLab 18.4.0 Discussions API source](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/lib/api/discussions.rb) |
+| The Discussions endpoint requires authentication; the Notes API does not guarantee discussion replies. | An authentication failure before comments load is an error. The Notes fallback is explicitly incomplete, never a successful claim that all review feedback was loaded. | The two Discussions API sources above; [discussion note types](https://docs.gitlab.com/api/discussions/#understand-note-types-in-the-api) |
+| Ordinary MR comments are individual discussion items and can also be retrieved by note ID. | If the clicked comment is missing, validate an uncached lookup of that exact ID. Ordinary comments can be recovered directly; threaded/unknown comments require one discussion reload or an explicit missing-context warning. Read the current DOM ID when clicked, including after GitLab reuses a note node. | [MR discussion items](https://docs.gitlab.com/api/discussions/#list-all-merge-request-discussion-items), [retrieve an MR note](https://docs.gitlab.com/api/notes/#retrieve-a-merge-request-note) |
+| Add to review creates a draft with a separate ID namespace and `note` body field. Older draft components reuse `note_…` anchors; newer ones use `draft_…`. | Identify drafts from their own DOM markers, request the exact draft endpoint and label the export as unpublished. On unavailable endpoints only, use scoped saved Markdown or rendered body text with a partial-context warning. Never substitute a published note with the same number or copy an unsaved editor. | [Draft Notes API](https://docs.gitlab.com/api/draft_notes/), [GitLab 15.11 draft component](https://gitlab.com/gitlab-org/gitlab/-/blob/v15.11.0-ee/app/assets/javascripts/batch_comments/components/draft_note.vue), [current draft component](https://gitlab.com/gitlab-org/gitlab/-/blob/master/app/assets/javascripts/batch_comments/components/draft_note.vue), [saved note body](https://gitlab.com/gitlab-org/gitlab/-/blob/v13.12.0-ee/app/assets/javascripts/notes/components/note_body.vue) |
+| REST exposes the tracked `position`, which may move to a newer diff. An anchor is active only when its base, start, and head refs match. | Describe code as the anchor revision, compare all available refs, and label historical and GitLab-mapped locations separately. Export only pinned anchor excerpts, without guessed current-code neighborhoods. | [GitLab 18.4.0 Note entity](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/lib/api/entities/note.rb), [position tracking](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/app/models/concerns/diff_positionable_note.rb), [diff comparison refs](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/lib/gitlab/diff/diff_refs.rb) |
+| Notes use numeric `note_…` anchors in both legacy notes and the Work Items UI. Work Item thread wrappers can also carry the root note ID. | Attach controls to actual notes and avoid duplicate controls on enclosing thread wrappers. | [GitLab 13.12.15 note component](https://github.com/gitlabhq/gitlabhq/blob/v13.12.15/app/assets/javascripts/notes/components/noteable_note.vue), [GitLab 18.4.0 Work Item note](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/app/assets/javascripts/work_items/components/notes/work_item_note.vue), [Work Item discussion](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/app/assets/javascripts/work_items/components/notes/work_item_discussion.vue) |
+| Recent GitLab redirects issue URLs to Work Item URLs; GitLab can also be installed below a nested URL prefix. | Recognize project Work Item routes and retain the installation prefix in API and web links. Group work items and non-issue types are outside this feature's project MR/issue scope. | [Work Items documentation](https://docs.gitlab.com/user/work_items/), [relative URL installations](https://docs.gitlab.com/install/relative_url/), [GitLab 18.4.0 issue-compatible types](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/app/models/work_items/type.rb) |
+
+Code excerpts have explicit size, line, and request limits. Missing historical
+commits, permission failures, binary/image files, LFS contents, and oversized
+files remain visible as limitations in the copied text; they do not remove the
+selected comments. Attachments and external resources are linked, not downloaded.
+Compact output omits repeated API fields and timestamps, but preserves full review
+bodies, selected/context-only scope, reply roles, status and precise anchor ranges.
+The receiving AI must locate the corresponding current code before applying a change.
+
+The review-export tests exercise the real data/formatting code with mocked HTTP
+responses. They do not establish live GitLab DOM, Chrome clipboard permission,
+or page-rendering compatibility; use the browser checks below for those surfaces.
+
+Fresh MR review reads the [MR commits](https://docs.gitlab.com/api/merge_requests/#retrieve-merge-request-commits)
+and [file diffs](https://docs.gitlab.com/api/merge_requests/#list-merge-request-diffs)
+endpoints separately from discussion loading. Tests cover pagination and compare
+all three revision references before and after loading. A capped file list,
+missing hunks, collapsed/oversized content and local copy limits must be disclosed
+in the prompt rather than described as a complete review context.
+
+The import tests also mock GitLab: they do not create real comments. Publication
+uses the [Discussions API](https://docs.gitlab.com/api/discussions/#create-a-new-thread-in-the-merge-request-diff)
+and explicit draft creation uses the [Draft Notes API](https://docs.gitlab.com/api/draft_notes/#create-a-draft-note).
+Each text position uses the server's old/new paths and three diff refs; context
+lines require both old and new line numbers. Unsupported draft creation never
+switches to publication, and the importer does not call `bulk_publish`, which
+would also publish the user's unrelated pending review comments.
+
+Existing-thread replies use [the discussion notes endpoint](https://docs.gitlab.com/api/discussions/#add-note-to-a-merge-request-thread)
+with `body`, while draft replies use `in_reply_to_discussion_id`. The importer
+checks both the public discussion hash and the original published note ID.
+GitLab 15.11's draft API metadata calls `discussion_id` an integer, but its
+[model validates a string hash](https://gitlab.com/gitlab-org/gitlab/-/blob/v15.11.0-ee/app/models/draft_note.rb);
+numeric IDs must not be guessed or conflated with public discussion IDs.
+Sending a reply does not issue a resolve/reopen request. All reply tests use
+mocked GitLab responses and do not publish real comments.
+
+A local Chrome fixture was also checked on 2026-10-13 with the production review
+scripts/styles and simulated GitLab responses. It verified pagination beyond the
+rendered comments, a single reply's requested/context scope, complete and partial
+copying, project Work Items navigation, safe rendering of comment text, and layout
+at desktop and 390px widths in light/dark themes. The fixture mocked clipboard
+writes and extension storage; these checks are not a live-GitLab or installed-
+extension compatibility certification.
+
 ## Remaining coverage gaps
 
 This suite covers selected behaviors, not every path or combination of settings.
@@ -137,3 +206,43 @@ For a release, use a disposable GitLab project and load the unpacked extension:
    receive its statuses and icons without a reload, duplicates, or repeated
    requests caused by badge rendering. Repeat with reviewer and branch badges
    enabled, and with an empty list followed by results.
+
+For review copying, repeat these checks on an older GitLab deployment and a
+recent deployment, recording the exact versions and any installation URL prefix:
+
+1. Open an MR with more than 100 discussions and collapsed replies/diffs. Copy
+   all feedback without expanding or scrolling the page; verify that the last
+   API page and reply are included, system activity is omitted, and resolved
+   threads are distinguishable from unresolved ones.
+2. Copy one reply, then its whole thread. The first output must mark only that
+   reply as requested work while retaining the root comment, its location, and
+   the other replies as context. Search/filter, select a subset, and verify that
+   unrelated discussions are absent from the output.
+3. Repeat on an issue, its description-only selection, and a recent project
+   Work Item issue page. Check inline controls after lazy loading, after a thread
+   is collapsed/reopened, and after navigation to another issue. There must be
+   no controls on system notes or duplicate thread wrappers.
+4. Include an old diff comment, renamed/deleted file, multiline comment,
+   file-level comment, and fork MR. Verify the recorded filenames/SHAs and that
+   unavailable historical files or approximate current positions are clearly
+   identified. Image attachments must not be described as included image data.
+5. Interrupt a later discussion-page request, expire the session, and block one
+   repository-file read. The UI must report failures accurately; an interrupted
+   later page must retain fetched comments with a partial-data warning in the
+   copied text. Retry/refresh, close during loading, and navigate during loading
+   to check that stale results never copy another MR's data.
+6. Change the saved prompt, reopen the picker, try a temporary prompt edit, and
+   reset to the English default. Verify that a temporary edit does not silently
+   replace the saved setting. Disable/re-enable the feature and check controls.
+7. Block clipboard permission or leave the tab unfocused while data loads. Check
+   that the prepared text remains available for manual selection/copy, that a
+   fresh Copy click works when allowed, and that Tab/Escape work in the picker.
+
+Repeat-review browser checks: publish findings, push fixes (also try force-pushing
+a rewritten branch), explicitly choose the reviewed GitLab version or enter its full SHA and inspect the repeat packet.
+Check compact exports first, then enable code inclusion: the selected delta must not
+duplicate the cumulative MR diff, and an unavailable comparison must explicitly
+fall back to the current MR diff. Verify that replies target existing threads and old-side snapshot lines cannot be
+used as current MR diff anchors. Verify that importing or publishing a response creates no local review history. Check file-filter overrides, excluded rename paths, a missing
+old commit, and failed version-list requests. Automated coverage uses API/DOM fixtures;
+it does not replace these live GitLab checks.

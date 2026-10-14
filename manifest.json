@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "1.12.3",
+  "version": "1.13.0",
   "description": "__MSG_extDescription__",
   "homepage_url": "https://github.com/termyanen/gitlab-actions",
   "default_locale": "en",
@@ -22,7 +22,7 @@
     },
     {
       "matches": ["https://*/*"],
-      "js": ["content_proxy.js"],
+      "js": ["content_proxy.js", "review-workflow.js", "review-export.js", "review-import.js", "review-import-ui.js", "review-copy.js"],
       "css": ["content.css"],
       "run_at": "document_idle"
     }

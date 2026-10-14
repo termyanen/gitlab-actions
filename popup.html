@@ -14,6 +14,7 @@
     .status { position: fixed; top: 0; left: 0; right: 0; padding: 6px 0; font-size: 12px; font-weight: 600; text-align: center; display: none; z-index: 9999; transition: opacity 0.3s; }
     .status.saved { background: #28a745; color: #fff; }
     .status.unsaved { background: #e67e22; color: #fff; }
+    .status.failed { background: #b42318; color: #fff; }
 
     /* Tabs */
     .tabs { display: flex; gap: 0; border-bottom: 2px solid #eee; margin-bottom: 12px; }
@@ -41,7 +42,23 @@
 
     .field { margin-bottom: 10px; }
     .field label { display: block; margin-bottom: 3px; font-weight: 500; }
-    .field input { width: 100%; padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
+    .field input, .field textarea, .field select { width: 100%; padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
+    select, .field select {
+      appearance: none;
+      padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px 16px;
+    }
+    .field textarea { font-family: inherit; line-height: 1.45; resize: vertical; min-height: 120px; }
+    .field.ai-review-language { margin-bottom: 16px; }
+    .field.ai-review-language label { margin-bottom: 6px; }
+    .ai-review-language select { min-height: 34px; font-family: inherit; }
+    .ai-review-language .hint { margin-top: 7px; line-height: 1.45; }
+    .ai-review-rules { margin: 12px 0 16px; }
+    .ai-review-rules summary { cursor: pointer; font-weight: 500; padding: 6px 0; }
+    .ai-review-rule { margin: 6px 0; padding: 0 8px; border: 1px solid #8885; border-radius: 4px; }
     .toggle { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
     .toggle label { flex: 1; cursor: pointer; }
     .toggle input { cursor: pointer; }
@@ -68,6 +85,7 @@
     .current-project { font-size: 11px; color: #1f75cb; margin-bottom: 8px; font-weight: 500; }
     .how-link { font-size: 11px; color: #1f75cb; text-decoration: none; font-weight: 400; margin-left: 8px; }
     .how-link:hover { text-decoration: underline; }
+    .how-link.review-guide-link { margin-left: 0; }
 
     .update-banner { background: #f0f7ff; border: 1px solid #cce0f5; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; position: relative; display: none; }
     .update-banner .update-version { font-weight: 600; color: #1f75cb; }
@@ -94,8 +112,8 @@
       .btn-drag-handle { color: #555; }
       .btn-drag-handle:hover { color: #aaa; }
       .btn-item.drag-over { box-shadow: 0 -2px 0 0 #6cb2f7 inset; background: #252d38; }
-      .field input { background: #2a2a2a; border-color: #444; color: #ddd; }
-      .field input::placeholder { color: #666; }
+      .field input, .field textarea, .field select { background-color: #2a2a2a; border-color: #444; color: #ddd; }
+      .field input::placeholder, .field textarea::placeholder { color: #666; }
       .custom-job input { background: #2a2a2a; border-color: #444; color: #ddd; }
       .jira-quick-action { background: #252525; border-color: #444; }
       .jira-quick-action input { background: #2a2a2a; border-color: #444; color: #ddd; }
@@ -112,7 +130,12 @@
       .how-link { color: #6cb2f7; }
       .status.saved { background: #2ea043; }
       .status.unsaved { background: #b35c14; }
-      select { background: #2a2a2a !important; border-color: #444 !important; color: #ddd !important; }
+      select, .field select {
+        background-color: #2a2a2a;
+        border-color: #444;
+        color: #ddd;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23bbb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+      }
       .update-banner { background: #1a2332; border-color: #2d4a6f; }
       .update-banner .update-version { color: #6cb2f7; }
       .update-banner a { color: #6cb2f7; }
@@ -160,8 +183,11 @@
   </div>
 
   <button id="save" style="display:none">Save</button>
-  <div class="status" id="status">Saved!</div>
+  <div class="status" id="status" role="status" aria-live="polite">Saved!</div>
 
+  <script src="review-workflow.js"></script>
+  <script src="review-export.js"></script>
+  <script src="review-import.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
