@@ -3140,7 +3140,7 @@
 
   if (isCommitsPage()) {
     try {
-      chrome.storage.sync.get({ jira_url: '', jira_ticket_regex: '', commits_jira_field: 'fixVersions' }, function(s) {
+      chrome.storage.sync.get({ jira_url: '', jira_ticket_regex: '', commits_jira_field: 'fixVersions, status' }, function(s) {
         if (chrome.runtime.lastError || !s.jira_url || !s.commits_jira_field) return;
         setJiraTicketRegex(s.jira_ticket_regex);
         var jiraUrl = s.jira_url;

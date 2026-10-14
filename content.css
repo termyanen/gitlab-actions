@@ -2221,3 +2221,207 @@ a:has(.gl-jira-badge):focus {
 .gl-dark .gl-group-play-btn:hover {
   background: var(--gl-background-color-subtle, #333238);
 }
+.gl-review-launcher,
+.gl-review-inline,
+.gl-review-overlay {
+  --gl-review-bg: var(--gl-background-color-default, #fff);
+  --gl-review-fg: var(--gl-text-color-default, #303030);
+  --gl-review-muted: var(--gl-text-color-subtle, #626168);
+  --gl-review-border: var(--gl-border-color-default, #dcdcde);
+  --gl-review-soft: var(--gl-background-color-subtle, #f5f5f7);
+  color: var(--gl-review-fg);
+  font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.gl-dark .gl-review-launcher,
+.gl-dark .gl-review-inline,
+.gl-dark .gl-review-overlay,
+[data-theme="dark"] .gl-review-overlay {
+  --gl-review-bg: var(--gl-background-color-default, #1f1e27);
+  --gl-review-fg: var(--gl-text-color-default, #ececef);
+  --gl-review-muted: var(--gl-text-color-subtle, #b5b4be);
+  --gl-review-border: var(--gl-border-color-default, #4a4856);
+  --gl-review-soft: var(--gl-background-color-subtle, #292833);
+}
+.gl-review-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--gl-review-border);
+  border-radius: 5px;
+  color: var(--gl-review-fg);
+  background: var(--gl-review-bg);
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: normal;
+}
+.gl-review-button:hover:not(:disabled) { background: var(--gl-review-soft); border-color: #89888d; }
+.gl-review-button:disabled { opacity: .5; cursor: default; }
+.gl-review-button:focus-visible,
+.gl-review-dialog :is(input, select, textarea, summary, a):focus-visible { outline: 2px solid #1f75cb; outline-offset: 2px; }
+.gl-review-button.gl-review-primary { color: #fff; background: #1f75cb; border-color: #1f75cb; }
+.gl-review-button.gl-review-primary:hover:not(:disabled) { background: #175da2; }
+.gl-review-launcher { display: inline-flex; align-items: center; align-self: center; margin: 0; margin-inline-start: 4px; vertical-align: middle; }
+.gl-review-launcher.gl-review-in-actions { align-self: flex-start; margin: 0; }
+.gl-review-floating { position: fixed; bottom: 20px; left: 20px; z-index: 990; margin: 0; box-shadow: 0 2px 12px #0002; }
+.gl-review-inline { display: inline-flex; align-items: center; align-self: center; margin: 0; margin-inline-start: 4px; vertical-align: middle; }
+.gl-review-icon-button { box-sizing: border-box; width: 32px; height: 32px; min-width: 0; margin: 0; padding: 6px; flex-shrink: 0; }
+.gl-review-inline .gl-review-icon-button { width: 24px; height: 24px; padding: 2px; border-color: transparent; background: transparent; color: var(--gl-review-muted); }
+.gl-review-inline .gl-review-icon-button:hover { color: var(--gl-review-fg); }
+.gl-review-icon { display: flex; pointer-events: none; }
+.gl-review-icon svg { display: block; width: 18px; height: 18px; }
+.gl-review-icon svg, .gl-review-icon svg * { fill: none !important; stroke: currentColor !important; }
+/* Both review dialogs lock the document only while an overlay exists. */
+html:has(.gl-review-overlay),
+body:has(.gl-review-overlay) { overflow: hidden !important; }
+html:has(.gl-review-overlay) { scrollbar-gutter: stable; }
+.gl-review-overlay { position: fixed; inset: 0; z-index: 100100; display: flex; align-items: center; justify-content: center; padding: 24px; background: #11182788; }
+.gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, .gl-review-note-text, textarea) { overscroll-behavior: contain; }
+.gl-review-overlay *, .gl-review-overlay *::before, .gl-review-overlay *::after { box-sizing: border-box; }
+.gl-review-dialog { display: flex; flex-direction: column; width: 1120px; max-width: 100%; height: min(860px, 92vh); background: var(--gl-review-bg); border: 1px solid var(--gl-review-border); border-radius: 12px; box-shadow: 0 24px 80px #0004; overflow: hidden; }
+/* Match the command palette's thin, rotating chevron without image requests. */
+.gl-review-dialog details > summary { display: flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; }
+.gl-review-dialog details > summary::-webkit-details-marker { display: none; }
+.gl-review-dialog details > summary::marker { content: ''; }
+.gl-review-dialog details > summary::before { content: ''; flex: 0 0 7px; width: 7px; height: 7px; margin-inline: 2px 3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .15s ease; }
+.gl-review-dialog details[open] > summary::before { transform: rotate(45deg); }
+@media (prefers-reduced-motion: reduce) {
+  .gl-review-dialog details > summary::before { transition: none; }
+}
+.gl-review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px 12px; }
+.gl-review-header h2 { color: inherit; font-size: 20px; line-height: 1.3; margin: 0 0 4px; }
+.gl-review-subject { color: var(--gl-review-muted); margin: 0; overflow-wrap: anywhere; max-height: 3em; overflow: auto; }
+.gl-review-status { padding: 0 22px 12px; min-height: 30px; color: var(--gl-review-muted); }
+.gl-review-error { color: #c23b30; }
+.gl-review-warning { margin: 0 22px 12px; padding: 10px 12px; border: 1px solid #d99530; border-radius: 6px; background: #f5a62312; max-height: 140px; overflow: auto; font-size: 12px; overflow-wrap: anywhere; }
+.gl-review-warning details { margin-top: 4px; }
+.gl-review-warning ul { margin: 4px 0; padding-left: 18px; }
+.gl-review-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); min-height: 0; flex: 1; border-top: 1px solid var(--gl-review-border); }
+.gl-review-picker { min-height: 0; display: flex; flex-direction: column; padding: 16px 18px; border-right: 1px solid var(--gl-review-border); }
+.gl-review-filters { display: flex; gap: 8px; }
+.gl-review-filters input { min-width: 0; flex: 1; }
+.gl-review-select { position: relative; display: block; min-width: 0; max-width: 46%; }
+.gl-review-select::after { content: ''; position: absolute; inset-inline-end: 12px; top: 50%; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-75%) rotate(45deg); pointer-events: none; }
+.gl-review-filters input, .gl-review-filters select, .gl-review-repeat-options select, .gl-review-baseline-sha, .gl-review-output textarea { border: 1px solid var(--gl-review-border); border-radius: 5px; background: var(--gl-review-bg); color: inherit; padding: 7px 9px; font: inherit; }
+.gl-review-filters select, .gl-review-repeat-options select { -webkit-appearance: none; appearance: none; width: 100%; min-width: 0; max-width: 100%; padding-inline-end: 32px; }
+.gl-review-general-toggle { display: flex; align-items: flex-start; gap: 7px; margin: 8px 0 0; font-size: 12px; cursor: pointer; }
+.gl-review-tools { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
+.gl-review-tools .gl-review-button { font-size: 12px; padding: 4px 8px; }
+.gl-review-count { font-size: 12px; color: var(--gl-review-muted); margin: 6px 0 10px; }
+.gl-review-list { overflow: auto; min-height: 0; flex: 1; padding-right: 4px; }
+.gl-review-thread { border: 1px solid var(--gl-review-border); border-radius: 7px; margin-bottom: 10px; overflow: hidden; }
+.gl-review-thread-heading { display: flex; gap: 6px; align-items: flex-start; padding: 9px 10px; background: var(--gl-review-soft); }
+.gl-review-thread-label { display: flex; align-items: flex-start; gap: 7px; min-width: 0; flex: 1; flex-wrap: wrap; margin: 0; cursor: pointer; }
+.gl-review-dialog input[type="checkbox"] { flex-shrink: 0; width: 15px; height: 15px; accent-color: #1f75cb; cursor: pointer; margin: 3px 0 0; }
+.gl-review-badge { font-size: 11px; font-weight: 600; }
+.gl-review-path { font: 11px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--gl-review-muted); overflow-wrap: anywhere; }
+.gl-review-link { color: #1f75cb; text-decoration: none; }
+.gl-review-note { padding: 10px; }
+.gl-review-note-label { display: flex; gap: 7px; flex-wrap: wrap; align-items: flex-start; margin: 0 0 6px; cursor: pointer; }
+.gl-review-note-label strong { font-size: 12px; font-weight: 600; }
+.gl-review-note-label time { font-size: 10px; line-height: 20px; }
+.gl-review-note-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: inherit; margin: 0; padding: 0; border: 0; background: none; max-height: 220px; overflow: auto; }
+.gl-review-replies { border-top: 1px solid var(--gl-review-border); }
+.gl-review-replies summary { padding: 7px 10px; cursor: pointer; color: var(--gl-review-muted); font-size: 12px; }
+.gl-review-replies .gl-review-note { border-top: 1px solid var(--gl-review-border); }
+.gl-review-muted { color: var(--gl-review-muted); font-size: 12px; }
+.gl-review-context-hint { margin: 10px 0 0; font-size: 11px; }
+.gl-review-output { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: auto; padding: 16px 18px; }
+.gl-review-description-toggle { display: flex; align-items: flex-start; gap: 7px; margin: 0; cursor: pointer; }
+.gl-review-prompt-details summary { cursor: pointer; }
+.gl-review-fresh-hint { margin: 0; padding: 10px 12px; border-radius: 6px; background: #1f75cb12; font-size: 12px; line-height: 1.5; }
+.gl-review-output .gl-review-prompt { width: 100%; min-height: 100px; resize: vertical; margin-top: 7px; }
+.gl-review-prompt-details p { margin: 5px 0; }
+.gl-review-preview-label { font-weight: 600; margin: 6px 0 0; }
+.gl-review-output .gl-review-preview { width: 100%; flex: 1; min-height: 160px; resize: none; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
+.gl-review-footer { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding: 14px 22px; border-top: 1px solid var(--gl-review-border); }
+.gl-review-overlay [hidden] { display: none !important; }
+@media (max-width: 720px) {
+  .gl-review-overlay { padding: 8px; }
+  .gl-review-dialog { height: 96vh; }
+  .gl-review-columns { grid-template-columns: 1fr; overflow: auto; display: block; }
+  .gl-review-picker { border-right: 0; border-bottom: 1px solid var(--gl-review-border); max-height: 54vh; min-height: 240px; }
+  .gl-review-output { min-height: 310px; }
+  .gl-review-header, .gl-review-footer { padding: 12px; }
+  .gl-review-status { padding: 0 12px 8px; }
+  .gl-review-warning { margin: 0 12px 8px; }
+  .gl-review-footer .gl-review-button { flex: 1; }
+}
+
+/* AI review import uses the same theme and control sizes as review export. */
+.gl-review-import-launcher.gl-review-floating { left: 60px; }
+.gl-review-import-input-pane { border-right: 1px solid var(--gl-review-border); }
+.gl-review-import-preview-pane { border-right: 0; }
+.gl-review-import-help { margin: 0 0 4px; }
+.gl-review-import-preview-title { margin: 0; color: inherit; font: inherit; font-weight: 600; }
+.gl-review-import-code { margin: 0 0 10px; padding: 7px 9px; border: 1px solid var(--gl-review-border); border-radius: 4px; color: inherit; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gl-review-import-text { max-height: none; }
+.gl-review-import-message { margin: 9px 0 0; overflow-wrap: anywhere; }
+.gl-review-import-resolve { padding-top: 10px; }
+.gl-review-import-item[data-import-result="invalid"],
+.gl-review-import-item[data-import-result="unknown"],
+.gl-review-import-item[data-import-result="failed"] { border-color: #d99530; }
+.gl-review-import-item[data-import-result="published"],
+.gl-review-import-item[data-import-result="draft"] { border-color: #4caa76; }
+.gl-review-import-send-hint { flex: 1 1 100%; margin: 0 0 3px; }
+.gl-review-copy-prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.gl-review-copy-prompt-actions .gl-review-button { flex: 1 1 160px; }
+.gl-review-copy-prompt-help { margin: 0; }
+.gl-review-import-original { padding: 9px 10px; margin: 0 0 12px; border-inline-start: 3px solid var(--gl-review-border); border-radius: 0 4px 4px 0; background: var(--gl-review-soft); }
+.gl-review-import-original-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin-bottom: 6px; }
+.gl-review-import-original-heading strong { font-size: 12px; }
+.gl-review-import-original-path { margin: 0 0 6px; }
+.gl-review-import-reply-label { display: block; margin-bottom: 6px; font-size: 12px; }
+.gl-review-import-edit { width: 24px; height: 24px; padding: 2px; border-color: transparent; background: transparent; color: var(--gl-review-muted); }
+.gl-review-import-edit:hover:not(:disabled) { color: var(--gl-review-fg); }
+.gl-review-import-editor-label { display: block; margin: 0 0 6px; font-size: 12px; font-weight: 600; }
+.gl-review-import-editor-input { display: block; width: 100%; min-height: 140px; resize: vertical; border: 1px solid var(--gl-review-border); border-radius: 5px; background: var(--gl-review-bg); color: inherit; padding: 8px 9px; font: inherit; line-height: 1.5; }
+.gl-review-import-edit-hint { margin: 7px 0; overflow-wrap: anywhere; }
+.gl-review-import-editor-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+@media (max-width: 720px) {
+  .gl-review-import-input-pane { border-right: 0; border-bottom: 1px solid var(--gl-review-border); min-height: 360px; }
+  .gl-review-import-preview-pane { border-bottom: 0; max-height: none; }
+  .gl-review-import-preview-pane .gl-review-list { min-height: 200px; }
+}
+
+.gl-review-repeat-options { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+.gl-review-repeat-options > label { flex: 1 1 200px; min-width: 0; margin: 0; font-size: 12px; line-height: 16px; }
+.gl-review-repeat-options .gl-review-select { max-width: 100%; margin-top: 5px; }
+.gl-review-repeat-options select,
+.gl-review-repeat-options > .gl-review-button,
+.gl-review-repeat-options .gl-review-baseline-sha { height: 32px; min-height: 32px; margin-bottom: 0; font-size: 13px; font-weight: 400; line-height: 18px; padding-block: 6px; }
+.gl-review-repeat-options select { display: block; }
+.gl-review-repeat-options > .gl-review-button { flex-shrink: 0; white-space: nowrap; }
+.gl-review-scope .gl-review-preview-label { display: block; }
+.gl-review-scope .gl-review-prompt { min-height: 56px; }
+
+.gl-review-baseline-sha { display: block; width: 100%; margin-top: 6px; }
+.gl-review-versions-hint { flex: 1 1 100%; margin: 0; order: 1; }
+
+/* Task tabs make the requested AI action explicit; selection never changes it. */
+.gl-review-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 0 22px 12px; padding: 4px; background: var(--gl-review-soft); border-radius: 8px; }
+.gl-review-tabs .gl-review-button { border-color: transparent; background: transparent; font-weight: 600; min-height: 38px; }
+.gl-review-tabs [aria-selected="true"] { background: var(--gl-review-bg); border-color: var(--gl-review-border); box-shadow: 0 1px 3px #0001; color: #1f75cb; }
+.gl-review-columns.gl-review-single-column { grid-template-columns: minmax(0, 1fr); }
+.gl-review-single-column .gl-review-output { width: 100%; max-width: 820px; justify-self: center; }
+.gl-review-task-hint { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; }
+.gl-review-task-summary { margin: 4px 0 8px; padding: 12px; background: var(--gl-review-soft); border: 1px solid var(--gl-review-border); border-radius: 7px; font-size: 13px; line-height: 1.6; }
+.gl-review-advanced, .gl-review-preview-details { border-top: 1px solid var(--gl-review-border); margin-top: 6px; padding-top: 12px; }
+.gl-review-advanced > summary, .gl-review-preview-details > summary { cursor: pointer; font-weight: 600; }
+.gl-review-advanced .gl-review-prompt-details { margin: 12px 0; }
+.gl-review-preview-details .gl-review-preview { margin-top: 8px; height: 240px; }
+.gl-review-next-step { margin: auto 0 0; padding-top: 14px; line-height: 1.6; }
+.gl-review-footer .gl-review-import-result { margin-inline-end: auto; }
+@media (max-width: 720px) {
+  .gl-review-tabs { margin-inline: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gl-review-tabs .gl-review-button { min-height: 34px; font-size: 12px; }
+  .gl-review-footer .gl-review-import-result { flex-basis: 100%; }
+}
+.gl-review-advanced .gl-review-copy-prompt-actions { margin-top: 10px; }
+@media (max-width: 720px) {
+  .gl-review-columns:not(.gl-review-import-columns) { display: flex; flex-direction: column; }
+  .gl-review-columns:not(.gl-review-import-columns) > .gl-review-output { order: -1; min-height: 0; flex-shrink: 0; }
+  .gl-review-columns:not(.gl-review-import-columns) > .gl-review-picker { flex-shrink: 0; border-top: 1px solid var(--gl-review-border); }
+}

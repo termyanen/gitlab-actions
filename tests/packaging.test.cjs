@@ -14,7 +14,7 @@ var root = require('./helpers/extension.cjs').root;
     var staging = fs.mkdtempSync(path.join(os.tmpdir(), 'gitlab-actions-package-'));
     try {
       var manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
-      var required = ['manifest.json', 'background.js', 'content.js', 'content_proxy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
+      var required = ['manifest.json', 'background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
       Object.keys(manifest.icons).forEach(function(size) { required.push(manifest.icons[size]); });
       ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
       required.concat(['pack.sh', 'package.json']).forEach(function(file) {

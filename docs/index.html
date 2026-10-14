@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitLab Actions - One-Click MR Workflow, Auto-Merge, Jira Integration</title>
-  <meta name="description" content="Free Chrome extension for GitLab merge requests. One-click rebase, auto-merge, version bump, CI job management, and deep Jira integration. Works with self-hosted GitLab. No API tokens needed.">
+  <title>GitLab Actions - One-Click MR Workflow, Auto-Merge, Jira Integration, AI Review</title>
+  <meta name="description" content="Free Chrome extension for GitLab merge requests. One-click rebase, auto-merge, version bump, CI job management, and deep Jira integration. Works with self-hosted GitLab. No API tokens needed. Now with AI review using your own tools.">
   <meta name="keywords" content="GitLab, Chrome extension, browser extension, merge request, auto-merge, rebase, version bump, Jira integration, CI/CD, DevOps, code review, productivity, GitLab tools, MR workflow, GitLab plugin, GitLab automation, self-hosted GitLab, merge request actions, GitLab CI, pipeline management, developer tools">
   <meta name="author" content="Roman Termyanen">
   <meta name="robots" content="index, follow">
@@ -12,7 +12,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="GitLab Actions - Automate Your GitLab MR Workflow">
-  <meta property="og:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. No tokens needed.">
+  <meta property="og:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. No tokens needed. Now with AI review using your own tools.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://termyanen.github.io/gitlab-actions">
   <meta property="og:site_name" content="GitLab Actions">
@@ -25,16 +25,13 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="GitLab Actions - Automate Your GitLab MR Workflow">
-  <meta name="twitter:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests.">
+  <meta name="twitter:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. Now with AI review using your own tools.">
   <meta name="twitter:image" content="https://termyanen.github.io/gitlab-actions/og-image.png">
 
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -45,13 +42,13 @@
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Chrome",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Chrome extension for GitLab merge requests: one-click rebase, auto-merge, version bump, CI jobs, Jira integration. No tokens needed.",
+    "description": "Chrome extension for GitLab merge requests: one-click rebase, auto-merge, version bump, CI jobs, Jira integration. No tokens needed. Now with AI review using your own tools.",
     "url": "https://termyanen.github.io/gitlab-actions",
     "downloadUrl": "https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak",
     "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.12.3",
+    "softwareVersion": "1.13.0",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -386,6 +383,15 @@
       *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
       html { scroll-behavior: auto; }
     }
+    .ai-review-section{scroll-margin-top:80px}
+    .ai-review-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;list-style:none}
+    .ai-review-steps li{padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+    .ai-step-number{display:block;color:var(--accent);font-size:13px;letter-spacing:.1em;margin-bottom:20px}
+    .ai-review-steps h3{font-size:18px;margin-bottom:10px}.ai-review-steps p{font-size:14px;color:var(--text-sec);line-height:1.65}
+    .ai-review-footer{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:24px}.ai-review-footer p{max-width:660px;color:var(--text-sec);font-size:14px}.ai-review-footer a{flex-shrink:0}
+    @media(max-width:900px){.ai-review-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-review-footer{align-items:flex-start;flex-direction:column}}
+    @media(max-width:480px){.ai-review-steps{grid-template-columns:1fr}}
+    :focus-visible{outline:3px solid var(--orange);outline-offset:4px}
   </style>
 </head>
 <body>
@@ -399,7 +405,7 @@
       </a>
       <div class="nav-right">
         <a href="#features" class="nav-hide-mobile" data-i18n="navFeatures">Features</a>
-        <a href="#jira" class="nav-hide-mobile" data-i18n="navJira">Jira</a>
+        <a href="review-guide.html" class="nav-hide-mobile" data-guide-link data-i18n="aiGuide">AI review guide</a>
         <a href="#how-it-works" class="nav-hide-mobile" data-i18n="navHow">How it works</a>
         <a href="https://github.com/termyanen/gitlab-actions" target="_blank" class="nav-hide-mobile">GitHub</a>
         <span class="lang-switch" id="langToggle" role="button" tabindex="0" aria-label="Switch language">RU</span>
@@ -415,7 +421,7 @@
       <span data-i18n-html="heroBadge">Free Chrome Extension &middot; Open Source &middot; 7 Languages</span>
     </div>
     <h1 data-i18n-html="heroTitle">Automate the routine in <span>GitLab</span></h1>
-    <p class="hero-sub" data-i18n="heroSub">Rebase, bump version, auto-merge, manage CI jobs, and track Jira tickets &mdash; all without leaving the merge request page. Works with any self-hosted GitLab. No API tokens needed.</p>
+    <p class="hero-sub" data-i18n="heroSub">Rebase, bump version, auto-merge, manage CI jobs, and track Jira tickets &mdash; all without leaving the merge request page. Works with any self-hosted GitLab. No API tokens needed. Now with AI review using your own tools.</p>
     <div class="hero-actions">
       <a href="https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak" class="btn-primary" target="_blank">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M8 6.5v7l6-3.5-6-3.5z" fill="currentColor"/></svg>
@@ -444,6 +450,21 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </header>
+
+  <section class="section ai-review-section" id="ai-review">
+    <div class="section-header">
+      <div class="section-label" data-i18n="aiLabel">New in 1.13 · AI review workflow</div>
+      <h2 data-i18n="aiTitle">From first review to verified fixes</h2>
+      <p data-i18n="aiSub">Use your own AI tool. Copy the task, bring back the answer, and decide what gets posted.</p>
+    </div>
+    <ol class="ai-review-steps">
+      <li><span class="ai-step-number">01</span><h3 data-i18n="aiStep1">Review</h3><p data-i18n="aiStep1Text">Copy the MR context and review every commit together. Set file filters and your own prompt.</p></li>
+      <li><span class="ai-step-number">02</span><h3 data-i18n="aiStep2">Check and publish</h3><p data-i18n="aiStep2Text">Import findings, verify their locations, edit the wording and send only selected comments.</p></li>
+      <li><span class="ai-step-number">03</span><h3 data-i18n="aiStep3">Fix and reply</h3><p data-i18n="aiStep3Text">Select feedback for your coding AI. After pushing fixes, prepare factual replies to those threads.</p></li>
+      <li><span class="ai-step-number">04</span><h3 data-i18n="aiStep4">Recheck</h3><p data-i18n="aiStep4Text">Compare the reviewed version with current code, verify selected findings and review new changes.</p></li>
+    </ol>
+    <div class="ai-review-footer"><p data-i18n="aiPrivacy">No AI account or API key in the extension. Nothing is uploaded to an AI provider automatically. GitLab receives comments only when you publish or add drafts.</p><a class="btn-secondary" href="review-guide.html" data-guide-link><span data-i18n="aiGuide">AI review guide</span> →</a></div>
+  </section>
 
   <!-- MR DETAIL FEATURES -->
   <section class="section" id="features" style="padding-top:40px">
@@ -795,7 +816,7 @@
   <section class="cta-section">
     <div class="cta-banner">
       <h2 data-i18n="ctaTitle">Stop clicking through GitLab UI</h2>
-      <p data-i18n="ctaSub">Join developers who save time on every merge request. Free, open source, privacy-first. No data leaves your browser.</p>
+      <p data-i18n="ctaSub">Free and open source. No analytics or automatic AI uploads. You choose what to copy and which comments to send to GitLab.</p>
       <div class="hero-actions">
         <a href="https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak" class="btn-primary" target="_blank">
           <span data-i18n="ctaInstallBottom">Install Free Extension</span>
@@ -821,10 +842,24 @@
   <script>
     var LANG = {
       en: {
+        aiLabel: "New in 1.13 · AI review workflow",
+        aiTitle: "From first review to verified fixes",
+        aiSub: "Use your own AI tool. Copy the task, bring back the answer, and decide what gets posted.",
+        aiStep1: "Review",
+        aiStep1Text: "Copy the MR context and review every commit together. Set file filters and your own prompt.",
+        aiStep2: "Check and publish",
+        aiStep2Text: "Import findings, verify their locations, edit the wording and send only selected comments.",
+        aiStep3: "Fix and reply",
+        aiStep3Text: "Select feedback for your coding AI. After pushing fixes, prepare factual replies to those threads.",
+        aiStep4: "Recheck",
+        aiStep4Text: "Compare the reviewed version with current code, verify selected findings and review new changes.",
+        aiPrivacy: "No AI account or API key in the extension. Nothing is uploaded to an AI provider automatically. GitLab receives comments only when you publish or add drafts.",
+        aiGuide: "AI review guide",
+
         navFeatures: 'Features', navJira: 'Jira', navHow: 'How it works', navInstall: 'Install',
         heroBadge: 'Free Chrome Extension &middot; Open Source &middot; 7 Languages',
         heroTitle: 'Automate the routine in <span>GitLab</span>',
-        heroSub: 'Rebase, bump version, auto-merge, manage CI jobs, and track Jira tickets \u2014 all without leaving the merge request page. Works with any self-hosted GitLab. No API tokens needed.',
+        heroSub: 'Rebase, bump version, auto-merge, manage CI jobs, and track Jira tickets \u2014 all without leaving the merge request page. Works with any self-hosted GitLab. No API tokens needed. Now with AI review using your own tools.',
         ctaInstall: 'Install Free from Chrome Web Store', ctaGithub: 'Star on GitHub',
         statSec: 'sec', statShip: 'to ship a merge request', statClicks: 'fewer clicks per MR', statTokens: 'tokens or setup needed',
 
@@ -919,15 +954,29 @@
         changelogFeatures: 'New features', changelogTechnical: 'Technical', changelogImprovements: 'Improvements', changelogBugfixes: 'Bug fixes',
 
         ctaTitle: 'Stop clicking through GitLab UI',
-        ctaSub: 'Join developers who save time on every merge request. Free, open source, privacy-first. No data leaves your browser.',
+        ctaSub: 'Free and open source. No analytics or automatic AI uploads. You choose what to copy and which comments to send to GitLab.',
         ctaInstallBottom: 'Install Free Extension',
         footerPrivacy: 'Privacy Policy'
       },
       ru: {
+        aiLabel: "Новое в 1.13 · Ревью с ИИ",
+        aiTitle: "От первого ревью до проверки исправлений",
+        aiSub: "Работайте со своим ИИ. Скопируйте задание, верните ответ и решите, что публиковать.",
+        aiStep1: "Проверьте MR",
+        aiStep1Text: "Передайте контекст MR для проверки всех коммитов вместе. Задайте фильтры файлов и свой промпт.",
+        aiStep2: "Опубликуйте замечания",
+        aiStep2Text: "Импортируйте результат, проверьте места в коде, отредактируйте текст и отправьте только выбранное.",
+        aiStep3: "Исправьте и ответьте",
+        aiStep3Text: "Выберите замечания для ИИ, работающего с кодом. После отправки исправлений подготовьте ответы в эти ветки.",
+        aiStep4: "Проверьте снова",
+        aiStep4Text: "Сравните проверенную версию с текущей, проверьте выбранные замечания и новые изменения кода.",
+        aiPrivacy: "Без аккаунта ИИ и API-ключа в расширении. Автоматической отправки провайдеру ИИ нет. Комментарии попадают в GitLab только по кнопке публикации или добавления в черновики.",
+        aiGuide: "Гайд по ревью с ИИ",
+
         navFeatures: 'Возможности', navJira: 'Jira', navHow: 'Как работает', navInstall: 'Установить',
         heroBadge: 'Бесплатное расширение для Chrome &middot; Open Source &middot; 7 языков',
         heroTitle: 'Автоматизируйте рутину в <span>GitLab</span>',
-        heroSub: 'Rebase, версия, auto-merge, CI-джобы и Jira \u2014 всё прямо на странице merge request. Работает с любым self-hosted GitLab. Без токенов.',
+        heroSub: 'Rebase, версия, auto-merge, CI-джобы и Jira \u2014 всё прямо на странице merge request. Работает с любым self-hosted GitLab. Без токенов. Плюс ревью с вашим ИИ.',
         ctaInstall: 'Установить из Chrome Web Store', ctaGithub: 'GitHub',
         statSec: 'сек', statShip: 'на отправку merge request', statClicks: 'меньше кликов на MR', statTokens: 'токенов и настроек',
 
@@ -1022,13 +1071,14 @@
         changelogFeatures: 'Новые возможности', changelogTechnical: 'Техническое', changelogImprovements: 'Улучшения', changelogBugfixes: 'Исправления',
 
         ctaTitle: 'Хватит кликать по GitLab UI',
-        ctaSub: 'Присоединяйтесь к разработчикам, которые экономят время на каждом merge request. Бесплатно, open source, приватно.',
+        ctaSub: "Бесплатно и с открытым кодом. Без аналитики и автоматической отправки ИИ. Вы выбираете, что копировать и какие комментарии отправлять в GitLab.",
         ctaInstallBottom: 'Установить бесплатно',
         footerPrivacy: 'Политика конфиденциальности'
       }
     };
 
-    var currentLang = (navigator.language || '').startsWith('ru') ? 'ru' : 'en';
+    var requestedLang = new URLSearchParams(location.search).get('lang');
+    var currentLang = requestedLang === 'ru' || requestedLang === 'en' ? requestedLang : (navigator.language || '').startsWith('ru') ? 'ru' : 'en';
 
     function applyLang(lang) {
       currentLang = lang;
@@ -1042,6 +1092,7 @@
         var key = el.getAttribute('data-i18n-html');
         if (strings[key] !== undefined) el.innerHTML = strings[key];
       });
+      document.querySelectorAll('[data-guide-link]').forEach(function(el) { el.href = 'review-guide.html?lang=' + lang; });
       var toggle = document.getElementById('langToggle');
       if (toggle) toggle.textContent = lang === 'en' ? 'RU' : 'EN';
     }
@@ -1174,7 +1225,7 @@
       if (!container) return;
       container.innerHTML = '';
       var sectionNames = {
-        'New features': 'changelogFeatures', 'Technical': 'changelogTechnical', 'Improvements': 'changelogImprovements', 'Bug fixes': 'changelogBugfixes',
+        'Review import': 'changelogFeatures', 'Импорт ревью': 'changelogFeatures', 'New features': 'changelogFeatures', 'Technical': 'changelogTechnical', 'Improvements': 'changelogImprovements', 'Bug fixes': 'changelogBugfixes',
         'Новые функции': 'changelogFeatures', 'Техническое': 'changelogTechnical', 'Улучшения': 'changelogImprovements', 'Исправления': 'changelogBugfixes'
       };
       var latestText = currentLang === 'ru' ? 'Новое' : 'Latest';
@@ -1212,7 +1263,7 @@
       var file = currentLang === 'ru' ? 'CHANGELOG_RU.md' : 'CHANGELOG.md';
       var container = document.getElementById('changelogContent');
       if (container) container.innerHTML = '<div class="changelog-loading">' + (LANG[currentLang].changelogLoading || 'Loading...') + '</div>';
-      fetch('https://raw.githubusercontent.com/termyanen/gitlab-actions/main/' + file)
+      fetch(file)
         .then(function(r) { return r.ok ? r.text() : Promise.reject(); })
         .then(function(md) { renderChangelog(parseChangelog(md)); })
         .catch(function() {

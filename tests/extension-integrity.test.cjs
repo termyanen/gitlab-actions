@@ -8,7 +8,7 @@ var vm = require('node:vm');
 var root = require('./helpers/extension.cjs').root;
 
 test('all shipped JavaScript parses', function() {
-  ['background.js', 'content.js', 'content_proxy.js', 'popup.js', 'welcome.js'].forEach(function(file) {
+  ['background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js', 'popup.js', 'welcome.js'].forEach(function(file) {
     assert.doesNotThrow(function() { new vm.Script(fs.readFileSync(path.join(root, file), 'utf8'), { filename: file }); });
   });
 });
@@ -55,4 +55,20 @@ test('both changelogs document the manifest release and share the same version h
     return releases;
   });
   assert.deepEqual(histories[0], histories[1]);
+});
+
+test('locale substitutions and store descriptions remain valid in all seven languages', function() {
+  var english = JSON.parse(fs.readFileSync(path.join(root, '_locales/en/messages.json')));
+  ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) {
+    var text = fs.readFileSync(path.join(root, '_locales', locale, 'messages.json'), 'utf8');
+    var messages = JSON.parse(text);
+    var declared = Array.from(text.matchAll(/^  "([^"]+)":/gm), function(match) { return match[1]; });
+    assert.equal(new Set(declared).size, declared.length, 'Duplicate locale keys: ' + locale);
+    assert.ok(messages.extDescription.message.length <= 132, 'Store description too long: ' + locale);
+    Object.keys(messages).forEach(function(key) {
+      var placeholders = function(value) { return (value.match(/\$(?:\d+|[A-Za-z_]+\$)/g) || []).sort(); };
+      assert.deepEqual(placeholders(messages[key].message), placeholders(english[key].message), 'Missing substitution: ' + locale + '.' + key);
+      assert.deepEqual(Object.keys(messages[key].placeholders || {}).sort(), Object.keys(english[key].placeholders || {}).sort(), 'Placeholder definitions differ: ' + locale + '.' + key);
+    });
+  });
 });
