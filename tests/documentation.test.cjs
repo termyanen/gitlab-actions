@@ -59,3 +59,45 @@ test('guide language switching updates visibility, accessibility state and links
   buttons[1].events.click(); assert.equal(links[1].attrs.href, 'privacy.html?lang=ru'); assert.equal(links[1].textContent, 'Приватность');
   assert.equal(locations.length, 2);
 });
+
+test('homepage renders the unified 1.13 release and older sectioned releases in both languages', function() {
+  var html = read('index.html');
+  var code = html.slice(html.indexOf('    function parseChangelog('), html.indexOf('    function loadChangelog('));
+  ['en', 'ru'].forEach(function(lang) {
+    var container = { innerHTML: '', children: [], appendChild: function(node) { this.children.push(node); } };
+    var context = vm.createContext({ currentLang: lang, LANG: { en: {}, ru: {} }, document: {
+      getElementById: function(id) { assert.equal(id, 'changelogContent'); return container; },
+      createElement: function() { return { innerHTML: '', querySelector: function() { return { addEventListener: function() {} }; } }; }
+    } });
+    vm.runInContext(code, context);
+    var markdown = read(lang === 'ru' ? 'CHANGELOG_RU.md' : 'CHANGELOG.md');
+    var versions = context.parseChangelog(markdown);
+    assert.equal(versions[0].version, '1.13.0');
+    assert.equal(versions[0].sections.length, 1);
+    assert.equal(versions[0].sections[0].title, '');
+    assert.equal(versions[0].sections[0].items.length, 9);
+    assert.match(versions[0].sections[0].items[0].bold, lang === 'ru' ? /Ревью с ИИ/ : /AI-assisted review/);
+    assert.ok(versions[1].sections[0].title, 'older releases keep explicit section headings');
+    context.renderChangelog(versions);
+    assert.equal(container.children.length, versions.length);
+    assert.equal((container.children[0].innerHTML.match(/class="changelog-item"/g) || []).length, 9);
+    assert.doesNotMatch(container.children[0].innerHTML, /class="changelog-section-title/);
+    assert.match(container.children[1].innerHTML, /class="changelog-section-title/);
+  });
+});
+
+test('changelog keeps plain and bold items before or after explicit sections without leaking between releases', function() {
+  var html = read('index.html');
+  var code = html.slice(html.indexOf('    function parseChangelog('), html.indexOf('    function renderChangelog('));
+  var context = vm.createContext({}); vm.runInContext(code, context);
+  var versions = context.parseChangelog('- Intro outside releases\n## 2.0.0\n- Plain item\n- **Feature** — Description\n### Fixes\n- **Fix** — Detail\n---\n## 1.0.0\n- Earlier item');
+  assert.equal(versions.length, 2);
+  assert.equal(versions[0].sections.length, 2);
+  assert.equal(versions[0].sections[0].items[0].text, 'Plain item');
+  assert.equal(versions[0].sections[0].items[1].bold, 'Feature');
+  assert.equal(versions[0].sections[0].items[1].text, 'Description');
+  assert.equal(versions[0].sections[1].title, 'Fixes');
+  assert.equal(versions[0].sections[1].items.length, 1);
+  assert.equal(versions[1].sections[0].items.length, 1);
+  assert.equal(versions[1].sections[0].items[0].text, 'Earlier item');
+});

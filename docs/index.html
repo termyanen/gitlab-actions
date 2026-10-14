@@ -1192,6 +1192,13 @@
       var versions = [];
       var current = null;
       var currentSection = null;
+      function addItem(item) {
+        if (!currentSection) {
+          currentSection = { title: '', items: [] };
+          current.sections.push(currentSection);
+        }
+        currentSection.items.push(item);
+      }
       md.split('\n').forEach(function(line) {
         var vMatch = line.match(/^## (.+)/);
         if (vMatch) {
@@ -1207,14 +1214,14 @@
           return;
         }
         var iMatch = line.match(/^- \*\*(.+?)\*\*(.+?)\s*[—–-]\s*(.+)/);
-        if (iMatch && currentSection) {
+        if (iMatch && current) {
           var extra = iMatch[2].trim();
-          currentSection.items.push({ bold: iMatch[1] + (extra ? ' ' + extra : ''), text: iMatch[3] });
+          addItem({ bold: iMatch[1] + (extra ? ' ' + extra : ''), text: iMatch[3] });
           return;
         }
         var plainMatch = line.match(/^- (.+)/);
-        if (plainMatch && currentSection) {
-          currentSection.items.push({ bold: '', text: plainMatch[1] });
+        if (plainMatch && current) {
+          addItem({ bold: '', text: plainMatch[1] });
         }
       });
       return versions;
@@ -1243,7 +1250,7 @@
           var titleKey = sectionNames[sec.title] || '';
           var isTech = sec.title === 'Technical' || sec.title === 'Improvements' || sec.title === 'Техническое' || sec.title === 'Улучшения';
           var localTitle = titleKey && LANG[currentLang][titleKey] ? LANG[currentLang][titleKey] : sec.title;
-          bodyHtml += '<div class="changelog-section-title' + (isTech ? ' tech' : '') + '">' + localTitle + '</div>';
+          if (sec.title) bodyHtml += '<div class="changelog-section-title' + (isTech ? ' tech' : '') + '">' + localTitle + '</div>';
           sec.items.forEach(function(item) {
             bodyHtml += '<div class="changelog-item">' +
               (item.bold ? '<strong>' + item.bold + '</strong> \u2014 ' : '') +
