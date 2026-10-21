@@ -15,7 +15,7 @@ No npm dependencies or install step are needed. Packaging checks also use Bash,
 | Area | Automated checks |
 | --- | --- |
 | Version bump | Source/target version base, JSON/TOML/plain text, nested fields, preservation of source changes, Unicode, strategies, project overrides, failed reads/writes, concurrent source edits |
-| MR workflows | Ship with merge/semi-linear/fast-forward history, Force Ship, rebase + auto-merge, delayed SHA/diff-head updates, commits fallback, rebase/pipeline timeouts, temporary/fatal merge errors and retry limits, branch removal settings, pipeline actions, draft toggle, copy, fixed reviewers, custom job dispatch |
+| MR workflows | Ship with merge/semi-linear/fast-forward history, Force Ship, rebase + auto-merge, delayed SHA/diff-head updates, commits fallback, rebase/pipeline timeouts, temporary/fatal merge errors and retry limits, branch removal settings, pipeline actions, draft toggle, copy, fixed reviewers, custom job dispatch, configurable MR label/field actions, validation, API failures and project overrides |
 | Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, and a simulated fresh worker |
 | GitLab API relay | Originating tab preference, frozen tabs, no open tabs, API errors, no replay of ambiguously delivered mutations |
 | Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors; field-only and composite quick actions, add/remove/set payloads, custom fields, validation before writes, partial failures without retries |
@@ -259,3 +259,13 @@ fall back to the current MR diff. Verify that replies target existing threads an
 used as current MR diff anchors. Verify that importing or publishing a response creates no local review history. Check file-filter overrides, excluded rename paths, a missing
 old commit, and failed version-list requests. Automated coverage uses API/DOM fixtures;
 it does not replace these live GitLab checks.
+
+## Configurable MR actions browser check (2026-10-21)
+
+A local Chrome fixture exercised the production popup and MR script with mocked
+Chrome storage and GitLab responses. It covered adding/editing/removing buttons,
+conditional label inputs, normalized saves, stable button identities and order,
+project inheritance and empty overrides, confirmation cancellation, command
+palette dispatch, API error recovery and a subsequent successful action. The
+Russian popup was inspected at 360 px in dark mode. No real MR was modified;
+live GitLab permissions and server-specific behavior still require a live check.

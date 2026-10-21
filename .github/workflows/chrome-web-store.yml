@@ -32,6 +32,7 @@ jobs:
           zip -r extension.zip . \
             -x "pack.sh" \
             -x ".*" \
+            -x "*/.*" \
             -x ".git/*" \
             -x ".github/*" \
             -x ".idea/*" \

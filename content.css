@@ -2354,6 +2354,10 @@ html:has(.gl-review-overlay) { scrollbar-gutter: stable; }
 .gl-review-import-launcher.gl-review-floating { left: 60px; }
 .gl-review-import-input-pane { border-right: 1px solid var(--gl-review-border); }
 .gl-review-import-preview-pane { border-right: 0; }
+/* Keep a clear wheel target beside long comments and editors. */
+.gl-review-import-preview-pane .gl-review-list { padding-inline-end: 28px; scrollbar-gutter: stable; }
+/* At the end of a nested comment/editor, continue scrolling the preview. */
+.gl-review-import-overlay :is(.gl-review-note-text, textarea) { overscroll-behavior-y: auto; }
 .gl-review-import-help { margin: 0 0 4px; }
 .gl-review-import-preview-title { margin: 0; color: inherit; font: inherit; font-weight: 600; }
 .gl-review-import-code { margin: 0 0 10px; padding: 7px 9px; border: 1px solid var(--gl-review-border); border-radius: 4px; color: inherit; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -2384,6 +2388,9 @@ html:has(.gl-review-overlay) { scrollbar-gutter: stable; }
   .gl-review-import-input-pane { border-right: 0; border-bottom: 1px solid var(--gl-review-border); min-height: 360px; }
   .gl-review-import-preview-pane { border-bottom: 0; max-height: none; }
   .gl-review-import-preview-pane .gl-review-list { min-height: 200px; }
+  /* The columns become the main scroller on narrow screens. */
+  .gl-review-import-columns { padding-inline-end: 20px; }
+  .gl-review-import-overlay :is(.gl-review-list, .gl-review-output) { overscroll-behavior-y: auto; }
 }
 
 .gl-review-repeat-options { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }

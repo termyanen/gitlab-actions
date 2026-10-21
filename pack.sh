@@ -7,6 +7,7 @@ rm -f gitlab-mr-actions-v*.zip
 zip -r "$ZIPNAME" . \
   -x "pack.sh" \
   -x ".*" \
+  -x "*/.*" \
   -x ".git/*" \
   -x ".github/*" \
   -x ".idea/*" \

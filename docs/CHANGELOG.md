@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.13.2
+
+- **AI review diff recovery** — import automatically retries missing or truncated file changes directly from GitLab's Git storage. Recovered comments still require an exact verified code line and the current MR revision; unavailable files do not block other ready comments.
+- **Share settings** — export the complete configuration, including project profiles, Jira actions and AI instructions, to a JSON file. Import validates the file and previews replacement before applying it; Jira access is requested when needed.
+- **Settings in a separate tab** — use the button at the top of the popup to open settings in a browser tab after saving current changes.
+- **Review import scrolling** — a wider right-hand gutter scrolls the comments preview independently of long comments and editors. Reaching the end of nested text continues scrolling the preview; narrow layouts continue through the whole dialog without scrolling GitLab behind it.
+- **Configurable MR actions** — create named buttons to remove selected or all labels, add/replace labels, or clear assignees, reviewers and milestone. Supports button ordering, the command palette, project profiles and settings export/import.
+
 ## 1.13.1
 
 - **Flexible Jira quick actions** — build buttons from the fields you need: status, assignee, labels, Fix Version, affected versions, components, priority and due date. Each button can update one field, such as only the version or assignee, or combine several changes. Labels, versions and components support adding, removing or replacing values. Advanced custom fields accept a Jira field ID and JSON value. Existing status + assignee buttons remain compatible.

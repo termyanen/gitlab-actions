@@ -28,8 +28,28 @@ GitLab's UI requires multiple clicks and page reloads for common MR operations. 
 | **Copy MR** | Copy MR title + link to clipboard |
 | **Reviewers** | Quick-set reviewers from a preconfigured list |
 | **Custom Jobs** | Trigger any manually-configured CI job |
+| **MR Actions** | Named buttons to remove selected/all labels, add/replace labels, or clear assignees, reviewers or milestone |
 
 All buttons are configurable — show/hide, reorder via drag & drop. Per-project profiles let you override settings for specific repositories.
+
+In settings, open **MR actions → Add MR action**, enter a button name and choose
+an action. For selected labels, enter exact names separated by commas or new
+lines; spaces inside names are preserved. **Remove specified labels** leaves
+other labels intact. **Clear all labels** removes every label. Adding/replacing
+labels may create missing project labels. Each button changes one field and
+uses the common confirmation preference. The MR page refreshes after success.
+Buttons also appear in the command palette and can be reordered with other
+buttons. Project profiles inherit global MR actions until saved, then use their
+own list; an empty project list hides them. Export/import includes these actions.
+
+Use **Export settings** at the top of the extension popup to download a JSON file
+with all settings, project profiles, custom buttons, Jira actions and AI prompts
+and instructions. Share the file, then use **Import settings**, select it and click
+**Replace settings** on the other installation. Import replaces the full
+configuration; it validates the file before writing and requests access to the
+configured Jira site when needed. Browser permissions, sessions and caches are
+not transferred. The file includes configured URLs, usernames and comment or
+prompt text. The ↗ button opens settings in a separate browser tab.
 
 ### Copy Review Feedback for AI
 

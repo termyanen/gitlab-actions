@@ -22,7 +22,7 @@ var root = require('./helpers/extension.cjs').root;
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.copyFileSync(path.join(root, file), destination);
       });
-      ['tests/example.test.cjs', 'tests/helpers/mock.cjs', 'node_modules/mock/index.js', '.git/config', '.github/workflows/tests.yml', 'docs/index.html', 'promo/example.txt', 'package-lock.json', 'CLAUDE.md', 'ROADMAP.md'].forEach(function(file) {
+      ['tests/example.test.cjs', 'tests/helpers/mock.cjs', 'node_modules/mock/index.js', '.git/config', '.github/workflows/tests.yml', 'docs/index.html', 'promo/example.txt', 'package-lock.json', 'CLAUDE.md', 'ROADMAP.md', '_locales/.DS_Store', 'icons/.DS_Store'].forEach(function(file) {
         var destination = path.join(staging, file);
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.writeFileSync(destination, 'Must not ship');
@@ -45,6 +45,7 @@ var root = require('./helpers/extension.cjs').root;
       var entries = execFileSync('unzip', ['-Z', '-1', path.join(staging, archive)], { encoding: 'utf8' }).trim().split('\n');
       required.forEach(function(file) { assert.ok(entries.includes(file), 'Missing packaged resource: ' + file); });
       entries.forEach(function(file) {
+        assert.equal(file.split('/').some(function(part) { return part.startsWith('.'); }), false, 'Hidden file must not ship: ' + file);
         assert.equal(/^(tests\/|node_modules\/|\.|docs\/|promo\/|package(?:-lock)?\.json$|pack\.sh$|CLAUDE\.md$|ROADMAP\.md$)/.test(file), false, 'Unexpected packaged file: ' + file);
       });
     } finally {

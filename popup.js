@@ -41,6 +41,16 @@ function loadLanguage(lang, callback) {
     });
 }
 
+function localizeHeader() {
+  document.getElementById('howLink').textContent = t('howItWorks');
+  var openTab = document.getElementById('openSettingsTab');
+  openTab.title = t('openSettingsInTab');
+  openTab.setAttribute('aria-label', t('openSettingsInTab'));
+  ['exportSettings', 'importSettings', 'settingsTransferHint', 'settingsImportReplace', 'applySettingsImport', 'cancelSettingsImport'].forEach(function(key) {
+    document.getElementById(key).textContent = t(key);
+  });
+}
+
 var BUILTIN_BUTTONS = [
   { key: 'btn_version',          labelKey: 'btnVersion',          hintKey: 'hintVersion' },
   { key: 'btn_rebase',           labelKey: 'btnRebase',           hintKey: 'hintRebase' },
@@ -147,6 +157,7 @@ var DEFAULTS = Object.assign({}, BUTTON_DEFAULTS, {
   reviewersList: '',
   reviewersJob: 'get-reviewers',
   customJobs: [],
+  mrActions: [],
   buttonOrder: [],
   projectProfiles: {},
   // Version bump settings
@@ -388,7 +399,7 @@ function renderDefaultTab(container) {
     '<h4>' + escHtml(t('customJobButtons')) + '</h4>' +
     '<div class="hint" style="margin-bottom:8px">' + escHtml(t('customJobsHint')) + '</div>' +
     '<div id="customJobsList"></div>' +
-    '<button class="add-btn" id="addCustomJob">' + escHtml(t('addJobButton')) + '</button>';
+    '<button class="add-btn" id="addCustomJob">' + escHtml(t('addJobButton')) + '</button>' + mrActionsSection('mrActionsList', 'addMrAction');
 
   var enabledMap = {};
   BUILTIN_BUTTONS.forEach(function(b) {
@@ -396,9 +407,10 @@ function renderDefaultTab(container) {
   });
 
   var customJobs = allData.customJobs || [];
-  var ordered = buildOrderedList(allData.buttonOrder || [], enabledMap, customJobs);
+  var ordered = buildOrderedList(allData.buttonOrder || [], enabledMap, customJobs, allData.mrActions || []);
   renderButtonOrder(ordered, 'buttonOrder');
   renderCustomJobs(customJobs, 'customJobsList', 'buttonOrder');
+  setupMrActions(allData.mrActions || [], 'mrActionsList', 'addMrAction', 'buttonOrder');
 
   document.getElementById('sound_enabled').checked = allData.sound_enabled || false;
   document.getElementById('notifications_enabled').checked = allData.notifications_enabled !== false;
@@ -483,7 +495,7 @@ function renderDefaultTab(container) {
     // Save every edited field before rebuilding the form in the new language.
     saveDefaultTab(function() {
       loadLanguage(newLang, function() {
-        document.getElementById('howLink').textContent = t('howItWorks');
+        localizeHeader();
         renderTabs();
         renderActiveTab();
       });
@@ -591,7 +603,7 @@ function renderProfileTab(container, path) {
     '<h4>' + escHtml(t('customJobButtons')) + '</h4>' +
     '<div class="hint" style="margin-bottom:8px">' + escHtml(t('projectSpecificJobs')) + '</div>' +
     '<div id="profileCustomJobsList"></div>' +
-    '<button class="add-btn" id="profileAddCustomJob">' + escHtml(t('addJobButton')) + '</button>';
+    '<button class="add-btn" id="profileAddCustomJob">' + escHtml(t('addJobButton')) + '</button>' + mrActionsSection('profileMrActionsList', 'profileAddMrAction', true);
 
   // Build enabled map from profile, falling back to defaults
   var enabledMap = {};
@@ -601,9 +613,10 @@ function renderProfileTab(container, path) {
   });
 
   var customJobs = profile.customJobs || [];
-  var ordered = buildOrderedList(profile.buttonOrder || allData.buttonOrder || [], enabledMap, customJobs);
+  var ordered = buildOrderedList(profile.buttonOrder || allData.buttonOrder || [], enabledMap, customJobs, profile.mrActions || allData.mrActions || []);
   renderButtonOrder(ordered, 'profileButtonOrder');
   renderCustomJobs(customJobs, 'profileCustomJobsList', 'profileButtonOrder');
+  setupMrActions(profile.mrActions || allData.mrActions || [], 'profileMrActionsList', 'profileAddMrAction', 'profileButtonOrder');
 
   // Version bump fields
   var pVersionFile = profile.versionFile || '';
@@ -657,11 +670,12 @@ function renderProfileTab(container, path) {
 // Shared button order / custom jobs
 // =========================================================================
 
-function buildOrderedList(savedOrder, enabledMap, customJobs) {
+function buildOrderedList(savedOrder, enabledMap, customJobs, mrActions) {
   var allKeys = [];
   BUILTIN_BUTTONS.forEach(function(b) { allKeys.push(b.key); });
   (customJobs || []).forEach(function(j, i) { allKeys.push('custom_' + i); });
 
+  (mrActions || []).forEach(function(a) { allKeys.push('mr_action_' + a.id); });
   var ordered = [];
   (savedOrder || []).forEach(function(key) {
     if (allKeys.indexOf(key) !== -1) ordered.push(key);
@@ -671,6 +685,10 @@ function buildOrderedList(savedOrder, enabledMap, customJobs) {
   });
 
   return ordered.map(function(key) {
+    if (key.indexOf('mr_action_') === 0) {
+      var action = (mrActions || []).find(function(a) { return key === 'mr_action_' + a.id; });
+      return { key: key, label: action.label || t('mrActions'), enabled: true, isCustom: true };
+    }
     if (key.indexOf('custom_') === 0) {
       var idx = parseInt(key.replace('custom_', ''));
       var cj = customJobs[idx];
@@ -782,7 +800,7 @@ function getButtonOrderFromUI(containerId) {
       key: row.getAttribute('data-key'),
       label: row.querySelector('.btn-label').textContent,
       enabled: row.querySelector('input[type="checkbox"]').checked,
-      isCustom: row.getAttribute('data-key').indexOf('custom_') === 0,
+      isCustom: /^(custom_|mr_action_)/.test(row.getAttribute('data-key')),
     });
   });
   return items;
@@ -810,6 +828,92 @@ function renderCustomJobs(jobs, listId, orderContainerId) {
       renderCustomJobs(current, listId, orderContainerId);
       rebuildButtonOrderCustom(orderContainerId, listId);
     });
+  });
+}
+
+var MR_ACTION_TYPES = ['remove_labels', 'clear_labels', 'add_labels', 'set_labels', 'clear_assignees', 'clear_reviewers', 'clear_milestone'];
+
+function mrActionsSection(listId, addId, profile) {
+  return '<div class="sep"></div><h4>' + escHtml(t('mrActions')) + '</h4>' +
+    '<div class="hint">' + escHtml(t('mrActionsHint')) + '</div>' +
+    (profile ? '<div class="hint">' + escHtml(t('mrActionsProfileHint')) + '</div>' : '') +
+    '<div id="' + listId + '"></div><button type="button" class="add-btn" id="' + addId + '">+ ' + escHtml(t('mrActionAdd')) + '</button>';
+}
+
+function validateMrActions(actions) {
+  if (!Array.isArray(actions)) throw new Error(t('mrActionInvalid'));
+  var ids = [];
+  actions.forEach(function(action) {
+    if (!action || typeof action.id !== 'string' || !/^[a-zA-Z0-9_-]{1,80}$/.test(action.id) || ids.indexOf(action.id) !== -1 ||
+        typeof action.label !== 'string' || !action.label.trim() || MR_ACTION_TYPES.indexOf(action.type) === -1 || typeof action.labels !== 'string' ||
+        (/^(remove|add|set)_labels$/.test(action.type) && !action.labels.split(/[,\n]+/).some(function(label) { return label.trim(); }))) throw new Error(t('mrActionInvalid'));
+    ids.push(action.id);
+  });
+}
+
+function getMrActionsFromUI(listId, validate) {
+  var actions = [];
+  document.querySelectorAll('#' + listId + ' .mr-action').forEach(function(row) {
+    var type = row.querySelector('[data-field="type"]').value;
+    actions.push({ id: row.dataset.id, label: row.querySelector('[data-field="label"]').value.trim(), type: type,
+      labels: /^(remove|add|set)_labels$/.test(type) ? row.querySelector('[data-field="labels"]').value.split(/[,\n]+/).map(function(label) { return label.trim(); }).filter(Boolean).filter(function(label, i, all) { return all.indexOf(label) === i; }).join(', ') : '' });
+  });
+  if (validate) validateMrActions(actions);
+  return actions;
+}
+
+function rebuildMrActionOrder(listId, orderId) {
+  var actions = getMrActionsFromUI(listId);
+  var items = getButtonOrderFromUI(orderId).filter(function(item) {
+    return item.key.indexOf('mr_action_') !== 0 || actions.some(function(action) { return item.key === 'mr_action_' + action.id; });
+  });
+  actions.forEach(function(action) {
+    var key = 'mr_action_' + action.id;
+    var item = items.find(function(it) { return it.key === key; });
+    if (item) item.label = action.label || t('mrActions');
+    else items.push({ key: key, label: action.label || t('mrActions'), enabled: true, isCustom: true });
+  });
+  renderButtonOrder(items, orderId);
+}
+
+function renderMrActions(actions, listId, orderId) {
+  var list = document.getElementById(listId);
+  list.innerHTML = '';
+  actions.forEach(function(action) {
+    var row = document.createElement('div');
+    row.className = 'mr-action';
+    row.dataset.id = action.id;
+    row.innerHTML = '<div class="mr-action-heading"><input type="text" data-field="label" aria-label="' + escHtml(t('mrActionLabel')) + '" placeholder="' + escHtml(t('mrActionLabel')) + '" value="' + escHtml(action.label || '') + '">' +
+      '<button type="button" class="remove-btn" aria-label="' + escHtml(t('mrActionDelete')) + '">&times;</button></div>' +
+      '<select data-field="type" aria-label="' + escHtml(t('mrActionType')) + '">' + MR_ACTION_TYPES.map(function(type) {
+        return '<option value="' + type + '">' + escHtml(t('mrAction_' + type)) + '</option>';
+      }).join('') + '</select>' +
+      '<div class="mr-action-labels"><textarea rows="2" data-field="labels" aria-label="' + escHtml(t('mrActionLabels')) + '" placeholder="' + escHtml(t('mrActionLabels')) + '">' + escHtml(action.labels || '') + '</textarea>' +
+      '<div class="hint">' + escHtml(t('mrActionLabelsHint')) + '</div></div>';
+    list.appendChild(row);
+    var select = row.querySelector('[data-field="type"]');
+    select.value = action.type;
+    function updateType() { row.querySelector('.mr-action-labels').hidden = !/^(remove|add|set)_labels$/.test(select.value); }
+    updateType();
+    select.addEventListener('change', updateType);
+    row.querySelector('[data-field="label"]').addEventListener('input', function() { rebuildMrActionOrder(listId, orderId); });
+    row.querySelector('.remove-btn').addEventListener('click', function() {
+      var current = getMrActionsFromUI(listId).filter(function(item) { return item.id !== action.id; });
+      renderMrActions(current, listId, orderId);
+      rebuildMrActionOrder(listId, orderId);
+      scheduleAutoSave();
+    });
+  });
+}
+
+function setupMrActions(actions, listId, addId, orderId) {
+  renderMrActions(actions, listId, orderId);
+  document.getElementById(addId).addEventListener('click', function() {
+    var current = getMrActionsFromUI(listId);
+    current.push({ id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2), label: '', type: 'remove_labels', labels: '' });
+    renderMrActions(current, listId, orderId);
+    rebuildMrActionOrder(listId, orderId);
+    scheduleAutoSave();
   });
 }
 
@@ -1010,7 +1114,7 @@ function getCustomJobsFromUI(listId) {
 function rebuildButtonOrderCustom(orderContainerId, listId) {
   var items = getButtonOrderFromUI(orderContainerId);
   var customJobs = getCustomJobsFromUI(listId);
-  items = items.filter(function(it) { return !it.isCustom; });
+  items = items.filter(function(it) { return it.key.indexOf('custom_') !== 0; });
   customJobs.forEach(function(cj, i) {
     items.push({ key: 'custom_' + i, label: cj.label || cj.jobName || 'Custom', enabled: true, isCustom: true });
   });
@@ -1025,21 +1129,23 @@ function escHtml(s) {
 // Save
 // =========================================================================
 
-function saveSettings() {
+function saveSettings(onSaved, onFailed) {
+  if (typeof onSaved !== 'function') onSaved = null;
+  if (typeof onFailed !== 'function') onFailed = null;
   if (activeTab === 'default') {
-    var saved = saveDefaultTab();
+    var saved = saveDefaultTab(onSaved, onFailed);
     if (saved) _autoSaveDirty = false;
     return saved;
   } else {
-    saveProfileTab(activeTab);
-    _autoSaveDirty = false;
-    return true;
+    var saved = saveProfileTab(activeTab, onSaved, onFailed);
+    if (saved) _autoSaveDirty = false;
+    return saved;
   }
 }
 
-function saveDefaultTab(onSaved) {
-  var jiraQuickActions;
-  try { jiraQuickActions = getJiraQuickActionsFromUI(); }
+function saveDefaultTab(onSaved, onFailed) {
+  var jiraQuickActions, mrActions;
+  try { jiraQuickActions = getJiraQuickActionsFromUI(); mrActions = getMrActionsFromUI('mrActionsList', true); }
   catch (error) { showSaveFailed(error.message); return false; }
   var prompts = {};
   // Validate every prompt before saving any setting, including escaped UTF-8 bytes.
@@ -1128,6 +1234,7 @@ function saveDefaultTab(onSaved) {
   settings.quickComments = getQuickCommentsFromUI();
   settings.reviewersList = (document.getElementById('reviewersList').value || '').trim();
   settings.reviewersJob = (document.getElementById('reviewersJob').value || '').trim();
+  settings.mrActions = mrActions;
   settings.customJobs = getCustomJobsFromUI('customJobsList').filter(function(j) { return j.label && j.jobName; });
   settings.projectProfiles = allData.projectProfiles || {};
 
@@ -1149,12 +1256,16 @@ function saveDefaultTab(onSaved) {
     var failed = !!chrome.runtime.lastError;
     showSaved(saveVersion);
     if (!failed && onSaved) onSaved();
+    if (failed && onFailed) onFailed();
   });
   return true;
 }
 
-function saveProfileTab(path) {
+function saveProfileTab(path, onSaved, onFailed) {
   var saveVersion = _statusVersion;
+  var mrActions;
+  try { mrActions = getMrActionsFromUI('profileMrActionsList', true); }
+  catch (error) { showSaveFailed(error.message); return false; }
   var items = getButtonOrderFromUI('profileButtonOrder');
   var buttons = {};
   items.forEach(function(it) {
@@ -1172,6 +1283,7 @@ function saveProfileTab(path) {
 
   var profile = {
     buttons: buttons,
+    mrActions: mrActions,
     buttonOrder: items.map(function(it) { return it.key; }),
     versionFile: profileVersionFile,
     versionPath: (document.getElementById('profileVersionPath').value || '').trim(),
@@ -1186,8 +1298,12 @@ function saveProfileTab(path) {
   allData.projectProfiles[path] = profile;
 
   chrome.storage.sync.set({ projectProfiles: allData.projectProfiles }, function() {
+    var failed = !!chrome.runtime.lastError;
     showSaved(saveVersion);
+    if (!failed && onSaved) onSaved();
+    if (failed && onFailed) onFailed();
   });
+  return true;
 }
 
 var _statusVersion = 0;
@@ -1257,11 +1373,208 @@ function scheduleAutoSave() {
 function attachAutoSave() {
   // Listen for all input changes in the popup
   document.body.addEventListener('input', function(e) {
-    if (e.target.matches('input, select, textarea')) scheduleAutoSave();
+    if (e.target.id !== 'settingsImportFile' && e.target.matches('input, select, textarea')) scheduleAutoSave();
   });
   document.body.addEventListener('change', function(e) {
-    if (e.target.matches('input, select, textarea')) scheduleAutoSave();
+    if (e.target.id !== 'settingsImportFile' && e.target.matches('input, select, textarea')) scheduleAutoSave();
   });
+}
+
+// =========================================================================
+// Settings sharing (only configuration keys, never caches or update metadata)
+// =========================================================================
+
+var _pendingSettingsImport = null;
+var _settingsTransferBusy = false;
+var SETTINGS_FILE_MAX_BYTES = 1024 * 1024;
+
+function settingsObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function validateSettingsShape(value, example) {
+  if (Array.isArray(example)) {
+    if (!Array.isArray(value)) throw new Error(t('settingsFileInvalid'));
+    if (example.length) value.forEach(function(item) { validateSettingsShape(item, example[0]); });
+  } else if (settingsObject(example)) {
+    if (!settingsObject(value)) throw new Error(t('settingsFileInvalid'));
+    Object.keys(value).forEach(function(key) {
+      if (!Object.prototype.hasOwnProperty.call(example, key)) throw new Error(t('settingsFileInvalid'));
+      validateSettingsShape(value[key], example[key]);
+    });
+  } else if (typeof value !== typeof example) {
+    throw new Error(t('settingsFileInvalid'));
+  }
+}
+
+function settingsSnapshot(data) {
+  var settings = {};
+  Object.keys(DEFAULTS).forEach(function(key) {
+    settings[key] = Object.prototype.hasOwnProperty.call(data, key) ? data[key] : DEFAULTS[key];
+  });
+  return JSON.parse(JSON.stringify(settings));
+}
+
+function validateSharedSettings(settings) {
+  var job = { label: '', jobName: '' };
+  var mrAction = { id: '', label: '', type: '', labels: '' };
+  var profileShape = { buttons: BUTTON_DEFAULTS, buttonOrder: [''], customJobs: [job], mrActions: [mrAction], versionFile: '', versionPath: '', versionStrategy: '', versionCommitTemplate: '', reviewersList: '', reviewersJob: '' };
+  Object.keys(settings).forEach(function(key) {
+    var value = settings[key];
+    if (key === 'projectProfiles') {
+      if (!settingsObject(value)) throw new Error(t('settingsFileInvalid'));
+      Object.keys(value).forEach(function(path) {
+        if (!path || ['__proto__', 'constructor', 'prototype'].indexOf(path) !== -1) throw new Error(t('settingsFileInvalid'));
+        validateSettingsShape(value[path], profileShape);
+        if (value[path].mrActions) validateMrActions(value[path].mrActions);
+      });
+    } else if (key === 'jiraQuickActions') {
+      if (!Array.isArray(value)) throw new Error(t('settingsFileInvalid'));
+      value.forEach(function(action) {
+        // Custom Jira fields intentionally accept arbitrary JSON values.
+        validateSettingsShape(action, { label: '', status: '', assignee: '', updates: [] });
+        (action.updates || []).forEach(function(update) {
+          if (!settingsObject(update) || typeof update.field !== 'string' || ['set', 'add', 'remove'].indexOf(update.operation) === -1 || !Object.prototype.hasOwnProperty.call(update, 'value')) throw new Error(t('settingsFileInvalid'));
+          var listField = ['labels', 'fixVersions', 'versions', 'components'].indexOf(update.field) !== -1;
+          if (listField) validateSettingsShape(update.value, ['']);
+          else if (['priority', 'duedate'].indexOf(update.field) !== -1) validateSettingsShape(update.value, '');
+          else if (!/^customfield_\d+$/.test(update.field)) throw new Error(t('settingsFileInvalid'));
+        });
+      });
+    } else {
+      var shape = DEFAULTS[key];
+      if (key === 'customJobs') shape = [job];
+      if (key === 'mrActions') { shape = [mrAction]; validateMrActions(value); }
+      if (key === 'quickComments') shape = [{ label: '', text: '' }];
+      if (key === 'buttonOrder' || key === 'cherry_pick_branches') shape = [''];
+      validateSettingsShape(value, shape);
+    }
+  });
+  AI_REVIEW_PROMPTS.forEach(function(prompt) {
+    if (settings[prompt.key].length > AI_REVIEW_PROMPT_MAX_LENGTH) throw new Error(t('aiReviewPromptTooLong'));
+  });
+  AI_REVIEW_RULES.forEach(function(block) {
+    var key = window.GlReviewWorkflow.INSTRUCTION_PREFIX + block.id;
+    window.GlReviewWorkflow.normalizeInstruction(block, settings[key]);
+  });
+  window.GlReviewWorkflow.normalizeFilter(settings.ai_review_file_filter);
+  if (['auto', 'en', 'ru', 'zh_CN', 'ja', 'de', 'fr', 'es'].indexOf(settings.language) === -1 ||
+      ['auto', 'en', 'ru', 'zh_CN', 'ja', 'de', 'fr', 'es'].indexOf(settings.ai_review_response_language) === -1 ||
+      ['patch', 'minor', 'major'].indexOf(settings.versionStrategy) === -1) throw new Error(t('settingsFileInvalid'));
+  if (settings.jira_url) {
+    var jira = new URL(settings.jira_url);
+    if (jira.protocol !== 'https:' || jira.username || jira.password || jira.search || jira.hash) throw new Error(t('settingsFileInvalid'));
+  }
+  if (settings.jira_ticket_regex) {
+    try { new RegExp(settings.jira_ticket_regex, 'g'); }
+    catch (error) { throw new Error(t('settingsFileInvalid')); }
+  }
+  Object.keys(settings).forEach(function(key) {
+    if (new TextEncoder().encode(key + JSON.stringify(settings[key])).length > 8192) throw new Error(t('settingsFileTooLarge'));
+  });
+  return settings;
+}
+
+function parseSettingsFile(text) {
+  if (new TextEncoder().encode(text).length > SETTINGS_FILE_MAX_BYTES) throw new Error(t('settingsFileTooLarge'));
+  var file;
+  try { file = JSON.parse(text); } catch (error) { throw new Error(t('settingsFileInvalid')); }
+  if (!settingsObject(file) || file.format !== 'gitlab-mr-actions-settings' || file.formatVersion !== 1 || !settingsObject(file.settings) || !Object.keys(file.settings).some(function(key) { return Object.prototype.hasOwnProperty.call(DEFAULTS, key); })) throw new Error(t('settingsFileInvalid'));
+  return validateSharedSettings(settingsSnapshot(file.settings));
+}
+
+function setSettingsTransferBusy(busy) {
+  _settingsTransferBusy = busy;
+  ['exportSettings', 'importSettings', 'applySettingsImport', 'cancelSettingsImport', 'openSettingsTab', 'addProfile'].forEach(function(id) {
+    document.getElementById(id).disabled = busy;
+  });
+  document.getElementById('tabs').inert = busy;
+  document.querySelector('.tab-content').inert = busy;
+}
+
+function exportAllSettings() {
+  if (_settingsTransferBusy) return;
+  clearTimeout(_autoSaveTimer);
+  _autoSaveTimer = null;
+  setSettingsTransferBusy(true);
+  // Wait for the current form to reach storage before reading the complete set.
+  if (!saveSettings(function() {
+    chrome.storage.sync.get(Object.keys(DEFAULTS), function(data) {
+      if (chrome.runtime.lastError) { setSettingsTransferBusy(false); showSaveFailed(t('settingsExportFailed')); return; }
+      try {
+        var file = { format: 'gitlab-mr-actions-settings', formatVersion: 1, extensionVersion: chrome.runtime.getManifest().version, settings: settingsSnapshot(data) };
+        var url = URL.createObjectURL(new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' }));
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'gitlab-mr-actions-settings.json';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function() { URL.revokeObjectURL(url); }, 10000);
+      } catch (error) { showSaveFailed(t('settingsExportFailed')); }
+      setSettingsTransferBusy(false);
+    });
+  }, function() { setSettingsTransferBusy(false); })) setSettingsTransferBusy(false);
+}
+
+function readSettingsImport(file) {
+  _pendingSettingsImport = null;
+  document.getElementById('settingsImportPreview').hidden = true;
+  if (!file) return;
+  if (file.size > SETTINGS_FILE_MAX_BYTES) { showSaveFailed(t('settingsFileTooLarge')); return; }
+  var reader = new FileReader();
+  reader.onload = function() {
+    try {
+      _pendingSettingsImport = parseSettingsFile(reader.result);
+      document.getElementById('settingsImportSummary').textContent = t('settingsImportSummary', [file.name, String(Object.keys(_pendingSettingsImport.projectProfiles).length)]);
+      document.getElementById('settingsImportPreview').hidden = false;
+      document.getElementById('applySettingsImport').focus();
+    } catch (error) { showSaveFailed(error.message || t('settingsFileInvalid')); }
+  };
+  reader.onerror = function() { showSaveFailed(t('settingsFileInvalid')); };
+  reader.readAsText(file);
+}
+
+function applySettingsImport() {
+  if (!_pendingSettingsImport || _settingsTransferBusy) return;
+  var settings = _pendingSettingsImport;
+  function fail(message) { setSettingsTransferBusy(false); showSaveFailed(message || t('settingsImportFailed')); }
+  function write() {
+    clearTimeout(_autoSaveTimer);
+    _autoSaveTimer = null;
+    chrome.storage.sync.get(null, function(stored) {
+      if (chrome.runtime.lastError) { fail(); return; }
+      var combined = Object.assign({}, stored, settings);
+      var bytes = Object.keys(combined).reduce(function(total, key) { return total + new TextEncoder().encode(key + JSON.stringify(combined[key])).length; }, 0);
+      if (bytes > 102400 || Object.keys(combined).length > 512) { fail(t('settingsFileTooLarge')); return; }
+      // One write replaces configuration, preserving unrelated extension state.
+      chrome.storage.sync.set(settings, function() {
+        if (chrome.runtime.lastError) { fail(); return; }
+        _autoSaveDirty = false;
+        _statusVersion++;
+        allData = settings;
+        activeTab = 'default';
+        _pendingSettingsImport = null;
+        document.getElementById('settingsImportPreview').hidden = true;
+        loadLanguage(settings.language, function() {
+          localizeHeader();
+          renderTabs();
+          renderActiveTab();
+          setSettingsTransferBusy(false);
+          showSaved();
+          document.getElementById('status').textContent = t('settingsImported');
+        });
+      });
+    });
+  }
+  setSettingsTransferBusy(true);
+  if (settings.jira_url) {
+    // Keep the permission request attached to the explicit Apply click.
+    chrome.permissions.request({ origins: [new URL(settings.jira_url).origin + '/*'] }, function(granted) {
+      if (chrome.runtime.lastError || !granted) { fail(t('settingsImportPermissionDenied')); return; }
+      write();
+    });
+  } else write();
 }
 
 // =========================================================================
@@ -1273,7 +1586,7 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.storage.sync.get({ language: 'auto' }, function(langData) {
     loadLanguage(langData.language, function() {
       // Apply i18n to static elements
-      document.getElementById('howLink').textContent = t('howItWorks');
+      localizeHeader();
 
       // Show update banner if extension was just updated
       chrome.storage.sync.get({ update_version: '', update_dismissed: '' }, function(ud) {
@@ -1312,6 +1625,9 @@ document.addEventListener('DOMContentLoaded', function() {
             renderTabs();
             renderActiveTab();
           }
+          document.getElementById('openSettingsTab').disabled = false;
+          document.getElementById('exportSettings').disabled = false;
+          document.getElementById('importSettings').disabled = false;
         });
       });
     });
@@ -1335,5 +1651,27 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   document.getElementById('save').addEventListener('click', saveSettings);
+  document.getElementById('openSettingsTab').addEventListener('click', function() {
+    clearTimeout(_autoSaveTimer);
+    _autoSaveTimer = null;
+    saveSettings(function() {
+      chrome.tabs.create({ url: chrome.runtime.getURL('popup.html') });
+    });
+  });
+  document.getElementById('exportSettings').addEventListener('click', exportAllSettings);
+  document.getElementById('importSettings').addEventListener('click', function() {
+    var input = document.getElementById('settingsImportFile');
+    input.value = '';
+    input.click();
+  });
+  document.getElementById('settingsImportFile').addEventListener('change', function(event) {
+    readSettingsImport(event.target.files[0]);
+  });
+  document.getElementById('applySettingsImport').addEventListener('click', applySettingsImport);
+  document.getElementById('cancelSettingsImport').addEventListener('click', function() {
+    _pendingSettingsImport = null;
+    document.getElementById('settingsImportPreview').hidden = true;
+    document.getElementById('importSettings').focus();
+  });
   attachAutoSave();
 });
