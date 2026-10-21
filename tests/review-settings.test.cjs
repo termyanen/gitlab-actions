@@ -345,3 +345,77 @@ test('an oversized automatic instruction prevents saving unrelated settings and 
   assert.equal(env.context.flushAutoSave(), true);
   assert.equal(env.writes[0].data.show_ai_review_copy, false);
 });
+
+function jiraActionRows(env, actions) {
+  function fieldRow(change) {
+    var parts = { field: change.field, value: change.value, operation: change.operation || 'set', custom: change.custom || '' };
+    return { querySelector: function(selector) { return { value: parts[selector.match(/data-part="([^"]+)"/)[1]] }; } };
+  }
+  var original = env.document.querySelectorAll;
+  env.document.querySelectorAll = function(selector) {
+    if (selector !== '#jiraQuickActionsList .jira-quick-action') return original(selector);
+    return actions.map(function(action) {
+      return { querySelector: function() { return { value: action.label }; }, querySelectorAll: function() { return action.changes.map(fieldRow); } };
+    });
+  };
+}
+
+test('Jira settings save version-only and assignee-only buttons without a status', function() {
+  var env = popup();
+  jiraActionRows(env, [
+    { label: 'Release', changes: [{ field: 'fixVersions', value: ' 2.0, 2.1, 2.0 ', operation: 'add' }] },
+    { label: 'Assign', changes: [{ field: 'assignee', value: ' alice ' }] }
+  ]);
+  assert.equal(env.save(), true);
+  assert.deepEqual(harness.plain(env.writes[0].data.jiraQuickActions), [
+    { label: 'Release', status: '', assignee: '', updates: [{ field: 'fixVersions', operation: 'add', value: ['2.0', '2.1'] }] },
+    { label: 'Assign', status: '', assignee: 'alice', updates: [] }
+  ]);
+});
+
+test('Jira settings preserve legacy status+assignee fields and serialize list/custom changes', function() {
+  var env = popup();
+  jiraActionRows(env, [{ label: 'Review', changes: [
+    { field: 'status', value: 'Review' }, { field: 'assignee', value: 'alice' },
+    { field: 'labels', value: 'old', operation: 'remove' },
+    { field: 'custom', custom: 'customfield_12345', value: '{"value":"Option"}' }
+  ] }]);
+  env.save();
+  assert.deepEqual(harness.plain(env.writes[0].data.jiraQuickActions), [{ label: 'Review', status: 'Review', assignee: 'alice', updates: [
+    { field: 'labels', operation: 'remove', value: ['old'] },
+    { field: 'customfield_12345', operation: 'set', value: { value: 'Option' } }
+  ] }]);
+});
+
+[
+  [{ field: 'custom', custom: 'customfield_12345', value: '{broken' }],
+  [{ field: 'custom', custom: 'bad_id', value: 'null' }],
+  [{ field: 'labels', value: 'a' }, { field: 'labels', value: 'b' }],
+  [{ field: 'status', value: 'Review' }, { field: 'status', value: 'Done' }],
+  [{ field: 'duedate', value: '2026-02-30' }],
+  [{ field: 'duedate', value: 'tomorrow' }]
+].forEach(function(changes, index) {
+  test('invalid Jira settings ' + index + ' preserve the draft and prevent every settings write', function() {
+    var env = popup();
+    jiraActionRows(env, [{ label: 'Invalid', changes: changes }]);
+    assert.equal(env.save(), false);
+    assert.equal(env.writes.length, 0);
+    assert.equal(env.control('status').className, 'status failed');
+  });
+});
+
+test('empty Jira changes are omitted while zero, false and null custom values are retained', function() {
+  var env = popup();
+  jiraActionRows(env, [
+    { label: 'Empty', changes: [{ field: 'status', value: ' ' }, { field: 'labels', value: ', , ' }] },
+    { label: 'Values', changes: [
+      { field: 'custom', custom: 'customfield_1', value: '0' },
+      { field: 'custom', custom: 'customfield_2', value: 'false' },
+      { field: 'custom', custom: 'customfield_3', value: 'null' }
+    ] }
+  ]);
+  env.save();
+  var actions = harness.plain(env.writes[0].data.jiraQuickActions);
+  assert.equal(actions.length, 1);
+  assert.deepEqual(actions[0].updates.map(function(change) { return change.value; }), [0, false, null]);
+});

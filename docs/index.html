@@ -48,7 +48,7 @@
     "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.13.0",
+    "softwareVersion": "1.13.1",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -756,7 +756,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l6 6M14 4l-6 6M4 16l6-6M14 16l-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fQuickTitle">Quick Actions</h3>
-        <p data-i18n="fQuickDesc">Configure composite actions: change status + assign user in one click. Buttons appear in sidebar only when the target transition is available.</p>
+        <p data-i18n="fQuickDesc">Configure each button to update one field or several: status, assignee, labels, Fix Version and more. Add, remove or replace list values. Field-only actions work independently of workflow transitions.</p>
       </div>
     </div>
   </section>
@@ -936,7 +936,7 @@
         fTransTitle: 'Change Status & Assignee',
         fTransDesc: 'Transition buttons show only available workflow actions. Change ticket status without leaving GitLab. Click assignee to search and reassign with autocomplete.',
         fQuickTitle: 'Quick Actions',
-        fQuickDesc: 'Configure composite actions: change status + assign user in one click. Buttons appear in sidebar only when the target transition is available.',
+        fQuickDesc: 'Configure each button to update one field or several: status, assignee, labels, Fix Version and more. Add, remove or replace list values. Field-only actions work independently of workflow transitions.',
         fEpicTitle: 'Epic Link & Sprint',
         fEpicDesc: 'Clickable epic link opens directly in Jira. Sprint field shows current sprint name. Custom fields discovered automatically per Jira instance.',
 
@@ -1053,7 +1053,7 @@
         fTransTitle: 'Смена статуса и исполнителя',
         fTransDesc: 'Кнопки переходов показывают только доступные действия воркфлоу. Смена статуса тикета без выхода из GitLab. Поиск и переназначение исполнителя с автокомплитом.',
         fQuickTitle: 'Быстрые действия',
-        fQuickDesc: 'Настраиваемые составные действия: смена статуса + назначение исполнителя в один клик. Кнопки появляются только когда целевой переход доступен.',
+        fQuickDesc: 'Каждая кнопка меняет одно поле или несколько: статус, исполнителя, метки, Fix Version и другие. Добавление, удаление и замена значений списков. Действия без смены статуса работают независимо от переходов.',
         fEpicTitle: 'Эпик и Спринт',
         fEpicDesc: 'Кликабельная ссылка на эпик открывается в Jira. Поле спринта показывает текущий спринт. Кастомные поля определяются автоматически для каждого экземпляра Jira.',
 
@@ -1202,6 +1202,11 @@
       md.split('\n').forEach(function(line) {
         var vMatch = line.match(/^## (.+)/);
         if (vMatch) {
+          if (/^unreleased$/i.test(vMatch[1].trim())) {
+            current = null;
+            currentSection = null;
+            return;
+          }
           current = { version: vMatch[1].trim(), sections: [] };
           versions.push(current);
           currentSection = null;

@@ -18,7 +18,8 @@ No npm dependencies or install step are needed. Packaging checks also use Bash,
 | MR workflows | Ship with merge/semi-linear/fast-forward history, Force Ship, rebase + auto-merge, delayed SHA/diff-head updates, commits fallback, rebase/pipeline timeouts, temporary/fatal merge errors and retry limits, branch removal settings, pipeline actions, draft toggle, copy, fixed reviewers, custom job dispatch |
 | Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, and a simulated fresh worker |
 | GitLab API relay | Originating tab preference, frozen tabs, no open tabs, API errors, no replay of ambiguously delivered mutations |
-| Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors |
+| Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors; field-only and composite quick actions, add/remove/set payloads, custom fields, validation before writes, partial failures without retries |
+| Jira quick-action settings | Assignee/version-only actions, legacy status+assignee shape, list normalization, custom JSON including null/false/zero, duplicate fields and invalid dates/JSON preventing settings writes |
 | MR list lifecycle | Replacement of the list container or rows, pagination during Jira/reviewer/metadata requests, late list rendering, cached and partially cached tickets, title changes and replacement, missing tickets and failed responses without request loops, authentication failures, observer cleanup |
 | AI review export | Modern/legacy/project Work Item routes, relative URL roots, all discussion pages and replies, missing pagination headers, duplicate/malformed records, partial failures, Notes API fallback, timeout/cancellation, explicit comment/thread/description selection, Markdown boundaries, fork and renamed-file context pinned to commit SHAs, old anchors, Unicode file fallback, oversized/binary/image files, attachment and snippet limitations |
 | Public documentation | Landing-page EN/RU key parity, guide/privacy anchors and assets, repeated language switching, local changelog synchronization and inline script parsing |
@@ -153,6 +154,18 @@ at desktop and 390px widths in light/dark themes. The fixture mocked clipboard
 writes and extension storage; these checks are not a live-GitLab or installed-
 extension compatibility certification.
 
+## Jira quick-action release checks (2026-10-21)
+
+Local Chrome fixtures verified the production popup and sidebar handlers for
+version-only and assignee-only actions, existing action settings, adding/removing
+fields, list operations, custom JSON and duplicate/date validation. They checked
+field-only availability after failed transition loading, transition-name matching,
+duplicate-click prevention, refreshed values, preserved comment drafts and
+partial-failure notices. Popup layout fits its 392px outer width; status, assignee,
+version and operation selectors show one right-aligned chevron in light and dark
+themes. The fixtures used simulated extension APIs and Jira responses, without
+mutating a real Jira instance.
+
 ## Remaining coverage gaps
 
 This suite covers selected behaviors, not every path or combination of settings.
@@ -166,7 +179,7 @@ still need tests; their absence does not establish a bug.
 | Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
 | Next | Group play | Parent/child pipelines with matching stage names, pagination, status changes while starting a group and partial API failures. |
 | Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog, Jira enrichment failures and malformed/empty-matching ticket regexes. |
-| Next | Jira sidebar and quick actions | Full issue/custom-field mapping, comment pagination, multi-step quick actions with partial failures, attachments/media and real cookie sessions. Current API-handler tests cover selected reads and mutations. |
+| Next | Jira sidebar and quick actions | Full issue/custom-field mapping, comment pagination, attachments/media, real cookie sessions and instance-specific edit permissions. API-handler tests cover multi-step quick actions with partial failures; a local Chrome fixture covers field-only availability, refreshes and duplicate clicks. |
 | Next | Badges and caches | Cache persistence/expiry/eviction, failed fetches, incremental multi-ticket rendering and commit version comparisons across pages. |
 
 The next layer needs representative GitLab DOM fixtures and a dedicated test
