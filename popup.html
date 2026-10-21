@@ -71,7 +71,12 @@
     .add-btn { background: #f0f0f0; color: #333; border: 1px dashed #ccc; margin-top: 6px; }
     .add-btn:hover { background: #e8e8e8; }
     .jira-quick-action { margin-top: 6px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; }
-    .jira-quick-action input { padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; box-sizing: border-box; width: 100%; }
+    .jira-quick-action input, .jira-quick-action select { padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; box-sizing: border-box; width: 100%; min-width: 0; }
+    .jqa-change { margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd; }
+    .jqa-change input { margin-top: 4px; }
+    .jqa-change select { flex: 1; margin: 0; padding-right: 32px; }
+    .jqa-change [hidden] { display: none; }
+    .jqa-change .hint { margin-bottom: 0; }
     .jqa-row { display: flex; gap: 6px; align-items: center; }
     .jqa-row + .jqa-row { margin-top: 4px; }
     .jqa-row input { flex: 1; }
@@ -116,7 +121,8 @@
       .field input::placeholder, .field textarea::placeholder { color: #666; }
       .custom-job input { background: #2a2a2a; border-color: #444; color: #ddd; }
       .jira-quick-action { background: #252525; border-color: #444; }
-      .jira-quick-action input { background: #2a2a2a; border-color: #444; color: #ddd; }
+      .jira-quick-action input, .jira-quick-action select { background-color: #2a2a2a; border-color: #444; color: #ddd; }
+      .jqa-change { border-color: #444; }
       .jira-quick-action input::placeholder { color: #666; }
       .quick-comment-row { background: #252525; border-color: #444; }
       .quick-comment-row input { background: #2a2a2a; border-color: #444; color: #ddd; }

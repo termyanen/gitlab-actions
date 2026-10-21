@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.13.1
+
+- **Flexible Jira quick actions** — build buttons from the fields you need: status, assignee, labels, Fix Version, affected versions, components, priority and due date. Each button can update one field, such as only the version or assignee, or combine several changes. Labels, versions and components support adding, removing or replacing values. Advanced custom fields accept a Jira field ID and JSON value. Existing status + assignee buttons remain compatible.
+
 ## 1.13.0
 
 - **AI-assisted review workflow** — New review, Fix review findings, Prepare replies and Follow-up review tabs cover initial review, code corrections, ready-to-post answers and verification after further commits or force pushes. Fix tasks can generate replies in the same run; this option is enabled by default.

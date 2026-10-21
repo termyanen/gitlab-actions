@@ -59,3 +59,96 @@ test('Jira mutation errors return to the UI without automatic retries', async fu
   assert.match(result._error, /403/);
   assert.equal(env.requests.length, 1);
 });
+
+async function quickAction(action, options) {
+  options = options || {};
+  var env = harness.background({ jira: options.jira || function() { return harness.response(204, ''); } });
+  var result = await env.finish(env.dispatch({ type: 'execute-jira-quick-action', jiraUrl: jiraUrl, ticket: 'PROJ-1', transitionId: options.transitionId, action: action }));
+  return { result: harness.plain(result), requests: env.requests };
+}
+
+test('Fix Version-only action sends one edit without transitioning or changing assignee', async function() {
+  var env = await quickAction({ updates: [{ field: 'fixVersions', operation: 'set', value: ['1.2', '1.3'] }] });
+  assert.deepEqual(env.result, { success: true, completed: { transition: false, fields: true } });
+  assert.equal(env.requests.length, 1);
+  assert.equal(env.requests[0].method, 'PUT');
+  assert.deepEqual(env.requests[0].body, { fields: { fixVersions: [{ name: '1.2' }, { name: '1.3' }] } });
+});
+
+test('assignee-only quick action preserves the existing saved action contract', async function() {
+  var env = await quickAction({ label: 'Assign Alice', status: '', assignee: 'alice' });
+  assert.equal(env.result.success, true);
+  assert.equal(env.requests.length, 1);
+  assert.deepEqual(env.requests[0].body, { fields: { assignee: { name: 'alice' } } });
+});
+
+test('quick action combines label/version/component operations and scalar/custom fields in one edit', async function() {
+  var env = await quickAction({ assignee: 'alice', updates: [
+    { field: 'labels', operation: 'add', value: ['reviewed', 'reviewed', 'готово'] },
+    { field: 'fixVersions', operation: 'remove', value: ['1.1'] },
+    { field: 'versions', operation: 'set', value: ['1.0'] },
+    { field: 'components', operation: 'add', value: ['Backend'] },
+    { field: 'priority', value: 'High' },
+    { field: 'duedate', value: '2026-10-21' },
+    { field: 'customfield_12345', value: { value: 'Option' } },
+    { field: 'customfield_12346', value: null }
+  ] });
+  assert.equal(env.result.success, true);
+  assert.equal(env.requests.length, 1);
+  assert.deepEqual(env.requests[0].body, {
+    fields: { assignee: { name: 'alice' }, versions: [{ name: '1.0' }], priority: { name: 'High' }, duedate: '2026-10-21', customfield_12345: { value: 'Option' }, customfield_12346: null },
+    update: { labels: [{ add: 'reviewed' }, { add: 'готово' }], fixVersions: [{ remove: { name: '1.1' } }], components: [{ add: { name: 'Backend' } }] }
+  });
+});
+
+test('status+fields quick action runs transition then edit and reports both completed steps', async function() {
+  var env = await quickAction({ status: 'Review', assignee: 'alice' }, { transitionId: '31' });
+  assert.deepEqual(env.requests.map(function(r) { return [r.method, r.body]; }), [
+    ['POST', { transition: { id: '31' } }], ['PUT', { fields: { assignee: { name: 'alice' } } }]
+  ]);
+  assert.deepEqual(env.result, { success: true, completed: { transition: true, fields: true } });
+});
+
+test('failed field edit reports a completed transition without retrying either mutation', async function() {
+  var env = await quickAction({ status: 'Review', assignee: 'alice' }, { transitionId: '31', jira: function(req) {
+    return req.method === 'POST' ? harness.response(204, '') : harness.response(400, { errors: { assignee: 'Cannot assign' } });
+  } });
+  assert.deepEqual(env.result.completed, { transition: true, fields: false });
+  assert.match(env.result._error, /400.*Cannot assign/);
+  assert.equal(env.requests.length, 2);
+});
+
+test('failed transition prevents all field edits', async function() {
+  var env = await quickAction({ status: 'Review', assignee: 'alice' }, { transitionId: '31', jira: function() { return harness.response(403, 'Denied'); } });
+  assert.deepEqual(env.result.completed, { transition: false, fields: false });
+  assert.match(env.result._error, /403/);
+  assert.equal(env.requests.length, 1);
+});
+
+[
+  [{ field: 'status', value: 'Done' }],
+  [{ field: '__proto__', value: 'invalid' }],
+  [{ field: 'labels', operation: 'unknown', value: ['a'] }],
+  [{ field: 'labels', value: 'a' }],
+  [{ field: 'labels', value: [] }],
+  [{ field: 'labels', value: [' '] }],
+  [{ field: 'labels', value: ['a'] }, { field: 'labels', value: ['b'] }],
+  [{ field: 'duedate', value: '2026-02-30' }],
+  [{ field: 'duedate', value: 'not a date' }],
+  [{ field: 'customfield_invalid', value: 1 }]
+].forEach(function(updates, index) {
+  test('invalid quick action ' + index + ' fails before a transition or field write', async function() {
+    var env = await quickAction({ status: 'Review', updates: updates }, { transitionId: '31' });
+    assert.ok(env.result._error);
+    assert.equal(env.requests.length, 0);
+    assert.deepEqual(env.result.completed, { transition: false, fields: false });
+  });
+});
+
+test('empty actions and unavailable requested transitions cannot edit fields', async function() {
+  for (var action of [{}, { status: 'Review', assignee: 'alice' }]) {
+    var env = await quickAction(action);
+    assert.ok(env.result._error);
+    assert.equal(env.requests.length, 0);
+  }
+});

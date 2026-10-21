@@ -489,6 +489,7 @@
   // Jira ticket status badges on MR list
   // =========================================================================
 
+  var _invalidateCommitJiraTicket = null;
   var _jiraCache = {}; // { ticket: { name, categoryKey, ts } }
   var JIRA_CACHE_TTL = 2 * 60 * 1000; // 2 minutes
   var _jiraFetching = false;
@@ -695,6 +696,7 @@
       jiraUrl: jiraUrl,
       ticket: ticket
     }, function(resp) {
+      if (sidebar.dataset.ticket !== ticket) return;
       if (!resp || resp._error) {
         var errMsg = resp ? resp._error : 'No response';
         if (resp && resp._error && /^(401|403)\s/.test(resp._error)) {
@@ -714,74 +716,64 @@
   }
 
   function loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions) {
-    chrome.runtime.sendMessage({
-      type: 'fetch-jira-transitions',
-      jiraUrl: jiraUrl,
-      ticket: ticket
-    }, function(resp) {
-      var container = sidebar.querySelector('#gl-jira-sidebar-transitions');
-      if (!container || !resp || resp._error) return;
+    var container = sidebar.querySelector('#gl-jira-sidebar-transitions');
+    if (!container || sidebar.dataset.ticket !== ticket) return;
+    container.dataset.busy = '';
+    var request = {};
+    container._jiraTransitionRequest = request;
 
-      var transitions = resp.transitions || [];
-      var transitionMap = {};
+    function render(transitions) {
+      var transitionMap = Object.create(null);
       transitions.forEach(function(t) {
-        transitionMap[(t.statusName || t.name).toLowerCase()] = t;
+        if (t.name) transitionMap[t.name.toLowerCase()] = t;
+        if (t.statusName && !transitionMap[t.statusName.toLowerCase()]) transitionMap[t.statusName.toLowerCase()] = t;
       });
-
-      // Render individual transition buttons
       var html = transitions.map(function(t) {
         var cls = getJiraCategoryClass(t.statusCategoryKey, t.statusName || t.name);
         return '<button class="gl-jira-sidebar-transition gl-jira-badge ' + cls + '" data-id="' + escHtml(t.id) + '" data-name="' + escHtml(t.statusName || t.name) + '" data-category="' + escHtml(t.statusCategoryKey) + '">' +
-          '&#8594; ' + escHtml(t.statusName || t.name) +
-        '</button>';
+          '&#8594; ' + escHtml(t.statusName || t.name) + '</button>';
       }).join('');
-
-      // Render quick action buttons (only if matching transition is available)
-      if (quickActions && quickActions.length) {
-        var qaHtml = '';
-        quickActions.forEach(function(qa) {
-          var matchedTransition = qa.status ? transitionMap[qa.status.toLowerCase()] : null;
-          // Show quick action if: has matching transition OR only has assignee (no status change needed)
-          if (matchedTransition || (!qa.status && qa.assignee)) {
-            qaHtml += '<button class="gl-jira-sidebar-quick-action" ' +
-              'data-transition-id="' + (matchedTransition ? escHtml(matchedTransition.id) : '') + '" ' +
-              'data-status-name="' + (matchedTransition ? escHtml(matchedTransition.statusName || matchedTransition.name) : '') + '" ' +
-              'data-status-category="' + (matchedTransition ? escHtml(matchedTransition.statusCategoryKey) : '') + '" ' +
-              'data-assignee="' + escHtml(qa.assignee || '') + '">' +
-              '&#9889; ' + escHtml(qa.label) +
-            '</button>';
-          }
-        });
-        if (qaHtml) {
-          html += '<div class="gl-jira-sidebar-qa-sep"></div>' + qaHtml;
+      var qaHtml = '';
+      (quickActions || []).forEach(function(qa, index) {
+        var matched = qa.status ? transitionMap[qa.status.toLowerCase()] : null;
+        if (qa.label && (matched || (!qa.status && (qa.assignee || (qa.updates || []).length)))) {
+          qaHtml += '<button class="gl-jira-sidebar-quick-action" data-action-index="' + index + '" ' +
+            'data-transition-id="' + (matched ? escHtml(matched.id) : '') + '" ' +
+            'data-status-name="' + (matched ? escHtml(matched.statusName || matched.name) : '') + '" ' +
+            'data-status-category="' + (matched ? escHtml(matched.statusCategoryKey) : '') + '">' +
+            '&#9889; ' + escHtml(qa.label) + '</button>';
         }
-      }
-
-      container.innerHTML = html;
-
-      // Transition click handler
-      container.addEventListener('click', function(e) {
-        var quickBtn = e.target.closest('.gl-jira-sidebar-quick-action');
-        if (quickBtn && !quickBtn.disabled) {
-          executeQuickAction(sidebar, quickBtn, ticket, jiraUrl, quickActions);
-          return;
-        }
-
-        var btn = e.target.closest('.gl-jira-sidebar-transition');
-        if (!btn || btn.disabled) return;
-
-        if (!_skipConfirmations && !confirm(btn.dataset.name + '?')) return;
-
-        disableAllTransitionBtns(container);
-        btn.style.opacity = '1';
-        btn.textContent = '...';
-
-        doTransition(sidebar, ticket, jiraUrl, btn.dataset.id, btn.dataset.name, btn.dataset.category, quickActions);
       });
+      container.innerHTML = html + (qaHtml ? '<div class="gl-jira-sidebar-qa-sep"></div>' + qaHtml : '');
+    }
+
+    // Field-only actions do not depend on transition permissions or availability.
+    render([]);
+    chrome.runtime.sendMessage({ type: 'fetch-jira-transitions', jiraUrl: jiraUrl, ticket: ticket }, function(resp) {
+      if (sidebar.dataset.ticket !== ticket || sidebar.querySelector('#gl-jira-sidebar-transitions') !== container || container.dataset.busy || container._jiraTransitionRequest !== request) return;
+      if (resp && !resp._error) render(resp.transitions || []);
     });
+
+    // Replace the handler when refreshing; repeated refreshes must not replay edits.
+    container.onclick = function(e) {
+      if (sidebar.dataset.ticket !== ticket || container.dataset.busy) return;
+      var quickBtn = e.target.closest('.gl-jira-sidebar-quick-action');
+      if (quickBtn && !quickBtn.disabled) {
+        executeQuickAction(sidebar, quickBtn, ticket, jiraUrl, quickActions);
+        return;
+      }
+      var btn = e.target.closest('.gl-jira-sidebar-transition');
+      if (!btn || btn.disabled) return;
+      if (!_skipConfirmations && !confirm(btn.dataset.name + '?')) return;
+      disableAllTransitionBtns(container);
+      btn.style.opacity = '1';
+      btn.textContent = '...';
+      doTransition(sidebar, ticket, jiraUrl, btn.dataset.id, btn.dataset.name, btn.dataset.category, quickActions);
+    };
   }
 
   function disableAllTransitionBtns(container) {
+    container.dataset.busy = 'true';
     container.querySelectorAll('button').forEach(function(b) { b.disabled = true; b.style.opacity = '0.5'; });
   }
 
@@ -808,60 +800,70 @@
       ticket: ticket,
       transitionId: transitionId
     }, function(result) {
+      if (sidebar.dataset.ticket !== ticket) return;
       if (result && result.success) {
         updateStatusAfterTransition(sidebar, ticket, statusName, categoryKey);
         loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
       } else {
         var container = sidebar.querySelector('#gl-jira-sidebar-transitions');
-        if (container) container.querySelectorAll('button').forEach(function(b) { b.disabled = false; b.style.opacity = '1'; });
+        if (container) loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
       }
     });
   }
 
   function executeQuickAction(sidebar, btn, ticket, jiraUrl, quickActions) {
-    var transitionId = btn.dataset.transitionId;
-    var statusName = btn.dataset.statusName;
-    var categoryKey = btn.dataset.statusCategory;
-    var assignee = btn.dataset.assignee;
-
+    var action = quickActions[Number(btn.dataset.actionIndex)];
+    if (!action) return;
     var container = sidebar.querySelector('#gl-jira-sidebar-transitions');
+    if (container.dataset.busy) return;
+    container.dataset.busy = 'true';
     disableAllTransitionBtns(container);
     btn.style.opacity = '1';
     btn.textContent = '...';
+    var previousError = sidebar.querySelector('.gl-jira-quick-action-error');
+    if (previousError) previousError.remove();
 
-    var steps = [];
-    if (transitionId) {
-      steps.push(function(cb) {
-        chrome.runtime.sendMessage({
-          type: 'do-jira-transition', jiraUrl: jiraUrl, ticket: ticket, transitionId: transitionId
-        }, function(r) { cb(r && r.success); });
-      });
+    function isCurrent() {
+      return sidebar.dataset.ticket === ticket && sidebar.querySelector('#gl-jira-sidebar-transitions') === container;
     }
-    if (assignee) {
-      steps.push(function(cb) {
-        chrome.runtime.sendMessage({
-          type: 'set-jira-assignee', jiraUrl: jiraUrl, ticket: ticket, username: assignee
-        }, function(r) { cb(r && r.success); });
-      });
-    }
-
-    function runStep(i) {
-      if (i >= steps.length) {
-        // All done — update UI
-        if (statusName) updateStatusAfterTransition(sidebar, ticket, statusName, categoryKey);
-        if (assignee) {
-          var assigneeEl = sidebar.querySelector('#gl-jira-sidebar-assignee');
-          if (assigneeEl) assigneeEl.innerHTML = escHtml(assignee) + ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
+    chrome.runtime.sendMessage({
+      type: 'execute-jira-quick-action', jiraUrl: jiraUrl, ticket: ticket,
+      transitionId: btn.dataset.transitionId, action: action
+    }, function(result) {
+      delete _jiraCache[ticket];
+      if (_invalidateCommitJiraTicket) _invalidateCommitJiraTicket(ticket);
+      if (!isCurrent()) return;
+      if (result && result.completed && result.completed.transition) {
+        updateStatusAfterTransition(sidebar, ticket, btn.dataset.statusName, btn.dataset.statusCategory);
+      }
+      var error = result && result.success ? '' : msg(result && result.completed && result.completed.transition ? 'jiraQuickActionPartial' : 'jiraQuickActionFailed') + ' ' + (result && result._error || '');
+      // Reload actual values after success AND partial failure; a transition may
+      // have succeeded even when the following field edit was rejected by Jira.
+      chrome.runtime.sendMessage({ type: 'fetch-jira-issue', jiraUrl: jiraUrl, ticket: ticket }, function(data) {
+        if (!isCurrent()) return;
+        if (data && !data._error) {
+          var draft = sidebar.querySelector('#gl-jira-sidebar-comment-input');
+          var draftText = draft ? draft.value : '';
+          renderJiraSidebarContent(sidebar, data, jiraUrl);
+          var restoredDraft = sidebar.querySelector('#gl-jira-sidebar-comment-input');
+          if (restoredDraft) restoredDraft.value = draftText;
+          var submitDraft = sidebar.querySelector('#gl-jira-sidebar-comment-submit');
+          if (submitDraft) submitDraft.disabled = !draftText.trim();
+          initAssigneeEditor(sidebar, ticket, jiraUrl);
+          initFixVersionsEditor(sidebar, ticket, jiraUrl, data.fixVersions || []);
+        } else {
+          error += (error ? ' ' : '') + msg('jiraQuickActionRefreshFailed');
         }
         loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
-        return;
-      }
-      steps[i](function(ok) {
-        if (ok) { runStep(i + 1); }
-        else { container.querySelectorAll('button').forEach(function(b) { b.disabled = false; b.style.opacity = '1'; }); }
+        if (error) {
+          var notice = document.createElement('div');
+          notice.className = 'gl-jira-sidebar-error gl-jira-quick-action-error';
+          notice.setAttribute('role', 'alert');
+          notice.textContent = error;
+          sidebar.querySelector('#gl-jira-sidebar-transitions').after(notice);
+        }
       });
-    }
-    runStep(0);
+    });
   }
 
   function initAssigneeEditor(sidebar, ticket, jiraUrl) {
@@ -3148,6 +3150,12 @@
         if (!jiraFields.length) return;
         var _commitJiraCache = {};
         var _commitJiraFetching = false;
+        var _commitJiraInvalidated = new Set();
+        _invalidateCommitJiraTicket = function(ticket) {
+          delete _commitJiraCache[ticket];
+          if (_commitJiraFetching) _commitJiraInvalidated.add(ticket);
+          else injectCommitJiraBadges();
+        };
 
         function injectCommitJiraBadges() {
           if (_commitJiraFetching) return;
@@ -3220,6 +3228,12 @@
           function fetchNextField() {
             if (fieldIdx >= jiraFields.length) {
               _commitJiraFetching = false;
+              if (_commitJiraInvalidated.size) {
+                _commitJiraInvalidated.forEach(function(ticket) { delete _commitJiraCache[ticket]; });
+                _commitJiraInvalidated.clear();
+                injectCommitJiraBadges();
+                return;
+              }
               ticketMap.forEach(function(entry) { renderCommitJiraBadges(entry); });
               return;
             }
@@ -3291,8 +3305,6 @@
             });
             if (vals.length) groups.push({ ticket: t, categoryKey: cached._categoryKey || '', badges: vals });
           });
-          if (!groups.length) return;
-
           // Idempotent re-render: skip when this exact badge set is already in
           // the DOM; rebuild when more tickets resolved (partial render before)
           var key = groups.map(function(g) {

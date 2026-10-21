@@ -60,7 +60,7 @@ test('guide language switching updates visibility, accessibility state and links
   assert.equal(locations.length, 2);
 });
 
-test('homepage renders the unified 1.13 release and older sectioned releases in both languages', function() {
+test('homepage renders the current patch, unified 1.13 and older sectioned releases in both languages', function() {
   var html = read('index.html');
   var code = html.slice(html.indexOf('    function parseChangelog('), html.indexOf('    function loadChangelog('));
   ['en', 'ru'].forEach(function(lang) {
@@ -72,17 +72,24 @@ test('homepage renders the unified 1.13 release and older sectioned releases in 
     vm.runInContext(code, context);
     var markdown = read(lang === 'ru' ? 'CHANGELOG_RU.md' : 'CHANGELOG.md');
     var versions = context.parseChangelog(markdown);
-    assert.equal(versions[0].version, '1.13.0');
+    var currentVersion = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8')).version;
+    assert.equal(versions[0].version, currentVersion);
     assert.equal(versions[0].sections.length, 1);
     assert.equal(versions[0].sections[0].title, '');
-    assert.equal(versions[0].sections[0].items.length, 9);
-    assert.match(versions[0].sections[0].items[0].bold, lang === 'ru' ? /Ревью с ИИ/ : /AI-assisted review/);
-    assert.ok(versions[1].sections[0].title, 'older releases keep explicit section headings');
+    var currentItems = versions[0].sections[0].items;
+    assert.ok(currentItems.length > 0);
+    assert.match(versions[0].sections[0].items[0].bold, lang === 'ru' ? /Быстрые действия Jira/i : /Jira quick actions/);
+    var unifiedIndex = versions.findIndex(function(release) { return release.version === '1.13.0'; });
+    assert.ok(unifiedIndex > 0);
+    assert.equal(versions[unifiedIndex].sections[0].items.length, 9);
+    assert.match(versions[unifiedIndex].sections[0].items[0].bold, lang === 'ru' ? /Ревью с ИИ/ : /AI-assisted review/);
+    assert.ok(versions[unifiedIndex + 1].sections[0].title, 'older releases keep explicit section headings');
     context.renderChangelog(versions);
     assert.equal(container.children.length, versions.length);
-    assert.equal((container.children[0].innerHTML.match(/class="changelog-item"/g) || []).length, 9);
+    assert.equal((container.children[0].innerHTML.match(/class="changelog-item"/g) || []).length, currentItems.length);
     assert.doesNotMatch(container.children[0].innerHTML, /class="changelog-section-title/);
-    assert.match(container.children[1].innerHTML, /class="changelog-section-title/);
+    assert.equal((container.children[unifiedIndex].innerHTML.match(/class="changelog-item"/g) || []).length, 9);
+    assert.match(container.children[unifiedIndex + 1].innerHTML, /class="changelog-section-title/);
   });
 });
 
@@ -100,4 +107,16 @@ test('changelog keeps plain and bold items before or after explicit sections wit
   assert.equal(versions[0].sections[1].items.length, 1);
   assert.equal(versions[1].sections[0].items.length, 1);
   assert.equal(versions[1].sections[0].items[0].text, 'Earlier item');
+});
+
+test('homepage omits unreleased changes without leaking their items into published releases', function() {
+  var html = read('index.html');
+  var code = html.slice(html.indexOf('    function parseChangelog('), html.indexOf('    function renderChangelog('));
+  var context = vm.createContext({}); vm.runInContext(code, context);
+  var versions = context.parseChangelog('## Unreleased\n- **Upcoming** — New feature\n### Fixes\n- Pending fix\n## 1.0.0\n- Published change');
+  assert.equal(versions.length, 1);
+  assert.equal(versions[0].version, '1.0.0');
+  assert.equal(versions[0].sections.length, 1);
+  assert.equal(versions[0].sections[0].items.length, 1);
+  assert.equal(versions[0].sections[0].items[0].text, 'Published change');
 });

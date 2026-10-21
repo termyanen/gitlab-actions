@@ -325,6 +325,58 @@ function mapJiraComment(c) {
   };
 }
 
+// Build the entire edit before executing a transition, so invalid settings never
+// leave an issue half changed. Jira validates field permissions and values.
+function buildJiraQuickActionEdit(action) {
+  var fields = {};
+  var update = {};
+  var seen = new Set();
+  if (action.assignee) fields.assignee = { name: action.assignee };
+  (action.updates || []).forEach(function(change) {
+    var field = change.field;
+    var operation = change.operation || 'set';
+    var value = change.value;
+    if (seen.has(field)) throw new Error('Duplicate Jira field: ' + field);
+    seen.add(field);
+    if (['labels', 'fixVersions', 'versions', 'components'].includes(field)) {
+      if (!['set', 'add', 'remove'].includes(operation) || !Array.isArray(value) || !value.length ||
+          value.some(function(v) { return typeof v !== 'string' || !v.trim(); })) {
+        throw new Error('Invalid Jira field: ' + field);
+      }
+      var values = Array.from(new Set(value));
+      if (field !== 'labels') values = values.map(function(name) { return { name: name }; });
+      if (operation === 'set') fields[field] = values;
+      else update[field] = values.map(function(v) { var op = {}; op[operation] = v; return op; });
+    } else if (field === 'priority' || field === 'duedate') {
+      if (operation !== 'set' || typeof value !== 'string' || !value.trim() ||
+          (field === 'duedate' && (!/^\d{4}-\d{2}-\d{2}$/.test(value) || isNaN(Date.parse(value)) || new Date(value).toISOString().slice(0, 10) !== value))) {
+        throw new Error('Invalid Jira field: ' + field);
+      }
+      fields[field] = field === 'priority' ? { name: value } : value;
+    } else if (/^customfield_\d+$/.test(field) && operation === 'set' && value !== undefined) {
+      fields[field] = value;
+    } else {
+      throw new Error('Unsupported Jira field: ' + field);
+    }
+  });
+  var body = {};
+  if (Object.keys(fields).length) body.fields = fields;
+  if (Object.keys(update).length) body.update = update;
+  return body;
+}
+
+function jiraQuickActionWrite(jiraUrl, ticket, suffix, method, body) {
+  return chrome.cookies.getAll({ url: jiraUrl }).then(function(cookies) {
+    return fetch(jiraUrl + '/rest/api/2/issue/' + encodeURIComponent(ticket) + suffix, {
+      method: method,
+      headers: { 'Content-Type': 'application/json', 'Cookie': cookies.map(function(c) { return c.name + '=' + c.value; }).join('; ') },
+      body: JSON.stringify(body)
+    });
+  }).then(function(response) {
+    if (!response.ok) return response.text().then(function(text) { throw new Error(response.status + ' ' + text); });
+  });
+}
+
 function fetchJiraStatuses(jiraUrl, tickets, showDetails) {
   var results = {};
   var fields = showDetails ? 'status,priority,issuetype' : 'status';
@@ -390,6 +442,28 @@ function getFieldMap(jiraUrl) {
 }
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  if (msg.type === 'execute-jira-quick-action') {
+    var completed = { transition: false, fields: false };
+    Promise.resolve().then(function() {
+      var action = msg.action || {};
+      var edit = buildJiraQuickActionEdit(action);
+      if (action.status && !msg.transitionId) throw new Error('Jira transition is unavailable');
+      if (!msg.transitionId && !Object.keys(edit).length) throw new Error('Empty Jira action');
+      var transition = msg.transitionId ? jiraQuickActionWrite(msg.jiraUrl, msg.ticket, '/transitions', 'POST', { transition: { id: msg.transitionId } }).then(function() {
+        completed.transition = true;
+      }) : Promise.resolve();
+      return transition.then(function() {
+        if (!Object.keys(edit).length) return;
+        return jiraQuickActionWrite(msg.jiraUrl, msg.ticket, '', 'PUT', edit).then(function() { completed.fields = true; });
+      });
+    }).then(function() {
+      sendResponse({ success: true, completed: completed });
+    }).catch(function(error) {
+      sendResponse({ _error: error.message, completed: completed });
+    });
+    return true;
+  }
+
   if (msg.type === 'fetch-jira-statuses') {
     fetchJiraStatuses(msg.jiraUrl, msg.tickets, msg.showDetails)
       .then(function(statuses) {

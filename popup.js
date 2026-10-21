@@ -470,7 +470,7 @@ function renderDefaultTab(container) {
   document.getElementById('show_jira_details').checked = allData.show_jira_details || false;
   renderJiraQuickActions(allData.jiraQuickActions || []);
   document.getElementById('addJiraQuickAction').addEventListener('click', function() {
-    addJiraQuickActionRow('', '', '');
+    addJiraQuickActionRow({});
   });
   document.getElementById('language').value = allData.language || 'auto';
 
@@ -817,27 +817,81 @@ function renderJiraQuickActions(actions) {
   var list = document.getElementById('jiraQuickActionsList');
   list.innerHTML = '';
   (actions || []).forEach(function(a) {
-    addJiraQuickActionRow(a.label || '', a.status || '', a.assignee || '');
+    addJiraQuickActionRow(a);
   });
 }
 
-function addJiraQuickActionRow(label, status, assignee) {
+var JIRA_ACTION_FIELDS = [
+  ['status', 'jiraQuickActionStatus'], ['assignee', 'jiraQuickActionAssignee'],
+  ['labels', 'jiraSidebarLabels'], ['fixVersions', 'jiraSidebarFixVersions'],
+  ['versions', 'jiraSidebarAffectsVersions'], ['components', 'jiraSidebarComponents'],
+  ['priority', 'jiraSidebarPriority'], ['duedate', 'jiraQuickActionDueDate'],
+  ['custom', 'jiraQuickActionCustom']
+];
+
+function addJiraQuickActionRow(action) {
   var list = document.getElementById('jiraQuickActionsList');
   var row = document.createElement('div');
   row.className = 'jira-quick-action';
   row.innerHTML =
     '<div class="jqa-row">' +
-      '<input type="text" data-field="label" placeholder="Send to QA" value="' + escHtml(label) + '">' +
-      '<span class="remove-btn" title="Remove">&times;</span>' +
+      '<input type="text" data-field="label" aria-label="' + escHtml(t('jiraQuickActionLabel')) + '" placeholder="' + escHtml(t('jiraQuickActionLabel')) + '" value="' + escHtml(action.label || '') + '">' +
+      '<button type="button" class="remove-btn" aria-label="' + escHtml(t('jiraQuickActionRemove')) + '">&times;</button>' +
     '</div>' +
-    '<div class="jqa-row">' +
-      '<div class="jqa-field"><span class="jqa-label">' + escHtml(t('jiraQuickActionStatus')) + '</span>' +
-      '<input type="text" data-field="status" placeholder="IN QA REVIEW" value="' + escHtml(status) + '"></div>' +
-      '<div class="jqa-field"><span class="jqa-label">' + escHtml(t('jiraQuickActionAssignee')) + '</span>' +
-      '<input type="text" data-field="assignee" placeholder="username" value="' + escHtml(assignee) + '"></div>' +
-    '</div>';
-  row.querySelector('.remove-btn').addEventListener('click', function() { row.remove(); });
+    '<div class="jqa-changes"></div>' +
+    '<button type="button" class="add-btn jqa-add-field">+ ' + escHtml(t('jiraQuickActionAddField')) + '</button>';
+  row.querySelector('.remove-btn').addEventListener('click', function() { row.remove(); scheduleAutoSave(); });
+  row.querySelector('.jqa-add-field').addEventListener('click', function() {
+    addJiraQuickActionField(row, { field: 'labels', operation: 'add', value: [] });
+  });
   list.appendChild(row);
+  if (action.status) addJiraQuickActionField(row, { field: 'status', value: action.status });
+  if (action.assignee) addJiraQuickActionField(row, { field: 'assignee', value: action.assignee });
+  (action.updates || []).forEach(function(update) { addJiraQuickActionField(row, update); });
+  if (!action.status && !action.assignee && !(action.updates || []).length) {
+    addJiraQuickActionField(row, { field: 'status', value: '' });
+  }
+}
+
+function addJiraQuickActionField(row, update) {
+  var fieldRow = document.createElement('div');
+  fieldRow.className = 'jqa-change';
+  fieldRow.innerHTML = '<div class="jqa-row">' +
+    '<select data-part="field" aria-label="' + escHtml(t('jiraQuickActionField')) + '">' + JIRA_ACTION_FIELDS.map(function(f) {
+      return '<option value="' + f[0] + '">' + escHtml(t(f[1])) + '</option>';
+    }).join('') + '</select>' +
+    '<select data-part="operation" aria-label="' + escHtml(t('jiraQuickActionOperation')) + '">' +
+      '<option value="add">' + escHtml(t('jiraQuickActionAddValues')) + '</option>' +
+      '<option value="remove">' + escHtml(t('jiraQuickActionRemoveValues')) + '</option>' +
+      '<option value="set">' + escHtml(t('jiraQuickActionSetValues')) + '</option></select>' +
+    '<button type="button" class="remove-btn" aria-label="' + escHtml(t('jiraQuickActionRemove')) + '">&times;</button></div>' +
+    '<input data-part="custom" aria-label="' + escHtml(t('jiraQuickActionCustom')) + '" placeholder="customfield_12345">' +
+    '<input data-part="value" aria-label="' + escHtml(t('jiraQuickActionValue')) + '">' +
+    '<div class="hint jqa-value-hint"></div>';
+  row.querySelector('.jqa-changes').appendChild(fieldRow);
+  var select = fieldRow.querySelector('[data-part="field"]');
+  var custom = fieldRow.querySelector('[data-part="custom"]');
+  var operation = fieldRow.querySelector('[data-part="operation"]');
+  var input = fieldRow.querySelector('[data-part="value"]');
+  select.value = /^customfield_\d+$/.test(update.field) ? 'custom' : update.field;
+  custom.value = select.value === 'custom' ? update.field : '';
+  operation.value = update.operation || 'set';
+  input.value = select.value === 'custom' ? JSON.stringify(update.value) : Array.isArray(update.value) ? update.value.join(', ') : update.value || '';
+  function updateControls() {
+    var field = select.value;
+    var multi = ['labels', 'fixVersions', 'versions', 'components'].includes(field);
+    operation.hidden = !multi;
+    custom.hidden = field !== 'custom';
+    input.placeholder = field === 'duedate' ? 'YYYY-MM-DD' : field === 'assignee' ? 'username' : '';
+    fieldRow.querySelector('.jqa-value-hint').textContent = t(field === 'custom' ? 'jiraQuickActionCustomHint' : multi ? 'jiraQuickActionListHint' : field === 'status' ? 'jiraQuickActionStatusHint' : 'jiraQuickActionValueHint');
+  }
+  select.addEventListener('change', function() {
+    input.value = '';
+    operation.value = 'add';
+    updateControls();
+  });
+  fieldRow.querySelector('.remove-btn').addEventListener('click', function() { fieldRow.remove(); scheduleAutoSave(); });
+  updateControls();
 }
 
 function getJiraQuickActionsFromUI() {
@@ -845,9 +899,31 @@ function getJiraQuickActionsFromUI() {
   var actions = [];
   rows.forEach(function(row) {
     var label = row.querySelector('[data-field="label"]').value.trim();
-    var status = row.querySelector('[data-field="status"]').value.trim();
-    var assignee = row.querySelector('[data-field="assignee"]').value.trim();
-    if (label && (status || assignee)) actions.push({ label: label, status: status, assignee: assignee });
+    var action = { label: label, status: '', assignee: '', updates: [] };
+    var seen = new Set();
+    row.querySelectorAll('.jqa-change').forEach(function(fieldRow) {
+      var field = fieldRow.querySelector('[data-part="field"]').value;
+      var raw = fieldRow.querySelector('[data-part="value"]').value.trim();
+      if (!raw) return;
+      var value = raw;
+      var operation = 'set';
+      if (field === 'custom') {
+        field = fieldRow.querySelector('[data-part="custom"]').value.trim();
+        if (!/^customfield_\d+$/.test(field)) throw new Error(t('jiraQuickActionInvalid'));
+        try { value = JSON.parse(raw); } catch (error) { throw new Error(t('jiraQuickActionInvalid')); }
+      } else if (['labels', 'fixVersions', 'versions', 'components'].includes(field)) {
+        value = Array.from(new Set(raw.split(',').map(function(v) { return v.trim(); }).filter(Boolean)));
+        operation = fieldRow.querySelector('[data-part="operation"]').value;
+        if (!value.length) return;
+      } else if (field === 'duedate' && (!/^\d{4}-\d{2}-\d{2}$/.test(raw) || isNaN(Date.parse(raw)) || new Date(raw).toISOString().slice(0, 10) !== raw)) {
+        throw new Error(t('jiraQuickActionInvalid'));
+      }
+      if (seen.has(field)) throw new Error(t('jiraQuickActionDuplicate'));
+      seen.add(field);
+      if (field === 'status' || field === 'assignee') action[field] = value;
+      else action.updates.push({ field: field, operation: operation, value: value });
+    });
+    if (label && (action.status || action.assignee || action.updates.length)) actions.push(action);
   });
   return actions;
 }
@@ -962,6 +1038,9 @@ function saveSettings() {
 }
 
 function saveDefaultTab(onSaved) {
+  var jiraQuickActions;
+  try { jiraQuickActions = getJiraQuickActionsFromUI(); }
+  catch (error) { showSaveFailed(error.message); return false; }
   var prompts = {};
   // Validate every prompt before saving any setting, including escaped UTF-8 bytes.
   var invalidPrompt = AI_REVIEW_PROMPTS.some(function(prompt) {
@@ -1044,7 +1123,7 @@ function saveDefaultTab(onSaved) {
   settings.jira_url = newJiraUrl;
   settings.jira_ticket_regex = (document.getElementById('jira_ticket_regex').value || '').trim();
   settings.show_jira_details = document.getElementById('show_jira_details').checked;
-  settings.jiraQuickActions = getJiraQuickActionsFromUI();
+  settings.jiraQuickActions = jiraQuickActions;
   settings.language = document.getElementById('language').value || 'auto';
   settings.quickComments = getQuickCommentsFromUI();
   settings.reviewersList = (document.getElementById('reviewersList').value || '').trim();

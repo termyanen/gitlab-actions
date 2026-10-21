@@ -341,7 +341,7 @@ Deep integration with Jira via session cookies (no API tokens needed):
 - **Full ticket sidebar** — click any badge to view: summary, status, type, priority, assignee, reporter, labels, epic, sprint, components, versions, description, attachments
 - **Change status** — workflow transition buttons, change ticket status without leaving GitLab
 - **Change assignee** — search and reassign with autocomplete
-- **Quick actions** — composite actions (status + assignee) in one click
+- **Quick actions** — configure each button to change one field or several: status, assignee, labels, Fix Version, affected versions, components, priority and due date. Add, remove or replace list values; advanced custom fields accept a Jira field ID and JSON value. Buttons without a status change work independently of workflow transitions. Existing status + assignee actions remain compatible.
 - **Attachments** — view images/videos in lightbox, download files
 - **Clickable Epic Link** — opens epic in Jira
 
