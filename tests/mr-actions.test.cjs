@@ -156,3 +156,47 @@ test('single custom job runs directly; comma-separated jobs go to the background
   assert.equal(env.messages[0].projectId, 37);
   assert.equal(env.messages[0].mrIid, 12);
 });
+
+[
+  ['remove_labels', ' waiting for QA, bug\nwaiting for QA, тип::ошибка ', { remove_labels: 'waiting for QA,bug,тип::ошибка' }],
+  ['clear_labels', 'ignored stale label', { labels: '' }],
+  ['add_labels', 'bug, ready for QA', { add_labels: 'bug,ready for QA' }],
+  ['set_labels', 'ready for QA', { labels: 'ready for QA' }],
+  ['clear_assignees', '', { assignee_ids: [0] }],
+  ['clear_reviewers', '', { reviewer_ids: [0] }],
+  ['clear_milestone', '', { milestone_id: 0 }]
+].forEach(function(example) {
+  test('configurable MR action sends only its chosen field: ' + example[0], async function() {
+    var env = fixture();
+    await env.finish(env.actions.doMrAction({ label: 'Custom action', type: example[0], labels: example[1] }));
+    assert.equal(env.requests.length, 1);
+    assert.equal(env.requests[0].method, 'PUT');
+    assert.equal(env.requests[0].path, '/projects/37/merge_requests/12');
+    assert.deepEqual(env.requests[0].body, example[2]);
+  });
+});
+
+[null, {}, {label:'  ',type:'clear_labels'}, {label:'Bad',type:'delete'}, {label:'Bad',type:'constructor'},
+  {label:'Bad',type:'remove_labels',labels:' , \n'}, {label:'Bad',type:'set_labels',labels:''}, {label:'Bad',type:'add_labels',labels:[]}].forEach(function(action, i) {
+  test('invalid MR action makes no request: ' + i, async function() {
+    var env = fixture();
+    await assert.rejects(env.finish(env.actions.doMrAction(action)));
+    assert.equal(env.requests.length, 0);
+  });
+});
+
+test('MR action API rejection is surfaced without retrying or writing other fields', async function() {
+  var env = harness.content({ gitlab: function() { return harness.response(403, {message:'Forbidden'}); } });
+  await assert.rejects(env.finish(env.actions.doMrAction({label:'Clear',type:'clear_labels'})), /Forbidden/);
+  assert.equal(env.requests.length, 1);
+});
+
+test('MR actions inherit defaults, support project overrides, and allow an empty override', async function() {
+  var defaultActions = [{id:'global',label:'Global',type:'clear_labels',labels:''}];
+  for (var override of [undefined, [], [{id:'local',label:'Local',type:'clear_reviewers',labels:''}]]) {
+    var profile = override === undefined ? {} : {mrActions:override};
+    var env = fixture({settings:{mrActions:defaultActions,projectProfiles:{'team/repo':profile}}});
+    var settings = await env.finish(env.actions.getSettings());
+    assert.deepEqual(JSON.parse(JSON.stringify(settings.mrActions)), override === undefined ? defaultActions : override);
+  }
+});

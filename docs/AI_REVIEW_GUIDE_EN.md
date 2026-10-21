@@ -144,6 +144,7 @@ Keep the reviewed SHA in your final review comment or original AI task if you wa
 | Deleted an imported draft and want to add it again | Click Check and preview again. Once GitLab confirms the draft is absent, it can be selected again. Unavailable draft lists and uncertain sends remain protected against duplicates |
 | New commits arrived while the AI worked | Prepared replies can be imported after pushing your fixes; verify their text. New findings need a fresh review. Do not replace the old JSON's SHA merely to bypass validation |
 | Wrong inline location | Give the AI the validation message and current diff; regenerate the location. The preview editor edits text, not anchors |
+| GitLab did not provide a file's full diff | Import automatically attempts to recover missing or truncated changes from GitLab's Git storage. This request shares your existing GitLab session, has a 16 MiB response limit, and still requires exact code-line and MR revision checks. If the server cannot return a verifiable diff, that comment stays blocked; other ready comments can be sent. Retry Check and preview after a temporary error, or prepare a general MR comment with the file and line in its text |
 | Delivery unconfirmed | Check GitLab first. A comment may already exist; do not retry blindly |
 | Selected discussion disappeared | Refresh and reselect. Reply preparation stops; repeat review marks the missing thread as unverified |
 | Partial context | Read the warning, refresh or obtain the missing material before claiming complete verification |

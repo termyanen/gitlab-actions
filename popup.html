@@ -6,6 +6,18 @@
     body { width: 360px; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #333; margin: 0 auto; }
     body.fullpage { width: 100%; max-width: 480px; padding: 24px; }
     h3 { margin: 0 0 14px; font-size: 15px; }
+    .popup-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .popup-header h3 { flex: 1; margin: 0; }
+    .open-settings-tab { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; margin: 0; padding: 5px; background: transparent; color: #1f75cb; }
+    .open-settings-tab:hover { background: #f0f7ff; }
+    .open-settings-tab:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    .settings-transfer { margin-bottom: 14px; }
+    .settings-transfer-actions { display: flex; gap: 8px; }
+    .settings-transfer-actions button { flex: 1; margin: 0; }
+    .settings-transfer .hint { line-height: 1.45; margin-top: 6px; }
+    .settings-import-preview { margin-top: 8px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+    .settings-import-preview p { margin: 0 0 8px; overflow-wrap: anywhere; }
+    button:disabled { opacity: 0.5; cursor: default; }
     h4 { margin: 14px 0 8px; font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
     .hint { font-size: 11px; color: #888; margin-top: 2px; }
     .sep { border-top: 1px solid #eee; margin: 12px 0; }
@@ -68,6 +80,13 @@
     .custom-job input { flex: 1; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; }
     .custom-job .remove-btn, .jira-quick-action .remove-btn { background: none; border: none; color: #d00; cursor: pointer; font-size: 16px; padding: 0 4px; margin: 0; width: auto; }
     .custom-job .remove-btn:hover, .jira-quick-action .remove-btn:hover { color: #a00; }
+    .mr-action { margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+    .mr-action-heading { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+    .mr-action input, .mr-action select, .mr-action textarea { box-sizing: border-box; width: 100%; min-width: 0; padding: 5px 6px; border: 1px solid #ddd; border-radius: 4px; font: inherit; }
+    .mr-action input { flex: 1; }
+    .mr-action textarea { margin-top: 6px; }
+    .mr-action .remove-btn { width: auto; margin: 0; padding: 0 6px; border: 0; background: none; color: #d00; font-size: 20px; }
+    .mr-action [hidden] { display: none; }
     .add-btn { background: #f0f0f0; color: #333; border: 1px dashed #ccc; margin-top: 6px; }
     .add-btn:hover { background: #e8e8e8; }
     .jira-quick-action { margin-top: 6px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; }
@@ -120,6 +139,9 @@
       .field input, .field textarea, .field select { background-color: #2a2a2a; border-color: #444; color: #ddd; }
       .field input::placeholder, .field textarea::placeholder { color: #666; }
       .custom-job input { background: #2a2a2a; border-color: #444; color: #ddd; }
+      .mr-action { border-color: #444; }
+      .mr-action input, .mr-action select, .mr-action textarea { background-color: #2a2a2a; border-color: #444; color: #ddd; }
+      .mr-action input::placeholder, .mr-action textarea::placeholder { color: #888; }
       .jira-quick-action { background: #252525; border-color: #444; }
       .jira-quick-action input, .jira-quick-action select { background-color: #2a2a2a; border-color: #444; color: #ddd; }
       .jqa-change { border-color: #444; }
@@ -130,7 +152,17 @@
       .jqa-label { color: #777; }
       button { background: #2d6cb4; }
       button:hover { background: #3a7fd4; }
-      .add-btn { background: #2a2a2a; color: #ddd; border-color: #555; }
+      .open-settings-tab { background: transparent; color: #6cb2f7; }
+      .open-settings-tab:hover { background: #252d38; }
+      .settings-import-preview { border-color: #444; }
+      .mr-action { margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+    .mr-action-heading { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+    .mr-action input, .mr-action select, .mr-action textarea { box-sizing: border-box; width: 100%; min-width: 0; }
+    .mr-action input { flex: 1; }
+    .mr-action textarea { margin-top: 6px; }
+    .mr-action .remove-btn { width: auto; margin: 0; padding: 0 6px; border: 0; background: none; color: #d00; font-size: 20px; }
+    .mr-action [hidden] { display: none; }
+    .add-btn { background: #2a2a2a; color: #ddd; border-color: #555; }
       .add-btn:hover { background: #333; }
       .current-project { color: #6cb2f7; }
       .how-link { color: #6cb2f7; }
@@ -153,7 +185,29 @@
   </style>
 </head>
 <body>
-  <h3 id="popupTitle">GitLab MR Actions <a href="welcome.html" target="_blank" class="how-link" id="howLink">How it works</a></h3>
+  <div class="popup-header">
+    <h3 id="popupTitle">GitLab MR Actions <a href="welcome.html" target="_blank" class="how-link" id="howLink">How it works</a></h3>
+    <button type="button" class="open-settings-tab" id="openSettingsTab" title="Open settings in a new tab" aria-label="Open settings in a new tab" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7M21 3l-11 11"/><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></svg>
+    </button>
+  </div>
+
+  <div class="settings-transfer" id="settingsTransfer">
+    <div class="settings-transfer-actions">
+      <button type="button" class="add-btn" id="exportSettings" disabled>Export settings</button>
+      <button type="button" class="add-btn" id="importSettings" disabled>Import settings</button>
+    </div>
+    <div class="hint" id="settingsTransferHint">Share all settings and project profiles as a JSON file.</div>
+    <input type="file" id="settingsImportFile" accept=".json,application/json" hidden>
+    <div class="settings-import-preview" id="settingsImportPreview" hidden>
+      <p id="settingsImportSummary"></p>
+      <p id="settingsImportReplace">This replaces all current settings and project profiles.</p>
+      <div class="settings-transfer-actions">
+        <button type="button" id="applySettingsImport">Replace settings</button>
+        <button type="button" class="add-btn" id="cancelSettingsImport">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <div class="update-banner" id="updateBanner"></div>
 

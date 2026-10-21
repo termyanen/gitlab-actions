@@ -1027,6 +1027,31 @@
     } catch(e) {}
   }
 
+  // Each configurable action updates only its chosen field in one request.
+  function doMrAction(action) {
+    return Promise.resolve().then(function() {
+      if (!action || typeof action.label !== 'string' || !action.label.trim()) throw new Error(t('mrActionInvalid'));
+      var body = {};
+      var labelFields = { remove_labels: 'remove_labels', add_labels: 'add_labels', set_labels: 'labels' };
+      if (Object.prototype.hasOwnProperty.call(labelFields, action.type)) {
+        if (typeof action.labels !== 'string') throw new Error(t('mrActionInvalid'));
+        var labels = action.labels.split(/[,\n]+/).map(function(label) { return label.trim(); }).filter(Boolean);
+        labels = labels.filter(function(label, i) { return labels.indexOf(label) === i; });
+        if (!labels.length) throw new Error(t('mrActionInvalid'));
+        body[labelFields[action.type]] = labels.join(',');
+      } else if (action.type === 'clear_labels') body.labels = '';
+      else if (action.type === 'clear_assignees') body.assignee_ids = [0];
+      else if (action.type === 'clear_reviewers') body.reviewer_ids = [0];
+      else if (action.type === 'clear_milestone') body.milestone_id = 0;
+      else throw new Error(t('mrActionInvalid'));
+      return api('PUT', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID, body);
+    });
+  }
+
+  function mrActionDescription(action) {
+    return t('mrAction_' + action.type) + (/^(remove|add|set)_labels$/.test(action.type) ? ': ' + action.labels : '');
+  }
+
   var _actionInProgress = false;
 
   function runAction(btn, actionFn, actionName, opts) {
@@ -1098,6 +1123,7 @@
     reviewersJob: 'get-reviewers',
     quickComments: [],
     customJobs: [],
+    mrActions: [],
     buttonOrder: [],
     projectProfiles: {},
     versionFile: 'package.json',
@@ -1128,6 +1154,7 @@
             if (profile.versionCommitTemplate) merged.versionCommitTemplate = profile.versionCommitTemplate;
             if (profile.reviewersList) merged.reviewersList = profile.reviewersList;
             if (profile.reviewersJob) merged.reviewersJob = profile.reviewersJob;
+            if (Array.isArray(profile.mrActions)) merged.mrActions = profile.mrActions;
             if (profile.customJobs) merged.customJobs = profile.customJobs;
             if (profile.buttonOrder) merged.buttonOrder = profile.buttonOrder;
             if (profile.buttons) {
@@ -1209,6 +1236,8 @@
       var allKeys = Object.keys(builtinDefs);
       (s.customJobs || []).forEach(function(j, i) { allKeys.push('custom_' + i); });
 
+      (s.mrActions || []).forEach(function(action) { allKeys.push('mr_action_' + action.id); });
+
       var orderedKeys = [];
       (s.buttonOrder || []).forEach(function(key) {
         if (allKeys.indexOf(key) !== -1) orderedKeys.push(key);
@@ -1218,7 +1247,20 @@
       });
 
       orderedKeys.forEach(function(key) {
-        if (key.indexOf('custom_') === 0) {
+        if (key.indexOf('mr_action_') === 0) {
+          var action = (s.mrActions || []).find(function(a) { return key === 'mr_action_' + a.id; });
+          if (!action || !action.label) return;
+          var btn = document.createElement('button');
+          btn.className = 'btn-custom-job';
+          btn.dataset.mrActionId = action.id;
+          btn.textContent = action.label;
+          btn.title = mrActionDescription(action);
+          btn.addEventListener('click', function() {
+            if (!s.skip_confirmations && !confirm(t('mrActionConfirm', [action.label, mrActionDescription(action)]))) return;
+            runAction(btn, function() { return doMrAction(action); }, action.label, { reloadOnSuccess: true });
+          });
+          container.appendChild(btn);
+        } else if (key.indexOf('custom_') === 0) {
           var idx = parseInt(key.replace('custom_', ''));
           var job = (s.customJobs || [])[idx];
           if (!job || !job.label || !job.jobName) return;
@@ -1297,7 +1339,10 @@
       };
       var paletteActions = [];
       orderedKeys.forEach(function(key) {
-        if (key.indexOf('custom_') === 0) {
+        if (key.indexOf('mr_action_') === 0) {
+          var action = (s.mrActions || []).find(function(a) { return key === 'mr_action_' + a.id; });
+          if (action && action.label) paletteActions.push({ id: key, label: action.label, icon: 'action' });
+        } else if (key.indexOf('custom_') === 0) {
           var idx = parseInt(key.replace('custom_', ''));
           var job = (s.customJobs || [])[idx];
           if (job && job.label && job.jobName) {
@@ -1699,6 +1744,14 @@
         'mr-retry-failed':     function() { return doRetryFailed(); },
         'mr-reviewers':        function() { return getSettings().then(function(s) { var list = (s.reviewersList || '').split(/[,\s]+/).map(function(u) { return u.replace(/^@/, '').trim(); }).filter(Boolean); return doReviewers(s.reviewersJob || 'get-reviewers', list); }); },
       };
+      if (typeof actionId !== 'string') return;
+      if (actionId.indexOf('mr_action_') === 0) {
+        var actionButton = Array.from(document.querySelectorAll('[data-mr-action-id]')).find(function(btn) {
+          return actionId === 'mr_action_' + btn.dataset.mrActionId;
+        });
+        if (actionButton) actionButton.click();
+        return;
+      }
       // Custom jobs
       if (actionId.indexOf('custom-job-') === 0) {
         var jobIdx = parseInt(actionId.replace('custom-job-', ''));

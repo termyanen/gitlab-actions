@@ -419,3 +419,38 @@ test('empty Jira changes are omitted while zero, false and null custom values ar
   assert.equal(actions.length, 1);
   assert.deepEqual(actions[0].updates.map(function(change) { return change.value; }), [0, false, null]);
 });
+
+function mrActionRow(id, label, type, labels) {
+  return {dataset:{id:id},querySelector:function(selector) {
+    var field = selector.match(/data-field="([^"]+)"/)[1];
+    return {value:{label:label,type:type,labels:labels}[field]};
+  }};
+}
+
+test('MR action settings normalize labels and prevent incomplete actions from saving', function() {
+  var env = popup();
+  var rows = [mrActionRow('qa',' Remove QA ','remove_labels',' QA ready, bug\nQA ready, тип::ошибка ')];
+  env.document.querySelectorAll = function(selector) { return selector === '#mrActionsList .mr-action' ? rows : []; };
+  assert.equal(env.save(), true);
+  assert.deepEqual(JSON.parse(JSON.stringify(env.writes[0].data.mrActions)), [{id:'qa',label:'Remove QA',type:'remove_labels',labels:'QA ready, bug, тип::ошибка'}]);
+  rows = [mrActionRow('qa','Remove QA','remove_labels',' , \n')];
+  assert.equal(env.save(), false);
+  assert.equal(env.writes.length, 1);
+  assert.equal(env.control('status').textContent, messages.mrActionInvalid.message);
+});
+
+test('MR action button order retains custom jobs and stable identities after removal', function() {
+  var env = popup();
+  var ordered = env.context.buildOrderedList(['mr_action_second','custom_0','btn_ship','mr_action_removed','mr_action_first'], {btn_ship:true}, [{label:'Deploy',jobName:'deploy'}],
+    [{id:'first',label:'First',type:'clear_labels',labels:''},{id:'second',label:'Second',type:'clear_reviewers',labels:''}]);
+  assert.deepEqual(Array.from(ordered.slice(0,4), function(item) { return item.key; }), ['mr_action_second','custom_0','btn_ship','mr_action_first']);
+  assert.equal(ordered[0].isCustom, true);
+});
+
+test('invalid project MR action preserves the current form and prevents profile writes', function() {
+  var env = popup();
+  env.context.activeTab = 'team/repo';
+  env.document.querySelectorAll = function(selector) { return selector === '#profileMrActionsList .mr-action' ? [mrActionRow('bad','','clear_labels','')] : []; };
+  assert.equal(env.context.saveSettings(), false);
+  assert.equal(env.writes.length, 0);
+});

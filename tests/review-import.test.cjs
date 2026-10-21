@@ -62,7 +62,7 @@ function environment(options) {
     throw new Error('Unexpected request: ' + url);
   }
   var sandbox = vm.createContext({
-    window: window, chrome: chrome, URL: URL, AbortController: AbortController, TextEncoder: TextEncoder,
+    window: window, chrome: chrome, URL: URL, AbortController: AbortController, TextEncoder: TextEncoder, TextDecoder: options.noTextDecoder ? undefined : TextDecoder,
     navigator: options.locks ? { locks: options.locks } : {},
     setTimeout: options.fastTimeout ? function(fn) { return setTimeout(fn, 5); } : setTimeout, clearTimeout: clearTimeout,
     fetch: async function(address, init) {
@@ -239,6 +239,193 @@ test('partial, binary and truncated diff files never receive guessed inline anch
     assert.equal(plan.items[0].status, 'invalid');
     await send(env, plan, ['R1']); assert.equal(env.posts().length, 0);
   }
+});
+
+test('missing and truncated diffs are recovered lazily once and retain exact renamed old/new/context anchors', async function() {
+  for (var limited of [{ collapsed: true, diff: '' }, { too_large: true, diff: '' }, { diff: '' }, { diff: '@@ -1,3 +1,4 @@\n first();\n' }]) {
+    var env = environment({ root: '/gitlab', legacy: true, handler: function(url, init, defaults) {
+      if (url.pathname.endsWith('/diffs')) return response([Object.assign({ old_path: 'src/old.js', new_path: 'src/new.js' }, limited)], 200, { 'x-next-page': '' });
+      if (url.pathname.endsWith('/changes')) {
+        assert.equal(url.search, '?access_raw_diffs=true');
+        return response({ iid: 42, sha: HEAD, diff_refs: refs(), changes: [{ old_path: 'src/old.js', new_path: 'src/new.js', renamed_file: true, diff: '@@ -1,3 +1,4 @@\n first();\n-old();\n+added();\n+  changed();\n tail();\n' }] });
+      }
+      return defaults(url, init);
+    } });
+    var plan = await env.api.prepare(env.context, env.json([
+      inline(), inline({ id: 'old', path: 'src/old.js', side: 'old', line: 2, code: 'old();' }),
+      inline({ id: 'context', line: 4, code: 'tail();' }), inline({ id: 'wrong-code', code: 'changed();' }),
+      inline({ id: 'wrong-line', line: 100 })
+    ]));
+    assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'ready', 'ready', 'invalid', 'invalid']);
+    assert.deepEqual(JSON.parse(JSON.stringify(plan.items[0].position)), position());
+    assert.equal(plan.items[1].position.old_line, 2); assert.equal(plan.items[1].position.new_line, null);
+    assert.equal(plan.items[2].position.old_line, 3); assert.equal(plan.items[2].position.new_line, 4);
+    assert.equal(plan.warnings.length, 0);
+    assert.equal(env.requests.filter(function(r) { return r.url.pathname.endsWith('/changes'); }).length, 1);
+    assert.equal(env.posts().length, 0);
+    await send(env, plan, ['R1']);
+    assert.deepEqual(canonicalPosition(JSON.parse(env.posts()[0].init.body).position), canonicalPosition(position()));
+    assert.ok(env.requests.every(function(r) { return r.url.pathname.startsWith('/gitlab/api/v4/'); }));
+  }
+});
+
+test('raw changes recover files omitted by display limits without losing already verified files', async function() {
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: [
+      { old_path: 'src/previous.js', new_path: 'src/missing.js', diff: '@@ -0,0 +8 @@\n+recovered();\n' },
+      { old_path: 'unrelated.js', new_path: 'unrelated.js', diff: '' }
+    ] }); // Old servers need not provide diff_refs or a SHA in /changes.
+    return defaults(url, init);
+  } });
+  var plan = await env.api.prepare(env.context, env.json([inline(), inline({ id: 'missing', path: 'src/missing.js', line: 8, code: 'recovered();' })]));
+  assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'ready']);
+  assert.equal(plan.items[1].position.old_path, 'src/previous.js');
+  assert.equal(plan.items[1].position.head_sha, HEAD);
+  assert.ok(plan.warnings.some(function(text) { return /limited/.test(text); }));
+  assert.equal(env.posts().length, 0);
+});
+
+test('legacy changes list can also recover excluded diffs through Gitaly', async function() {
+  var queries = [], env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response({}, 405);
+    if (url.pathname.endsWith('/changes')) {
+      queries.push(url.search);
+      return response({ changes: [{ old_path: 'src/new.js', new_path: 'src/new.js', diff: url.searchParams.has('access_raw_diffs') ? '@@ -0,0 +3 @@\n+  changed();\n' : '' }] });
+    }
+    return defaults(url, init);
+  } });
+  var plan = await env.api.prepare(env.context, env.json());
+  assert.equal(plan.items[0].status, 'ready');
+  assert.deepEqual(queries, ['', '?access_raw_diffs=true']);
+});
+
+test('complete diffs, unrelated excluded files, invalid input and reply/general tasks do not request raw changes', async function() {
+  var env = environment({ handler: async function(url, init, defaults) {
+    if (url.pathname.endsWith('/changes')) throw new Error('Raw changes must remain lazy');
+    if (url.pathname.endsWith('/diffs')) {
+      var data = await (await defaults(url, init)).json();
+      data.push({ old_path: 'unrelated.js', new_path: 'unrelated.js', collapsed: true, diff: '' });
+      return response(data, 200, { 'x-next-page': '' });
+    }
+    return defaults(url, init);
+  } });
+  for (var items of [[inline()], [inline({ code: 'not the code' })], [inline({ line: 100 })], [general()], [inline({ body: '/merge' })]]) {
+    await env.api.prepare(env.context, env.json(items));
+  }
+  assert.equal(env.requests.filter(function(r) { return r.url.pathname.endsWith('/changes'); }).length, 0);
+  var replies = replyEnvironment();
+  await replies.api.prepare(replies.context, replies.json([reply()]));
+  assert.equal(replies.requests.filter(function(r) { return /\/(diffs|changes)$/.test(r.url.pathname); }).length, 0);
+});
+
+test('failed or unverifiable raw recovery leaves only the affected comments blocked', async function() {
+  var good = { old_path: 'missing.js', new_path: 'missing.js', diff: '@@ -0,0 +3 @@\n+  changed();\n' };
+  var cases = [
+    { status: 404 }, { status: 403 }, { status: 500 }, { data: {} }, { data: { changes: [null] } },
+    { data: { changes: [] } }, { data: { changes: [good, good] } },
+    { data: { changes: [Object.assign({}, good, { too_large: true })] } },
+    { data: { changes: [Object.assign({}, good, { diff: '@@ -0,0 +3,2 @@\n+  changed();\n' })] } },
+    { data: { changes: [Object.assign({}, good, { diff: 'Binary files differ' })] } },
+    { data: { changes: [Object.assign({}, good, { old_path: 'different.js' })] } },
+    { data: { sha: 'd'.repeat(40), changes: [good] } },
+    { data: { iid: 43, changes: [good] } },
+    { data: { diff_refs: refs({ base_sha: 'd'.repeat(40) }), changes: [good] } }
+  ];
+  for (var attempt of cases) {
+    var env = environment({ handler: async function(url, init, defaults) {
+      if (url.pathname.endsWith('/diffs')) {
+        var data = await (await defaults(url, init)).json();
+        data.push({ old_path: 'missing.js', new_path: 'missing.js', diff: '' });
+        return response(data, 200, { 'x-next-page': '' });
+      }
+      if (url.pathname.endsWith('/changes')) return response(attempt.data || {}, attempt.status);
+      return defaults(url, init);
+    } });
+    var plan = await env.api.prepare(env.context, env.json([inline(), inline({ id: 'missing', path: 'missing.js' })]));
+    assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'invalid']);
+    assert.equal(plan.items[1].position, null);
+    assert.ok(plan.warnings.length > 0);
+    await send(env, plan, ['missing']);
+    assert.equal(env.posts().length, 0);
+  }
+});
+
+test('raw recovery never replaces an ambiguous displayed path with a guessed rename', async function() {
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response([
+      { old_path: 'a.js', new_path: 'src/new.js', diff: '' }, { old_path: 'b.js', new_path: 'src/new.js', diff: '' }
+    ], 200, { 'x-next-page': '' });
+    return defaults(url, init);
+  } });
+  var plan = await env.api.prepare(env.context, env.json());
+  assert.equal(plan.items[0].status, 'invalid');
+  assert.equal(env.requests.filter(function(r) { return r.url.pathname.endsWith('/changes'); }).length, 0);
+});
+
+test('MR changes during raw recovery and cancellation still stop preparation without writes', async function() {
+  var env = environment({ handler: function(url, init, defaults, state) {
+    if (url.pathname.endsWith('/diffs')) return response([], 200, { 'x-next-page': '' });
+    if (url.pathname.endsWith('/changes')) {
+      state.refs.head_sha = 'd'.repeat(40);
+      return response({ changes: [{ old_path: 'src/new.js', new_path: 'src/new.js', diff: '@@ -0,0 +3 @@\n+  changed();\n' }] });
+    }
+    return defaults(url, init);
+  } });
+  await assert.rejects(env.api.prepare(env.context, env.json()), /changed while/);
+  assert.equal(env.posts().length, 0);
+  var controller = new AbortController();
+  var cancelled = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response([], 200, { 'x-next-page': '' });
+    if (url.pathname.endsWith('/changes')) controller.abort();
+    return defaults(url, init);
+  } });
+  await assert.rejects(cancelled.api.prepare(cancelled.context, cancelled.json(), { signal: controller.signal }), { name: 'AbortError' });
+  assert.equal(cancelled.posts().length, 0);
+});
+
+test('oversized raw responses are bounded with and without Content-Length or streaming decoding', async function() {
+  for (var mode of ['header', 'stream', 'text']) {
+    var cancelled = false;
+    var env = environment({ noTextDecoder: mode === 'text', handler: function(url, init, defaults) {
+      if (url.pathname.endsWith('/diffs')) return response([], 200, { 'x-next-page': '' });
+      if (url.pathname.endsWith('/changes')) {
+        if (mode === 'text') return { ok: true, text: async function() { return '界'.repeat(6 * 1024 * 1024); } };
+        return {
+          ok: true, headers: new Headers(mode === 'header' ? { 'content-length': String(16 * 1024 * 1024 + 1) } : {}),
+          body: mode === 'header' ? { cancel: async function() { cancelled = true; } } : { getReader: function() {
+            return { read: async function() { return { done: false, value: new Uint8Array(16 * 1024 * 1024 + 1) }; }, cancel: async function() { cancelled = true; } };
+          } }
+        };
+      }
+      return defaults(url, init);
+    } });
+    var plan = await env.api.prepare(env.context, env.json());
+    assert.equal(plan.items[0].status, 'invalid');
+    assert.ok(plan.warnings.some(function(text) { return /16 MiB/.test(text); }));
+    if (mode !== 'text') assert.equal(cancelled, true);
+    assert.equal(env.posts().length, 0);
+  }
+});
+
+test('streamed recovery preserves exact Unicode code even across split UTF-8 characters', async function() {
+  var code = '  проверить("界");';
+  var bytes = new TextEncoder().encode(JSON.stringify({ changes: [{ old_path: 'src/new.js', new_path: 'src/new.js', diff: '@@ -0,0 +3 @@\n+' + code + '\n' }] }));
+  var offset = 0, cancelled = false;
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response([], 200, { 'x-next-page': '' });
+    if (url.pathname.endsWith('/changes')) return { ok: true, body: { getReader: function() {
+      return { read: async function() {
+        if (offset >= bytes.length) return { done: true };
+        return { done: false, value: bytes.slice(offset, ++offset) };
+      }, cancel: async function() { cancelled = true; } };
+    } } };
+    return defaults(url, init);
+  } });
+  var plan = await env.api.prepare(env.context, env.json([inline({ code: code })]));
+  assert.equal(plan.items[0].status, 'ready');
+  assert.equal(plan.items[0].code, code);
+  assert.equal(cancelled, true);
+  assert.equal(env.posts().length, 0);
 });
 
 test('paginated diffs and discussions are fully read even without headers on capped pages', async function() {

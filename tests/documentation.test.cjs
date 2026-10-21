@@ -78,7 +78,12 @@ test('homepage renders the current patch, unified 1.13 and older sectioned relea
     assert.equal(versions[0].sections[0].title, '');
     var currentItems = versions[0].sections[0].items;
     assert.ok(currentItems.length > 0);
-    assert.match(versions[0].sections[0].items[0].bold, lang === 'ru' ? /Быстрые действия Jira/i : /Jira quick actions/);
+    assert.match(currentItems[0].bold, lang === 'ru' ? /Догрузка diff/ : /AI review diff recovery/);
+    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Обмен настройками/ : /Share settings/).test(item.bold); }));
+    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Настройки в отдельной вкладке/ : /Settings in a separate tab/).test(item.bold); }));
+    var previousPatch = versions.find(function(release) { return release.version === '1.13.1'; });
+    assert.equal(previousPatch.sections[0].items.length, 1);
+    assert.match(previousPatch.sections[0].items[0].bold, lang === 'ru' ? /Быстрые действия Jira/i : /Jira quick actions/);
     var unifiedIndex = versions.findIndex(function(release) { return release.version === '1.13.0'; });
     assert.ok(unifiedIndex > 0);
     assert.equal(versions[unifiedIndex].sections[0].items.length, 9);

@@ -198,6 +198,10 @@
   <td>Give the AI the validation message and current diff; regenerate the location. The preview editor edits text, not anchors</td>
 </tr>
 <tr>
+  <td>GitLab did not provide a file's full diff</td>
+  <td>Import automatically attempts to recover missing or truncated changes from GitLab's Git storage. This request shares your existing GitLab session, has a 16 MiB response limit, and still requires exact code-line and MR revision checks. If the server cannot return a verifiable diff, that comment stays blocked; other ready comments can be sent. Retry Check and preview after a temporary error, or prepare a general MR comment with the file and line in its text</td>
+</tr>
+<tr>
   <td>Delivery unconfirmed</td>
   <td>Check GitLab first. A comment may already exist; do not retry blindly</td>
 </tr>
@@ -422,6 +426,10 @@
   <td>Передайте ИИ сообщение проверки и актуальный diff, получите исправленный результат. Редактор предпросмотра меняет текст, а не привязку</td>
 </tr>
 <tr>
+  <td>GitLab не вернул полный diff файла</td>
+  <td>Импорт автоматически пытается догрузить отсутствующие или обрезанные изменения из Git-хранилища GitLab через вашу текущую сессию. Размер ответа ограничен 16 МиБ; точный текст строки и версия MR по-прежнему проверяются. Если сервер не вернул проверяемый diff, этот комментарий остаётся заблокированным, а остальные готовые можно отправить. После временной ошибки повторите «Проверить и посмотреть» либо подготовьте общий комментарий MR, указав файл и строку в тексте</td>
+</tr>
+<tr>
   <td>Отправка не подтверждена</td>
   <td>Сначала проверьте обсуждение в GitLab. Комментарий мог сохраниться; повторная отправка вслепую создаст дубль</td>
 </tr>
@@ -457,5 +465,5 @@
 </table></div>
 <p>Для issue доступны копирование замечаний и описание для работы с ИИ. Ревью кода с нуля, повторное ревью версий и импорт комментариев из этого гайда относятся к MR.</p>
 </article></div></div></main>
-<footer><a href="./" data-en="← All features" data-ru="← Все возможности">← All features</a><a href="https://github.com/termyanen/gitlab-actions" rel="noreferrer">GitHub</a><span>GitLab MR Actions · 1.13.1</span></footer>
+<footer><a href="./" data-en="← All features" data-ru="← Все возможности">← All features</a><a href="https://github.com/termyanen/gitlab-actions" rel="noreferrer">GitHub</a><span>GitLab MR Actions · 1.13.2</span></footer>
 </body></html>

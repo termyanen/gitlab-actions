@@ -208,7 +208,7 @@ function content(options) {
   source = source.slice(0, end) +
     'PROJECT_ID = 37; MR_IID = 12; PROJECT_PATH = "team/repo";\n' +
     'showToast = function() {}; pollTaskStatus = function() {};\n' +
-    'globalThis.actions = { doVersionBump, doShip, doForceShip, doRebaseVersion, doRebaseAutoMerge, doJustRebase, doPipelineRestart, doPipelineCancel, doDraftToggle, doRetryFailed, doCopyMr, doReviewers, doTriggerJob, doAutoMerge, getSettings, getMergeOptions, bumpVersion, parseToml, updateTomlVersion, doRebase, pollRebase, waitForBranchInMR, waitMRReady, doAutoMergeWithRetry };\n' +
+    'globalThis.actions = { doVersionBump, doShip, doForceShip, doRebaseVersion, doRebaseAutoMerge, doJustRebase, doPipelineRestart, doPipelineCancel, doDraftToggle, doRetryFailed, doCopyMr, doReviewers, doTriggerJob, doAutoMerge, getSettings, getMergeOptions, bumpVersion, parseToml, updateTomlVersion, doRebase, pollRebase, waitForBranchInMR, waitMRReady, doAutoMergeWithRetry, doMrAction };\n' +
     source.slice(end);
   vm.runInContext(source, env.context, { filename: 'content.js' });
   env.actions = env.context.actions;
