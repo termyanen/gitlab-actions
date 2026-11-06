@@ -12,6 +12,7 @@
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run lint:architecture && npm test",
     "pretest": "npm run build",
     "test:browser": "npm run build && playwright test",
+    "test:performance": "npm run build && node scripts/profile-runtime.mjs --check",
     "lint:architecture": "node scripts/check-architecture.mjs",
     "format:check": "prettier --check \"src/**/*.ts\" \"scripts/**/*.mjs\""
   },
