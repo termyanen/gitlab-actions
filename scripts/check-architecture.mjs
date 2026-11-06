@@ -1,104 +1,204 @@
 import ts from "typescript";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const sourceRoot = join(root, "src");
 const layers = ["app", "pages", "widgets", "features", "entities", "shared"];
-const violations = [];
+const publicEntries = /^(?:index|background|content)\.ts$/;
 
-function files(directory) {
-  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    const path = join(directory, entry.name);
-    if (entry.isFile() && /\.(?:js|jsx|mjs|cjs)$/.test(entry.name))
-      violations.push(`${relative(root, path)}: runtime must be TypeScript`);
-    return entry.isDirectory()
-      ? files(path)
-      : path.endsWith(".ts")
-        ? [path]
-        : [];
-  });
-}
+/** Checks source boundaries without loading or executing application modules. */
+export function checkArchitecture(sourceRoot) {
+  sourceRoot = resolve(sourceRoot);
+  const violations = [];
+  const graph = new Map();
+  const label = (file) => relative(sourceRoot, file);
 
-function checkImport(file, specifier) {
-  if (!specifier.startsWith(".")) return;
-  const resolved = resolve(dirname(file), specifier);
-  const target = [
-    resolved,
-    resolved + ".ts",
-    resolved + ".js",
-    join(resolved, "index.ts"),
-  ].find(
-    (candidate) => existsSync(candidate) && /\.(?:ts|js)$/.test(candidate),
-  );
-  if (!target) {
-    violations.push(`${relative(root, file)}: unresolved import ${specifier}`);
-    return;
+  function files(directory) {
+    return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+      const path = join(directory, entry.name);
+      if (entry.isFile() && /\.(?:js|jsx|mjs|cjs)$/.test(entry.name))
+        violations.push(`${label(path)}: runtime must be TypeScript`);
+      return entry.isDirectory()
+        ? files(path)
+        : path.endsWith(".ts")
+          ? [path]
+          : [];
+    });
   }
-  const from = relative(sourceRoot, file).split("/");
-  const to = relative(sourceRoot, target).split("/");
-  if (to[0] === "..") {
-    violations.push(
-      `${relative(root, file)}: runtime import outside src: ${specifier}`,
-    );
-    return;
-  }
-  const sameSlice =
-    from[0] === to[0] &&
-    (["app", "shared"].includes(from[0]) || from[1] === to[1]);
-  if (!sameSlice && layers.indexOf(to[0]) <= layers.indexOf(from[0])) {
-    violations.push(
-      `${relative(root, file)}: forbidden ${from.slice(0, 2).join("/")} → ${to.slice(0, 2).join("/")}`,
-    );
-  }
-  if (
-    !sameSlice &&
-    !["app", "shared"].includes(to[0]) &&
-    !(to.length === 3 && /^(?:index|background|content)\.ts$/.test(to[2]))
-  ) {
-    violations.push(
-      `${relative(root, file)}: use public API of ${to.slice(0, 2).join("/")}`,
-    );
-  }
-}
 
-for (const file of files(sourceRoot)) {
-  const source = ts.createSourceFile(
-    file,
-    readFileSync(file, "utf8"),
-    ts.ScriptTarget.Latest,
-    true,
-  );
-  if (!layers.includes(relative(sourceRoot, file).split("/")[0]))
-    violations.push(`${relative(root, file)}: unknown FSD layer`);
-  if (/@ts-(?:nocheck|ignore)\b/.test(source.text))
-    violations.push(`${relative(root, file)}: blanket TypeScript suppression`);
-  function visit(node) {
-    if (
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-      node.moduleSpecifier &&
-      ts.isStringLiteral(node.moduleSpecifier)
-    )
-      checkImport(file, node.moduleSpecifier.text);
-    if (
-      ts.isCallExpression(node) &&
-      node.expression.kind === ts.SyntaxKind.ImportKeyword &&
-      ts.isStringLiteral(node.arguments[0])
-    )
-      checkImport(file, node.arguments[0].text);
-    if (node.kind === ts.SyntaxKind.AnyKeyword)
+  function checkImport(file, specifier, runtime = true) {
+    if (!specifier.startsWith(".")) {
       violations.push(
-        `${relative(root, file)}: explicit any is not a migration strategy`,
+        `${label(file)}: runtime source imports must be relative: ${specifier}`,
       );
-    ts.forEachChild(node, visit);
+      return;
+    }
+    const resolved = resolve(dirname(file), specifier);
+    const target = [
+      resolved,
+      resolved + ".ts",
+      resolved.replace(/\.js$/, ".ts"),
+      join(resolved, "index.ts"),
+    ].find((candidate) => existsSync(candidate) && /\.ts$/.test(candidate));
+    if (!target) {
+      violations.push(`${label(file)}: unresolved import ${specifier}`);
+      return;
+    }
+    const from = label(file).split("/");
+    const to = label(target).split("/");
+    if (to[0] === "..") {
+      violations.push(
+        `${label(file)}: runtime import outside src: ${specifier}`,
+      );
+      return;
+    }
+    const sameSlice =
+      from[0] === to[0] &&
+      (["app", "shared"].includes(from[0]) || from[1] === to[1]);
+    if (!sameSlice && layers.indexOf(to[0]) <= layers.indexOf(from[0]))
+      violations.push(
+        `${label(file)}: forbidden ${from.slice(0, 2).join("/")} → ${to.slice(0, 2).join("/")}`,
+      );
+    if (
+      !sameSlice &&
+      !["app", "shared"].includes(to[0]) &&
+      !(to.length === 3 && publicEntries.test(to[2]))
+    )
+      violations.push(
+        `${label(file)}: use public API of ${to.slice(0, 2).join("/")}`,
+      );
+    if (to[0] === "shared") {
+      const depth = ["api", "lib", "ui", "config"].includes(to[1]) ? 3 : 2;
+      const sameUnit =
+        from.slice(0, depth).join("/") === to.slice(0, depth).join("/");
+      if (!sameUnit && !(to.length === depth + 1 && to.at(-1) === "index.ts"))
+        violations.push(
+          `${label(file)}: use public API of ${to.slice(0, depth).join("/")}`,
+        );
+    }
+    if (runtime) graph.get(file).add(target);
   }
-  visit(source);
+
+  const sourceFiles = files(sourceRoot);
+  sourceFiles.forEach((file) => graph.set(file, new Set()));
+  for (const file of sourceFiles) {
+    const source = ts.createSourceFile(
+      file,
+      readFileSync(file, "utf8"),
+      ts.ScriptTarget.Latest,
+      true,
+    );
+    if (!layers.includes(label(file).split("/")[0]))
+      violations.push(`${label(file)}: unknown FSD layer`);
+    if (/@ts-(?:nocheck|ignore)\b/.test(source.text))
+      violations.push(`${label(file)}: blanket TypeScript suppression`);
+    function visit(node) {
+      if (
+        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+        node.moduleSpecifier &&
+        ts.isStringLiteral(node.moduleSpecifier)
+      ) {
+        const clause = ts.isImportDeclaration(node) ? node.importClause : node;
+        const named = ts.isImportDeclaration(node)
+          ? clause?.namedBindings
+          : node.exportClause;
+        const onlyTypes =
+          clause?.isTypeOnly ||
+          (named &&
+            "elements" in named &&
+            named.elements.length > 0 &&
+            named.elements.every((element) => element.isTypeOnly) &&
+            !clause?.name);
+        checkImport(file, node.moduleSpecifier.text, !onlyTypes);
+      }
+      if (ts.isExportDeclaration(node) && !node.exportClause)
+        violations.push(
+          `${label(file)}: export explicit public API names instead of wildcard exports`,
+        );
+      if (
+        ts.isImportTypeNode(node) &&
+        ts.isLiteralTypeNode(node.argument) &&
+        ts.isStringLiteral(node.argument.literal)
+      )
+        checkImport(file, node.argument.literal.text, false);
+      if (
+        ts.isCallExpression(node) &&
+        node.expression.kind === ts.SyntaxKind.ImportKeyword
+      ) {
+        const argument = node.arguments[0];
+        if (argument && ts.isStringLiteral(argument))
+          checkImport(file, argument.text);
+        else {
+          // One bootstrap loads the locally packaged ESM entry in Chrome's isolated world.
+          const bootstrap =
+            label(file) === "app/entrypoints/content_proxy.ts" &&
+            argument &&
+            ts.isCallExpression(argument) &&
+            argument.expression.getText(source) === "chrome.runtime.getURL" &&
+            argument.arguments.length === 1 &&
+            ts.isStringLiteral(argument.arguments[0]) &&
+            argument.arguments[0].text === "modules/content.js";
+          if (!bootstrap)
+            violations.push(
+              `${label(file)}: dynamic imports must use a statically known local module`,
+            );
+        }
+      }
+      if (
+        ts.isCallExpression(node) &&
+        /^(?:setTimeout|setInterval|sleep)$|\.(?:setTimeout|setInterval|timeout|interval)$/.test(
+          node.expression.getText(source),
+        )
+      ) {
+        const delay =
+          node.arguments[node.expression.getText(source) === "sleep" ? 0 : 1];
+        if (
+          delay &&
+          (ts.isNumericLiteral(delay) || ts.isBinaryExpression(delay))
+        )
+          violations.push(`${label(file)}: give timer policy an explicit name`);
+      }
+      if (node.kind === ts.SyntaxKind.AnyKeyword)
+        violations.push(
+          `${label(file)}: explicit any is not a migration strategy`,
+        );
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+  }
+  const visited = new Set();
+  const stack = [];
+  const active = new Set();
+  function visitDependency(file) {
+    if (active.has(file)) {
+      const cycle = stack
+        .slice(stack.indexOf(file))
+        .concat(file)
+        .map(label)
+        .join(" → ");
+      violations.push(`Circular runtime dependency: ${cycle}`);
+      return;
+    }
+    if (visited.has(file)) return;
+    visited.add(file);
+    active.add(file);
+    stack.push(file);
+    for (const dependency of graph.get(file) || []) visitDependency(dependency);
+    stack.pop();
+    active.delete(file);
+  }
+  sourceFiles.forEach(visitDependency);
+  return violations;
 }
 
-if (violations.length) {
-  console.error(violations.join("\n"));
-  process.exitCode = 1;
-} else {
-  console.log("FSD import boundaries and TypeScript source checks passed.");
+if (import.meta.url === pathToFileURL(resolve(process.argv[1] || "")).href) {
+  const violations = checkArchitecture(join(root, "src"));
+  if (violations.length) {
+    console.error(violations.join("\n"));
+    process.exitCode = 1;
+  } else
+    console.log(
+      "FSD public APIs, runtime cycles, timer policies and TypeScript source checks passed.",
+    );
 }

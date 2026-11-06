@@ -293,3 +293,70 @@ manifest, загрузка модулей, CSS, MR/Jira workflows и восст�
 CSS: 80 498 байт (main: 66 443 байта). CPU, память и задержки на настоящем
 GitLab не измерялись; живая матрица из `tests/README.md` остаётся проверкой
 перед выпуском. Локальный ZIP пересобран с исправлениями. Push не выполнялся.
+
+## Повторный архитектурный проход — 2026-11-06
+
+После функционального ревью проверены владельцы настроек, зависимости модулей,
+размер ответственности файлов и значения, управляющие поведением runtime.
+Изменения выполнены в той же ветке, без новых runtime-зависимостей.
+
+1. Общие defaults кнопок, MR, версионирования и reviewers находятся в
+   `entities/settings/model/defaults.ts`. Popup, MR actions и commit widgets
+   используют эти значения. Review entity владеет ограничениями длины промптов
+   и файловых фильтров; эти ограничения используют и валидация, и UI.
+2. Префиксы GitLab/Jira API, размер полной страницы GitLab, polling маршрута,
+   пути страниц расширения и внешние ссылки имеют именованную конфигурацию.
+   Политики CI polling, ожиданий rebase/merge, retention завершённых задач,
+   debounce, feedback и сетевых таймаутов названы в соответствующих модулях.
+   Существующие значения и storage keys сохранены.
+3. Крупные функции разделены по ответственности внутри FSD-слайсов:
+   review export — feedback/context/fresh/repeat; import — prompts/plan/journal
+   и отправка; review UI — окно/потоки/действия/route lifecycle; настройки —
+   формы/default/profile, persistence и button order; Jira — comments,
+   transitions, field editors и форматирование; MR list — Jira/reviewers,
+   metadata и badges; toolbar — failed jobs, sensitive warning и Git commands.
+   Зависимости между частями передаются явно, mutable state остаётся у владельца.
+4. Обнаружен и устранён цикл `markdown → code-context → markdown`: независимые
+   helpers позиций перенесены в `position.ts`. Public API настроек больше не
+   использует wildcard exports.
+5. Архитектурная проверка теперь запрещает циклы runtime, обход public API
+   Shared, неконтролируемые динамические импорты, wildcard exports и числовые
+   задержки непосредственно в timer-вызовах. Type-only импорты проверяют границы,
+   но не образуют runtime-циклов. Bootstrap имеет узкое исключение только для
+   `chrome.runtime.getURL("modules/content.js")`.
+6. TypeScript дополнительно проверяет неиспользуемые locals/parameters,
+   switch fallthrough и override. Test adapter обновлён под состояние страницы
+   настроек; прежние assertions сохранены, production не содержит test hooks.
+
+| Основной файл | Строк до | Строк после |
+| --- | ---: | ---: |
+| Review export | 1467 | 61 |
+| Review import | 1470 | 638 |
+| Settings controller | 1886 | 604 |
+| Jira panel | 1601 | 601 |
+| MR list | 1353 | 368 |
+| Review controls | 2031 | 761 |
+| Review import dialog | 1256 | 876 |
+| MR toolbar | 1212 | 825 |
+| Command palette | 770 | 474 |
+
+Это разделение ответственности, а не удаление функциональности или сокращение
+общего количества строк: появились отдельные модули и типизированные контракты.
+Константы находятся рядом с владельцем; в Shared попадают общие протоколы и
+конфигурация. Идентификаторы протокола, i18n keys, markup, селекторы конкретного
+компонента и очевидные арифметические значения не заменяются бессодержательными
+переменными. Размер файла сам по себе не является основанием для нового слайса.
+
+Проверки: TypeScript, ESLint, Prettier, FSD, 839 Node-тестов и 14 Chromium
+сценариев проходят. Среди новых проверок — восемь архитектурных графов и
+сохранение edits при переключении профиля и языка в настоящем popup.
+Начальный MR-граф: 136 192 байта (до этого прохода 133 310; main 308 462).
+Bootstrap остаётся 281 байт, CSS — 80 498 байт. Прирост MR JS около 2,2% связан
+с явными контрактами модулей; бюджеты загрузки проходят, тяжёлые фичи остаются
+lazy. Это измерение размера JS, не CPU/памяти/latency на настоящем сервере.
+
+Основания: [FSD public API](https://feature-sliced.design/docs/reference/public-api),
+[FSD slices and segments](https://feature-sliced.design/docs/concepts/low-coupling),
+[Chrome service worker events](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/events),
+[esbuild TypeScript caveats](https://esbuild.github.io/content-types/#typescript-caveats).
+Проверка типов остаётся отдельным обязательным шагом; сборщик её не заменяет.
