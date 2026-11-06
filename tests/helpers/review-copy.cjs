@@ -25,7 +25,7 @@ function dom() {
   }
   function element(tag) {
     var text = '';
-    var el = { tagName: tag.toUpperCase(), children: [], parentElement: null, attributes: {}, events: {}, value: '', checked: false, disabled: false, hidden: false, style: {} };
+    var el = { nodeType: 1, tagName: tag.toUpperCase(), children: [], parentElement: null, attributes: {}, events: {}, value: '', checked: false, disabled: false, hidden: false, style: {} };
     Object.setPrototypeOf(el, HTMLElement.prototype);
     Object.defineProperties(el, {
       className: { get: function() { return el.attributes.class || ''; }, set: function(value) { el.attributes.class = String(value); } },
@@ -161,6 +161,7 @@ async function create(options) {
   };
   var timerId = 0;
   env.context = vm.createContext({
+    structuredClone: structuredClone,
     window: { location: { origin: 'https://gitlab.test', pathname: options.pathname || '/team/repo/-/merge_requests/12' }, GlReviewImportUI: options.importUI, addEventListener: function(type, fn) { env.windowEvents[type] = fn; } },
     document: document, HTMLElement: tree.HTMLElement, MutationObserver: tree.MutationObserver, AbortController: AbortController, URL: URL,
     setTimeout: function(fn) { env.timers.set(++timerId, fn); return timerId; }, clearTimeout: function(id) { env.timers.delete(id); },

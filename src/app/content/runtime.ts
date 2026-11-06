@@ -6,16 +6,32 @@ import { ROUTE_POLL_INTERVAL_MS } from "../../shared/config/runtime";
 import { errorMessage } from "../../shared/lib/errors";
 import type { Lifecycle } from "../../shared/lib/lifecycle";
 import { createLifecycle } from "../../shared/lib/lifecycle";
+import {
+  arrayOf,
+  isRecord,
+  isString,
+  optional,
+} from "../../shared/lib/validation";
 import type { createJiraPanel } from "../../widgets/jira-panel";
 import type { startMrToolbar } from "../../widgets/mr-toolbar";
 import { createTaskTracker } from "../../widgets/task-tracker";
+const isJobs = arrayOf(isString);
+const maybeString = optional(isString);
 const lifetime = createLifecycle();
 const tracker = createTaskTracker(lifetime);
 const jira = createJiraState();
 const api = createSessionApi(() => location.origin);
 lifetime.onCleanup(
   addRuntimeListener((message, _sender, sendResponse) => {
+    if (!isRecord(message)) return;
     if (message.type === "api-proxy") {
+      if (
+        typeof message.method !== "string" ||
+        typeof message.path !== "string"
+      ) {
+        sendResponse({ _error: "Invalid GitLab API request" });
+        return;
+      }
       api(message.method, message.path, message.body)
         .then(sendResponse)
         .catch((error: unknown) =>
@@ -23,7 +39,14 @@ lifetime.onCleanup(
         );
       return true;
     }
-    if (message.type === "task-result")
+    if (typeof message.taskId !== "string" || !maybeString(message.mrTitle))
+      return;
+    if (
+      message.type === "task-result" &&
+      typeof message.success === "boolean" &&
+      maybeString(message.message) &&
+      (message.jobs === undefined || isJobs(message.jobs))
+    )
       tracker.updateTrackerItem(
         message.taskId,
         message.jobs || [],
@@ -31,7 +54,11 @@ lifetime.onCleanup(
         message.success ? null : message.message,
         message.mrTitle,
       );
-    if (message.type === "task-progress")
+    if (
+      message.type === "task-progress" &&
+      isJobs(message.jobs) &&
+      typeof message.status === "string"
+    )
       tracker.updateTrackerItem(
         message.taskId,
         message.jobs,

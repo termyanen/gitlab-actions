@@ -1,11 +1,13 @@
-import { reportError } from "../../../shared/lib/errors";
 import { msg } from "../../../shared/i18n";
+import { reportError } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import {
   createChildLifecycle,
   createLifecycle,
 } from "../../../shared/lib/lifecycle";
+import { isRecord } from "../../../shared/lib/validation";
+import { requireElement } from "../../../shared/ui/dom";
 const COPIED_FEEDBACK_DURATION_MS = 2000;
 
 export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
@@ -67,15 +69,24 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
 
     overlay.appendChild(modal);
 
-    const dateInput =
-      modal.querySelector<HTMLInputElement>(".gl-standup-date")!;
-    const prevBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-prev")!;
-    const nextBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-next")!;
-    const bodyEl = modal.querySelector<HTMLDivElement>(".gl-standup-body")!;
-    const actionsEl = modal.querySelector<HTMLDivElement>(
-      ".gl-standup-actions",
-    )!;
-    const copyBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-copy")!;
+    const dateInput = requireElement(
+      modal.querySelector<HTMLInputElement>(".gl-standup-date"),
+    );
+    const prevBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-standup-prev"),
+    );
+    const nextBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-standup-next"),
+    );
+    const bodyEl = requireElement(
+      modal.querySelector<HTMLDivElement>(".gl-standup-body"),
+    );
+    const actionsEl = requireElement(
+      modal.querySelector<HTMLDivElement>(".gl-standup-actions"),
+    );
+    const copyBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-standup-copy"),
+    );
     let currentText = "";
     let request = 0;
 
@@ -90,12 +101,17 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
       actionsEl.style.display = "none";
       chrome.runtime.sendMessage(
         { type: "generate-standup", gitlabUrl: GITLAB_URL, date: dateStr },
-        session.once(function (resp: { text?: string; _error?: string }) {
+        session.once(function (resp: unknown) {
           const lastErr = chrome.runtime.lastError;
           if (currentRequest !== request) return;
-          if (lastErr || !resp || resp._error) {
+          if (
+            lastErr ||
+            !isRecord(resp) ||
+            resp._error !== undefined ||
+            typeof resp.text !== "string"
+          ) {
             const errText =
-              resp && resp._error
+              isRecord(resp) && typeof resp._error === "string" && resp._error
                 ? resp._error
                 : lastErr && lastErr.message
                   ? lastErr.message
@@ -158,9 +174,9 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
     function closeStandup() {
       session.dispose();
     }
-    modal
-      .querySelector<HTMLButtonElement>(".gl-standup-close")!
-      .addEventListener("click", closeStandup);
+    requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-standup-close"),
+    ).addEventListener("click", closeStandup);
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) closeStandup();
     });

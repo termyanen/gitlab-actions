@@ -2,7 +2,7 @@ import {
   BUILTIN_BUTTONS,
   BUTTON_DEFAULTS,
 } from "../../../features/manage-settings";
-import { byId, escHtml } from "./dom";
+import { byId, escHtml, valueControlById } from "./dom";
 import type { SettingsFormContext } from "./form-context";
 export function createProfileSettingsForm(context: SettingsFormContext) {
   const { state, t, scheduleAutoSave } = context;
@@ -19,7 +19,7 @@ export function createProfileSettingsForm(context: SettingsFormContext) {
     const profile = (state.data.projectProfiles || {})[path] || {};
     container.innerHTML =
       "<h4>" +
-      escHtml(t("buttonsFor", [path.split("/").pop()!])) +
+      escHtml(t("buttonsFor", [path.split("/").pop() || path])) +
       "</h4>" +
       '<div class="hint" style="margin-bottom:6px">' +
       escHtml(t("overrideHint")) +
@@ -117,7 +117,7 @@ export function createProfileSettingsForm(context: SettingsFormContext) {
           ? profileVal
           : state.data[b.key] !== undefined
             ? !!state.data[b.key]
-            : (BUTTON_DEFAULTS as Record<string, boolean>)[b.key];
+            : BUTTON_DEFAULTS[b.key];
     });
 
     const customJobs = profile.customJobs || [];
@@ -138,8 +138,8 @@ export function createProfileSettingsForm(context: SettingsFormContext) {
 
     // Version bump fields
     const pVersionFile = profile.versionFile || "";
-    const pPresetEl = byId<HTMLInputElement>("profileVersionFilePreset");
-    const pCustomInput = byId<HTMLInputElement>("profileVersionFile");
+    const pPresetEl = valueControlById("profileVersionFilePreset");
+    const pCustomInput = valueControlById("profileVersionFile");
     const pVersionPathField = byId("profileVersionPathField");
     const knownPresets = ["package.json", "pyproject.toml"];
     if (pVersionFile && knownPresets.indexOf(pVersionFile) !== -1) {
@@ -155,7 +155,9 @@ export function createProfileSettingsForm(context: SettingsFormContext) {
     function updateProfilePathVisibility() {
       const v = pPresetEl.value;
       if (v === "__custom__") {
-        const ext = (pCustomInput.value || "").split(".").pop()!.toLowerCase();
+        const ext = (
+          (pCustomInput.value || "").split(".").pop() || ""
+        ).toLowerCase();
         pVersionPathField.style.display =
           ext === "txt" || ext === "text" ? "none" : "";
       } else {
@@ -174,17 +176,15 @@ export function createProfileSettingsForm(context: SettingsFormContext) {
     });
     updateProfilePathVisibility();
 
-    byId<HTMLInputElement>("profileVersionPath").value =
-      profile.versionPath || "";
-    byId<HTMLInputElement>("profileVersionStrategy").value =
+    valueControlById("profileVersionPath").value = profile.versionPath || "";
+    valueControlById("profileVersionStrategy").value =
       profile.versionStrategy || "";
-    byId<HTMLInputElement>("profileVersionCommitTemplate").value =
+    valueControlById("profileVersionCommitTemplate").value =
       profile.versionCommitTemplate || "";
 
-    byId<HTMLInputElement>("profileReviewersList").value =
+    valueControlById("profileReviewersList").value =
       profile.reviewersList || "";
-    byId<HTMLInputElement>("profileReviewersJob").value =
-      profile.reviewersJob || "";
+    valueControlById("profileReviewersJob").value = profile.reviewersJob || "";
 
     byId("profileAddCustomJob").addEventListener("click", function () {
       const current = getCustomJobsFromUI("profileCustomJobsList");

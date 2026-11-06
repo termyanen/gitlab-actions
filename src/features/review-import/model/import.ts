@@ -1,4 +1,8 @@
-import type { Discussion, NotePosition } from "../../../entities/discussion";
+import type { NotePosition } from "../../../entities/discussion";
+import {
+  readCreatedComment,
+  readDiscussion,
+} from "../../../entities/discussion";
 import type {
   InstructionOptions,
   ReviewContext,
@@ -9,6 +13,12 @@ import {
   DEFAULT_REVIEW_PROMPT,
 } from "../../../entities/review";
 import { toError } from "../../../shared/lib/errors";
+import {
+  decodeResponse,
+  decoder,
+  isNumber,
+  objectOf,
+} from "../../../shared/lib/validation";
 import { equalPosition } from "./diff";
 import {
   discussionFingerprint,
@@ -24,7 +34,6 @@ import { createImportPlanner } from "./plan";
 import { createImportPrompts } from "./prompts";
 import { metadata, request } from "./transport";
 import type {
-  CreatedComment,
   ImportError,
   ImportItem,
   ImportOptions,
@@ -43,6 +52,12 @@ import {
   warning,
 } from "./utils";
 import { endpoint, safeContext } from "./validation";
+const readCurrentUser = decoder(
+  objectOf<{ id: number }>({
+    id: isNumber,
+  }),
+  "GitLab current user response",
+);
 export function createReviewImporter(
   reviewWorkflow: typeof defaultWorkflow | null = defaultWorkflow,
 ) {
@@ -54,11 +69,14 @@ export function createReviewImporter(
   ) {
     return reviewWorkflow
       ? reviewWorkflow.instruction(id, options, variables)
-      : fallback.replace(/\{(language|selection)\}/g, function (match, key) {
-          return variables && variables[key] !== undefined
-            ? variables[key]
-            : match;
-        });
+      : fallback.replace(
+          /\{(language|selection)\}/g,
+          function (match: string, key: string) {
+            return variables && variables[key] !== undefined
+              ? variables[key]
+              : match;
+          },
+        );
   }
 
   const plans = new WeakMap<ImportPlan, InternalPlan>();
@@ -126,16 +144,24 @@ export function createReviewImporter(
     // status or clear its journal entry, including when the PUT response is lost.
     let began = false;
     try {
+      if (!item.discussion_id) throw new Error("Missing reply discussion ID");
       const path =
         endpoint(context) +
         "/discussions/" +
-        encodeURIComponent(item.discussion_id!);
-      const user = (await request<{ id: number }>(context, "/user", options))
-        .data;
+        encodeURIComponent(item.discussion_id || "");
+      const user = (
+        await request(context, "/user", options).then(
+          decodeResponse(readCurrentUser),
+        )
+      ).data;
       if (!user || user.id !== internal.userId)
         throw new Error("Your GitLab account changed.");
       const thread = validateDiscussion(
-        (await request<Discussion>(context, path, options)).data,
+        (
+          await request(context, path, options).then(
+            decodeResponse(readDiscussion),
+          )
+        ).data,
       );
       if (
         !targetNote(thread, item) ||
@@ -166,12 +192,8 @@ export function createReviewImporter(
       began = true;
       const updated = validateDiscussion(
         (
-          await request<Discussion>(
-            context,
-            path,
-            options,
-            { resolved: true },
-            "PUT",
+          await request(context, path, options, { resolved: true }, "PUT").then(
+            decodeResponse(readDiscussion),
           )
         ).data,
       );
@@ -243,9 +265,10 @@ export function createReviewImporter(
       error.beforeSend = true;
       return error;
     }
-    const internal = plans.get(plan);
-    if (!internal)
+    const stored = plans.get(plan);
+    if (!stored)
       throw refusal("Check the review again before sending comments.");
+    const internal = stored;
     let context;
     try {
       context = safeContext(internal.context);
@@ -316,7 +339,7 @@ export function createReviewImporter(
     });
     let everBegan = false;
     function append(result: ImportResultItem) {
-      internal!.outcomes[result.id] = result.status;
+      internal.outcomes[result.id] = result.status;
       output.items.push(result);
       progress(options, {
         phase: "publishing",
@@ -347,8 +370,7 @@ export function createReviewImporter(
         throw new Error(
           "This GitLab version cannot add review drafts through the API. You can choose Publish instead.",
         );
-      for (let i = 0; i < targets.length; i++) {
-        const item = targets[i];
+      for (const item of targets) {
         if (item.status !== "ready") {
           append(
             resultItem(
@@ -387,6 +409,8 @@ export function createReviewImporter(
         let began = false;
         let ownsPending = false;
         try {
+          if (item.type === "reply" && !item.discussion_id)
+            throw new Error("Missing reply discussion ID");
           const saved = await checkedPending(key, existing, context, options);
           if (saved) {
             if (saved.status === "published" || saved.status === "draft")
@@ -411,13 +435,13 @@ export function createReviewImporter(
           if (item.type === "reply") {
             const freshThread = validateDiscussion(
               (
-                await request<Discussion>(
+                await request(
                   context,
                   endpoint(context) +
                     "/discussions/" +
-                    encodeURIComponent(item.discussion_id!),
+                    encodeURIComponent(item.discussion_id || ""),
                   options,
-                )
+                ).then(decodeResponse(readDiscussion))
               ).data,
             );
             if (!targetNote(freshThread, item)) {
@@ -480,9 +504,11 @@ export function createReviewImporter(
             in_reply_to_discussion_id?: string;
             position?: NotePosition;
           } = mode === "draft" ? { note: item.body } : { body: item.body };
-          if (item.type === "reply" && mode === "draft")
+          if (item.type === "reply" && mode === "draft") {
+            if (!item.discussion_id)
+              throw new Error("Missing reply discussion ID");
             payload.in_reply_to_discussion_id = item.discussion_id;
-          else if (item.position) {
+          } else if (item.position) {
             payload.position = clone(item.position);
             if (payload.position.old_line === null)
               delete payload.position.old_line;
@@ -496,16 +522,16 @@ export function createReviewImporter(
               ? "/draft_notes"
               : item.type === "reply"
                 ? "/discussions/" +
-                  encodeURIComponent(item.discussion_id!) +
+                  encodeURIComponent(item.discussion_id || "") +
                   "/notes"
                 : "/discussions";
           const created = (
-            await request<CreatedComment>(
+            await request(
               context,
               endpoint(context) + writePath,
               options,
               payload,
-            )
+            ).then(decodeResponse(readCreatedComment))
           ).data;
           const note =
             mode === "draft" || item.type === "reply"

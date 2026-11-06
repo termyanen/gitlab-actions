@@ -1,8 +1,9 @@
-import type {
-  MergeRequest,
-  RevisionComparison,
+import {
+  readMergeRequest,
+  readRevisionComparison,
 } from "../../../entities/merge-request";
 import { toError } from "../../../shared/lib/errors";
+import { decodeResponse } from "../../../shared/lib/validation";
 import type { ReviewContextLoader } from "./context";
 import type { ExportDependencies } from "./dependencies";
 import { getNotes, getStatus, load } from "./discussions";
@@ -87,7 +88,7 @@ export function createRepeatReviewExporter(
           // silently substituting their merge base. Prefer the source fork.
           const project = result.sourceProjectId || context.projectPath;
           const compare = (
-            await request<RevisionComparison>(
+            await request(
               context,
               "/projects/" +
                 encodeURIComponent(project) +
@@ -97,7 +98,7 @@ export function createRepeatReviewExporter(
                 encodeURIComponent(result.headSha) +
                 "&straight=true",
               Object.assign({}, options, { maxBytes: 8 * 1024 * 1024 }),
-            )
+            ).then(decodeResponse(readRevisionComparison))
           ).data;
           if (
             !compare ||
@@ -257,21 +258,30 @@ export function createRepeatReviewExporter(
           addWarning(warnings, message);
         });
         let budget = 100000;
-        const found = new Set();
+        const found = new Set<string>();
         const threads = snapshot.discussions
           .map(function (thread) {
             if (selectedIds && !selectedIds.has(String(thread.id))) return null;
             const notes = getNotes(thread).filter(function (note) {
               return !note.draft && !/^draft:/.test(String(note.id));
             });
-            if (!notes.length) return null;
+            if (!notes[0]) return null;
             found.add(String(thread.id));
             const first = notes[0],
               position = first.position || first.original_position;
             const inScope =
               !position ||
               workflow.filterFiles(
-                [{ old_path: position.old_path, new_path: position.new_path }],
+                [
+                  {
+                    ...(position.old_path == null
+                      ? {}
+                      : { old_path: position.old_path }),
+                    ...(position.new_path == null
+                      ? {}
+                      : { new_path: position.new_path }),
+                  },
+                ],
                 scope,
               ).included.length > 0;
             return {
@@ -352,11 +362,11 @@ export function createRepeatReviewExporter(
         );
       }
     const latest = (
-      await request<MergeRequest>(
+      await request(
         context,
         path,
         Object.assign({}, options, { fresh: true }),
-      )
+      ).then(decodeResponse(readMergeRequest))
     ).data;
     if (
       JSON.stringify(reviewRefs(latest, context)) !==

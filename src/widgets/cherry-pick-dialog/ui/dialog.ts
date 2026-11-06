@@ -7,6 +7,7 @@ import { errorMessage } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { requireElement } from "../../../shared/ui/dom";
 export function createCherryPickDialog(
   origin: string,
   encodedProject: string,
@@ -92,33 +93,35 @@ export function createCherryPickDialog(
 
     overlay.appendChild(modal);
 
-    const input = modal.querySelector<HTMLInputElement>(
-      ".gl-cherry-pick-input",
-    )!;
-    const addBtn = modal.querySelector<HTMLButtonElement>(
-      ".gl-cherry-pick-add-btn",
-    )!;
-    const branchList = modal.querySelector<HTMLDivElement>(
-      ".gl-cherry-pick-branches",
-    )!;
-    const startBtn = modal.querySelector<HTMLButtonElement>(
-      ".gl-cherry-pick-start",
-    )!;
-    const closeBtn = modal.querySelector<HTMLButtonElement>(
-      ".gl-cherry-pick-close",
-    )!;
-    const cancelBtn = modal.querySelector<HTMLButtonElement>(
-      ".gl-cherry-pick-cancel",
-    )!;
-    const mrCheckbox = modal.querySelector<HTMLInputElement>(
-      ".gl-cherry-pick-mr-checkbox",
-    )!;
-    const fallbackCheckbox = modal.querySelector<HTMLInputElement>(
-      ".gl-cherry-pick-fallback-checkbox",
-    )!;
-    const bumpCheckbox = modal.querySelector<HTMLInputElement>(
-      ".gl-cherry-pick-bump-checkbox",
-    )!;
+    const input = requireElement(
+      modal.querySelector<HTMLInputElement>(".gl-cherry-pick-input"),
+    );
+    const addBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-cherry-pick-add-btn"),
+    );
+    const branchList = requireElement(
+      modal.querySelector<HTMLDivElement>(".gl-cherry-pick-branches"),
+    );
+    const startBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-cherry-pick-start"),
+    );
+    const closeBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-cherry-pick-close"),
+    );
+    const cancelBtn = requireElement(
+      modal.querySelector<HTMLButtonElement>(".gl-cherry-pick-cancel"),
+    );
+    const mrCheckbox = requireElement(
+      modal.querySelector<HTMLInputElement>(".gl-cherry-pick-mr-checkbox"),
+    );
+    const fallbackCheckbox = requireElement(
+      modal.querySelector<HTMLInputElement>(
+        ".gl-cherry-pick-fallback-checkbox",
+      ),
+    );
+    const bumpCheckbox = requireElement(
+      modal.querySelector<HTMLInputElement>(".gl-cherry-pick-bump-checkbox"),
+    );
 
     const picker = createCherryPicker(
       origin,
@@ -133,8 +136,8 @@ export function createCherryPickDialog(
     function addBranch(name: string) {
       name = name.trim();
       if (!name) return;
-      for (let i = 0; i < branches.length; i++) {
-        if (branches[i].name === name) return;
+      for (const currentBranch of branches) {
+        if (currentBranch.name === name) return;
       }
       branches.push({ name: name, status: "pending", error: "" });
       renderBranches();
@@ -215,7 +218,8 @@ export function createCherryPickDialog(
         .querySelectorAll<HTMLButtonElement>(".gl-cherry-pick-remove")
         .forEach(function (btn) {
           btn.addEventListener("click", function () {
-            removeBranch(parseInt(btn.dataset.idx!));
+            const index = Number(btn.dataset.idx);
+            if (Number.isSafeInteger(index) && index >= 0) removeBranch(index);
           });
         });
     }
@@ -243,11 +247,8 @@ export function createCherryPickDialog(
     startBtn.addEventListener("click", function () {
       if (_running) return;
       let hasPending = false;
-      for (let k = 0; k < branches.length; k++) {
-        if (
-          branches[k].status === "pending" ||
-          branches[k].status === "error"
-        ) {
+      for (const branchRow of branches) {
+        if (branchRow.status === "pending" || branchRow.status === "error") {
           hasPending = true;
           break;
         }
@@ -276,9 +277,10 @@ export function createCherryPickDialog(
 
       let idx = 0;
       function processNext() {
-        while (idx < branches.length && branches[idx].status !== "pending")
+        while (idx < branches.length && branches[idx]?.status !== "pending")
           idx++;
-        if (idx >= branches.length) {
+        const branchState = branches[idx];
+        if (!branchState) {
           _running = false;
           startBtn.disabled = false;
           startBtn.textContent = msg("cherryPickStart");
@@ -304,11 +306,10 @@ export function createCherryPickDialog(
           return;
         }
 
-        branches[idx].status = "in_progress";
+        branchState.status = "in_progress";
         renderBranches();
 
         const useFallback = fallbackCheckbox.checked;
-        const branchState = branches[idx];
         const targetBranch = branchState.name;
         // Retain completed steps for retries in this modal. In particular,
         // an MR creation error must not replay or discard a successful pick.

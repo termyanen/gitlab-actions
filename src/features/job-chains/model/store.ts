@@ -1,31 +1,52 @@
 import { reportRuntimeError } from "../../../shared/api/runtime";
 import { reportError } from "../../../shared/lib/errors";
+import {
+  arrayOf,
+  either,
+  isBoolean,
+  isNumber,
+  isRecord,
+  isString,
+  literal,
+  nullable,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import type { ChainTask } from "./types";
 const COMPLETED_TASK_RETENTION = 50;
 const TASK_WAKEUP_INTERVAL_MINUTES = 1;
 const TASK_STORAGE_KEY = "job_chain_state_v1";
 export const TASK_ALARM = "job-chain-wakeup";
 
+const taskShape = objectOf<ChainTask>({
+  gitlabUrl: isString,
+  _tabId: optional(nullable(isNumber)),
+  _cancelled: optional(isBoolean),
+  phase: either(
+    either(literal("ready"), literal("dispatching")),
+    either(literal("waiting"), literal("complete")),
+  ),
+  pendingJobId: optional(isNumber),
+  pendingOperation: optional(either(literal("play"), literal("retry"))),
+  waitAttempts: optional(isNumber),
+  updatedAt: optional(isNumber),
+  jobs: arrayOf(isString),
+  currentIndex: isNumber,
+  projectId: isNumber,
+  mrIid: isNumber,
+  pipelineId: optional(nullable(isNumber)),
+  pipelineProjectId: optional(isNumber),
+  mrTitle: optional(isString),
+  status: isString,
+  error: optional(nullable(isString)),
+});
 function isTask(value: unknown): value is ChainTask {
-  if (!value || typeof value !== "object") return false;
-  const task = value as Partial<ChainTask>;
   return (
-    typeof task.gitlabUrl === "string" &&
-    task.gitlabUrl.startsWith("https://") &&
-    typeof task.projectId === "number" &&
-    typeof task.mrIid === "number" &&
-    Array.isArray(task.jobs) &&
-    task.jobs.every((job) => typeof job === "string") &&
-    Number.isInteger(task.currentIndex) &&
-    task.currentIndex! >= 0 &&
-    task.currentIndex! <= task.jobs.length &&
-    typeof task.status === "string" &&
-    ["ready", "dispatching", "waiting", "complete"].includes(
-      task.phase || "",
-    ) &&
-    (task.pipelineId === null ||
-      task.pipelineId === undefined ||
-      typeof task.pipelineId === "number")
+    taskShape(value) &&
+    value.gitlabUrl.startsWith("https://") &&
+    Number.isInteger(value.currentIndex) &&
+    value.currentIndex >= 0 &&
+    value.currentIndex <= value.jobs.length
   );
 }
 
@@ -38,8 +59,8 @@ export function createTaskStore(tasks: Record<string, ChainTask>) {
           reject(new Error(chrome.runtime.lastError.message));
           return;
         }
-        const stored = data[TASK_STORAGE_KEY];
-        if (stored && typeof stored === "object") {
+        const stored: unknown = data[TASK_STORAGE_KEY];
+        if (isRecord(stored)) {
           for (const [id, task] of Object.entries(stored))
             if (id.startsWith("task-") && isTask(task)) tasks[id] = task;
         }
@@ -53,10 +74,7 @@ export function createTaskStore(tasks: Record<string, ChainTask>) {
       .sort((a, b) => (b[1].updatedAt || 0) - (a[1].updatedAt || 0));
     for (const [id] of completed.slice(COMPLETED_TASK_RETENTION))
       delete tasks[id];
-    const snapshot = JSON.parse(JSON.stringify(tasks)) as Record<
-      string,
-      ChainTask
-    >;
+    const snapshot: unknown = JSON.parse(JSON.stringify(tasks));
     const operation = writes
       .catch(() => {})
       .then(

@@ -41,7 +41,8 @@ export function createImportPrompts(
         settled = true;
         if (options.signal) options.signal.removeEventListener("abort", cancel);
         if (error) reject(error);
-        else resolve(value!);
+        else if (value !== undefined) resolve(value);
+        else reject(new Error("The prompt is unavailable"));
       }
       function cancel() {
         finish(abortError());
@@ -137,7 +138,8 @@ export function createImportPrompts(
       ? options.fileFilter ||
         (await reviewWorkflow.settings(options.signal)).filter
       : null;
-    const scopeText = scope ? reviewWorkflow!.scopeText(scope, options) : "";
+    const scopeText =
+      scope && reviewWorkflow ? reviewWorkflow.scopeText(scope, options) : "";
     const meta = await metadata(context, options);
     const text = [
       scopeText,
@@ -251,23 +253,25 @@ export function createImportPrompts(
             : discussionState(discussion) === "unresolved")
         );
       })
-      .map(function (discussion) {
+      .flatMap(function (discussion) {
         const notes = discussion.notes.filter(function (note) {
           return !note.system;
         });
+        const first = notes[0];
+        if (!first) return [];
         const thread: ReplyThread = {
           discussion_id: discussion.id,
-          note_id: notes[0].id,
-          url: context.webUrl + "#note_" + notes[0].id,
+          note_id: first.id,
+          url: context.webUrl + "#note_" + first.id,
           comments: notes.map(function (note) {
             const result: ReplyThreadNote = {
               note_id: note.id,
               body: note.body,
             };
-            if (note.author)
+            if (note.author?.username || note.author?.name)
               result.author = note.author.username
                 ? "@" + note.author.username
-                : note.author.name;
+                : note.author.name || "";
             if (note.resolved === true) result.resolved = true;
             return result;
           }),
@@ -294,7 +298,7 @@ export function createImportPrompts(
       version: 1,
       mr_url: context.webUrl,
       head_sha: meta.refs.head_sha,
-      comments: threads.length
+      comments: threads[0]
         ? [
             {
               id: "R1",

@@ -1,3 +1,4 @@
+import { isRecord } from "../../../shared/lib/validation";
 import { REVIEW_FILE_FILTER_MAX_LENGTH } from "./limits";
 import type { FileFilter, ReviewFile } from "./types";
 export const FILTER_FIELDS = [
@@ -15,7 +16,7 @@ export const DEFAULT_FILTER: FileFilter = {
 
 export function normalizeFilter(value?: unknown): FileFilter {
   const result = { ...DEFAULT_FILTER };
-  const input = value as Record<string, unknown> | undefined | null;
+  const input = isRecord(value) ? value : undefined;
   FILTER_FIELDS.forEach((key) => {
     const text = input && input[key];
     if (text != null && typeof text !== "string")
@@ -51,7 +52,8 @@ function pattern(raw: string) {
     const memo = new Map<string, boolean>();
     function match(i: number, j: number): boolean {
       const key = i + ":" + j;
-      if (memo.has(key)) return memo.get(key)!;
+      const cached = memo.get(key);
+      if (cached !== undefined) return cached;
       let result;
       if (i === value.length) result = j === path.length;
       else if (value.slice(i, i + 3) === "**/") {
@@ -128,7 +130,7 @@ export function filterFiles<T extends ReviewFile>(files: T[], input?: unknown) {
     else
       excluded.push({
         path: path,
-        old_path: file.old_path,
+        ...(file.old_path === undefined ? {} : { old_path: file.old_path }),
         reason: blocked ? "explicit exclusion" : "outside include lists",
       });
   });

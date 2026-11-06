@@ -12,6 +12,7 @@ import { reportError } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { decodeArray } from "../../../shared/lib/validation";
+import { eventElement } from "../../../shared/ui/dom";
 // =========================================================================
 // Failed Job Quick View
 // =========================================================================
@@ -63,17 +64,17 @@ export function createFailedJobView(
           result += "</span>";
           open = false;
         }
-        for (let c = 0; c < codes.length; c++) {
-          const color = ANSI_COLORS[codes[c]];
+        for (const ansiCode of codes) {
+          const color = ANSI_COLORS[ansiCode];
           if (color) {
             result += '<span style="color:' + color + '">';
             open = true;
             break;
           }
-          if (codes[c] === "0" || codes[c] === "") {
+          if (ansiCode === "0" || ansiCode === "") {
             break;
           }
-          if (codes[c] === "1") {
+          if (ansiCode === "1") {
             result += '<span style="font-weight:700">';
             open = true;
             break;
@@ -240,7 +241,7 @@ export function createFailedJobView(
                 item.appendChild(trace);
 
                 nameRow.addEventListener("click", function (e) {
-                  if ((e.target as Element).closest("a")) return;
+                  if (eventElement(e.target)?.closest("a")) return;
                   const visible = trace.style.display !== "none";
                   trace.style.display = visible ? "none" : "";
                   item.classList.toggle("collapsed", visible);
@@ -276,9 +277,9 @@ export function createFailedJobView(
                 const traces = wrapper.querySelectorAll<HTMLElement>(
                   ".gl-mr-actions-failed-job-trace",
                 );
-                for (let i = 0; i < traces.length; i++) {
-                  if (traces[i].style.display !== "none") {
-                    traces[i].scrollTop = traces[i].scrollHeight;
+                for (const traceResult of traces) {
+                  if (traceResult.style.display !== "none") {
+                    traceResult.scrollTop = traceResult.scrollHeight;
                   }
                 }
               });
@@ -305,11 +306,7 @@ export function createFailedJobView(
       )
         .then(decodeArray(readPipeline))
         .then(function (pipelines) {
-          if (
-            pipelines &&
-            pipelines.length &&
-            pipelines[0].status === "failed"
-          ) {
+          if (pipelines && pipelines[0] && pipelines[0].status === "failed") {
             renderForPipeline(pipelines[0].id);
           }
         })

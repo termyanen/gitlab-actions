@@ -132,8 +132,7 @@ export function createJobChains() {
               .then(function (pipelines) {
                 if (task._cancelled) throw new Error("Cancelled by user");
                 let latest = null;
-                for (let i = 0; i < pipelines.length; i++) {
-                  const pipeline = pipelines[i];
+                for (const pipeline of pipelines) {
                   if (mr.sha && pipeline.sha !== mr.sha) continue;
                   // Preserve GitLab's MR-pipeline preference within this SHA.
                   latest = pipeline;
@@ -164,11 +163,14 @@ export function createJobChains() {
           // redirect polling or a retry to a newly created MR pipeline.
           let found: Job | null = null;
           let hasNewJobs = false;
-          for (let i = 0; i < jobs.length; i++) {
-            if (jobs[i].name === jobName && (!found || jobs[i].id > found.id))
-              found = jobs[i];
-            if (!seen[jobs[i].id]) hasNewJobs = true;
-            seen[jobs[i].id] = true;
+          for (const pipelineJob of jobs) {
+            if (
+              pipelineJob.name === jobName &&
+              (!found || pipelineJob.id > found.id)
+            )
+              found = pipelineJob;
+            if (!seen[pipelineJob.id]) hasNewJobs = true;
+            seen[pipelineJob.id] = true;
           }
           if (found || jobs.length < GITLAB_PAGE_SIZE) return found;
           if (!hasNewJobs)
@@ -246,13 +248,13 @@ export function createJobChains() {
     jobName: string,
     maxAttempts?: number,
   ) {
-    maxAttempts = maxAttempts || JOB_POLL_MAX_ATTEMPTS;
+    const limit = maxAttempts || JOB_POLL_MAX_ATTEMPTS;
     let attempt = task.waitAttempts || 0;
     function check(): Promise<Job> {
       attempt++;
       task.waitAttempts = attempt;
       if (task._cancelled) throw new Error("Cancelled by user");
-      if (attempt > maxAttempts!)
+      if (attempt > limit)
         throw new Error('Timeout waiting for "' + jobName + '"');
       return checkpoint(task)
         .then(
@@ -291,6 +293,8 @@ export function createJobChains() {
       try {
         while (!task._cancelled && task.currentIndex < task.jobs.length) {
           const jobName = task.jobs[task.currentIndex];
+          if (jobName === undefined)
+            throw new Error("The current job is missing from the task");
           task.status = "running: " + jobName;
           broadcastProgress(taskId);
           const result =
@@ -345,7 +349,8 @@ export function createJobChains() {
       .query({ url: gitlabUrl + "/*" })
       .then(function (tabs) {
         tabs.forEach(function (tab) {
-          chrome.tabs.sendMessage(tab.id!, message).catch(function () {});
+          if (tab.id !== undefined)
+            chrome.tabs.sendMessage(tab.id, message).catch(function () {});
         });
       })
       .catch(function () {});
@@ -409,7 +414,7 @@ export function createJobChains() {
       let taskId = "task-" + Date.now() + "-" + ++taskSequence;
       while (tasks[taskId])
         taskId = "task-" + Date.now() + "-" + ++taskSequence;
-      tasks[taskId] = {
+      const task: ChainTask = {
         jobs: msg.jobs,
         currentIndex: 0,
         gitlabUrl: msg.gitlabUrl,
@@ -422,8 +427,9 @@ export function createJobChains() {
         error: null,
         _tabId: sender.tab?.id ?? null,
       };
+      tasks[taskId] = task;
       try {
-        await checkpoint(tasks[taskId]);
+        await checkpoint(task);
       } catch (error) {
         delete tasks[taskId];
         throw error;
@@ -462,14 +468,13 @@ export function createJobChains() {
         status: string;
         mrTitle?: string;
       }[] = [];
-      for (const id in tasks) {
-        const t = tasks[id];
+      for (const [id, t] of Object.entries(tasks)) {
         if (t.status !== "done" && t.status !== "error") {
           active.push({
             taskId: id,
             jobs: t.jobs,
             status: t.status,
-            mrTitle: t.mrTitle,
+            ...(t.mrTitle === undefined ? {} : { mrTitle: t.mrTitle }),
           });
         }
       }

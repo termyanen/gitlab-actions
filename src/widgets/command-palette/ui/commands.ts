@@ -1,6 +1,7 @@
 import { reportRuntimeError } from "../../../shared/api/runtime";
-import { reportError } from "../../../shared/lib/errors";
 import { msg } from "../../../shared/i18n";
+import { reportError } from "../../../shared/lib/errors";
+import { cloneElement } from "../../../shared/ui/dom";
 import type { Command, MrCommands, SidebarLink } from "../model/types";
 export function createPaletteCommands(
   openStandupModal: () => void,
@@ -44,7 +45,7 @@ export function createPaletteCommands(
   function parseSidebarLink(a: Element) {
     const href = a.getAttribute("href");
     if (!href) return null;
-    const clone = a.cloneNode(true) as Element;
+    const clone = cloneElement(a);
     // Remove badges, counts, avatars
     const junk = clone.querySelectorAll(
       '[class*="badge"], [class*="count"], .badge, .count, span[aria-label], [class*="avatar"], img, .gl-avatar',
@@ -66,7 +67,7 @@ export function createPaletteCommands(
       // Super Sidebar: sections are li/div with a direct child <button> (expander)
       const sBtn = el.querySelector(":scope > button");
       if (sBtn && sBtn !== a) {
-        const sClone = sBtn.cloneNode(true) as Element;
+        const sClone = cloneElement(sBtn);
         const sJunk = sClone.querySelectorAll(
           '[class*="badge"], [class*="count"], [class*="avatar"], img, svg, .gl-avatar',
         );
@@ -86,7 +87,7 @@ export function createPaletteCommands(
         sLink !== a &&
         el.querySelector(".sidebar-sub-level-items")
       ) {
-        const lClone = sLink.cloneNode(true) as Element;
+        const lClone = cloneElement(sLink);
         const lJunk = lClone.querySelectorAll(
           '[class*="badge"], [class*="count"], [class*="avatar"], img, svg',
         );
@@ -118,7 +119,7 @@ export function createPaletteCommands(
       const item = parseSidebarLink(a);
       if (item) {
         pinned.push(item);
-        seenHrefs[item.href.split("?")[0]] = true;
+        seenHrefs[item.href.split("?")[0] || ""] = true;
       }
     });
 
@@ -129,7 +130,7 @@ export function createPaletteCommands(
     navEls.forEach(function (a) {
       const item = parseSidebarLink(a);
       if (!item) return;
-      const cleanHref = item.href.split("?")[0];
+      const cleanHref = item.href.split("?")[0] || "";
       if (seenHrefs[cleanHref]) return;
       seenHrefs[cleanHref] = true;
       nav.push(item);
@@ -156,7 +157,7 @@ export function createPaletteCommands(
 
     // Pinned items first
     sidebar.pinned.forEach(function (pin, i) {
-      const pinPath = pin.href.split("?")[0];
+      const pinPath = pin.href.split("?")[0] || "";
       if (!isCurrentPath(pinPath)) {
         cmds.push({
           id: "pin-" + i,
@@ -172,7 +173,7 @@ export function createPaletteCommands(
 
     // All other sidebar navigation
     sidebar.nav.forEach(function (item, i) {
-      const itemPath = item.href.split("?")[0];
+      const itemPath = item.href.split("?")[0] || "";
       if (!isCurrentPath(itemPath)) {
         cmds.push({
           id: "nav-" + i,

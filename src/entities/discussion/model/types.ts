@@ -4,7 +4,7 @@ export interface NoteAuthor {
   name?: string;
 }
 
-interface NoteLine {
+export interface NoteLine {
   old_line?: number | null;
   new_line?: number | null;
   line_code?: string;
@@ -12,8 +12,8 @@ interface NoteLine {
 }
 
 export interface NotePosition extends NoteLine {
-  old_path?: string;
-  new_path?: string;
+  old_path?: string | null;
+  new_path?: string | null;
   base_sha?: string;
   start_sha?: string;
   head_sha?: string;
@@ -30,14 +30,14 @@ export interface Note {
   body: string;
   system?: boolean;
   created_at?: string;
-  author?: NoteAuthor;
+  author?: NoteAuthor | null;
   resolvable?: boolean;
   resolved?: boolean;
   outdated?: boolean;
   position?: NotePosition | null;
   original_position?: NotePosition | null;
   noteable_type?: string;
-  commit_id?: string;
+  commit_id?: string | null;
   type?: string | null;
   web_url?: string;
   attachment?: string | null;
@@ -47,11 +47,12 @@ export interface Note {
 }
 
 export interface DraftNote {
+  author_id?: number;
   id: string | number;
   note: string;
-  author?: NoteAuthor;
+  author?: NoteAuthor | null;
   position?: NotePosition | null;
-  discussion_id?: string | number;
+  discussion_id?: string | number | null;
 }
 
 export interface Discussion {
@@ -65,4 +66,11 @@ export interface Discussion {
   truncated?: boolean;
   has_more?: boolean;
   body?: never;
+}
+
+export interface CreatedComment extends Omit<Partial<Note>, "notes"> {
+  note?: string;
+  notes?: CreatedComment[];
+  discussion_id?: string;
+  resolve_discussion?: boolean;
 }

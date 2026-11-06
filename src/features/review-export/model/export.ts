@@ -39,11 +39,14 @@ export function createReviewExporter(
   ) {
     return reviewWorkflow
       ? reviewWorkflow.instruction(id, options, variables)
-      : fallback.replace(/\{(language|selection)\}/g, function (match, key) {
-          return variables && variables[key] !== undefined
-            ? variables[key]
-            : match;
-        });
+      : fallback.replace(
+          /\{(language|selection)\}/g,
+          function (match: string, key: string) {
+            return variables && variables[key] !== undefined
+              ? variables[key]
+              : match;
+          },
+        );
   }
 
   return {

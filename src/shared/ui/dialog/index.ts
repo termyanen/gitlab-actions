@@ -22,6 +22,7 @@ export function createDialogKeydown(dialog: HTMLElement, close: () => unknown) {
     if (!targets.length) return;
     const first = targets[0];
     const last = targets[targets.length - 1];
+    if (!first || !last) return;
     const outside = !dialog.contains(document.activeElement);
     if (event.shiftKey && (document.activeElement === first || outside)) {
       event.preventDefault();

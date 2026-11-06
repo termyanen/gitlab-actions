@@ -1,4 +1,5 @@
 import type { ReviewContext } from "../../../entities/review";
+import { emptyRecord } from "../../../shared/lib/records";
 import { loadDiffs } from "./diff";
 import {
   discussionFingerprint,
@@ -25,7 +26,13 @@ import {
   sameRefs,
   warning,
 } from "./utils";
-import { bodyError, itemError, parseInput, safeContext } from "./validation";
+import {
+  bodyError,
+  itemError,
+  parseInput,
+  safeContext,
+  validComment,
+} from "./validation";
 export function createImportPlanner(
   plans: WeakMap<ImportPlan, InternalPlan>,
   running: Set<string>,
@@ -61,10 +68,8 @@ export function createImportPlanner(
     if (hasReplies && input.head_sha == null)
       warning(warnings, replyNotice(false));
     const inlineTargets = !stale
-      ? input.comments.filter(function (item) {
-          return (
-            item.type !== "reply" && item.path !== null && !itemError(item)
-          );
+      ? input.comments.filter(validComment).filter(function (item) {
+          return item.type !== "reply" && item.path !== null;
         })
       : [];
     const loaded = await Promise.all([
@@ -88,20 +93,20 @@ export function createImportPlanner(
       );
     if (changedDuringCheck) warning(warnings, replyNotice(true));
     const items: ImportItem[] = [];
-    const signatures = new Set();
-    const repliedThreads = new Set();
-    const replyFingerprints: Record<string, string> = Object.create(null);
-    for (let index = 0; index < input.comments.length; index++) {
+    const signatures = new Set<string>();
+    const repliedThreads = new Set<string>();
+    const replyFingerprints: Record<string, string> = emptyRecord();
+    for (const [index, source] of input.comments.entries()) {
       checkAbort(options.signal);
-      const source = input.comments[index];
       const item: ImportItem = {
         id: source.id,
         type: source.type === "reply" ? "reply" : "comment",
-        path: source.path,
-        side: source.side,
-        line: source.line,
-        code: source.code,
-        body: source.body,
+        path: typeof source.path === "string" ? source.path : null,
+        side:
+          source.side === "old" || source.side === "new" ? source.side : null,
+        line: typeof source.line === "number" ? source.line : null,
+        code: typeof source.code === "string" ? source.code : null,
+        body: typeof source.body === "string" ? source.body : "",
         status: "ready",
         message: "",
         position: null,
@@ -112,8 +117,9 @@ export function createImportPlanner(
         error =
           "The merge request changed. Ask the AI to review the current code before posting this new finding.";
       if (item.type === "reply") {
-        item.discussion_id = source.discussion_id;
-        item.note_id = source.note_id;
+        if (typeof source.discussion_id === "string")
+          item.discussion_id = source.discussion_id;
+        if (typeof source.note_id === "number") item.note_id = source.note_id;
         item.path = null;
         item.side = null;
         item.line = null;
@@ -123,15 +129,15 @@ export function createImportPlanner(
             return d.id === item.discussion_id;
           });
           const target = targetNote(discussion, item);
-          if (!target)
+          if (!discussion || !target)
             error =
               "The requested published comment was not found in this merge request discussion.";
-          else if (repliedThreads.has(item.discussion_id))
+          else if (repliedThreads.has(discussion.id))
             error = "Include only one reply per discussion in this import.";
           else {
-            repliedThreads.add(item.discussion_id);
-            item.replyTo = replyContext(context, discussion!, target);
-            replyFingerprints[item.id] = discussionFingerprint(discussion!);
+            repliedThreads.add(discussion.id);
+            item.replyTo = replyContext(context, discussion, target);
+            replyFingerprints[item.id] = discussionFingerprint(discussion);
             if (otherReplyDraft(existing, item))
               item.message =
                 "You already have a different draft reply in this discussion. Publish this reply directly or review the existing draft in GitLab.";
@@ -140,16 +146,21 @@ export function createImportPlanner(
       } else if (!error && source.path !== null) {
         const matches = files.filter(function (file) {
           return (
-            file[`${source.side}_path` as "old_path" | "new_path"] ===
+            file[source.side === "old" ? "old_path" : "new_path"] ===
             source.path
           );
         });
-        if (matches.length !== 1)
+        const match = matches[0];
+        if (matches.length !== 1 || !match)
           error =
             "This file could not be uniquely found in the loaded merge request changes.";
-        else if (matches[0].error) error = matches[0].error;
+        else if (match.error) error = match.error;
         else {
-          const line = matches[0].lines![source.side!].get(source.line!);
+          const line =
+            (source.side === "old" || source.side === "new") &&
+            typeof source.line === "number"
+              ? match.lines?.[source.side].get(source.line)
+              : undefined;
           if (!line)
             error =
               "This line is not in the verified diff. Choose a line from the merge request changes.";
@@ -160,8 +171,8 @@ export function createImportPlanner(
             item.position = Object.assign(
               {
                 position_type: "text",
-                old_path: matches[0].old_path,
-                new_path: matches[0].new_path,
+                old_path: match.old_path,
+                new_path: match.new_path,
               },
               meta.refs,
               { old_line: line.old_line, new_line: line.new_line },
@@ -229,7 +240,7 @@ export function createImportPlanner(
       userId: existing.userId,
       replyFingerprints: replyFingerprints,
       source: clone(input),
-      outcomes: Object.create(null),
+      outcomes: emptyRecord(),
     });
     return plan;
   }
@@ -240,8 +251,9 @@ export function createImportPlanner(
     options: ImportOptions = {},
   ) {
     options = options || {};
-    const internal = plans.get(plan);
-    if (!internal) throw new Error("Check the review before editing comments.");
+    const stored = plans.get(plan);
+    if (!stored) throw new Error("Check the review before editing comments.");
+    const internal = stored;
     const context = safeContext(internal.context);
     checkAbort(options.signal);
     if (running.has(context.webUrl))
@@ -251,7 +263,7 @@ export function createImportPlanner(
     if (!Array.isArray(edits) || !edits.length || edits.length > 200)
       throw new Error("Choose the comment text to edit.");
     const source = clone(internal.source);
-    const edited = new Set();
+    const edited = new Set<string>();
     const originals: ImportItem[] = [];
     edits.forEach(function (edit) {
       if (
@@ -297,9 +309,10 @@ export function createImportPlanner(
         if (!item)
           throw new Error("This comment is not in the checked preview.");
         originals.push(item);
-        source.comments.find(function (value) {
-          return value.id === edit.id;
-        })!.body = edit.body;
+        const original = source.comments.find((value) => value.id === edit.id);
+        if (!original)
+          throw new Error("This comment is not in the checked source.");
+        original.body = edit.body;
       }
     });
     if (source.comments.length > 200)
@@ -310,7 +323,7 @@ export function createImportPlanner(
           "Wait until comments finish sending before editing the preview.",
         );
       originals.forEach(function (item) {
-        const outcome = internal!.outcomes[item.id];
+        const outcome = internal.outcomes[item.id] || "";
         if (
           item.editable === false ||
           item.status === "duplicate" ||
@@ -323,10 +336,9 @@ export function createImportPlanner(
     }
     async function checkEditable() {
       checkEditableState();
-      for (let i = 0; i < originals.length; i++) {
-        const item = originals[i];
+      for (const item of originals) {
         const saved = await pending(
-          operationKey(context, item, internal!.userId),
+          operationKey(context, item, internal.userId),
         );
         if (saved)
           throw new Error(
@@ -338,7 +350,9 @@ export function createImportPlanner(
     }
     await checkEditable();
     const revised = await prepare(context, JSON.stringify(source), options);
-    const next = plans.get(revised)!;
+    const next = plans.get(revised);
+    if (!next)
+      throw new Error("Check the revised review before editing comments.");
     if (!sameRefs(next.refs, internal.refs)) {
       if (
         !source.comments.some(function (item) {
@@ -371,17 +385,19 @@ export function createImportPlanner(
       if (
         item.type === "reply" &&
         item.status === "ready" &&
-        internal.replyFingerprints[item.id] &&
+        typeof internal.replyFingerprints[item.id] === "string" &&
         next.replyFingerprints[item.id] !== internal.replyFingerprints[item.id]
       ) {
         item.status = "invalid";
         item.message =
           "This discussion changed after the preview. Review its updated comments and check the review again.";
-        next.replyFingerprints[item.id] = internal.replyFingerprints[item.id];
+        const fingerprint = internal.replyFingerprints[item.id];
+        if (fingerprint !== undefined)
+          next.replyFingerprints[item.id] = fingerprint;
       }
     });
     next.items = clone(revised.items);
-    next.outcomes = Object.assign(Object.create(null), internal.outcomes);
+    next.outcomes = Object.assign(emptyRecord(), internal.outcomes);
     return revised;
   }
   return { prepare, revise };

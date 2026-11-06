@@ -62,6 +62,7 @@ function environment(options) {
     throw new Error('Unexpected request: ' + url);
   }
   var sandbox = vm.createContext({
+    structuredClone: structuredClone,
     window: window, chrome: chrome, URL: URL, AbortController: AbortController, TextEncoder: TextEncoder, TextDecoder: options.noTextDecoder ? undefined : TextDecoder,
     navigator: options.locks ? { locks: options.locks } : {},
     setTimeout: options.fastTimeout ? function(fn) { return setTimeout(fn, 5); } : setTimeout, clearTimeout: clearTimeout,

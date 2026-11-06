@@ -4,9 +4,11 @@ import type { MrActionContext } from "../../../features/mr-actions";
 import { createMrActions } from "../../../features/mr-actions";
 import { addRuntimeListener } from "../../../shared/api/runtime";
 import type { Translate } from "../../../shared/i18n";
+import { readMessages } from "../../../shared/i18n";
 import { errorMessage, reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { isRecord } from "../../../shared/lib/validation";
 import { createFeedback } from "../../../shared/ui/feedback";
 import { formatElapsed } from "./display";
 import { createFailedJobView } from "./failed-jobs";
@@ -70,8 +72,8 @@ export function startMrToolbar(
     if (_i18nMessages && _i18nMessages[key]) {
       let msg = _i18nMessages[key].message || "";
       if (substitutions && substitutions.length) {
-        for (let i = 0; i < substitutions.length; i++) {
-          msg = msg.replace("$" + (i + 1), String(substitutions[i]));
+        for (const [i, substitution] of substitutions.entries()) {
+          msg = msg.replace("$" + (i + 1), String(substitution));
         }
       }
       return msg;
@@ -108,6 +110,7 @@ export function startMrToolbar(
             .then(function (r) {
               return r.json();
             })
+            .then(readMessages)
             .then(function (msgs) {
               _i18nMessages = msgs;
               resolve();
@@ -127,7 +130,7 @@ export function startMrToolbar(
     const match = window.location.pathname.match(
       /\/(.+?)\/-\/merge_requests\/(\d+)/,
     );
-    if (!match) return false;
+    if (!match?.[1] || !match[2]) return false;
     // A running action owns the original MR even before the app observes a
     // pushState. Never redirect its subsequent requests to a new route.
     if (
@@ -142,15 +145,15 @@ export function startMrToolbar(
 
   function getProjectId() {
     const el = document.querySelector<HTMLElement>("[data-project-id]");
-    if (el) return parseInt(el.dataset.projectId!);
+    if (el?.dataset.projectId) return parseInt(el.dataset.projectId);
     const body = document.querySelector("body");
     if (body && body.dataset.projectId) return parseInt(body.dataset.projectId);
     const scripts = document.querySelectorAll("script");
-    for (let i = 0; i < scripts.length; i++) {
-      const m = (scripts[i].textContent || "").match(
+    for (const currentScript of scripts) {
+      const m = (currentScript.textContent || "").match(
         /"project_id"\s*:\s*(\d+)/,
       );
-      if (m) return parseInt(m[1]);
+      if (m?.[1]) return parseInt(m[1]);
     }
     return null;
   }
@@ -500,7 +503,9 @@ export function startMrToolbar(
                   });
               } else {
                 runAction(btn, def.action, def.name, {
-                  reloadOnSuccess: def.reloadOnSuccess,
+                  ...(def.reloadOnSuccess === undefined
+                    ? {}
+                    : { reloadOnSuccess: def.reloadOnSuccess }),
                 });
               }
             });
@@ -678,7 +683,12 @@ export function startMrToolbar(
   ) {
     scope.onCleanup(
       addRuntimeListener(function (msg) {
-        if (msg.type === "task-result") {
+        if (
+          isRecord(msg) &&
+          msg.type === "task-result" &&
+          typeof msg.success === "boolean" &&
+          typeof msg.message === "string"
+        ) {
           if (msg.success) {
             showToast(msg.message, "success");
           } else {

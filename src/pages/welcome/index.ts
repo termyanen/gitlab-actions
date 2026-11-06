@@ -1,15 +1,17 @@
 import { reportRuntimeError } from "../../shared/api/runtime";
 import { SETTINGS_PAGE } from "../../shared/config/extension";
+import { requireElement } from "../../shared/ui/dom";
 export function startWelcome() {
-  document
-    .getElementById("openSettings")!
-    .addEventListener("click", function (e) {
+  requireElement(document.getElementById("openSettings")).addEventListener(
+    "click",
+    function (e) {
       e.preventDefault();
       chrome.tabs.create(
         { url: chrome.runtime.getURL(SETTINGS_PAGE) },
         reportRuntimeError,
       );
-    });
+    },
+  );
 
   // i18n: localize all elements with data-i18n attribute
   document.querySelectorAll("[data-i18n]").forEach(function (el) {

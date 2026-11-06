@@ -6,9 +6,10 @@ import {
   createChildLifecycle,
   createLifecycle,
 } from "../../../shared/lib/lifecycle";
+import { requireElement } from "../../../shared/ui/dom";
 import { createJiraComments } from "./comments";
-import { createJiraFieldEditors } from "./field-editors";
 import { createJiraSidebarContent } from "./content";
+import { createJiraFieldEditors } from "./field-editors";
 import { createJiraTransitions } from "./transitions";
 const CLOSE_ANIMATION_TIMEOUT_MS = 400;
 
@@ -56,16 +57,18 @@ export function createJiraPanel(
       existing.dataset.ticket = ticket;
       const ticketLink = existing.querySelector<HTMLAnchorElement>(
         ".gl-jira-sidebar-header .gfm-issue",
-      )!;
+      );
       if (ticketLink) {
         ticketLink.textContent = ticket;
         ticketLink.href = jiraUrl + "/browse/" + ticket;
       }
-      existing.querySelector<HTMLElement>(".gl-jira-sidebar-body")!.innerHTML =
+      requireElement(
+        existing.querySelector<HTMLElement>(".gl-jira-sidebar-body"),
+      ).innerHTML =
         '<div class="gl-jira-sidebar-loading"><div class="gl-jira-sidebar-spinner"></div></div>';
     }
 
-    const sidebar = reuse ? existing! : document.createElement("div");
+    const sidebar = existing || document.createElement("div");
     if (!reuse) {
       sidebar.className = "gl-jira-sidebar";
       sidebar.dataset.ticket = ticket;
@@ -91,7 +94,9 @@ export function createJiraPanel(
     }
     closeActive = closeSidebar;
     session.listen(
-      sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-close")!,
+      requireElement(
+        sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-close"),
+      ),
       "click",
       closeSidebar,
     );
@@ -123,7 +128,8 @@ export function createJiraPanel(
       );
       if (media) {
         e.preventDefault();
-        openJiraLightbox(media.dataset.url!, media.dataset.type!);
+        if (media.dataset.url && media.dataset.type)
+          openJiraLightbox(media.dataset.url, media.dataset.type);
       }
     });
 
@@ -136,14 +142,14 @@ export function createJiraPanel(
       },
       session.once(function (resp) {
         if (sidebar.dataset.ticket !== ticket) return;
-        if (!resp || resp._error) {
+        if (!resp || resp._error !== undefined) {
           const errMsg = resp ? resp._error : "No response";
           if (resp && resp._error && /^(401|403)\s/.test(resp._error)) {
             jiraState.authFailed = true;
           }
-          sidebar.querySelector<HTMLElement>(
-            ".gl-jira-sidebar-body",
-          )!.innerHTML =
+          requireElement(
+            sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-body"),
+          ).innerHTML =
             '<div class="gl-jira-sidebar-error">' + escHtml(errMsg) + "</div>";
           return;
         }

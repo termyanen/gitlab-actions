@@ -29,7 +29,8 @@ export function createListJiraBadges(
       const titleEl = q<HTMLAnchorElement>(entry.item, SEL.titleLink);
       if (!titleEl) return;
       const titleContainer =
-        qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
+        qUp(titleEl, SEL.titleWrap) || titleEl.parentElement;
+      if (!titleContainer) return;
       if (titleContainer.querySelector(".gl-jira-loader")) return; // already has loader
       const loader = document.createElement("span");
       loader.className = "gl-jira-loader";
@@ -55,8 +56,8 @@ export function createListJiraBadges(
     const title = titleEl.textContent.trim();
     const tickets = parseTickets(title);
 
-    const titleContainer =
-      qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
+    const titleContainer = qUp(titleEl, SEL.titleWrap) || titleEl.parentElement;
+    if (!titleContainer) return;
 
     // Build expected badge key to avoid redundant re-renders
     const badgeKey = tickets
@@ -218,15 +219,16 @@ export function createListJiraBadges(
         jiraState.fetching = false;
         try {
           removeJiraLoaders();
-          if (chrome.runtime.lastError || !resp || resp._error) return;
+          if (chrome.runtime.lastError || !resp || resp._error !== undefined)
+            return;
           const statuses = resp.statuses || {};
 
           // Stop all Jira requests if auth failed (401/403)
-          if (statuses._authError) {
+          if (resp._authError) {
             jiraState.authFailed = true;
             console.warn(
               "[GitLab Actions] Jira auth failed (" +
-                statuses._authError +
+                resp._authError +
                 "), stopping Jira requests. Reload page after re-login.",
             );
             return;
@@ -234,22 +236,15 @@ export function createListJiraBadges(
 
           // Update cache
           const fetchedNow = Date.now();
-          for (const t in statuses) {
+          for (const [t, value] of Object.entries(statuses)) {
             jiraState.cache[t] = {
-              name: statuses[t].name,
-              categoryKey: statuses[t].categoryKey,
-              priority: statuses[t].priority,
-              priorityIcon: statuses[t].priorityIcon,
-              type: statuses[t].type,
-              typeIcon: statuses[t].typeIcon,
+              ...value,
               ts: fetchedNow,
             };
           }
 
           // Merge with cached
-          const merged: Record<string, JiraStatus> = {};
-          for (const k in cachedStatuses) merged[k] = cachedStatuses[k];
-          for (const k2 in statuses) merged[k2] = statuses[k2];
+          const merged = { ...cachedStatuses, ...statuses };
 
           itemTicketMap.forEach(function (entry) {
             if (entry.item.isConnected) renderJiraBadges(entry.item, merged);
@@ -296,13 +291,13 @@ export function createListJiraBadges(
         showDetails: jiraState.showDetails,
       },
       scope.guard(function (resp) {
-        if (!resp || resp._error || !resp.statuses) return;
+        if (!resp || resp._error !== undefined || !resp.statuses) return;
         const statuses = resp.statuses;
-        if (statuses._authError) {
+        if (resp._authError) {
           jiraState.authFailed = true;
           console.warn(
             "[GitLab Actions] Jira auth failed (" +
-              statuses._authError +
+              resp._authError +
               "), stopping Jira requests. Reload page after re-login.",
           );
           return;

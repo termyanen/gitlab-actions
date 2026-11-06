@@ -8,7 +8,12 @@ import {
   optional,
   recordOf,
 } from "../../../shared/lib/validation";
-import type { JiraNamed, JiraUser, RawJiraIssue } from "./types";
+import type {
+  JiraNamed,
+  JiraUser,
+  RawJiraComment,
+  RawJiraIssue,
+} from "./types";
 
 const user = objectOf<JiraUser>({
   accountId: optional(isString),
@@ -26,7 +31,7 @@ export const readJiraUser = decoder(user, "Jira user response");
 export const readRawJiraIssue = decoder(
   objectOf<RawJiraIssue>({
     key: optional(isString),
-    fields: objectOf({
+    fields: objectOf<RawJiraIssue["fields"]>({
       summary: optional(isString),
       status: optional(named),
       description: optional(nullable(isString)),
@@ -39,7 +44,7 @@ export const readRawJiraIssue = decoder(
       labels: optional(arrayOf(isString)),
       attachment: optional(
         arrayOf(
-          objectOf({
+          objectOf<NonNullable<RawJiraIssue["fields"]["attachment"]>[number]>({
             filename: isString,
             content: isString,
             size: optional(isNumber),
@@ -54,4 +59,14 @@ export const readRawJiraIssue = decoder(
     }),
   }),
   "Jira issue response",
+);
+
+export const readRawJiraComment = decoder(
+  objectOf<RawJiraComment>({
+    id: isString,
+    author: optional(user),
+    body: optional(isString),
+    created: optional(isString),
+  }),
+  "Jira comment response",
 );

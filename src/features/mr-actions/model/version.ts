@@ -73,33 +73,33 @@ export function createVersionActions({
 
             if (filePath.match(/\.json$/i)) {
               // JSON file (package.json, composer.json, etc.)
-              const jsonObj = JSON.parse(rawContent);
+              const jsonObj: unknown = JSON.parse(rawContent);
               const currentVersion = getNestedValue(
                 JSON.parse(versionContent),
                 versionPath,
               );
-              if (!currentVersion)
+              if (typeof currentVersion !== "string" || !currentVersion)
                 throw new Error(
                   'Version field "' +
                     versionPath +
                     '" not found in ' +
                     filePath,
                 );
-              newVersion = bumpVersion(currentVersion as string, strategy);
+              newVersion = bumpVersion(currentVersion, strategy);
               setNestedValue(jsonObj, versionPath, newVersion);
               newRawContent = JSON.stringify(jsonObj, null, 2) + "\n";
             } else if (filePath.match(/\.toml$/i)) {
               // TOML file (pyproject.toml, Cargo.toml, etc.)
               const tomlObj = parseToml(versionContent);
               const currentVersion = getNestedValue(tomlObj, versionPath);
-              if (!currentVersion)
+              if (typeof currentVersion !== "string" || !currentVersion)
                 throw new Error(
                   'Version field "' +
                     versionPath +
                     '" not found in ' +
                     filePath,
                 );
-              newVersion = bumpVersion(currentVersion as string, strategy);
+              newVersion = bumpVersion(currentVersion, strategy);
               newRawContent = updateTomlVersion(
                 rawContent,
                 versionPath,
@@ -140,7 +140,9 @@ export function createVersionActions({
                 encoding: "base64",
                 commit_message: commitMessage,
                 // Reject an outdated write if the source file changed meanwhile.
-                last_commit_id: file.last_commit_id,
+                ...(file.last_commit_id === undefined
+                  ? {}
+                  : { last_commit_id: file.last_commit_id }),
               },
             ).then(function () {
               return { version: newVersion, branch: branch };

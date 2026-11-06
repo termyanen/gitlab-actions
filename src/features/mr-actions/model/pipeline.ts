@@ -14,6 +14,7 @@ import {
   arrayOf,
   decodeArray,
   decoder,
+  isRecord,
   isString,
   objectOf,
 } from "../../../shared/lib/validation";
@@ -58,8 +59,7 @@ export function createPipelineActions({
         .then(decodeArray(readPipeline))
         .then(function (pipelines) {
           let latest = null;
-          for (let i = 0; i < pipelines.length; i++) {
-            const pipeline = pipelines[i];
+          for (const pipeline of pipelines) {
             if (mr.sha && pipeline.sha !== mr.sha) continue;
             // GitLab prefers MR pipelines over branch pipelines, then orders
             // each group newest first. Preserve that preference for this SHA.
@@ -98,9 +98,9 @@ export function createPipelineActions({
           if (jobs.length < GITLAB_PAGE_SIZE) return collected;
           // Protect against a proxy/server ignoring the page parameter.
           let hasNewJobs = false;
-          for (let i = 0; i < jobs.length; i++) {
-            if (!seen[jobs[i].id]) hasNewJobs = true;
-            seen[jobs[i].id] = true;
+          for (const pipelineJob of jobs) {
+            if (!seen[pipelineJob.id]) hasNewJobs = true;
+            seen[pipelineJob.id] = true;
           }
           if (!hasNewJobs)
             throw new Error(t("errorJobsPageRepeated", [String(pipeline.id)]));
@@ -161,9 +161,9 @@ export function createPipelineActions({
         jobId?: number;
       }> {
         let reviewerNote: string | null = null;
-        for (let i = notes.length - 1; i >= 0; i--) {
-          if (/Reviewers?\s*:/i.test(notes[i].body)) {
-            reviewerNote = notes[i].body;
+        for (const note of notes.slice().reverse()) {
+          if (/Reviewers?\s*:/i.test(note.body)) {
+            reviewerNote = note.body;
             break;
           }
         }
@@ -328,9 +328,9 @@ export function createPipelineActions({
     // When a job is retried, GitLab creates a new job with the same name.
     // Pick the one with the highest ID (most recent).
     let found = null;
-    for (let i = 0; i < jobs.length; i++) {
-      if (jobs[i].name === jobName) {
-        if (!found || jobs[i].id > found.id) found = jobs[i];
+    for (const matchingJob of jobs) {
+      if (matchingJob.name === jobName) {
+        if (!found || matchingJob.id > found.id) found = matchingJob;
       }
     }
     return found;
@@ -435,21 +435,22 @@ export function createPipelineActions({
       )
         .then(decodeArray(readPipeline))
         .then(function (pipelines) {
-          if (!pipelines.length) return null;
+          const pipeline = pipelines[0];
+          if (!pipeline) return null;
           return api(
             "GET",
             "/projects/" +
               context.projectId +
               "/pipelines/" +
-              pipelines[0].id +
+              pipeline.id +
               "/jobs?per_page=" +
               GITLAB_PAGE_SIZE,
           ).then(decodeArray(readJob));
         })
         .then(function (jobs) {
           if (!jobs) return null;
-          for (let i = 0; i < jobs.length; i++) {
-            if (jobs[i].name === name) return jobs[i];
+          for (const candidateJob of jobs) {
+            if (candidateJob.name === name) return candidateJob;
           }
           return null;
         });
@@ -497,15 +498,16 @@ export function createPipelineActions({
       .filter(Boolean);
 
     // Single job — run directly in content script
-    if (jobNames.length === 1) {
+    const firstJob = jobNames[0];
+    if (jobNames.length === 1 && firstJob !== undefined) {
       let pipeline: PipelineSelection;
       return getCurrentPipeline()
         .then(function (selected) {
           pipeline = selected;
-          return getPipelineJobs(pipeline, jobNames[0]);
+          return getPipelineJobs(pipeline, firstJob);
         })
         .then(function (jobs) {
-          return startJob(jobs, jobNames[0], pipeline);
+          return startJob(jobs, firstJob, pipeline);
         });
     }
 
@@ -522,12 +524,12 @@ export function createPipelineActions({
             mrIid: context.mrIid,
             mrTitle: mrTitle,
           },
-          function (response) {
+          function (response: unknown) {
             if (chrome.runtime.lastError) {
               reject(new Error(chrome.runtime.lastError.message));
               return;
             }
-            if (response && response.taskId) {
+            if (isRecord(response) && typeof response.taskId === "string") {
               pollTaskStatus(response.taskId, jobNames, mrTitle);
               resolve({ taskId: response.taskId });
             } else {

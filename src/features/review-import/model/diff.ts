@@ -4,8 +4,13 @@ import type {
   FileDiff,
   LegacyChanges,
 } from "../../../entities/merge-request";
+import {
+  readFileDiff,
+  readLegacyChanges,
+} from "../../../entities/merge-request";
 import type { ReviewContext } from "../../../entities/review";
 import { toError } from "../../../shared/lib/errors";
+import { decodeResponse } from "../../../shared/lib/validation";
 import { MAX_RAW_DIFF_BYTES } from "./limits";
 import { paginate, request } from "./transport";
 import type {
@@ -148,6 +153,7 @@ export async function loadDiffs(
       endpoint(context) + "/diffs",
       options,
       diffKey,
+      readFileDiff,
     );
   } catch (errorValue) {
     const error = toError(errorValue);
@@ -161,10 +167,8 @@ export async function loadDiffs(
     }
     try {
       const legacy = (
-        await request<LegacyChanges>(
-          context,
-          endpoint(context) + "/changes",
-          options,
+        await request(context, endpoint(context) + "/changes", options).then(
+          decodeResponse(readLegacyChanges),
         )
       ).data;
       files = changeFiles(legacy, context, refs);
@@ -187,10 +191,10 @@ export async function loadDiffs(
   const needed = targets.filter(function (target) {
     const matches = result.filter(function (file) {
       return (
-        file[`${target.side}_path` as "old_path" | "new_path"] === target.path
+        file[target.side === "old" ? "old_path" : "new_path"] === target.path
       );
     });
-    return !matches.length || (matches.length === 1 && matches[0].error);
+    return !matches.length || (matches.length === 1 && matches[0]?.error);
   });
   if (!needed.length) return result;
   try {
@@ -198,34 +202,37 @@ export async function loadDiffs(
     // /raw_diffs also has display limits; access_raw_diffs bypasses the
     // database-backed limit and remains available on older API v4 servers.
     const raw = (
-      await request<LegacyChanges>(
+      await request(
         context,
         endpoint(context) + "/changes?access_raw_diffs=true",
         Object.assign({}, options, { maxBytes: MAX_RAW_DIFF_BYTES }),
-      )
+      ).then(decodeResponse(readLegacyChanges))
     ).data;
     const recoveredFiles = changeFiles(raw, context, refs);
     needed.forEach(function (target) {
       const matches = result.filter(function (file) {
         return (
-          file[`${target.side}_path` as "old_path" | "new_path"] === target.path
+          file[target.side === "old" ? "old_path" : "new_path"] === target.path
         );
       });
-      if (matches.length > 1 || (matches.length === 1 && !matches[0].error))
+      if (matches.length > 1 || (matches.length === 1 && !matches[0]?.error))
         return;
       const candidates = recoveredFiles.filter(function (file) {
         return (
-          file[`${target.side}_path` as "old_path" | "new_path"] === target.path
+          file[target.side === "old" ? "old_path" : "new_path"] === target.path
         );
       });
+      const candidate = candidates[0];
+      const match = matches[0];
       if (
         candidates.length !== 1 ||
-        (matches.length && diffKey(candidates[0]) !== diffKey(matches[0]))
+        !candidate ||
+        (match && diffKey(candidate) !== diffKey(match))
       )
         return;
-      const recovered = verifiedDiff(candidates[0]);
+      const recovered = verifiedDiff(candidate);
       if (recovered.error) return;
-      if (matches.length) result[result.indexOf(matches[0])] = recovered;
+      if (match) result[result.indexOf(match)] = recovered;
       else result.push(recovered);
     });
     if (
@@ -233,11 +240,11 @@ export async function loadDiffs(
       needed.some(function (target) {
         const matches = result.filter(function (file) {
           return (
-            file[`${target.side}_path` as "old_path" | "new_path"] ===
+            file[target.side === "old" ? "old_path" : "new_path"] ===
             target.path
           );
         });
-        return matches.length !== 1 || matches[0].error;
+        return matches.length !== 1 || matches[0]?.error;
       })
     )
       warning(

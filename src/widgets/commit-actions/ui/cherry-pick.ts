@@ -82,14 +82,14 @@ export function startCommitCherryPick(
             const result: Element[] = [];
             const seen: Element[] = [];
             const clipboardEls = qAll(document, "[data-clipboard-text]");
-            for (let i = 0; i < clipboardEls.length; i++) {
+            for (const clipboardElement of clipboardEls) {
               const text =
-                clipboardEls[i].getAttribute("data-clipboard-text") || "";
+                clipboardElement.getAttribute("data-clipboard-text") || "";
               if (/^[0-9a-f]{7,40}$/.test(text)) {
                 const group =
-                  clipboardEls[i].closest(
+                  clipboardElement.closest(
                     ".btn-group, .commit-sha-group, .gl-button-group",
-                  ) || clipboardEls[i].parentElement;
+                  ) || clipboardElement.parentElement;
                 if (group && seen.indexOf(group) === -1) {
                   seen.push(group);
                   result.push(group);
@@ -120,11 +120,11 @@ export function startCommitCherryPick(
                 const msgEls = qAll(row, SEL.commitMsg);
                 if (msgEls.length > 1) {
                   // GitLab splits message into multiple <a> when it contains issue references
-                  for (let mi = 0; mi < msgEls.length; mi++) {
-                    commitMsg += msgEls[mi].textContent || "";
+                  for (const messageElement of msgEls) {
+                    commitMsg += messageElement.textContent || "";
                   }
                   commitMsg = commitMsg.trim();
-                } else if (msgEls.length === 1) {
+                } else if (msgEls.length === 1 && msgEls[0]) {
                   commitMsg = (
                     msgEls[0].textContent ||
                     msgEls[0].getAttribute("title") ||

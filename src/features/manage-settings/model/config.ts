@@ -1,7 +1,7 @@
 import type { JiraQuickAction } from "../../../entities/jira-issue";
 import type { FileFilter } from "../../../entities/review";
 import * as workflow from "../../../entities/review";
-import { MR_DEFAULTS, LIST_DEFAULTS } from "../../../entities/settings";
+import { LIST_DEFAULTS, MR_DEFAULTS } from "../../../entities/settings";
 export { BUTTON_DEFAULTS } from "../../../entities/settings";
 export const BUILTIN_BUTTONS = [
   { key: "btn_version", labelKey: "btnVersion", hintKey: "hintVersion" },
@@ -45,7 +45,7 @@ export const BUILTIN_BUTTONS = [
     hintKey: "hintRetryFailed",
   },
   { key: "btn_copy_mr", labelKey: "btnCopyMr", hintKey: "hintCopyMr" },
-];
+] as const;
 export const AI_REVIEW_PROMPT_MAX_LENGTH = workflow.REVIEW_PROMPT_MAX_LENGTH;
 export const AI_REVIEW_FILTER_FIELDS: (keyof FileFilter)[] = [
   "includeExtensions",
@@ -53,12 +53,12 @@ export const AI_REVIEW_FILTER_FIELDS: (keyof FileFilter)[] = [
   "ignoreFiles",
   "ignoreDirs",
 ];
-export const AI_REVIEW_FILTER_LABELS = [
-  "aiReviewIncludeExtensions",
-  "aiReviewIncludeFiles",
-  "aiReviewIgnoreFiles",
-  "aiReviewIgnoreDirs",
-];
+export const AI_REVIEW_FILTER_LABELS: Record<keyof FileFilter, string> = {
+  includeExtensions: "aiReviewIncludeExtensions",
+  includeFiles: "aiReviewIncludeFiles",
+  ignoreFiles: "aiReviewIgnoreFiles",
+  ignoreDirs: "aiReviewIgnoreDirs",
+};
 export const AI_REVIEW_PROMPTS = [
   {
     key: "ai_review_prompt",
@@ -140,7 +140,7 @@ export const MR_ACTION_TYPES = [
   "clear_reviewers",
   "clear_milestone",
 ];
-export const JIRA_ACTION_FIELDS = [
+export const JIRA_ACTION_FIELDS: readonly (readonly [string, string])[] = [
   ["status", "jiraQuickActionStatus"],
   ["assignee", "jiraQuickActionAssignee"],
   ["labels", "jiraSidebarLabels"],

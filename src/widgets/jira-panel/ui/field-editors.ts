@@ -1,6 +1,7 @@
 import { sendJiraMessage } from "../../../entities/jira-issue/content";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { eventElement, requireElement } from "../../../shared/ui/dom";
 const ASSIGNEE_SEARCH_DEBOUNCE_MS = 300;
 
 export function createJiraFieldEditors(scope: Lifecycle) {
@@ -9,18 +10,20 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     ticket: string,
     jiraUrl: string,
   ) {
-    const assigneeEl = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-assignee",
-    )!;
-    const searchBox = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-assignee-search",
-    )!;
-    const input = searchBox.querySelector<HTMLInputElement>(
-      ".gl-jira-sidebar-assignee-input",
-    )!;
-    const resultsEl = searchBox.querySelector<HTMLElement>(
-      ".gl-jira-sidebar-assignee-results",
-    )!;
+    const assigneeEl = requireElement(
+      sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-assignee"),
+    );
+    const searchBox = requireElement(
+      sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-assignee-search"),
+    );
+    const input = requireElement(
+      searchBox.querySelector<HTMLInputElement>(
+        ".gl-jira-sidebar-assignee-input",
+      ),
+    );
+    const resultsEl = requireElement(
+      searchBox.querySelector<HTMLElement>(".gl-jira-sidebar-assignee-results"),
+    );
     let searchTimer: ReturnType<typeof setTimeout> | undefined;
     let searchRequest = 0;
 
@@ -35,32 +38,31 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     });
 
     // Unassign button
-    searchBox
-      .querySelector<HTMLElement>(".gl-jira-sidebar-unassign")!
-      .addEventListener("click", function (e) {
-        e.stopPropagation();
-        sendJiraMessage(
-          {
-            type: "set-jira-assignee",
-            jiraUrl: jiraUrl,
-            ticket: ticket,
-            username: null,
-          },
-          scope.once(function (result) {
-            if (result && result.success) {
-              assigneeEl.innerHTML =
-                '<span style="opacity:0.5">' +
-                escHtml(
-                  chrome.i18n.getMessage("jiraSidebarUnassigned") ||
-                    "Unassigned",
-                ) +
-                "</span>" +
-                ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
-              searchBox.style.display = "none";
-            }
-          }),
-        );
-      });
+    requireElement(
+      searchBox.querySelector<HTMLElement>(".gl-jira-sidebar-unassign"),
+    ).addEventListener("click", function (e) {
+      e.stopPropagation();
+      sendJiraMessage(
+        {
+          type: "set-jira-assignee",
+          jiraUrl: jiraUrl,
+          ticket: ticket,
+          username: null,
+        },
+        scope.once(function (result) {
+          if (result && result.success) {
+            assigneeEl.innerHTML =
+              '<span style="opacity:0.5">' +
+              escHtml(
+                chrome.i18n.getMessage("jiraSidebarUnassigned") || "Unassigned",
+              ) +
+              "</span>" +
+              ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
+            searchBox.style.display = "none";
+          }
+        }),
+      );
+    });
 
     input.addEventListener("input", function () {
       const request = ++searchRequest;
@@ -82,7 +84,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           },
           scope.once(function (resp) {
             if (request !== searchRequest) return;
-            if (!resp || resp._error || !resp.users) {
+            if (!resp || resp._error !== undefined || !resp.users) {
               resultsEl.innerHTML = "";
               return;
             }
@@ -127,13 +129,13 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     });
 
     resultsEl.addEventListener("click", function (e) {
-      const item = (e.target as Element).closest<HTMLElement>(
+      const item = eventElement(e.target)?.closest<HTMLElement>(
         ".gl-jira-sidebar-assignee-item",
       );
       if (!item) return;
 
-      const username = item.dataset.key!;
-      const displayName = item.dataset.name!;
+      const username = item.dataset.key;
+      const displayName = item.dataset.name;
 
       input.disabled = true;
       resultsEl.innerHTML =
@@ -165,21 +167,25 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     jiraUrl: string,
     currentVersions: string[],
   ) {
-    const valueEl = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-fixversions",
-    )!;
-    const dropdown = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-fixversions-dropdown",
-    )!;
-    const listEl = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-fixversions-list",
-    )!;
-    const errorEl = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-fixversions-error",
-    )!;
-    const filterInput = sidebar.querySelector<HTMLInputElement>(
-      "#gl-jira-sidebar-fixversions-filter",
-    )!;
+    const valueEl = requireElement(
+      sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-fixversions"),
+    );
+    const dropdown = requireElement(
+      sidebar.querySelector<HTMLElement>(
+        "#gl-jira-sidebar-fixversions-dropdown",
+      ),
+    );
+    const listEl = requireElement(
+      sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-fixversions-list"),
+    );
+    const errorEl = requireElement(
+      sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-fixversions-error"),
+    );
+    const filterInput = requireElement(
+      sidebar.querySelector<HTMLInputElement>(
+        "#gl-jira-sidebar-fixversions-filter",
+      ),
+    );
     let selected = currentVersions.slice();
 
     function filterList() {
@@ -187,9 +193,9 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       const items = listEl.querySelectorAll<HTMLElement>(
         ".gl-jira-sidebar-version-item",
       );
-      for (let i = 0; i < items.length; i++) {
-        const name = (items[i].textContent || "").trim().toLowerCase();
-        items[i].style.display =
+      for (const versionItem of items) {
+        const name = (versionItem.textContent || "").trim().toLowerCase();
+        versionItem.style.display =
           !query || name.indexOf(query) !== -1 ? "" : "none";
       }
     }
@@ -222,7 +228,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           ticket: ticket,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error || !resp.versions) {
+          if (!resp || resp._error !== undefined || !resp.versions) {
             listEl.innerHTML = "";
             return;
           }
@@ -280,11 +286,12 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     filterInput.addEventListener("input", filterList);
 
     listEl.addEventListener("change", function (e) {
-      const cb = (e.target as Element).closest<HTMLInputElement>(
+      const cb = eventElement(e.target)?.closest<HTMLInputElement>(
         'input[type="checkbox"]',
       );
       if (!cb) return;
-      const name = cb.dataset.name!;
+      const name = cb.dataset.name;
+      if (name === undefined) return;
       const newSelected = selected.slice();
       if (cb.checked) {
         if (newSelected.indexOf(name) === -1) newSelected.push(name);
@@ -303,7 +310,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
         },
         scope.once(function (resp) {
           cb.disabled = false;
-          if (!resp || resp._error) {
+          if (!resp || resp._error !== undefined) {
             cb.checked = !cb.checked;
             errorEl.textContent =
               chrome.i18n.getMessage("jiraSidebarFixVersionsError") ||

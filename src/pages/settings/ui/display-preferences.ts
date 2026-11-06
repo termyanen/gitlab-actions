@@ -1,11 +1,11 @@
+import type { DisplayPreferences } from "../../../entities/settings";
 import {
   DISPLAY_NUMBER_LIMITS,
   FILE_PATTERN_MAX_LENGTH,
   readDisplayPreferences,
   validDisplayPreferences,
 } from "../../../entities/settings";
-import type { DisplayPreferences } from "../../../entities/settings";
-import { byId, escHtml } from "./dom";
+import { escHtml, inputById, valueControlById } from "./dom";
 
 const NUMBER_FIELDS = [
   { key: "failed_jobs_limit", label: "failedJobsLimit" },
@@ -44,12 +44,12 @@ export function displayPreferencesSection(t: (key: string) => string) {
 export function populateDisplayPreferences(data: Record<string, unknown>) {
   const preferences = readDisplayPreferences(data);
   NUMBER_FIELDS.forEach(({ key }) => {
-    byId<HTMLInputElement>(key).value = String(preferences[key]);
+    valueControlById(key).value = String(preferences[key]);
   });
   TEXT_FIELDS.forEach(({ key }) => {
-    byId<HTMLInputElement | HTMLTextAreaElement>(key).value = preferences[key];
+    valueControlById(key).value = preferences[key];
   });
-  byId<HTMLInputElement>("sensitive_file_defaults").checked =
+  inputById("sensitive_file_defaults").checked =
     preferences.sensitive_file_defaults;
 }
 
@@ -58,16 +58,12 @@ export function readDisplayPreferencesForm(
 ): DisplayPreferences {
   const values: Record<string, unknown> = {};
   NUMBER_FIELDS.forEach(({ key }) => {
-    values[key] = Number(byId<HTMLInputElement>(key).value);
+    values[key] = Number(valueControlById(key).value);
   });
   TEXT_FIELDS.forEach(({ key }) => {
-    values[key] = byId<HTMLInputElement | HTMLTextAreaElement>(
-      key,
-    ).value.trim();
+    values[key] = valueControlById(key).value.trim();
   });
-  values.sensitive_file_defaults = byId<HTMLInputElement>(
-    "sensitive_file_defaults",
-  ).checked;
+  values.sensitive_file_defaults = inputById("sensitive_file_defaults").checked;
   if (!validDisplayPreferences(values))
     throw new Error(t("displayPreferencesInvalid"));
   return readDisplayPreferences(values);

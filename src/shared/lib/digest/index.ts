@@ -7,7 +7,7 @@ export function digest(text: string) {
   const view = new DataView(buffer.buffer);
   view.setUint32(size - 8, Math.floor(bytes.length / 0x20000000));
   view.setUint32(size - 4, bytes.length * 8);
-  const h = [
+  const h: [number, number, number, number, number, number, number, number] = [
     0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c,
     0x1f83d9ab, 0x5be0cd19,
   ];
@@ -27,19 +27,24 @@ export function digest(text: string) {
   function rotate(v: number, n: number) {
     return (v >>> n) | (v << (32 - n));
   }
+  const words = new DataView(new ArrayBuffer(64 * 4));
+  const word = (index: number) => words.getInt32(index * 4);
+  const setWord = (index: number, value: number) =>
+    words.setInt32(index * 4, value);
   for (let offset = 0; offset < size; offset += 64) {
-    const w = new Int32Array(64);
     let j;
-    for (j = 0; j < 16; j++) w[j] = view.getInt32(offset + j * 4);
+    for (j = 0; j < 16; j++) setWord(j, view.getInt32(offset + j * 4));
     for (j = 16; j < 64; j++) {
-      const x = w[j - 15],
-        y = w[j - 2];
-      w[j] =
-        (w[j - 16] +
+      const x = word(j - 15),
+        y = word(j - 2);
+      setWord(
+        j,
+        (word(j - 16) +
           (rotate(x, 7) ^ rotate(x, 18) ^ (x >>> 3)) +
-          w[j - 7] +
+          word(j - 7) +
           (rotate(y, 17) ^ rotate(y, 19) ^ (y >>> 10))) |
-        0;
+          0,
+      );
     }
     let a = h[0],
       b = h[1],
@@ -49,13 +54,14 @@ export function digest(text: string) {
       f = h[5],
       g = h[6],
       z = h[7];
-    for (j = 0; j < 64; j++) {
+    j = 0;
+    for (const constant of k) {
       const first =
         (z +
           (rotate(e, 6) ^ rotate(e, 11) ^ rotate(e, 25)) +
           ((e & f) ^ (~e & g)) +
-          k[j] +
-          w[j]) |
+          constant +
+          word(j)) |
         0;
       const second =
         ((rotate(a, 2) ^ rotate(a, 13) ^ rotate(a, 22)) +
@@ -69,10 +75,16 @@ export function digest(text: string) {
       c = b;
       b = a;
       a = (first + second) | 0;
+      j++;
     }
-    [a, b, c, d, e, f, g, z].forEach(function (value, i) {
-      h[i] = (h[i] + value) | 0;
-    });
+    h[0] = (h[0] + a) | 0;
+    h[1] = (h[1] + b) | 0;
+    h[2] = (h[2] + c) | 0;
+    h[3] = (h[3] + d) | 0;
+    h[4] = (h[4] + e) | 0;
+    h[5] = (h[5] + f) | 0;
+    h[6] = (h[6] + g) | 0;
+    h[7] = (h[7] + z) | 0;
   }
   return h
     .map(function (value) {

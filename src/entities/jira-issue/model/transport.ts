@@ -1,8 +1,19 @@
+import {
+  arrayOf,
+  isBoolean,
+  isNumber,
+  isRecord,
+  isString,
+  objectOf,
+  optional,
+  recordOf,
+  type Guard,
+} from "../../../shared/lib/validation";
 import type {
-  JiraStatus,
-  JiraTransition,
   JiraComment,
   JiraIssue,
+  JiraStatus,
+  JiraTransition,
 } from "./types";
 export interface JiraFieldValue {
   values: string[];
@@ -10,11 +21,13 @@ export interface JiraFieldValue {
 }
 interface JiraResponses {
   "fetch-jira-statuses": {
-    statuses: Record<string, JiraStatus> & { _authError?: number };
+    statuses: Record<string, JiraStatus>;
+    _authError?: number;
   };
   "fetch-jira-issue": JiraIssue;
   "fetch-jira-field-values": {
-    values: Record<string, JiraFieldValue> & { _authError?: number };
+    values: Record<string, JiraFieldValue>;
+    _authError?: number;
   };
   "search-jira-assignable": {
     users: { key: string; name: string; avatar: string }[];
@@ -33,9 +46,169 @@ interface JiraResponses {
     completed?: { transition?: boolean; fields?: boolean };
   };
 }
+
+const status = objectOf<JiraStatus>({
+  name: isString,
+  categoryKey: isString,
+  priority: optional(isString),
+  priorityIcon: optional(isString),
+  type: optional(isString),
+  typeIcon: optional(isString),
+});
+const comment = objectOf<JiraComment>({
+  id: isString,
+  author: isString,
+  authorId: isString,
+  avatarUrl: optional(isString),
+  body: isString,
+  created: isString,
+});
+const success = objectOf({ success: isBoolean });
+const issue = objectOf<JiraIssue>({
+  key: isString,
+  summary: isString,
+  status: isString,
+  statusCategoryKey: isString,
+  description: isString,
+  assignee: isString,
+  reporter: isString,
+  priority: isString,
+  priorityIcon: optional(isString),
+  type: isString,
+  typeIcon: optional(isString),
+  created: isString,
+  updated: isString,
+  labels: arrayOf(isString),
+  attachments: recordOf(isString),
+  attachmentList: arrayOf(
+    objectOf({
+      filename: isString,
+      url: isString,
+      size: isNumber,
+      mimeType: isString,
+    }),
+  ),
+  components: arrayOf(isString),
+  versions: arrayOf(isString),
+  fixVersions: arrayOf(isString),
+  resolution: isString,
+  epicLink: isString,
+  sprint: isString,
+});
+const responses: { [K in keyof JiraResponses]: Guard<JiraResponses[K]> } = {
+  "fetch-jira-statuses": objectOf<JiraResponses["fetch-jira-statuses"]>({
+    statuses: recordOf(status),
+    _authError: optional(isNumber),
+  }),
+  "fetch-jira-field-values": objectOf<JiraResponses["fetch-jira-field-values"]>(
+    {
+      values: recordOf(
+        objectOf<JiraFieldValue>({
+          values: arrayOf(isString),
+          categoryKey: optional(isString),
+        }),
+      ),
+      _authError: optional(isNumber),
+    },
+  ),
+  "fetch-jira-issue": issue,
+  "search-jira-assignable": objectOf({
+    users: arrayOf(
+      objectOf({ key: isString, name: isString, avatar: isString }),
+    ),
+  }),
+  "fetch-jira-versions": objectOf({
+    versions: arrayOf(objectOf({ name: isString, released: isBoolean })),
+  }),
+  "set-jira-fix-versions": success,
+  "set-jira-assignee": success,
+  "do-jira-transition": success,
+  "delete-jira-comment": success,
+  "fetch-jira-transitions": objectOf({
+    transitions: arrayOf(
+      objectOf<JiraTransition>({
+        id: isString,
+        name: isString,
+        statusName: isString,
+        statusCategoryKey: isString,
+      }),
+    ),
+  }),
+  "fetch-jira-comments": objectOf({
+    comments: arrayOf(comment),
+    total: isNumber,
+  }),
+  "fetch-jira-myself": objectOf({ id: isString }),
+  "post-jira-comment": objectOf({ comment }),
+  "execute-jira-quick-action": objectOf<
+    JiraResponses["execute-jira-quick-action"]
+  >({
+    success: isBoolean,
+    completed: optional(
+      objectOf<{ transition?: boolean; fields?: boolean }>({
+        transition: optional(isBoolean),
+        fields: optional(isBoolean),
+      }),
+    ),
+  }),
+};
+interface JiraFailure {
+  _error: string;
+  completed?: { transition?: boolean; fields?: boolean };
+}
+const completedAction = objectOf<NonNullable<JiraFailure["completed"]>>({
+  transition: optional(isBoolean),
+  fields: optional(isBoolean),
+});
+type JiraResponse<T> =
+  | (T & { _error?: never })
+  | (JiraFailure & { [K in Exclude<keyof T, "completed">]?: never });
 export function sendJiraMessage<K extends keyof JiraResponses>(
   message: { type: K; [key: string]: unknown },
-  callback: (response: JiraResponses[K] & { _error?: string }) => void,
+  callback: (response: JiraResponse<JiraResponses[K]>) => void,
 ) {
-  chrome.runtime.sendMessage(message, callback);
+  chrome.runtime.sendMessage(message, (raw: unknown) => {
+    const runtimeError = chrome.runtime.lastError;
+    if (runtimeError) {
+      callback({
+        _error: runtimeError.message || "No response from extension",
+      });
+      return;
+    }
+    if (isRecord(raw) && raw._error !== undefined) {
+      callback({
+        _error:
+          typeof raw._error === "string"
+            ? raw._error || "Jira request failed"
+            : "Invalid Jira response",
+        ...(completedAction(raw.completed) ? { completed: raw.completed } : {}),
+      });
+      return;
+    }
+    // Older worker responses keep authentication metadata inside a ticket map.
+    // Extract it before validating tickets, without changing that wire format.
+    if (
+      isRecord(raw) &&
+      (message.type === "fetch-jira-statuses" ||
+        message.type === "fetch-jira-field-values")
+    ) {
+      const key =
+        message.type === "fetch-jira-statuses" ? "statuses" : "values";
+      const values = raw[key];
+      if (isRecord(values)) {
+        const { _authError, ...tickets } = values;
+        raw = {
+          ...raw,
+          [key]: tickets,
+          ...(_authError === undefined ? {} : { _authError }),
+        };
+      }
+    }
+    const valid = responses[message.type];
+    if (!valid(raw)) {
+      callback({ _error: "Invalid Jira response" });
+      return;
+    }
+    callback(raw);
+  });
 }

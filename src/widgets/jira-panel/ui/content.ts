@@ -4,6 +4,7 @@ import {
   getPriorityHtml,
 } from "../../../entities/jira-issue/content";
 import { escHtml } from "../../../shared/lib/html";
+import { requireElement } from "../../../shared/ui/dom";
 import type { createJiraComments } from "./comments";
 import { formatJiraDate, formatJiraWikiText } from "./format";
 
@@ -327,7 +328,7 @@ export function createJiraSidebarContent(
         ")</div>" +
         '<div class="gl-jira-sidebar-attachments">';
       data.attachmentList.forEach(function (a) {
-        const ext = a.filename.split(".").pop()!.toLowerCase();
+        const ext = (a.filename.split(".").pop() || "").toLowerCase();
         const isImage =
           ["png", "jpg", "jpeg", "gif", "bmp", "svg", "webp"].indexOf(ext) !==
           -1;
@@ -408,8 +409,9 @@ export function createJiraSidebarContent(
       "</div>" +
       "</div>";
 
-    sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-body")!.innerHTML =
-      bodyHtml;
+    requireElement(
+      sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-body"),
+    ).innerHTML = bodyHtml;
 
     fetchAndRenderJiraComments(sidebar, data.key, jiraUrl, 0);
     wireJiraCommentForm(sidebar, data.key, jiraUrl);
