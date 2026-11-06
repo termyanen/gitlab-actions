@@ -172,3 +172,13 @@ web-accessible resources. Дополнительные разрешения вв
   Общие настройки popup переносятся вместе с их потребителями на шаге 08,
   чтобы не создать зависимость между слайсами entities/settings и entities/review.
   Проходят typecheck, lint, architecture, 817 Node-тестов и 3 browser-сценария.
+- 05: AI review перенесён в строгий TypeScript: `features/review-export`,
+  `features/review-import`, `widgets/review-dialog`, `widgets/review-import-dialog`.
+  Отдельные модули отвечают за HTTP/pagination, diff, ревизии, discussion state,
+  Markdown и проверку входных данных. Контракты MR/discussion добавлены в entities.
+  Content review собирается одним entrypoint без глобальных `window.GlReview*`.
+  Для старого popup до шага 08 оставлен один явный bridge в app/settings-legacy.
+  Проверка HTML scripts добавлена после обнаруженного browser-тестом старого
+  подключения; итог: typecheck/lint/FSD, 817 Node-тестов и 3 browser-теста проходят.
+  Права, CSP, форматы сохранённых настроек и журнал неопределённых отправок
+  сохранены. Контроллеры UI имеют dispose для будущего общего lifecycle.

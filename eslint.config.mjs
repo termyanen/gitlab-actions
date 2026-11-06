@@ -8,6 +8,9 @@ export default tseslint.config(
   {
     files: ['src/**/*.ts'],
     rules: {
+      "preserve-caught-error": "off",
+      // Protocol validation intentionally rejects ASCII control characters.
+      "no-control-regex": "off",
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
