@@ -191,3 +191,11 @@ web-accessible resources. Дополнительные разрешения вв
   команды страницы postMessage listener. Дополнительный browser-сценарий
   проверяет отсутствие мутаций API при сообщении веб-страницы.
   Проходят typecheck/lint/FSD, 817 Node-тестов и 4 browser-теста.
+- 07: удалён монолит content_proxy.js. Jira state/контракты находятся в
+  entities/jira-issue; список MR, Jira panel, commit actions, pipeline actions,
+  palette и standup разделены на widgets. Cherry-pick workflow выделен в
+  feature, строгий diff fallback — в shared. App связывает callbacks между
+  widgets без импортов соседних слайсов. Сохранены batching, TTL, обработка
+  auth errors, отложенное обновление списков и retry операций cherry-pick.
+  Tracker и session API используются повторно. Проходят 817 Node-тестов,
+  typecheck/lint/FSD и 4 browser-теста на production-сборке.
