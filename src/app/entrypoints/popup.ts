@@ -1,3 +1,2 @@
-import "../settings-legacy";
-// Transitional entrypoint; the implementation is migrated slice by slice.
-import "../../../popup.js";
+import { startSettings } from "../../pages/settings";
+startSettings();

@@ -2,18 +2,40 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const ts = require('typescript');
 const { buildSync } = require('esbuild');
 const root = path.resolve(__dirname, '../..');
 const cache = new Map();
 
 // Test-only module bundles run in each test's isolated VM. Production builds
 // never export test hooks or depend on this adapter.
-function bundleForTest(entry, { globalName = 'TestModule', footer = '' } = {}) {
-  const key = JSON.stringify([entry, globalName, footer]);
+function bundleForTest(entry, { globalName = 'TestModule', footer = '', exposeBindings = false } = {}) {
+  const key = JSON.stringify([entry, globalName, footer, exposeBindings]);
   if (!cache.has(key)) {
+    let input = { entryPoints: [entry] };
+    if (exposeBindings) {
+      const file = path.join(root, entry);
+      let source = fs.readFileSync(file, 'utf8');
+      const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true);
+      const bindings = new Map();
+      function binding(name, writable) {
+        if (ts.isIdentifier(name)) bindings.set(name.text, writable);
+        else if (ts.isObjectBindingPattern(name)) name.elements.forEach(part => binding(part.name, writable));
+      }
+      for (const node of ast.statements) {
+        if (ts.isFunctionDeclaration(node) && node.name) binding(node.name, true);
+        if (ts.isVariableStatement(node)) node.declarationList.declarations.forEach(decl => binding(decl.name, !(node.declarationList.flags & ts.NodeFlags.Const)));
+        if (ts.isImportDeclaration(node) && !node.importClause?.isTypeOnly) {
+          const imports = node.importClause?.namedBindings;
+          if (imports && ts.isNamedImports(imports)) imports.elements.filter(part => !part.isTypeOnly).forEach(part => binding(part.name, false));
+        }
+      }
+      source += '\nObject.defineProperties(globalThis, {' + [...bindings].map(([name, writable]) => JSON.stringify(name) + ': {configurable: true, get: () => ' + name + (writable ? ', set: value => { ' + name + ' = value; }' : '') + '}').join(',') + '});';
+      input = {stdin: {contents: source, resolveDir: path.dirname(file), sourcefile: file, loader: 'ts'}};
+    }
     const result = buildSync({
       absWorkingDir: root,
-      entryPoints: [entry],
+      ...input,
       bundle: true,
       write: false,
       format: 'iife',
@@ -29,6 +51,8 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '' } = {}) {
 }
 
 function readRuntime(file) {
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'popup.js') return bundleForTest('src/pages/settings/ui/settings.ts', {exposeBindings: true, footer: 'for (const key of Object.keys(SettingsConfigModule)) if (!(key in globalThis)) globalThis[key] = SettingsConfigModule[key]; startSettings();'}) .replace(/^/, bundleForTest('src/features/manage-settings/index.ts', {globalName: 'SettingsConfigModule'}));
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'welcome.js') return bundleForTest('src/app/entrypoints/welcome.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content_proxy.js') return bundleForTest('src/app/entrypoints/content_proxy.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content.js') {
     return bundleForTest('src/app/entrypoints/content.ts');

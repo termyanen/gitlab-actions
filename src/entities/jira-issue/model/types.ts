@@ -29,7 +29,7 @@ export interface JiraQuickAction {
   label: string;
   status?: string;
   assignee?: string;
-  updates?: { field: string; action: string; value: string }[];
+  updates?: JiraFieldUpdate[];
 }
 export interface JiraComment {
   id: string;
@@ -67,4 +67,10 @@ export interface JiraIssue {
   resolution: string;
   epicLink: string;
   sprint: string;
+}
+
+export interface JiraFieldUpdate {
+  field: string;
+  operation?: string;
+  value: unknown;
 }
