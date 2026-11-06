@@ -2,16 +2,18 @@ import ts from "typescript";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { moduleEntryPoints, scriptEntryPoints } from "./entrypoints.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const layers = ["app", "pages", "widgets", "features", "entities", "shared"];
 const publicEntries = /^(?:index|background|content)\.ts$/;
 
 /** Checks source boundaries without loading or executing application modules. */
-export function checkArchitecture(sourceRoot) {
+export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
   sourceRoot = resolve(sourceRoot);
   const violations = [];
   const graph = new Map();
+  const sourceGraph = new Map();
   const label = (file) => relative(sourceRoot, file).split(sep).join("/");
 
   function files(directory) {
@@ -93,11 +95,15 @@ export function checkArchitecture(sourceRoot) {
           `${label(file)}: use public API of ${to.slice(0, depth).join("/")}`,
         );
     }
+    sourceGraph.get(file).add(target);
     if (runtime) graph.get(file).add(target);
   }
 
   const sourceFiles = files(sourceRoot).sort();
-  sourceFiles.forEach((file) => graph.set(file, new Set()));
+  sourceFiles.forEach((file) => {
+    graph.set(file, new Set());
+    sourceGraph.set(file, new Set());
+  });
   for (const file of sourceFiles) {
     const source = ts.createSourceFile(
       file,
@@ -215,16 +221,44 @@ export function checkArchitecture(sourceRoot) {
     active.delete(file);
   }
   sourceFiles.forEach(visitDependency);
+  if (entryPoints) {
+    const reachable = new Set();
+    function visitSource(file) {
+      if (reachable.has(file)) return;
+      reachable.add(file);
+      for (const dependency of sourceGraph.get(file)) visitSource(dependency);
+    }
+    for (const entry of entryPoints) {
+      const file = resolve(sourceRoot, entry);
+      if (!sourceGraph.has(file))
+        violations.push(
+          `${label(file)}: entry point is outside the checked source graph`,
+        );
+      else visitSource(file);
+    }
+    // Ambient declarations are included by tsconfig, without an explicit import.
+    sourceFiles.filter((file) => file.endsWith(".d.ts")).forEach(visitSource);
+    for (const file of sourceFiles)
+      if (!reachable.has(file))
+        violations.push(
+          `${label(file)}: module is not reachable from extension entry points`,
+        );
+  }
   return violations;
 }
 
 if (import.meta.url === pathToFileURL(resolve(process.argv[1] || "")).href) {
-  const violations = checkArchitecture(join(root, "src"));
+  const violations = checkArchitecture(join(root, "src"), {
+    entryPoints: [
+      ...Object.values(scriptEntryPoints),
+      ...Object.values(moduleEntryPoints),
+    ].map((entry) => resolve(root, entry)),
+  });
   if (violations.length) {
     console.error(violations.join("\n"));
     process.exitCode = 1;
   } else
     console.log(
-      "FSD public APIs, runtime cycles, timer policies and TypeScript source checks passed.",
+      "FSD public APIs, runtime cycles, source reachability, timer policies and TypeScript source checks passed.",
     );
 }
