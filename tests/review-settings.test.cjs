@@ -5,6 +5,14 @@ var assert = require('node:assert/strict');
 var vm = require('node:vm');
 var harness = require('./helpers/extension.cjs');
 var messages = require('../_locales/en/messages.json');
+// Prompts now come from imported domain constants instead of window globals.
+var sharedDefaults = {};
+if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
+  var promptContext = vm.createContext({window: {}});
+  vm.runInContext(harness.readRuntime('review-workflow.js'), promptContext);
+  sharedDefaults = promptContext.window.GlReviewWorkflow;
+}
+
 
 function popup(sharedPrompt, sharedFreshPrompt, savedData, sharedImport) {
   var controls = new Map();
@@ -38,18 +46,18 @@ function popup(sharedPrompt, sharedFreshPrompt, savedData, sharedImport) {
 }
 
 test('AI copy settings use the shared English prompt, default enabled state and a working reset action', function() {
-  var env = popup('Shared English default prompt.');
+  var env = popup((sharedDefaults.DEFAULT_PROMPT || 'Shared English default prompt.'));
   assert.equal(env.control('show_ai_review_copy').checked, true);
-  assert.equal(env.control('ai_review_prompt').value, 'Shared English default prompt.');
+  assert.equal(env.control('ai_review_prompt').value, (sharedDefaults.DEFAULT_PROMPT || 'Shared English default prompt.'));
   env.control('show_ai_review_copy').checked = false;
   env.control('ai_review_prompt').value = 'Custom\nmultiline prompt';
   assert.equal(env.save(), true);
   assert.equal(env.writes[0].data.show_ai_review_copy, false);
   assert.equal(env.writes[0].data.ai_review_prompt, 'Custom\nmultiline prompt');
   env.control('resetAiReviewPrompt').events.click();
-  assert.equal(env.control('ai_review_prompt').value, 'Shared English default prompt.');
+  assert.equal(env.control('ai_review_prompt').value, (sharedDefaults.DEFAULT_PROMPT || 'Shared English default prompt.'));
   env.context.flushAutoSave();
-  assert.equal(env.writes[1].data.ai_review_prompt, 'Shared English default prompt.');
+  assert.equal(env.writes[1].data.ai_review_prompt, (sharedDefaults.DEFAULT_PROMPT || 'Shared English default prompt.'));
 });
 
 test('missing shared script still has an English fallback and a blank prompt restores it', function() {
@@ -133,22 +141,22 @@ test('failed debounced validation keeps edits protected when switching tabs afte
 });
 
 test('fresh review has an independent shared default, saved value and reset action', function() {
-  var env = popup('Feedback default.', 'Fresh default.', {
+  var env = popup((sharedDefaults.DEFAULT_PROMPT || 'Feedback default.'), (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'), {
     ai_review_prompt: 'Fix feedback my way.', ai_review_fresh_prompt: 'Review security and answer in German.'
   });
   assert.equal(env.control('ai_review_prompt').value, 'Fix feedback my way.');
   assert.equal(env.control('ai_review_fresh_prompt').value, 'Review security and answer in German.');
-  assert.equal(env.control('ai_review_fresh_prompt').placeholder, 'Fresh default.');
+  assert.equal(env.control('ai_review_fresh_prompt').placeholder, (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'));
   env.control('ai_review_fresh_prompt').value = 'My new review instructions.';
   assert.equal(env.save(), true);
   assert.equal(env.writes[0].data.ai_review_fresh_prompt, 'My new review instructions.');
   assert.equal(env.writes[0].data.ai_review_prompt, 'Fix feedback my way.');
   env.control('resetAiReviewFreshPrompt').events.click();
-  assert.equal(env.control('ai_review_fresh_prompt').value, 'Fresh default.');
+  assert.equal(env.control('ai_review_fresh_prompt').value, (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'));
   assert.equal(env.control('ai_review_prompt').value, 'Fix feedback my way.');
   env.context.flushAutoSave();
-  assert.equal(env.writes[1].data.ai_review_fresh_prompt, 'Fresh default.');
-  var reloaded = popup('Feedback default.', 'Fresh default.', env.writes[0].data);
+  assert.equal(env.writes[1].data.ai_review_fresh_prompt, (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'));
+  var reloaded = popup((sharedDefaults.DEFAULT_PROMPT || 'Feedback default.'), (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'), env.writes[0].data);
   assert.equal(reloaded.control('ai_review_fresh_prompt').value, 'My new review instructions.');
 });
 
@@ -185,7 +193,7 @@ test('fresh review fallback matches the shared default and blank instructions re
 });
 
 test('fresh review textarea participates in autosave without replacing feedback instructions', function() {
-  var env = popup('Feedback default.', 'Fresh default.');
+  var env = popup((sharedDefaults.DEFAULT_PROMPT || 'Feedback default.'), (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'));
   env.context.attachAutoSave();
   var prompt = env.control('ai_review_fresh_prompt');
   prompt.tagName = 'textarea';
@@ -193,13 +201,13 @@ test('fresh review textarea participates in autosave without replacing feedback 
   env.document.body.events.input({ target: prompt });
   assert.equal(env.context.flushAutoSave(), true);
   assert.equal(env.writes[0].data.ai_review_fresh_prompt, 'Latest fresh-review draft');
-  assert.equal(env.writes[0].data.ai_review_prompt, 'Feedback default.');
+  assert.equal(env.writes[0].data.ai_review_prompt, (sharedDefaults.DEFAULT_PROMPT || 'Feedback default.'));
 });
 
 ['import', 'reply'].forEach(function(kind) {
   var key = 'ai_review_' + kind + '_prompt';
   var reset = kind === 'import' ? 'resetAiReviewImportPrompt' : 'resetAiReviewReplyPrompt';
-  var shared = { DEFAULT_REVIEW_PROMPT: 'Review default.', DEFAULT_REPLY_PROMPT: 'Reply default.' };
+  var shared = { DEFAULT_REVIEW_PROMPT: (sharedDefaults.DEFAULT_REVIEW_PROMPT || 'Review default.'), DEFAULT_REPLY_PROMPT: (sharedDefaults.DEFAULT_REPLY_PROMPT || 'Reply default.') };
   var fallback = kind === 'import' ? shared.DEFAULT_REVIEW_PROMPT : shared.DEFAULT_REPLY_PROMPT;
   test(kind + ' prompt saves independently, reloads and resets through autosave', function() {
     var saved = { ai_review_prompt: 'Feedback custom.', ai_review_fresh_prompt: 'Fresh custom.', ai_review_import_prompt: 'Import custom.', ai_review_reply_prompt: 'Reply custom.' };

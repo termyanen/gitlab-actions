@@ -8,3 +8,4 @@ export type {
   JiraComment,
   JiraIssue,
 } from "./model/types";
+export type { JiraFieldUpdate } from "./model/types";

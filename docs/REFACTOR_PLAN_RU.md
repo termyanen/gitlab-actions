@@ -199,3 +199,11 @@ web-accessible resources. Дополнительные разрешения вв
   auth errors, отложенное обновление списков и retry операций cherry-pick.
   Tracker и session API используются повторно. Проходят 817 Node-тестов,
   typecheck/lint/FSD и 4 browser-теста на production-сборке.
+- 08: popup и welcome перенесены в pages; configuration и проверка/снимок
+  настроек — в features/manage-settings, редакторы списков — в отдельный
+  модуль UI. Удалены корневые popup.js/welcome.js и legacy bridge.
+  AI defaults импортируются из entities/review, без копий и window globals.
+  Соответствующие тесты используют реальные domain constants вместо подмены
+  глобальных JS-объектов; проверки autosave, reset, квот и ошибок сохранены.
+  Старые storage keys, profiles и formatVersion JSON не изменены.
+  Проходят typecheck/lint/FSD, 817 Node-тестов и 4 browser-сценария.
