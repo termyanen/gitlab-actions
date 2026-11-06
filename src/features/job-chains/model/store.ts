@@ -1,3 +1,5 @@
+import { reportRuntimeError } from "../../../shared/api/runtime";
+import { reportError } from "../../../shared/lib/errors";
 import type { ChainTask } from "./types";
 const COMPLETED_TASK_RETENTION = 50;
 const TASK_WAKEUP_INTERVAL_MINUTES = 1;
@@ -71,15 +73,19 @@ export function createTaskStore(tasks: Record<string, ChainTask>) {
     return operation;
   }
   function syncAlarm() {
+    // alarms.create returned void before Chrome 111; other supported API calls
+    // use callbacks so runtime.lastError is observed on the Chrome 110 baseline.
     if (
       Object.values(tasks).some(
         (task) => task.status !== "done" && task.status !== "error",
       )
     )
-      chrome.alarms.create(TASK_ALARM, {
-        periodInMinutes: TASK_WAKEUP_INTERVAL_MINUTES,
-      });
-    else chrome.alarms.clear(TASK_ALARM);
+      chrome.alarms
+        .create(TASK_ALARM, {
+          periodInMinutes: TASK_WAKEUP_INTERVAL_MINUTES,
+        })
+        ?.catch(reportError);
+    else chrome.alarms.clear(TASK_ALARM, reportRuntimeError);
   }
   return { load, save, syncAlarm };
 }

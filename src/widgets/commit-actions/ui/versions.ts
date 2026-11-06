@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import { VERSION_DEFAULTS } from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
@@ -251,7 +252,9 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
                         fetched[sha] = "";
                     });
                 }),
-              ).then(fetchNextBatch);
+              )
+                .then(fetchNextBatch)
+                .catch(reportError);
             }
             fetchNextBatch();
           }

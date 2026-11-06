@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import type { SessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
@@ -129,7 +130,8 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
         .catch(function () {})
         .then(function () {
           fetchOne(i + 1);
-        });
+        })
+        .catch(reportError);
     }
 
     fetchOne(0);

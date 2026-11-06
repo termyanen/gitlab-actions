@@ -1,3 +1,5 @@
+import { reportRuntimeError } from "../../../shared/api/runtime";
+import { reportError } from "../../../shared/lib/errors";
 import { msg } from "../../../shared/i18n";
 import type { Command, MrCommands, SidebarLink } from "../model/types";
 export function createPaletteCommands(
@@ -246,7 +248,7 @@ export function createPaletteCommands(
         group: msg("cmdGroupNav"),
         icon: "copy",
         action: function () {
-          navigator.clipboard.writeText(projectPath);
+          navigator.clipboard.writeText(projectPath).catch(reportError);
         },
       });
     }
@@ -273,7 +275,10 @@ export function createPaletteCommands(
       group: msg("cmdGroupExt"),
       icon: "settings",
       action: function () {
-        chrome.runtime.sendMessage({ type: "open-options" });
+        chrome.runtime.sendMessage(
+          { type: "open-options" },
+          reportRuntimeError,
+        );
       },
     });
 

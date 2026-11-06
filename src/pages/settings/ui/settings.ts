@@ -1,3 +1,5 @@
+import { reportError } from "../../../shared/lib/errors";
+import { reportRuntimeError } from "../../../shared/api/runtime";
 import {
   CHANGELOG_BASE_URL,
   SETTINGS_PAGE,
@@ -524,37 +526,42 @@ export function startSettings() {
               banner.style.display = "block";
               byId("updateClose").addEventListener("click", function () {
                 banner.style.display = "none";
-                chrome.storage.sync.set({
-                  update_dismissed: ud.update_version,
-                });
-                chrome.action.setBadgeText({ text: "" });
+                chrome.storage.sync.set(
+                  {
+                    update_dismissed: ud.update_version,
+                  },
+                  reportRuntimeError,
+                );
+                chrome.action.setBadgeText({ text: "" }, reportRuntimeError);
               });
               // Clear badge when popup is opened
-              chrome.action.setBadgeText({ text: "" });
+              chrome.action.setBadgeText({ text: "" }, reportRuntimeError);
             },
           );
 
-          detectCurrentProject().then(function () {
-            chrome.storage.sync.get(Object.keys(DEFAULTS), function (data) {
-              state.data = data;
-              renderTabs();
-              renderActiveTab();
-
-              // Auto-switch to current project's profile if it exists
-              if (
-                currentProjectPath &&
-                state.data.projectProfiles &&
-                state.data.projectProfiles[currentProjectPath]
-              ) {
-                activeTab = currentProjectPath;
+          detectCurrentProject()
+            .then(function () {
+              chrome.storage.sync.get(Object.keys(DEFAULTS), function (data) {
+                state.data = data;
                 renderTabs();
                 renderActiveTab();
-              }
-              byId<HTMLButtonElement>("openSettingsTab").disabled = false;
-              byId<HTMLButtonElement>("exportSettings").disabled = false;
-              byId<HTMLButtonElement>("importSettings").disabled = false;
-            });
-          });
+
+                // Auto-switch to current project's profile if it exists
+                if (
+                  currentProjectPath &&
+                  state.data.projectProfiles &&
+                  state.data.projectProfiles[currentProjectPath]
+                ) {
+                  activeTab = currentProjectPath;
+                  renderTabs();
+                  renderActiveTab();
+                }
+                byId<HTMLButtonElement>("openSettingsTab").disabled = false;
+                byId<HTMLButtonElement>("exportSettings").disabled = false;
+                byId<HTMLButtonElement>("importSettings").disabled = false;
+              });
+            })
+            .catch(reportError);
         });
       },
     );
@@ -581,7 +588,10 @@ export function startSettings() {
       clearTimeout(state.autoSaveTimer ?? undefined);
       state.autoSaveTimer = null;
       saveSettings(function () {
-        chrome.tabs.create({ url: chrome.runtime.getURL(SETTINGS_PAGE) });
+        chrome.tabs.create(
+          { url: chrome.runtime.getURL(SETTINGS_PAGE) },
+          reportRuntimeError,
+        );
       });
     });
     byId("exportSettings").addEventListener("click", exportAllSettings);

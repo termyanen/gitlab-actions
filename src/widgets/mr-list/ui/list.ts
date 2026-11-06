@@ -1,3 +1,5 @@
+import { reportError } from "../../../shared/lib/errors";
+import { reportRuntimeError } from "../../../shared/api/runtime";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import { createSessionApi } from "../../../shared/api/gitlab";
@@ -48,7 +50,7 @@ export function startMrList(
               if (user && user.username) {
                 const toStore: Record<string, string> = {};
                 toStore[cacheKey] = user.username;
-                chrome.storage.local.set(toStore);
+                chrome.storage.local.set(toStore, reportRuntimeError);
                 resolve(user.username);
               } else {
                 resolve(null);
@@ -119,7 +121,8 @@ export function startMrList(
                 scope.timeout(function () {
                   li.querySelector("svg")!.style.color = "";
                 }, COPIED_FEEDBACK_DURATION_MS);
-              });
+              })
+              .catch(reportError);
           });
           const lastLi = controlsUl.lastElementChild as HTMLElement | null;
           controlsUl.appendChild(li);
@@ -237,94 +240,102 @@ export function startMrList(
             ? getCurrentUsername()
             : Promise.resolve(null);
 
-          usernamePromise.then(function (username) {
-            function runAllListFeatures() {
-              if (!isMrListPage()) return;
-              if (s.dim_drafts || s.highlight_own_mrs || s.show_copy_mr) {
-                applyMrListEnhancements(s, username);
+          usernamePromise
+            .then(function (username) {
+              function runAllListFeatures() {
+                if (!isMrListPage()) return;
+                if (s.dim_drafts || s.highlight_own_mrs || s.show_copy_mr) {
+                  applyMrListEnhancements(s, username);
+                }
+                if (s.show_reviewer_badge && username) {
+                  fetchAndRenderReviewerBadges(username);
+                }
+                if (
+                  s.show_threads_badge ||
+                  s.show_size_badge ||
+                  s.show_conflicts_badge ||
+                  s.show_approval_badge ||
+                  s.show_branches
+                ) {
+                  fetchAndRenderMrMeta(
+                    s.show_threads_badge,
+                    s.show_size_badge,
+                    s.show_conflicts_badge,
+                    s.show_approval_badge,
+                    s.show_branches,
+                    s.show_branches_links,
+                    username,
+                  );
+                }
+                if (s.jira_url) {
+                  setJiraTicketRegex(s.jira_ticket_regex);
+                  fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
+                }
+                if (s.show_only_mine || s.show_needs_review)
+                  injectListToggles(username, s);
               }
-              if (s.show_reviewer_badge && username) {
-                fetchAndRenderReviewerBadges(username);
-              }
-              if (
-                s.show_threads_badge ||
-                s.show_size_badge ||
-                s.show_conflicts_badge ||
-                s.show_approval_badge ||
-                s.show_branches
-              ) {
-                fetchAndRenderMrMeta(
-                  s.show_threads_badge,
-                  s.show_size_badge,
-                  s.show_conflicts_badge,
-                  s.show_approval_badge,
-                  s.show_branches,
-                  s.show_branches_links,
-                  username,
+
+              // Watch a stable ancestor: pagination/filtering can replace the entire
+              // list, leaving an observer attached to its old, detached container.
+              // Filter actual records because MutationObserver runs asynchronously;
+              // a synchronous "rendering" flag cannot suppress our own badge writes.
+              const listContentSelector =
+                SEL.mrItem +
+                ", " +
+                SEL.listContainer +
+                ", " +
+                SEL.titleLink +
+                ", " +
+                SEL.filterBar +
+                ", .top-area, .issues-filters, .nav-controls";
+              function isListMutation(mutation: MutationRecord) {
+                const target =
+                  mutation.target.nodeType === 1
+                    ? (mutation.target as Element)
+                    : mutation.target.parentElement;
+                if (qUp(target, SEL.titleLink)) return true;
+                if (mutation.type !== "childList") return false;
+                return (
+                  Array.prototype.some.call(
+                    mutation.addedNodes,
+                    isListContent,
+                  ) ||
+                  Array.prototype.some.call(
+                    mutation.removedNodes,
+                    isListContent,
+                  )
                 );
               }
-              if (s.jira_url) {
-                setJiraTicketRegex(s.jira_ticket_regex);
-                fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
+              function isListContent(node: Node) {
+                return (
+                  node.nodeType === 1 &&
+                  ((node as Element).matches(listContentSelector) ||
+                    !!q(node as Element, listContentSelector))
+                );
               }
-              if (s.show_only_mine || s.show_needs_review)
-                injectListToggles(username, s);
-            }
-
-            // Watch a stable ancestor: pagination/filtering can replace the entire
-            // list, leaving an observer attached to its old, detached container.
-            // Filter actual records because MutationObserver runs asynchronously;
-            // a synchronous "rendering" flag cannot suppress our own badge writes.
-            const listContentSelector =
-              SEL.mrItem +
-              ", " +
-              SEL.listContainer +
-              ", " +
-              SEL.titleLink +
-              ", " +
-              SEL.filterBar +
-              ", .top-area, .issues-filters, .nav-controls";
-            function isListMutation(mutation: MutationRecord) {
-              const target =
-                mutation.target.nodeType === 1
-                  ? (mutation.target as Element)
-                  : mutation.target.parentElement;
-              if (qUp(target, SEL.titleLink)) return true;
-              if (mutation.type !== "childList") return false;
-              return (
-                Array.prototype.some.call(mutation.addedNodes, isListContent) ||
-                Array.prototype.some.call(mutation.removedNodes, isListContent)
-              );
-            }
-            function isListContent(node: Node) {
-              return (
-                node.nodeType === 1 &&
-                ((node as Element).matches(listContentSelector) ||
-                  !!q(node as Element, listContentSelector))
-              );
-            }
-            let _observerTimer: ReturnType<typeof setTimeout> | undefined;
-            const listObserver = scope.observer(function (mutations) {
-              if (!isMrListPage() || !mutations.some(isListMutation)) return;
-              scope.cancelTimeout(_observerTimer);
-              _observerTimer = scope.timeout(
-                runAllListFeatures,
-                LIST_REFRESH_DEBOUNCE_MS,
-              );
-            });
-            listObserver.observe(document.body, {
-              childList: true,
-              subtree: true,
-              characterData: true,
-              attributes: true,
-              attributeFilter: ["href"],
-            });
-            runAllListFeatures();
-            scope.listen(window, "beforeunload", function () {
-              listObserver.disconnect();
-              scope.cancelTimeout(_observerTimer);
-            });
-          });
+              let _observerTimer: ReturnType<typeof setTimeout> | undefined;
+              const listObserver = scope.observer(function (mutations) {
+                if (!isMrListPage() || !mutations.some(isListMutation)) return;
+                scope.cancelTimeout(_observerTimer);
+                _observerTimer = scope.timeout(
+                  runAllListFeatures,
+                  LIST_REFRESH_DEBOUNCE_MS,
+                );
+              });
+              listObserver.observe(document.body, {
+                childList: true,
+                subtree: true,
+                characterData: true,
+                attributes: true,
+                attributeFilter: ["href"],
+              });
+              runAllListFeatures();
+              scope.listen(window, "beforeunload", function () {
+                listObserver.disconnect();
+                scope.cancelTimeout(_observerTimer);
+              });
+            })
+            .catch(reportError);
         }),
       );
     } catch {

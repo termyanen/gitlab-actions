@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
@@ -140,15 +141,18 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
     });
 
     copyBtn.addEventListener("click", function () {
-      navigator.clipboard.writeText(currentText).then(
-        session.once(function () {
-          const orig = copyBtn.textContent;
-          copyBtn.textContent = "\u2713 " + msg("standupCopied");
-          session.timeout(function () {
-            copyBtn.textContent = orig;
-          }, COPIED_FEEDBACK_DURATION_MS);
-        }),
-      );
+      navigator.clipboard
+        .writeText(currentText)
+        .then(
+          session.once(function () {
+            const orig = copyBtn.textContent;
+            copyBtn.textContent = "\u2713 " + msg("standupCopied");
+            session.timeout(function () {
+              copyBtn.textContent = orig;
+            }, COPIED_FEEDBACK_DURATION_MS);
+          }),
+        )
+        .catch(reportError);
     });
 
     function closeStandup() {

@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import { createImportWindow } from "./window";
 import { element } from "../../../shared/ui/dom";
 import type { ReviewContext } from "../../../entities/review";
@@ -159,7 +160,7 @@ export function createImportDialog(
     state.select.disabled =
       locked ||
       !state.plan ||
-      !state.plan!.items.some(function (item) {
+      !state.plan.items.some(function (item) {
         return selectable(state, item);
       });
     state.clear.disabled = locked || !count;
@@ -178,7 +179,7 @@ export function createImportDialog(
     state.count.textContent = state.t("aiReviewSelectedCount", [count]);
     state.replyHint.hidden =
       !state.plan ||
-      !state.plan!.items.some(function (item) {
+      !state.plan.items.some(function (item) {
         return item.type === "reply";
       });
     state.list
@@ -186,7 +187,7 @@ export function createImportDialog(
       .forEach(function (check) {
         const item =
           state.plan &&
-          state.plan!.items.find(function (item) {
+          state.plan.items.find(function (item) {
             return item.id === check.dataset.importItem;
           });
         check.disabled = locked || !item || !selectable(state, item);
@@ -234,7 +235,7 @@ export function createImportDialog(
       do {
         id = "manual-" + ++state.manualId;
       } while (
-        state.plan!.items.some(function (existing) {
+        state.plan.items.some(function (existing) {
           return existing.id === id;
         })
       );
@@ -251,7 +252,7 @@ export function createImportDialog(
   function cancelEditor(state: ImportDialogState) {
     if (!current(state) || !state.editor) return;
     state.run++;
-    if (state.controller) state.controller!.abort();
+    if (state.controller) state.controller.abort();
     state.busy = "";
     state.editor = null;
     setStatus(state, state.t("aiReviewImportChecked", [state.selected.size]));
@@ -260,7 +261,7 @@ export function createImportDialog(
 
   function saveEditor(state: ImportDialogState) {
     if (!current(state) || state.busy || !state.editor || !state.plan) return;
-    const editor = state.editor!;
+    const editor = state.editor;
     const edit: ImportEdit = { id: editor.id, body: editor.body };
     if (editor.add) edit.add = true;
     const run = ++state.run;
@@ -336,15 +337,16 @@ export function createImportDialog(
         if (!current(state) || state.run !== run) return;
         state.busy = "";
         render(state);
-        if (state.editorInput) state.editorInput!.focus();
-      });
+        if (state.editorInput) state.editorInput.focus();
+      })
+      .catch(reportError);
   }
 
   function invalidate(state: ImportDialogState) {
     // A write cannot be retargeted by editing the input while it is running.
     if (state.busy === "sending") return;
     state.run++;
-    if (state.controller) state.controller!.abort();
+    if (state.controller) state.controller.abort();
     state.busy = "";
     state.editor = null;
     state.plan = null;
@@ -418,7 +420,8 @@ export function createImportDialog(
         if (!current(state) || state.run !== run) return;
         state.busy = "";
         updateActions(state);
-      });
+      })
+      .catch(reportError);
   }
 
   function prepare(state: ImportDialogState) {
@@ -474,7 +477,8 @@ export function createImportDialog(
         if (!current(state) || state.run !== run) return;
         state.busy = "";
         render(state);
-      });
+      })
+      .catch(reportError);
   }
 
   function acceptResult(state: ImportDialogState, result: ImportResultItem) {
@@ -593,7 +597,8 @@ export function createImportDialog(
         state.busy = "";
         state.stopping = false;
         render(state);
-      });
+      })
+      .catch(reportError);
   }
 
   function open(context: ReviewContext, options?: { t?: Translate }) {

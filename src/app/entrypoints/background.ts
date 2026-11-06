@@ -1,3 +1,4 @@
+import { reportRuntimeError } from "../../shared/api/runtime";
 import { handleJiraMessage } from "../../features/jira-actions";
 import { createJobChains } from "../../features/job-chains";
 import { generateStandup } from "../../features/standup";
@@ -19,8 +20,12 @@ chrome.runtime.onMessage.addListener((raw: unknown, sender, sendResponse) => {
   if (message.type === "generate-standup")
     return generateStandup(message, sender, sendResponse);
   if (message.type === "open-options") {
-    chrome.tabs.create({ url: chrome.runtime.getURL(SETTINGS_PAGE) });
-    return;
+    chrome.tabs.create({ url: chrome.runtime.getURL(SETTINGS_PAGE) }, () => {
+      const error = chrome.runtime.lastError;
+      if (error) reportRuntimeError();
+      sendResponse(error ? { _error: error.message } : { ok: true });
+    });
+    return true;
   }
   return chains.handleMessage(message, sender, sendResponse);
 });

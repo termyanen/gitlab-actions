@@ -41,7 +41,7 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '', exposeBi
       format: 'iife',
       globalName,
       platform: 'browser',
-      target: 'chrome88',
+      target: 'chrome' + JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'))).minimum_chrome_version,
       footer: { js: footer },
       logLevel: 'silent',
     });

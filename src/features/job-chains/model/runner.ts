@@ -1,3 +1,5 @@
+import { reportRuntimeError } from "../../../shared/api/runtime";
+import { reportError } from "../../../shared/lib/errors";
 import {
   JOB_POLL_INTERVAL_MS,
   JOB_POLL_MAX_ATTEMPTS,
@@ -315,7 +317,7 @@ export function createJobChains() {
         running.delete(taskId);
         store.syncAlarm();
       }
-    })();
+    })().catch(reportError);
   }
   function broadcastToTabs(gitlabUrl: string, message: unknown) {
     chrome.tabs
@@ -353,12 +355,16 @@ export function createJobChains() {
 
     chrome.storage.sync.get({ notifications_enabled: true }, function (s) {
       if (s.notifications_enabled !== false) {
-        chrome.notifications.create("task-" + taskId, {
-          type: "basic",
-          iconUrl: NOTIFICATION_ICON,
-          title: success ? "Job Chain Completed" : "Job Chain Failed",
-          message: message,
-        });
+        chrome.notifications.create(
+          "task-" + taskId,
+          {
+            type: "basic",
+            iconUrl: NOTIFICATION_ICON,
+            title: success ? "Job Chain Completed" : "Job Chain Failed",
+            message: message,
+          },
+          reportRuntimeError,
+        );
       }
     });
   }

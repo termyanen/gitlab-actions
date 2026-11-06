@@ -127,11 +127,11 @@ export function createActionEditors({
       const item = items.find(function (it) {
         return it.key === key;
       });
-      if (item) item.label = action!.label || t("mrActions");
+      if (item) item.label = action.label || t("mrActions");
       else
         items.push({
           key: key,
-          label: action!.label || t("mrActions"),
+          label: action.label || t("mrActions"),
           enabled: true,
           isCustom: true,
         });

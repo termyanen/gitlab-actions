@@ -1,3 +1,12 @@
+import { reportError } from "../../lib/errors";
+
+/** Chrome exposes callback API errors only during the callback invocation. */
+export function reportRuntimeError(): void {
+  const error = chrome.runtime.lastError;
+  if (error)
+    reportError(new Error(error.message || "Chrome API request failed"));
+}
+
 export function isExtensionValid() {
   try {
     return !!(chrome && chrome.runtime && chrome.runtime.id);

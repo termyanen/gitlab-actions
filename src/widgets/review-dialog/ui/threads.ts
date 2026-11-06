@@ -56,8 +56,8 @@ export function createReviewThreads(
   function visibleThreads(state: ReviewDialogState) {
     if (!state.snapshot) return [];
     const query = state.search.value.trim().toLowerCase();
-    return state.snapshot!.discussions.filter(function (thread) {
-      const notes = data.getNotes(thread!);
+    return state.snapshot.discussions.filter(function (thread) {
+      const notes = data.getNotes(thread);
       if (!notes.length) return false;
       if (!matchesStatus(state, thread)) return false;
       if (!query) return true;
@@ -85,7 +85,7 @@ export function createReviewThreads(
         element("p", "gl-review-muted", t("aiReviewEmpty")),
       );
     threads.forEach(function (thread) {
-      const notes = data.getNotes(thread!);
+      const notes = data.getNotes(thread);
       const card = element("article", "gl-review-thread");
       const heading = element("div", "gl-review-thread-heading");
       const label = element("label", "gl-review-thread-label");
@@ -207,7 +207,7 @@ export function createReviewThreads(
         const thread = state.snapshot!.discussions.find(function (item) {
           return String(item.id) === check.dataset.reviewThread;
         });
-        const notes = data.getNotes(thread!);
+        const notes = data.getNotes(thread);
         const count = notes.filter(function (note) {
           return state.selected.has(String(note.id));
         }).length;
@@ -217,7 +217,7 @@ export function createReviewThreads(
   }
 
   function selectedDiscussionIds(state: ReviewDialogState, replies?: boolean) {
-    return (state.snapshot ? state.snapshot!.discussions : [])
+    return (state.snapshot ? state.snapshot.discussions : [])
       .filter(function (thread) {
         const notes = data.getNotes(thread).filter(function (note) {
           return !note.draft && !/^draft:/.test(String(note.id));
@@ -249,7 +249,7 @@ export function createReviewThreads(
     const discussionIds: string[] = [];
     const noteIds: string[] = [];
     state.snapshot!.discussions.forEach(function (thread) {
-      const notes = data.getNotes(thread!);
+      const notes = data.getNotes(thread);
       const chosen = notes.filter(function (note) {
         return state.selected.has(String(note.id));
       });
