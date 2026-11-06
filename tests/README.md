@@ -143,6 +143,12 @@ handling. They cover the existing modern and legacy selector shapes in the
 fixture, but do not establish compatibility with every live GitLab version or
 replace browser checks of native DOM behavior.
 
+For injected UI changes, use the [GitLab UI verification checklist](../docs/GITLAB_UI.md#verify-an-injected-ui-change).
+The API compatibility fixtures do not load historical GitLab stylesheets, and the
+browser suite is not a visual regression matrix across GitLab versions and themes.
+Record the actual DOM variants, themes and live server versions checked in the PR;
+do not infer visual compatibility from an API fixture's version label.
+
 Assertions check observable results and API requests rather than snapshots of
 the implementation. New bug fixes should first add a regression that fails with
 the old behavior. Keep tests out of extension runtime scripts and archives.
