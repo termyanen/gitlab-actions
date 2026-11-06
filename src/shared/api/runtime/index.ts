@@ -5,3 +5,10 @@ export function isExtensionValid() {
     return false;
   }
 }
+
+export function addRuntimeListener(
+  listener: Parameters<typeof chrome.runtime.onMessage.addListener>[0],
+) {
+  chrome.runtime.onMessage.addListener(listener);
+  return () => chrome.runtime.onMessage.removeListener(listener);
+}

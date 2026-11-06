@@ -1,4 +1,4 @@
-.gl-mr-actions-ext {
+:where(html.gl-actions-host) .gl-mr-actions-ext {
   display: flex;
   margin-left: 0;
   padding: 20px;
@@ -13,7 +13,7 @@
   box-sizing: border-box;
 }
 
-.gl-mr-actions-ext button {
+:where(html.gl-actions-host) .gl-mr-actions-ext button {
   height: 30px;
   display: inline-flex;
   align-items: center;
@@ -32,19 +32,19 @@
   border-color: var(--gl-button-confirm-primary-border-color-default);
 }
 
-.gl-mr-actions-ext button:hover {
+:where(html.gl-actions-host) .gl-mr-actions-ext button:hover {
   color: var(--gl-button-confirm-primary-foreground-color-hover);
   background-color: var(--gl-button-confirm-primary-background-color-hover);
   border-color: var(--gl-button-confirm-primary-border-color-hover);
 }
 
-.gl-mr-actions-ext button:disabled {
+:where(html.gl-actions-host) .gl-mr-actions-ext button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 
-.gl-mr-actions-ext button .spinner {
+:where(html.gl-actions-host) .gl-mr-actions-ext button .spinner {
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -58,7 +58,7 @@
   to { transform: rotate(360deg); }
 }
 
-.gl-mr-actions-toast {
+:where(html.gl-actions-host) .gl-mr-actions-toast {
   position: fixed;
   top: 16px;
   right: 16px;
@@ -73,8 +73,8 @@
   line-height: 1.4;
 }
 
-.gl-mr-actions-toast.success { background: #108548; }
-.gl-mr-actions-toast.error { background: #dd2b0e; }
+:where(html.gl-actions-host) .gl-mr-actions-toast.success { background: #108548; }
+:where(html.gl-actions-host) .gl-mr-actions-toast.error { background: #dd2b0e; }
 
 @keyframes ext-toast-in {
   from { opacity: 0; transform: translateY(-10px); }
@@ -85,7 +85,7 @@
    Background jobs tracker panel
    ========================================================================= */
 
-.gl-mr-actions-tracker {
+:where(html.gl-actions-host) .gl-mr-actions-tracker {
   position: fixed;
   bottom: 16px;
   right: 16px;
@@ -101,7 +101,7 @@
   animation: ext-tracker-in 0.3s ease;
 }
 
-.gl-mr-actions-tracker.tracker-collapsed {
+:where(html.gl-actions-host) .gl-mr-actions-tracker.tracker-collapsed {
   display: none;
 }
 
@@ -110,7 +110,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.tracker-header {
+:where(html.gl-actions-host) .tracker-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -119,7 +119,7 @@
   border-bottom: 1px solid var(--gl-border-color-default, #dcdcde);
 }
 
-.tracker-title {
+:where(html.gl-actions-host) .tracker-title {
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
@@ -127,13 +127,13 @@
   color: var(--gl-text-color-secondary, #666);
 }
 
-.tracker-header-actions {
+:where(html.gl-actions-host) .tracker-header-actions {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.tracker-clear {
+:where(html.gl-actions-host) .tracker-clear {
   background: none;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
   border-radius: 4px;
@@ -144,12 +144,12 @@
   line-height: 1.4;
 }
 
-.tracker-clear:hover {
+:where(html.gl-actions-host) .tracker-clear:hover {
   background: var(--gl-background-color-subtle, #f0f0f0);
   color: var(--gl-text-color-default, #333);
 }
 
-.tracker-close {
+:where(html.gl-actions-host) .tracker-close {
   background: none;
   border: none;
   font-size: 18px;
@@ -159,35 +159,35 @@
   line-height: 1;
 }
 
-.tracker-close:hover {
+:where(html.gl-actions-host) .tracker-close:hover {
   color: var(--gl-text-color-default, #333);
 }
 
-.tracker-list {
+:where(html.gl-actions-host) .tracker-list {
   max-height: 300px;
   overflow-y: auto;
 }
 
-.tracker-item {
+:where(html.gl-actions-host) .tracker-item {
   padding: 10px 12px;
   border-bottom: 1px solid var(--gl-border-color-default, #ececec);
 }
 
-.tracker-item:last-child {
+:where(html.gl-actions-host) .tracker-item:last-child {
   border-bottom: none;
 }
 
-.tracker-item.done {
+:where(html.gl-actions-host) .tracker-item.done {
   opacity: 0.7;
 }
 
-.tracker-row {
+:where(html.gl-actions-host) .tracker-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.tracker-icon {
+:where(html.gl-actions-host) .tracker-icon {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
@@ -199,22 +199,22 @@
   font-weight: 700;
 }
 
-.tracker-icon.tracker-running {
+:where(html.gl-actions-host) .tracker-icon.tracker-running {
   background: #1f75cb;
   color: #fff;
 }
 
-.tracker-icon.tracker-success {
+:where(html.gl-actions-host) .tracker-icon.tracker-success {
   background: #108548;
   color: #fff;
 }
 
-.tracker-icon.tracker-error {
+:where(html.gl-actions-host) .tracker-icon.tracker-error {
   background: #dd2b0e;
   color: #fff;
 }
 
-.tracker-spinner {
+:where(html.gl-actions-host) .tracker-spinner {
   display: inline-block;
   width: 10px;
   height: 10px;
@@ -224,7 +224,7 @@
   animation: ext-spin 0.6s linear infinite;
 }
 
-.tracker-steps {
+:where(html.gl-actions-host) .tracker-steps {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -232,7 +232,7 @@
   font-size: 12px;
 }
 
-.step {
+:where(html.gl-actions-host) .step {
   padding: 2px 6px;
   border-radius: 4px;
   background: var(--gl-background-color-subtle, #f0f0f0);
@@ -240,23 +240,23 @@
   white-space: nowrap;
 }
 
-.step-active {
+:where(html.gl-actions-host) .step-active {
   background: #1f75cb;
   color: #fff;
   animation: ext-pulse 2s ease-in-out infinite;
 }
 
-.step-done {
+:where(html.gl-actions-host) .step-done {
   background: #108548;
   color: #fff;
 }
 
-.step-error {
+:where(html.gl-actions-host) .step-error {
   background: #dd2b0e;
   color: #fff;
 }
 
-.step-arrow {
+:where(html.gl-actions-host) .step-arrow {
   color: var(--gl-text-color-secondary, #999);
   font-size: 11px;
 }
@@ -266,7 +266,7 @@
   50% { opacity: 0.7; }
 }
 
-.tracker-mr-title {
+:where(html.gl-actions-host) .tracker-mr-title {
   font-size: 11px;
   font-weight: 600;
   color: var(--gl-text-color-default, #333);
@@ -276,7 +276,7 @@
   text-overflow: ellipsis;
 }
 
-.tracker-error-msg {
+:where(html.gl-actions-host) .tracker-error-msg {
   margin-top: 6px;
   padding: 4px 8px;
   background-color: var(--gl-button-default-primary-background-color-default);
@@ -287,7 +287,7 @@
   word-break: break-word;
 }
 
-.tracker-cancel {
+:where(html.gl-actions-host) .tracker-cancel {
   flex-shrink: 0;
   background: none;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
@@ -301,14 +301,14 @@
   transition: all 0.15s;
 }
 
-.tracker-cancel:hover {
+:where(html.gl-actions-host) .tracker-cancel:hover {
   background: #dd2b0e;
   border-color: #dd2b0e;
   color: #fff;
 }
 
 /* Floating button to reopen tracker panel */
-.gl-mr-actions-fab {
+:where(html.gl-actions-host) .gl-mr-actions-fab {
   display: none;
   position: fixed;
   bottom: 16px;
@@ -326,18 +326,18 @@
   transition: all 0.15s;
 }
 
-.gl-mr-actions-fab.fab-visible {
+:where(html.gl-actions-host) .gl-mr-actions-fab.fab-visible {
   display: block;
 }
 
-.gl-mr-actions-fab:hover {
+:where(html.gl-actions-host) .gl-mr-actions-fab:hover {
   background: #1a68b3;
   box-shadow: 0 4px 16px rgba(31,117,203,0.5);
   transform: scale(1.05);
 }
 
 /* Time tracker badge */
-.gl-mr-actions-time {
+:where(html.gl-actions-host) .gl-mr-actions-time {
   height: 30px;
   display: inline-flex;
   align-items: center;
@@ -352,34 +352,34 @@
   white-space: nowrap;
 }
 
-.gl-mr-actions-time::before {
+:where(html.gl-actions-host) .gl-mr-actions-time::before {
   content: "\1F552 ";
   margin-right: 4px;
 }
 
-.gl-dark .gl-mr-actions-time {
+:where(html.gl-actions-host) .gl-dark .gl-mr-actions-time {
   border: none;
 }
 
 /* Quick comment buttons */
-.gl-mr-actions-ext .btn-quick-comment {
+:where(html.gl-actions-host) .gl-mr-actions-ext .btn-quick-comment {
   color: var(--gl-text-color-default, #333) !important;
   background: var(--gl-background-color-subtle, #f0f0f0) !important;
   border-color: var(--gl-border-color-default, #dcdcde) !important;
   font-size: 12px !important;
 }
 
-.gl-mr-actions-ext .btn-quick-comment:hover {
+:where(html.gl-actions-host) .gl-mr-actions-ext .btn-quick-comment:hover {
   background: var(--gl-background-color-default, #e8e8e8) !important;
   border-color: var(--gl-text-color-secondary, #999) !important;
 }
 
-.gl-dark .gl-mr-actions-ext .btn-quick-comment {
+:where(html.gl-actions-host) .gl-dark .gl-mr-actions-ext .btn-quick-comment {
   border: none !important;
 }
 
 /* Conflicts indicator badge */
-.gl-mr-actions-conflict-badge {
+:where(html.gl-actions-host) .gl-mr-actions-conflict-badge {
   height: 30px;
   display: inline-flex;
   align-items: center;
@@ -398,36 +398,36 @@
 }
 
 /* MR list enhancements */
-.gl-mr-ext-dimmed {
+:where(html.gl-actions-host) .gl-mr-ext-dimmed {
   opacity: 0.45;
   transition: opacity 0.2s;
 }
 
-.gl-mr-ext-dimmed:hover {
+:where(html.gl-actions-host) .gl-mr-ext-dimmed:hover {
   opacity: 0.75;
 }
 
-.gl-mr-ext-own {
+:where(html.gl-actions-host) .gl-mr-ext-own {
   border-left: 3px solid #1f75cb !important;
   background-color: rgba(31, 117, 203, 0.04);
 }
 
 /* MR list "Only mine" toggle */
-.gl-mr-ext-toggle {
+:where(html.gl-actions-host) .gl-mr-ext-toggle {
   margin-left: 8px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
 }
 
-.gl-mr-ext-toggle.active {
+:where(html.gl-actions-host) .gl-mr-ext-toggle.active {
   background: #1f75cb !important;
   border-color: #1f75cb !important;
   color: #fff !important;
 }
 
 /* Unresolved threads count (in ul.controls, after comments icon) */
-li.gl-mr-ext-threads-badge {
+:where(html.gl-actions-host) li.gl-mr-ext-threads-badge {
   display: inline-flex !important;
   align-items: center;
   gap: 2px;
@@ -438,7 +438,7 @@ li.gl-mr-ext-threads-badge {
 }
 
 /* MR list conflict badge */
-.gl-mr-ext-conflict-badge {
+:where(html.gl-actions-host) .gl-mr-ext-conflict-badge {
   display: inline-block;
   font-size: 10px;
   font-weight: 700;
@@ -456,7 +456,7 @@ li.gl-mr-ext-threads-badge {
 }
 
 /* MR size labels */
-.gl-mr-ext-size-badge {
+:where(html.gl-actions-host) .gl-mr-ext-size-badge {
   display: inline-block;
   font-size: 10px;
   font-weight: 700;
@@ -470,22 +470,22 @@ li.gl-mr-ext-threads-badge {
   letter-spacing: 0.3px;
 }
 
-.gl-mr-ext-size-badge.size-s {
+:where(html.gl-actions-host) .gl-mr-ext-size-badge.size-s {
   background: #dcfce7;
   color: #166534;
 }
 
-.gl-mr-ext-size-badge.size-m {
+:where(html.gl-actions-host) .gl-mr-ext-size-badge.size-m {
   background: #dbeafe;
   color: #1e40af;
 }
 
-.gl-mr-ext-size-badge.size-l {
+:where(html.gl-actions-host) .gl-mr-ext-size-badge.size-l {
   background: #fef3c7;
   color: #92400e;
 }
 
-.gl-mr-ext-size-badge.size-xl {
+:where(html.gl-actions-host) .gl-mr-ext-size-badge.size-xl {
   background: #fecaca;
   color: #991b1b;
 }
@@ -493,14 +493,14 @@ li.gl-mr-ext-threads-badge {
 /* My approval indicator — text only, inherits native GitLab badge styling */
 
 /* Branch badges in MR list */
-.gl-mr-ext-branch-badge {
+:where(html.gl-actions-host) .gl-mr-ext-branch-badge {
   display: flex;
   align-items: center;
   gap: 4px;
   margin-top: 4px;
 }
 
-.gl-mr-ext-branch-badge .ref-name {
+:where(html.gl-actions-host) .gl-mr-ext-branch-badge .ref-name {
   max-width: 480px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -513,16 +513,16 @@ li.gl-mr-ext-threads-badge {
   color: var(--gl-text-color-secondary, #666);
 }
 
-/* .gl-mr-ext-branch-badge a.ref-name:hover {
+:where(html.gl-actions-host) /* .gl-mr-ext-branch-badge a.ref-name:hover {
   text-decoration: underline;
   color: var(--gl-link-color, #1068bf);
-} */
+} :where(html.gl-actions-host) */
 
 .gl-mr-ext-branch-arrow {
   color: var(--gl-text-color-subtle, #999);
 }
 
-.gl-mr-ext-branch-loader {
+:where(html.gl-actions-host) .gl-mr-ext-branch-loader {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -530,13 +530,13 @@ li.gl-mr-ext-threads-badge {
   height: 18px;
 }
 
-.gl-mr-ext-branch-loader .gl-jira-loader {
+:where(html.gl-actions-host) .gl-mr-ext-branch-loader .gl-jira-loader {
   margin-left: 0;
   height: 14px;
 }
 
 /* Jira ticket group wrapper */
-.gl-jira-ticket-group {
+:where(html.gl-actions-host) .gl-jira-ticket-group {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -544,16 +544,16 @@ li.gl-mr-ext-threads-badge {
   vertical-align: middle;
 }
 
-.gl-jira-ticket-group .gl-jira-list-icon {
+:where(html.gl-actions-host) .gl-jira-ticket-group .gl-jira-list-icon {
   margin-left: 0;
 }
 
-.gl-jira-ticket-group .gl-jira-badge {
+:where(html.gl-actions-host) .gl-jira-ticket-group .gl-jira-badge {
   margin-left: 0;
 }
 
 /* Separator between Jira ticket groups */
-.gl-jira-ticket-sep {
+:where(html.gl-actions-host) .gl-jira-ticket-sep {
   display: inline-block;
   width: 1px;
   height: 18px;
@@ -563,7 +563,7 @@ li.gl-mr-ext-threads-badge {
 }
 
 /* Jira status badges */
-.gl-jira-badge {
+:where(html.gl-actions-host) .gl-jira-badge {
   display: inline-block;
   font-size: 10px;
   font-weight: 600;
@@ -578,55 +578,55 @@ li.gl-mr-ext-threads-badge {
   white-space: nowrap;
   outline: none;
 }
-.gl-jira-ticket-group:active,
-.gl-jira-ticket-group:focus {
+:where(html.gl-actions-host) .gl-jira-ticket-group:active,
+:where(html.gl-actions-host) .gl-jira-ticket-group:focus {
   outline: none;
 }
-.gl-link:has(.gl-jira-badge):active,
-.gl-link:has(.gl-jira-badge):focus,
-a:has(.gl-jira-badge):active,
-a:has(.gl-jira-badge):focus {
+:where(html.gl-actions-host) .gl-link:has(.gl-jira-badge):active,
+:where(html.gl-actions-host) .gl-link:has(.gl-jira-badge):focus,
+:where(html.gl-actions-host) a:has(.gl-jira-badge):active,
+:where(html.gl-actions-host) a:has(.gl-jira-badge):focus {
   outline: none !important;
 }
 
-.gl-jira-badge.jira-done {
+:where(html.gl-actions-host) .gl-jira-badge.jira-done {
   background: #dcfce7;
   color: #166534;
 }
 
-.gl-jira-badge.jira-progress {
+:where(html.gl-actions-host) .gl-jira-badge.jira-progress {
   background: #dbeafe;
   color: #1e40af;
 }
 
-.gl-jira-badge.jira-new {
+:where(html.gl-actions-host) .gl-jira-badge.jira-new {
   background: #f3f4f6;
   color: #6b7280;
 }
 
-.gl-jira-badge.jira-qa {
+:where(html.gl-actions-host) .gl-jira-badge.jira-qa {
   background: #f3e8ff;
   color: #6b21a8;
 }
 
-.gl-jira-badge.jira-default {
+:where(html.gl-actions-host) .gl-jira-badge.jira-default {
   background: #fef3c7;
   color: #92400e;
 }
 
 /* Copy MR button in controls bar */
-.gl-mr-ext-copy-li {
+:where(html.gl-actions-host) .gl-mr-ext-copy-li {
   color: var(--gl-text-color-secondary, #666);
   transition: color 0.15s;
 }
 
-.gl-mr-ext-copy-li:hover {
+:where(html.gl-actions-host) .gl-mr-ext-copy-li:hover {
   color: var(--gl-text-color-default, #333);
 }
 
 
 /* Reviewer badge */
-.gl-reviewer-badge {
+:where(html.gl-actions-host) .gl-reviewer-badge {
   display: inline-block;
   font-size: 10px;
   font-weight: 600;
@@ -644,7 +644,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Version badge on commits page */
-.gl-commit-version-badge {
+:where(html.gl-actions-host) .gl-commit-version-badge {
   display: inline-block;
   box-sizing: border-box;
   font-size: 10px;
@@ -662,26 +662,26 @@ a:has(.gl-jira-badge):focus {
   background: transparent;
 }
 
-.gl-commit-version-badge.gl-commit-version-changed {
+:where(html.gl-actions-host) .gl-commit-version-badge.gl-commit-version-changed {
   font-weight: 600;
   color: var(--gl-color-blue-700, #1068bf);
   background: var(--gl-color-blue-50, #e9f3fc);
   border-color: var(--gl-color-blue-200, #9dc7f1);
 }
 
-.gl-dark .gl-commit-version-badge.gl-commit-version-changed {
+:where(html.gl-actions-host) .gl-dark .gl-commit-version-badge.gl-commit-version-changed {
   color: var(--gl-color-blue-300, #9dc7f1);
   background: rgba(66, 143, 220, 0.16);
   border-color: rgba(66, 143, 220, 0.4);
 }
 
-.gl-commit-version-loader {
+:where(html.gl-actions-host) .gl-commit-version-loader {
   width: 44px;
   margin: 0 8px 0 0;
 }
 
 /* Jira loading skeleton */
-.gl-jira-loader {
+:where(html.gl-actions-host) .gl-jira-loader {
   display: inline-block;
   width: 50px;
   height: 18px;
@@ -699,7 +699,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Jira sidebar */
-.gl-jira-sidebar {
+:where(html.gl-actions-host) .gl-jira-sidebar {
   position: fixed;
   top: 0;
   right: 0;
@@ -721,7 +721,7 @@ a:has(.gl-jira-badge):focus {
   to { transform: translateX(0); }
 }
 
-.gl-jira-sidebar-closing {
+:where(html.gl-actions-host) .gl-jira-sidebar-closing {
   animation: gl-jira-sidebar-out 0.2s ease forwards;
 }
 
@@ -730,11 +730,11 @@ a:has(.gl-jira-badge):focus {
   to { transform: translateX(100%); }
 }
 
-.gl-jira-sidebar .gl-jira-badge {
+:where(html.gl-actions-host) .gl-jira-sidebar .gl-jira-badge {
   margin-left: 0;
 }
 
-.gl-jira-sidebar-header {
+:where(html.gl-actions-host) .gl-jira-sidebar-header {
   font-size: 14px;
   font-weight: 600;
   display: flex;
@@ -747,7 +747,7 @@ a:has(.gl-jira-badge):focus {
   min-height: 48px;
 }
 
-.gl-jira-sidebar-close {
+:where(html.gl-actions-host) .gl-jira-sidebar-close {
   background: none;
   border: none;
   font-size: 22px;
@@ -757,24 +757,24 @@ a:has(.gl-jira-badge):focus {
   line-height: 1;
 }
 
-.gl-jira-sidebar-close:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-close:hover {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-jira-sidebar-body {
+:where(html.gl-actions-host) .gl-jira-sidebar-body {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
 }
 
-.gl-jira-sidebar-loading {
+:where(html.gl-actions-host) .gl-jira-sidebar-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 0;
 }
 
-.gl-jira-sidebar-spinner {
+:where(html.gl-actions-host) .gl-jira-sidebar-spinner {
   width: 24px;
   height: 24px;
   border: 3px solid var(--gl-border-color-default, #dcdcde);
@@ -783,13 +783,13 @@ a:has(.gl-jira-badge):focus {
   animation: ext-spin 0.6s linear infinite;
 }
 
-.gl-jira-sidebar-error {
+:where(html.gl-actions-host) .gl-jira-sidebar-error {
   color: #dd2b0e;
   padding: 16px;
   text-align: center;
 }
 
-.gl-jira-sidebar-title {
+:where(html.gl-actions-host) .gl-jira-sidebar-title {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 16px 0;
@@ -797,19 +797,19 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-jira-sidebar-fields {
+:where(html.gl-actions-host) .gl-jira-sidebar-fields {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.gl-jira-sidebar-row {
+:where(html.gl-actions-host) .gl-jira-sidebar-row {
   display: flex;
   align-items: baseline;
   gap: 8px;
 }
 
-.gl-jira-sidebar-label {
+:where(html.gl-actions-host) .gl-jira-sidebar-label {
   font-size: 11px;
   font-weight: 600;
   color: var(--gl-text-color-secondary, #666);
@@ -819,32 +819,32 @@ a:has(.gl-jira-badge):focus {
   flex-shrink: 0;
 }
 
-.gl-jira-sidebar-value {
+:where(html.gl-actions-host) .gl-jira-sidebar-value {
   font-size: 13px;
   color: var(--gl-text-color-default, #333);
   word-break: break-word;
 }
 
-.gl-jira-priority {
+:where(html.gl-actions-host) .gl-jira-priority {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 13px;
 }
-.gl-jira-priority-icon {
+:where(html.gl-actions-host) .gl-jira-priority-icon {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
-.gl-jira-list-icon {
+:where(html.gl-actions-host) .gl-jira-list-icon {
   width: 18px;
   height: 18px;
   vertical-align: middle;
   margin-left: 4px;
 }
 
-.gl-jira-sidebar-label-tag {
+:where(html.gl-actions-host) .gl-jira-sidebar-label-tag {
   display: inline-block;
   font-size: 11px;
   padding: 1px 6px;
@@ -855,42 +855,42 @@ a:has(.gl-jira-badge):focus {
   margin-bottom: 5px;
 }
 
-.gl-jira-sidebar-sep {
+:where(html.gl-actions-host) .gl-jira-sidebar-sep {
   height: 1px;
   background: var(--gl-border-color-default, #dcdcde);
   margin: 16px 0;
 }
 
-.gl-jira-sidebar-transitions {
+:where(html.gl-actions-host) .gl-jira-sidebar-transitions {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   padding: 4px 0 8px 98px;
 }
 
-.gl-jira-sidebar-transition {
+:where(html.gl-actions-host) .gl-jira-sidebar-transition {
   cursor: pointer;
   border: none;
   transition: opacity 0.15s, transform 0.1s;
 }
 
-.gl-jira-sidebar-transition:hover:not(:disabled) {
+:where(html.gl-actions-host) .gl-jira-sidebar-transition:hover:not(:disabled) {
   opacity: 0.85;
   transform: scale(1.05);
 }
 
-.gl-jira-sidebar-transition:disabled {
+:where(html.gl-actions-host) .gl-jira-sidebar-transition:disabled {
   cursor: default;
 }
 
-.gl-jira-sidebar-qa-sep {
+:where(html.gl-actions-host) .gl-jira-sidebar-qa-sep {
   width: 100%;
   height: 1px;
   background: var(--gl-border-color-default, #dcdcde);
   margin: 2px 0;
 }
 
-.gl-jira-sidebar-quick-action {
+:where(html.gl-actions-host) .gl-jira-sidebar-quick-action {
   display: inline-block;
   font-family: inherit;
   font-size: 10px;
@@ -910,42 +910,42 @@ a:has(.gl-jira-badge):focus {
   transition: all 0.15s;
 }
 
-.gl-jira-sidebar-quick-action:hover:not(:disabled) {
+:where(html.gl-actions-host) .gl-jira-sidebar-quick-action:hover:not(:disabled) {
   background: var(--gl-button-confirm-primary-background-color-default, #1f75cb);
   border-color: var(--gl-button-confirm-primary-border-color-default, #1f75cb);
   color: var(--gl-button-confirm-primary-foreground-color-default, #fff);
   transform: scale(1.05);
 }
 
-.gl-jira-sidebar-quick-action:disabled {
+:where(html.gl-actions-host) .gl-jira-sidebar-quick-action:disabled {
   cursor: default;
   opacity: 0.5;
 }
 
 /* Assignee editor */
-.gl-jira-sidebar-assignee {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee {
   cursor: pointer;
 }
 
-.gl-jira-sidebar-assignee:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee:hover {
   color: #1f75cb;
 }
 
-.gl-jira-sidebar-edit-icon {
+:where(html.gl-actions-host) .gl-jira-sidebar-edit-icon {
   font-size: 11px;
   opacity: 0.4;
 }
 
-.gl-jira-sidebar-assignee:hover .gl-jira-sidebar-edit-icon {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee:hover .gl-jira-sidebar-edit-icon {
   opacity: 1;
 }
 
-.gl-jira-sidebar-assignee-search {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-search {
   padding: 4px 0 8px 88px;
 }
 
-.gl-jira-sidebar-assignee-input,
-.gl-jira-sidebar-fixversions-filter {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-input,
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions-filter {
   width: 100%;
   padding: 6px 8px;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
@@ -956,24 +956,24 @@ a:has(.gl-jira-badge):focus {
   box-sizing: border-box;
 }
 
-.gl-jira-sidebar-assignee-input:focus,
-.gl-jira-sidebar-fixversions-filter:focus {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-input:focus,
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions-filter:focus {
   outline: none;
   border-color: #1f75cb;
   box-shadow: 0 0 0 2px rgba(31, 117, 203, 0.2);
 }
 
-.gl-jira-sidebar-fixversions-filter {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions-filter {
   margin-bottom: 4px;
 }
 
-.gl-jira-sidebar-assignee-results {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-results {
   max-height: 200px;
   overflow-y: auto;
   margin-top: 4px;
 }
 
-.gl-jira-sidebar-assignee-item {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -984,26 +984,26 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-jira-sidebar-assignee-item:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-item:hover {
   background: var(--gl-background-color-subtle, #f5f5f5);
 }
 
-.gl-jira-sidebar-assignee-avatar {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-avatar {
   width: 20px;
   height: 20px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.gl-jira-sidebar-assignee-loading,
-.gl-jira-sidebar-assignee-empty {
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-loading,
+:where(html.gl-actions-host) .gl-jira-sidebar-assignee-empty {
   padding: 8px;
   font-size: 12px;
   color: var(--gl-text-color-secondary, #666);
   text-align: center;
 }
 
-.gl-jira-sidebar-unassign {
+:where(html.gl-actions-host) .gl-jira-sidebar-unassign {
   background: none;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
   border-radius: 4px;
@@ -1014,30 +1014,30 @@ a:has(.gl-jira-badge):focus {
   line-height: 1;
 }
 
-.gl-jira-sidebar-unassign:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-unassign:hover {
   background: #dd2b0e;
   border-color: #dd2b0e;
   color: #fff;
 }
 
 /* Fix Versions editor */
-.gl-jira-sidebar-fixversions {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions {
   cursor: pointer;
 }
 
-.gl-jira-sidebar-fixversions:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions:hover {
   color: #1f75cb;
 }
 
-.gl-jira-sidebar-fixversions:hover .gl-jira-sidebar-edit-icon {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions:hover .gl-jira-sidebar-edit-icon {
   opacity: 1;
 }
 
-.gl-jira-sidebar-fixversions-dropdown {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions-dropdown {
   padding: 4px 0 8px 88px;
 }
 
-.gl-jira-sidebar-fixversions-list {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions-list {
   max-height: 180px;
   overflow-y: auto;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
@@ -1045,7 +1045,7 @@ a:has(.gl-jira-badge):focus {
   padding: 4px;
 }
 
-.gl-jira-sidebar-version-item {
+:where(html.gl-actions-host) .gl-jira-sidebar-version-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1056,17 +1056,17 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-jira-sidebar-version-item:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-version-item:hover {
   background: var(--gl-background-color-subtle, #f5f5f5);
 }
 
-.gl-jira-sidebar-fixversions-error {
+:where(html.gl-actions-host) .gl-jira-sidebar-fixversions-error {
   color: #dd2b0e;
   font-size: 12px;
   margin-top: 4px;
 }
 
-.gl-jira-sidebar-desc-label {
+:where(html.gl-actions-host) .gl-jira-sidebar-desc-label {
   font-size: 11px;
   font-weight: 600;
   color: var(--gl-text-color-secondary, #666);
@@ -1075,15 +1075,15 @@ a:has(.gl-jira-badge):focus {
   margin-bottom: 8px;
 }
 
-.gl-jira-sidebar-desc {
+:where(html.gl-actions-host) .gl-jira-sidebar-desc {
   font-size: 13px;
   line-height: 1.6;
   color: var(--gl-text-color-default, #333);
   word-break: break-word;
 }
 
-.gl-jira-sidebar-img,
-.gl-jira-sidebar-video {
+:where(html.gl-actions-host) .gl-jira-sidebar-img,
+:where(html.gl-actions-host) .gl-jira-sidebar-video {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
@@ -1091,21 +1091,21 @@ a:has(.gl-jira-badge):focus {
   border: 1px solid var(--gl-border-color-default, #dcdcde);
 }
 
-.gl-jira-sidebar-img {
+:where(html.gl-actions-host) .gl-jira-sidebar-img {
   cursor: zoom-in;
 }
 
-.gl-jira-sidebar-inline-link {
+:where(html.gl-actions-host) .gl-jira-sidebar-inline-link {
   color: #1f75cb;
   text-decoration: none;
 }
 
-.gl-jira-sidebar-inline-link:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-inline-link:hover {
   text-decoration: underline;
 }
 
 /* Jira image lightbox */
-.gl-jira-lightbox {
+:where(html.gl-actions-host) .gl-jira-lightbox {
   position: fixed;
   top: 0;
   left: 0;
@@ -1125,7 +1125,7 @@ a:has(.gl-jira-badge):focus {
   to { opacity: 1; }
 }
 
-.gl-jira-lightbox-closing {
+:where(html.gl-actions-host) .gl-jira-lightbox-closing {
   animation: gl-jira-lightbox-out 0.15s ease forwards;
 }
 
@@ -1134,8 +1134,8 @@ a:has(.gl-jira-badge):focus {
   to { opacity: 0; }
 }
 
-.gl-jira-lightbox-img,
-.gl-jira-lightbox-video {
+:where(html.gl-actions-host) .gl-jira-lightbox-img,
+:where(html.gl-actions-host) .gl-jira-lightbox-video {
   max-width: 90vw;
   max-height: 90vh;
   object-fit: contain;
@@ -1144,13 +1144,13 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Attachments list */
-.gl-jira-sidebar-attachments {
+:where(html.gl-actions-host) .gl-jira-sidebar-attachments {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.gl-jira-sidebar-attach-item {
+:where(html.gl-actions-host) .gl-jira-sidebar-attach-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1163,11 +1163,11 @@ a:has(.gl-jira-badge):focus {
   cursor: pointer;
 }
 
-.gl-jira-sidebar-attach-item:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-attach-item:hover {
   background: var(--gl-background-color-subtle, #f5f5f5);
 }
 
-.gl-jira-sidebar-attach-thumb {
+:where(html.gl-actions-host) .gl-jira-sidebar-attach-thumb {
   width: 32px;
   height: 32px;
   object-fit: cover;
@@ -1175,7 +1175,7 @@ a:has(.gl-jira-badge):focus {
   flex-shrink: 0;
 }
 
-.gl-jira-sidebar-attach-icon {
+:where(html.gl-actions-host) .gl-jira-sidebar-attach-icon {
   width: 32px;
   height: 32px;
   display: flex;
@@ -1185,7 +1185,7 @@ a:has(.gl-jira-badge):focus {
   flex-shrink: 0;
 }
 
-.gl-jira-sidebar-attach-name {
+:where(html.gl-actions-host) .gl-jira-sidebar-attach-name {
   font-size: 12px;
   flex: 1;
   overflow: hidden;
@@ -1193,37 +1193,37 @@ a:has(.gl-jira-badge):focus {
   white-space: nowrap;
 }
 
-.gl-jira-sidebar-attach-size {
+:where(html.gl-actions-host) .gl-jira-sidebar-attach-size {
   font-size: 11px;
   color: var(--gl-text-color-secondary, #999);
   flex-shrink: 0;
 }
 
 /* Jira sidebar comments (#180) */
-.gl-jira-sidebar-comments-list {
+:where(html.gl-actions-host) .gl-jira-sidebar-comments-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.gl-jira-sidebar-comments-loading {
+:where(html.gl-actions-host) .gl-jira-sidebar-comments-loading {
   display: flex;
   justify-content: center;
   padding: 12px 0;
 }
 
-.gl-jira-sidebar-comments-empty {
+:where(html.gl-actions-host) .gl-jira-sidebar-comments-empty {
   font-size: 12px;
   color: var(--gl-text-color-secondary, #666);
   font-style: italic;
 }
 
-.gl-jira-sidebar-comment {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment {
   display: flex;
   gap: 8px;
 }
 
-.gl-jira-sidebar-comment-avatar {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-avatar {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -1232,30 +1232,30 @@ a:has(.gl-jira-badge):focus {
   background: var(--gl-background-color-subtle, #f5f5f5);
 }
 
-.gl-jira-sidebar-comment-main {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-main {
   flex: 1;
   min-width: 0;
 }
 
-.gl-jira-sidebar-comment-header {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-header {
   display: flex;
   align-items: baseline;
   gap: 6px;
   margin-bottom: 4px;
 }
 
-.gl-jira-sidebar-comment-author {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-author {
   font-weight: 600;
   font-size: 12px;
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-jira-sidebar-comment-date {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-date {
   font-size: 11px;
   color: var(--gl-text-color-secondary, #666);
 }
 
-.gl-jira-sidebar-comment-delete {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-delete {
   margin-left: auto;
   background: none;
   border: none;
@@ -1266,23 +1266,23 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color-secondary, #666);
 }
 
-.gl-jira-sidebar-comment-delete:hover:not(:disabled) {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-delete:hover:not(:disabled) {
   color: #dd2b0e;
 }
 
-.gl-jira-sidebar-comment-delete:disabled {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-delete:disabled {
   opacity: 0.5;
   cursor: default;
 }
 
-.gl-jira-sidebar-comment-body {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-body {
   font-size: 13px;
   line-height: 1.6;
   color: var(--gl-text-color-default, #333);
   word-break: break-word;
 }
 
-.gl-jira-sidebar-load-more {
+:where(html.gl-actions-host) .gl-jira-sidebar-load-more {
   align-self: flex-start;
   background: none;
   border: none;
@@ -1292,19 +1292,19 @@ a:has(.gl-jira-badge):focus {
   cursor: pointer;
 }
 
-.gl-jira-sidebar-load-more:hover {
+:where(html.gl-actions-host) .gl-jira-sidebar-load-more:hover {
   text-decoration: underline;
 }
 
-.gl-jira-sidebar-load-more:disabled {
+:where(html.gl-actions-host) .gl-jira-sidebar-load-more:disabled {
   cursor: default;
 }
 
-.gl-jira-sidebar-load-more.is-loading {
+:where(html.gl-actions-host) .gl-jira-sidebar-load-more.is-loading {
   align-self: center;
 }
 
-.gl-jira-sidebar-spinner-sm {
+:where(html.gl-actions-host) .gl-jira-sidebar-spinner-sm {
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -1314,11 +1314,11 @@ a:has(.gl-jira-badge):focus {
   animation: ext-spin 0.6s linear infinite;
 }
 
-.gl-jira-sidebar-comment-form {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-form {
   margin-top: 14px;
 }
 
-.gl-jira-sidebar-comment-input {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-input {
   width: 100%;
   min-height: 60px;
   resize: vertical;
@@ -1332,18 +1332,18 @@ a:has(.gl-jira-badge):focus {
   box-sizing: border-box;
 }
 
-.gl-jira-sidebar-comment-input:focus {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-input:focus {
   outline: none;
   border-color: #1f75cb;
 }
 
-.gl-jira-sidebar-comment-actions {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 8px;
 }
 
-.gl-jira-sidebar-comment-submit {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-submit {
   padding: 6px 16px;
   border: none;
   border-radius: 4px;
@@ -1355,31 +1355,31 @@ a:has(.gl-jira-badge):focus {
   transition: background 0.15s;
 }
 
-.gl-jira-sidebar-comment-submit:hover:not(:disabled) {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-submit:hover:not(:disabled) {
   background: var(--gl-button-confirm-primary-background-color-hover, #1b69b6);
 }
 
-.gl-jira-sidebar-comment-submit:disabled {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-submit:disabled {
   opacity: 0.5;
   cursor: default;
 }
 
-.gl-jira-sidebar-comment-error {
+:where(html.gl-actions-host) .gl-jira-sidebar-comment-error {
   font-size: 12px;
   color: #dd2b0e;
   margin-top: 6px;
 }
 
 
-.gl-jira-badge {
+:where(html.gl-actions-host) .gl-jira-badge {
   cursor: pointer;
   user-select: none;
 }
 
 /* Larger badges in MR detail title */
-.title-container .gl-jira-badge,
-.detail-page-header .gl-jira-badge,
-[data-testid="title-content"] .gl-jira-badge {
+:where(html.gl-actions-host) .title-container .gl-jira-badge,
+:where(html.gl-actions-host) .detail-page-header .gl-jira-badge,
+:where(html.gl-actions-host) [data-testid="title-content"] .gl-jira-badge {
   font-size: 13px;
   height: 24px;
   line-height: 24px;
@@ -1388,7 +1388,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Collapse top bars button */
-.gl-mr-ext-collapse-btn {
+:where(html.gl-actions-host) .gl-mr-ext-collapse-btn {
   position: fixed;
   top: 12px;
   right: 12px;
@@ -1408,54 +1408,54 @@ a:has(.gl-jira-badge):focus {
   padding: 0;
 }
 
-.gl-mr-ext-collapse-btn:hover {
+:where(html.gl-actions-host) .gl-mr-ext-collapse-btn:hover {
   opacity: 1;
   background: var(--gl-background-color-default, #fff);
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-mr-ext-collapse-btn svg {
+:where(html.gl-actions-host) .gl-mr-ext-collapse-btn svg {
   width: 14px;
   height: 14px;
 }
 
 /* Collapsed bars state — top bars only, not sidebar */
-.gl-mr-ext-bars-collapsed .top-bar-fixed,
-.gl-mr-ext-bars-collapsed header.navbar-gitlab,
-.gl-mr-ext-bars-collapsed .navbar,
-.gl-mr-ext-bars-collapsed .with-performance-bar .performance-bar,
-.gl-mr-ext-bars-collapsed .performance-bar,
-.gl-mr-ext-bars-collapsed .js-performance-bar {
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .top-bar-fixed,
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed header.navbar-gitlab,
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .navbar,
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .with-performance-bar .performance-bar,
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .performance-bar,
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .js-performance-bar {
   display: none !important;
 }
 
-.gl-mr-ext-bars-collapsed .content-wrapper,
-.gl-mr-ext-bars-collapsed .layout-page {
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .content-wrapper,
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .layout-page {
   padding-top: 0 !important;
 }
 
-.gl-mr-ext-bars-collapsed .gl-mr-ext-collapse-btn {
+:where(html.gl-actions-host) .gl-mr-ext-bars-collapsed .gl-mr-ext-collapse-btn {
   top: 4px;
 }
 
 /* Hide right sidebar */
-.gl-mr-ext-hide-right-sidebar .right-sidebar,
-.gl-mr-ext-hide-right-sidebar .issuable-sidebar,
-.gl-mr-ext-hide-right-sidebar [data-testid="super-sidebar"] + .content-wrapper .right-sidebar {
+:where(html.gl-actions-host) .gl-mr-ext-hide-right-sidebar .right-sidebar,
+:where(html.gl-actions-host) .gl-mr-ext-hide-right-sidebar .issuable-sidebar,
+:where(html.gl-actions-host) .gl-mr-ext-hide-right-sidebar [data-testid="super-sidebar"] + .content-wrapper .right-sidebar {
   display: none !important;
 }
 
-.gl-mr-ext-hide-right-sidebar .content-body {
+:where(html.gl-actions-host) .gl-mr-ext-hide-right-sidebar .content-body {
   margin-right: 0 !important;
 }
 
-.gl-mr-ext-hide-right-sidebar .merge-request-overview {
+:where(html.gl-actions-host) .gl-mr-ext-hide-right-sidebar .merge-request-overview {
   grid-template-columns: 1fr !important;
 }
 
 
 /* Group by author headers */
-.gl-mr-ext-group-header {
+:where(html.gl-actions-host) .gl-mr-ext-group-header {
   padding: 8px 16px;
   font-size: 12px;
   font-weight: 600;
@@ -1466,7 +1466,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Failed job quick view */
-.gl-mr-actions-failed-jobs {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs {
   border-top: 1px solid var(--gl-border-color-section, var(--gl-border-color-default, #dcdcde));
   padding: 12px 20px;
   width: 100%;
@@ -1475,7 +1475,7 @@ a:has(.gl-jira-badge):focus {
   overflow: hidden;
 }
 
-.gl-mr-actions-failed-jobs-header {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs-header {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1486,33 +1486,33 @@ a:has(.gl-jira-badge):focus {
   font-weight: 600;
 }
 
-.gl-mr-actions-failed-jobs-title {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs-title {
   flex: 1;
 }
 
-.gl-mr-actions-failed-jobs-toggle {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs-toggle {
   display: inline-flex;
   color: var(--gl-text-color-secondary, #666);
   transition: transform 0.15s;
   transform: rotate(180deg);
 }
 
-.gl-mr-actions-failed-jobs.collapsed .gl-mr-actions-failed-jobs-toggle {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs.collapsed .gl-mr-actions-failed-jobs-toggle {
   transform: rotate(90deg);
 }
 
-.gl-mr-actions-failed-jobs-list {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs-list {
   margin-top: 8px;
 }
 
-.gl-mr-actions-failed-job-item {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-item {
   border: 1px solid var(--gl-border-color-default, #dcdcde);
   border-radius: 6px;
   margin-bottom: 6px;
   overflow: hidden;
 }
 
-.gl-mr-actions-failed-job-name {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-name {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1522,22 +1522,22 @@ a:has(.gl-jira-badge):focus {
   background: var(--gl-background-color-subtle, #f0f0f0);
 }
 
-.gl-mr-actions-failed-job-name a {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-name a {
   color: var(--gl-text-color-danger, #dd2b0e);
   text-decoration: none;
   font-weight: 500;
 }
 
-.gl-mr-actions-failed-job-name a:hover {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-name a:hover {
   text-decoration: underline;
 }
 
-.gl-mr-actions-failed-job-stage {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-stage {
   font-size: 11px;
   color: var(--gl-text-color-secondary, #666);
 }
 
-.gl-mr-actions-failed-job-expand {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-expand {
   display: inline-flex;
   color: var(--gl-text-color-secondary, #666);
   margin-left: auto;
@@ -1545,11 +1545,11 @@ a:has(.gl-jira-badge):focus {
   transform: rotate(180deg);
 }
 
-.gl-mr-actions-failed-job-item.collapsed .gl-mr-actions-failed-job-expand {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-item.collapsed .gl-mr-actions-failed-job-expand {
   transform: rotate(90deg);
 }
 
-.gl-mr-actions-failed-job-trace {
+:where(html.gl-actions-host) .gl-mr-actions-failed-job-trace {
   margin: 0;
   padding: 10px 12px;
   font-family: var(--gl-monospace-font, 'GitLab Mono', 'JetBrains Mono', 'Menlo', monospace);
@@ -1564,7 +1564,7 @@ a:has(.gl-jira-badge):focus {
   border-top: 1px solid var(--gl-border-color-default, #dcdcde);
 }
 
-.gl-mr-actions-failed-jobs-more {
+:where(html.gl-actions-host) .gl-mr-actions-failed-jobs-more {
   font-size: 12px;
   color: var(--gl-text-color-secondary, #666);
   padding: 4px 0;
@@ -1572,7 +1572,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* ── Command Palette (Cmd+K) ─────────────────────────────────────── */
-.gl-cmd-palette-overlay {
+:where(html.gl-actions-host) .gl-cmd-palette-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -1592,7 +1592,7 @@ a:has(.gl-jira-badge):focus {
   to { opacity: 1; }
 }
 
-.gl-cmd-palette {
+:where(html.gl-actions-host) .gl-cmd-palette {
   width: 520px;
   max-width: 90vw;
   max-height: 60vh;
@@ -1610,7 +1610,7 @@ a:has(.gl-jira-badge):focus {
   to { transform: translateY(0); opacity: 1; }
 }
 
-.gl-cmd-palette-input-wrap {
+:where(html.gl-actions-host) .gl-cmd-palette-input-wrap {
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -1618,14 +1618,14 @@ a:has(.gl-jira-badge):focus {
   gap: 10px;
 }
 
-.gl-cmd-palette-icon {
+:where(html.gl-actions-host) .gl-cmd-palette-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
   color: var(--gl-text-color-secondary, #666);
 }
 
-.gl-cmd-palette-input {
+:where(html.gl-actions-host) .gl-cmd-palette-input {
   flex: 1;
   border: none;
   outline: none;
@@ -1635,17 +1635,17 @@ a:has(.gl-jira-badge):focus {
   font-family: inherit;
 }
 
-.gl-cmd-palette-input::placeholder {
+:where(html.gl-actions-host) .gl-cmd-palette-input::placeholder {
   color: var(--gl-text-color-secondary, #999);
 }
 
-.gl-cmd-palette-list {
+:where(html.gl-actions-host) .gl-cmd-palette-list {
   overflow-y: auto;
   padding: 6px;
   flex: 1;
 }
 
-.gl-cmd-palette-group {
+:where(html.gl-actions-host) .gl-cmd-palette-group {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1660,22 +1660,22 @@ a:has(.gl-jira-badge):focus {
   -webkit-user-select: none;
 }
 
-.gl-cmd-palette-group:hover {
+:where(html.gl-actions-host) .gl-cmd-palette-group:hover {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-cmd-palette-group-chevron {
+:where(html.gl-actions-host) .gl-cmd-palette-group-chevron {
   width: 12px;
   height: 12px;
   flex-shrink: 0;
   transition: transform 0.15s ease;
 }
 
-.gl-cmd-palette-group.collapsed .gl-cmd-palette-group-chevron {
+:where(html.gl-actions-host) .gl-cmd-palette-group.collapsed .gl-cmd-palette-group-chevron {
   transform: rotate(-90deg);
 }
 
-.gl-cmd-palette-group-count {
+:where(html.gl-actions-host) .gl-cmd-palette-group-count {
   margin-left: auto;
   font-size: 9px;
   font-weight: 600;
@@ -1687,7 +1687,7 @@ a:has(.gl-jira-badge):focus {
   height: 16px;
 }
 
-.gl-cmd-palette-item {
+:where(html.gl-actions-host) .gl-cmd-palette-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1699,52 +1699,52 @@ a:has(.gl-jira-badge):focus {
   transition: background 0.05s;
 }
 
-.gl-cmd-palette-item:hover,
-.gl-cmd-palette-item.selected {
+:where(html.gl-actions-host) .gl-cmd-palette-item:hover,
+:where(html.gl-actions-host) .gl-cmd-palette-item.selected {
   background: var(--gl-background-color-subtle, #f0f0f0);
 }
 
-.gl-cmd-palette-item.selected {
+:where(html.gl-actions-host) .gl-cmd-palette-item.selected {
   background: #1f75cb;
   color: #fff;
 }
 
-.gl-cmd-palette-item.selected .gl-cmd-palette-item-hint {
+:where(html.gl-actions-host) .gl-cmd-palette-item.selected .gl-cmd-palette-item-hint {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.gl-cmd-palette-item.selected .gl-cmd-palette-item-icon {
+:where(html.gl-actions-host) .gl-cmd-palette-item.selected .gl-cmd-palette-item-icon {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.gl-cmd-palette-item-icon {
+:where(html.gl-actions-host) .gl-cmd-palette-item-icon {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
   color: var(--gl-text-color-secondary, #666);
 }
 
-.gl-cmd-palette-item-label {
+:where(html.gl-actions-host) .gl-cmd-palette-item-label {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.gl-cmd-palette-item-hint {
+:where(html.gl-actions-host) .gl-cmd-palette-item-hint {
   font-size: 11px;
   color: var(--gl-text-color-secondary, #999);
   flex-shrink: 0;
 }
 
-.gl-cmd-palette-empty {
+:where(html.gl-actions-host) .gl-cmd-palette-empty {
   padding: 24px 16px;
   text-align: center;
   font-size: 13px;
   color: var(--gl-text-color-secondary, #999);
 }
 
-.gl-cmd-palette-footer {
+:where(html.gl-actions-host) .gl-cmd-palette-footer {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1754,7 +1754,7 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color-secondary, #999);
 }
 
-.gl-cmd-palette-footer kbd {
+:where(html.gl-actions-host) .gl-cmd-palette-footer kbd {
   display: inline-block;
   padding: 1px 5px;
   font-size: 10px;
@@ -1765,7 +1765,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* ── Standup Modal ────────────────────────────────────────────────── */
-.gl-standup-overlay {
+:where(html.gl-actions-host) .gl-standup-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -1780,7 +1780,7 @@ a:has(.gl-jira-badge):focus {
   animation: gl-cmd-palette-fade-in 0.1s ease;
 }
 
-.gl-standup-modal {
+:where(html.gl-actions-host) .gl-standup-modal {
   width: 560px;
   max-width: 90vw;
   max-height: 75vh;
@@ -1793,7 +1793,7 @@ a:has(.gl-jira-badge):focus {
   animation: gl-cmd-palette-slide-in 0.15s ease;
 }
 
-.gl-standup-header {
+:where(html.gl-actions-host) .gl-standup-header {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1804,14 +1804,14 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-standup-date-nav {
+:where(html.gl-actions-host) .gl-standup-date-nav {
   display: flex;
   align-items: center;
   gap: 4px;
   margin-left: auto;
 }
 
-.gl-standup-date {
+:where(html.gl-actions-host) .gl-standup-date {
   background: var(--gl-background-color-subtle, #f0f0f0);
   border: 1px solid var(--gl-border-color-default, #dcdcde);
   border-radius: 4px;
@@ -1822,12 +1822,12 @@ a:has(.gl-jira-badge):focus {
   cursor: pointer;
 }
 
-.gl-standup-date::-webkit-calendar-picker-indicator {
+:where(html.gl-actions-host) .gl-standup-date::-webkit-calendar-picker-indicator {
   cursor: pointer;
   opacity: 0.6;
 }
 
-.gl-standup-date-btn {
+:where(html.gl-actions-host) .gl-standup-date-btn {
   background: none;
   border: 1px solid var(--gl-border-color-default, #dcdcde);
   border-radius: 4px;
@@ -1842,16 +1842,16 @@ a:has(.gl-jira-badge):focus {
   justify-content: center;
 }
 
-.gl-standup-date-btn:hover:not(:disabled) {
+:where(html.gl-actions-host) .gl-standup-date-btn:hover:not(:disabled) {
   background: var(--gl-background-color-subtle, #f0f0f0);
 }
 
-.gl-standup-date-btn:disabled {
+:where(html.gl-actions-host) .gl-standup-date-btn:disabled {
   opacity: 0.3;
   cursor: default;
 }
 
-.gl-standup-close {
+:where(html.gl-actions-host) .gl-standup-close {
   background: none;
   border: none;
   font-size: 22px;
@@ -1861,17 +1861,17 @@ a:has(.gl-jira-badge):focus {
   line-height: 1;
 }
 
-.gl-standup-close:hover {
+:where(html.gl-actions-host) .gl-standup-close:hover {
   color: var(--gl-text-color-default, #333);
 }
 
-.gl-standup-body {
+:where(html.gl-actions-host) .gl-standup-body {
   flex: 1;
   overflow-y: auto;
   padding: 16px 20px;
 }
 
-.gl-standup-content {
+:where(html.gl-actions-host) .gl-standup-content {
   font-family: var(--gl-monospace-font, 'GitLab Mono', 'JetBrains Mono', 'Menlo', monospace);
   font-size: 12px;
   line-height: 1.6;
@@ -1886,7 +1886,7 @@ a:has(.gl-jira-badge):focus {
   user-select: text;
 }
 
-.gl-standup-actions {
+:where(html.gl-actions-host) .gl-standup-actions {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1894,7 +1894,7 @@ a:has(.gl-jira-badge):focus {
   border-top: 1px solid var(--gl-border-color-default, #dcdcde);
 }
 
-.gl-standup-copy {
+:where(html.gl-actions-host) .gl-standup-copy {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1908,18 +1908,18 @@ a:has(.gl-jira-badge):focus {
   transition: all 0.15s;
 }
 
-.gl-standup-copy:hover {
+:where(html.gl-actions-host) .gl-standup-copy:hover {
   background: var(--gl-button-confirm-primary-background-color-hover, #1b69b6);
 }
 
-.gl-standup-loading {
+:where(html.gl-actions-host) .gl-standup-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 0;
 }
 
-.gl-standup-spinner {
+:where(html.gl-actions-host) .gl-standup-spinner {
   width: 24px;
   height: 24px;
   border: 3px solid var(--gl-border-color-default, #dcdcde);
@@ -1928,7 +1928,7 @@ a:has(.gl-jira-badge):focus {
   animation: ext-spin 0.6s linear infinite;
 }
 
-.gl-standup-error {
+:where(html.gl-actions-host) .gl-standup-error {
   color: #dd2b0e;
   padding: 16px;
   text-align: center;
@@ -1939,20 +1939,20 @@ a:has(.gl-jira-badge):focus {
    ==================================================================== */
 
 /* Cherry-pick button — native GitLab classes on the element itself */
-.gl-cherry-pick-btn.gl-button svg { pointer-events: none; }
+:where(html.gl-actions-host) .gl-cherry-pick-btn.gl-button svg { pointer-events: none; }
 
 /* Cherry-pick button on commit detail page header */
-.gl-cherry-pick-detail-btn {
+:where(html.gl-actions-host) .gl-cherry-pick-detail-btn {
   margin-left: 8px;
   vertical-align: middle;
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
-.gl-cherry-pick-detail-btn svg { pointer-events: none; }
+:where(html.gl-actions-host) .gl-cherry-pick-detail-btn svg { pointer-events: none; }
 
 /* Overlay — reuse GitLab modal backdrop pattern */
-.gl-cherry-pick-overlay {
+:where(html.gl-actions-host) .gl-cherry-pick-overlay {
   position: fixed;
   inset: 0;
   background: var(--gl-overlay-bg-color, rgba(0,0,0,0.5));
@@ -1963,7 +1963,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Modal container */
-.gl-cherry-pick-modal {
+:where(html.gl-actions-host) .gl-cherry-pick-modal {
   background: var(--gl-background-color-default, #fff);
   border: 1px solid var(--gl-border-color-default, #dcdcde);
   border-radius: var(--gl-border-radius-base, 0.25rem);
@@ -1979,20 +1979,20 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Header */
-.gl-cherry-pick-header {
+:where(html.gl-actions-host) .gl-cherry-pick-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--gl-spacing-5, 1rem) var(--gl-spacing-5, 1rem);
   border-bottom: 1px solid var(--gl-border-color-default, #dcdcde);
 }
-.gl-cherry-pick-header-title {
+:where(html.gl-actions-host) .gl-cherry-pick-header-title {
   font-weight: var(--gl-font-weight-bold, 600);
   font-size: var(--gl-font-size-h2, 1rem);
 }
 
 /* Commit message subtitle */
-.gl-cherry-pick-commit-msg {
+:where(html.gl-actions-host) .gl-cherry-pick-commit-msg {
   padding: var(--gl-spacing-4, 0.75rem) var(--gl-spacing-5, 1rem);
   color: var(--gl-text-color-secondary, #666);
   border-bottom: 1px solid var(--gl-border-color-default, #dcdcde);
@@ -2000,27 +2000,27 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Input row */
-.gl-cherry-pick-input-row {
+:where(html.gl-actions-host) .gl-cherry-pick-input-row {
   display: flex;
   gap: var(--gl-spacing-3, 0.5rem);
   padding: var(--gl-spacing-5, 1rem) var(--gl-spacing-5, 1rem) var(--gl-spacing-3, 0.5rem);
 }
-.gl-cherry-pick-input-row .gl-cherry-pick-add-btn {
+:where(html.gl-actions-host) .gl-cherry-pick-input-row .gl-cherry-pick-add-btn {
   flex-shrink: 0;
 }
-.gl-cherry-pick-input-row .gl-cherry-pick-input {
+:where(html.gl-actions-host) .gl-cherry-pick-input-row .gl-cherry-pick-input {
   background-color: transparent;
   color: inherit;
 }
 
 /* Branch list */
-.gl-cherry-pick-branches {
+:where(html.gl-actions-host) .gl-cherry-pick-branches {
   padding: var(--gl-spacing-3, 0.5rem) var(--gl-spacing-5, 1rem);
   overflow-y: auto;
   max-height: 300px;
   flex: 1;
 }
-.gl-cherry-pick-branch-row {
+:where(html.gl-actions-host) .gl-cherry-pick-branch-row {
   display: flex;
   align-items: center;
   gap: var(--gl-spacing-3, 0.5rem);
@@ -2030,12 +2030,12 @@ a:has(.gl-jira-badge):focus {
   background: var(--gl-background-color-subtle, #fafafa);
   border: 1px solid var(--gl-border-color-default, #ececec);
 }
-.gl-cherry-pick-branch-name {
+:where(html.gl-actions-host) .gl-cherry-pick-branch-name {
   flex: 1;
   font-family: var(--gl-monospace-font, 'Menlo', monospace);
   font-size: var(--gl-font-size-sm, 0.75rem);
 }
-.gl-cherry-pick-error-text {
+:where(html.gl-actions-host) .gl-cherry-pick-error-text {
   font-size: var(--gl-font-size-sm, 0.75rem);
   color: var(--gl-theme-red-500, #dd2b0e);
   max-width: 200px;
@@ -2043,7 +2043,7 @@ a:has(.gl-jira-badge):focus {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.gl-cherry-pick-remove {
+:where(html.gl-actions-host) .gl-cherry-pick-remove {
   background: none;
   border: none;
   font-size: 16px;
@@ -2053,28 +2053,28 @@ a:has(.gl-jira-badge):focus {
   line-height: 1;
   flex-shrink: 0;
 }
-.gl-cherry-pick-remove:hover { color: var(--gl-theme-red-500, #dd2b0e); }
+:where(html.gl-actions-host) .gl-cherry-pick-remove:hover { color: var(--gl-theme-red-500, #dd2b0e); }
 
 /* Status icons — inline SVGs matching GitLab CI icons */
-.gl-cherry-pick-status-icon { display: inline-flex; flex-shrink: 0; }
-.gl-cherry-pick-status-icon svg { width: 18px; height: 18px; }
-.gl-cherry-pick-status-icon.pending svg { color: var(--gl-text-color-secondary, #89888d); }
-.gl-cherry-pick-status-icon.in-progress svg { color: var(--gl-theme-blue-500, #1f75cb); animation: ext-spin 0.8s linear infinite; }
-.gl-cherry-pick-status-icon.success svg { color: var(--gl-theme-green-500, #108548); }
-.gl-cherry-pick-status-icon.error svg { color: var(--gl-theme-red-500, #dd2b0e); }
+:where(html.gl-actions-host) .gl-cherry-pick-status-icon { display: inline-flex; flex-shrink: 0; }
+:where(html.gl-actions-host) .gl-cherry-pick-status-icon svg { width: 18px; height: 18px; }
+:where(html.gl-actions-host) .gl-cherry-pick-status-icon.pending svg { color: var(--gl-text-color-secondary, #89888d); }
+:where(html.gl-actions-host) .gl-cherry-pick-status-icon.in-progress svg { color: var(--gl-theme-blue-500, #1f75cb); animation: ext-spin 0.8s linear infinite; }
+:where(html.gl-actions-host) .gl-cherry-pick-status-icon.success svg { color: var(--gl-theme-green-500, #108548); }
+:where(html.gl-actions-host) .gl-cherry-pick-status-icon.error svg { color: var(--gl-theme-red-500, #dd2b0e); }
 
 /* Status row coloring */
-.gl-cherry-pick-status-success {
+:where(html.gl-actions-host) .gl-cherry-pick-status-success {
   border-color: var(--gl-theme-green-200, rgba(16,133,72,0.3));
   background: var(--gl-theme-green-50, rgba(16,133,72,0.05));
 }
-.gl-cherry-pick-status-error {
+:where(html.gl-actions-host) .gl-cherry-pick-status-error {
   border-color: var(--gl-theme-red-200, rgba(221,43,14,0.3));
   background: var(--gl-theme-red-50, rgba(221,43,14,0.05));
 }
 
 /* MR toggle checkbox */
-.gl-cherry-pick-mr-toggle {
+:where(html.gl-actions-host) .gl-cherry-pick-mr-toggle {
   display: flex;
   align-items: center;
   gap: var(--gl-spacing-3, 0.5rem);
@@ -2083,7 +2083,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* MR link badge */
-.gl-cherry-pick-mr-link {
+:where(html.gl-actions-host) .gl-cherry-pick-mr-link {
   font-size: var(--gl-font-size-sm, 0.75rem);
   font-weight: var(--gl-font-weight-bold, 600);
   color: var(--gl-theme-blue-500, #1f75cb);
@@ -2093,12 +2093,12 @@ a:has(.gl-jira-badge):focus {
   background: var(--gl-theme-blue-50, rgba(31,117,203,0.1));
   flex-shrink: 0;
 }
-.gl-cherry-pick-mr-link:hover {
+:where(html.gl-actions-host) .gl-cherry-pick-mr-link:hover {
   background: var(--gl-theme-blue-100, rgba(31,117,203,0.2));
 }
 
 /* Footer buttons — use GitLab spacing */
-.gl-cherry-pick-footer {
+:where(html.gl-actions-host) .gl-cherry-pick-footer {
   display: flex;
   justify-content: flex-end;
   gap: var(--gl-spacing-3, 0.5rem);
@@ -2107,7 +2107,7 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Sensitive file warning (#13) */
-.gl-mr-ext-sensitive-warning {
+:where(html.gl-actions-host) .gl-mr-ext-sensitive-warning {
   height: 30px;
   display: inline-flex;
   align-items: center;
@@ -2124,13 +2124,13 @@ a:has(.gl-jira-badge):focus {
 }
 
 /* Git command buttons (#12) */
-.gl-mr-ext-git-commands {
+:where(html.gl-actions-host) .gl-mr-ext-git-commands {
   display: flex;
   gap: 6px;
   padding-left: 0.5em;
   flex-wrap: wrap;
 }
-.gl-mr-ext-git-cmd-btn {
+:where(html.gl-actions-host) .gl-mr-ext-git-cmd-btn {
   height: 28px;
   display: inline-flex;
   align-items: center;
@@ -2145,22 +2145,22 @@ a:has(.gl-jira-badge):focus {
   transition: border-color 0.15s, color 0.15s;
   white-space: nowrap;
 }
-.gl-mr-ext-git-cmd-btn:hover {
+:where(html.gl-actions-host) .gl-mr-ext-git-cmd-btn:hover {
   border-color: var(--gl-border-color-strong, #868686);
   color: var(--gl-text-color, #303030);
 }
-.gl-dark .gl-mr-ext-git-cmd-btn {
+:where(html.gl-actions-host) .gl-dark .gl-mr-ext-git-cmd-btn {
   background: var(--gl-background-color-default, #1f1f1f);
   color: var(--gl-text-color-secondary, #999);
   border-color: var(--gl-border-color-default, #404040);
 }
-.gl-dark .gl-mr-ext-git-cmd-btn:hover {
+:where(html.gl-actions-host) .gl-dark .gl-mr-ext-git-cmd-btn:hover {
   color: var(--gl-text-color, #e0e0e0);
   border-color: var(--gl-border-color-strong, #666);
 }
 
 /* ===== Group play button on pipeline graph (stage column title) ===== */
-.gl-group-play-btn {
+:where(html.gl-actions-host) .gl-group-play-btn {
   width: 24px;
   height: 24px;
   display: inline-flex;
@@ -2178,21 +2178,21 @@ a:has(.gl-jira-badge):focus {
   cursor: pointer;
   z-index: 2;
 }
-.gl-group-play-btn:hover {
+:where(html.gl-actions-host) .gl-group-play-btn:hover {
   background: var(--gl-background-color-subtle, #ececef);
   border-color: currentColor;
 }
-.gl-group-play-btn svg {
+:where(html.gl-actions-host) .gl-group-play-btn svg {
   pointer-events: none;
   display: block;
 }
-.gl-group-play-btn.gl-group-play-busy {
+:where(html.gl-actions-host) .gl-group-play-btn.gl-group-play-busy {
   pointer-events: none;
 }
-.gl-group-play-btn.gl-group-play-busy svg {
+:where(html.gl-actions-host) .gl-group-play-btn.gl-group-play-busy svg {
   display: none;
 }
-.gl-group-play-btn.gl-group-play-busy::after {
+:where(html.gl-actions-host) .gl-group-play-btn.gl-group-play-busy::after {
   content: '';
   width: 12px;
   height: 12px;
@@ -2204,26 +2204,26 @@ a:has(.gl-jira-badge):focus {
 @keyframes gl-group-play-spin {
   to { transform: rotate(360deg); }
 }
-.gl-group-play-btn.gl-group-play-done {
+:where(html.gl-actions-host) .gl-group-play-btn.gl-group-play-done {
   color: var(--green-500, #108548);
   border-color: currentColor;
   pointer-events: none;
 }
-.gl-group-play-btn.gl-group-play-error {
+:where(html.gl-actions-host) .gl-group-play-btn.gl-group-play-error {
   color: var(--red-500, #dd2b0e);
   border-color: currentColor;
 }
-.gl-dark .gl-group-play-btn {
+:where(html.gl-actions-host) .gl-dark .gl-group-play-btn {
   background: var(--gl-background-color-default, #28272d);
   color: var(--gl-text-color, #ececef);
   border-color: var(--gl-border-color-strong, #737278);
 }
-.gl-dark .gl-group-play-btn:hover {
+:where(html.gl-actions-host) .gl-dark .gl-group-play-btn:hover {
   background: var(--gl-background-color-subtle, #333238);
 }
-.gl-review-launcher,
-.gl-review-inline,
-.gl-review-overlay {
+:where(html.gl-actions-host) .gl-review-launcher,
+:where(html.gl-actions-host) .gl-review-inline,
+:where(html.gl-actions-host) .gl-review-overlay {
   --gl-review-bg: var(--gl-background-color-default, #fff);
   --gl-review-fg: var(--gl-text-color-default, #303030);
   --gl-review-muted: var(--gl-text-color-subtle, #626168);
@@ -2232,17 +2232,17 @@ a:has(.gl-jira-badge):focus {
   color: var(--gl-review-fg);
   font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-.gl-dark .gl-review-launcher,
-.gl-dark .gl-review-inline,
-.gl-dark .gl-review-overlay,
-[data-theme="dark"] .gl-review-overlay {
+:where(html.gl-actions-host) .gl-dark .gl-review-launcher,
+:where(html.gl-actions-host) .gl-dark .gl-review-inline,
+:where(html.gl-actions-host) .gl-dark .gl-review-overlay,
+:where(html.gl-actions-host) [data-theme="dark"] .gl-review-overlay {
   --gl-review-bg: var(--gl-background-color-default, #1f1e27);
   --gl-review-fg: var(--gl-text-color-default, #ececef);
   --gl-review-muted: var(--gl-text-color-subtle, #b5b4be);
   --gl-review-border: var(--gl-border-color-default, #4a4856);
   --gl-review-soft: var(--gl-background-color-subtle, #292833);
 }
-.gl-review-button {
+:where(html.gl-actions-host) .gl-review-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2257,178 +2257,189 @@ a:has(.gl-jira-badge):focus {
   cursor: pointer;
   white-space: normal;
 }
-.gl-review-button:hover:not(:disabled) { background: var(--gl-review-soft); border-color: #89888d; }
-.gl-review-button:disabled { opacity: .5; cursor: default; }
-.gl-review-button:focus-visible,
-.gl-review-dialog :is(input, select, textarea, summary, a):focus-visible { outline: 2px solid #1f75cb; outline-offset: 2px; }
-.gl-review-button.gl-review-primary { color: #fff; background: #1f75cb; border-color: #1f75cb; }
-.gl-review-button.gl-review-primary:hover:not(:disabled) { background: #175da2; }
-.gl-review-launcher { display: inline-flex; align-items: center; align-self: center; margin: 0; margin-inline-start: 4px; vertical-align: middle; }
-.gl-review-launcher.gl-review-in-actions { align-self: flex-start; margin: 0; }
-.gl-review-floating { position: fixed; bottom: 20px; left: 20px; z-index: 990; margin: 0; box-shadow: 0 2px 12px #0002; }
-.gl-review-inline { display: inline-flex; align-items: center; align-self: center; margin: 0; margin-inline-start: 4px; vertical-align: middle; }
-.gl-review-icon-button { box-sizing: border-box; width: 32px; height: 32px; min-width: 0; margin: 0; padding: 6px; flex-shrink: 0; }
-.gl-review-inline .gl-review-icon-button { width: 24px; height: 24px; padding: 2px; border-color: transparent; background: transparent; color: var(--gl-review-muted); }
-.gl-review-inline .gl-review-icon-button:hover { color: var(--gl-review-fg); }
-.gl-review-icon { display: flex; pointer-events: none; }
-.gl-review-icon svg { display: block; width: 18px; height: 18px; }
-.gl-review-icon svg, .gl-review-icon svg * { fill: none !important; stroke: currentColor !important; }
+:where(html.gl-actions-host) .gl-review-button:hover:not(:disabled) { background: var(--gl-review-soft); border-color: #89888d; }
+:where(html.gl-actions-host) .gl-review-button:disabled { opacity: .5; cursor: default; }
+:where(html.gl-actions-host) .gl-review-button:focus-visible,
+:where(html.gl-actions-host) .gl-review-dialog :is(input, select, textarea, summary, a):focus-visible { outline: 2px solid #1f75cb; outline-offset: 2px; }
+:where(html.gl-actions-host) .gl-review-button.gl-review-primary { color: #fff; background: #1f75cb; border-color: #1f75cb; }
+:where(html.gl-actions-host) .gl-review-button.gl-review-primary:hover:not(:disabled) { background: #175da2; }
+:where(html.gl-actions-host) .gl-review-launcher { display: inline-flex; align-items: center; align-self: center; margin: 0; margin-inline-start: 4px; vertical-align: middle; }
+:where(html.gl-actions-host) .gl-review-launcher.gl-review-in-actions { align-self: flex-start; margin: 0; }
+:where(html.gl-actions-host) .gl-review-floating { position: fixed; bottom: 20px; left: 20px; z-index: 990; margin: 0; box-shadow: 0 2px 12px #0002; }
+:where(html.gl-actions-host) .gl-review-inline { display: inline-flex; align-items: center; align-self: center; margin: 0; margin-inline-start: 4px; vertical-align: middle; }
+:where(html.gl-actions-host) .gl-review-icon-button { box-sizing: border-box; width: 32px; height: 32px; min-width: 0; margin: 0; padding: 6px; flex-shrink: 0; }
+:where(html.gl-actions-host) .gl-review-inline .gl-review-icon-button { width: 24px; height: 24px; padding: 2px; border-color: transparent; background: transparent; color: var(--gl-review-muted); }
+:where(html.gl-actions-host) .gl-review-inline .gl-review-icon-button:hover { color: var(--gl-review-fg); }
+:where(html.gl-actions-host) .gl-review-icon { display: flex; pointer-events: none; }
+:where(html.gl-actions-host) .gl-review-icon svg { display: block; width: 18px; height: 18px; }
+:where(html.gl-actions-host) .gl-review-icon svg,
+:where(html.gl-actions-host) .gl-review-icon svg * { fill: none !important; stroke: currentColor !important; }
 /* Both review dialogs lock the document only while an overlay exists. */
-html:has(.gl-review-overlay),
-body:has(.gl-review-overlay) { overflow: hidden !important; }
-html:has(.gl-review-overlay) { scrollbar-gutter: stable; }
-.gl-review-overlay { position: fixed; inset: 0; z-index: 100100; display: flex; align-items: center; justify-content: center; padding: 24px; background: #11182788; }
-.gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, .gl-review-note-text, textarea) { overscroll-behavior: contain; }
-.gl-review-overlay *, .gl-review-overlay *::before, .gl-review-overlay *::after { box-sizing: border-box; }
-.gl-review-dialog { display: flex; flex-direction: column; width: 1120px; max-width: 100%; height: min(860px, 92vh); background: var(--gl-review-bg); border: 1px solid var(--gl-review-border); border-radius: 12px; box-shadow: 0 24px 80px #0004; overflow: hidden; }
+:where(html.gl-actions-host):has(.gl-review-overlay),
+:where(html.gl-actions-host) body:has(.gl-review-overlay) { overflow: hidden !important; }
+:where(html.gl-actions-host):has(.gl-review-overlay) { scrollbar-gutter: stable; }
+:where(html.gl-actions-host) .gl-review-overlay { position: fixed; inset: 0; z-index: 100100; display: flex; align-items: center; justify-content: center; padding: 24px; background: #11182788; }
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, .gl-review-note-text, textarea) { overscroll-behavior: contain; }
+:where(html.gl-actions-host) .gl-review-overlay *,
+:where(html.gl-actions-host) .gl-review-overlay *::before,
+:where(html.gl-actions-host) .gl-review-overlay *::after { box-sizing: border-box; }
+:where(html.gl-actions-host) .gl-review-dialog { display: flex; flex-direction: column; width: 1120px; max-width: 100%; height: min(860px, 92vh); background: var(--gl-review-bg); border: 1px solid var(--gl-review-border); border-radius: 12px; box-shadow: 0 24px 80px #0004; overflow: hidden; }
 /* Match the command palette's thin, rotating chevron without image requests. */
-.gl-review-dialog details > summary { display: flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; }
-.gl-review-dialog details > summary::-webkit-details-marker { display: none; }
-.gl-review-dialog details > summary::marker { content: ''; }
-.gl-review-dialog details > summary::before { content: ''; flex: 0 0 7px; width: 7px; height: 7px; margin-inline: 2px 3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .15s ease; }
-.gl-review-dialog details[open] > summary::before { transform: rotate(45deg); }
+:where(html.gl-actions-host) .gl-review-dialog details > summary { display: flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; }
+:where(html.gl-actions-host) .gl-review-dialog details > summary::-webkit-details-marker { display: none; }
+:where(html.gl-actions-host) .gl-review-dialog details > summary::marker { content: ''; }
+:where(html.gl-actions-host) .gl-review-dialog details > summary::before { content: ''; flex: 0 0 7px; width: 7px; height: 7px; margin-inline: 2px 3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .15s ease; }
+:where(html.gl-actions-host) .gl-review-dialog details[open] > summary::before { transform: rotate(45deg); }
 @media (prefers-reduced-motion: reduce) {
-  .gl-review-dialog details > summary::before { transition: none; }
+  :where(html.gl-actions-host) .gl-review-dialog details > summary::before { transition: none; }
 }
-.gl-review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px 12px; }
-.gl-review-header h2 { color: inherit; font-size: 20px; line-height: 1.3; margin: 0 0 4px; }
-.gl-review-subject { color: var(--gl-review-muted); margin: 0; overflow-wrap: anywhere; max-height: 3em; overflow: auto; }
-.gl-review-status { padding: 0 22px 12px; min-height: 30px; color: var(--gl-review-muted); }
-.gl-review-error { color: #c23b30; }
-.gl-review-warning { margin: 0 22px 12px; padding: 10px 12px; border: 1px solid #d99530; border-radius: 6px; background: #f5a62312; max-height: 140px; overflow: auto; font-size: 12px; overflow-wrap: anywhere; }
-.gl-review-warning details { margin-top: 4px; }
-.gl-review-warning ul { margin: 4px 0; padding-left: 18px; }
-.gl-review-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); min-height: 0; flex: 1; border-top: 1px solid var(--gl-review-border); }
-.gl-review-picker { min-height: 0; display: flex; flex-direction: column; padding: 16px 18px; border-right: 1px solid var(--gl-review-border); }
-.gl-review-filters { display: flex; gap: 8px; }
-.gl-review-filters input { min-width: 0; flex: 1; }
-.gl-review-select { position: relative; display: block; min-width: 0; max-width: 46%; }
-.gl-review-select::after { content: ''; position: absolute; inset-inline-end: 12px; top: 50%; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-75%) rotate(45deg); pointer-events: none; }
-.gl-review-filters input, .gl-review-filters select, .gl-review-repeat-options select, .gl-review-baseline-sha, .gl-review-output textarea { border: 1px solid var(--gl-review-border); border-radius: 5px; background: var(--gl-review-bg); color: inherit; padding: 7px 9px; font: inherit; }
-.gl-review-filters select, .gl-review-repeat-options select { -webkit-appearance: none; appearance: none; width: 100%; min-width: 0; max-width: 100%; padding-inline-end: 32px; }
-.gl-review-general-toggle { display: flex; align-items: flex-start; gap: 7px; margin: 8px 0 0; font-size: 12px; cursor: pointer; }
-.gl-review-tools { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
-.gl-review-tools .gl-review-button { font-size: 12px; padding: 4px 8px; }
-.gl-review-count { font-size: 12px; color: var(--gl-review-muted); margin: 6px 0 10px; }
-.gl-review-list { overflow: auto; min-height: 0; flex: 1; padding-right: 4px; }
-.gl-review-thread { border: 1px solid var(--gl-review-border); border-radius: 7px; margin-bottom: 10px; overflow: hidden; }
-.gl-review-thread-heading { display: flex; gap: 6px; align-items: flex-start; padding: 9px 10px; background: var(--gl-review-soft); }
-.gl-review-thread-label { display: flex; align-items: flex-start; gap: 7px; min-width: 0; flex: 1; flex-wrap: wrap; margin: 0; cursor: pointer; }
-.gl-review-dialog input[type="checkbox"] { flex-shrink: 0; width: 15px; height: 15px; accent-color: #1f75cb; cursor: pointer; margin: 3px 0 0; }
-.gl-review-badge { font-size: 11px; font-weight: 600; }
-.gl-review-path { font: 11px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--gl-review-muted); overflow-wrap: anywhere; }
-.gl-review-link { color: #1f75cb; text-decoration: none; }
-.gl-review-note { padding: 10px; }
-.gl-review-note-label { display: flex; gap: 7px; flex-wrap: wrap; align-items: flex-start; margin: 0 0 6px; cursor: pointer; }
-.gl-review-note-label strong { font-size: 12px; font-weight: 600; }
-.gl-review-note-label time { font-size: 10px; line-height: 20px; }
-.gl-review-note-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: inherit; margin: 0; padding: 0; border: 0; background: none; max-height: 220px; overflow: auto; }
-.gl-review-replies { border-top: 1px solid var(--gl-review-border); }
-.gl-review-replies summary { padding: 7px 10px; cursor: pointer; color: var(--gl-review-muted); font-size: 12px; }
-.gl-review-replies .gl-review-note { border-top: 1px solid var(--gl-review-border); }
-.gl-review-muted { color: var(--gl-review-muted); font-size: 12px; }
-.gl-review-context-hint { margin: 10px 0 0; font-size: 11px; }
-.gl-review-output { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: auto; padding: 16px 18px; }
-.gl-review-description-toggle { display: flex; align-items: flex-start; gap: 7px; margin: 0; cursor: pointer; }
-.gl-review-prompt-details summary { cursor: pointer; }
-.gl-review-fresh-hint { margin: 0; padding: 10px 12px; border-radius: 6px; background: #1f75cb12; font-size: 12px; line-height: 1.5; }
-.gl-review-output .gl-review-prompt { width: 100%; min-height: 100px; resize: vertical; margin-top: 7px; }
-.gl-review-prompt-details p { margin: 5px 0; }
-.gl-review-preview-label { font-weight: 600; margin: 6px 0 0; }
-.gl-review-output .gl-review-preview { width: 100%; flex: 1; min-height: 160px; resize: none; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
-.gl-review-footer { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding: 14px 22px; border-top: 1px solid var(--gl-review-border); }
-.gl-review-overlay [hidden] { display: none !important; }
+:where(html.gl-actions-host) .gl-review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px 12px; }
+:where(html.gl-actions-host) .gl-review-header h2 { color: inherit; font-size: 20px; line-height: 1.3; margin: 0 0 4px; }
+:where(html.gl-actions-host) .gl-review-subject { color: var(--gl-review-muted); margin: 0; overflow-wrap: anywhere; max-height: 3em; overflow: auto; }
+:where(html.gl-actions-host) .gl-review-status { padding: 0 22px 12px; min-height: 30px; color: var(--gl-review-muted); }
+:where(html.gl-actions-host) .gl-review-error { color: #c23b30; }
+:where(html.gl-actions-host) .gl-review-warning { margin: 0 22px 12px; padding: 10px 12px; border: 1px solid #d99530; border-radius: 6px; background: #f5a62312; max-height: 140px; overflow: auto; font-size: 12px; overflow-wrap: anywhere; }
+:where(html.gl-actions-host) .gl-review-warning details { margin-top: 4px; }
+:where(html.gl-actions-host) .gl-review-warning ul { margin: 4px 0; padding-left: 18px; }
+:where(html.gl-actions-host) .gl-review-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); min-height: 0; flex: 1; border-top: 1px solid var(--gl-review-border); }
+:where(html.gl-actions-host) .gl-review-picker { min-height: 0; display: flex; flex-direction: column; padding: 16px 18px; border-right: 1px solid var(--gl-review-border); }
+:where(html.gl-actions-host) .gl-review-filters { display: flex; gap: 8px; }
+:where(html.gl-actions-host) .gl-review-filters input { min-width: 0; flex: 1; }
+:where(html.gl-actions-host) .gl-review-select { position: relative; display: block; min-width: 0; max-width: 46%; }
+:where(html.gl-actions-host) .gl-review-select::after { content: ''; position: absolute; inset-inline-end: 12px; top: 50%; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-75%) rotate(45deg); pointer-events: none; }
+:where(html.gl-actions-host) .gl-review-filters input,
+:where(html.gl-actions-host) .gl-review-filters select,
+:where(html.gl-actions-host) .gl-review-repeat-options select,
+:where(html.gl-actions-host) .gl-review-baseline-sha,
+:where(html.gl-actions-host) .gl-review-output textarea { border: 1px solid var(--gl-review-border); border-radius: 5px; background: var(--gl-review-bg); color: inherit; padding: 7px 9px; font: inherit; }
+:where(html.gl-actions-host) .gl-review-filters select,
+:where(html.gl-actions-host) .gl-review-repeat-options select { -webkit-appearance: none; appearance: none; width: 100%; min-width: 0; max-width: 100%; padding-inline-end: 32px; }
+:where(html.gl-actions-host) .gl-review-general-toggle { display: flex; align-items: flex-start; gap: 7px; margin: 8px 0 0; font-size: 12px; cursor: pointer; }
+:where(html.gl-actions-host) .gl-review-tools { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
+:where(html.gl-actions-host) .gl-review-tools .gl-review-button { font-size: 12px; padding: 4px 8px; }
+:where(html.gl-actions-host) .gl-review-count { font-size: 12px; color: var(--gl-review-muted); margin: 6px 0 10px; }
+:where(html.gl-actions-host) .gl-review-list { overflow: auto; min-height: 0; flex: 1; padding-right: 4px; }
+:where(html.gl-actions-host) .gl-review-thread { border: 1px solid var(--gl-review-border); border-radius: 7px; margin-bottom: 10px; overflow: hidden; }
+:where(html.gl-actions-host) .gl-review-thread-heading { display: flex; gap: 6px; align-items: flex-start; padding: 9px 10px; background: var(--gl-review-soft); }
+:where(html.gl-actions-host) .gl-review-thread-label { display: flex; align-items: flex-start; gap: 7px; min-width: 0; flex: 1; flex-wrap: wrap; margin: 0; cursor: pointer; }
+:where(html.gl-actions-host) .gl-review-dialog input[type="checkbox"] { flex-shrink: 0; width: 15px; height: 15px; accent-color: #1f75cb; cursor: pointer; margin: 3px 0 0; }
+:where(html.gl-actions-host) .gl-review-badge { font-size: 11px; font-weight: 600; }
+:where(html.gl-actions-host) .gl-review-path { font: 11px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--gl-review-muted); overflow-wrap: anywhere; }
+:where(html.gl-actions-host) .gl-review-link { color: #1f75cb; text-decoration: none; }
+:where(html.gl-actions-host) .gl-review-note { padding: 10px; }
+:where(html.gl-actions-host) .gl-review-note-label { display: flex; gap: 7px; flex-wrap: wrap; align-items: flex-start; margin: 0 0 6px; cursor: pointer; }
+:where(html.gl-actions-host) .gl-review-note-label strong { font-size: 12px; font-weight: 600; }
+:where(html.gl-actions-host) .gl-review-note-label time { font-size: 10px; line-height: 20px; }
+:where(html.gl-actions-host) .gl-review-note-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: inherit; margin: 0; padding: 0; border: 0; background: none; max-height: 220px; overflow: auto; }
+:where(html.gl-actions-host) .gl-review-replies { border-top: 1px solid var(--gl-review-border); }
+:where(html.gl-actions-host) .gl-review-replies summary { padding: 7px 10px; cursor: pointer; color: var(--gl-review-muted); font-size: 12px; }
+:where(html.gl-actions-host) .gl-review-replies .gl-review-note { border-top: 1px solid var(--gl-review-border); }
+:where(html.gl-actions-host) .gl-review-muted { color: var(--gl-review-muted); font-size: 12px; }
+:where(html.gl-actions-host) .gl-review-context-hint { margin: 10px 0 0; font-size: 11px; }
+:where(html.gl-actions-host) .gl-review-output { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: auto; padding: 16px 18px; }
+:where(html.gl-actions-host) .gl-review-description-toggle { display: flex; align-items: flex-start; gap: 7px; margin: 0; cursor: pointer; }
+:where(html.gl-actions-host) .gl-review-prompt-details summary { cursor: pointer; }
+:where(html.gl-actions-host) .gl-review-fresh-hint { margin: 0; padding: 10px 12px; border-radius: 6px; background: #1f75cb12; font-size: 12px; line-height: 1.5; }
+:where(html.gl-actions-host) .gl-review-output .gl-review-prompt { width: 100%; min-height: 100px; resize: vertical; margin-top: 7px; }
+:where(html.gl-actions-host) .gl-review-prompt-details p { margin: 5px 0; }
+:where(html.gl-actions-host) .gl-review-preview-label { font-weight: 600; margin: 6px 0 0; }
+:where(html.gl-actions-host) .gl-review-output .gl-review-preview { width: 100%; flex: 1; min-height: 160px; resize: none; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
+:where(html.gl-actions-host) .gl-review-footer { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding: 14px 22px; border-top: 1px solid var(--gl-review-border); }
+:where(html.gl-actions-host) .gl-review-overlay [hidden] { display: none !important; }
 @media (max-width: 720px) {
-  .gl-review-overlay { padding: 8px; }
-  .gl-review-dialog { height: 96vh; }
-  .gl-review-columns { grid-template-columns: 1fr; overflow: auto; display: block; }
-  .gl-review-picker { border-right: 0; border-bottom: 1px solid var(--gl-review-border); max-height: 54vh; min-height: 240px; }
-  .gl-review-output { min-height: 310px; }
-  .gl-review-header, .gl-review-footer { padding: 12px; }
-  .gl-review-status { padding: 0 12px 8px; }
-  .gl-review-warning { margin: 0 12px 8px; }
-  .gl-review-footer .gl-review-button { flex: 1; }
+  :where(html.gl-actions-host) .gl-review-overlay { padding: 8px; }
+  :where(html.gl-actions-host) .gl-review-dialog { height: 96vh; }
+  :where(html.gl-actions-host) .gl-review-columns { grid-template-columns: 1fr; overflow: auto; display: block; }
+  :where(html.gl-actions-host) .gl-review-picker { border-right: 0; border-bottom: 1px solid var(--gl-review-border); max-height: 54vh; min-height: 240px; }
+  :where(html.gl-actions-host) .gl-review-output { min-height: 310px; }
+  :where(html.gl-actions-host) .gl-review-header,
+:where(html.gl-actions-host) .gl-review-footer { padding: 12px; }
+  :where(html.gl-actions-host) .gl-review-status { padding: 0 12px 8px; }
+  :where(html.gl-actions-host) .gl-review-warning { margin: 0 12px 8px; }
+  :where(html.gl-actions-host) .gl-review-footer .gl-review-button { flex: 1; }
 }
 
 /* AI review import uses the same theme and control sizes as review export. */
-.gl-review-import-launcher.gl-review-floating { left: 60px; }
-.gl-review-import-input-pane { border-right: 1px solid var(--gl-review-border); }
-.gl-review-import-preview-pane { border-right: 0; }
+:where(html.gl-actions-host) .gl-review-import-launcher.gl-review-floating { left: 60px; }
+:where(html.gl-actions-host) .gl-review-import-input-pane { border-right: 1px solid var(--gl-review-border); }
+:where(html.gl-actions-host) .gl-review-import-preview-pane { border-right: 0; }
 /* Keep a clear wheel target beside long comments and editors. */
-.gl-review-import-preview-pane .gl-review-list { padding-inline-end: 28px; scrollbar-gutter: stable; }
+:where(html.gl-actions-host) .gl-review-import-preview-pane .gl-review-list { padding-inline-end: 28px; scrollbar-gutter: stable; }
 /* At the end of a nested comment/editor, continue scrolling the preview. */
-.gl-review-import-overlay :is(.gl-review-note-text, textarea) { overscroll-behavior-y: auto; }
-.gl-review-import-help { margin: 0 0 4px; }
-.gl-review-import-preview-title { margin: 0; color: inherit; font: inherit; font-weight: 600; }
-.gl-review-import-code { margin: 0 0 10px; padding: 7px 9px; border: 1px solid var(--gl-review-border); border-radius: 4px; color: inherit; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
-.gl-review-import-text { max-height: none; }
-.gl-review-import-message { margin: 9px 0 0; overflow-wrap: anywhere; }
-.gl-review-import-resolve { padding-top: 10px; }
-.gl-review-import-item[data-import-result="invalid"],
-.gl-review-import-item[data-import-result="unknown"],
-.gl-review-import-item[data-import-result="failed"] { border-color: #d99530; }
-.gl-review-import-item[data-import-result="published"],
-.gl-review-import-item[data-import-result="draft"] { border-color: #4caa76; }
-.gl-review-import-send-hint { flex: 1 1 100%; margin: 0 0 3px; }
-.gl-review-copy-prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.gl-review-copy-prompt-actions .gl-review-button { flex: 1 1 160px; }
-.gl-review-copy-prompt-help { margin: 0; }
-.gl-review-import-original { padding: 9px 10px; margin: 0 0 12px; border-inline-start: 3px solid var(--gl-review-border); border-radius: 0 4px 4px 0; background: var(--gl-review-soft); }
-.gl-review-import-original-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin-bottom: 6px; }
-.gl-review-import-original-heading strong { font-size: 12px; }
-.gl-review-import-original-path { margin: 0 0 6px; }
-.gl-review-import-reply-label { display: block; margin-bottom: 6px; font-size: 12px; }
-.gl-review-import-edit { width: 24px; height: 24px; padding: 2px; border-color: transparent; background: transparent; color: var(--gl-review-muted); }
-.gl-review-import-edit:hover:not(:disabled) { color: var(--gl-review-fg); }
-.gl-review-import-editor-label { display: block; margin: 0 0 6px; font-size: 12px; font-weight: 600; }
-.gl-review-import-editor-input { display: block; width: 100%; min-height: 140px; resize: vertical; border: 1px solid var(--gl-review-border); border-radius: 5px; background: var(--gl-review-bg); color: inherit; padding: 8px 9px; font: inherit; line-height: 1.5; }
-.gl-review-import-edit-hint { margin: 7px 0; overflow-wrap: anywhere; }
-.gl-review-import-editor-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+:where(html.gl-actions-host) .gl-review-import-overlay :is(.gl-review-note-text, textarea) { overscroll-behavior-y: auto; }
+:where(html.gl-actions-host) .gl-review-import-help { margin: 0 0 4px; }
+:where(html.gl-actions-host) .gl-review-import-preview-title { margin: 0; color: inherit; font: inherit; font-weight: 600; }
+:where(html.gl-actions-host) .gl-review-import-code { margin: 0 0 10px; padding: 7px 9px; border: 1px solid var(--gl-review-border); border-radius: 4px; color: inherit; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+:where(html.gl-actions-host) .gl-review-import-text { max-height: none; }
+:where(html.gl-actions-host) .gl-review-import-message { margin: 9px 0 0; overflow-wrap: anywhere; }
+:where(html.gl-actions-host) .gl-review-import-resolve { padding-top: 10px; }
+:where(html.gl-actions-host) .gl-review-import-item[data-import-result="invalid"],
+:where(html.gl-actions-host) .gl-review-import-item[data-import-result="unknown"],
+:where(html.gl-actions-host) .gl-review-import-item[data-import-result="failed"] { border-color: #d99530; }
+:where(html.gl-actions-host) .gl-review-import-item[data-import-result="published"],
+:where(html.gl-actions-host) .gl-review-import-item[data-import-result="draft"] { border-color: #4caa76; }
+:where(html.gl-actions-host) .gl-review-import-send-hint { flex: 1 1 100%; margin: 0 0 3px; }
+:where(html.gl-actions-host) .gl-review-copy-prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+:where(html.gl-actions-host) .gl-review-copy-prompt-actions .gl-review-button { flex: 1 1 160px; }
+:where(html.gl-actions-host) .gl-review-copy-prompt-help { margin: 0; }
+:where(html.gl-actions-host) .gl-review-import-original { padding: 9px 10px; margin: 0 0 12px; border-inline-start: 3px solid var(--gl-review-border); border-radius: 0 4px 4px 0; background: var(--gl-review-soft); }
+:where(html.gl-actions-host) .gl-review-import-original-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin-bottom: 6px; }
+:where(html.gl-actions-host) .gl-review-import-original-heading strong { font-size: 12px; }
+:where(html.gl-actions-host) .gl-review-import-original-path { margin: 0 0 6px; }
+:where(html.gl-actions-host) .gl-review-import-reply-label { display: block; margin-bottom: 6px; font-size: 12px; }
+:where(html.gl-actions-host) .gl-review-import-edit { width: 24px; height: 24px; padding: 2px; border-color: transparent; background: transparent; color: var(--gl-review-muted); }
+:where(html.gl-actions-host) .gl-review-import-edit:hover:not(:disabled) { color: var(--gl-review-fg); }
+:where(html.gl-actions-host) .gl-review-import-editor-label { display: block; margin: 0 0 6px; font-size: 12px; font-weight: 600; }
+:where(html.gl-actions-host) .gl-review-import-editor-input { display: block; width: 100%; min-height: 140px; resize: vertical; border: 1px solid var(--gl-review-border); border-radius: 5px; background: var(--gl-review-bg); color: inherit; padding: 8px 9px; font: inherit; line-height: 1.5; }
+:where(html.gl-actions-host) .gl-review-import-edit-hint { margin: 7px 0; overflow-wrap: anywhere; }
+:where(html.gl-actions-host) .gl-review-import-editor-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 @media (max-width: 720px) {
-  .gl-review-import-input-pane { border-right: 0; border-bottom: 1px solid var(--gl-review-border); min-height: 360px; }
-  .gl-review-import-preview-pane { border-bottom: 0; max-height: none; }
-  .gl-review-import-preview-pane .gl-review-list { min-height: 200px; }
+  :where(html.gl-actions-host) .gl-review-import-input-pane { border-right: 0; border-bottom: 1px solid var(--gl-review-border); min-height: 360px; }
+  :where(html.gl-actions-host) .gl-review-import-preview-pane { border-bottom: 0; max-height: none; }
+  :where(html.gl-actions-host) .gl-review-import-preview-pane .gl-review-list { min-height: 200px; }
   /* The columns become the main scroller on narrow screens. */
-  .gl-review-import-columns { padding-inline-end: 20px; }
-  .gl-review-import-overlay :is(.gl-review-list, .gl-review-output) { overscroll-behavior-y: auto; }
+  :where(html.gl-actions-host) .gl-review-import-columns { padding-inline-end: 20px; }
+  :where(html.gl-actions-host) .gl-review-import-overlay :is(.gl-review-list, .gl-review-output) { overscroll-behavior-y: auto; }
 }
 
-.gl-review-repeat-options { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
-.gl-review-repeat-options > label { flex: 1 1 200px; min-width: 0; margin: 0; font-size: 12px; line-height: 16px; }
-.gl-review-repeat-options .gl-review-select { max-width: 100%; margin-top: 5px; }
-.gl-review-repeat-options select,
-.gl-review-repeat-options > .gl-review-button,
-.gl-review-repeat-options .gl-review-baseline-sha { height: 32px; min-height: 32px; margin-bottom: 0; font-size: 13px; font-weight: 400; line-height: 18px; padding-block: 6px; }
-.gl-review-repeat-options select { display: block; }
-.gl-review-repeat-options > .gl-review-button { flex-shrink: 0; white-space: nowrap; }
-.gl-review-scope .gl-review-preview-label { display: block; }
-.gl-review-scope .gl-review-prompt { min-height: 56px; }
+:where(html.gl-actions-host) .gl-review-repeat-options { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+:where(html.gl-actions-host) .gl-review-repeat-options > label { flex: 1 1 200px; min-width: 0; margin: 0; font-size: 12px; line-height: 16px; }
+:where(html.gl-actions-host) .gl-review-repeat-options .gl-review-select { max-width: 100%; margin-top: 5px; }
+:where(html.gl-actions-host) .gl-review-repeat-options select,
+:where(html.gl-actions-host) .gl-review-repeat-options > .gl-review-button,
+:where(html.gl-actions-host) .gl-review-repeat-options .gl-review-baseline-sha { height: 32px; min-height: 32px; margin-bottom: 0; font-size: 13px; font-weight: 400; line-height: 18px; padding-block: 6px; }
+:where(html.gl-actions-host) .gl-review-repeat-options select { display: block; }
+:where(html.gl-actions-host) .gl-review-repeat-options > .gl-review-button { flex-shrink: 0; white-space: nowrap; }
+:where(html.gl-actions-host) .gl-review-scope .gl-review-preview-label { display: block; }
+:where(html.gl-actions-host) .gl-review-scope .gl-review-prompt { min-height: 56px; }
 
-.gl-review-baseline-sha { display: block; width: 100%; margin-top: 6px; }
-.gl-review-versions-hint { flex: 1 1 100%; margin: 0; order: 1; }
+:where(html.gl-actions-host) .gl-review-baseline-sha { display: block; width: 100%; margin-top: 6px; }
+:where(html.gl-actions-host) .gl-review-versions-hint { flex: 1 1 100%; margin: 0; order: 1; }
 
 /* Task tabs make the requested AI action explicit; selection never changes it. */
-.gl-review-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 0 22px 12px; padding: 4px; background: var(--gl-review-soft); border-radius: 8px; }
-.gl-review-tabs .gl-review-button { border-color: transparent; background: transparent; font-weight: 600; min-height: 38px; }
-.gl-review-tabs [aria-selected="true"] { background: var(--gl-review-bg); border-color: var(--gl-review-border); box-shadow: 0 1px 3px #0001; color: #1f75cb; }
-.gl-review-columns.gl-review-single-column { grid-template-columns: minmax(0, 1fr); }
-.gl-review-single-column .gl-review-output { width: 100%; max-width: 820px; justify-self: center; }
-.gl-review-task-hint { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; }
-.gl-review-task-summary { margin: 4px 0 8px; padding: 12px; background: var(--gl-review-soft); border: 1px solid var(--gl-review-border); border-radius: 7px; font-size: 13px; line-height: 1.6; }
-.gl-review-advanced, .gl-review-preview-details { border-top: 1px solid var(--gl-review-border); margin-top: 6px; padding-top: 12px; }
-.gl-review-advanced > summary, .gl-review-preview-details > summary { cursor: pointer; font-weight: 600; }
-.gl-review-advanced .gl-review-prompt-details { margin: 12px 0; }
-.gl-review-preview-details .gl-review-preview { margin-top: 8px; height: 240px; }
-.gl-review-next-step { margin: auto 0 0; padding-top: 14px; line-height: 1.6; }
-.gl-review-footer .gl-review-import-result { margin-inline-end: auto; }
+:where(html.gl-actions-host) .gl-review-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 0 22px 12px; padding: 4px; background: var(--gl-review-soft); border-radius: 8px; }
+:where(html.gl-actions-host) .gl-review-tabs .gl-review-button { border-color: transparent; background: transparent; font-weight: 600; min-height: 38px; }
+:where(html.gl-actions-host) .gl-review-tabs [aria-selected="true"] { background: var(--gl-review-bg); border-color: var(--gl-review-border); box-shadow: 0 1px 3px #0001; color: #1f75cb; }
+:where(html.gl-actions-host) .gl-review-columns.gl-review-single-column { grid-template-columns: minmax(0, 1fr); }
+:where(html.gl-actions-host) .gl-review-single-column .gl-review-output { width: 100%; max-width: 820px; justify-self: center; }
+:where(html.gl-actions-host) .gl-review-task-hint { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; }
+:where(html.gl-actions-host) .gl-review-task-summary { margin: 4px 0 8px; padding: 12px; background: var(--gl-review-soft); border: 1px solid var(--gl-review-border); border-radius: 7px; font-size: 13px; line-height: 1.6; }
+:where(html.gl-actions-host) .gl-review-advanced,
+:where(html.gl-actions-host) .gl-review-preview-details { border-top: 1px solid var(--gl-review-border); margin-top: 6px; padding-top: 12px; }
+:where(html.gl-actions-host) .gl-review-advanced > summary,
+:where(html.gl-actions-host) .gl-review-preview-details > summary { cursor: pointer; font-weight: 600; }
+:where(html.gl-actions-host) .gl-review-advanced .gl-review-prompt-details { margin: 12px 0; }
+:where(html.gl-actions-host) .gl-review-preview-details .gl-review-preview { margin-top: 8px; height: 240px; }
+:where(html.gl-actions-host) .gl-review-next-step { margin: auto 0 0; padding-top: 14px; line-height: 1.6; }
+:where(html.gl-actions-host) .gl-review-footer .gl-review-import-result { margin-inline-end: auto; }
 @media (max-width: 720px) {
-  .gl-review-tabs { margin-inline: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .gl-review-tabs .gl-review-button { min-height: 34px; font-size: 12px; }
-  .gl-review-footer .gl-review-import-result { flex-basis: 100%; }
+  :where(html.gl-actions-host) .gl-review-tabs { margin-inline: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :where(html.gl-actions-host) .gl-review-tabs .gl-review-button { min-height: 34px; font-size: 12px; }
+  :where(html.gl-actions-host) .gl-review-footer .gl-review-import-result { flex-basis: 100%; }
 }
-.gl-review-advanced .gl-review-copy-prompt-actions { margin-top: 10px; }
+:where(html.gl-actions-host) .gl-review-advanced .gl-review-copy-prompt-actions { margin-top: 10px; }
 @media (max-width: 720px) {
-  .gl-review-columns:not(.gl-review-import-columns) { display: flex; flex-direction: column; }
-  .gl-review-columns:not(.gl-review-import-columns) > .gl-review-output { order: -1; min-height: 0; flex-shrink: 0; }
-  .gl-review-columns:not(.gl-review-import-columns) > .gl-review-picker { flex-shrink: 0; border-top: 1px solid var(--gl-review-border); }
+  :where(html.gl-actions-host) .gl-review-columns:not(.gl-review-import-columns) { display: flex; flex-direction: column; }
+  :where(html.gl-actions-host) .gl-review-columns:not(.gl-review-import-columns) > .gl-review-output { order: -1; min-height: 0; flex-shrink: 0; }
+  :where(html.gl-actions-host) .gl-review-columns:not(.gl-review-import-columns) > .gl-review-picker { flex-shrink: 0; border-top: 1px solid var(--gl-review-border); }
 }

@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { escHtml } from "../../../shared/lib/html";
 interface TaskStatus {
   taskId: string;
@@ -6,7 +8,8 @@ interface TaskStatus {
   error?: string;
   mrTitle?: string;
 }
-export function createTaskTracker() {
+export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
+  const polling = new Set<string>();
   // =========================================================================
   // Background tasks tracker panel
   // =========================================================================
@@ -77,7 +80,7 @@ export function createTaskTracker() {
   function cancelTask(taskId: string | null) {
     chrome.runtime.sendMessage(
       { type: "cancel-task", taskId: taskId },
-      function () {},
+      scope.guard(function () {}),
     );
   }
 
@@ -187,13 +190,13 @@ export function createTaskTracker() {
       return;
     chrome.runtime.sendMessage(
       { type: "get-active-tasks" },
-      function (tasks: TaskStatus[]) {
+      scope.guard(function (tasks: TaskStatus[]) {
         if (chrome.runtime.lastError || !tasks || !tasks.length) return;
         tasks.forEach(function (t: TaskStatus) {
           updateTrackerItem(t.taskId, t.jobs, t.status, null, t.mrTitle);
           pollTaskStatus(t.taskId, t.jobs, t.mrTitle);
         });
-      },
+      }),
     );
   }
 
@@ -202,23 +205,27 @@ export function createTaskTracker() {
     jobNames: string[],
     mrTitle?: string,
   ) {
-    const interval = setInterval(function () {
+    if (polling.has(taskId) || scope.disposed) return;
+    polling.add(taskId);
+    const interval = scope.interval(function () {
       chrome.runtime.sendMessage(
         { type: "get-task-status", taskId: taskId },
-        function (resp: TaskStatus) {
+        scope.guard(function (resp: TaskStatus) {
           if (
             chrome.runtime.lastError ||
             !resp ||
             resp.status === "not_found"
           ) {
             clearInterval(interval);
+            polling.delete(taskId);
             return;
           }
           updateTrackerItem(taskId, jobNames, resp.status, resp.error, mrTitle);
           if (resp.status === "done" || resp.status === "error") {
             clearInterval(interval);
+            polling.delete(taskId);
           }
-        },
+        }),
       );
     }, 10000);
   }

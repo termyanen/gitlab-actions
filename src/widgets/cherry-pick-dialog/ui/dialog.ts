@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createCherryPicker } from "../../../features/cherry-pick";
 import type {
   CherryPickSettings,
@@ -9,6 +11,7 @@ export function createCherryPickDialog(
   encodedProject: string,
   msg: (key: string) => string,
   showToast: (message: string, type: "success" | "error") => void,
+  scope: Lifecycle = createLifecycle(),
 ) {
   function openCherryPickModal(
     sha: string,
@@ -350,7 +353,7 @@ export function createCherryPickDialog(
 
     function closeModal() {
       overlay.remove();
-      document.removeEventListener("keydown", onKey);
+      removeKey();
     }
 
     function onKey(e: KeyboardEvent) {
@@ -362,7 +365,7 @@ export function createCherryPickDialog(
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) closeModal();
     });
-    document.addEventListener("keydown", onKey);
+    const removeKey = scope.listen(document, "keydown", onKey);
 
     document.body.appendChild(overlay);
     input.focus();

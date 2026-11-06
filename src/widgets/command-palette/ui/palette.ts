@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 interface Command {
   id: string;
   label: string;
@@ -14,13 +16,24 @@ import { createSessionApi } from "../../../shared/api/gitlab";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
 
-export function startCommandPalette(openStandupModal: () => void) {
+export function startCommandPalette(
+  openStandupModal: () => void,
+  scope: Lifecycle = createLifecycle(),
+  openImmediately = false,
+  mrCommands: {
+    actions: () => { id: string; label: string; icon: string }[];
+    run: (id: string) => void;
+  } = { actions: () => [], run: () => {} },
+) {
   const GITLAB_URL = window.location.origin;
-  const api = createSessionApi(() => GITLAB_URL);
+  const api = createSessionApi(() => GITLAB_URL, scope.signal);
   try {
     chrome.storage.sync.get(
       { show_cmd_palette: true, show_standup: true },
-      function (s) {
+      scope.guard(function (s: {
+        show_cmd_palette: boolean;
+        show_standup: boolean;
+      }) {
         if (chrome.runtime.lastError || !s.show_cmd_palette) return;
 
         let _paletteOpen = false;
@@ -39,19 +52,23 @@ export function startCommandPalette(openStandupModal: () => void) {
 
         // File search
         let _defaultBranch = "";
+        let _branchProject = "";
         let _fileSearchReqId = 0;
 
         function fetchDefaultBranch(projectPath: string) {
-          if (_defaultBranch) return;
+          if (_branchProject === projectPath && _defaultBranch) return;
+          _branchProject = projectPath;
+          _defaultBranch = "";
           api<{ default_branch?: string }>(
             "GET",
             "/projects/" + encodeURIComponent(projectPath),
           )
             .then(function (proj) {
-              _defaultBranch = proj.default_branch || "main";
+              if (_branchProject === projectPath)
+                _defaultBranch = proj.default_branch || "main";
             })
             .catch(function () {
-              _defaultBranch = "main";
+              if (_branchProject === projectPath) _defaultBranch = "main";
             });
         }
 
@@ -340,19 +357,15 @@ export function startCommandPalette(openStandupModal: () => void) {
           }
 
           // MR actions (only on MR detail page — read available actions from content.js)
-          if (
-            isMrDetail &&
-            window.__glMrActionsLoaded &&
-            window.__glMrPaletteActions
-          ) {
-            window.__glMrPaletteActions.forEach(function (a) {
+          if (isMrDetail && mrCommands.actions().length) {
+            mrCommands.actions().forEach(function (a) {
               cmds.push({
                 id: a.id,
                 label: a.label,
                 group: msg("cmdGroupMr"),
                 icon: a.icon || "action",
                 action: function () {
-                  if (window.__glMrPaletteRun) window.__glMrPaletteRun(a.id);
+                  mrCommands.run(a.id);
                 },
               });
             });
@@ -549,10 +562,11 @@ export function startCommandPalette(openStandupModal: () => void) {
             }
           }
 
+          let removeKey = () => {};
           function closePalette() {
             _paletteOpen = false;
             overlay.remove();
-            document.removeEventListener("keydown", onKey);
+            removeKey();
           }
 
           function onKey(e: KeyboardEvent) {
@@ -651,7 +665,7 @@ export function startCommandPalette(openStandupModal: () => void) {
             // File search with debounce (min 2 chars)
             if (q.length >= 2 && projectPath) {
               clearTimeout(_fileSearchTimer);
-              _fileSearchTimer = setTimeout(function () {
+              _fileSearchTimer = scope.timeout(function () {
                 if (!_paletteOpen) return;
                 _lastFileQuery = q;
                 searchFiles(projectPath, q, function (files) {
@@ -721,14 +735,15 @@ export function startCommandPalette(openStandupModal: () => void) {
             if (e.target === overlay) closePalette();
           });
 
-          document.addEventListener("keydown", onKey, true);
+          removeKey = scope.listen(document, "keydown", onKey, true);
 
           document.body.appendChild(overlay);
           input.focus();
           renderList();
         }
 
-        document.addEventListener(
+        scope.listen(
+          document,
           "keydown",
           function (e) {
             if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -741,8 +756,10 @@ export function startCommandPalette(openStandupModal: () => void) {
           true,
         );
 
+        if (openImmediately) openPalette();
+
         // ── Standup Modal ──────────────────────────────────────────────
-      },
+      }),
     );
   } catch {
     /* Optional UI may be unavailable. */

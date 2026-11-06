@@ -1,9 +1,13 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
 
-export function createStandupDialog() {
+export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
+  let removeEscape = () => {};
   function openStandupModal() {
+    removeEscape();
     const existing = document.querySelector(".gl-standup-overlay");
     if (existing) {
       existing.remove();
@@ -75,7 +79,7 @@ export function createStandupDialog() {
       actionsEl.style.display = "none";
       chrome.runtime.sendMessage(
         { type: "generate-standup", gitlabUrl: GITLAB_URL, date: dateStr },
-        function (resp) {
+        scope.guard(function (resp: { text?: string; _error?: string }) {
           const lastErr = chrome.runtime.lastError;
           if (lastErr || !resp || resp._error) {
             const errText =
@@ -94,7 +98,7 @@ export function createStandupDialog() {
             escHtml(currentText) +
             "</pre>";
           actionsEl.style.display = "";
-        },
+        }),
       );
     }
 
@@ -128,13 +132,14 @@ export function createStandupDialog() {
       navigator.clipboard.writeText(currentText).then(function () {
         const orig = copyBtn.textContent;
         copyBtn.textContent = "\u2713 " + msg("standupCopied");
-        setTimeout(function () {
+        scope.timeout(function () {
           copyBtn.textContent = orig;
         }, 2000);
       });
     });
 
     function closeStandup() {
+      removeEscape();
       overlay.remove();
     }
     modal
@@ -143,10 +148,9 @@ export function createStandupDialog() {
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) closeStandup();
     });
-    document.addEventListener("keydown", function onEsc(e) {
+    removeEscape = scope.listen(document, "keydown", function onEsc(e) {
       if (e.key === "Escape" && document.querySelector(".gl-standup-overlay")) {
         closeStandup();
-        document.removeEventListener("keydown", onEsc);
       }
     });
 
