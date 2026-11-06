@@ -201,10 +201,16 @@ module.exports = async function(options) {
 
   // Run the real list initializer, selectors, fetch/cache and render functions.
   // Skip unrelated features below it; no production test hooks are introduced.
-  var source = harness.readRuntime('content_proxy.js');
-  var end = source.indexOf('  // MR detail page: Jira badges in title');
-  assert.ok(end > 0, 'MR list initializer must precede the detail-page section');
-  vm.runInContext(source.slice(0, end) + '\n})();', env.context, { filename: 'content_proxy.js' });
+  if (process.env.EXTENSION_TEST_SOURCE_DIR) {
+    var source = harness.readRuntime('content_proxy.js');
+    var end = source.indexOf('  // MR detail page: Jira badges in title');
+    assert.ok(end > 0, 'MR list initializer must precede the detail-page section');
+    vm.runInContext(source.slice(0, end) + '\n})();', env.context, { filename: 'content_proxy.js' });
+  } else {
+    var bundle = require('./runtime.cjs').bundleForTest;
+    vm.runInContext(bundle('src/entities/jira-issue/index.ts', {globalName: 'JiraStateModule'}), env.context);
+    vm.runInContext(bundle('src/widgets/mr-list/index.ts', {globalName: 'MrListModule', footer: 'MrListModule.startMrList(JiraStateModule.createJiraState(), function() {}, false);'}), env.context);
+  }
   await harness.flush();
   return env;
 };

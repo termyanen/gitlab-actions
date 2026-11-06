@@ -1,0 +1,157 @@
+import { msg } from "../../../shared/i18n";
+import { escHtml } from "../../../shared/lib/html";
+
+export function createStandupDialog() {
+  const GITLAB_URL = window.location.origin;
+  function openStandupModal() {
+    const existing = document.querySelector(".gl-standup-overlay");
+    if (existing) {
+      existing.remove();
+      return;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "gl-standup-overlay";
+
+    const modal = document.createElement("div");
+    modal.className = "gl-standup-modal";
+
+    const now = new Date();
+    function pad2(n: number) {
+      return n < 10 ? "0" + n : "" + n;
+    }
+    const todayIso =
+      now.getFullYear() +
+      "-" +
+      pad2(now.getMonth() + 1) +
+      "-" +
+      pad2(now.getDate());
+
+    modal.innerHTML =
+      '<div class="gl-standup-header">' +
+      "<span>" +
+      escHtml(msg("standupTitle")) +
+      "</span>" +
+      '<div class="gl-standup-date-nav">' +
+      '<button class="gl-standup-date-btn gl-standup-prev" title="Previous day">\u2039</button>' +
+      '<input type="date" class="gl-standup-date" value="' +
+      todayIso +
+      '" max="' +
+      todayIso +
+      '">' +
+      '<button class="gl-standup-date-btn gl-standup-next" title="Next day" disabled>\u203a</button>' +
+      "</div>" +
+      '<button class="gl-standup-close" title="Close">&times;</button>' +
+      "</div>" +
+      '<div class="gl-standup-body">' +
+      '<div class="gl-standup-loading"><div class="gl-standup-spinner"></div></div>' +
+      "</div>" +
+      '<div class="gl-standup-actions" style="display:none">' +
+      '<button class="gl-standup-copy">' +
+      escHtml(msg("standupCopy")) +
+      "</button>" +
+      "</div>";
+
+    overlay.appendChild(modal);
+
+    const dateInput =
+      modal.querySelector<HTMLInputElement>(".gl-standup-date")!;
+    const prevBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-prev")!;
+    const nextBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-next")!;
+    const bodyEl = modal.querySelector<HTMLDivElement>(".gl-standup-body")!;
+    const actionsEl = modal.querySelector<HTMLDivElement>(
+      ".gl-standup-actions",
+    )!;
+    const copyBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-copy")!;
+    let currentText = "";
+
+    function updateNavButtons() {
+      nextBtn.disabled = dateInput.value >= todayIso;
+    }
+
+    function loadDate(dateStr: string) {
+      bodyEl.innerHTML =
+        '<div class="gl-standup-loading"><div class="gl-standup-spinner"></div></div>';
+      actionsEl.style.display = "none";
+      chrome.runtime.sendMessage(
+        { type: "generate-standup", gitlabUrl: GITLAB_URL, date: dateStr },
+        function (resp) {
+          const lastErr = chrome.runtime.lastError;
+          if (lastErr || !resp || resp._error) {
+            const errText =
+              resp && resp._error
+                ? resp._error
+                : lastErr && lastErr.message
+                  ? lastErr.message
+                  : "No response";
+            bodyEl.innerHTML =
+              '<div class="gl-standup-error">' + escHtml(errText) + "</div>";
+            return;
+          }
+          currentText = resp.text || "";
+          bodyEl.innerHTML =
+            '<pre class="gl-standup-content">' +
+            escHtml(currentText) +
+            "</pre>";
+          actionsEl.style.display = "";
+        },
+      );
+    }
+
+    function shiftDate(days: number) {
+      const d = new Date(dateInput.value + "T00:00:00");
+      d.setDate(d.getDate() + days);
+      const iso =
+        d.getFullYear() +
+        "-" +
+        pad2(d.getMonth() + 1) +
+        "-" +
+        pad2(d.getDate());
+      if (iso > todayIso) return;
+      dateInput.value = iso;
+      updateNavButtons();
+      loadDate(iso);
+    }
+
+    dateInput.addEventListener("change", function () {
+      updateNavButtons();
+      loadDate(dateInput.value);
+    });
+    prevBtn.addEventListener("click", function () {
+      shiftDate(-1);
+    });
+    nextBtn.addEventListener("click", function () {
+      shiftDate(1);
+    });
+
+    copyBtn.addEventListener("click", function () {
+      navigator.clipboard.writeText(currentText).then(function () {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = "\u2713 " + msg("standupCopied");
+        setTimeout(function () {
+          copyBtn.textContent = orig;
+        }, 2000);
+      });
+    });
+
+    function closeStandup() {
+      overlay.remove();
+    }
+    modal
+      .querySelector<HTMLButtonElement>(".gl-standup-close")!
+      .addEventListener("click", closeStandup);
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) closeStandup();
+    });
+    document.addEventListener("keydown", function onEsc(e) {
+      if (e.key === "Escape" && document.querySelector(".gl-standup-overlay")) {
+        closeStandup();
+        document.removeEventListener("keydown", onEsc);
+      }
+    });
+
+    document.body.appendChild(overlay);
+    loadDate(todayIso);
+  }
+  return { open: openStandupModal };
+}

@@ -1,5 +1,6 @@
 export interface ApiError extends Error {
   httpStatus?: number;
+  errorCode?: string;
 }
 export type SessionApi = <T = unknown>(
   method: string,
@@ -34,7 +35,11 @@ export function createSessionApi(origin: () => string): SessionApi {
     return fetch(url, opts).then(function (r) {
       if (r.status === 204) return {} as T;
       return r.text().then(function (text) {
-        let data: { message?: unknown; error?: unknown } | null;
+        let data: {
+          message?: unknown;
+          error?: unknown;
+          error_code?: string;
+        } | null;
         try {
           data = JSON.parse(text);
         } catch {
@@ -47,6 +52,7 @@ export function createSessionApi(origin: () => string): SessionApi {
           if (typeof msg === "object") msg = JSON.stringify(msg);
           const err: ApiError = new Error(String(msg));
           err.httpStatus = r.status;
+          err.errorCode = data?.error_code;
           throw err;
         }
         return (data || {}) as T;

@@ -29,6 +29,7 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '' } = {}) {
 }
 
 function readRuntime(file) {
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content_proxy.js') return bundleForTest('src/app/entrypoints/content_proxy.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content.js') {
     return bundleForTest('src/app/entrypoints/content.ts');
   }
