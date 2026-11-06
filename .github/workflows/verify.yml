@@ -20,6 +20,12 @@ jobs:
       - name: Validate GitHub Actions workflows
         run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
       - run: npm audit --audit-level=moderate
+      - name: Verify generated website
+        run: |
+          python3 -m venv "$RUNNER_TEMP/docs-venv"
+          "$RUNNER_TEMP/docs-venv/bin/python" -m pip install --require-hashes -r docs/requirements.txt
+          "$RUNNER_TEMP/docs-venv/bin/python" docs/build_pages.py
+          git diff --exit-code -- docs/review-guide.html docs/privacy.html docs/CHANGELOG.md docs/CHANGELOG_RU.md
       - run: npm run check
       - name: Build zip
         run: |

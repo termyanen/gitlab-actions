@@ -29,7 +29,7 @@ var root = require('./helpers/extension.cjs').root;
         fs.cpSync(path.join(root, directory), path.join(staging, directory), { recursive: true });
       });
       fs.symlinkSync(path.join(root, 'node_modules'), path.join(staging, 'node_modules'), 'dir');
-      ['tests/example.test.cjs', 'tests/helpers/mock.cjs', '.git/config', '.github/workflows/tests.yml', 'docs/index.html', 'promo/example.txt', 'package-lock.json', 'CLAUDE.md', 'ROADMAP.md', '_locales/.DS_Store', 'icons/.DS_Store'].forEach(function(file) {
+      ['tests/example.test.cjs', 'tests/helpers/mock.cjs', '.git/config', '.github/workflows/tests.yml', '.agents/skills/prepare-release/SKILL.md', '.claude/skills/fixture/SKILL.md', 'docs/index.html', 'docs/requirements.txt', 'promo/example.txt', 'package-lock.json', 'AGENTS.md', 'CONTRIBUTING.md', 'GEMINI.md', 'CLAUDE.md', 'ROADMAP.md', '_locales/.DS_Store', 'icons/.DS_Store'].forEach(function(file) {
         var destination = path.join(staging, file);
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.writeFileSync(destination, 'Must not ship');
@@ -57,7 +57,7 @@ var root = require('./helpers/extension.cjs').root;
       required.forEach(function(file) { assert.ok(entries.includes(file), 'Missing packaged resource: ' + file); });
       entries.forEach(function(file) {
         assert.equal(file.split('/').some(function(part) { return part.startsWith('.'); }), false, 'Hidden file must not ship: ' + file);
-        assert.equal(/^(tests\/|node_modules\/|src\/|scripts\/|\.|docs\/|promo\/|package(?:-lock)?\.json$|pack\.sh$|CLAUDE\.md$|ROADMAP\.md$)/.test(file), false, 'Unexpected packaged file: ' + file);
+        assert.equal(/^(tests\/|node_modules\/|src\/|scripts\/|\.|docs\/|promo\/|package(?:-lock)?\.json$|pack\.sh$|(?:AGENTS|CONTRIBUTING|GEMINI|CLAUDE|ROADMAP)\.md$)/.test(file), false, 'Unexpected packaged file: ' + file);
         assert.equal(/\.(?:ts|map)$/.test(file), false, 'Development source must not ship: ' + file);
       });
     } finally {
