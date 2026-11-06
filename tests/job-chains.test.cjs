@@ -8,6 +8,24 @@ function task() {
   return { gitlabUrl: 'https://gitlab.test', projectId: 37, mrIid: 12, jobs: ['build', 'deploy'], currentIndex: 0, status: 'starting' };
 }
 
+test('browser startup re-establishes task alarms after Chrome clears them', async function() {
+  var env = harness.background({gitlab: function() { return new Promise(function() {}); }});
+  await env.context.ready;
+  var alarms = [];
+  env.context.chrome.alarms.create = function(name, options) { alarms.push({name, options}); };
+  // Keep the resumed read pending so repeated startup events cannot launch a second runner.
+  env.context.tasks['task-startup'] = Object.assign(task(), {phase: 'waiting'});
+  assert.equal(typeof env.listeners.startup, 'function', 'listener must be registered synchronously');
+  env.listeners.startup();
+  env.listeners.startup();
+  await harness.flush();
+  assert.ok(alarms.some(alarm => alarm.name === 'job-chain-wakeup' && alarm.options.periodInMinutes === 1));
+  await env.clock.next();
+  env.listeners.startup();
+  await harness.flush();
+  assert.equal(env.requests.length, 1, 'repeated startup must not duplicate a pending runner');
+});
+
 test('job lookups stay on the initial pipeline when a new MR pipeline appears', async function() {
   var latest = 100;
   var env = harness.background({ gitlab: function(req) {
