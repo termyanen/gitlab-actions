@@ -38,6 +38,7 @@
 <ul>
 <li><strong>Preferences:</strong> <code>chrome.storage.sync</code> stores settings, including custom review prompts, automatic instruction text and enabled states, and file filters, until changed or the extension is uninstalled. If Chrome Sync is enabled, Google may synchronize these preferences between your browsers. Do not put secrets or repository content into saved prompts or instructions if you do not want them in synchronized settings.</li>
 <li><strong>Local caches:</strong> <code>chrome.storage.local</code> stores a GitLab username cache and commit-version badge results, including project/file identifiers and commit hashes. Version results are capped at 1,000 entries. These caches remain until replaced, evicted where applicable, or extension data is removed. Other loaded content and UI state use memory or browser session storage.</li>
+<li><strong>CI task recovery:</strong> <code>chrome.storage.local</code> stores active job-chain checkpoints and up to 50 completed tasks: GitLab origin, project/MR/pipeline/job identifiers, MR title, job names, progress, timestamps and error messages. They remain until replaced or extension data is removed and are not synchronized through Chrome Sync. They contain no job logs, repository files or credentials.</li>
 <li><strong>Duplicate-send protection:</strong> review import stores a local digest identifier, delivery status, timestamp and, after confirmation, comment ID. These records prevent accidental reposting after interruptions and remain until extension data is removed. They contain no comment body, code, prompt or review transcript and are not a review history. They are not stored in Chrome Sync.</li>
 <li><strong>Review content:</strong> fetched discussions/code and pasted import text remain in page memory while the feature is in use. The extension does not save a persistent review transcript or snapshots. Closing the page clears that page's memory. Clipboard text remains under browser/operating-system control until replaced or cleared; clipboard synchronization tools are outside the extension's control.</li>
 <li><strong>Credentials:</strong> the extension does not persist session cookies or CSRF tokens; browser cookies remain in the browser's cookie store.</li>
@@ -62,7 +63,11 @@
 <tbody>
 <tr>
   <td><code>storage</code></td>
-  <td>Preferences, local caches and duplicate-send protection</td>
+  <td>Preferences, local caches, CI task checkpoints and duplicate-send protection</td>
+</tr>
+<tr>
+  <td><code>alarms</code></td>
+  <td>Wake the service worker to restore unfinished CI tasks</td>
 </tr>
 <tr>
   <td><code>notifications</code></td>
@@ -121,6 +126,7 @@
 <ul>
 <li><strong>Настройки:</strong> <code>chrome.storage.sync</code> хранит конфигурацию, включая пользовательские промпты, тексты и состояния автоматических инструкций и фильтры файлов, до изменения или удаления расширения. При включённом Chrome Sync Google может синхронизировать эти настройки между браузерами. Не включайте секреты или код в сохранённые промпты и инструкции, если не хотите сохранять их в синхронизируемых настройках.</li>
 <li><strong>Локальные кэши:</strong> <code>chrome.storage.local</code> хранит имя пользователя GitLab и результаты определения версий по коммитам, включая идентификаторы проекта/файла и SHA. Кэш версий ограничен 1000 записями. Кэши остаются до замены, вытеснения там, где оно предусмотрено, или удаления данных расширения. Остальные загруженные данные и состояние интерфейса используют память или хранилище сессии браузера.</li>
+<li><strong>Восстановление CI-задач:</strong> <code>chrome.storage.local</code> хранит состояния активных цепочек и до 50 завершённых задач: адрес GitLab, идентификаторы проекта/MR/pipeline/job, заголовок MR, имена job, прогресс, время и сообщения об ошибках. Они сохраняются до замены или удаления данных расширения и не синхронизируются через Chrome Sync. Логи job, файлы репозитория и учётные данные в эти записи не входят.</li>
 <li><strong>Защита от повторной отправки:</strong> импорт сохраняет локально хеш-идентификатор операции, статус доставки, время и после подтверждения — ID комментария. Записи остаются до удаления данных расширения и помогают не повторять отправку после сбоев. Они не содержат текста комментария, кода, промпта или переписки ревью, не являются историей ревью и не синхронизируются через Chrome Sync.</li>
 <li><strong>Содержимое ревью:</strong> обсуждения, код и вставленный ответ находятся в памяти страницы во время использования. Расширение не сохраняет постоянную историю ревью или снимки кода. Закрытие страницы очищает её память. Скопированный текст остаётся под управлением браузера и операционной системы до замены или очистки; сторонняя синхронизация буфера не контролируется расширением.</li>
 <li><strong>Учётные данные:</strong> расширение не сохраняет сессионные cookie или CSRF-токены; cookie остаются в хранилище браузера.</li>
@@ -145,7 +151,11 @@
 <tbody>
 <tr>
   <td><code>storage</code></td>
-  <td>Настройки, локальные кэши и защита от повторной отправки</td>
+  <td>Настройки, локальные кэши, состояния CI-задач и защита от повторной отправки</td>
+</tr>
+<tr>
+  <td><code>alarms</code></td>
+  <td>Пробуждение service worker для восстановления незавершённых CI-задач</td>
 </tr>
 <tr>
   <td><code>notifications</code></td>

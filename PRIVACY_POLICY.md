@@ -29,6 +29,7 @@ Optional discussion resolution is sent to the same GitLab only when you explicit
 
 - **Preferences:** `chrome.storage.sync` stores settings, including custom review prompts, automatic instruction text and enabled states, and file filters, until changed or the extension is uninstalled. If Chrome Sync is enabled, Google may synchronize these preferences between your browsers. Do not put secrets or repository content into saved prompts or instructions if you do not want them in synchronized settings.
 - **Local caches:** `chrome.storage.local` stores a GitLab username cache and commit-version badge results, including project/file identifiers and commit hashes. Version results are capped at 1,000 entries. These caches remain until replaced, evicted where applicable, or extension data is removed. Other loaded content and UI state use memory or browser session storage.
+- **CI task recovery:** `chrome.storage.local` stores active job-chain checkpoints and up to 50 completed tasks: GitLab origin, project/MR/pipeline/job identifiers, MR title, job names, progress, timestamps and error messages. They remain until replaced or extension data is removed and are not synchronized through Chrome Sync. They contain no job logs, repository files or credentials.
 - **Duplicate-send protection:** review import stores a local digest identifier, delivery status, timestamp and, after confirmation, comment ID. These records prevent accidental reposting after interruptions and remain until extension data is removed. They contain no comment body, code, prompt or review transcript and are not a review history. They are not stored in Chrome Sync.
 - **Review content:** fetched discussions/code and pasted import text remain in page memory while the feature is in use. The extension does not save a persistent review transcript or snapshots. Closing the page clears that page's memory. Clipboard text remains under browser/operating-system control until replaced or cleared; clipboard synchronization tools are outside the extension's control.
 - **Credentials:** the extension does not persist session cookies or CSRF tokens; browser cookies remain in the browser's cookie store.
@@ -48,7 +49,8 @@ The extension runs bundled JavaScript and does not download executable code or e
 
 | Permission | Purpose |
 |---|---|
-| `storage` | Preferences, local caches and duplicate-send protection |
+| `storage` | Preferences, local caches, CI task checkpoints and duplicate-send protection |
+| `alarms` | Wake the service worker to restore unfinished CI tasks |
 | `notifications` | Completion notifications for background jobs |
 | `tabs` | Communicate with GitLab tabs and locate tabs needed for user-triggered work |
 | `cookies` | Existing GitLab/Jira session authentication used by integration features |
