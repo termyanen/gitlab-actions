@@ -14,6 +14,7 @@ export interface ReviewIntent {
 export interface ImportDialog {
   close(force?: boolean): boolean;
   open(context: ReviewContext, options: { t: Translate }): void;
+  syncRoute?(): void;
 }
 export interface ReviewSettings {
   [key: string]: unknown;
@@ -46,6 +47,7 @@ export interface ReviewDialogState {
   loadController?: AbortController | null;
   exportController?: AbortController;
   versionsController?: AbortController;
+  versionsLoaded?: boolean;
   busy?: boolean;
   loading?: boolean;
   needsLoad?: boolean;

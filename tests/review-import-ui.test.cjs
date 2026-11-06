@@ -379,6 +379,47 @@ test('navigation during a batch aborts it when progress arrives and ignores stal
   assert.equal(env.document.querySelector('.gl-review-import-overlay'), null);
 });
 
+test('declining SPA discard preserves import input when a pending validation responds', async function() {
+  var env = await setup({settings: {ai_review_confirm_close: true}});
+  await env.change(env.input, '{"version":1,"comments":[]}', 'input');
+  await env.click('aiReviewImportValidate');
+  var request = env.preparations[0];
+  var overlay = env.document.querySelector('.gl-review-import-overlay');
+  var confirmations = 0;
+  env.context.window.confirm = function() { confirmations++; return false; };
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/13';
+  assert.equal(env.importUI.close(), false);
+  assert.equal(request.options.signal.aborted, true);
+  request.reject(Object.assign(new Error('Cancelled'), {name: 'AbortError'}));
+  await env.drain();
+  assert.equal(env.document.querySelector('.gl-review-import-overlay'), overlay);
+  assert.equal(env.input.value, '{"version":1,"comments":[]}');
+  assert.equal(confirmations, 1);
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/12';
+  env.importUI.syncRoute();
+  assert.equal(env.button('aiReviewImportValidate').disabled, false);
+  assert.equal(env.button('aiReviewImportPublish').disabled, true);
+});
+
+test('a retained import requires revalidation after navigation interrupts a send', async function() {
+  var env = await setup({settings: {ai_review_confirm_close: true}});
+  await env.preview();
+  await env.click('aiReviewImportPublish');
+  var request = env.publications[0];
+  env.context.window.confirm = function() { return false; };
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/13';
+  assert.equal(env.importUI.close(), false);
+  assert.equal(request.options.signal.aborted, true);
+  request.resolve({items: [{id: 'a', status: 'published'}], warnings: []});
+  await env.drain();
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/12';
+  env.importUI.syncRoute();
+  assert.ok(env.document.querySelector('.gl-review-import-overlay'));
+  assert.equal(env.button('aiReviewImportValidate').disabled, false);
+  assert.equal(env.button('aiReviewImportPublish').disabled, true);
+  assert.equal(env.publications.length, 1);
+});
+
 test('the same MR changes tab and GitLab subpath remain valid import contexts', async function() {
   var env = await setup({ pathname: '/gitlab/team/repo/-/merge_requests/12/diffs' });
   env.importUI.close();

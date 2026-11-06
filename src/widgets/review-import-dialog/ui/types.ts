@@ -17,6 +17,7 @@ export interface ImportDialogState {
   manualId: number;
   busy: "" | "checking" | "sending" | "prompt" | "revising";
   stopping?: boolean;
+  retainedRoute?: string;
   run: number;
   controller?: AbortController;
   overlay: HTMLDivElement;

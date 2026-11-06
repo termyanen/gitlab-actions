@@ -29,9 +29,21 @@ npm run test:browser
 ```
 
 These checks cover settings autosave/reload, an unrelated HTTPS page, review
-controls under DOM updates, untrusted page messages, a real worker stop/restart,
-repeated SPA navigation, and lazy UI under a restrictive page CSP. They use local fixtures and do not establish
+controls under DOM updates, untrusted page messages, and lazy UI under a restrictive
+page CSP. They also cover SPA cleanup of Git commands, failed-job panels and
+approval badges, late API responses, stale palette actions, and an in-flight MR
+action retaining its original target during DOM replacement. A real worker
+stop/restart is tested both for saved status and for an active job chain completing
+without replaying its play request. They use local fixtures and do not establish
 compatibility with a live GitLab/Jira server. Each run removes its test profile.
+
+The refactor review against `main` (`1d97afe`) ran the same 659 behavioral checks
+against both implementations; all passed on both. The current full suite has 831
+Node tests and 13 production-browser scenarios. Review UI regressions also cover
+keeping an edited draft when navigation is declined, ignoring late validation
+responses, recovering from an aborted export after returning, and requiring new
+validation after an interrupted import send. Test counts describe this review
+snapshot, not a whole-extension coverage percentage.
 
 ## What is covered
 
@@ -276,7 +288,7 @@ still need tests; their absence does not establish a bug.
 
 | Priority | Area | Scenarios still missing |
 | --- | --- | --- |
-| Next | Real browser lifecycle | Actual Chrome worker suspension/restart, offline request completion and page reloads. The fresh-VM test confirms existing behavior: tasks live in worker memory, become `not_found` after restart, and are not automatically replayed. Automatic recovery is not implemented. Cherry-pick retry checkpoints last only while its modal remains open. |
+| Next | Real browser lifecycle | Natural idle suspension, browser shutdown/relaunch, offline request completion and page reloads. Explicit Chromium worker stop/restart and active job-chain recovery are covered; persisted checkpoints reconcile the pinned pipeline before continuing and do not blindly replay an uncertain mutation. Cherry-pick retry checkpoints last only while its modal remains open. |
 | Next | Popup/settings | Debounced autosave, profile switching, button reordering, language changes and permission approval/denial in Chrome. |
 | Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
 | Next | Group play | Parent/child pipelines with matching stage names, pagination, status changes while starting a group and partial API failures. |
