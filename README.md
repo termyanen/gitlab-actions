@@ -398,10 +398,15 @@ Flexible configuration for automatic version bumping:
    ```bash
    git clone https://github.com/termyanen/gitlab-actions.git
    ```
-2. Open `chrome://extensions/` in Chrome
-3. Enable "Developer mode" (top right)
-4. Click "Load unpacked" and select the cloned folder
-5. Open any GitLab merge request page
+2. Use Node.js 22.12+ (`nvm use`), then run `npm ci` and `npm run build`.
+3. Open `chrome://extensions/` and enable "Developer mode".
+4. Click "Load unpacked" and select the generated `dist/` folder.
+5. Open any GitLab merge request page.
+
+Use `npm run dev` to rebuild JavaScript and copy changed assets during development.
+Reload the unpacked extension and the GitLab tab after a rebuild. Production
+builds contain no development server or source maps. The architecture and commit
+sequence are documented in [the FSD migration plan](docs/REFACTOR_PLAN_RU.md).
 
 ## Configuration
 
@@ -442,7 +447,8 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 
 ## Testing
 
-Run `npm test` with Node.js 18.18+; no dependency installation is required. The
+Run `npm ci`, then `npm run check` with Node.js 22.12+. This checks TypeScript,
+lint, regressions and the production build. Use `npm test` for regressions only. The
 regression suite covers version bumps, MR actions, CI job chains, API relay, Jira
 handlers, cherry-pick flows and diff helpers, locales, and release packaging. Tests run in
 CI and before Chrome Web Store uploads. See [test coverage and browser checks](tests/README.md)
@@ -463,8 +469,8 @@ release:
 5. Package with `bash pack.sh` when needed; the archive name comes from the manifest.
    If creating a GitHub release, use the same version in its tag and release notes.
 
-The private `package.json` exists only to run tests and has no separate release
-version. Both packaging paths exclude it and the test/development files.
+The private `package.json` configures the development toolchain and has no separate
+release version. Both packaging paths build and package only `dist/`.
 
 ## License
 
