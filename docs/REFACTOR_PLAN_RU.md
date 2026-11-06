@@ -522,3 +522,65 @@ actionlint и чистая установка; Chromium/API tests использ
 [Manifest V3: локальный исполняемый код](https://developer.chrome.com/docs/webstore/program-policies/mv3-requirements),
 [minimatch advisory](https://github.com/advisories/GHSA-g3hv-75wg-m249),
 [Ubuntu runner image](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md).
+
+## Правила контрибьюторов и проверка типов (база `2d78b1e`)
+
+Добавлены `AGENTS.md` и `CONTRIBUTING.md`: карта FSD, точки изменения настроек,
+правила API/DOM/async/lifecycle, команды проверки и требования к описанию PR.
+Обнаруженный локальный `CLAUDE.md` всё ещё требовал ES5, Node 18 и изменения
+старых корневых JS-файлов. Он заменён короткой ссылкой на общие инструкции и
+теперь отслеживается Git. Добавлен шаблон PR с результатами проверок и влиянием
+на совместимость. Автоматические hooks/install-скрипты не добавлялись.
+
+ESLint использует современный `defineConfig` и TypeScript Project Service.
+Включены точечные type-aware правила: необработанные и некорректно используемые
+Promise, await для непригодных значений, лишние утверждения типов, повторяющиеся
+и избыточные union-типы, exhaustiveness switch и выбрасывание Error.
+Оператор `void` не отключает проверку Promise. Неиспользуемые eslint-disable
+считаются ошибкой; TS-подавления требуют объяснения, ts-ignore/nocheck запрещены.
+Проверка расширена на Node-скрипты и конфигурации инструментов, warnings запрещены.
+`globals` — новая dev-зависимость; runtime npm-зависимостей не появилось.
+
+В TypeScript включены проверка библиотечных деклараций, side-effect imports,
+запрет недостижимого кода и неиспользуемых labels. `strict` сохранён.
+У Prettier появилась явная конфигурация; проверяются также корневые JSON,
+конфигурации инструментов и workflow YAML. `.editorconfig` задаёт базовый стиль
+редакторов. Старые CJS-fixtures и маркетинговые страницы не переформатировались.
+Тестовый esbuild-адаптер теперь берёт target из manifest, как production-сборщик.
+
+Исправлены 40 мест с необработанными Promise/завершениями цепочек и удалены
+28 избыточных утверждений типов. Chrome callback API читают `runtime.lastError`
+внутри callback; неожиданные Promise failures получают конечный обработчик.
+Существующие пользовательские сообщения об ошибках сохранены. `alarms.create`
+учитывает void на Chrome 110 и Promise начиная с Chrome 111.
+Браузерный тест выявил отсутствие ответа у `open-options`: обработчик теперь
+держит message port открытым до результата `tabs.create`, отвечает об успехе
+или ошибке и не вызывает ложный `message port closed` у вызывающей стороны.
+
+Проверки: чистый `npm ci` и полный check в отдельной копии прошли; итоговый
+`npm run check` — 860 тестов. Добавлены регрессии отказа storage, результата
+открытия настроек и отказа clipboard с успешной повторной попыткой. Отдельные
+невалидные примеры подтвердили, что lint отклоняет floating Promise (включая
+void), async predicate, await обычного числа, неполный switch и неизвестный
+идентификатор Node-скрипта. Корректно обработанный Promise принимается.
+Actionlint проходит, npm audit — 0 известных уязвимостей.
+
+Runtime-профиль: после 60 замен списка рост DOM/обработчиков 0/0, медиана
+216,66 мс; после 20 циклов review/SPA — 0/0. Лимиты роста памяти, DOM-узлов
+и обработчиков не превышены. Итоговые 23 Chromium-сценария проходят.
+Bootstrap остался 281 байт, CSS — 80 498; начальный MR JS вырос с 135 645 до
+136 201 байта (+556 байт, примерно 0,41%) из-за обработки ошибок.
+
+Дальнейшая миграция типов должна отдельно пересмотреть динамические словари
+API, индексы массивов, nullable DOM-контракты и absent/undefined в настройках.
+Глобальные `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` и запрет
+всех narrowing assertions пока не включены: пробный прогон первых двух дал
+423 диагностических ошибки. Маскировать их `!`, `as` или подавлениями нельзя.
+`noImplicitReturns` также требует отдельного уточнения существующих контрактов.
+
+Источники: [typed linting](https://typescript-eslint.io/getting-started/typed-linting/),
+[floating promises и void](https://typescript-eslint.io/rules/no-floating-promises/),
+[Prettier config](https://prettier.io/docs/configuration),
+[Chrome alarms.create](https://developer.chrome.com/docs/extensions/reference/api/alarms#method-create),
+[indexed access](https://www.typescriptlang.org/tsconfig/noUncheckedIndexedAccess.html),
+[exact optional properties](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html).
