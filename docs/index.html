@@ -506,7 +506,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 6v5M10 13v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fFailedJobTitle">Failed Job Quick View</h3>
-        <p data-i18n="fFailedJobDesc">When a pipeline fails, see failed job names and the last lines of the error log right on the MR page. No need to click through multiple pages to find what went wrong.</p>
+        <p data-i18n="fFailedJobDesc">Preview failed jobs and log tails on the MR page. Configure job and line counts in Display rules and limits; open the full pipeline when more jobs are available.</p>
       </div>
       <!-- Version bump -->
       <div class="bento-card">
@@ -610,7 +610,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3L2 17h16L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 9v3M10 14v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fSensitiveTitle">Sensitive File Warning</h3>
-        <p data-i18n="fSensitiveDesc">Warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.</p>
+        <p data-i18n="fSensitiveDesc">Flag sensitive files with built-in rules, additional patterns and exclusions. Settings control the rules; incomplete scans are marked explicitly.</p>
       </div>
       <!-- Git commands -->
       <div class="bento-card">
@@ -651,7 +651,7 @@
         <div class="feature-dot" style="background:var(--purple)"></div>
         <div>
           <h4 data-i18n="fReviewerTitle">"Your Review" Badge</h4>
-          <p data-i18n="fReviewerDesc">Scans MR comments for reviewer assignments. Shows a badge when you are mentioned as a reviewer. Cached for 5 minutes.</p>
+          <p data-i18n="fReviewerDesc">Find exact reviewer mentions in the oldest MR comments. Configure scan depth (10 comments by default). Results are cached for 5 minutes.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -672,7 +672,7 @@
         <div class="feature-dot" style="background:var(--cyan)"></div>
         <div>
           <h4 data-i18n="fSizeTitle">MR Size Labels</h4>
-          <p data-i18n="fSizeDesc">Color-coded S/M/L/XL badges based on lines changed. Quickly assess MR complexity before opening.</p>
+          <p data-i18n="fSizeDesc">S/M/L/XL badges with configurable line and file thresholds. GitLab lower-bound counts stay marked as partial.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -870,7 +870,7 @@
         fCiTitle: 'CI/CD Pipeline Control',
         fCiDesc: 'New pipeline, cancel running, retry all failed jobs, trigger custom manual jobs \u2014 manage your CI without navigating away from the MR.',
         fFailedJobTitle: 'Failed Job Quick View',
-        fFailedJobDesc: 'When a pipeline fails, see failed job names and the last lines of the error log right on the MR page. No need to click through multiple pages to find what went wrong.',
+        fFailedJobDesc: 'Preview failed jobs and log tails on the MR page. Configure job and line counts in Display rules and limits; open the full pipeline when more jobs are available.',
         fVersionTitle: 'Smart Version Bump',
         fVersionDesc: 'Automatic version increment for package.json, pyproject.toml, version.txt, or any custom file. Configurable JSON path, strategy (patch/minor/major), commit message template, and option to read version from the target branch.',
         fReviewTitle: 'Quick Reviewers',
@@ -892,7 +892,7 @@
         fTrackerTitle: 'Background Job Tracker',
         fTrackerDesc: 'Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.',
         fSensitiveTitle: 'Sensitive File Warning',
-        fSensitiveDesc: 'Warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.',
+        fSensitiveDesc: 'Flag sensitive files with built-in rules, additional patterns and exclusions. Settings control the rules; incomplete scans are marked explicitly.',
         fGitCmdTitle: 'Git Command Buttons',
         fGitCmdDesc: 'Copy ready-to-run checkout, pull, and hard-reset commands for the MR\'s source branch with one click. Handy for local testing and code review.',
 
@@ -903,13 +903,13 @@
         fDimTitle: 'Dim Drafts & Highlight Own MRs',
         fDimDesc: 'Draft MRs are visually dimmed. Your own MRs get a blue left border for instant recognition.',
         fReviewerTitle: '"Your Review" Badge',
-        fReviewerDesc: 'Scans MR comments for reviewer assignments. Shows a badge when you are mentioned as a reviewer. Cached for 5 minutes.',
+        fReviewerDesc: 'Find exact reviewer mentions in the oldest MR comments. Configure scan depth (10 comments by default). Results are cached for 5 minutes.',
         fCopyListTitle: 'Copy MR from List',
         fCopyListDesc: 'Copy button on each MR in the list. Copies title and link to clipboard without opening the merge request.',
         fThreadsTitle: 'Unresolved Threads Count',
         fThreadsDesc: 'Red badge showing the number of unresolved discussion threads on each MR. Fetched via API with 5-minute cache.',
         fSizeTitle: 'MR Size Labels',
-        fSizeDesc: 'Color-coded S/M/L/XL badges based on lines changed. Quickly assess MR complexity before opening.',
+        fSizeDesc: 'S/M/L/XL badges with configurable line and file thresholds. GitLab lower-bound counts stay marked as partial.',
         fConflictsTitle: 'Conflicts Indicator',
         fConflictsDesc: 'Red CONFLICTS badge on MR list and detail pages when the branch has merge conflicts that need to be resolved.',
         fApprovalTitle: 'My Approval Indicator',
@@ -987,7 +987,7 @@
         fCiTitle: 'Управление CI/CD',
         fCiDesc: 'Новый пайплайн, отмена запущенного, перезапуск упавших джобов, запуск кастомных ручных джобов \u2014 всё без перехода на другие страницы.',
         fFailedJobTitle: 'Быстрый просмотр ошибок',
-        fFailedJobDesc: 'При падении пайплайна показывает имена упавших джобов и последние строки лога ошибки прямо на странице MR. Не нужно кликать в пайплайн, чтобы найти ошибку.',
+        fFailedJobDesc: 'Предпросмотр упавших jobs и последних строк логов прямо в MR. Число jobs и строк задаётся в настройках; остальные доступны по ссылке на полный pipeline.',
         fVersionTitle: 'Умный Version Bump',
         fVersionDesc: 'Автоматическое поднятие версии в package.json, pyproject.toml, version.txt или любом другом файле. Настраиваемый путь, стратегия (patch/minor/major), шаблон коммита и чтение версии из target-ветки.',
         fReviewTitle: 'Быстрые ревьюеры',
@@ -1009,7 +1009,7 @@
         fTrackerTitle: 'Трекер фоновых задач',
         fTrackerDesc: 'Долгие операции (Ship, Rebase + Auto-merge) выполняются в фоновом service worker. Плавающая панель показывает прогресс в реальном времени с визуализацией шагов и кнопкой отмены. Работает на всех вкладках GitLab.',
         fSensitiveTitle: 'Предупреждение о чувствительных файлах',
-        fSensitiveDesc: 'Бейдж-предупреждение, когда MR изменяет файлы безопасности: .env, Dockerfile, CI-конфиги, файлы с ключами.',
+        fSensitiveDesc: 'Проверка чувствительных файлов по встроенным правилам, своим шаблонам и исключениям. Правила настраиваются; неполная проверка явно отмечается.',
         fGitCmdTitle: 'Кнопки git-команд',
         fGitCmdDesc: 'Копирование готовых команд checkout, pull и hard reset для ветки MR одним кликом. Удобно для локального тестирования и ревью.',
 
@@ -1020,13 +1020,13 @@
         fDimTitle: 'Затемнение черновиков и подсветка своих MR',
         fDimDesc: 'Черновые MR визуально приглушены. Ваши собственные MR выделены синей полоской слева.',
         fReviewerTitle: 'Бейдж "Ваше ревью"',
-        fReviewerDesc: 'Сканирует комментарии MR на назначение ревьюеров. Показывает бейдж, когда вы упомянуты как ревьюер. Кэш 5 минут.',
+        fReviewerDesc: 'Поиск точных упоминаний ревьюера в первых комментариях MR. Глубина поиска настраивается (по умолчанию 10). Кэш — 5 минут.',
         fCopyListTitle: 'Копирование MR из списка',
         fCopyListDesc: 'Кнопка копирования на каждом MR в списке. Копирует заголовок и ссылку в буфер без открытия merge request.',
         fThreadsTitle: 'Нерешённые треды',
         fThreadsDesc: 'Красный бейдж с количеством нерешённых тредов на каждом MR. Данные из API с кэшем 5 минут.',
         fSizeTitle: 'Размер MR',
-        fSizeDesc: 'Цветные бейджи S/M/L/XL по количеству изменённых строк. Быстрая оценка сложности MR.',
+        fSizeDesc: 'Бейджи S/M/L/XL с настраиваемыми порогами строк и файлов. Нижние границы счётчиков GitLab сохраняют отметку о неполноте.',
         fConflictsTitle: 'Индикатор конфликтов',
         fConflictsDesc: 'Красный бейдж КОНФЛИКТЫ в списке и на странице MR, когда в ветке есть конфликты слияния.',
         fApprovalTitle: 'Индикатор моего аппрува',

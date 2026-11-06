@@ -1,13 +1,14 @@
-import { SEL } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
 import { insertAfterSafe, q, qUp } from "../../../shared/lib/dom";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { Approval } from "../model/types";
-const SIZE_LIMITS = {
-  lines: { small: 50, medium: 200, large: 500 },
-  files: { small: 5, medium: 15, large: 30 },
-};
+import {
+  DISPLAY_DEFAULTS,
+  parseSizeThresholds,
+} from "../../../entities/settings";
+import type { DisplayPreferences } from "../../../entities/settings";
 
 export function createMetadataBadges(scope: Lifecycle) {
   // GitLab replaces rows without changing the route (pagination/filtering).
@@ -40,21 +41,27 @@ export function createMetadataBadges(scope: Lifecycle) {
       .querySelectorAll(".gl-mr-ext-approval-item")
       .forEach((item) => item.remove());
   });
-  function renderThreadsBadge(mrItem: HTMLElement, count: number) {
+  function renderThreadsBadge(
+    mrItem: HTMLElement,
+    count: number,
+    partial: boolean,
+  ) {
     if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-threads-badge")) return;
-    if (count === 0) return;
+    if (count === 0 && !partial) return;
 
     const controlsUl = q(mrItem, SEL.controls);
     if (!controlsUl) return;
 
     const li = document.createElement("li");
     li.className = "gl-mr-ext-threads-badge";
-    li.title = count + " unresolved thread" + (count === 1 ? "" : "s");
+    li.title = partial
+      ? msg("threadsIncompleteHint", [count, GITLAB_PAGE_SIZE])
+      : msg("threadsCountHint", [count]);
     li.innerHTML =
       '<svg viewBox="0 0 16 16" class="s16"><path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" d="M2.75 1.75h10.5c.55 0 1 .45 1 1v7c0 .55-.45 1-1 1H8.56l-3.4 3.4a.25.25 0 0 1-.43-.18V10.75H2.75c-.55 0-1-.45-1-1v-7c0-.55.45-1 1-1Z"/><line x1="5" y1="5" x2="11" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="7.5" x2="9" y2="7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' +
       "<span>" +
-      count +
+      (partial ? (count ? count + "+" : "?") : count) +
       "</span>";
 
     // Insert after comments icon if found, otherwise prepend to controls
@@ -73,6 +80,8 @@ export function createMetadataBadges(scope: Lifecycle) {
     mrItem: HTMLElement,
     changesLines: number,
     changesFiles: number,
+    settings: DisplayPreferences,
+    filesTruncated: boolean,
   ) {
     if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-size-badge")) return;
@@ -81,44 +90,25 @@ export function createMetadataBadges(scope: Lifecycle) {
     const titleContainer =
       qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
 
-    let label, cls, tooltip;
-    if (changesLines > 0) {
-      // Size by lines changed
-      if (changesLines <= SIZE_LIMITS.lines.small) {
-        label = "S";
-        cls = "size-s";
-      } else if (changesLines <= SIZE_LIMITS.lines.medium) {
-        label = "M";
-        cls = "size-m";
-      } else if (changesLines <= SIZE_LIMITS.lines.large) {
-        label = "L";
-        cls = "size-l";
-      } else {
-        label = "XL";
-        cls = "size-xl";
-      }
-      tooltip = changesLines + " lines, " + changesFiles + " files";
-    } else {
-      // Fallback: size by files changed
-      if (changesFiles <= SIZE_LIMITS.files.small) {
-        label = "S";
-        cls = "size-s";
-      } else if (changesFiles <= SIZE_LIMITS.files.medium) {
-        label = "M";
-        cls = "size-m";
-      } else if (changesFiles <= SIZE_LIMITS.files.large) {
-        label = "L";
-        cls = "size-l";
-      } else {
-        label = "XL";
-        cls = "size-xl";
-      }
-      tooltip = changesFiles + " files changed";
-    }
+    const key = changesLines > 0 ? "mr_size_lines" : "mr_size_files";
+    const thresholds =
+      parseSizeThresholds(settings[key]) ||
+      parseSizeThresholds(DISPLAY_DEFAULTS[key]);
+    if (!thresholds) return;
+    const size = changesLines > 0 ? changesLines : changesFiles;
+    const index = thresholds.findIndex((limit) => size <= limit);
+    const label = index < 0 ? "XL" : ["S", "M", "L"][index];
+    const cls = "size-" + label.toLowerCase();
+    const fileCount = String(changesFiles) + (filesTruncated ? "+" : "");
+    const tooltip =
+      changesLines > 0
+        ? msg("mrSizeLinesTooltip", [changesLines, fileCount])
+        : msg("mrSizeFilesTooltip", [fileCount]);
 
     const badge = document.createElement("span");
     badge.className = "gl-mr-ext-size-badge " + cls;
-    badge.textContent = label;
+    badge.textContent =
+      label + (filesTruncated && changesLines <= 0 && index >= 0 ? "+" : "");
     badge.title = tooltip;
     // Always insert right after the title link, before Jira badges
     insertAfterSafe(titleContainer, badge, titleEl);

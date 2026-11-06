@@ -2,6 +2,10 @@ import { reportError } from "../../../shared/lib/errors";
 import { reportRuntimeError } from "../../../shared/api/runtime";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
+import {
+  DISPLAY_DEFAULTS,
+  readDisplayPreferences,
+} from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
@@ -206,6 +210,7 @@ export function startMrList(
 
   if (isMrListPage()) {
     const listDefaults = {
+      ...DISPLAY_DEFAULTS,
       dim_drafts: false,
       highlight_own_mrs: false,
       show_only_mine: false,
@@ -228,6 +233,7 @@ export function startMrList(
         listDefaults,
         scope.guard(function (s: ListSettings) {
           if (chrome.runtime.lastError) return;
+          Object.assign(s, readDisplayPreferences(s));
           jiraState.skipConfirmations = !!s.skip_confirmations;
 
           const needsUsername =
@@ -248,7 +254,10 @@ export function startMrList(
                   applyMrListEnhancements(s, username);
                 }
                 if (s.show_reviewer_badge && username) {
-                  fetchAndRenderReviewerBadges(username);
+                  fetchAndRenderReviewerBadges(
+                    username,
+                    s.reviewer_notes_limit,
+                  );
                 }
                 if (
                   s.show_threads_badge ||
@@ -257,15 +266,7 @@ export function startMrList(
                   s.show_approval_badge ||
                   s.show_branches
                 ) {
-                  fetchAndRenderMrMeta(
-                    s.show_threads_badge,
-                    s.show_size_badge,
-                    s.show_conflicts_badge,
-                    s.show_approval_badge,
-                    s.show_branches,
-                    s.show_branches_links,
-                    username,
-                  );
+                  fetchAndRenderMrMeta(s, username);
                 }
                 if (s.jira_url) {
                   setJiraTicketRegex(s.jira_ticket_regex);

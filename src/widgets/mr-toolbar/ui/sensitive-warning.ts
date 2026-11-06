@@ -1,33 +1,19 @@
+import { reportError } from "../../../shared/lib/errors";
 import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
-import type { ActiveMergeRequest } from "../../../entities/merge-request";
+import type { MrSettings } from "../../../entities/settings";
+import { createSensitiveFileMatcher } from "../model/sensitive-files";
+
 import type {
   createMrActions,
   MrActionContext,
 } from "../../../features/mr-actions";
 import type { Translate } from "../../../shared/i18n";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+const SENSITIVE_SCAN_MAX_PAGES = 10;
 // =========================================================================
 // Sensitive file warning (#13)
 // =========================================================================
 
-const SENSITIVE_PATTERNS = [
-  /^\.env(\..*)?$/i,
-  /^Dockerfile(\..*)?$/i,
-  /^docker-compose[^/]*\.ya?ml$/i,
-  /^\.gitlab-ci\.yml$/i,
-  /^\.github\/workflows\//i,
-  /^Jenkinsfile$/i,
-  /credentials/i,
-  /secrets?\.(json|ya?ml|toml|xml|properties|cfg|conf|ini)$/i,
-  /^\.ssh\//i,
-  /^\.npmrc$/i,
-  /^\.pypirc$/i,
-  /^\.htpasswd$/i,
-  /^\.pgpass$/i,
-  /^id_rsa/i,
-  /\.pem$/i,
-  /\.key$/i,
-];
 export function createSensitiveWarning(
   context: MrActionContext,
   api: ReturnType<typeof createMrActions>["api"],
@@ -35,42 +21,48 @@ export function createSensitiveWarning(
   parsePage: () => boolean,
   t: Translate,
 ) {
-  function isSensitiveFile(filepath: string) {
-    const name = filepath.replace(/^.*\//, "");
-    for (let i = 0; i < SENSITIVE_PATTERNS.length; i++) {
-      if (
-        SENSITIVE_PATTERNS[i].test(name) ||
-        SENSITIVE_PATTERNS[i].test(filepath)
-      )
-        return true;
-    }
-    return false;
-  }
+  let pending = false;
 
-  function injectSensitiveWarning(_mr: ActiveMergeRequest) {
-    if (scope.disposed) return;
+  function injectSensitiveWarning(settings: MrSettings) {
+    if (scope.disposed || pending) return;
     if (document.querySelector(".gl-mr-ext-sensitive-warning")) return;
 
-    api<{ new_path: string; old_path: string }[]>(
-      "GET",
-      "/projects/" +
-        context.projectId +
-        "/merge_requests/" +
-        context.mrIid +
-        "/diffs?per_page=" +
-        GITLAB_PAGE_SIZE,
-    )
-      .then(function (diffs) {
-        if (scope.disposed || !parsePage()) return;
-        if (!diffs || !diffs.length) return;
-        const sensitiveFiles = [];
-        for (let i = 0; i < diffs.length; i++) {
-          const path = diffs[i].new_path || diffs[i].old_path;
-          if (path && isSensitiveFile(path)) {
-            sensitiveFiles.push(path);
-          }
+    const isSensitiveFile = createSensitiveFileMatcher(settings);
+    const sensitiveFiles = new Set<string>();
+    let incomplete = false;
+    pending = true;
+    async function scan() {
+      for (let page = 1; page <= SENSITIVE_SCAN_MAX_PAGES; page++) {
+        if (scope.disposed) return;
+        const diffs = await api<{ new_path: string; old_path: string }[]>(
+          "GET",
+          "/projects/" +
+            context.projectId +
+            "/merge_requests/" +
+            context.mrIid +
+            "/diffs?per_page=" +
+            GITLAB_PAGE_SIZE +
+            "&page=" +
+            page,
+        );
+        for (const diff of diffs) {
+          if (
+            (diff.new_path && isSensitiveFile(diff.new_path)) ||
+            (diff.old_path && isSensitiveFile(diff.old_path))
+          )
+            sensitiveFiles.add(diff.new_path || diff.old_path);
         }
-        if (!sensitiveFiles.length) return;
+        if (diffs.length < GITLAB_PAGE_SIZE) return;
+      }
+      incomplete = true;
+    }
+    scan()
+      .catch(() => {
+        incomplete = true;
+      })
+      .then(function () {
+        if (scope.disposed || !parsePage()) return;
+        if (!sensitiveFiles.size && !incomplete) return;
         if (document.querySelector(".gl-mr-ext-sensitive-warning")) return;
 
         const container = document.querySelector(".gl-mr-actions-ext");
@@ -78,12 +70,25 @@ export function createSensitiveWarning(
 
         const badge = document.createElement("span");
         badge.className = "gl-mr-ext-sensitive-warning";
-        badge.textContent = t("sensitiveWarningBadge", [sensitiveFiles.length]);
+        badge.textContent = incomplete
+          ? t("sensitiveScanIncomplete")
+          : t("sensitiveWarningBadge", [sensitiveFiles.size]);
         badge.title =
-          t("sensitiveWarningHint") + "\n" + sensitiveFiles.join("\n");
+          (incomplete
+            ? t("sensitiveScanIncompleteHint", [
+                SENSITIVE_SCAN_MAX_PAGES * GITLAB_PAGE_SIZE,
+              ])
+            : t("sensitiveWarningHint")) +
+          "\n" +
+          [...sensitiveFiles].join("\n");
         container.insertBefore(badge, container.firstChild);
+        if (container instanceof HTMLElement)
+          container.style.removeProperty("display");
       })
-      .catch(function () {});
+      .catch(reportError)
+      .finally(() => {
+        pending = false;
+      });
   }
   return { injectSensitiveWarning };
 }

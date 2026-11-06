@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **Configurable display rules** — set MR size thresholds, failed-job preview count, log line count, reviewer-comment scan depth, and sensitive-file patterns/exclusions. All previous defaults are preserved; settings are validated and included in export/import.
+- **More accurate previews** — reviewer badges match complete usernames. Failed-job previews link to the full pipeline without presenting a partial count as a total. Thread previews and GitLab lower-bound file counts remain visibly partial.
+- **Independent warnings** — the sensitive-file warning also works with all toolbar buttons and the time tracker disabled; the empty toolbar no longer causes repeated MR initialization.
+- **Transparent scan limits** — sensitive-file checks read later diff pages and mark API errors/scan limits. Standup reports warn when bounded selections may omit activity. Added a configuration/limits guide and translated settings/onboarding descriptions.
+
 ## 1.13.3
 
 - **CI job lookup** — fix reviewers, custom job buttons, background chains and failed-job retries by selecting the MR head pipeline and reading later job pages when needed. If the head pipeline is unavailable, keep GitLab’s MR-pipeline preference for the current commit. Fork jobs use their own project, including older responses without a pipeline project ID; retry recovery stays in the original pipeline. Missing-job errors identify the checked pipeline.

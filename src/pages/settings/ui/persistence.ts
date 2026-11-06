@@ -7,6 +7,7 @@ import {
   AI_REVIEW_RULES,
 } from "../../../features/manage-settings";
 import { byId } from "./dom";
+import { readDisplayPreferencesForm } from "./display-preferences";
 import type { SettingsFormContext } from "./form-context";
 export function createSettingsPersistence(context: SettingsFormContext) {
   const { state, t, showSaveFailed, showSaved } = context;
@@ -23,10 +24,11 @@ export function createSettingsPersistence(context: SettingsFormContext) {
     onSaved?: (() => void) | null,
     onFailed?: (() => void) | null,
   ) {
-    let jiraQuickActions, mrActions;
+    let jiraQuickActions, mrActions, displayPreferences;
     try {
       jiraQuickActions = getJiraQuickActionsFromUI();
       mrActions = getMrActionsFromUI("mrActionsList", true);
+      displayPreferences = readDisplayPreferencesForm(t);
     } catch (error) {
       showSaveFailed(error instanceof Error ? error.message : String(error));
       return false;
@@ -80,7 +82,7 @@ export function createSettingsPersistence(context: SettingsFormContext) {
     }
     const saveVersion = state.statusVersion;
     const items = getButtonOrderFromUI("buttonOrder");
-    const settings: Record<string, unknown> = {};
+    const settings: Record<string, unknown> = { ...displayPreferences };
 
     items.forEach(function (it) {
       if (!it.isCustom) settings[it.key] = it.enabled;

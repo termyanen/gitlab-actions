@@ -35,6 +35,7 @@ const ANSI_COLORS: Record<string, string> = {
 
 const CHEVRON_SVG =
   '<svg viewBox="0 0 16 16" width="12" height="12"><path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" d="M3 10l5-5 5 5"/></svg>';
+const TRACE_FETCH_CONCURRENCY = 5;
 export function createFailedJobView(
   context: MrActionContext,
   api: ReturnType<typeof createMrActions>["api"],
@@ -90,7 +91,7 @@ export function createFailedJobView(
     return result;
   }
 
-  function fetchJobTrace(jobId: number) {
+  function fetchJobTrace(jobId: number, lineLimit: number) {
     const url =
       context.origin +
       GITLAB_API_PREFIX +
@@ -106,7 +107,7 @@ export function createFailedJobView(
           const lines = text.split("\n").filter(function (l) {
             return l.replace(/\x1b\[[0-9;]*[a-zA-Z]/g, "").trim() !== "";
           });
-          return ansiToHtml(lines.slice(-50).join("\n"));
+          return ansiToHtml(lines.slice(-lineLimit).join("\n"));
         });
       })
       .catch(function () {
@@ -131,7 +132,8 @@ export function createFailedJobView(
           context.projectId +
           "/pipelines/" +
           pipelineId +
-          "/jobs?scope[]=failed&per_page=10",
+          "/jobs?scope[]=failed&per_page=" +
+          (s.failed_jobs_limit + 1),
       )
         .then(function (jobs) {
           if (scope.disposed) return;
@@ -145,7 +147,12 @@ export function createFailedJobView(
           header.className = "gl-mr-actions-failed-jobs-header";
           header.innerHTML =
             '<span class="gl-mr-actions-failed-jobs-title">' +
-            escHtml(t("failedJobsCount", [jobs.length])) +
+            escHtml(
+              t("failedJobsPreview", [
+                Math.min(jobs.length, s.failed_jobs_limit),
+                s.failed_job_trace_lines,
+              ]),
+            ) +
             "</span>" +
             '<span class="gl-mr-actions-failed-jobs-toggle">' +
             CHEVRON_SVG +
@@ -162,14 +169,34 @@ export function createFailedJobView(
             wrapper.classList.toggle("collapsed", visible);
           });
 
-          const displayJobs = jobs.slice(0, 5);
-          const tracePromises = displayJobs.map(function (job) {
-            return fetchJobTrace(job.id).then(function (trace) {
-              return { job: job, trace: trace };
-            });
-          });
-
-          Promise.all(tracePromises)
+          const displayJobs = jobs.slice(0, s.failed_jobs_limit);
+          async function loadTraces() {
+            const results: { job: Job; trace: string }[] = [];
+            for (
+              let start = 0;
+              start < displayJobs.length;
+              start += TRACE_FETCH_CONCURRENCY
+            ) {
+              if (scope.disposed) return results;
+              const batch = displayJobs.slice(
+                start,
+                start + TRACE_FETCH_CONCURRENCY,
+              );
+              results.push(
+                ...(await Promise.all(
+                  batch.map(async (job) => ({
+                    job,
+                    trace: await fetchJobTrace(
+                      job.id,
+                      s.failed_job_trace_lines,
+                    ),
+                  })),
+                )),
+              );
+            }
+            return results;
+          }
+          loadTraces()
             .then(function (results) {
               if (scope.disposed || !parsePage()) return;
               results.forEach(function (r, i) {
@@ -226,10 +253,18 @@ export function createFailedJobView(
                 list.appendChild(item);
               });
 
-              if (jobs.length > 5) {
-                const more = document.createElement("div");
+              if (jobs.length > s.failed_jobs_limit) {
+                const more = document.createElement("a");
+                more.href =
+                  context.origin +
+                  "/" +
+                  context.projectPath +
+                  "/-/pipelines/" +
+                  pipelineId;
+                more.target = "_blank";
+                more.rel = "noopener noreferrer";
                 more.className = "gl-mr-actions-failed-jobs-more";
-                more.textContent = t("failedJobsMore", [jobs.length - 5]);
+                more.textContent = t("failedJobsOpenPipeline");
                 list.appendChild(more);
               }
 

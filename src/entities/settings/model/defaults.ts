@@ -1,3 +1,4 @@
+import { DISPLAY_DEFAULTS } from "./display-preferences";
 import type {
   CustomJob,
   MrAction,
@@ -28,6 +29,7 @@ export const VERSION_DEFAULTS = {
 };
 
 export const MR_DEFAULTS = {
+  ...DISPLAY_DEFAULTS,
   ...BUTTON_DEFAULTS,
   ...VERSION_DEFAULTS,
   sound_enabled: false,

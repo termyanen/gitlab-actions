@@ -171,3 +171,55 @@ test('unrelated DOM changes and unloading do not fetch another list page', async
   await env.drain();
   assert.equal(env.batches.length, 1);
 });
+
+for (const [body, expected] of [['Reviewers: @alice2', 0], ['Reviewers: @alice-team', 0], ['Reviewers: @alice.dev', 0], ['Reviewers: @alice.', 1], ['Reviewer: @ALICE', 1], ['Contact: @alice', 0]]) {
+  test('reviewer scan uses configured depth and exact username: ' + body, async () => {
+    const paths = [];
+    const env = await mrList({settings: {jira_url: '', show_reviewer_badge: true, reviewer_notes_limit: 37}, gitlab: req => {
+      paths.push(req.path); return [{body}];
+    }});
+    await env.drain();
+    assert.match(paths[0], /notes\?per_page=37&sort=asc$/);
+    assert.equal(env.document.querySelectorAll('.gl-reviewer-badge').length, expected);
+  });
+}
+
+for (const [settings, data, expected] of [
+  [{mr_size_lines: '10, 20, 30'}, {additions:'15', deletions:'5', changes_count:'2'}, 'M'],
+  [{mr_size_files: '1, 2, 3'}, {changes_count:'4'}, 'XL'],
+  [{mr_size_lines: '100, 10, 0'}, {additions:'40', deletions:'10', changes_count:'2'}, 'S'],
+]) {
+  test('MR badge applies configured thresholds with safe fallback: ' + JSON.stringify(settings), async () => {
+    const env = await mrList({settings: {jira_url:'', show_size_badge:true, ...settings}, gitlab: () => data});
+    await env.drain();
+    assert.equal(env.document.querySelector('.gl-mr-ext-size-badge').textContent, expected);
+  });
+}
+
+test('capped GitLab file counts remain a lower bound with custom size thresholds', async () => {
+  const env = await mrList({settings:{jira_url:'', show_size_badge:true, mr_size_files:'2000, 4000, 6000'}, gitlab:() => ({changes_count:'1000+'})});
+  await env.drain();
+  const badge = env.document.querySelector('.gl-mr-ext-size-badge');
+  assert.equal(badge.textContent, 'S+');
+  assert.match(badge.title, /1000\+/);
+});
+
+for (const mode of ['complete', 'full-page', 'error']) {
+  test('thread badge distinguishes a known count from an incomplete preview: ' + mode, async () => {
+    const env = await mrList({settings:{jira_url:'', show_threads_badge:true}, gitlab:req => {
+      if (!req.path.includes('/discussions?')) return {};
+      if (mode === 'error') return Promise.reject(new Error('503'));
+      return Array.from({length:mode === 'full-page' ? 100 : 1}, () => ({notes:[{resolvable:true, resolved:false}]}));
+    }});
+    await env.drain();
+    // A newly rendered row is enhanced from the same cache, including completeness.
+    const row = env.row('MR with controls', 1);
+    const controls = env.document.createElement('ul'); controls.setAttribute('data-testid', 'issuable-controls'); row.appendChild(controls);
+    env.host.replaceChildren(env.list([row]));
+    await env.drain();
+    const badge = env.document.querySelector('.gl-mr-ext-threads-badge');
+    assert.ok(badge);
+    assert.match(badge.title, mode === 'complete' ? /threadsCountHint:1$/ : /threadsIncompleteHint:(100|0),100$/);
+    assert.match(badge.textContent, mode === 'error' ? /\?/ : mode === 'full-page' ? /100\+/ : /<span>1<\/span>/);
+  });
+}

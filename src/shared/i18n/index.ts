@@ -3,9 +3,9 @@ export type Translate = (
   substitutions?: (string | number | null | undefined)[],
 ) => string;
 
-export function msg(key: string) {
+export function msg(key: string, substitutions?: (string | number)[]) {
   try {
-    return chrome.i18n.getMessage(key) || key;
+    return chrome.i18n.getMessage(key, substitutions?.map(String)) || key;
   } catch {
     return key;
   }
