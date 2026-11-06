@@ -1,28 +1,29 @@
 import * as workflow from "../../../entities/review";
 import { validDisplayPreferences } from "../../../entities/settings";
-import type { JiraFieldUpdate } from "../../../entities/jira-issue";
+import { isRecord, isUnknownArray } from "../../../shared/lib/validation";
+import type { Settings } from "./config";
 import {
-  DEFAULTS,
-  BUTTON_DEFAULTS,
-  MR_ACTION_TYPES,
   AI_REVIEW_PROMPTS,
-  AI_REVIEW_RULES,
   AI_REVIEW_PROMPT_MAX_LENGTH,
+  AI_REVIEW_RULES,
+  BUTTON_DEFAULTS,
+  DEFAULTS,
+  MR_ACTION_TYPES,
   SETTINGS_FILE_MAX_BYTES,
 } from "./config";
-import type { Settings } from "./config";
 export function createSettingsValidation(t: (key: string) => string) {
   function validateMrActions(actions: unknown) {
-    if (!Array.isArray(actions)) throw new Error(t("mrActionInvalid"));
+    if (!isUnknownArray(actions)) throw new Error(t("mrActionInvalid"));
     const ids: string[] = [];
     actions.forEach(function (action) {
       if (
-        !action ||
+        !isRecord(action) ||
         typeof action.id !== "string" ||
         !/^[a-zA-Z0-9_-]{1,80}$/.test(action.id) ||
         ids.indexOf(action.id) !== -1 ||
         typeof action.label !== "string" ||
         !action.label.trim() ||
+        typeof action.type !== "string" ||
         MR_ACTION_TYPES.indexOf(action.type) === -1 ||
         typeof action.labels !== "string" ||
         (/^(remove|add|set)_labels$/.test(action.type) &&
@@ -39,7 +40,7 @@ export function createSettingsValidation(t: (key: string) => string) {
   }
   function validateSettingsShape(value: unknown, example: unknown) {
     if (Array.isArray(example)) {
-      if (!Array.isArray(value)) throw new Error(t("settingsFileInvalid"));
+      if (!isUnknownArray(value)) throw new Error(t("settingsFileInvalid"));
       if (example.length)
         value.forEach(function (item) {
           validateSettingsShape(item, example[0]);
@@ -62,9 +63,13 @@ export function createSettingsValidation(t: (key: string) => string) {
         ? data[key]
         : DEFAULTS[key];
     });
-    return JSON.parse(JSON.stringify(settings)) as Settings;
+    const snapshot: unknown = JSON.parse(JSON.stringify(settings));
+    if (!isRecord(snapshot)) throw new Error(t("settingsFileInvalid"));
+    return snapshot;
   }
-  function validateSharedSettings(settings: Settings) {
+  function validateSharedSettings(
+    settings: Record<string, unknown>,
+  ): asserts settings is Settings {
     if (!validDisplayPreferences(settings))
       throw new Error(t("displayPreferencesInvalid"));
     const job = { label: "", jobName: "" };
@@ -91,15 +96,15 @@ export function createSettingsValidation(t: (key: string) => string) {
             ["__proto__", "constructor", "prototype"].indexOf(path) !== -1
           )
             throw new Error(t("settingsFileInvalid"));
-          validateSettingsShape(value[path], profileShape);
-          if ((value[path] as Record<string, unknown>).mrActions)
-            validateMrActions(
-              (value[path] as Record<string, unknown>).mrActions,
-            );
+          const profile = value[path];
+          if (!isRecord(profile)) throw new Error(t("settingsFileInvalid"));
+          validateSettingsShape(profile, profileShape);
+          if (profile.mrActions) validateMrActions(profile.mrActions);
         });
       } else if (key === "jiraQuickActions") {
-        if (!Array.isArray(value)) throw new Error(t("settingsFileInvalid"));
+        if (!isUnknownArray(value)) throw new Error(t("settingsFileInvalid"));
         value.forEach(function (action) {
+          if (!isRecord(action)) throw new Error(t("settingsFileInvalid"));
           // Custom Jira fields intentionally accept arbitrary JSON values.
           validateSettingsShape(action, {
             label: "",
@@ -107,11 +112,15 @@ export function createSettingsValidation(t: (key: string) => string) {
             assignee: "",
             updates: [],
           });
-          (action.updates || []).forEach(function (update: JiraFieldUpdate) {
+          const updates = action.updates || [];
+          if (!isUnknownArray(updates))
+            throw new Error(t("settingsFileInvalid"));
+          updates.forEach(function (update) {
             if (
               !settingsObject(update) ||
               typeof update.field !== "string" ||
-              ["set", "add", "remove"].indexOf(update.operation || "") === -1 ||
+              typeof update.operation !== "string" ||
+              ["set", "add", "remove"].indexOf(update.operation) === -1 ||
               !Object.prototype.hasOwnProperty.call(update, "value")
             )
               throw new Error(t("settingsFileInvalid"));
@@ -149,6 +158,9 @@ export function createSettingsValidation(t: (key: string) => string) {
     });
     workflow.normalizeFilter(settings.ai_review_file_filter);
     if (
+      typeof settings.language !== "string" ||
+      typeof settings.ai_review_response_language !== "string" ||
+      typeof settings.versionStrategy !== "string" ||
       ["auto", "en", "ru", "zh_CN", "ja", "de", "fr", "es"].indexOf(
         settings.language,
       ) === -1 ||
@@ -158,7 +170,7 @@ export function createSettingsValidation(t: (key: string) => string) {
       ["patch", "minor", "major"].indexOf(settings.versionStrategy) === -1
     )
       throw new Error(t("settingsFileInvalid"));
-    if (settings.jira_url) {
+    if (typeof settings.jira_url === "string" && settings.jira_url) {
       const jira = new URL(settings.jira_url);
       if (
         jira.protocol !== "https:" ||
@@ -169,7 +181,10 @@ export function createSettingsValidation(t: (key: string) => string) {
       )
         throw new Error(t("settingsFileInvalid"));
     }
-    if (settings.jira_ticket_regex) {
+    if (
+      typeof settings.jira_ticket_regex === "string" &&
+      settings.jira_ticket_regex
+    ) {
       try {
         new RegExp(settings.jira_ticket_regex, "g");
       } catch {
@@ -183,7 +198,7 @@ export function createSettingsValidation(t: (key: string) => string) {
       )
         throw new Error(t("settingsFileTooLarge"));
     });
-    return settings;
+    return;
   }
   function parseSettingsFile(text: string) {
     if (new TextEncoder().encode(text).length > SETTINGS_FILE_MAX_BYTES)
@@ -204,7 +219,9 @@ export function createSettingsValidation(t: (key: string) => string) {
       })
     )
       throw new Error(t("settingsFileInvalid"));
-    return validateSharedSettings(settingsSnapshot(file.settings));
+    const settings = settingsSnapshot(file.settings);
+    validateSharedSettings(settings);
+    return settings;
   }
   return { validateMrActions, settingsSnapshot, parseSettingsFile };
 }

@@ -1,5 +1,13 @@
 import type { Discussion, NotePosition } from "../../../entities/discussion";
 import { toError } from "../../../shared/lib/errors";
+import {
+  decodeResponse,
+  decoder,
+  isNumber,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import { getNotes } from "./discussions";
 import {
   MAX_FILE_BYTES,
@@ -12,6 +20,15 @@ import { anchorLine, validLine } from "./position";
 import { addWarning, progress } from "./progress";
 import { checkAbort, request } from "./transport";
 import type { ExportOptions, FileReader, ReviewSnapshot } from "./types";
+const readFileContents = decoder(isString, "GitLab file response");
+const readEncodedFile = decoder(
+  objectOf<{ content: string; encoding: string; size?: number }>({
+    content: isString,
+    encoding: isString,
+    size: optional(isNumber),
+  }),
+  "GitLab file response",
+);
 function excerpt(content: string, position: NotePosition, side: "old" | "new") {
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const range = position.line_range || {};
@@ -63,7 +80,8 @@ export function fileLoader(
   let requests = 0;
   return function (project: number | string, path: string, ref: string) {
     const key = JSON.stringify([project, path, ref]);
-    if (cache.has(key)) return cache.get(key)!;
+    const cached = cache.get(key);
+    if (cached) return cached;
     const promise = (async function () {
       checkAbort(options.signal);
       if (++requests > MAX_FILE_REQUESTS)
@@ -78,11 +96,17 @@ export function fileLoader(
       let content;
       try {
         content = (
-          await request<string>(
+          await request(
             snapshot.context,
             endpoint + "/raw?ref=" + encodeURIComponent(ref),
-            { signal: options.signal, raw: true, maxBytes: MAX_FILE_BYTES },
-          )
+            {
+              ...(options.signal === undefined
+                ? {}
+                : { signal: options.signal }),
+              raw: true,
+              maxBytes: MAX_FILE_BYTES,
+            },
+          ).then(decodeResponse(readFileContents))
         ).data;
       } catch (caught) {
         const error = toError(caught);
@@ -93,11 +117,16 @@ export function fileLoader(
           throw error;
         // The JSON repository-files endpoint also works on older GitLab releases.
         const file = (
-          await request<{ content: string; encoding: string; size?: number }>(
+          await request(
             snapshot.context,
             endpoint + "?ref=" + encodeURIComponent(ref),
-            { signal: options.signal, maxBytes: MAX_FILE_BYTES * 2 },
-          )
+            {
+              ...(options.signal === undefined
+                ? {}
+                : { signal: options.signal }),
+              maxBytes: MAX_FILE_BYTES * 2,
+            },
+          ).then(decodeResponse(readEncodedFile))
         ).data;
         if (
           !file ||
@@ -205,15 +234,16 @@ export async function codeContext(
       side: "new",
     });
   }
+  const oldRef = position.base_sha || position.start_sha;
   if (
     position.old_path &&
-    (position.base_sha || position.start_sha) &&
+    oldRef &&
     (oldLine || position.position_type === "file")
   ) {
     tasks.push({
       label: "Comment anchor revision (old side)",
       path: position.old_path,
-      ref: (position.base_sha || position.start_sha)!,
+      ref: oldRef,
       project: target,
       fallback: source,
       side: "old",

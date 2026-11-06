@@ -1,20 +1,26 @@
 import * as workflow from "../../../entities/review";
-import { REVIEW_GUIDE_URL } from "../../../shared/config/extension";
 import { MR_DEFAULTS, VERSION_DEFAULTS } from "../../../entities/settings";
 import {
   AI_REVIEW_FILTER_FIELDS,
   AI_REVIEW_FILTER_LABELS,
-  AI_REVIEW_PROMPT_MAX_LENGTH,
   AI_REVIEW_PROMPTS,
+  AI_REVIEW_PROMPT_MAX_LENGTH,
   AI_REVIEW_RULES,
   BUILTIN_BUTTONS,
   BUTTON_DEFAULTS,
 } from "../../../features/manage-settings";
-import { byId, escHtml } from "./dom";
+import { REVIEW_GUIDE_URL } from "../../../shared/config/extension";
 import {
   displayPreferencesSection,
   populateDisplayPreferences,
 } from "./display-preferences";
+import {
+  byId,
+  escHtml,
+  inputById,
+  textControlById,
+  valueControlById,
+} from "./dom";
 import type { SettingsFormContext } from "./form-context";
 export function createDefaultSettingsForm(context: SettingsFormContext) {
   const {
@@ -297,12 +303,12 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       '<p class="hint">' +
       escHtml(t("aiReviewFileFiltersHint")) +
       "</p>" +
-      AI_REVIEW_FILTER_FIELDS.map(function (key, index) {
+      AI_REVIEW_FILTER_FIELDS.map(function (key) {
         return (
           '<div class="field"><label for="ai_review_filter_' +
           key +
           '">' +
-          escHtml(t(AI_REVIEW_FILTER_LABELS[index])) +
+          escHtml(t(AI_REVIEW_FILTER_LABELS[key])) +
           '</label><textarea id="ai_review_filter_' +
           key +
           '" rows="3" maxlength="' +
@@ -467,7 +473,7 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       enabledMap[b.key] =
         state.data[b.key] !== undefined
           ? !!state.data[b.key]
-          : (BUTTON_DEFAULTS as Record<string, boolean>)[b.key];
+          : BUTTON_DEFAULTS[b.key];
     });
 
     const customJobs = state.data.customJobs || [];
@@ -487,74 +493,64 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       "buttonOrder",
     );
 
-    byId<HTMLInputElement>("sound_enabled").checked =
-      state.data.sound_enabled || false;
-    byId<HTMLInputElement>("notifications_enabled").checked =
+    inputById("sound_enabled").checked = state.data.sound_enabled || false;
+    inputById("notifications_enabled").checked =
       state.data.notifications_enabled !== false;
-    byId<HTMLInputElement>("show_time_tracker").checked =
+    inputById("show_time_tracker").checked =
       state.data.show_time_tracker !== false;
-    byId<HTMLInputElement>("show_failed_job_view").checked =
+    inputById("show_failed_job_view").checked =
       state.data.show_failed_job_view !== false;
-    byId<HTMLInputElement>("skip_confirmations").checked =
+    inputById("skip_confirmations").checked =
       state.data.skip_confirmations || false;
-    byId<HTMLInputElement>("dim_drafts").checked =
-      state.data.dim_drafts || false;
-    byId<HTMLInputElement>("highlight_own_mrs").checked =
+    inputById("dim_drafts").checked = state.data.dim_drafts || false;
+    inputById("highlight_own_mrs").checked =
       state.data.highlight_own_mrs || false;
-    byId<HTMLInputElement>("show_only_mine").checked =
-      state.data.show_only_mine || false;
-    byId<HTMLInputElement>("show_needs_review").checked =
+    inputById("show_only_mine").checked = state.data.show_only_mine || false;
+    inputById("show_needs_review").checked =
       state.data.show_needs_review || false;
-    byId<HTMLInputElement>("show_reviewer_badge").checked =
+    inputById("show_reviewer_badge").checked =
       state.data.show_reviewer_badge || false;
-    byId<HTMLInputElement>("show_copy_mr").checked =
-      state.data.show_copy_mr || false;
-    byId<HTMLInputElement>("show_threads_badge").checked =
+    inputById("show_copy_mr").checked = state.data.show_copy_mr || false;
+    inputById("show_threads_badge").checked =
       state.data.show_threads_badge || false;
-    byId<HTMLInputElement>("show_size_badge").checked =
-      state.data.show_size_badge || false;
-    byId<HTMLInputElement>("show_conflicts_badge").checked =
+    inputById("show_size_badge").checked = state.data.show_size_badge || false;
+    inputById("show_conflicts_badge").checked =
       state.data.show_conflicts_badge || false;
-    byId<HTMLInputElement>("show_approval_badge").checked =
+    inputById("show_approval_badge").checked =
       state.data.show_approval_badge || false;
-    byId<HTMLInputElement>("show_branches").checked =
-      state.data.show_branches !== false;
-    byId<HTMLInputElement>("show_branches_links").checked =
+    inputById("show_branches").checked = state.data.show_branches !== false;
+    inputById("show_branches_links").checked =
       state.data.show_branches_links || false;
-    byId<HTMLInputElement>("collapse_bars").checked =
-      state.data.collapse_bars || false;
-    byId<HTMLInputElement>("hide_right_sidebar").checked =
+    inputById("collapse_bars").checked = state.data.collapse_bars || false;
+    inputById("hide_right_sidebar").checked =
       state.data.hide_right_sidebar || false;
-    byId<HTMLInputElement>("show_cmd_palette").checked =
+    inputById("show_cmd_palette").checked =
       state.data.show_cmd_palette !== false;
-    byId<HTMLInputElement>("show_standup").checked =
-      state.data.show_standup !== false;
-    byId<HTMLInputElement>("standup_jira_enrich").checked =
+    inputById("show_standup").checked = state.data.show_standup !== false;
+    inputById("standup_jira_enrich").checked =
       state.data.standup_jira_enrich !== false;
-    byId<HTMLInputElement>("show_cherry_pick").checked =
+    inputById("show_cherry_pick").checked =
       state.data.show_cherry_pick !== false;
-    byId<HTMLInputElement>("show_commit_version").checked =
+    inputById("show_commit_version").checked =
       state.data.show_commit_version || false;
-    byId<HTMLInputElement>("show_group_play").checked =
-      state.data.show_group_play !== false;
-    byId<HTMLInputElement>("show_sensitive_warning").checked =
+    inputById("show_group_play").checked = state.data.show_group_play !== false;
+    inputById("show_sensitive_warning").checked =
       state.data.show_sensitive_warning || false;
-    byId<HTMLInputElement>("show_git_commands").checked =
+    inputById("show_git_commands").checked =
       state.data.show_git_commands || false;
-    byId<HTMLInputElement>("show_ai_review_copy").checked =
+    inputById("show_ai_review_copy").checked =
       state.data.show_ai_review_copy !== false;
-    byId<HTMLInputElement>("ai_review_confirm_close").checked =
+    inputById("ai_review_confirm_close").checked =
       state.data.ai_review_confirm_close === true;
-    byId<HTMLInputElement>("ai_review_response_language").value =
+    valueControlById("ai_review_response_language").value =
       workflow.normalizeResponseLanguage(
         state.data.ai_review_response_language,
       );
     AI_REVIEW_PROMPTS.forEach(function (prompt) {
-      const input = byId<HTMLInputElement>(prompt.key);
+      const input = textControlById(prompt.key);
+      const promptValue = state.data[prompt.key];
       input.value =
-        typeof state.data[prompt.key] === "string"
-          ? (state.data[prompt.key] as string)
-          : prompt.value;
+        typeof promptValue === "string" ? promptValue : prompt.value;
       input.placeholder = prompt.value;
       byId(prompt.reset).addEventListener("click", function () {
         input.value = prompt.value;
@@ -569,51 +565,51 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       } catch {
         value = { enabled: true, text: block.text };
       }
-      byId<HTMLInputElement>(key).value = value.text;
-      byId<HTMLInputElement>(key).placeholder = block.text;
-      byId<HTMLInputElement>(key + "_enabled").checked = value.enabled;
+      valueControlById(key).value = value.text;
+      textControlById(key).placeholder = block.text;
+      inputById(key + "_enabled").checked = value.enabled;
       byId(key + "_reset").addEventListener("click", function () {
-        byId<HTMLInputElement>(key).value = block.text;
-        byId<HTMLInputElement>(key + "_enabled").checked = true;
+        valueControlById(key).value = block.text;
+        inputById(key + "_enabled").checked = true;
         scheduleAutoSave();
       });
     });
     AI_REVIEW_FILTER_FIELDS.forEach(function (key) {
-      byId<HTMLInputElement>("ai_review_filter_" + key).value =
+      valueControlById("ai_review_filter_" + key).value =
         state.data.ai_review_file_filter &&
         typeof state.data.ai_review_file_filter[key] === "string"
           ? state.data.ai_review_file_filter[key]
           : "";
     });
-    byId<HTMLInputElement>("cherry_pick_create_mr").checked =
+    inputById("cherry_pick_create_mr").checked =
       state.data.cherry_pick_create_mr !== false;
-    byId<HTMLInputElement>("cherry_pick_smart_fallback").checked =
+    inputById("cherry_pick_smart_fallback").checked =
       state.data.cherry_pick_smart_fallback !== false;
-    byId<HTMLInputElement>("cherry_pick_bump_version").checked =
+    inputById("cherry_pick_bump_version").checked =
       state.data.cherry_pick_bump_version || false;
-    byId<HTMLInputElement>("commits_jira_field").value =
+    valueControlById("commits_jira_field").value =
       state.data.commits_jira_field || "fixVersions, status";
     renderCherryPickBranches(state.data.cherry_pick_branches || []);
     byId("addCherryPickBranch").addEventListener("click", function () {
       addCherryPickBranchRow("");
     });
-    byId<HTMLInputElement>("jira_url").value = state.data.jira_url || "";
-    byId<HTMLInputElement>("jira_ticket_regex").value =
+    valueControlById("jira_url").value = state.data.jira_url || "";
+    valueControlById("jira_ticket_regex").value =
       state.data.jira_ticket_regex || "";
-    byId<HTMLInputElement>("show_jira_details").checked =
+    inputById("show_jira_details").checked =
       state.data.show_jira_details || false;
     renderJiraQuickActions(state.data.jiraQuickActions || []);
     byId("addJiraQuickAction").addEventListener("click", function () {
       addJiraQuickActionRow({});
     });
-    byId<HTMLInputElement>("language").value = state.data.language || "auto";
+    valueControlById("language").value = state.data.language || "auto";
 
     // Language change needs full re-render
     byId("language").addEventListener("change", function (event) {
       event.stopPropagation();
       clearTimeout(state.autoSaveTimer ?? undefined);
       state.autoSaveTimer = null;
-      const newLang = byId<HTMLInputElement>("language").value;
+      const newLang = valueControlById("language").value;
       // Save every edited field before rebuilding the form in the new language.
       saveDefaultTab(function () {
         loadLanguage(newLang, function () {
@@ -627,15 +623,14 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
     byId("addQuickComment").addEventListener("click", function () {
       addQuickCommentRow("", "");
     });
-    byId<HTMLInputElement>("reviewersList").value =
-      state.data.reviewersList || "";
-    byId<HTMLInputElement>("reviewersJob").value =
+    valueControlById("reviewersList").value = state.data.reviewersList || "";
+    valueControlById("reviewersJob").value =
       state.data.reviewersJob || MR_DEFAULTS.reviewersJob;
 
     // Version bump settings
     const versionFile = state.data.versionFile || "package.json";
-    const presetEl = byId<HTMLInputElement>("versionFilePreset");
-    const customInput = byId<HTMLInputElement>("versionFile");
+    const presetEl = valueControlById("versionFilePreset");
+    const customInput = valueControlById("versionFile");
     const versionPathField = byId("versionPathField");
 
     const knownPresets = ["package.json", "pyproject.toml", "version.txt"];
@@ -658,7 +653,7 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       }
       updateVersionPathVisibility();
       // Auto-suggest version path placeholder based on file type
-      const pathInput = byId<HTMLInputElement>("versionPath");
+      const pathInput = textControlById("versionPath");
       if (presetEl.value === "pyproject.toml") {
         pathInput.placeholder = "tool.poetry.version";
       } else {
@@ -677,14 +672,13 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       }
     }
 
-    byId<HTMLInputElement>("versionPath").value =
-      state.data.versionPath || "version";
-    byId<HTMLInputElement>("versionStrategy").value =
+    valueControlById("versionPath").value = state.data.versionPath || "version";
+    valueControlById("versionStrategy").value =
       state.data.versionStrategy || "patch";
-    byId<HTMLInputElement>("versionCommitTemplate").value =
+    valueControlById("versionCommitTemplate").value =
       state.data.versionCommitTemplate ||
       VERSION_DEFAULTS.versionCommitTemplate;
-    byId<HTMLInputElement>("version_from_target").checked =
+    inputById("version_from_target").checked =
       state.data.version_from_target || false;
 
     byId("addCustomJob").addEventListener("click", function () {

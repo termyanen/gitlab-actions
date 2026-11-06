@@ -16,10 +16,14 @@ if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
 
 function popup(sharedPrompt, sharedFreshPrompt, savedData, sharedImport) {
   var controls = new Map();
-  function element() {
-    return { value: '', checked: false, style: {}, className: '', textContent: '', events: {}, children: [], querySelectorAll: function() { return []; },
+  function element(tag) {
+    var el = { nodeType: 1, tagName: (tag || "div").toUpperCase(), value: '', checked: false, style: {}, className: '', textContent: '', events: {}, children: [], querySelectorAll: function() { return []; },
       addEventListener: function(name, fn) { this.events[name] = fn; }, appendChild: function(el) { this.children.push(el); }, setAttribute: function() {},
-      matches: function(selectors) { return selectors.split(',').map(function(s) { return s.trim(); }).includes(this.tagName); } };
+      matches: function(selectors) { return selectors.split(',').map(function(s) { return s.trim(); }).includes(this.tagName.toLowerCase()); } };
+    Object.defineProperty(el, "innerHTML", { set: function(html) {
+      for (var match of html.matchAll(/<(\w+)\b[^>]*\bid="([^"]+)"/g)) control(match[2]).tagName = match[1].toUpperCase();
+    }});
+    return el;
   }
   function control(id) { if (!controls.has(id)) controls.set(id, element()); return controls.get(id); }
   var env = { writes: [], timers: new Map(), control: control };
@@ -97,7 +101,7 @@ test('textarea input schedules autosave and flushing preserves a draft before fo
   var env = popup();
   env.context.attachAutoSave();
   var prompt = env.control('ai_review_prompt');
-  prompt.tagName = 'textarea';
+  prompt.tagName = 'TEXTAREA';
   prompt.value = 'Latest unsaved instruction';
   env.document.body.events.input({ target: prompt });
   assert.equal(env.control('status').className, 'status unsaved');
@@ -196,7 +200,7 @@ test('fresh review textarea participates in autosave without replacing feedback 
   var env = popup((sharedDefaults.DEFAULT_PROMPT || 'Feedback default.'), (sharedDefaults.DEFAULT_FRESH_REVIEW_PROMPT || 'Fresh default.'));
   env.context.attachAutoSave();
   var prompt = env.control('ai_review_fresh_prompt');
-  prompt.tagName = 'textarea';
+  prompt.tagName = 'TEXTAREA';
   prompt.value = 'Latest fresh-review draft';
   env.document.body.events.input({ target: prompt });
   assert.equal(env.context.flushAutoSave(), true);
@@ -217,7 +221,7 @@ test('fresh review textarea participates in autosave without replacing feedback 
     env.context.attachAutoSave();
     var field = env.control(key);
     field.value = 'Answer in German; focus on concrete changes.';
-    field.tagName = 'textarea';
+    field.tagName = 'TEXTAREA';
     env.document.body.events.input({ target: field });
     assert.equal(env.context.flushAutoSave(), true);
     assert.equal(env.writes[0].data[key], field.value);

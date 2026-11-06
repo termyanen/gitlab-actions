@@ -15,6 +15,7 @@ import {
   optional,
   type Decoder,
 } from "../../../shared/lib/validation";
+import { isElement } from "../../../shared/ui/dom";
 const readBridge = decoder(
   objectOf<Bridge>({
     downstream_pipeline: optional(
@@ -51,7 +52,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
           const pathMatch = window.location.pathname.match(
             /^\/(.+?)\/-\/pipelines\/(\d+)/,
           );
-          if (!pathMatch) return;
+          if (!pathMatch?.[1] || !pathMatch[2]) return;
           const encodedProject = encodeURIComponent(pathMatch[1]);
           const pipelineId = pathMatch[2];
 
@@ -89,11 +90,11 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
               stages: {},
               jobIds: {},
             };
-            for (let i = 0; i < jobs.length; i++) {
-              const st = jobs[i].stage || "";
+            for (const pipelineJob of jobs) {
+              const st = pipelineJob.stage || "";
               if (!entry.stages[st]) entry.stages[st] = [];
-              entry.stages[st].push(jobs[i]);
-              entry.jobIds[jobs[i].id] = true;
+              entry.stages[st].push(pipelineJob);
+              entry.jobIds[pipelineJob.id] = true;
             }
             return entry;
           }
@@ -117,8 +118,8 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
               }),
             ]).then(function (res) {
               const children = [];
-              for (let i = 0; i < res[1].length; i++) {
-                const dp = res[1][i].downstream_pipeline;
+              for (const bridge of res[1]) {
+                const dp = bridge.downstream_pipeline;
                 if (!dp || !dp.id) continue;
                 // project path from web_url — bridges API has no project_id field
                 let ref = encodedProject;
@@ -126,7 +127,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
                   const pm = new URL(dp.web_url).pathname.match(
                     /^\/(.+?)\/-\/pipelines\/\d+/,
                   );
-                  if (pm) ref = encodeURIComponent(pm[1]);
+                  if (pm?.[1]) ref = encodeURIComponent(pm[1]);
                 } catch {
                   /* Optional UI may be unavailable. */
                 }
@@ -151,8 +152,8 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
                 }),
               ).then(function (childEntries) {
                 const list = [buildPipelineEntry(encodedProject, res[0])];
-                for (let i = 0; i < childEntries.length; i++) {
-                  if (childEntries[i]) list.push(childEntries[i]!);
+                for (const childEntry of childEntries) {
+                  if (childEntry) list.push(childEntry);
                 }
                 _pipelinesCache = { list: list, at: Date.now() };
                 _pipelinesPromise = null;
@@ -175,14 +176,14 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
             const scope =
               qUp(titleEl, SEL.pipelineStageColumn) || titleEl.parentElement;
             const links = qAll(scope, SEL.pipelineJobLink);
-            for (let i = 0; i < links.length; i++) {
-              const m = (links[i].getAttribute("href") || "").match(
+            for (const jobLink of links) {
+              const m = (jobLink.getAttribute("href") || "").match(
                 /\/(?:jobs|builds)\/(\d+)/,
               );
               if (!m) continue;
               const jid = Number(m[1]);
-              for (let p = 0; p < list.length; p++) {
-                if (list[p].jobIds[jid]) return list[p];
+              for (const pipelineEntry of list) {
+                if (pipelineEntry.jobIds[jid]) return pipelineEntry;
               }
               return null; // job from a pipeline we didn't fetch (deeper nesting) — don't guess
             }
@@ -192,8 +193,8 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
 
           function manualJobsOf(jobs: Job[]) {
             const manual = [];
-            for (let i = 0; i < jobs.length; i++) {
-              if (jobs[i].status === "manual") manual.push(jobs[i]);
+            for (const manualJob of jobs) {
+              if (manualJob.status === "manual") manual.push(manualJob);
             }
             return manual;
           }
@@ -223,14 +224,14 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
           ) {
             if (btn._glBusy) return;
             btn._glBusy = true;
+            btn.classList.remove("gl-group-play-error");
             btn.classList.add("gl-group-play-busy");
             getPipelines()
               .then(function (list) {
                 if (scope.disposed) return;
                 const entry = pipelineEntryFor(titleEl, list);
-                const manual = entry
-                  ? manualJobsOf(entry.stages[stageName] || [])
-                  : [];
+                if (!entry) throw new Error(msg("groupPlayError"));
+                const manual = manualJobsOf(entry.stages[stageName] || []);
                 let chain: Promise<unknown> = Promise.resolve();
                 let failed = 0;
                 manual.forEach(function (job) {
@@ -238,7 +239,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
                     return api(
                       "POST",
                       "/projects/" +
-                        entry!.projectRef +
+                        entry.projectRef +
                         "/jobs/" +
                         job.id +
                         "/play",
@@ -276,8 +277,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
             getPipelines()
               .then(function (list) {
                 if (scope.disposed) return;
-                for (let i = 0; i < titles.length; i++) {
-                  const titleEl = titles[i];
+                for (const titleEl of titles) {
                   const ourBtn =
                     titleEl.querySelector<PlayButton>(".gl-group-play-btn");
                   const nativeBtn = q(titleEl, SEL.pipelineStageAction);
@@ -341,10 +341,10 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
           function isOwnMutation(m: MutationRecord) {
             if (m.type !== "childList") return false;
             if (m.removedNodes.length || !m.addedNodes.length) return false;
-            for (let j = 0; j < m.addedNodes.length; j++) {
-              const n = m.addedNodes[j] as Element;
+            for (const addedNode of m.addedNodes) {
+              const n = addedNode;
               if (!(
-                n.nodeType === 1 &&
+                isElement(n) &&
                 n.classList &&
                 n.classList.contains("gl-group-play-btn")
               ))
@@ -365,8 +365,8 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
 
             const target = q(document, SEL.pipelineGraph) || document.body;
             const mo = scope.observer(function (mutations) {
-              for (let i = 0; i < mutations.length; i++) {
-                if (isOwnMutation(mutations[i])) continue;
+              for (const mutation of mutations) {
+                if (isOwnMutation(mutation)) continue;
                 scheduleInject();
                 return;
               }

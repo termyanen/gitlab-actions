@@ -20,9 +20,9 @@ export function isBoolean(value: unknown): value is boolean {
 export function isUnknown(_value: unknown): _value is unknown {
   return true;
 }
-export function literal<const T extends string | number | boolean>(
-  expected: T,
-): Guard<T> {
+export function literal<
+  const T extends string | number | boolean | null | undefined,
+>(expected: T): Guard<T> {
   return (value): value is T => value === expected;
 }
 export function optional<T>(guard: Guard<T>): Guard<T | undefined> {
@@ -67,4 +67,11 @@ export function decodeArray<T>(read: Decoder<T>): Decoder<T[]> {
     if (!isUnknownArray(value)) throw new Error("Invalid API response list");
     return value.map(read);
   };
+}
+
+export function decodeResponse<T>(read: Decoder<T>) {
+  return (result: { data: unknown; response: Response }) => ({
+    data: read(result.data),
+    response: result.response,
+  });
 }

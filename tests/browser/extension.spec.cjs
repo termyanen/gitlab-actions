@@ -529,3 +529,45 @@ test('sensitive-file rules scan later pages, honor exclusions and disclose API f
     await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
   }
 });
+
+test('pipeline group play skips unrelated columns and recovers when its pipeline disappears', async () => {
+  const page = await context.newPage();
+  const writes = [];
+  try {
+    await page.route('https://gitlab.test/team/repo/-/pipelines/100', route => route.fulfill({contentType:'text/html', body:`<!doctype html><html><head><meta content="GitLab"><meta name="csrf-token" content="fixture"></head><body data-page="projects:pipelines:show">
+      <div data-testid="stage-column" id="unrelated"><div data-testid="stage-column-title"><span title="test">test</span></div><a href="/team/repo/-/jobs/999">Nested job</a></div>
+      <div data-testid="stage-column" id="known"><div data-testid="stage-column-title"><span title="test">test</span></div><a href="/team/repo/-/jobs/8">Manual job</a></div>
+      </body></html>`}));
+    await page.route('**/api/v4/**', async route => {
+      const request = route.request();
+      const url = new URL(request.url());
+      if (request.method() !== 'GET') writes.push(url.pathname);
+      const body = url.pathname.endsWith('/pipelines/100/jobs') ? [{id:8, name:'manual-build', status:'manual', stage:'test'}] : [];
+      await route.fulfill({contentType:'application/json', body:JSON.stringify(body)});
+    });
+    await page.goto('https://gitlab.test/team/repo/-/pipelines/100');
+    const button = page.locator('#known .gl-group-play-btn');
+    await expect(button).toBeVisible();
+    await expect(page.locator('#unrelated .gl-group-play-btn')).toHaveCount(0);
+    const failed = await page.evaluate(async () => {
+      const link = document.querySelector('#known a');
+      const original = link.getAttribute('href');
+      const button = document.querySelector('#known .gl-group-play-btn');
+      link.href = '/team/repo/-/jobs/999';
+      button.click();
+      // Drain the cached pipeline promise and its failure handler before the graph refresh.
+      await new Promise(resolve => setTimeout(resolve, 0));
+      const outcome = { error: button.classList.contains('gl-group-play-error'), loading: button.classList.contains('gl-group-play-busy') };
+      link.setAttribute('href', original);
+      return outcome;
+    });
+    expect(failed).toEqual({error:true, loading:false});
+    expect(writes).toEqual([]);
+    await button.click();
+    await expect.poll(() => writes).toEqual(['/api/v4/projects/team%2Frepo/jobs/8/play']);
+    await expect(button).toHaveClass(/gl-group-play-done/);
+    await expect(button).not.toHaveClass(/gl-group-play-error/);
+  } finally {
+    await page.close();
+  }
+});

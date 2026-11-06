@@ -1,24 +1,26 @@
-import { reportError } from "../../../shared/lib/errors";
+import type { Settings } from "../../../features/manage-settings";
+import {
+  DEFAULTS,
+  SETTINGS_FILE_MAX_BYTES,
+  createSettingsValidation,
+} from "../../../features/manage-settings";
 import { reportRuntimeError } from "../../../shared/api/runtime";
 import {
   CHANGELOG_BASE_URL,
   SETTINGS_PAGE,
   STORE_REVIEWS_URL,
 } from "../../../shared/config/extension";
+import { readMessages } from "../../../shared/i18n";
+import { reportError } from "../../../shared/lib/errors";
+import { eventElement, requireElement } from "../../../shared/ui/dom";
 import type { SettingsPageState } from "../model/types";
 import { createActionEditors } from "./action-editors";
 import { createButtonOrderEditor } from "./button-order";
 import { createDefaultSettingsForm } from "./default-form";
-import { byId, escHtml } from "./dom";
+import { buttonById, byId, escHtml, inputById } from "./dom";
 import type { SettingsFormContext } from "./form-context";
 import { createSettingsPersistence } from "./persistence";
 import { createProfileSettingsForm } from "./profile-form";
-import type { Settings } from "../../../features/manage-settings";
-import {
-  createSettingsValidation,
-  DEFAULTS,
-  SETTINGS_FILE_MAX_BYTES,
-} from "../../../features/manage-settings";
 const SAVE_STATUS_DURATION_MS = 1500;
 const SAVE_STATUS_FADE_MS = 300;
 const AUTOSAVE_DEBOUNCE_MS = 500;
@@ -73,8 +75,8 @@ function t(key: string, substitutions?: string[]) {
   if (_i18nMessages && _i18nMessages[key]) {
     let msg = _i18nMessages[key].message || "";
     if (substitutions && substitutions.length) {
-      for (let i = 0; i < substitutions.length; i++) {
-        msg = msg.replace("$" + (i + 1), substitutions[i]);
+      for (const [i, substitution] of substitutions.entries()) {
+        msg = msg.replace("$" + (i + 1), substitution);
       }
     }
     return msg;
@@ -93,6 +95,7 @@ function loadLanguage(lang: string, callback: () => void) {
     .then(function (r) {
       return r.json();
     })
+    .then(readMessages)
     .then(function (data) {
       _i18nMessages = data;
       callback();
@@ -131,7 +134,7 @@ function detectCurrentProject() {
         const m = tabs[0].url.match(
           /https?:\/\/[^/]+\/(.+?)\/-\/merge_requests/,
         );
-        if (m) {
+        if (m?.[1]) {
           currentProjectPath = m[1];
           const el = byId("currentProject");
           el.textContent = t("current", [currentProjectPath]);
@@ -158,7 +161,7 @@ function renderTabs() {
     tab.className = "tab" + (activeTab === path ? " active" : "");
     tab.setAttribute("data-tab", path);
     // Show short name
-    const shortName = path.split("/").pop()!;
+    const shortName = path.split("/").pop() || path;
     tab.innerHTML =
       escHtml(shortName) +
       '<span class="tab-remove" data-path="' +
@@ -170,11 +173,11 @@ function renderTabs() {
   // Tab click handlers
   container.querySelectorAll<HTMLElement>(".tab").forEach(function (tab) {
     tab.addEventListener("click", function (e) {
-      if ((e.target as HTMLElement).classList.contains("tab-remove")) {
-        const path = (e.target as HTMLElement).getAttribute("data-path")!;
-        if (confirm(t("removeProfile", [path]))) {
+      if (eventElement(e.target)?.classList.contains("tab-remove")) {
+        const path = eventElement(e.target)?.getAttribute("data-path");
+        if (path && confirm(t("removeProfile", [path]))) {
           if (!flushAutoSave()) return;
-          delete state.data.projectProfiles![path];
+          delete profiles[path];
           if (activeTab === path) activeTab = "default";
           renderTabs();
           renderActiveTab();
@@ -182,7 +185,7 @@ function renderTabs() {
         return;
       }
       if (!flushAutoSave()) return;
-      activeTab = tab.getAttribute("data-tab")!;
+      activeTab = tab.getAttribute("data-tab") || "default";
       renderTabs();
       renderActiveTab();
     });
@@ -193,7 +196,7 @@ function renderTabs() {
   if (currentProjectPath && !profiles[currentProjectPath]) {
     addBtn.style.display = "";
     addBtn.textContent = t("addProfileFor", [
-      currentProjectPath.split("/").pop()!,
+      currentProjectPath.split("/").pop() || currentProjectPath,
     ]);
   } else {
     addBtn.style.display = "none";
@@ -201,7 +204,9 @@ function renderTabs() {
 }
 
 function renderActiveTab() {
-  const contentEl = document.querySelector<HTMLElement>(".tab-content")!;
+  const contentEl = requireElement(
+    document.querySelector<HTMLElement>(".tab-content"),
+  );
   if (activeTab === "default") {
     renderDefaultTab(contentEl);
   } else {
@@ -296,15 +301,15 @@ function attachAutoSave() {
   // Listen for all input changes in the popup
   document.body.addEventListener("input", function (e) {
     if (
-      (e.target as HTMLElement).id !== "settingsImportFile" &&
-      (e.target as HTMLElement).matches("input, select, textarea")
+      eventElement(e.target)?.id !== "settingsImportFile" &&
+      eventElement(e.target)?.matches("input, select, textarea")
     )
       scheduleAutoSave();
   });
   document.body.addEventListener("change", function (e) {
     if (
-      (e.target as HTMLElement).id !== "settingsImportFile" &&
-      (e.target as HTMLElement).matches("input, select, textarea")
+      eventElement(e.target)?.id !== "settingsImportFile" &&
+      eventElement(e.target)?.matches("input, select, textarea")
     )
       scheduleAutoSave();
   });
@@ -324,10 +329,11 @@ function setSettingsTransferBusy(busy: boolean) {
     "openSettingsTab",
     "addProfile",
   ].forEach(function (id) {
-    byId<HTMLButtonElement>(id).disabled = busy;
+    buttonById(id).disabled = busy;
   });
   byId("tabs").inert = busy;
-  document.querySelector<HTMLElement>(".tab-content")!.inert = busy;
+  requireElement(document.querySelector<HTMLElement>(".tab-content")).inert =
+    busy;
 }
 
 function exportAllSettings() {
@@ -556,9 +562,9 @@ export function startSettings() {
                   renderTabs();
                   renderActiveTab();
                 }
-                byId<HTMLButtonElement>("openSettingsTab").disabled = false;
-                byId<HTMLButtonElement>("exportSettings").disabled = false;
-                byId<HTMLButtonElement>("importSettings").disabled = false;
+                buttonById("openSettingsTab").disabled = false;
+                buttonById("exportSettings").disabled = false;
+                buttonById("importSettings").disabled = false;
               });
             })
             .catch(reportError);
@@ -596,12 +602,12 @@ export function startSettings() {
     });
     byId("exportSettings").addEventListener("click", exportAllSettings);
     byId("importSettings").addEventListener("click", function () {
-      const input = byId<HTMLInputElement>("settingsImportFile");
+      const input = inputById("settingsImportFile");
       input.value = "";
       input.click();
     });
-    byId("settingsImportFile").addEventListener("change", function (event) {
-      readSettingsImport((event.target as HTMLInputElement).files?.[0]);
+    byId("settingsImportFile").addEventListener("change", function () {
+      readSettingsImport(inputById("settingsImportFile").files?.[0]);
     });
     byId("applySettingsImport").addEventListener("click", applySettingsImport);
     byId("cancelSettingsImport").addEventListener("click", function () {

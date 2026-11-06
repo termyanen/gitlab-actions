@@ -6,9 +6,9 @@ import {
   isString,
   objectOf,
 } from "../../../shared/lib/validation";
-import { readRawJiraIssue } from "./validation";
 import type { JiraQuickAction, JiraStatus } from "../model/types";
 import type { RawJiraComment } from "./types";
+import { readRawJiraIssue } from "./validation";
 const readJiraFields = decoder(
   arrayOf(
     objectOf<{ id: string; name: string }[][number]>({
@@ -62,7 +62,7 @@ export function mapJiraComment(c: RawJiraComment) {
 export function buildJiraQuickActionEdit(action: Partial<JiraQuickAction>) {
   const fields: Record<string, unknown> = {};
   const update: Record<string, unknown> = {};
-  const seen = new Set();
+  const seen = new Set<string>();
   if (action.assignee) fields.assignee = { name: action.assignee };
   (action.updates || []).forEach(function (change) {
     const field = change.field;
@@ -73,10 +73,10 @@ export function buildJiraQuickActionEdit(action: Partial<JiraQuickAction>) {
     if (["labels", "fixVersions", "versions", "components"].includes(field)) {
       if (
         !["set", "add", "remove"].includes(operation) ||
-        !Array.isArray(value) ||
+        !arrayOf(isString)(value) ||
         !value.length ||
         value.some(function (v) {
-          return typeof v !== "string" || !v.trim();
+          return !v.trim();
         })
       ) {
         throw new Error("Invalid Jira field: " + field);
@@ -173,6 +173,7 @@ export function fetchJiraStatuses(
   function fetchOne(i: number): Promise<typeof results> {
     if (i >= tickets.length || authFailed) return Promise.resolve(results);
     const ticket = tickets[i];
+    if (ticket === undefined) return Promise.resolve(results);
     return jiraApi(
       jiraUrl,
       JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + fields,
@@ -189,11 +190,11 @@ export function fetchJiraStatuses(
           if (showDetails) {
             r.priority = data.fields.priority ? data.fields.priority.name : "";
             r.priorityIcon = data.fields.priority
-              ? data.fields.priority.iconUrl
+              ? data.fields.priority.iconUrl || ""
               : "";
             r.type = data.fields.issuetype ? data.fields.issuetype.name : "";
             r.typeIcon = data.fields.issuetype
-              ? data.fields.issuetype.iconUrl
+              ? data.fields.issuetype.iconUrl || ""
               : "";
           }
           results[ticket] = r;

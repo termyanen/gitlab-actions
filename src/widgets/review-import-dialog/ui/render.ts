@@ -82,8 +82,9 @@ export function createImportRenderer(actions: {
   }
 
   function safeLink(state: ImportDialogState, href?: string) {
+    if (!href) return null;
     try {
-      const url = new URL(href!, state.context.webUrl);
+      const url = new URL(href, state.context.webUrl);
       return /^https?:$/.test(url.protocol) &&
         url.origin === state.context.origin
         ? url.href
@@ -346,7 +347,8 @@ export function createImportRenderer(actions: {
   }
 
   function renderEditor(state: ImportDialogState) {
-    const editor = state.editor!;
+    const editor = state.editor;
+    if (!editor) throw new Error("No comment is being edited");
     const form = element("div", "gl-review-import-editor");
     const label = element(
       "label",

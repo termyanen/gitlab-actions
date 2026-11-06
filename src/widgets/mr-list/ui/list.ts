@@ -13,6 +13,7 @@ import { reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
 import { decoder, isString, objectOf } from "../../../shared/lib/validation";
+import { isElement, requireElement } from "../../../shared/ui/dom";
 import type { ListSettings } from "../model/types";
 import { createListJiraBadges } from "./jira-badges";
 import { createMrMetadata } from "./metadata";
@@ -129,16 +130,16 @@ export function startMrList(
             navigator.clipboard
               .writeText(mrTitle + "\n" + mrUrl)
               .then(function () {
-                li.querySelector("svg")!.style.color = "#108548";
+                requireElement(li.querySelector("svg")).style.color = "#108548";
                 scope.timeout(function () {
-                  li.querySelector("svg")!.style.color = "";
+                  requireElement(li.querySelector("svg")).style.color = "";
                 }, COPIED_FEEDBACK_DURATION_MS);
               })
               .catch(reportError);
           });
-          const lastLi = controlsUl.lastElementChild as HTMLElement | null;
+          const lastLi = controlsUl.lastElementChild;
           controlsUl.appendChild(li);
-          if (lastLi) lastLi.style.marginRight = "0";
+          if (lastLi instanceof HTMLElement) lastLi.style.marginRight = "0";
         }
       }
     });
@@ -279,10 +280,9 @@ export function startMrList(
                 SEL.filterBar +
                 ", .top-area, .issues-filters, .nav-controls";
               function isListMutation(mutation: MutationRecord) {
-                const target =
-                  mutation.target.nodeType === 1
-                    ? (mutation.target as Element)
-                    : mutation.target.parentElement;
+                const target = isElement(mutation.target)
+                  ? mutation.target
+                  : mutation.target.parentElement;
                 if (qUp(target, SEL.titleLink)) return true;
                 if (mutation.type !== "childList") return false;
                 return (
@@ -298,9 +298,9 @@ export function startMrList(
               }
               function isListContent(node: Node) {
                 return (
-                  node.nodeType === 1 &&
-                  ((node as Element).matches(listContentSelector) ||
-                    !!q(node as Element, listContentSelector))
+                  isElement(node) &&
+                  (node.matches(listContentSelector) ||
+                    !!q(node, listContentSelector))
                 );
               }
               let _observerTimer: ReturnType<typeof setTimeout> | undefined;

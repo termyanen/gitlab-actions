@@ -2,6 +2,7 @@ import type { JiraQuickAction } from "../../../entities/jira-issue";
 import type {
   JiraMessage,
   JiraNamed,
+  JiraUser,
   RawJiraComment,
 } from "../../../entities/jira-issue/background";
 import {
@@ -12,6 +13,7 @@ import {
   jiraQuickActionWrite,
   mapJiraComment,
   readJiraUser,
+  readRawJiraComment,
   readRawJiraIssue,
 } from "../../../entities/jira-issue/background";
 import type { JiraFieldValue } from "../../../entities/jira-issue/content";
@@ -23,7 +25,9 @@ import {
   decoder,
   isBoolean,
   isNumber,
+  isRecord,
   isString,
+  isUnknownArray,
   objectOf,
   optional,
   recordOf,
@@ -43,11 +47,11 @@ const readJiraVersions = decoder(
 const readJiraTransitions = decoder(
   objectOf<{ transitions: { id: string; name: string; to?: JiraNamed }[] }>({
     transitions: arrayOf(
-      objectOf({
+      objectOf<{ id: string; name: string; to?: JiraNamed }>({
         id: isString,
         name: isString,
         to: optional(
-          objectOf({
+          objectOf<JiraNamed>({
             name: isString,
             iconUrl: optional(isString),
             statusCategory: optional(
@@ -65,10 +69,10 @@ const readJiraTransitions = decoder(
 const readJiraComments = decoder(
   objectOf<{ comments: RawJiraComment[]; total: number }>({
     comments: arrayOf(
-      objectOf({
+      objectOf<RawJiraComment>({
         id: isString,
         author: optional(
-          objectOf({
+          objectOf<JiraUser>({
             accountId: optional(isString),
             key: optional(isString),
             name: optional(isString),
@@ -195,19 +199,20 @@ export function handleJiraMessage(
               ? f[fieldMap.sprintField]
               : null;
             if (sprintVal) {
-              if (Array.isArray(sprintVal) && sprintVal.length) {
+              if (isUnknownArray(sprintVal) && sprintVal.length) {
                 const last = sprintVal[sprintVal.length - 1];
-                if (typeof last === "object" && last.name) sprint = last.name;
+                if (isRecord(last) && typeof last.name === "string")
+                  sprint = last.name;
                 else if (typeof last === "string") {
                   const sm = last.match(/name=([^,\]]+)/);
-                  if (sm) sprint = sm[1];
+                  if (sm?.[1]) sprint = sm[1];
                 }
               } else if (typeof sprintVal === "string") {
                 sprint = sprintVal;
               }
             }
             sendResponse({
-              key: data.key,
+              key: data.key || msg.ticket,
               summary: f.summary || "",
               status: f.status ? f.status.name : "",
               statusCategoryKey:
@@ -257,6 +262,7 @@ export function handleJiraMessage(
     function fetchField(i: number): Promise<typeof results> {
       if (i >= tickets.length || authFailed) return Promise.resolve(results);
       const ticket = tickets[i];
+      if (ticket === undefined) return Promise.resolve(results);
       return jiraApi(
         msg.jiraUrl,
         JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + apiFields,
@@ -266,9 +272,11 @@ export function handleJiraMessage(
           const val = data && data.fields ? data.fields[field] : null;
           const values: string[] = [];
           let categoryKey = "";
-          if (Array.isArray(val)) {
+          if (isUnknownArray(val)) {
             val.forEach(function (v) {
-              values.push(typeof v === "object" && v.name ? v.name : String(v));
+              values.push(
+                isRecord(v) && typeof v.name === "string" ? v.name : String(v),
+              );
             });
           } else if (
             val &&
@@ -288,8 +296,10 @@ export function handleJiraMessage(
             values.push(String(val));
           }
           if (values.length) {
-            results[ticket] = { values: values };
-            if (categoryKey) results[ticket].categoryKey = categoryKey;
+            results[ticket] = {
+              values,
+              ...(categoryKey ? { categoryKey } : {}),
+            };
           }
         })
         .catch(function (err: unknown) {
@@ -329,7 +339,7 @@ export function handleJiraMessage(
             return {
               key: u.key || u.name,
               name: u.displayName,
-              avatar: u.avatarUrls ? u.avatarUrls["24x24"] : "",
+              avatar: u.avatarUrls?.["24x24"] || "",
             };
           }),
         });
@@ -550,6 +560,7 @@ export function handleJiraMessage(
         }
         return r.json();
       })
+      .then(readRawJiraComment)
       .then(function (c) {
         sendResponse({ comment: mapJiraComment(c) });
       })

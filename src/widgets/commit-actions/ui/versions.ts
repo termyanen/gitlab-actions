@@ -5,7 +5,13 @@ import { q, qAll, qUp } from "../../../shared/lib/dom";
 import { errorMessage, reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
-import { decoder, isString, objectOf } from "../../../shared/lib/validation";
+import {
+  decoder,
+  isNumber,
+  isRecord,
+  isString,
+  objectOf,
+} from "../../../shared/lib/validation";
 import { getNestedValue, parseToml } from "../../../shared/lib/version";
 const readFileContent = decoder(
   objectOf<{ content: string }>({
@@ -20,6 +26,26 @@ interface CommitEntry {
   sha: string;
 }
 
+interface CachedVersion {
+  v: string;
+  ts: number;
+}
+const isCachedVersion = objectOf<CachedVersion>({ v: isString, ts: isNumber });
+function cachedVersions(response: unknown): Record<string, CachedVersion> {
+  const result: Record<string, CachedVersion> = {};
+  if (isRecord(response) && isRecord(response.gl_commit_versions)) {
+    for (const [key, value] of Object.entries(response.gl_commit_versions)) {
+      if (isCachedVersion(value))
+        Object.defineProperty(result, key, {
+          value,
+          enumerable: true,
+          writable: true,
+          configurable: true,
+        });
+    }
+  }
+  return result;
+}
 export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
   const api = createSessionApi(() => GITLAB_URL, scope.signal);
@@ -92,32 +118,32 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
             );
             if (!shaGroups.length) {
               const clipEls = qAll(document, "[data-clipboard-text]");
-              for (let ci = 0; ci < clipEls.length; ci++) {
+              for (const clipboardElement of clipEls) {
                 const cv =
-                  clipEls[ci].getAttribute("data-clipboard-text") || "";
+                  clipboardElement.getAttribute("data-clipboard-text") || "";
                 if (/^[0-9a-f]{7,40}$/.test(cv)) {
                   const g =
-                    clipEls[ci].closest(
+                    clipboardElement.closest(
                       ".btn-group, .commit-sha-group, .gl-button-group",
-                    ) || clipEls[ci].parentElement;
+                    ) || clipboardElement.parentElement;
                   if (g && shaGroups.indexOf(g) === -1) shaGroups.push(g);
                 }
               }
             }
             const entries: CommitEntry[] = [];
             const seenRows: Element[] = [];
-            for (let i = 0; i < shaGroups.length; i++) {
-              const shaEl = q(shaGroups[i], SEL.commitSha);
+            for (const shaGroup of shaGroups) {
+              const shaEl = q(shaGroup, SEL.commitSha);
               const sha = shaEl
                 ? shaEl.getAttribute("data-clipboard-text") ||
                   (shaEl.textContent || "").trim()
                 : "";
               if (!sha || !/^[0-9a-f]{7,40}$/.test(sha)) continue;
               const row =
-                qUp(shaGroups[i], SEL.commitRow) || shaGroups[i].parentElement;
+                qUp(shaGroup, SEL.commitRow) || shaGroup.parentElement;
               if (!row || seenRows.indexOf(row) !== -1) continue;
               seenRows.push(row);
-              entries.push({ row: row, group: shaGroups[i], sha: sha });
+              entries.push({ row: row, group: shaGroup, sha: sha });
             }
             return entries; // DOM order = newest first
           }
@@ -125,24 +151,21 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
           function persistVersions(map: Record<string, string>) {
             chrome.storage.local.get(
               { gl_commit_versions: {} },
-              scope.guard(function (res: {
-                gl_commit_versions?: Record<string, { v: string; ts: number }>;
-              }) {
+              scope.guard(function (res: unknown) {
                 if (chrome.runtime.lastError) return;
-                const store = res.gl_commit_versions || {};
+                const store = cachedVersions(res);
                 const now = Date.now();
-                let sha;
-                for (sha in map) {
-                  store[cacheScope + sha] = { v: map[sha], ts: now };
+                for (const [sha, version] of Object.entries(map)) {
+                  store[cacheScope + sha] = { v: version, ts: now };
                 }
                 // Cap the store; evict oldest entries first
                 const keys = Object.keys(store);
                 if (keys.length > 1000) {
                   keys.sort(function (a, b) {
-                    return (store[a].ts || 0) - (store[b].ts || 0);
+                    return (store[a]?.ts || 0) - (store[b]?.ts || 0);
                   });
-                  for (let i = 0; i < keys.length - 1000; i++)
-                    delete store[keys[i]];
+                  for (const key of keys.slice(0, keys.length - 1000))
+                    delete store[key];
                 }
                 chrome.storage.local.set(
                   { gl_commit_versions: store },
@@ -158,8 +181,7 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
 
           function renderCommitVersionBadges(entries: CommitEntry[]) {
             if (scope.disposed) return;
-            for (let i = 0; i < entries.length; i++) {
-              const entry = entries[i];
+            for (const [i, entry] of entries.entries()) {
               const loader = entry.row.querySelector(
                 ".gl-commit-version-loader",
               );
@@ -169,8 +191,9 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
               if (!version) continue; // unknown or file absent at this commit
               // Highlight when the version differs from the next older commit on the page
               let changed = false;
-              if (i + 1 < entries.length) {
-                const olderVersion = _versionCache[entries[i + 1].sha];
+              const older = entries[i + 1];
+              if (older) {
+                const olderVersion = _versionCache[older.sha];
                 changed = !!olderVersion && olderVersion !== version;
               }
               if (!entry.group.parentNode) continue; // detached by a Vue re-render
@@ -191,12 +214,12 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
             if (!entries.length) return;
 
             const uncached: string[] = [];
-            for (let i = 0; i < entries.length; i++) {
+            for (const commitEntry of entries) {
               if (
-                _versionCache[entries[i].sha] === undefined &&
-                uncached.indexOf(entries[i].sha) === -1
+                _versionCache[commitEntry.sha] === undefined &&
+                uncached.indexOf(commitEntry.sha) === -1
               ) {
-                uncached.push(entries[i].sha);
+                uncached.push(commitEntry.sha);
               }
             }
 
@@ -269,14 +292,11 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
 
           chrome.storage.local.get(
             { gl_commit_versions: {} },
-            scope.guard(function (res: {
-              gl_commit_versions?: Record<string, { v: string; ts: number }>;
-            }) {
-              const store =
-                (!chrome.runtime.lastError && res.gl_commit_versions) || {};
-              for (const k in store) {
+            scope.guard(function (res: unknown) {
+              const store = chrome.runtime.lastError ? {} : cachedVersions(res);
+              for (const [k, cached] of Object.entries(store)) {
                 if (k.indexOf(cacheScope) === 0)
-                  _versionCache[k.substring(cacheScope.length)] = store[k].v;
+                  _versionCache[k.substring(cacheScope.length)] = cached.v;
               }
 
               injectCommitVersionBadges();

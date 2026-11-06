@@ -16,7 +16,11 @@ export function isExtensionValid() {
 }
 
 export function addRuntimeListener(
-  listener: Parameters<typeof chrome.runtime.onMessage.addListener>[0],
+  listener: (
+    message: unknown,
+    sender: chrome.runtime.MessageSender,
+    sendResponse: (response: unknown) => void,
+  ) => boolean | undefined,
 ) {
   chrome.runtime.onMessage.addListener(listener);
   return () => chrome.runtime.onMessage.removeListener(listener);

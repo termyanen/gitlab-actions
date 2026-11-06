@@ -6,9 +6,10 @@ var harness = require('./helpers/extension.cjs');
 var messages = require('../_locales/en/messages.json');
 
 function environment() {
+  var tags = new Map(Array.from(require('node:fs').readFileSync(require('node:path').join(__dirname, '../popup.html'), 'utf8').matchAll(/<(\w+)\b[^>]*\bid="([^"]+)"/g), function(match) { return [match[2], match[1].toUpperCase()]; }));
   var controls = new Map(), timers = new Map(), timer = 0;
   function element() { return { style: {}, disabled: false, hidden: true, textContent: '', setAttribute: function() {}, focus: function() {}, addEventListener: function() {}, appendChild: function() {}, remove: function() {}, click: function() {} }; }
-  function control(id) { if (!controls.has(id)) controls.set(id, element()); return controls.get(id); }
+  function control(id) { if (!controls.has(id)) controls.set(id, Object.assign(element(), {tagName: tags.get(id) || "DIV", nodeType: 1})); return controls.get(id); }
   var env = { stored: { update_version: '1.13.1', language: 'en' }, writes: [], requests: [], downloads: [], granted: true, writeError: false, readError: false };
   var context = vm.createContext({ window: { innerWidth: 360 }, TextEncoder: TextEncoder, URL: URL, Blob: Blob,
     document: { body: element(), addEventListener: function() {}, getElementById: control, querySelector: function() { return control('content'); }, createElement: function() { var el = element(); el.click = function() { env.downloads.push(el); }; return el; } },

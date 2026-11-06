@@ -1,30 +1,40 @@
+import type { JiraQuickAction } from "../../entities/jira-issue";
+import type { JiraMessage } from "../../entities/jira-issue/background";
 import type { ChainMessage } from "../../features/job-chains";
 import type { StandupMessage } from "../../features/standup";
-import type { JiraMessage } from "../../entities/jira-issue/background";
+import {
+  arrayOf,
+  isBoolean,
+  isNumber,
+  isRecord,
+  isString,
+  isUnknown,
+  nullable,
+  objectOf,
+  optional,
+} from "../../shared/lib/validation";
+
 type BackgroundMessage =
   ChainMessage | StandupMessage | JiraMessage | { type: "open-options" };
-const jiraTypes = new Set([
-  "execute-jira-quick-action",
-  "fetch-jira-statuses",
-  "fetch-jira-issue",
-  "fetch-jira-field-values",
-  "search-jira-assignable",
-  "fetch-jira-versions",
-  "set-jira-fix-versions",
-  "set-jira-assignee",
-  "fetch-jira-transitions",
-  "fetch-jira-comments",
-  "fetch-jira-myself",
-  "delete-jira-comment",
-  "post-jira-comment",
-  "do-jira-transition",
-]);
-function strings(value: unknown): value is string[] {
-  return (
-    Array.isArray(value) && value.every((item) => typeof item === "string")
-  );
-}
-function origin(value: unknown): boolean {
+const strings = arrayOf(isString);
+const maybeString = optional(isString);
+const maybeNumber = optional(isNumber);
+const quickAction = objectOf<Partial<JiraQuickAction>>({
+  id: maybeString,
+  label: maybeString,
+  status: maybeString,
+  assignee: maybeString,
+  updates: optional(
+    arrayOf(
+      objectOf<NonNullable<JiraQuickAction["updates"]>[number]>({
+        field: isString,
+        operation: maybeString,
+        value: isUnknown,
+      }),
+    ),
+  ),
+});
+function origin(value: unknown): value is string {
   if (typeof value !== "string") return false;
   try {
     const url = new URL(value);
@@ -33,57 +43,74 @@ function origin(value: unknown): boolean {
     return false;
   }
 }
+function validBackgroundMessage(value: unknown): value is BackgroundMessage {
+  if (!isRecord(value)) return false;
+  if (value.type === "open-options" || value.type === "get-active-tasks")
+    return true;
+  if (value.type === "get-task-status" || value.type === "cancel-task")
+    return isString(value.taskId);
+  if (value.type === "start-job-chain")
+    return (
+      origin(value.gitlabUrl) &&
+      isNumber(value.projectId) &&
+      isNumber(value.mrIid) &&
+      strings(value.jobs) &&
+      maybeString(value.mrTitle)
+    );
+  if (value.type === "generate-standup")
+    return origin(value.gitlabUrl) && maybeString(value.date);
+  if (!origin(value.jiraUrl)) return false;
+  switch (value.type) {
+    case "fetch-jira-myself":
+      return true;
+    case "fetch-jira-statuses":
+      return strings(value.tickets) && optional(isBoolean)(value.showDetails);
+    case "fetch-jira-field-values":
+      return strings(value.tickets) && maybeString(value.field);
+  }
+  if (!isString(value.ticket)) return false;
+  switch (value.type) {
+    case "fetch-jira-issue":
+    case "fetch-jira-versions":
+    case "fetch-jira-transitions":
+      return true;
+    case "set-jira-fix-versions":
+      return strings(value.versions);
+    case "search-jira-assignable":
+      return isString(value.query);
+    case "post-jira-comment":
+      return isString(value.text);
+    case "delete-jira-comment":
+      return isString(value.commentId);
+    case "do-jira-transition":
+      return isString(value.transitionId);
+    case "set-jira-assignee":
+      return optional(nullable(isString))(value.username);
+    case "fetch-jira-comments":
+      return maybeNumber(value.startAt) && maybeNumber(value.maxResults);
+    case "execute-jira-quick-action":
+      return (
+        maybeString(value.transitionId) && optional(quickAction)(value.action)
+      );
+    default:
+      return false;
+  }
+}
 export function parseBackgroundMessage(
   value: unknown,
 ): BackgroundMessage | null {
-  if (!value || typeof value !== "object" || !("type" in value)) return null;
-  const data = value as Record<string, unknown>;
-  if (data.type === "open-options" || data.type === "get-active-tasks")
-    return data as BackgroundMessage;
-  if (data.type === "get-task-status" || data.type === "cancel-task")
-    return typeof data.taskId === "string" ? (data as BackgroundMessage) : null;
-  if (data.type === "start-job-chain")
-    return origin(data.gitlabUrl) &&
-      typeof data.projectId === "number" &&
-      typeof data.mrIid === "number" &&
-      strings(data.jobs)
-      ? (data as BackgroundMessage)
-      : null;
-  if (data.type === "generate-standup")
-    return origin(data.gitlabUrl) &&
-      (data.date === undefined || typeof data.date === "string")
-      ? (data as BackgroundMessage)
-      : null;
-  if (
-    typeof data.type !== "string" ||
-    !jiraTypes.has(data.type) ||
-    !origin(data.jiraUrl)
-  )
-    return null;
-  if (data.type === "fetch-jira-myself") return data as BackgroundMessage;
-  if (
-    data.type === "fetch-jira-statuses" ||
-    data.type === "fetch-jira-field-values"
-  )
-    return strings(data.tickets) ? (data as BackgroundMessage) : null;
-  if (typeof data.ticket !== "string") return null;
-  if (data.type === "set-jira-fix-versions" && !strings(data.versions))
-    return null;
-  if (data.type === "search-jira-assignable" && typeof data.query !== "string")
-    return null;
-  if (data.type === "post-jira-comment" && typeof data.text !== "string")
-    return null;
-  if (data.type === "delete-jira-comment" && typeof data.commentId !== "string")
-    return null;
-  if (
-    data.type === "do-jira-transition" &&
-    typeof data.transitionId !== "string"
-  )
-    return null;
-  return data as BackgroundMessage;
+  return validBackgroundMessage(value) ? value : null;
 }
 export function isJiraMessage(
   message: BackgroundMessage,
 ): message is JiraMessage {
-  return jiraTypes.has(message.type);
+  // Extra payload fields must not change routing: only the discriminant matters.
+  return (
+    message.type !== "open-options" &&
+    message.type !== "generate-standup" &&
+    message.type !== "start-job-chain" &&
+    message.type !== "get-task-status" &&
+    message.type !== "cancel-task" &&
+    message.type !== "get-active-tasks"
+  );
 }

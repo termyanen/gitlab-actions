@@ -1,7 +1,16 @@
-import type { Note } from "../../../entities/discussion";
+import { readNote } from "../../../entities/discussion";
 import type { ReviewContext } from "../../../entities/review";
 import { digest } from "../../../shared/lib/digest";
 import { toError } from "../../../shared/lib/errors";
+import {
+  decodeResponse,
+  either,
+  isNumber,
+  isRecord,
+  literal,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import { normalizedPosition } from "./diff";
 import { request } from "./transport";
 import type {
@@ -12,6 +21,14 @@ import type {
 } from "./types";
 import { positive, warning } from "./utils";
 import { endpoint } from "./validation";
+const isJournalEntry = objectOf<JournalEntry>({
+  status: either(
+    either(literal("pending"), literal("unknown")),
+    either(literal("draft"), literal("published")),
+  ),
+  time: isNumber,
+  id: optional(isNumber),
+});
 export function createDeliveryJournal() {
   const JOURNAL_PREFIX = "glReviewImportPending:";
   const journal = new Map<string, JournalEntry>();
@@ -40,15 +57,15 @@ export function createDeliveryJournal() {
   }
 
   function storageCall(
-    method: "get" | "set" | "remove",
-    argument: string | Record<string, JournalEntry>,
-  ): Promise<Record<string, JournalEntry> | undefined> {
+    ...[method, argument]:
+      ["get" | "remove", string] | ["set", Record<string, JournalEntry>]
+  ): Promise<unknown> {
     const local =
       typeof chrome !== "undefined" ? chrome.storage?.local : undefined;
     if (!local || typeof local[method] !== "function")
       return Promise.resolve(method === "get" ? {} : undefined);
     return new Promise((resolve, reject) => {
-      const finish = (value?: Record<string, JournalEntry>) => {
+      const finish = (value?: unknown) => {
         if (chrome.runtime && chrome.runtime.lastError)
           reject(
             new Error(
@@ -58,10 +75,9 @@ export function createDeliveryJournal() {
         else resolve(value);
       };
       try {
-        if (method === "get") local.get(argument as string, finish);
-        else if (method === "set")
-          local.set(argument as Record<string, JournalEntry>, () => finish());
-        else local.remove(argument as string, () => finish());
+        if (method === "get") local.get(argument, finish);
+        else if (method === "set") local.set(argument, () => finish());
+        else local.remove(argument, () => finish());
       } catch {
         reject(
           new Error(
@@ -75,9 +91,9 @@ export function createDeliveryJournal() {
   async function pending(key: string) {
     if (journal.has(key)) return journal.get(key);
     const data = await storageCall("get", JOURNAL_PREFIX + key);
-    const saved = data && data[JOURNAL_PREFIX + key];
+    const saved = isRecord(data) ? data[JOURNAL_PREFIX + key] : undefined;
     if (
-      saved &&
+      isJournalEntry(saved) &&
       (saved.status === "pending" ||
         saved.status === "unknown" ||
         ((saved.status === "draft" || saved.status === "published") &&
@@ -117,7 +133,7 @@ export function createDeliveryJournal() {
     // A confirmed draft can be deleted in GitLab. Only a successfully loaded
     // complete draft list proves absence; unknown sends remain protected.
     if (
-      saved &&
+      isJournalEntry(saved) &&
       saved.status === "draft" &&
       existing.draftSupported &&
       !existing.notes.some(function (note) {
@@ -130,7 +146,7 @@ export function createDeliveryJournal() {
     // Published replies can also be deleted. A lagging discussion list alone
     // is not proof: verify the confirmed note ID before releasing its journal.
     if (
-      saved &&
+      isJournalEntry(saved) &&
       saved.status === "published" &&
       !existing.discussions.some(function (discussion) {
         return discussion.notes.some(function (note) {
@@ -140,11 +156,11 @@ export function createDeliveryJournal() {
     ) {
       try {
         const note = (
-          await request<Note>(
+          await request(
             context,
             endpoint(context) + "/notes/" + saved.id,
             options,
-          )
+          ).then(decodeResponse(readNote))
         ).data;
         if (!note || note.id !== saved.id || typeof note.body !== "string")
           throw new Error(

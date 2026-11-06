@@ -14,3 +14,11 @@ export {
   readFileDiff,
   readMergeRequest,
 } from "./model/validation";
+
+export { readLegacyChanges, readRevisionComparison } from "./model/validation";
+
+export { isCommit, isFileDiff } from "./model/validation";
+
+export { readCommit } from "./model/validation";
+
+export { isMergeRequest } from "./model/validation";

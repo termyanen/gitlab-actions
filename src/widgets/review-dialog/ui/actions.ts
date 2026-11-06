@@ -79,12 +79,13 @@ export function createReviewDialogActions(
   }
 
   function fileFilter(state: ReviewDialogState) {
-    if (!getWorkflow()) return undefined;
+    const workflow = getWorkflow();
+    if (!workflow) return undefined;
     const value: Partial<FileFilter> = {};
     state.filterFields.forEach(function (field) {
       value[field.key] = field.input.value;
     });
-    return getWorkflow()!.normalizeFilter(value);
+    return workflow.normalizeFilter(value);
   }
 
   function repeatReview(state: ReviewDialogState, copy: boolean) {
@@ -110,7 +111,7 @@ export function createReviewDialogActions(
       status(state, t("aiReviewFilterInvalid"), true);
       return;
     }
-    if (state.loadController) state.loadController.abort();
+    if (state.loadController) state.loadController?.abort();
     state.loadController = null;
     state.loading = false;
     invalidate(state);
@@ -128,7 +129,7 @@ export function createReviewDialogActions(
           state.baseline.value === "manual"
             ? state.baselineSha.value.trim()
             : state.baseline.value,
-        fileFilter: scope,
+        ...(scope === undefined ? {} : { fileFilter: scope }),
         includeCode: state.includeCode.checked,
         includeDescription: state.includeDescription.checked,
         prompt: state.prompt.value,
@@ -163,17 +164,18 @@ export function createReviewDialogActions(
   }
 
   function prepareReplies(state: ReviewDialogState, copy: boolean) {
+    const importer = getImporter();
     if (
       !isCurrent(state) ||
       state.busy ||
       state.context.kind !== "merge_requests" ||
-      !getImporter()
+      !importer
     )
       return;
     const discussionIds = selectedDiscussionIds(state, true);
     if (state.loading || !discussionIds.length) return;
     // This export loads its own context; a late picker response must not replace it.
-    if (state.loadController) state.loadController.abort();
+    if (state.loadController) state.loadController?.abort();
     state.loadController = null;
     state.loading = false;
     invalidate(state);
@@ -186,18 +188,19 @@ export function createReviewDialogActions(
     Promise.resolve()
       .then(function () {
         if (!isCurrent(state) || run !== state.exportRun) return;
-        return getImporter()!.getReplyPrompt(state.context, {
+        return importer.getReplyPrompt(state.context, {
           signal: controller.signal,
           discussionIds: discussionIds,
           prompt: state.prompt.value,
         });
       })
       .then(function (text) {
-        if (!isCurrent(state) || run !== state.exportRun) return;
-        state.prepared = { text: text! };
-        state.preview.value = text!;
+        if (!isCurrent(state) || run !== state.exportRun || text === undefined)
+          return;
+        state.prepared = { text: text };
+        state.preview.value = text;
         state.size.textContent = t("aiReviewSize", [
-          text!.length.toLocaleString(),
+          text.length.toLocaleString(),
         ]);
         state.previewDetails.open = !copy || state.previewDetails.open;
         status(state, t("aiReviewReady"));
@@ -240,8 +243,10 @@ export function createReviewDialogActions(
       return;
     }
     const fresh = freshReview(state);
+    const snapshot = state.snapshot;
+    if (!fresh && !snapshot) return;
     if (fresh && state.loading) {
-      state.loadController!.abort();
+      state.loadController?.abort();
       state.loadController = null;
       state.loading = false;
     }
@@ -252,7 +257,10 @@ export function createReviewDialogActions(
     updateActions(state);
     const opts: ExportOptions = fresh ? {} : selection(state);
     try {
-      if (fresh) opts.fileFilter = fileFilter(state);
+      if (fresh) {
+        const filter = fileFilter(state);
+        if (filter) opts.fileFilter = filter;
+      }
     } catch {
       state.busy = false;
       updateActions(state);
@@ -278,9 +286,10 @@ export function createReviewDialogActions(
         t("aiReviewCodeProgress", [progress.loaded, progress.total]),
       );
     };
-    const request = fresh
-      ? data.prepareFreshReview(state.context, opts)
-      : data.prepareExport(state.snapshot!, opts);
+    const request =
+      fresh || !snapshot
+        ? data.prepareFreshReview(state.context, opts)
+        : data.prepareExport(snapshot, opts);
     request
       .then(function (result) {
         if (!isCurrent(state) || run !== state.exportRun) return;
@@ -311,7 +320,7 @@ export function createReviewDialogActions(
   }
 
   function load(state: ReviewDialogState, preserve: boolean) {
-    if (state.loadController) state.loadController.abort();
+    if (state.loadController) state.loadController?.abort();
     invalidate(state);
     const controller = new AbortController();
     state.loadController = controller;
@@ -322,9 +331,15 @@ export function createReviewDialogActions(
     updateActions(state);
     data
       .load(state.context, {
-        noteId: state.intent.noteId,
-        noteAnchor: state.intent.noteAnchor,
-        visibleNote: state.intent.visibleNote,
+        ...(state.intent.noteId === undefined
+          ? {}
+          : { noteId: state.intent.noteId }),
+        ...(state.intent.noteAnchor === undefined
+          ? {}
+          : { noteAnchor: state.intent.noteAnchor }),
+        ...(state.intent.visibleNote === undefined
+          ? {}
+          : { visibleNote: state.intent.visibleNote }),
         signal: controller.signal,
         onProgress: function (progress) {
           if (
@@ -345,7 +360,7 @@ export function createReviewDialogActions(
           (snapshot.entity && snapshot.entity.title) ||
           state.context.projectPath;
         const oldSelected = state.selected;
-        state.selected = new Set();
+        state.selected = new Set<string>();
         let foundIntent = false;
         snapshot.discussions.forEach(function (thread) {
           const notes = data.getNotes(thread);

@@ -1,4 +1,3 @@
-import { createDialogKeydown } from "../../../shared/ui/dialog";
 import type { Discussion } from "../../../entities/discussion";
 import type * as Workflow from "../../../entities/review";
 import type { ReviewContext } from "../../../entities/review";
@@ -9,6 +8,7 @@ import {
 import type { createReviewExporter } from "../../../features/review-export";
 import type { createReviewImporter } from "../../../features/review-import";
 import type { Translate } from "../../../shared/i18n";
+import { createDialogKeydown } from "../../../shared/ui/dialog";
 import { element } from "../../../shared/ui/dom";
 import type { createReviewThreads } from "./threads";
 import type {
@@ -119,35 +119,44 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
     tabs.setAttribute("role", "tablist");
     tabs.setAttribute("aria-label", t("aiReviewChooseTask"));
     tabs.hidden = context.kind !== "merge_requests";
-    (Object.keys(taskKeys) as ReviewTask[]).forEach(
-      function (task, index, tasks) {
-        const tab = button(taskKeys[task], function () {
-          setTask(state, task);
-        });
-        tab.dataset.task = task;
-        tab.id = "gl-review-tab-" + task;
-        tab.setAttribute("role", "tab");
-        tab.setAttribute("aria-controls", "gl-review-task-panel");
-        tab.addEventListener("keydown", function (event) {
-          const next =
-            event.key === "ArrowRight"
-              ? (index + 1) % tasks.length
-              : event.key === "ArrowLeft"
-                ? (index + tasks.length - 1) % tasks.length
-                : event.key === "Home"
-                  ? 0
-                  : event.key === "End"
-                    ? tasks.length - 1
-                    : -1;
-          if (next < 0) return;
-          event.preventDefault();
-          taskTabs[next].focus();
-          setTask(state, tasks[next]);
-        });
-        taskTabs.push(tab);
-        tabs.appendChild(tab);
-      },
-    );
+    (
+      [
+        "fresh",
+        "feedback",
+        "replies",
+        "repeat",
+      ] as const satisfies readonly ReviewTask[]
+    ).forEach(function (task, index, tasks) {
+      const tab = button(taskKeys[task], function () {
+        setTask(state, task);
+      });
+      tab.dataset.task = task;
+      tab.id = "gl-review-tab-" + task;
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-controls", "gl-review-task-panel");
+      tab.addEventListener("keydown", function (event) {
+        const next =
+          event.key === "ArrowRight"
+            ? (index + 1) % tasks.length
+            : event.key === "ArrowLeft"
+              ? (index + tasks.length - 1) % tasks.length
+              : event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? tasks.length - 1
+                  : -1;
+        if (next < 0) return;
+        event.preventDefault();
+        const nextTab = taskTabs[next];
+        const nextTask = tasks[next];
+        if (nextTab && nextTask) {
+          nextTab.focus();
+          setTask(state, nextTask);
+        }
+      });
+      taskTabs.push(tab);
+      tabs.appendChild(tab);
+    });
     dialog.appendChild(tabs);
     const viewStatus = element("div", "gl-review-status");
     viewStatus.setAttribute("role", "status");
@@ -295,17 +304,17 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
       element("p", "gl-review-muted", t("aiReviewFileFiltersHint")),
     );
     const viewFilterFields = (workflow ? workflow.FILTER_FIELDS : []).map(
-      function (key, index) {
+      function (key) {
         const label = element(
           "label",
           "gl-review-preview-label",
           t(
-            [
-              "aiReviewIncludeExtensions",
-              "aiReviewIncludeFiles",
-              "aiReviewIgnoreFiles",
-              "aiReviewIgnoreDirs",
-            ][index],
+            {
+              includeExtensions: "aiReviewIncludeExtensions",
+              includeFiles: "aiReviewIncludeFiles",
+              ignoreFiles: "aiReviewIgnoreFiles",
+              ignoreDirs: "aiReviewIgnoreDirs",
+            }[key],
           ),
         );
         const input = element("textarea", "gl-review-prompt");
@@ -542,7 +551,7 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
       "aiReviewPasteResult",
       function () {
         if (!getImportDialog() || context.kind !== "merge_requests") return;
-        if (close() !== false) getImportDialog()!.open(context, { t: t });
+        if (close() !== false) getImportDialog()?.open(context, { t: t });
       },
       "gl-review-import-result",
     );
@@ -571,7 +580,7 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
     const state: ReviewDialogState = {
       context: context,
       intent: reviewIntent,
-      selected: new Set(),
+      selected: new Set<string>(),
       selectionEdited: false,
       exportRun: 0,
       previousFocus:
@@ -648,7 +657,7 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
     activate(state);
     document.addEventListener("keydown", state.onKeydown, true);
     document.body.appendChild(overlay);
-    if (context.kind === "merge_requests") state.tabs[1].focus();
+    if (context.kind === "merge_requests") state.tabs[1]?.focus();
     else state.search.focus();
     state.initialValues = copyValues(state);
     load(state, false);

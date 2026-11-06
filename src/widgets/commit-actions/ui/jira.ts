@@ -79,14 +79,14 @@ export function startCommitJira(
             if (!shaGroups.length) {
               // Fallback: clipboard buttons with SHA pattern
               const clipEls = qAll(document, "[data-clipboard-text]");
-              for (let ci = 0; ci < clipEls.length; ci++) {
+              for (const clipboardElement of clipEls) {
                 const cv =
-                  clipEls[ci].getAttribute("data-clipboard-text") || "";
+                  clipboardElement.getAttribute("data-clipboard-text") || "";
                 if (/^[0-9a-f]{7,40}$/.test(cv)) {
                   const g =
-                    clipEls[ci].closest<HTMLElement>(
+                    clipboardElement.closest<HTMLElement>(
                       ".btn-group, .commit-sha-group, .gl-button-group",
-                    ) || clipEls[ci].parentElement;
+                    ) || clipboardElement.parentElement;
                   if (g && shaGroups.indexOf(g) === -1) shaGroups.push(g);
                 }
               }
@@ -97,9 +97,9 @@ export function startCommitJira(
             const allTickets: string[] = [];
             const seen: HTMLElement[] = [];
 
-            for (let i = 0; i < shaGroups.length; i++) {
+            for (const shaGroup of shaGroups) {
               const row =
-                qUp(shaGroups[i], SEL.commitRow) || shaGroups[i].parentElement;
+                qUp(shaGroup, SEL.commitRow) || shaGroup.parentElement;
               if (!row || seen.indexOf(row) !== -1) continue;
               seen.push(row);
               // Rows with badges are still collected: a row may have rendered
@@ -107,14 +107,15 @@ export function startCommitJira(
               const msgEls = qAll(row, SEL.commitMsg);
               if (!msgEls.length) continue;
               let text = "";
-              for (let j = 0; j < msgEls.length; j++) {
-                text += msgEls[j].textContent || "";
+              for (const messageElement of msgEls) {
+                text += messageElement.textContent || "";
               }
               text = text.trim();
               const tickets = parseTickets(text);
               if (!tickets.length) continue;
               // Find last commit message element for badge insertion
               const lastMsgEl = msgEls[msgEls.length - 1];
+              if (!lastMsgEl) continue;
               ticketMap.push({
                 row: row,
                 lastMsgEl: lastMsgEl,
@@ -173,6 +174,10 @@ export function startCommitJira(
                 return;
               }
               const field = jiraFields[fieldIdx];
+              if (field === undefined) {
+                _commitJiraFetching = false;
+                return;
+              }
               const batch = uncached.slice(0, 5);
               sendJiraMessage(
                 {
@@ -182,9 +187,9 @@ export function startCommitJira(
                   field: field,
                 },
                 scope.guard(function (resp) {
-                  if (resp && !resp._error) {
+                  if (resp && resp._error === undefined) {
                     const data = resp.values || {};
-                    if (data._authError) {
+                    if (resp._authError) {
                       jiraState.authFailed = true;
                       _commitJiraFetching = false;
                       ticketMap.forEach(function (entry) {
@@ -192,18 +197,18 @@ export function startCommitJira(
                       });
                       console.warn(
                         "[GitLab Actions] Jira auth failed (" +
-                          data._authError +
+                          resp._authError +
                           "), stopping Jira requests. Reload page after re-login.",
                       );
                       return;
                     }
                     const now = Date.now();
-                    for (const t in data) {
+                    for (const [t, value] of Object.entries(data)) {
                       if (!_commitJiraCache[t])
                         _commitJiraCache[t] = { ts: now, fields: {} };
-                      _commitJiraCache[t].fields[field] = data[t].values || [];
-                      if (data[t].categoryKey)
-                        _commitJiraCache[t]._categoryKey = data[t].categoryKey;
+                      _commitJiraCache[t].fields[field] = value.values || [];
+                      if (value.categoryKey)
+                        _commitJiraCache[t]._categoryKey = value.categoryKey;
                       _commitJiraCache[t].ts = now;
                     }
                     batch.forEach(function (t) {
@@ -232,7 +237,7 @@ export function startCommitJira(
             const anchor = entry.lastMsgEl;
             const loader = document.createElement("span");
             loader.className = "gl-jira-loader gl-commit-jira-loader";
-            anchor.parentNode!.insertBefore(loader, anchor.nextSibling);
+            anchor.parentNode?.insertBefore(loader, anchor.nextSibling);
           }
 
           function removeCommitJiraLoader(entry: CommitTicketEntry) {
@@ -295,10 +300,11 @@ export function startCommitJira(
             const stale = entry.row.querySelectorAll(
               ".gl-commit-jira-badge, .gl-jira-ticket-group, .gl-jira-ticket-sep",
             );
-            for (let si = 0; si < stale.length; si++) stale[si].remove();
+            for (const badge of stale) badge.remove();
 
             const anchor = entry.lastMsgEl;
-            const wrap = anchor.parentNode!;
+            const wrap = anchor.parentNode;
+            if (!wrap) return;
             const ref = anchor.nextSibling;
             groups.forEach(function (g, idx) {
               if (idx > 0) {

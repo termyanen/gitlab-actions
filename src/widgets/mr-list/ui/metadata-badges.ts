@@ -1,14 +1,14 @@
+import type { DisplayPreferences } from "../../../entities/settings";
+import {
+  DISPLAY_DEFAULTS,
+  parseSizeThresholds,
+} from "../../../entities/settings";
 import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
 import { insertAfterSafe, q, qUp } from "../../../shared/lib/dom";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { Approval } from "../model/types";
-import {
-  DISPLAY_DEFAULTS,
-  parseSizeThresholds,
-} from "../../../entities/settings";
-import type { DisplayPreferences } from "../../../entities/settings";
 
 export function createMetadataBadges(scope: Lifecycle) {
   // GitLab replaces rows without changing the route (pagination/filtering).
@@ -87,8 +87,8 @@ export function createMetadataBadges(scope: Lifecycle) {
     if (mrItem.querySelector(".gl-mr-ext-size-badge")) return;
     const titleEl = q<HTMLAnchorElement>(mrItem, SEL.titleLink);
     if (!titleEl) return;
-    const titleContainer =
-      qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
+    const titleContainer = qUp(titleEl, SEL.titleWrap) || titleEl.parentElement;
+    if (!titleContainer) return;
 
     const key = changesLines > 0 ? "mr_size_lines" : "mr_size_files";
     const thresholds =
@@ -97,7 +97,7 @@ export function createMetadataBadges(scope: Lifecycle) {
     if (!thresholds) return;
     const size = changesLines > 0 ? changesLines : changesFiles;
     const index = thresholds.findIndex((limit) => size <= limit);
-    const label = index < 0 ? "XL" : ["S", "M", "L"][index];
+    const label = index < 0 ? "XL" : ["S", "M", "L"][index] || "XL";
     const cls = "size-" + label.toLowerCase();
     const fileCount = String(changesFiles) + (filesTruncated ? "+" : "");
     const tooltip =
@@ -119,8 +119,8 @@ export function createMetadataBadges(scope: Lifecycle) {
     if (mrItem.querySelector(".gl-mr-ext-conflict-badge")) return;
     const titleEl = q<HTMLAnchorElement>(mrItem, SEL.titleLink);
     if (!titleEl) return;
-    const titleContainer =
-      qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
+    const titleContainer = qUp(titleEl, SEL.titleWrap) || titleEl.parentElement;
+    if (!titleContainer) return;
     const badge = document.createElement("span");
     badge.className = "gl-mr-ext-conflict-badge";
     badge.title =
@@ -184,7 +184,7 @@ export function createMetadataBadges(scope: Lifecycle) {
       wrap.appendChild(arrow);
       wrap.appendChild(makeBranchEl(targetBranch));
     }
-    infoRow.parentNode!.insertBefore(wrap, infoRow.nextSibling);
+    infoRow.parentNode?.insertBefore(wrap, infoRow.nextSibling);
   }
 
   function renderApprovalIndicator(
@@ -197,8 +197,7 @@ export function createMetadataBadges(scope: Lifecycle) {
     if (!approvedBy || !approvedBy.length) return;
 
     let myApproval = false;
-    for (let i = 0; i < approvedBy.length; i++) {
-      const u = approvedBy[i];
+    for (const u of approvedBy) {
       const uname = (u.user && u.user.username) || u.username || "";
       if (uname === username) {
         myApproval = true;
@@ -222,14 +221,14 @@ export function createMetadataBadges(scope: Lifecycle) {
       const badges = mrItem.querySelectorAll<HTMLElement>(
         ".gl-badge.badge-success, .gl-badge.badge-pill",
       );
-      for (let b = 0; b < badges.length; b++) {
-        const txt = (badges[b].textContent || "").trim();
+      for (const currentBadge of badges) {
+        const txt = (currentBadge.textContent || "").trim();
         if (
           txt.indexOf("Approved") !== -1 ||
           txt.indexOf("approved") !== -1 ||
           txt.indexOf("approval") !== -1
         ) {
-          nativeBadge = badges[b];
+          nativeBadge = currentBadge;
           break;
         }
       }

@@ -1,6 +1,11 @@
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
-import type { MergeRequest } from "../../../entities/merge-request";
+import { readMergeRequest } from "../../../entities/merge-request";
 import type { ReviewContext } from "../../../entities/review";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import {
+  decodeArray,
+  decodeResponse,
+  type Decoder,
+} from "../../../shared/lib/validation";
 import { MAX_PAGES, TIMEOUT } from "./limits";
 import type { ImportError, ImportOptions } from "./types";
 import { abortError, checkAbort } from "./utils";
@@ -71,7 +76,7 @@ async function boundedDiffText(response: Response, maxBytes: number) {
   return text;
 }
 
-export async function request<T = unknown>(
+export async function request(
   context: ReviewContext,
   path: string,
   options: ImportOptions = {},
@@ -121,7 +126,7 @@ export async function request<T = unknown>(
           redirect: "error",
           signal: controller.signal,
           headers: headers,
-          body: write ? JSON.stringify(payload) : undefined,
+          ...(write ? { body: JSON.stringify(payload) } : {}),
         });
         if (!response.ok) {
           const error: ImportError = new Error(
@@ -139,7 +144,7 @@ export async function request<T = unknown>(
         const text = options.maxBytes
           ? await boundedDiffText(response, options.maxBytes)
           : await response.text();
-        let result: T;
+        let result: unknown;
         try {
           result = JSON.parse(text);
         } catch {
@@ -159,10 +164,11 @@ export async function paginate<T>(
   path: string,
   options: ImportOptions,
   key: (item: T) => string | number | null | undefined,
+  read: Decoder<T>,
 ) {
   const result: T[] = [];
-  const seen = new Set();
-  const pages = new Set();
+  const seen = new Set<string>();
+  const pages = new Set<number>();
   let page = 1;
   for (let count = 0; count < MAX_PAGES; count++) {
     checkAbort(options.signal);
@@ -171,11 +177,11 @@ export async function paginate<T>(
         "GitLab repeated a page of results. Reload and try again.",
       );
     pages.add(page);
-    const fetched = await request<T[]>(
+    const fetched = await request(
       context,
       path + "?per_page=" + GITLAB_PAGE_SIZE + "&page=" + page,
       options,
-    );
+    ).then(decodeResponse(decodeArray(read)));
     if (!Array.isArray(fetched.data))
       throw new Error("GitLab returned an incomplete list.");
     let added = 0;
@@ -207,7 +213,7 @@ export async function paginate<T>(
     } else {
       const link = header(fetched.response, "Link");
       const match = link && link.match(/<([^>]+)>\s*;\s*rel\s*=\s*"?next"?/i);
-      if (match) {
+      if (match?.[1]) {
         const url = new URL(match[1], context.apiRoot + path);
         const expected = new URL(context.apiRoot + path);
         const number = url.searchParams.get("page");
@@ -233,7 +239,9 @@ export async function paginate<T>(
 
 export async function metadata(context: ReviewContext, options: ImportOptions) {
   const entity = (
-    await request<MergeRequest>(context, endpoint(context), options)
+    await request(context, endpoint(context), options).then(
+      decodeResponse(readMergeRequest),
+    )
   ).data;
   return { entity: entity, refs: readRefs(entity, context) };
 }

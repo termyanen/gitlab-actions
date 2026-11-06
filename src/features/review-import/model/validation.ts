@@ -1,7 +1,8 @@
-import type { ReviewContext } from "../../../entities/review";
 import type { MergeRequest } from "../../../entities/merge-request";
-import type { ImportComment, ReviewInput } from "./types";
-import { sha, positive } from "./utils";
+import type { ReviewContext } from "../../../entities/review";
+import { isRecord, isUnknownArray } from "../../../shared/lib/validation";
+import type { ImportCandidate, ImportComment, ReviewInput } from "./types";
+import { positive, sha } from "./utils";
 
 export function currentOrigin() {
   const loc =
@@ -53,7 +54,8 @@ export function safeContext(input: ReviewContext) {
       "Review comments can only be imported into the current GitLab site.",
     );
   const root = api.pathname.match(/^(.*)\/api\/v4\/?$/);
-  if (!root) throw new Error("The GitLab API address is invalid.");
+  if (root?.[1] === undefined)
+    throw new Error("The GitLab API address is invalid.");
   const path = web.pathname.slice(root[1].length);
   if (web.pathname.indexOf(root[1] + "/") !== 0)
     throw new Error(
@@ -61,7 +63,7 @@ export function safeContext(input: ReviewContext) {
     );
   const parsed = path.match(/^\/(.+)\/(?:-\/)?merge_requests\/(\d+)\/?$/);
   if (
-    !parsed ||
+    !parsed?.[1] ||
     decodeURIComponent(parsed[1].replace(/\/-$/, "")) !== input.projectPath ||
     String(Number(parsed[2])) !== String(Number(input.iid))
   )
@@ -122,8 +124,8 @@ export function parseInput(text: string, context: ReviewContext) {
     throw new Error("Paste a JSON review no larger than 1 MiB.");
   text = text.trim();
   const fenced = text.match(/^```(?:json)?\s*\n([\s\S]*?)\n```$/i);
-  if (fenced) text = fenced[1];
-  let data: ReviewInput;
+  if (fenced?.[1] !== undefined) text = fenced[1];
+  let data: unknown;
   try {
     data = JSON.parse(text);
   } catch {
@@ -131,31 +133,33 @@ export function parseInput(text: string, context: ReviewContext) {
       "The review is not valid JSON. Ask the AI to return the requested JSON format.",
     );
   }
-  if (!data || Array.isArray(data) || data.version !== 1)
+  if (!isRecord(data) || data.version !== 1)
     throw new Error("This review format is not supported. Use version 1.");
   let url;
   try {
+    if (typeof data.mr_url !== "string") throw new Error("Missing URL");
     url = new URL(data.mr_url);
   } catch {
     throw new Error("The review must include the merge request URL.");
   }
   if (url.href.replace(/\/$/, "") !== context.webUrl)
     throw new Error("This review belongs to a different merge request.");
-  if (!Array.isArray(data.comments) || data.comments.length > 200)
+  if (!isUnknownArray(data.comments) || data.comments.length > 200)
     throw new Error(
       "The review must contain a comments array with at most 200 comments.",
     );
   const repliesOnly =
     data.comments.length > 0 &&
     data.comments.every(function (item) {
-      return item && item.type === "reply";
+      return isRecord(item) && item.type === "reply";
     });
   if (!(repliesOnly && data.head_sha == null) && !sha(data.head_sha))
     throw new Error("The review must include the full reviewed commit SHA.");
-  const ids = new Set();
+  const ids = new Set<string>();
+  const comments: ImportCandidate[] = [];
   data.comments.forEach(function (item) {
     if (
-      !item ||
+      !isRecord(item) ||
       typeof item.id !== "string" ||
       !item.id.trim() ||
       item.id.length > 128 ||
@@ -164,8 +168,12 @@ export function parseInput(text: string, context: ReviewContext) {
     )
       throw new Error("Each review comment must have its own unique text ID.");
     ids.add(item.id);
+    comments.push({ ...item, id: item.id });
   });
-  return data;
+  const result: ReviewInput = { version: 1, mr_url: url.href, comments };
+  if (typeof data.head_sha === "string" || data.head_sha === null)
+    result.head_sha = data.head_sha;
+  return result;
 }
 
 export function bodyError(body: unknown) {
@@ -181,7 +189,7 @@ export function bodyError(body: unknown) {
   return null;
 }
 
-export function itemError(item: ImportComment) {
+export function itemError(item: ImportCandidate) {
   const invalidBody = bodyError(item.body);
   if (invalidBody) return invalidBody;
   if (
@@ -234,4 +242,9 @@ export function itemError(item: ImportComment) {
   if (typeof item.code !== "string" || /[\r\n]/.test(item.code))
     return "Include the exact complete code line without a line break.";
   return null;
+}
+
+/** Checked as a whole before using location fields or building write payloads. */
+export function validComment(item: ImportCandidate): item is ImportComment {
+  return itemError(item) === null;
 }

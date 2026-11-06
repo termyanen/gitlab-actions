@@ -61,7 +61,8 @@ export function createImportDialog(
     if (
       current(state) &&
       state.run === run &&
-      !state.controller!.signal.aborted
+      state.controller &&
+      !state.controller.signal.aborted
     )
       return;
     const error = new Error("Cancelled");
@@ -71,15 +72,18 @@ export function createImportDialog(
 
   function close(force?: boolean | Event) {
     if (!active) return true;
+    const closing = active;
     const dirty =
-      active.input.value.trim() || active.editor || active.busy === "sending";
+      closing.input.value.trim() ||
+      closing.editor ||
+      closing.busy === "sending";
     const completed =
-      active.plan &&
-      active.plan.items.length &&
-      !active.editor &&
-      !active.busy &&
-      active.plan.items.every(function (item) {
-        const result = active!.results.get(item.id) || item;
+      closing.plan &&
+      closing.plan.items.length &&
+      !closing.editor &&
+      !closing.busy &&
+      closing.plan.items.every(function (item) {
+        const result = closing.results.get(item.id) || item;
         return (
           ["published", "draft", "duplicate"].indexOf(result.status) !== -1 &&
           (!result.resolveStatus || result.resolveStatus === "resolved")
@@ -92,25 +96,25 @@ export function createImportDialog(
       !completed &&
       typeof window.confirm === "function" &&
       !window.confirm(
-        active.t(
-          active.busy === "sending"
+        closing.t(
+          closing.busy === "sending"
             ? "aiReviewConfirmStopAndClose"
             : "aiReviewConfirmDiscard",
         ),
       )
     ) {
-      if (!samePage(active.context)) {
-        active.retainedRoute = window.location.pathname;
-        active.controller?.abort();
-        active.run++;
+      if (!samePage(closing.context)) {
+        closing.retainedRoute = window.location.pathname;
+        closing.controller?.abort();
+        closing.run++;
         // A send may have reached GitLab. Preserve the input, but require a
         // new validation (including the delivery journal) before any retry.
-        if (active.busy === "sending") {
-          active.plan = null;
-          active.selected.clear();
-          active.resolveSelected.clear();
+        if (closing.busy === "sending") {
+          closing.plan = null;
+          closing.selected.clear();
+          closing.resolveSelected.clear();
         }
-        active.busy = "";
+        closing.busy = "";
         render(active);
       }
       return false;
@@ -160,7 +164,7 @@ export function createImportDialog(
     state.select.disabled =
       locked ||
       !state.plan ||
-      !state.plan.items.some(function (item) {
+      !state.plan?.items.some(function (item) {
         return selectable(state, item);
       });
     state.clear.disabled = locked || !count;
@@ -179,7 +183,7 @@ export function createImportDialog(
     state.count.textContent = state.t("aiReviewSelectedCount", [count]);
     state.replyHint.hidden =
       !state.plan ||
-      !state.plan.items.some(function (item) {
+      !state.plan?.items.some(function (item) {
         return item.type === "reply";
       });
     state.list
@@ -187,16 +191,16 @@ export function createImportDialog(
       .forEach(function (check) {
         const item =
           state.plan &&
-          state.plan.items.find(function (item) {
+          state.plan?.items.find(function (item) {
             return item.id === check.dataset.importItem;
           });
         check.disabled = locked || !item || !selectable(state, item);
-        check.checked = state.selected.has(check.dataset.importItem!);
+        check.checked = state.selected.has(check.dataset.importItem || "");
       });
     state.list
       .querySelectorAll<HTMLInputElement>("[data-import-resolve]")
       .forEach(function (check) {
-        const item = state.plan!.items.find(function (item) {
+        const item = state.plan?.items.find(function (item) {
           return item.id === check.dataset.importResolve;
         });
         check.disabled =
@@ -205,7 +209,9 @@ export function createImportDialog(
           !canResolve(item) ||
           !selectable(state, item) ||
           !state.selected.has(item.id);
-        check.checked = state.resolveSelected.has(check.dataset.importResolve!);
+        check.checked = state.resolveSelected.has(
+          check.dataset.importResolve || "",
+        );
       });
     state.list
       .querySelectorAll<HTMLButtonElement>("[data-import-edit]")
@@ -230,7 +236,7 @@ export function createImportDialog(
       setStatus(state, state.t("aiReviewImportCommentLimit"), true);
       return;
     }
-    let id = item && item.id;
+    let id = item ? item.id : "";
     if (!item) {
       do {
         id = "manual-" + ++state.manualId;
@@ -241,12 +247,12 @@ export function createImportDialog(
       );
     }
     state.editor = {
-      id: id!,
+      id: id,
       add: !item,
       body: item && typeof item.body === "string" ? item.body : "",
     };
     render(state);
-    state.editorInput!.focus();
+    state.editorInput?.focus();
   }
 
   function cancelEditor(state: ImportDialogState) {
@@ -261,6 +267,9 @@ export function createImportDialog(
 
   function saveEditor(state: ImportDialogState) {
     if (!current(state) || state.busy || !state.editor || !state.plan) return;
+    const importer = getImporter();
+    if (!importer) return;
+    const plan = state.plan;
     const editor = state.editor;
     const edit: ImportEdit = { id: editor.id, body: editor.body };
     if (editor.add) edit.add = true;
@@ -273,7 +282,7 @@ export function createImportDialog(
     Promise.resolve()
       .then(function () {
         checkCurrent(state, run);
-        return getImporter()!.revise(state.plan!, [edit], {
+        return importer.revise(plan, [edit], {
           signal: controller.signal,
         });
       })
@@ -341,7 +350,7 @@ export function createImportDialog(
         if (!current(state) || state.run !== run) return;
         state.busy = "";
         render(state);
-        if (state.editorInput) state.editorInput.focus();
+        if (state.editorInput) state.editorInput?.focus();
       })
       .catch(reportError);
   }
@@ -364,6 +373,8 @@ export function createImportDialog(
 
   function copyPrompt(state: ImportDialogState, replies: boolean | "format") {
     if (!current(state) || state.busy || state.editor) return;
+    const importer = getImporter();
+    if (!importer) return;
     const formatOnly = replies === "format";
     const label = state.t(
       formatOnly ? "aiReviewImportFormat" : "aiReviewImportPrompt",
@@ -380,8 +391,8 @@ export function createImportDialog(
     Promise.resolve()
       .then(function () {
         checkCurrent(state, run);
-        if (formatOnly) return getImporter()!.getResponseFormat();
-        return getImporter()![replies ? "getReplyPrompt" : "getPrompt"](
+        if (formatOnly) return importer.getResponseFormat();
+        return importer[replies ? "getReplyPrompt" : "getPrompt"](
           state.context,
           { signal: controller.signal },
         );
@@ -440,6 +451,8 @@ export function createImportDialog(
       !state.input.value.trim()
     )
       return;
+    const importer = getImporter();
+    if (!importer) return;
     const run = ++state.run;
     const controller = (state.controller = new AbortController());
     state.busy = "checking";
@@ -453,7 +466,7 @@ export function createImportDialog(
     Promise.resolve()
       .then(function () {
         checkCurrent(state, run);
-        return getImporter()!.prepare(state.context, state.input.value, {
+        return importer.prepare(state.context, state.input.value, {
           signal: controller.signal,
         });
       })
@@ -496,7 +509,7 @@ export function createImportDialog(
   function acceptResult(state: ImportDialogState, result: ImportResultItem) {
     if (
       !result ||
-      !state.plan!.items.some(function (item) {
+      !state.plan?.items.some(function (item) {
         return item.id === result.id;
       })
     )
@@ -515,7 +528,10 @@ export function createImportDialog(
       !state.selected.size
     )
       return;
-    const selected = state.plan.items
+    const importer = getImporter();
+    if (!importer) return;
+    const plan = state.plan;
+    const selected = plan.items
       .filter(function (item) {
         return state.selected.has(item.id) && selectable(state, item);
       })
@@ -525,7 +541,7 @@ export function createImportDialog(
     if (!selected.length) return;
     const controller = (state.controller = new AbortController());
     const run = ++state.run;
-    const completed = new Set();
+    const completed = new Set<string>();
     state.busy = "sending";
     state.stopping = false;
     setStatus(state, state.t("aiReviewImportSending"));
@@ -539,7 +555,7 @@ export function createImportDialog(
     Promise.resolve()
       .then(function () {
         checkCurrent(state, run);
-        return getImporter()!.publish(state.plan!, selected, {
+        return importer.publish(plan, selected, {
           mode: mode,
           signal: controller.signal,
           csrfToken: csrfToken,
@@ -567,10 +583,7 @@ export function createImportDialog(
           if (!completed.has(id))
             acceptResult(state, { id: id, status: "unknown", message: "" });
         });
-        warnings(
-          state,
-          (state.plan!.warnings || []).concat(result.warnings || []),
-        );
+        warnings(state, (plan.warnings || []).concat(result.warnings || []));
         setStatus(
           state,
           state.t(
@@ -653,7 +666,7 @@ export function createImportDialog(
     close,
     syncRoute() {
       if (active?.retainedRoute && samePage(active.context)) {
-        active.retainedRoute = undefined;
+        delete active.retainedRoute;
         updateActions(active);
       }
     },

@@ -108,10 +108,7 @@ export function instruction(
 export function normalizeResponseLanguage(
   value: unknown,
 ): keyof typeof RESPONSE_LANGUAGES {
-  return typeof value === "string" &&
-    Object.prototype.hasOwnProperty.call(RESPONSE_LANGUAGES, value)
-    ? (value as keyof typeof RESPONSE_LANGUAGES)
-    : "auto";
+  return isResponseLanguage(value) ? value : "auto";
 }
 
 export async function applyResponseLanguage(
@@ -182,4 +179,10 @@ export function scopeText(
     "\n" +
     instruction("scope", options)
   );
+}
+
+function isResponseLanguage(
+  value: unknown,
+): value is keyof typeof RESPONSE_LANGUAGES {
+  return typeof value === "string" && Object.hasOwn(RESPONSE_LANGUAGES, value);
 }

@@ -73,13 +73,29 @@ export function createLifecycle() {
       takeRecords: () => instance.takeRecords(),
     };
   }
+  // Infer the event from its name; the target only proves it supports that listener.
   function listen<K extends keyof (DocumentEventMap & WindowEventMap)>(
-    target: EventTarget,
+    target: {
+      addEventListener(
+        type: NoInfer<K>,
+        listener: (
+          event: (DocumentEventMap & WindowEventMap)[NoInfer<K>],
+        ) => void,
+        options?: boolean | AddEventListenerOptions,
+      ): void;
+      removeEventListener(
+        type: NoInfer<K>,
+        listener: (
+          event: (DocumentEventMap & WindowEventMap)[NoInfer<K>],
+        ) => void,
+        options?: boolean | EventListenerOptions,
+      ): void;
+    },
     event: K,
     callback: (event: (DocumentEventMap & WindowEventMap)[K]) => void,
     options?: boolean | AddEventListenerOptions,
   ) {
-    const handler = guard(callback) as EventListener;
+    const handler = guard(callback);
     if (!disposed) target.addEventListener(event, handler, options);
     let active = true;
     return onCleanup(() => {

@@ -50,7 +50,7 @@ export type JiraMessage =
       jiraUrl: string;
       ticket: string;
       transitionId?: string;
-      action?: JiraQuickAction;
+      action?: Partial<JiraQuickAction>;
     }
   | {
       type: "fetch-jira-statuses";

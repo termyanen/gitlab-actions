@@ -42,7 +42,7 @@ export function createGitCommands(t: Translate, scope: Lifecycle) {
       },
     ];
 
-    for (let i = 0; i < commands.length; i++) {
+    for (const currentCommand of commands) {
       (function (c) {
         const btn = document.createElement("button");
         btn.className = "gl-mr-ext-git-cmd-btn";
@@ -52,7 +52,7 @@ export function createGitCommands(t: Translate, scope: Lifecycle) {
           copyToClipboard(c.cmd, btn);
         });
         wrapper.appendChild(btn);
-      })(commands[i]);
+      })(currentCommand);
     }
 
     descBlock.appendChild(wrapper);

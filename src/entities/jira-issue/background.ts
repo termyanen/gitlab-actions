@@ -15,3 +15,5 @@ export type {
 } from "./api/types";
 
 export { readJiraUser, readRawJiraIssue } from "./api/validation";
+
+export { readRawJiraComment } from "./api/validation";

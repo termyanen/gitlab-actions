@@ -124,12 +124,12 @@ export function createFreshReviewExporter(
         options,
       );
     delete result.sections;
-    return result as ReviewResult & { text: string };
+    return { ...result, text: result.text };
   }
 
   async function appendExistingDiscussions(
     context: ReviewContext,
-    result: ReviewResult,
+    result: ReviewResult & { sections: string[] },
     options: ExportOptions,
   ) {
     let snapshot;
@@ -166,7 +166,7 @@ export function createFreshReviewExporter(
         const notes = getNotes(thread).filter(function (note) {
           return !note.draft && !/^draft:/.test(String(note.id));
         });
-        if (!notes.length) return null;
+        if (!notes[0]) return null;
         const first = notes[0],
           position = first.position || first.original_position;
         const item: {
@@ -181,13 +181,24 @@ export function createFreshReviewExporter(
         if (position) {
           const oldSide =
             position.new_line == null && position.old_line != null;
-          item.path = oldSide ? position.old_path : position.new_path;
-          item.line = oldSide ? position.old_line : position.new_line;
+          const path = oldSide ? position.old_path : position.new_path;
+          const line = oldSide ? position.old_line : position.new_line;
+          if (path != null) item.path = path;
+          if (line !== undefined) item.line = line;
           if (oldSide) item.side = "old";
           if (
             workflow &&
             !workflow.filterFiles(
-              [{ old_path: position.old_path, new_path: position.new_path }],
+              [
+                {
+                  ...(position.old_path == null
+                    ? {}
+                    : { old_path: position.old_path }),
+                  ...(position.new_path == null
+                    ? {}
+                    : { new_path: position.new_path }),
+                },
+              ],
               scope,
             ).included.length
           )
@@ -215,7 +226,7 @@ export function createFreshReviewExporter(
       result.complete && snapshot.complete && !result.warnings.length;
     result.existingCount = items.length;
     if (!items.length) return;
-    result.sections!.push(
+    result.sections.push(
       ...[
         "## Existing discussions — duplicate filter only (source data)",
         instruction(

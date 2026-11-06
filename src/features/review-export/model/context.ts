@@ -1,10 +1,11 @@
-import type {
-  Commit,
-  FileDiff,
-  LegacyChanges,
-  MergeRequest,
+import type { Commit, FileDiff } from "../../../entities/merge-request";
+import {
+  readCommit,
+  readFileDiff,
+  readLegacyChanges,
 } from "../../../entities/merge-request";
 import { toError } from "../../../shared/lib/errors";
+import { decodeResponse } from "../../../shared/lib/validation";
 import type { ExportDependencies } from "./dependencies";
 import {
   MAX_REVIEW_DIFF_CHARS,
@@ -13,7 +14,12 @@ import {
 } from "./limits";
 import { fence, inline } from "./markdown";
 import { addWarning, progress } from "./progress";
-import { completeReviewHunks, reviewPages, reviewRefs } from "./revisions";
+import {
+  completeReviewHunks,
+  readReviewEntity,
+  reviewPages,
+  reviewRefs,
+} from "./revisions";
 import { checkAbort, request } from "./transport";
 import type { ExportOptions, ReviewContext, ReviewResult } from "./types";
 export function createReviewContextLoader({
@@ -41,7 +47,11 @@ export function createReviewContextLoader({
       "/merge_requests/" +
       encodeURIComponent(context.iid);
     progress(options, { phase: "metadata", loaded: 0 });
-    const entity = (await request<MergeRequest>(context, path, options)).data;
+    const entity = (
+      await request(context, path, options).then(
+        decodeResponse(readReviewEntity),
+      )
+    ).data;
     const refs = reviewRefs(entity, context);
     const results =
       options.includeCode === true
@@ -52,6 +62,7 @@ export function createReviewContextLoader({
               "commits",
               options,
               warnings,
+              readCommit,
             ),
             (async function () {
               try {
@@ -61,6 +72,7 @@ export function createReviewContextLoader({
                   "diffs",
                   options,
                   warnings,
+                  readFileDiff,
                 );
               } catch (caught) {
                 const error = toError(caught);
@@ -70,11 +82,11 @@ export function createReviewContextLoader({
                 )
                   throw error;
                 const legacy = (
-                  await request<LegacyChanges>(
+                  await request(
                     context,
                     path + "/changes",
                     Object.assign({}, options, { maxBytes: 8 * 1024 * 1024 }),
-                  )
+                  ).then(decodeResponse(readLegacyChanges))
                 ).data;
                 if (!legacy || !Array.isArray(legacy.changes))
                   throw new Error("GitLab did not return MR changes.");
@@ -123,25 +135,32 @@ export function createReviewContextLoader({
               }
             })(),
           ])
-        : [];
+        : undefined;
     checkAbort(options.signal);
-    const lists = results.map(function (result, index) {
+    function loaded<T>(
+      result:
+        PromiseSettledResult<{ items: T[]; complete: boolean }> | undefined,
+      kind: string,
+    ) {
+      if (!result) return { items: [], complete: true };
       if (result.status === "fulfilled") return result.value;
-      if (result.reason.name === "AbortError") throw result.reason;
-      // Ref mismatches cannot be downgraded to partial context.
-      if (/MR revision changed/.test(result.reason.message))
-        throw result.reason;
+      const error = toError(result.reason);
+      if (
+        error.name === "AbortError" ||
+        /MR revision changed/.test(error.message)
+      )
+        throw error;
       addWarning(
         warnings,
-        "MR " +
-          (index ? "diffs" : "commits") +
-          " could not be loaded: " +
-          result.reason.message,
+        "MR " + kind + " could not be loaded: " + error.message,
       );
       return { items: [], complete: false };
-    });
-    const commits = (lists.length ? lists[0].items : []) as Commit[];
-    let diffs = (lists.length ? lists[1].items : []) as FileDiff[];
+    }
+    const commitList = loaded(results?.[0], "commits");
+    const diffList = loaded(results?.[1], "diffs");
+    const lists = [commitList, diffList];
+    const commits = commitList.items;
+    let diffs = diffList.items;
     if (options.includeCode === true) {
       if (
         !commits.some(function (commit) {
@@ -267,7 +286,7 @@ export function createReviewContextLoader({
         const title =
           typeof commit.title === "string" && commit.title
             ? commit.title
-            : message.split(/\r?\n/)[0];
+            : message.split(/\r?\n/)[0] || "";
         sections.push(
           "### " +
             inline(commit.id) +
@@ -407,7 +426,11 @@ export function createReviewContextLoader({
         );
     }
     progress(options, { phase: "finalizing", loaded: 0 });
-    const latest = (await request<MergeRequest>(context, path, options)).data;
+    const latest = (
+      await request(context, path, options).then(
+        decodeResponse(readReviewEntity),
+      )
+    ).data;
     if (JSON.stringify(reviewRefs(latest, context)) !== JSON.stringify(refs))
       throw new Error(
         "The MR revision changed while preparing the review. Copy the fresh review again.",
@@ -422,7 +445,9 @@ export function createReviewContextLoader({
         }) && !warnings.length,
       headSha: refs.head_sha,
       refs: refs,
-      sourceProjectId: entity.source_project_id,
+      ...(entity.source_project_id === undefined
+        ? {}
+        : { sourceProjectId: entity.source_project_id }),
       commitCount: options.includeCode === true ? commits.length : null,
       fileCount: options.includeCode === true ? diffs.length : null,
       excludedFiles: filtered.excluded,

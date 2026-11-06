@@ -1,6 +1,18 @@
 import type { Discussion, DraftNote, Note } from "../../../entities/discussion";
-import type { MergeRequest } from "../../../entities/merge-request";
-import { toError } from "../../../shared/lib/errors";
+import {
+  isDraftNote,
+  isNote,
+  readDiscussion,
+  readNote,
+} from "../../../entities/discussion";
+import { readMergeRequest } from "../../../entities/merge-request";
+import { errorMessage, toError } from "../../../shared/lib/errors";
+import {
+  decodeResponse,
+  isRecord,
+  isUnknownArray,
+  type Decoder,
+} from "../../../shared/lib/validation";
 import { MAX_PAGES, PAGE_SIZE } from "./limits";
 import { addWarning, progress } from "./progress";
 import { apiUrl, checkAbort, header, request } from "./transport";
@@ -10,19 +22,20 @@ export { getNotes, getStatus } from "../../../entities/discussion/content";
 
 // Older installations and proxies sometimes omit all pagination headers. Probe
 // until an empty page in that case, even when the server caps per_page below 100.
-async function paginate<K extends "notes" | "discussions">(
+async function paginate<T extends Note | Discussion>(
   context: ReviewContext,
   path: string,
   options: ExportOptions,
   warnings: string[],
-  kind: K,
+  kind: "notes" | "discussions",
+  read: Decoder<T>,
 ): Promise<{
-  items: (K extends "notes" ? Note : Discussion)[];
+  items: T[];
   complete: boolean;
 }> {
-  const result: (Note | Discussion)[] = [];
-  const byId = new Map<string, Note | Discussion>();
-  const visited = new Set();
+  const result: T[] = [];
+  const byId = new Map<string, T>();
+  const visited = new Set<number>();
   let page = 1;
   let complete = true;
   const endpoint = apiUrl(context, path);
@@ -39,7 +52,7 @@ async function paginate<K extends "notes" | "discussions">(
     visited.add(page);
     let fetched;
     try {
-      fetched = await request<(Note | Discussion)[]>(
+      fetched = await request(
         context,
         path +
           "?per_page=" +
@@ -49,7 +62,7 @@ async function paginate<K extends "notes" | "discussions">(
           (kind === "notes" ? "&sort=asc&order_by=created_at" : ""),
         options,
       );
-      if (!Array.isArray(fetched.data))
+      if (!isUnknownArray(fetched.data))
         throw new Error("GitLab did not return a comment list.");
     } catch (caught) {
       const error = toError(caught);
@@ -65,14 +78,30 @@ async function paginate<K extends "notes" | "discussions">(
       break;
     }
     const data = fetched.data;
+    if (!isUnknownArray(data))
+      throw new Error("GitLab did not return a comment list.");
     let added = 0;
-    data.forEach(function (item) {
-      if (
-        !item ||
-        item.id == null ||
-        (kind === "discussions" && !Array.isArray(item.notes)) ||
-        (kind === "notes" && typeof item.body !== "string")
-      ) {
+    data.forEach(function (raw) {
+      let item: T;
+      try {
+        let value = raw;
+        if (
+          kind === "discussions" &&
+          isRecord(raw) &&
+          isUnknownArray(raw.notes)
+        ) {
+          const notes = raw.notes.filter(isNote);
+          if (notes.length !== raw.notes.length) {
+            complete = false;
+            addWarning(
+              warnings,
+              "An incomplete note was omitted; some review text may be missing.",
+            );
+          }
+          value = { ...raw, notes };
+        }
+        item = read(value);
+      } catch {
         addWarning(
           warnings,
           "GitLab returned an incomplete comment record; some comments may be missing.",
@@ -86,15 +115,16 @@ async function paginate<K extends "notes" | "discussions">(
         byId.set(id, item);
         result.push(item);
         added++;
-      } else if (kind === "discussions") {
+      } else if (kind === "discussions" && existing.notes && item.notes) {
+        const existingNotes = existing.notes;
         const ids = new Set(
-          existing.notes!.filter(Boolean).map(function (note) {
+          existingNotes.filter(Boolean).map(function (note) {
             return String(note.id);
           }),
         );
-        item.notes!.forEach(function (note) {
+        item.notes.forEach(function (note) {
           if (note && !ids.has(String(note.id))) {
-            existing.notes!.push(note);
+            existingNotes.push(note);
             ids.add(String(note.id));
             added++;
           }
@@ -120,7 +150,7 @@ async function paginate<K extends "notes" | "discussions">(
       else next = -1;
     } else if (link) {
       const found = link.match(/<([^>]+)>\s*;\s*rel\s*=\s*"?next"?/i);
-      if (found) {
+      if (found?.[1]) {
         try {
           const nextUrl = new URL(found[1], endpoint);
           const baseUrl = new URL(endpoint);
@@ -170,7 +200,7 @@ async function paginate<K extends "notes" | "discussions">(
     }
   }
   return {
-    items: result as (K extends "notes" ? Note : Discussion)[],
+    items: result,
     complete: complete,
   };
 }
@@ -190,7 +220,7 @@ function containsNote(discussions: Discussion[], noteId: string) {
 function mergeDiscussions(previous: Discussion[], fresh: Discussion[]) {
   // Prefer refreshed content and ownership if an ordinary comment was turned
   // into a thread, while retaining replies absent from a partial refresh.
-  const ownership = new Map();
+  const ownership = new Map<string, string>();
   fresh.forEach(function (thread) {
     thread.notes.forEach(function (note) {
       if (note && note.id != null && typeof note.body === "string")
@@ -221,8 +251,9 @@ function mergeDiscussions(previous: Discussion[], fresh: Discussion[]) {
       if (note && note.id != null) indices.set(String(note.id), index);
     });
     thread.notes.forEach(function (note) {
-      if (note && typeof note.body === "string" && indices.has(String(note.id)))
-        notes[indices.get(String(note.id))!] = note;
+      const index = indices.get(String(note.id));
+      if (note && typeof note.body === "string" && index !== undefined)
+        notes[index] = note;
       else {
         if (note && note.id != null && !indices.has(String(note.id)))
           indices.set(String(note.id), notes.length);
@@ -265,21 +296,22 @@ async function recoverRequestedDraft(
   let raw: DraftNote;
   let pageOnly = false;
   try {
-    raw = (
-      await request<DraftNote>(
+    const response = (
+      await request(
         context,
         path + "/draft_notes/" + id,
         Object.assign({}, options, { fresh: true }),
       )
     ).data;
     if (
-      !raw ||
-      String(raw.id) !== id ||
-      typeof raw.note !== "string" ||
-      !raw.note.trim()
+      !isDraftNote(response) ||
+      String(response.id) !== id ||
+      typeof response.note !== "string" ||
+      !response.note.trim()
     ) {
       throw new Error("GitLab did not return the requested draft comment.");
     }
+    raw = response;
   } catch (caught) {
     const error = toError(caught);
     if (error.name === "AbortError") throw error;
@@ -290,7 +322,11 @@ async function recoverRequestedDraft(
       typeof visible.body === "string" &&
       visible.body.trim()
     ) {
-      raw = { id: id, note: visible.body, author: visible.author };
+      raw = {
+        id,
+        note: visible.body,
+        ...(visible.author === undefined ? {} : { author: visible.author }),
+      };
       pageOnly = true;
       if (visible.format === "markdown") {
         addWarning(
@@ -376,7 +412,7 @@ async function recoverRequestedNote(
 ) {
   const id = String(options.noteId == null ? "" : options.noteId);
   const draft = id.match(/^draft:([1-9]\d*)$/);
-  if (draft)
+  if (draft?.[1])
     return recoverRequestedDraft(
       context,
       path,
@@ -390,8 +426,11 @@ async function recoverRequestedNote(
   let note;
   const freshOptions = Object.assign({}, options, { fresh: true });
   try {
-    note = (await request<Note>(context, path + "/notes/" + id, freshOptions))
-      .data;
+    note = (
+      await request(context, path + "/notes/" + id, freshOptions).then(
+        decodeResponse(readNote),
+      )
+    ).data;
     if (
       !note ||
       String(note.id) !== id ||
@@ -430,6 +469,7 @@ async function recoverRequestedNote(
       freshOptions,
       warnings,
       "discussions",
+      readDiscussion,
     );
     discussions = mergeDiscussions(discussions, refreshed.items);
     complete = refreshed.complete;
@@ -476,7 +516,7 @@ export async function load(
     encodeURIComponent(context.iid);
   progress(options, { phase: "metadata", loaded: 0 });
   const results = await Promise.allSettled([
-    request<MergeRequest>(context, path, options),
+    request(context, path, options).then(decodeResponse(readMergeRequest)),
     (async function () {
       try {
         return await paginate(
@@ -485,6 +525,7 @@ export async function load(
           options,
           warnings,
           "discussions",
+          readDiscussion,
         );
       } catch (caught) {
         const error = toError(caught);
@@ -506,6 +547,7 @@ export async function load(
           options,
           warnings,
           "notes",
+          readNote,
         );
         return {
           items: notes.items.map(function (note) {
@@ -538,7 +580,7 @@ export async function load(
       warnings,
       "MR/issue metadata could not be loaded; description, branches, and current revision may be missing." +
         (results[0].status === "rejected"
-          ? " " + results[0].reason.message
+          ? " " + errorMessage(results[0].reason)
           : ""),
     );
   }
@@ -553,7 +595,7 @@ export async function load(
   const discussions = recovered.items;
   complete = complete && recovered.complete;
   discussions.forEach(function (discussion) {
-    const seen = new Set();
+    const seen = new Set<string>();
     discussion.notes = discussion.notes.filter(function (note) {
       if (!note || note.id == null || typeof note.body !== "string") {
         complete = false;

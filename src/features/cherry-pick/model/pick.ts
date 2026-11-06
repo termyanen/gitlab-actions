@@ -115,8 +115,8 @@ export function createCherryPicker(
       // overlapping pages; duplicate actions must never reach the
       // Commits API, so refuse on any repeated path
       const seenPaths: Record<string, boolean> = {};
-      for (let di = 0; di < diffs.length; di++) {
-        const dupKey = diffs[di].new_path || diffs[di].old_path;
+      for (const currentDiff of diffs) {
+        const dupKey = currentDiff.new_path || currentDiff.old_path;
         if (seenPaths[dupKey])
           throw new Error("Duplicate diff entries for: " + dupKey);
         seenPaths[dupKey] = true;
@@ -188,12 +188,10 @@ export function createCherryPicker(
         if (isToml) {
           const parentParsed = parseToml(parentContent);
           const parentV = getNestedValue(parentParsed, vPath);
+          if (typeof parentV !== "string")
+            throw new Error("Version not found at " + vPath);
           // Replace version in commit content with parent version and compare
-          const normalized = updateTomlVersion(
-            commitContent,
-            vPath,
-            parentV as string,
-          );
+          const normalized = updateTomlVersion(commitContent, vPath, parentV);
           if (normalized !== parentContent) {
             throw new Error(
               msg("cherryPickFallbackVersionFileHasOtherChanges") ||
@@ -202,8 +200,8 @@ export function createCherryPicker(
           }
         } else {
           // JSON — compare parsed objects to avoid formatting sensitivity
-          const parentJson = JSON.parse(parentContent);
-          const commitJson = JSON.parse(commitContent);
+          const parentJson: unknown = JSON.parse(parentContent);
+          const commitJson: unknown = JSON.parse(commitContent);
           const parentVersion = getNestedValue(parentJson, vPath);
           // Set version in commit JSON to parent's version, then compare objects
           setNestedValue(commitJson, vPath, parentVersion);
@@ -242,7 +240,9 @@ export function createCherryPicker(
                 return {
                   action: "delete",
                   file_path: d.old_path,
-                  last_commit_id: targetFile.last_commit_id,
+                  ...(targetFile.last_commit_id === undefined
+                    ? {}
+                    : { last_commit_id: targetFile.last_commit_id }),
                 };
               });
             }
@@ -324,7 +324,9 @@ export function createCherryPicker(
                   file_path: d.new_path,
                   content: sourceFile.content,
                   encoding: "base64",
-                  last_commit_id: targetFile.last_commit_id,
+                  ...(targetFile.last_commit_id === undefined
+                    ? {}
+                    : { last_commit_id: targetFile.last_commit_id }),
                 };
               }
               // Binary or mode-only changes carry no text diff — with a
@@ -365,7 +367,9 @@ export function createCherryPicker(
                 file_path: d.new_path,
                 content: btoa(unescape(encodeURIComponent(patchedTarget))),
                 encoding: "base64",
-                last_commit_id: targetFile.last_commit_id,
+                ...(targetFile.last_commit_id === undefined
+                  ? {}
+                  : { last_commit_id: targetFile.last_commit_id }),
               };
             });
           },
@@ -421,22 +425,21 @@ export function createCherryPicker(
               const isPlainText = vFile.indexOf(".txt") !== -1;
 
               if (isPlainText) {
-                currentVersion = rawContent.trim();
-                newVersion = bumpVersion(currentVersion as string, strategy);
+                newVersion = bumpVersion(rawContent.trim(), strategy);
                 newContent = newVersion + "\n";
               } else if (isToml) {
                 const parsed = parseToml(rawContent);
                 currentVersion = getNestedValue(parsed, vPath);
-                if (!currentVersion)
+                if (typeof currentVersion !== "string" || !currentVersion)
                   throw new Error("Version not found at " + vPath);
-                newVersion = bumpVersion(currentVersion as string, strategy);
+                newVersion = bumpVersion(currentVersion, strategy);
                 newContent = updateTomlVersion(rawContent, vPath, newVersion);
               } else {
-                const json = JSON.parse(rawContent);
+                const json: unknown = JSON.parse(rawContent);
                 currentVersion = getNestedValue(json, vPath);
-                if (!currentVersion)
+                if (typeof currentVersion !== "string" || !currentVersion)
                   throw new Error("Version not found at " + vPath);
-                newVersion = bumpVersion(currentVersion as string, strategy);
+                newVersion = bumpVersion(currentVersion, strategy);
                 setNestedValue(json, vPath, newVersion);
                 newContent = JSON.stringify(json, null, 2) + "\n";
               }
@@ -447,7 +450,9 @@ export function createCherryPicker(
                 file_path: vFile,
                 content: btoa(unescape(encodeURIComponent(newContent))),
                 encoding: "base64",
-                last_commit_id: file.last_commit_id,
+                ...(file.last_commit_id === undefined
+                  ? {}
+                  : { last_commit_id: file.last_commit_id }),
               });
 
               const commitMsg =
@@ -543,8 +548,7 @@ export function createCherryPicker(
             )
               .then(decodeArray(readMergeRequest))
               .then(function (mrs) {
-                for (let mi = 0; mi < mrs.length; mi++) {
-                  const mr = mrs[mi];
+                for (const mr of mrs) {
                   // Project MR lists can also contain requests from forks.
                   if (
                     mr.source_branch === commitBranch &&

@@ -2,6 +2,7 @@ import type { JiraComment, JiraState } from "../../../entities/jira-issue";
 import { sendJiraMessage } from "../../../entities/jira-issue/content";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { eventElement, requireElement } from "../../../shared/ui/dom";
 import { formatJiraDate, formatJiraWikiText } from "./format";
 export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
   // Cache of current Jira user id per Jira instance, used to detect "own" comments
@@ -14,7 +15,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
     sendJiraMessage(
       { type: "fetch-jira-myself", jiraUrl: jiraUrl },
       scope.once(function (resp) {
-        const id = resp && !resp._error ? resp.id : "";
+        const id = resp && resp._error === undefined ? resp.id : "";
         jiraState.myselfCache[jiraUrl] = id;
         cb(id);
       }),
@@ -73,11 +74,11 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
   ) {
     const listEl = sidebar.querySelector<HTMLElement>(
       "#gl-jira-sidebar-comments-list",
-    )!;
+    );
     if (!listEl) return;
     const lm = listEl.querySelector<HTMLButtonElement>(
       ".gl-jira-sidebar-load-more",
-    )!;
+    );
     if (startAt === 0) {
       listEl.innerHTML =
         '<div class="gl-jira-sidebar-comments-loading"><div class="gl-jira-sidebar-spinner"></div></div>';
@@ -96,7 +97,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           maxResults: 5,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error) {
+          if (!resp || resp._error !== undefined) {
             if (startAt === 0) {
               listEl.innerHTML =
                 '<div class="gl-jira-sidebar-comments-empty">' +
@@ -116,7 +117,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           }
           const headerEl = sidebar.querySelector<HTMLElement>(
             "#gl-jira-sidebar-comments-header",
-          )!;
+          );
           if (headerEl) {
             headerEl.textContent =
               (chrome.i18n.getMessage("jiraSidebarComments") || "Comments") +
@@ -169,13 +170,13 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
   ) {
     const input = sidebar.querySelector<HTMLTextAreaElement>(
       "#gl-jira-sidebar-comment-input",
-    )!;
+    );
     const submitBtn = sidebar.querySelector<HTMLButtonElement>(
       "#gl-jira-sidebar-comment-submit",
-    )!;
-    const errorEl = sidebar.querySelector<HTMLElement>(
-      "#gl-jira-sidebar-comment-error",
-    )!;
+    );
+    const errorEl = requireElement(
+      sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-comment-error"),
+    );
     if (!input || !submitBtn) return;
 
     input.addEventListener("input", function () {
@@ -183,7 +184,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
       errorEl.style.display = "none";
     });
 
-    function submitComment() {
+    const submitComment = function () {
       const text = input.value.trim();
       if (!text) return;
       submitBtn.disabled = true;
@@ -196,7 +197,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           text: text,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error) {
+          if (!resp || resp._error !== undefined) {
             errorEl.textContent =
               chrome.i18n.getMessage("jiraSidebarCommentError") ||
               "Failed to post comment";
@@ -204,12 +205,14 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
             submitBtn.disabled = false;
             return;
           }
-          const listEl = sidebar.querySelector<HTMLElement>(
-            "#gl-jira-sidebar-comments-list",
-          )!;
+          const listEl = requireElement(
+            sidebar.querySelector<HTMLElement>(
+              "#gl-jira-sidebar-comments-list",
+            ),
+          );
           const empty = listEl.querySelector<HTMLElement>(
             ".gl-jira-sidebar-comments-empty",
-          )!;
+          );
           if (empty) empty.remove();
           // A freshly posted comment is always our own — force the delete button to show
           listEl.insertAdjacentHTML(
@@ -218,10 +221,10 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           );
           const headerEl = sidebar.querySelector<HTMLElement>(
             "#gl-jira-sidebar-comments-header",
-          )!;
+          );
           if (headerEl) {
             const m = (headerEl.textContent || "").match(/\((\d+)\)/);
-            const newTotal = (m ? parseInt(m[1], 10) : 0) + 1;
+            const newTotal = (m?.[1] ? parseInt(m[1], 10) : 0) + 1;
             headerEl.textContent =
               (chrome.i18n.getMessage("jiraSidebarComments") || "Comments") +
               " (" +
@@ -232,7 +235,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           submitBtn.disabled = true;
         }),
       );
-    }
+    };
 
     submitBtn.addEventListener("click", submitComment);
     input.addEventListener("keydown", function (e) {
@@ -250,19 +253,20 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
   ) {
     const listEl = sidebar.querySelector<HTMLElement>(
       "#gl-jira-sidebar-comments-list",
-    )!;
+    );
     const errorEl = sidebar.querySelector<HTMLElement>(
       "#gl-jira-sidebar-comment-error",
-    )!;
+    );
     if (!listEl) return;
 
     listEl.addEventListener("click", function (e) {
-      const btn = (e.target as Element).closest<HTMLButtonElement>(
+      const btn = eventElement(e.target)?.closest<HTMLButtonElement>(
         ".gl-jira-sidebar-comment-delete",
       );
       if (!btn || btn.disabled) return;
       const commentEl = btn.closest<HTMLElement>(".gl-jira-sidebar-comment");
-      const commentId = commentEl!.dataset.commentId;
+      const commentId = commentEl?.dataset.commentId;
+      if (!commentEl || !commentId) return;
 
       if (
         !jiraState.skipConfirmations &&
@@ -283,7 +287,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           commentId: commentId,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error) {
+          if (!resp || resp._error !== undefined) {
             btn.disabled = false;
             if (errorEl) {
               errorEl.textContent =
@@ -293,13 +297,13 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
             }
             return;
           }
-          commentEl!.remove();
+          commentEl.remove();
           const headerEl = sidebar.querySelector<HTMLElement>(
             "#gl-jira-sidebar-comments-header",
-          )!;
+          );
           if (headerEl) {
             const m = (headerEl.textContent || "").match(/\((\d+)\)/);
-            const newTotal = Math.max(0, (m ? parseInt(m[1], 10) : 1) - 1);
+            const newTotal = Math.max(0, (m?.[1] ? parseInt(m[1], 10) : 1) - 1);
             headerEl.textContent =
               (chrome.i18n.getMessage("jiraSidebarComments") || "Comments") +
               " (" +
@@ -307,7 +311,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
               ")";
             if (
               !newTotal &&
-              !listEl.querySelector<HTMLElement>(".gl-jira-sidebar-comment")!
+              !listEl.querySelector<HTMLElement>(".gl-jira-sidebar-comment")
             ) {
               listEl.innerHTML =
                 '<div class="gl-jira-sidebar-comments-empty">' +

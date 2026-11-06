@@ -6,10 +6,13 @@ import { createLifecycle } from "../../../shared/lib/lifecycle";
 import {
   arrayOf,
   decoder,
+  isBoolean,
   isString,
   objectOf,
   optional,
+  recordOf,
 } from "../../../shared/lib/validation";
+import { eventElement, requireElement } from "../../../shared/ui/dom";
 import type { Command } from "../model/types";
 import { createPaletteCommands } from "./commands";
 const readDefaultBranch = decoder(
@@ -51,11 +54,10 @@ export function startCommandPalette(
         let _paletteOpen = false;
         const _paletteCollapsed: Record<string, boolean> = (function () {
           try {
-            return (
-              JSON.parse(
-                sessionStorage.getItem("gl-cmd-palette-collapsed") || "null",
-              ) || {}
+            const data: unknown = JSON.parse(
+              sessionStorage.getItem("gl-cmd-palette-collapsed") || "null",
             );
+            return recordOf(isBoolean)(data) ? data : {};
           } catch {
             return {};
           }
@@ -195,12 +197,12 @@ export function startCommandPalette(
 
           overlay.appendChild(modal);
 
-          const input = modal.querySelector<HTMLInputElement>(
-            ".gl-cmd-palette-input",
-          )!;
-          const listEl = modal.querySelector<HTMLDivElement>(
-            ".gl-cmd-palette-list",
-          )!;
+          const input = requireElement(
+            modal.querySelector<HTMLInputElement>(".gl-cmd-palette-input"),
+          );
+          const listEl = requireElement(
+            modal.querySelector<HTMLDivElement>(".gl-cmd-palette-list"),
+          );
 
           let isSearching = false;
 
@@ -220,7 +222,7 @@ export function startCommandPalette(
               const g = cmd.group || "";
               if (renderedGroups.indexOf(g) !== -1) return;
               renderedGroups.push(g);
-              const items = groupItems[g];
+              const items = groupItems[g] || [];
               const collapsed = !isSearching && _paletteCollapsed[g];
               html +=
                 '<div class="gl-cmd-palette-group' +
@@ -270,7 +272,9 @@ export function startCommandPalette(
               ".gl-cmd-palette-item",
             );
             els.forEach(function (el) {
-              indices.push(parseInt(el.dataset.idx!));
+              const index = Number(el.dataset.idx);
+              if (Number.isSafeInteger(index) && index >= 0)
+                indices.push(index);
             });
             return indices;
           }
@@ -281,11 +285,12 @@ export function startCommandPalette(
           }
 
           function execSelected() {
-            if (filtered[selectedIdx]) {
+            const command = filtered[selectedIdx];
+            if (command) {
               closePalette();
               if (scope.disposed || window.location.pathname !== openedPath)
                 return;
-              filtered[selectedIdx].action();
+              command.action();
             }
           }
 
@@ -311,10 +316,11 @@ export function startCommandPalette(
               if (e.key === "ArrowDown") {
                 selectedIdx =
                   curPos < vis.length - 1
-                    ? vis[curPos + 1]
-                    : vis[vis.length - 1];
+                    ? (vis[curPos + 1] ?? selectedIdx)
+                    : (vis[vis.length - 1] ?? selectedIdx);
               } else {
-                selectedIdx = curPos > 0 ? vis[curPos - 1] : vis[0];
+                selectedIdx =
+                  (curPos > 0 ? vis[curPos - 1] : vis[0]) ?? selectedIdx;
               }
               renderList();
               scrollToSelected();
@@ -328,11 +334,12 @@ export function startCommandPalette(
           }
 
           listEl.addEventListener("click", function (e) {
-            const groupEl = (e.target as HTMLElement).closest<HTMLElement>(
+            const groupEl = eventElement(e.target)?.closest<HTMLElement>(
               ".gl-cmd-palette-group",
             );
             if (groupEl && !isSearching) {
-              const groupName = groupEl.dataset.group!;
+              const groupName = groupEl.dataset.group;
+              if (!groupName) return;
               _paletteCollapsed[groupName] = !_paletteCollapsed[groupName];
               try {
                 sessionStorage.setItem(
@@ -345,16 +352,16 @@ export function startCommandPalette(
               renderList();
               const vis = getVisibleIndices();
               if (vis.length && vis.indexOf(selectedIdx) === -1) {
-                selectedIdx = vis[0];
+                selectedIdx = vis[0] ?? selectedIdx;
                 renderList();
               }
               return;
             }
-            const item = (e.target as HTMLElement).closest<HTMLElement>(
+            const item = eventElement(e.target)?.closest<HTMLElement>(
               ".gl-cmd-palette-item",
             );
             if (item) {
-              selectedIdx = parseInt(item.dataset.idx!);
+              selectedIdx = Number(item.dataset.idx);
               execSelected();
             }
           });
@@ -370,7 +377,7 @@ export function startCommandPalette(
               _lastFileQuery = "";
               renderList();
               const vis = getVisibleIndices();
-              selectedIdx = vis.length ? vis[0] : 0;
+              selectedIdx = vis[0] ?? 0;
               renderList();
               return;
             }
@@ -386,7 +393,7 @@ export function startCommandPalette(
             filtered = cmdResults;
             renderList();
             const vis = getVisibleIndices();
-            selectedIdx = vis.length ? vis[0] : 0;
+            selectedIdx = vis[0] ?? 0;
             renderList();
 
             // File search with debounce (min 2 chars)
@@ -406,7 +413,7 @@ export function startCommandPalette(
                   const fileGroup = msg("cmdGroupFiles");
                   const defaultBranch = _defaultBranch || "main";
                   const fileCmds = files.map(function (filePath) {
-                    const fileName = filePath.split("/").pop()!;
+                    const fileName = filePath.split("/").pop() || filePath;
                     return {
                       id: "file-" + filePath,
                       label: fileName,
@@ -446,11 +453,11 @@ export function startCommandPalette(
           });
 
           listEl.addEventListener("mousemove", function (e) {
-            const item = (e.target as HTMLElement).closest<HTMLElement>(
+            const item = eventElement(e.target)?.closest<HTMLElement>(
               ".gl-cmd-palette-item",
             );
             if (item) {
-              const idx = parseInt(item.dataset.idx!);
+              const idx = Number(item.dataset.idx);
               if (idx !== selectedIdx) {
                 selectedIdx = idx;
                 renderList();

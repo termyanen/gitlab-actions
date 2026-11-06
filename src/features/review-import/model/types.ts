@@ -1,14 +1,13 @@
 import type {
   Discussion,
-  Note,
-  NotePosition,
   NoteAuthor,
+  NotePosition,
 } from "../../../entities/discussion";
 import type { DiffRefs } from "../../../entities/merge-request";
 import type {
-  ReviewContext,
-  InstructionOptions,
   FileFilter,
+  InstructionOptions,
+  ReviewContext,
 } from "../../../entities/review";
 
 export interface ImportOptions extends InstructionOptions {
@@ -27,24 +26,30 @@ export interface ImportOptions extends InstructionOptions {
   resolveIds?: string[];
 }
 
-/** Input is checked at runtime before a comment can enter the send plan. */
+/** Preserve malformed fields for per-comment diagnostics and editing. */
+export interface ImportCandidate {
+  [field: string]: unknown;
+  id: string;
+}
+
+/** Validated fields exposed to preview and sending code. */
 export interface ImportComment {
   [field: string]: unknown;
   id: string;
-  type?: "reply" | "comment";
+  type?: "reply" | "comment" | null;
   body: string;
   path?: string | null;
   side?: "old" | "new" | null;
   line?: number | null;
   code?: string | null;
-  discussion_id?: string;
-  note_id?: number;
+  discussion_id?: string | null;
+  note_id?: number | null;
 }
 export interface ReviewInput {
   version: 1;
   mr_url: string;
   head_sha?: string | null;
-  comments: ImportComment[];
+  comments: ImportCandidate[];
 }
 export interface ReplyContext {
   body: string;
@@ -78,6 +83,8 @@ export interface ReplyThread {
   original_location?: CompactLocation;
 }
 export interface ImportItem extends ImportComment {
+  discussion_id?: string;
+  note_id?: number;
   type: "reply" | "comment";
   status: "ready" | "invalid" | "duplicate";
   message: string;
@@ -161,9 +168,4 @@ export interface VerifiedDiff {
   lines?: { old: Map<number, DiffLine>; new: Map<number, DiffLine> };
   error?: string;
 }
-export interface CreatedComment extends Omit<Partial<Note>, "notes"> {
-  note?: string;
-  notes?: CreatedComment[];
-  discussion_id?: string;
-  resolve_discussion?: boolean;
-}
+export type { CreatedComment } from "../../../entities/discussion";

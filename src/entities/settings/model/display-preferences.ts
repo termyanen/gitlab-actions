@@ -27,6 +27,9 @@ export function parseSizeThresholds(value: unknown): SizeThresholds | null {
     return null;
   const [small, medium, large] = parts.map(Number);
   if (
+    small === undefined ||
+    medium === undefined ||
+    large === undefined ||
     ![small, medium, large].every(Number.isSafeInteger) ||
     small < 1 ||
     small >= medium ||
