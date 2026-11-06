@@ -207,3 +207,16 @@ web-accessible resources. Дополнительные разрешения вв
   глобальных JS-объектов; проверки autosave, reset, квот и ошибок сохранены.
   Старые storage keys, profiles и formatVersion JSON не изменены.
   Проходят typecheck/lint/FSD, 817 Node-тестов и 4 browser-сценария.
+- 09: весь runtime теперь TypeScript strict; allowJs и последний корневой
+  background.js удалены. App синхронно регистрирует typed message dispatch,
+  install и alarms handlers. Proxy transport, Jira API/actions, standup и
+  job chains имеют отдельные модули. Задачи сохраняются в storage.local;
+  перед play/retry записывается dispatch checkpoint, восстановление сначала
+  сверяет job в закреплённом pipeline. Неопределённый результат требует
+  проверки пользователем, повторной мутации нет. Отмена и счётчик ожиданий
+  сохраняются; хранится до 50 завершённых задач. Разрешение alarms добавлено
+  для пробуждения worker (1 минута); в живом worker сохранён polling 20 секунд.
+  6 новых регрессий проверяют recovery, потерянный ответ, ошибку storage,
+  отмену и повторный alarm. Проходят 823 Node-теста и 5 browser-сценариев,
+  включая реальную остановку service worker через Chromium DevTools Protocol
+  и восстановление состояния через новое runtime message.

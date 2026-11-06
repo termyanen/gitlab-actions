@@ -80,6 +80,7 @@ function environment(options) {
   var notifications = [];
   var listeners = {};
   var settings = options.settings || {};
+  var localStorage = options.localStorage || {};
   var chrome = {
     runtime: {
       id: 'test-extension',
@@ -93,7 +94,12 @@ function environment(options) {
       }
     },
     i18n: { getMessage: function(key, substitutions) { return key + (substitutions ? ':' + substitutions.join(',') : ''); } },
+    alarms: {onAlarm: {addListener: function(fn) {listeners.alarm = fn;}}, create: function() {}, clear: function() {}},
     storage: {
+      local: {
+        get: function(key, callback) { callback(plain(localStorage)); },
+        set: function(values, callback) { Object.assign(localStorage, plain(values)); if (callback) callback(); }
+      },
       sync: {
         get: function(defaults, callback) { callback(plain(Object.assign({}, defaults, settings))); },
         set: function(values, callback) { Object.assign(settings, values); if (callback) callback(); }
@@ -184,6 +190,7 @@ function environment(options) {
     messages: messages,
     notifications: notifications,
     chrome: chrome,
+    localStorage: localStorage,
     listeners: listeners,
     finish: function(promise) { return timers.finish(promise); },
     dispatch: function(message, sender) {
