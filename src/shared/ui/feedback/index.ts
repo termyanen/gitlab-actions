@@ -1,3 +1,4 @@
+import { reportError } from "../../lib/errors";
 import { isExtensionValid } from "../../api/runtime";
 const TOAST_DURATION_MS = 5000;
 const SOUND_CONTEXT_LIFETIME_MS = 1000;
@@ -90,7 +91,7 @@ export function createFeedback(
       });
       setTimeout(function () {
         try {
-          ctx.close();
+          ctx.close().catch(reportError);
         } catch {
           /* Optional browser feedback is best effort. */
         }

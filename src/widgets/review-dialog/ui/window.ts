@@ -311,7 +311,7 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
         const input = element("textarea", "gl-review-prompt");
         input.rows = 2;
         input.maxLength = REVIEW_FILE_FILTER_MAX_LENGTH;
-        input.setAttribute("aria-label", label.textContent!);
+        input.setAttribute("aria-label", label.textContent);
         input.value =
           settings.ai_review_file_filter &&
           typeof settings.ai_review_file_filter[key] === "string"

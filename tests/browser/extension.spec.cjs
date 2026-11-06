@@ -183,6 +183,24 @@ test('SPA navigation disposes route UI and remounts it without duplicates', asyn
   expect(runtimeErrors).toEqual([]);
 });
 
+test('opening settings through the worker completes without a closed-message-port error', async () => {
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${extensionId}/welcome.html`);
+  const opened = context.waitForEvent('page');
+  const error = await page.evaluate(() => new Promise(resolve => {
+    chrome.runtime.sendMessage({type: 'open-options'}, () => resolve(chrome.runtime.lastError?.message || null));
+  }));
+  const settings = await opened;
+  await settings.waitForLoadState();
+  try {
+    expect(settings.url()).toBe(`chrome-extension://${extensionId}/popup.html`);
+    expect(error).toBeNull();
+  } finally {
+    await settings.close();
+    await page.close();
+  }
+});
+
 test('packaged lazy dialogs and palette work under a restrictive page CSP', async () => {
   const page = await context.newPage();
   const scripts = [];

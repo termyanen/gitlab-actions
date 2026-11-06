@@ -44,6 +44,36 @@ test('standup ignores out-of-order reports and replies after closing', async ({p
   await expect(page.locator('.gl-standup-overlay')).toHaveCount(0);
 });
 
+test('standup clipboard denial is handled and a later copy can succeed', async ({page}) => {
+  const errors = [], diagnostics = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') diagnostics.push(message.text()); });
+  await mount(page, 'src/widgets/standup/index.ts', () => {
+    let attempts = 0;
+    window.copied = [];
+    Object.defineProperty(navigator, 'clipboard', {configurable: true, value: {
+      writeText: text => {
+        if (++attempts === 1) return Promise.reject(new Error('Clipboard denied'));
+        copied.push(text);
+        return Promise.resolve();
+      }
+    }});
+    window.scope = Lifecycle.createLifecycle();
+    window.dialog = Widget.createStandupDialog(scope);
+    dialog.open();
+    reply('generate-standup', {text: 'Daily report'});
+  });
+  const copy = page.locator('.gl-standup-copy');
+  await copy.click();
+  await expect.poll(() => diagnostics.join('\n')).toContain('Clipboard denied');
+  await expect(copy).toHaveText('standupCopy');
+  await copy.click();
+  await expect(copy).toContainText('standupCopied');
+  expect(await page.evaluate(() => copied)).toEqual(['Daily report']);
+  expect(errors).toEqual([]);
+  await page.evaluate(() => scope.dispose());
+});
+
 async function mountJira(page) {
   await mount(page, 'src/widgets/jira-panel/index.ts', () => {
     window.scope = Lifecycle.createLifecycle();

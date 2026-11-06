@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import type * as Workflow from "../../../entities/review";
 import type { ReviewContext } from "../../../entities/review";
 import type { createReviewExporter } from "../../../features/review-export";
@@ -569,12 +570,12 @@ export function startReviewControls(
     const sidebarToggle =
       actions && actions.querySelector(".js-sidebar-toggle");
     if (sidebarToggle && sidebarToggle.parentElement === actions) {
-      const children = Array.from(actions!.children);
+      const children = Array.from(actions.children);
       if (
         launcher.parentElement !== actions ||
         children.indexOf(launcher) + 1 !== children.indexOf(sidebarToggle)
       )
-        actions!.insertBefore(launcher, sidebarToggle);
+        actions.insertBefore(launcher, sidebarToggle);
     } else if (launcher.parentElement !== (target || document.body))
       (target || document.body).appendChild(launcher);
     if (context.kind === "merge_requests" && getImportDialog()) {
@@ -685,7 +686,7 @@ export function startReviewControls(
   chrome.storage.sync.get(settings, function (values) {
     if (chrome.runtime.lastError) return;
     Object.assign(settings, values);
-    language().then(mount);
+    language().then(mount).catch(reportError);
   });
   const onSettingsChanged = (
     changes: Record<string, chrome.storage.StorageChange>,
@@ -715,7 +716,7 @@ export function startReviewControls(
       .forEach(function (el) {
         el.remove();
       });
-    language().then(mount);
+    language().then(mount).catch(reportError);
   };
   chrome.storage.onChanged?.addListener(onSettingsChanged);
   const observer = new MutationObserver(function (records) {
