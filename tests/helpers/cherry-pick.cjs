@@ -57,6 +57,11 @@ module.exports = function(options) {
     return selector === 'meta[name="csrf-token"]' ? query(selector) : document.body.querySelector(selector);
   };
   document.querySelectorAll = function(selector) { return document.body.querySelectorAll(selector); };
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
+    const { bundleForTest } = require('./runtime.cjs');
+    vm.runInContext(bundleForTest('src/widgets/cherry-pick-dialog/index.ts', { globalName: 'CherryPick' }), env.context);
+    vm.runInContext(`globalThis.openCherryPickModal = CherryPick.createCherryPickDialog(window.location.origin, 'team%2Frepo', key => chrome.i18n.getMessage(key) || key, () => {}).open;`, env.context);
+  } else {
   var source = harness.readRuntime('content_proxy.js');
   var start = source.indexOf('        function openCherryPickModal(');
   var end = source.indexOf('        function showToast(', start);
@@ -72,6 +77,7 @@ module.exports = function(options) {
       'globalThis.openCherryPickModal = ' + modalSource + '; return;';
   });
   vm.runInContext(source, env.context, { filename: 'content_proxy.js' });
+  }
   env.open = function(settings, sha) {
     env.context.openCherryPickModal(sha, 'Fix Unicode: исправление', settings);
     env.start = document.body.querySelector('.gl-cherry-pick-start');

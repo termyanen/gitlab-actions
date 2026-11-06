@@ -227,6 +227,12 @@ function background(options) {
 
 function proxyHelpers() {
   var env = environment();
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
+    const { bundleForTest } = require('./runtime.cjs');
+    vm.runInContext(bundleForTest('src/shared/lib/diff/index.ts', { globalName: 'Diff' }), env.context);
+    vm.runInContext(bundleForTest('src/shared/lib/version/index.ts', { globalName: 'Version' }), env.context);
+    return { ...env.context.Diff, ...env.context.Version };
+  }
   var source = readRuntime('content_proxy.js');
   var marker = 'if (!isGitLab()) return;';
   assert.ok(source.includes(marker), 'content_proxy.js GitLab guard must be present');
