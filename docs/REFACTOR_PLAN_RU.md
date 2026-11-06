@@ -220,3 +220,16 @@ web-accessible resources. Дополнительные разрешения вв
   отмену и повторный alarm. Проходят 823 Node-теста и 5 browser-сценариев,
   включая реальную остановку service worker через Chromium DevTools Protocol
   и восстановление состояния через новое runtime message.
+- 10: manifest запускает один bootstrap (281 байт) на HTTPS; ESM chunks
+  упакованы локально и доступны через web_accessible_resources. Маршрут
+  загружает только нужные widgets; AI export/import, Jira panel, cherry-pick,
+  palette и standup отложены. Начальный граф MR: 132 215 байт против 308 462
+  байт baseline production; общий GitLab runtime: 11 270 байт. Это объём JS,
+  не сравнительный замер CPU/памяти. CSS остаётся declarative для совместимости
+  со строгой CSP, все обычные правила ограничены html.gl-actions-host.
+  Lifecycle отключает route observers/listeners/timers, отменяет GET-запросы
+  и блокирует поздний UI; tracker polling дедуплицирован. Палитра получает
+  actions через app callbacks, глобальные window.__glMr* удалены.
+  При отказе от закрытия dirty review после SPA-перехода draft сохраняется,
+  повторного confirmation на том же маршруте нет. Проходят 825 Node-тестов
+  и 7 browser-сценариев, включая SPA циклы и lazy UI при script/style-src none.

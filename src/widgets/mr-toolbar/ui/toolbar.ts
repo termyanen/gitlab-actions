@@ -1,3 +1,6 @@
+import { addRuntimeListener } from "../../../shared/api/runtime";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { escHtml } from "../../../shared/lib/html";
 import { createFeedback } from "../../../shared/ui/feedback";
 import { createMrActions } from "../../../features/mr-actions";
@@ -8,8 +11,13 @@ import type { Job, Pipeline } from "../../../entities/pipeline";
 import type { Translate } from "../../../shared/i18n";
 import type { ToolbarButton, PaletteAction, Tracker } from "./types";
 
-export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
-  const { updateTrackerItem, restoreActiveTasks, pollTaskStatus } = tracker;
+export function startMrToolbar(
+  context: MrActionContext,
+  tracker: Tracker,
+  scope: Lifecycle = createLifecycle(),
+) {
+  let availableActions: PaletteAction[] = [];
+  const { updateTrackerItem, pollTaskStatus } = tracker;
   const { showToast } = createFeedback(() => actions.getSettings());
   const actions = createMrActions(context, { t, showToast, pollTaskStatus });
   const {
@@ -60,29 +68,34 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
 
   const _languageReady = new Promise<void>(function (resolve) {
     try {
-      chrome.storage.sync.get({ language: "auto" }, function (data) {
-        if (chrome.runtime.lastError) {
-          resolve();
-          return;
-        }
-        if (!data.language || data.language === "auto") {
-          resolve();
-          return;
-        }
-        fetch(
-          chrome.runtime.getURL("_locales/" + data.language + "/messages.json"),
-        )
-          .then(function (r) {
-            return r.json();
-          })
-          .then(function (msgs) {
-            _i18nMessages = msgs;
+      chrome.storage.sync.get(
+        { language: "auto" },
+        scope.guard(function (data: { language: string }) {
+          if (chrome.runtime.lastError) {
             resolve();
-          })
-          .catch(function () {
+            return;
+          }
+          if (!data.language || data.language === "auto") {
             resolve();
-          });
-      });
+            return;
+          }
+          fetch(
+            chrome.runtime.getURL(
+              "_locales/" + data.language + "/messages.json",
+            ),
+          )
+            .then(function (r) {
+              return r.json();
+            })
+            .then(function (msgs) {
+              _i18nMessages = msgs;
+              resolve();
+            })
+            .catch(function () {
+              resolve();
+            });
+        }),
+      );
     } catch {
       resolve();
     }
@@ -182,7 +195,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
           "!" + context.mrIid + " " + titleText,
         );
         if (opts.reloadOnSuccess) {
-          setTimeout(function () {
+          scope.timeout(function () {
             window.location.reload();
           }, 5000);
         }
@@ -207,6 +220,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
 
   let _injecting = false;
   function injectButtons() {
+    if (scope.disposed) return;
     if (_injecting || document.querySelector(".gl-mr-actions-ext")) return;
 
     const stateBadge = document.querySelector(".issuable-status-badge .badge");
@@ -228,6 +242,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
 
     Promise.all([getMR(), getSettings(), getMergeMethod(), _languageReady])
       .then(function (results) {
+        if (scope.disposed) return;
         const mr = results[0];
         const s = results[1];
         const mergeMethod = results[2];
@@ -437,7 +452,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
                   .action()
                   .then(function () {
                     btn.textContent = "\u2713";
-                    setTimeout(function () {
+                    scope.timeout(function () {
                       btn.textContent = origText;
                       btn.disabled = false;
                     }, 2000);
@@ -477,7 +492,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
             )
               .then(function () {
                 qcBtn.textContent = "\u2713";
-                setTimeout(function () {
+                scope.timeout(function () {
                   qcBtn.textContent = origText;
                   qcBtn.disabled = false;
                 }, 2000);
@@ -557,7 +572,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
             });
           }
         });
-        window.__glMrPaletteActions = paletteActions;
+        availableActions = paletteActions;
 
         // Conflicts indicator badge
         if (mr.has_conflicts) {
@@ -594,7 +609,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
         // Git command generator (#12) — injected into description block, not action bar
         if (s.show_git_commands) {
           // Delay slightly to let Vue render description
-          setTimeout(function () {
+          scope.timeout(function () {
             injectGitCommands(mr);
           }, 500);
         }
@@ -718,10 +733,12 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
     s: MrSettings,
     widgetSection: Element,
   ) {
+    if (scope.disposed) return;
     if (s.show_failed_job_view === false) return;
     if (document.querySelector(".gl-mr-actions-failed-jobs")) return;
 
     function renderForPipeline(pipelineId: number) {
+      if (scope.disposed) return;
       api<Job[]>(
         "GET",
         "/projects/" +
@@ -731,6 +748,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
           "/jobs?scope[]=failed&per_page=10",
       )
         .then(function (jobs) {
+          if (scope.disposed) return;
           if (!jobs || !jobs.length) return;
           if (document.querySelector(".gl-mr-actions-failed-jobs")) return;
 
@@ -904,6 +922,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
   }
 
   function injectSensitiveWarning(_mr: ActiveMergeRequest) {
+    if (scope.disposed) return;
     if (document.querySelector(".gl-mr-ext-sensitive-warning")) return;
 
     api<{ new_path: string; old_path: string }[]>(
@@ -944,6 +963,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
   // =========================================================================
 
   function injectGitCommands(mr: ActiveMergeRequest) {
+    if (scope.disposed) return;
     if (document.querySelector(".gl-mr-ext-git-commands")) return;
 
     const descBlock = document.querySelector(
@@ -998,7 +1018,7 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
       .then(function () {
         const orig = btn.textContent;
         btn.textContent = "\u2713";
-        setTimeout(function () {
+        scope.timeout(function () {
           btn.textContent = orig;
         }, 2000);
       })
@@ -1022,30 +1042,17 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
     chrome.runtime &&
     chrome.runtime.onMessage
   ) {
-    chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-      if (msg.type === "task-result") {
-        if (msg.success) {
-          showToast(msg.message, "success");
-        } else {
-          showToast(msg.message, "error");
+    scope.onCleanup(
+      addRuntimeListener(function (msg) {
+        if (msg.type === "task-result") {
+          if (msg.success) {
+            showToast(msg.message, "success");
+          } else {
+            showToast(msg.message, "error");
+          }
         }
-      }
-      if (msg.type === "task-progress") {
-        updateTrackerItem(msg.taskId, msg.jobs, msg.status, null, msg.mrTitle);
-      }
-      // API proxy: background worker relays API calls through content script
-      // because only content scripts have access to GitLab session cookies
-      if (msg.type === "api-proxy") {
-        api(msg.method, msg.path, msg.body)
-          .then(function (data) {
-            sendResponse(data);
-          })
-          .catch(function (err) {
-            sendResponse({ _error: err.message });
-          });
-        return true; // async sendResponse
-      }
-    });
+      }),
+    );
 
     // Commands are called through the extension's isolated-world composition.
   }
@@ -1161,26 +1168,25 @@ export function startMrToolbar(context: MrActionContext, tracker: Tracker) {
     if (!context.projectId) return;
 
     injectButtons();
-    restoreActiveTasks();
 
     // Re-inject on SPA navigation (GitLab uses turbolinks/pjax)
-    const observer = new MutationObserver(function () {
+    const observer = scope.observer(function () {
       if (!document.querySelector(".gl-mr-actions-ext") && parsePage()) {
         context.projectId = getProjectId();
         if (context.projectId) injectButtons();
       }
     });
     observer.observe(document.body, { childList: true, subtree: true });
-    window.addEventListener("beforeunload", function () {
+    scope.listen(window, "beforeunload", function () {
       observer.disconnect();
     });
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    scope.listen(document, "DOMContentLoaded", init);
   } else {
     init();
   }
 
-  return { runPaletteAction };
+  return { runPaletteAction, getPaletteActions: () => availableActions };
 }

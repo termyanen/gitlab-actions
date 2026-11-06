@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { JiraState, JiraStatus } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
@@ -64,12 +66,13 @@ export function startMrList(
   jiraState: JiraState,
   openJiraSidebar: (ticket: string, url: string) => void,
   _isMrDetailPage: boolean,
+  scope: Lifecycle = createLifecycle(),
 ) {
   const { setJiraTicketRegex, parseTickets } = createJiraMatcher(jiraState);
   const GITLAB_URL = window.location.origin;
   const JIRA_CACHE_TTL = 2 * 60 * 1000;
 
-  const api = createSessionApi(() => GITLAB_URL);
+  const api = createSessionApi(() => GITLAB_URL, scope.signal);
   function isMrListPage() {
     return /\/-\/merge_requests\/?(\?|$)/.test(
       window.location.pathname + window.location.search,
@@ -80,30 +83,33 @@ export function startMrList(
     const cacheKey = "_gl_mr_ext_username_" + GITLAB_URL;
     return new Promise<string | null>(function (resolve) {
       // Check cache first
-      chrome.storage.local.get(cacheKey, function (data) {
-        if (chrome.runtime.lastError) {
-          /* ignore */
-        }
-        if (data && data[cacheKey]) {
-          resolve(typeof data[cacheKey] === "string" ? data[cacheKey] : null);
-          return;
-        }
-        // Fetch from API
-        api<{ username: string }>("GET", "/user")
-          .then(function (user) {
-            if (user && user.username) {
-              const toStore: Record<string, string> = {};
-              toStore[cacheKey] = user.username;
-              chrome.storage.local.set(toStore);
-              resolve(user.username);
-            } else {
+      chrome.storage.local.get(
+        cacheKey,
+        scope.guard(function (data: Record<string, unknown>) {
+          if (chrome.runtime.lastError) {
+            /* ignore */
+          }
+          if (data && data[cacheKey]) {
+            resolve(typeof data[cacheKey] === "string" ? data[cacheKey] : null);
+            return;
+          }
+          // Fetch from API
+          api<{ username: string }>("GET", "/user")
+            .then(function (user) {
+              if (user && user.username) {
+                const toStore: Record<string, string> = {};
+                toStore[cacheKey] = user.username;
+                chrome.storage.local.set(toStore);
+                resolve(user.username);
+              } else {
+                resolve(null);
+              }
+            })
+            .catch(function () {
               resolve(null);
-            }
-          })
-          .catch(function () {
-            resolve(null);
-          });
-      });
+            });
+        }),
+      );
     });
   }
 
@@ -111,6 +117,7 @@ export function startMrList(
     settings: ListSettings,
     username: string | null,
   ) {
+    if (scope.disposed) return;
     const mrItems = qAll(document, SEL.mrItem);
     if (!mrItems.length) return;
 
@@ -160,7 +167,7 @@ export function startMrList(
               .writeText(mrTitle + "\n" + mrUrl)
               .then(function () {
                 li.querySelector("svg")!.style.color = "#108548";
-                setTimeout(function () {
+                scope.timeout(function () {
                   li.querySelector("svg")!.style.color = "";
                 }, 1500);
               });
@@ -193,6 +200,7 @@ export function startMrList(
   }
 
   function injectListToggles(username: string | null, settings: ListSettings) {
+    if (scope.disposed) return;
     if (document.querySelector(".gl-mr-ext-toolbar")) return;
 
     let container = q(document, SEL.filterBar);
@@ -245,6 +253,7 @@ export function startMrList(
   // =========================================================================
 
   function renderJiraLoaders(itemTicketMap: ItemTicket[]) {
+    if (scope.disposed) return;
     itemTicketMap.forEach(function (entry) {
       if (entry.item.querySelector(".gl-jira-badge")) return; // already has badges
       const titleEl = q<HTMLAnchorElement>(entry.item, SEL.titleLink);
@@ -267,6 +276,7 @@ export function startMrList(
     mrItem: HTMLElement,
     statuses: Record<string, JiraStatus>,
   ) {
+    if (scope.disposed) return;
     const titleEl = q<HTMLAnchorElement>(mrItem, SEL.titleLink);
     if (!titleEl) return;
 
@@ -431,7 +441,7 @@ export function startMrList(
         tickets: ticketsToFetch,
         showDetails: jiraState.showDetails,
       },
-      function (resp) {
+      scope.guard(function (resp) {
         jiraState.fetching = false;
         try {
           removeJiraLoaders();
@@ -480,7 +490,7 @@ export function startMrList(
               fetchAndRenderJiraStatuses(jiraUrl, showDetails);
           }
         }
-      },
+      }),
     );
   }
   const _reviewerCache: Record<string, { isReviewer: boolean; ts: number }> =
@@ -518,6 +528,7 @@ export function startMrList(
   }
 
   function renderReviewerBadge(mrItem: HTMLElement, isReviewer: boolean) {
+    if (scope.disposed) return;
     if (mrItem.querySelector(".gl-reviewer-badge")) return;
     if (!isReviewer) return;
 
@@ -624,6 +635,7 @@ export function startMrList(
   let _mrMetaRefreshPending = false;
 
   function renderThreadsBadge(mrItem: HTMLElement, count: number) {
+    if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-threads-badge")) return;
     if (count === 0) return;
 
@@ -656,6 +668,7 @@ export function startMrList(
     changesLines: number,
     changesFiles: number,
   ) {
+    if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-size-badge")) return;
     const titleEl = q<HTMLAnchorElement>(mrItem, SEL.titleLink);
     if (!titleEl) return;
@@ -706,6 +719,7 @@ export function startMrList(
   }
 
   function renderConflictBadge(mrItem: HTMLElement) {
+    if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-conflict-badge")) return;
     const titleEl = q<HTMLAnchorElement>(mrItem, SEL.titleLink);
     if (!titleEl) return;
@@ -727,6 +741,7 @@ export function startMrList(
     targetBranch: string,
     clickable: boolean,
   ) {
+    if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-branch-badge")) return;
     if (!sourceBranch) return;
     const loader = mrItem.querySelector(".gl-mr-ext-branch-loader");
@@ -781,6 +796,7 @@ export function startMrList(
     approvedBy: Approval[],
     username: string | null,
   ) {
+    if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-approval-done")) return;
     if (!approvedBy || !approvedBy.length) return;
 
@@ -1101,106 +1117,109 @@ export function startMrList(
       jira_ticket_regex: "",
     };
     try {
-      chrome.storage.sync.get(listDefaults, function (s: ListSettings) {
-        if (chrome.runtime.lastError) return;
-        jiraState.skipConfirmations = !!s.skip_confirmations;
+      chrome.storage.sync.get(
+        listDefaults,
+        scope.guard(function (s: ListSettings) {
+          if (chrome.runtime.lastError) return;
+          jiraState.skipConfirmations = !!s.skip_confirmations;
 
-        const needsUsername =
-          s.highlight_own_mrs ||
-          s.show_only_mine ||
-          s.show_needs_review ||
-          s.show_reviewer_badge ||
-          s.show_approval_badge;
-        const usernamePromise = needsUsername
-          ? getCurrentUsername()
-          : Promise.resolve(null);
+          const needsUsername =
+            s.highlight_own_mrs ||
+            s.show_only_mine ||
+            s.show_needs_review ||
+            s.show_reviewer_badge ||
+            s.show_approval_badge;
+          const usernamePromise = needsUsername
+            ? getCurrentUsername()
+            : Promise.resolve(null);
 
-        usernamePromise.then(function (username) {
-          function runAllListFeatures() {
-            if (!isMrListPage()) return;
-            if (s.dim_drafts || s.highlight_own_mrs || s.show_copy_mr) {
-              applyMrListEnhancements(s, username);
+          usernamePromise.then(function (username) {
+            function runAllListFeatures() {
+              if (!isMrListPage()) return;
+              if (s.dim_drafts || s.highlight_own_mrs || s.show_copy_mr) {
+                applyMrListEnhancements(s, username);
+              }
+              if (s.show_reviewer_badge && username) {
+                fetchAndRenderReviewerBadges(username);
+              }
+              if (
+                s.show_threads_badge ||
+                s.show_size_badge ||
+                s.show_conflicts_badge ||
+                s.show_approval_badge ||
+                s.show_branches
+              ) {
+                fetchAndRenderMrMeta(
+                  s.show_threads_badge,
+                  s.show_size_badge,
+                  s.show_conflicts_badge,
+                  s.show_approval_badge,
+                  s.show_branches,
+                  s.show_branches_links,
+                  username,
+                );
+              }
+              if (s.jira_url) {
+                setJiraTicketRegex(s.jira_ticket_regex);
+                fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
+              }
+              if (s.show_only_mine || s.show_needs_review)
+                injectListToggles(username, s);
             }
-            if (s.show_reviewer_badge && username) {
-              fetchAndRenderReviewerBadges(username);
-            }
-            if (
-              s.show_threads_badge ||
-              s.show_size_badge ||
-              s.show_conflicts_badge ||
-              s.show_approval_badge ||
-              s.show_branches
-            ) {
-              fetchAndRenderMrMeta(
-                s.show_threads_badge,
-                s.show_size_badge,
-                s.show_conflicts_badge,
-                s.show_approval_badge,
-                s.show_branches,
-                s.show_branches_links,
-                username,
+
+            // Watch a stable ancestor: pagination/filtering can replace the entire
+            // list, leaving an observer attached to its old, detached container.
+            // Filter actual records because MutationObserver runs asynchronously;
+            // a synchronous "rendering" flag cannot suppress our own badge writes.
+            const listContentSelector =
+              SEL.mrItem +
+              ", " +
+              SEL.listContainer +
+              ", " +
+              SEL.titleLink +
+              ", " +
+              SEL.filterBar +
+              ", .top-area, .issues-filters, .nav-controls";
+            function isListMutation(mutation: MutationRecord) {
+              const target =
+                mutation.target.nodeType === 1
+                  ? (mutation.target as Element)
+                  : mutation.target.parentElement;
+              if (qUp(target, SEL.titleLink)) return true;
+              if (mutation.type !== "childList") return false;
+              return (
+                Array.prototype.some.call(mutation.addedNodes, isListContent) ||
+                Array.prototype.some.call(mutation.removedNodes, isListContent)
               );
             }
-            if (s.jira_url) {
-              setJiraTicketRegex(s.jira_ticket_regex);
-              fetchAndRenderJiraStatuses(s.jira_url, s.show_jira_details);
+            function isListContent(node: Node) {
+              return (
+                node.nodeType === 1 &&
+                ((node as Element).matches(listContentSelector) ||
+                  !!q(node as Element, listContentSelector))
+              );
             }
-            if (s.show_only_mine || s.show_needs_review)
-              injectListToggles(username, s);
-          }
-
-          // Watch a stable ancestor: pagination/filtering can replace the entire
-          // list, leaving an observer attached to its old, detached container.
-          // Filter actual records because MutationObserver runs asynchronously;
-          // a synchronous "rendering" flag cannot suppress our own badge writes.
-          const listContentSelector =
-            SEL.mrItem +
-            ", " +
-            SEL.listContainer +
-            ", " +
-            SEL.titleLink +
-            ", " +
-            SEL.filterBar +
-            ", .top-area, .issues-filters, .nav-controls";
-          function isListMutation(mutation: MutationRecord) {
-            const target =
-              mutation.target.nodeType === 1
-                ? (mutation.target as Element)
-                : mutation.target.parentElement;
-            if (qUp(target, SEL.titleLink)) return true;
-            if (mutation.type !== "childList") return false;
-            return (
-              Array.prototype.some.call(mutation.addedNodes, isListContent) ||
-              Array.prototype.some.call(mutation.removedNodes, isListContent)
-            );
-          }
-          function isListContent(node: Node) {
-            return (
-              node.nodeType === 1 &&
-              ((node as Element).matches(listContentSelector) ||
-                !!q(node as Element, listContentSelector))
-            );
-          }
-          let _observerTimer: ReturnType<typeof setTimeout> | undefined;
-          const listObserver = new MutationObserver(function (mutations) {
-            if (!isMrListPage() || !mutations.some(isListMutation)) return;
-            clearTimeout(_observerTimer);
-            _observerTimer = setTimeout(runAllListFeatures, 200);
+            let _observerTimer: ReturnType<typeof setTimeout> | undefined;
+            const listObserver = scope.observer(function (mutations) {
+              if (!isMrListPage() || !mutations.some(isListMutation)) return;
+              clearTimeout(_observerTimer);
+              _observerTimer = scope.timeout(runAllListFeatures, 200);
+            });
+            listObserver.observe(document.body, {
+              childList: true,
+              subtree: true,
+              characterData: true,
+              attributes: true,
+              attributeFilter: ["href"],
+            });
+            runAllListFeatures();
+            scope.listen(window, "beforeunload", function () {
+              listObserver.disconnect();
+              clearTimeout(_observerTimer);
+            });
           });
-          listObserver.observe(document.body, {
-            childList: true,
-            subtree: true,
-            characterData: true,
-            attributes: true,
-            attributeFilter: ["href"],
-          });
-          runAllListFeatures();
-          window.addEventListener("beforeunload", function () {
-            listObserver.disconnect();
-            clearTimeout(_observerTimer);
-          });
-        });
-      });
+        }),
+      );
     } catch {
       /* Extension may have been reloaded. */
     }
@@ -1219,7 +1238,7 @@ export function startMrList(
           show_jira_details: false,
           skip_confirmations: false,
         },
-        function (s: {
+        scope.guard(function (s: {
           jira_url: string;
           jira_ticket_regex: string;
           show_jira_details: boolean;
@@ -1231,7 +1250,7 @@ export function startMrList(
           jiraState.skipConfirmations = !!s.skip_confirmations;
           setJiraTicketRegex(s.jira_ticket_regex);
           injectMrDetailJiraBadges(s.jira_url);
-        },
+        }),
       );
     } catch {
       /* Extension may have been reloaded. */
@@ -1239,13 +1258,14 @@ export function startMrList(
   }
 
   function injectMrDetailJiraBadges(jiraUrl: string) {
+    if (scope.disposed) return;
     if (jiraState.authFailed) return;
     const titleEl = document.querySelector<HTMLElement>(
       '.title-container .title, .detail-page-header .title, [data-testid="title-content"]',
     );
     if (!titleEl) {
       // SPA — retry after short delay
-      setTimeout(function () {
+      scope.timeout(function () {
         injectMrDetailJiraBadges(jiraUrl);
       }, 1000);
       return;
@@ -1265,7 +1285,7 @@ export function startMrList(
         tickets: tickets,
         showDetails: jiraState.showDetails,
       },
-      function (resp) {
+      scope.guard(function (resp) {
         if (!resp || resp._error || !resp.statuses) return;
         const statuses = resp.statuses;
         if (statuses._authError) {
@@ -1313,7 +1333,7 @@ export function startMrList(
           });
           titleEl.appendChild(badge);
         });
-      },
+      }),
     );
   }
 

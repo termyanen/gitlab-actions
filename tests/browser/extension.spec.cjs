@@ -35,7 +35,7 @@ test.beforeAll(async () => {
       return;
     }
     const gitlab = url.hostname === 'gitlab.test';
-    await route.fulfill({ contentType: 'text/html', body: `<!doctype html><html><head>
+    await route.fulfill({ contentType: 'text/html', headers: gitlab ? {'Content-Security-Policy': "default-src 'self'; script-src 'none'; style-src 'none'; img-src 'self' data:; connect-src 'self'"} : {}, body: `<!doctype html><html><head>
       ${gitlab ? '<meta content="GitLab"><meta name="csrf-token" content="fixture">' : ''}
       <title>Extension fixture</title></head><body ${gitlab ? 'data-page="projects:merge_requests:show" data-project-id="37"' : ''}>
       <main><h1>Fixture</h1><div class="merge-request-details"><div class="detail-page-header"></div>
@@ -71,7 +71,8 @@ test('a non-GitLab HTTPS page receives no extension controls or API requests', a
   await page.goto('https://ordinary.test/example');
   await page.waitForTimeout(1200);
   await expect(page.locator('[class*="gl-review"], .gl-mr-actions-ext, .gl-tracker-fab')).toHaveCount(0);
-  expect(requests.filter((url) => url.includes('/api/v4/') || url.includes('/rest/api/'))).toEqual([]);
+  expect(requests.filter((url) => url.includes('/api/v4/') || url.includes('/rest/api/') || url.includes('/modules/'))).toEqual([]);
+  await expect(page.locator('html')).not.toHaveClass(/gl-actions-host/);
   await page.close();
 });
 
@@ -119,6 +120,47 @@ test('installed worker restores task status after Chromium stops the service wor
   expect(response).toEqual({status: 'error', error: 'Cancelled by user'});
   [worker] = context.serviceWorkers();
   await cdp.detach();
+  await page.close();
+  expect(runtimeErrors).toEqual([]);
+});
+
+
+test('SPA navigation disposes route UI and remounts it without duplicates', async () => {
+  const page = await context.newPage();
+  await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+  await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+  for (let i = 0; i < 3; i++) {
+    await page.evaluate(() => history.pushState({}, '', '/team/repo/-/tree/main'));
+    await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(0);
+    await expect(page.locator('.gl-review-launcher')).toHaveCount(0);
+    await page.evaluate(() => history.pushState({}, '', '/team/repo/-/merge_requests/42'));
+    await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+    await expect(page.locator('.gl-review-launcher:not(.gl-review-import-launcher)')).toHaveCount(1);
+  }
+  await page.close();
+  expect(runtimeErrors).toEqual([]);
+});
+
+test('packaged lazy dialogs and palette work under a restrictive page CSP', async () => {
+  const page = await context.newPage();
+  const scripts = [];
+  page.on('request', request => {if (request.url().includes('/modules/')) scripts.push(request.url());});
+  await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+  const launcher = page.locator('.gl-review-launcher:not(.gl-review-import-launcher)');
+  await expect(launcher).toHaveCount(1);
+  const initial = scripts.length;
+  await launcher.click();
+  await expect(page.locator('.gl-review-overlay')).toBeVisible();
+  await expect(page.locator('.gl-review-overlay')).toHaveCSS('position', 'fixed');
+  await expect.poll(() => scripts.length).toBeGreaterThan(initial);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.gl-review-overlay')).toHaveCount(0);
+  await page.keyboard.press('Control+k');
+  await expect(page.locator('.gl-cmd-palette-overlay')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.gl-cmd-palette-overlay')).toHaveCount(0);
+  await page.keyboard.press('Control+k');
+  await expect(page.locator('.gl-cmd-palette-overlay')).toHaveCount(1);
   await page.close();
   expect(runtimeErrors).toEqual([]);
 });

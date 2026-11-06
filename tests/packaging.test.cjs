@@ -14,7 +14,7 @@ var root = require('./helpers/extension.cjs').root;
     var staging = fs.mkdtempSync(path.join(os.tmpdir(), 'gitlab-actions-package-'));
     try {
       var manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
-      var required = ['manifest.json', 'background.js', 'content.js', 'content_proxy.js', 'review-copy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
+      var required = ['manifest.json', 'background.js', 'content_proxy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
       Object.keys(manifest.icons).forEach(function(size) { required.push(manifest.icons[size]); });
       ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
       required.concat(['pack.sh', 'package.json', 'tsconfig.json']).forEach(function(file) {
@@ -50,6 +50,8 @@ var root = require('./helpers/extension.cjs').root;
         archive = 'extension.zip';
       }
       var entries = execFileSync('unzip', ['-Z', '-1', path.join(staging, archive)], { encoding: 'utf8' }).trim().split('\n');
+      assert.ok(entries.includes('modules/content.js'), 'Packaged module entry is required');
+      assert.ok(entries.some(file => file.startsWith('modules/chunks/')), 'Packaged lazy chunks are required');
       required.forEach(function(file) { assert.ok(entries.includes(file), 'Missing packaged resource: ' + file); });
       entries.forEach(function(file) {
         assert.equal(file.split('/').some(function(part) { return part.startsWith('.'); }), false, 'Hidden file must not ship: ' + file);

@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
@@ -14,6 +16,7 @@ interface CommitTicketEntry {
 export function startCommitJira(
   jiraState: JiraState,
   openJiraSidebar: (ticket: string, url: string) => void,
+  scope: Lifecycle = createLifecycle(),
 ) {
   const { setJiraTicketRegex, parseTickets } = createJiraMatcher(jiraState);
 
@@ -34,7 +37,7 @@ export function startCommitJira(
           jira_ticket_regex: "",
           commits_jira_field: "fixVersions, status",
         },
-        function (s: {
+        scope.guard(function (s: {
           jira_url: string;
           jira_ticket_regex: string;
           commits_jira_field: string;
@@ -67,6 +70,7 @@ export function startCommitJira(
           };
 
           function injectCommitJiraBadges() {
+            if (scope.disposed) return;
             if (_commitJiraFetching) return;
 
             // Find commit rows via SHA groups (same reliable strategy as cherry-pick buttons)
@@ -176,7 +180,7 @@ export function startCommitJira(
                   tickets: batch,
                   field: field,
                 },
-                function (resp) {
+                scope.guard(function (resp) {
                   if (resp && !resp._error) {
                     const data = resp.values || {};
                     if (data._authError) {
@@ -210,13 +214,14 @@ export function startCommitJira(
                   }
                   fieldIdx++;
                   fetchNextField();
-                },
+                }),
               );
             }
             fetchNextField();
           }
 
           function renderCommitJiraLoader(entry: CommitTicketEntry) {
+            if (scope.disposed) return;
             if (
               entry.row.querySelector(
                 ".gl-commit-jira-badge, .gl-commit-jira-loader",
@@ -235,6 +240,7 @@ export function startCommitJira(
           }
 
           function renderCommitJiraBadges(entry: CommitTicketEntry) {
+            if (scope.disposed) return;
             removeCommitJiraLoader(entry);
             // One group per ticket (like the MR list), values deduped within a
             // ticket only — two tickets with the same status both keep their badge
@@ -324,15 +330,15 @@ export function startCommitJira(
           injectCommitJiraBadges();
 
           let _cjTimer: ReturnType<typeof setTimeout> | undefined;
-          const cjObserver = new MutationObserver(function () {
+          const cjObserver = scope.observer(function () {
             clearTimeout(_cjTimer);
-            _cjTimer = setTimeout(injectCommitJiraBadges, 500);
+            _cjTimer = scope.timeout(injectCommitJiraBadges, 500);
           });
           cjObserver.observe(document.body, { childList: true, subtree: true });
-          window.addEventListener("beforeunload", function () {
+          scope.listen(window, "beforeunload", function () {
             cjObserver.disconnect();
           });
-        },
+        }),
       );
     } catch {
       /* Extension may have been reloaded. */

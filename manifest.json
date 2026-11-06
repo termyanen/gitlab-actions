@@ -5,8 +5,16 @@
   "description": "__MSG_extDescription__",
   "homepage_url": "https://github.com/termyanen/gitlab-actions",
   "default_locale": "en",
-  "permissions": ["storage", "notifications", "tabs", "cookies", "alarms"],
-  "optional_host_permissions": ["https://*/"],
+  "permissions": [
+    "storage",
+    "notifications",
+    "tabs",
+    "cookies",
+    "alarms"
+  ],
+  "optional_host_permissions": [
+    "https://*/"
+  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'none'"
   },
@@ -15,15 +23,15 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*/*/-/merge_requests/*"],
-      "js": ["content.js"],
-      "css": ["content.css"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://*/*"],
-      "js": ["content_proxy.js", "review-copy.js"],
-      "css": ["content.css"],
+      "matches": [
+        "https://*/*"
+      ],
+      "js": [
+        "content_proxy.js"
+      ],
+      "css": [
+        "content.css"
+      ],
       "run_at": "document_idle"
     }
   ],
@@ -40,8 +48,16 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "web_accessible_resources": [{
-    "resources": ["_locales/*/messages.json"],
-    "matches": ["https://*/*"]
-  }]
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "_locales/*/messages.json",
+        "modules/*.js",
+        "modules/chunks/*.js"
+      ],
+      "matches": [
+        "https://*/*"
+      ]
+    }
+  ]
 }
