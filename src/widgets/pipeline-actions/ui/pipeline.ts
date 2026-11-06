@@ -308,7 +308,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
 
           let _injectTimer: ReturnType<typeof setTimeout> | undefined;
           function scheduleInject() {
-            if (_injectTimer) clearTimeout(_injectTimer);
+            if (_injectTimer) scope.cancelTimeout(_injectTimer);
             _injectTimer = scope.timeout(function () {
               _injectTimer = undefined;
               injectGroupPlayButtons();

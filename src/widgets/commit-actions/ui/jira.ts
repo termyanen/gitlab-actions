@@ -332,7 +332,7 @@ export function startCommitJira(
 
           let _cjTimer: ReturnType<typeof setTimeout> | undefined;
           const cjObserver = scope.observer(function () {
-            clearTimeout(_cjTimer);
+            scope.cancelTimeout(_cjTimer);
             _cjTimer = scope.timeout(
               injectCommitJiraBadges,
               BADGE_MOUNT_DEBOUNCE_MS,

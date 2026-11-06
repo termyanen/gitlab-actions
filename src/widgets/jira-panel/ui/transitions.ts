@@ -102,7 +102,7 @@ export function createJiraTransitions(
     render([]);
     sendJiraMessage(
       { type: "fetch-jira-transitions", jiraUrl: jiraUrl, ticket: ticket },
-      scope.guard(function (resp) {
+      scope.once(function (resp) {
         if (
           sidebar.dataset.ticket !== ticket ||
           sidebar.querySelector<
@@ -164,7 +164,7 @@ export function createJiraTransitions(
     const statusBadge = sidebar.querySelector<HTMLElement>(
       "#gl-jira-sidebar-status",
     )!;
-    if (statusBadge) {
+    if (!scope.disposed && sidebar.dataset.ticket === ticket && statusBadge) {
       const cls = getJiraCategoryClass(categoryKey, statusName);
       statusBadge.className = "gl-jira-badge " + cls;
       statusBadge.textContent = statusName;
@@ -198,19 +198,13 @@ export function createJiraTransitions(
         ticket: ticket,
         transitionId: transitionId,
       },
-      scope.guard(function (result) {
-        if (sidebar.dataset.ticket !== ticket) return;
+      function (result) {
         if (result && result.success) {
           updateStatusAfterTransition(sidebar, ticket, statusName, categoryKey);
-          loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
-        } else {
-          const container = sidebar.querySelector<
-            HTMLElement & { _jiraTransitionRequest?: object }
-          >("#gl-jira-sidebar-transitions")!;
-          if (container)
-            loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
         }
-      }),
+        if (!scope.disposed && sidebar.dataset.ticket === ticket)
+          loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
+      },
     );
   }
 
@@ -252,11 +246,12 @@ export function createJiraTransitions(
         transitionId: btn.dataset.transitionId,
         action: action,
       },
-      scope.guard(function (result) {
+      function (result) {
+        // An accepted mutation can finish after the issue panel closes. Keep
+        // entity invalidation independent from the lifetime of its view.
         delete jiraState.cache[ticket];
         if (jiraState.invalidateCommitTicket)
           jiraState.invalidateCommitTicket(ticket);
-        if (!isCurrent()) return;
         if (result && result.completed && result.completed.transition) {
           updateStatusAfterTransition(
             sidebar,
@@ -265,6 +260,7 @@ export function createJiraTransitions(
             btn.dataset.statusCategory!,
           );
         }
+        if (scope.disposed || !isCurrent()) return;
         let error =
           result && result.success
             ? ""
@@ -279,7 +275,7 @@ export function createJiraTransitions(
         // have succeeded even when the following field edit was rejected by Jira.
         sendJiraMessage(
           { type: "fetch-jira-issue", jiraUrl: jiraUrl, ticket: ticket },
-          scope.guard(function (data) {
+          scope.once(function (data) {
             if (!isCurrent()) return;
             if (data && !data._error) {
               const draft = sidebar.querySelector<HTMLTextAreaElement>(
@@ -320,7 +316,7 @@ export function createJiraTransitions(
             }
           }),
         );
-      }),
+      },
     );
   }
   return { loadJiraTransitions };

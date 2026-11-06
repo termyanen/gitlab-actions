@@ -217,13 +217,13 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
             !resp ||
             resp.status === "not_found"
           ) {
-            clearInterval(interval);
+            scope.cancelInterval(interval);
             polling.delete(taskId);
             return;
           }
           updateTrackerItem(taskId, jobNames, resp.status, resp.error, mrTitle);
           if (resp.status === "done" || resp.status === "error") {
-            clearInterval(interval);
+            scope.cancelInterval(interval);
             polling.delete(taskId);
           }
         }),

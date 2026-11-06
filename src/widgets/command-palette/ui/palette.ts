@@ -371,7 +371,7 @@ export function startCommandPalette(
 
             // File search with debounce (min 2 chars)
             if (q.length >= 2 && projectPath) {
-              clearTimeout(_fileSearchTimer);
+              scope.cancelTimeout(_fileSearchTimer);
               _fileSearchTimer = scope.timeout(function () {
                 if (!_paletteOpen) return;
                 _lastFileQuery = q;

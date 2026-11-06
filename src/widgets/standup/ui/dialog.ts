@@ -1,22 +1,29 @@
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
-import { createLifecycle } from "../../../shared/lib/lifecycle";
+import {
+  createChildLifecycle,
+  createLifecycle,
+} from "../../../shared/lib/lifecycle";
 const COPIED_FEEDBACK_DURATION_MS = 2000;
 
 export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
-  let removeEscape = () => {};
+  let active: Lifecycle | undefined;
   function openStandupModal() {
-    removeEscape();
+    if (scope.disposed) return;
     const existing = document.querySelector(".gl-standup-overlay");
+    active?.dispose();
     if (existing) {
       existing.remove();
       return;
     }
+    const session = createChildLifecycle(scope);
+    active = session;
 
     const overlay = document.createElement("div");
     overlay.className = "gl-standup-overlay";
+    session.onCleanup(() => overlay.remove());
 
     const modal = document.createElement("div");
     modal.className = "gl-standup-modal";
@@ -69,19 +76,22 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
     )!;
     const copyBtn = modal.querySelector<HTMLButtonElement>(".gl-standup-copy")!;
     let currentText = "";
+    let request = 0;
 
     function updateNavButtons() {
       nextBtn.disabled = dateInput.value >= todayIso;
     }
 
     function loadDate(dateStr: string) {
+      const currentRequest = ++request;
       bodyEl.innerHTML =
         '<div class="gl-standup-loading"><div class="gl-standup-spinner"></div></div>';
       actionsEl.style.display = "none";
       chrome.runtime.sendMessage(
         { type: "generate-standup", gitlabUrl: GITLAB_URL, date: dateStr },
-        scope.guard(function (resp: { text?: string; _error?: string }) {
+        session.once(function (resp: { text?: string; _error?: string }) {
           const lastErr = chrome.runtime.lastError;
+          if (currentRequest !== request) return;
           if (lastErr || !resp || resp._error) {
             const errText =
               resp && resp._error
@@ -130,18 +140,19 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
     });
 
     copyBtn.addEventListener("click", function () {
-      navigator.clipboard.writeText(currentText).then(function () {
-        const orig = copyBtn.textContent;
-        copyBtn.textContent = "\u2713 " + msg("standupCopied");
-        scope.timeout(function () {
-          copyBtn.textContent = orig;
-        }, COPIED_FEEDBACK_DURATION_MS);
-      });
+      navigator.clipboard.writeText(currentText).then(
+        session.once(function () {
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = "\u2713 " + msg("standupCopied");
+          session.timeout(function () {
+            copyBtn.textContent = orig;
+          }, COPIED_FEEDBACK_DURATION_MS);
+        }),
+      );
     });
 
     function closeStandup() {
-      removeEscape();
-      overlay.remove();
+      session.dispose();
     }
     modal
       .querySelector<HTMLButtonElement>(".gl-standup-close")!
@@ -149,7 +160,7 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) closeStandup();
     });
-    removeEscape = scope.listen(document, "keydown", function onEsc(e) {
+    session.listen(document, "keydown", function onEsc(e) {
       if (e.key === "Escape" && document.querySelector(".gl-standup-overlay")) {
         closeStandup();
       }
