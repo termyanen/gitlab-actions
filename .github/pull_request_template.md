@@ -9,6 +9,11 @@ List commands actually run and their results. Note any relevant checks not run.
 For UI changes, include screenshots. For lifecycle/rendering changes, include the
 browser and performance results. Fixtures do not establish live-server compatibility.
 
+For UI injected into GitLab, name the reused controls/classes/tokens and explain
+any new custom styles or compatibility fallbacks. Record light/dark appearance,
+keyboard behavior and affected modern/legacy DOM variants actually checked; state
+what remains untested. See `docs/GITLAB_UI.md`; write "not applicable" otherwise.
+
 ## Compatibility
 
 When module boundaries changed, name the owning slice, new public exports or

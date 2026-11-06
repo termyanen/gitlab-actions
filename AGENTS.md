@@ -36,6 +36,19 @@ instruction files as pointers here, rather than maintaining competing rules.
 - `scripts/` is Node tooling; `tests/` holds VM regressions and Chromium fixtures.
   `.reports/`, `dist/`, archives and browser traces are generated, not source.
 
+## GitLab UI integration
+
+- Before adding or changing injected UI, read [docs/GITLAB_UI.md](docs/GITLAB_UI.md).
+  Reuse GitLab controls, markup/class patterns and semantic theme tokens through
+  the existing integration points. Do not invent a separate button or visual style
+  when an appropriate GitLab pattern already works in the supported contexts.
+- Custom CSS needs a concrete layout, missing-control or compatibility reason.
+  Keep it scoped to extension UI; preserve selector/theme fallbacks and keyboard
+  behavior. Do not add a UI framework or copy GitLab's stylesheet to style a control.
+- For UI PRs, name what was reused, explain new styles/fallbacks and record light/dark,
+  keyboard and affected modern/legacy DOM checks. Report untested combinations;
+  passing API fixtures does not certify styling on every GitLab version.
+
 ## Preserve behavior and contracts
 
 - Preserve settings keys/defaults, per-project overrides, import/export formats,

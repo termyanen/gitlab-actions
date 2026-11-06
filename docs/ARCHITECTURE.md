@@ -39,6 +39,7 @@ Typical change locations:
 | A background operation/message | Keep the handler in its owning feature. Update the message contract, validation in `app/background/messages.ts`, and dispatch in `app/entrypoints/background.ts`. Register worker listeners synchronously. |
 | A persisted preference | Contract/defaults/normalization in `entities/settings` when used by runtime; transfer defaults/validation in `features/manage-settings`; form and persistence in `pages/settings`; consumers, all seven locales and round-trip tests. See [configuration rules](CONFIGURATION.md). |
 | A GitLab selector or transport change | Shared GitLab configuration/adapter for the external contract; feature-specific request orchestration stays with the feature. Keep existing GitLab fallbacks. |
+| A GitLab control or visual change | Read [the UI integration guide](GITLAB_UI.md), reuse the owning widget's native markup/token patterns and existing fallbacks, then add only the scoped CSS the behavior needs. |
 | A helper used twice | Keep it local unless its responsibility is independently reusable. Domain code belongs in the owning entity; only generic technical code belongs in Shared. |
 
 ## Define a small public API
@@ -123,7 +124,8 @@ together instead of disabling a check.
    that retains a closed view or an old route.
 3. Mount the UI through its owning page/widget and App composition. Use a lifecycle
    scope for DOM, listeners, observers, timers and async results. Disposal must
-   prevent late results from changing another MR or a closed dialog.
+   prevent late results from changing another MR or a closed dialog. Follow the
+   [GitLab UI rules](GITLAB_UI.md) for controls, styles, themes and DOM fallbacks.
 4. For a new background message, update validation and dispatch together. For a
    long-running job, use durable checkpoints and restart/reconciliation behavior;
    an in-memory callback is not a service-worker persistence mechanism.

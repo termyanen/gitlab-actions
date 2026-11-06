@@ -27,6 +27,8 @@ for commits, pushes, PR creation and publication; do not request it again if giv
    [PR template](../.github/pull_request_template.md), record actual commands and
    results, and disclose omitted checks. A screenshot is evidence for UI changes;
    fixture tests are not a claim about every live GitLab/Jira deployment.
+   For injected UI, follow [GITLAB_UI.md](GITLAB_UI.md): name the reused GitLab
+   pattern, justify custom CSS and record the themes/DOM variants actually checked.
 6. Produce a title and body, defaulting to `.reports/pr.md` for a local draft
    (create `.reports/` if needed). If PR creation is authorized, use the configured
    provider/CLI and this exact body; with `gh`, prefer `--body-file` to shell text.
