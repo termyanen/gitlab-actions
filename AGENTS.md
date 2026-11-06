@@ -65,6 +65,15 @@ instruction files as pointers here, rather than maintaining competing rules.
 - Validate external messages, imported JSON and API data before narrowing types.
   Use `unknown`, guards and discriminated unions at boundaries. Avoid `any`,
   `as unknown as`, broad assertions and non-null assertions that hide missing data.
+- `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` are required. ESLint
+  rejects unsafe narrowing, non-null assertions and unsafe operations on `any`.
+  Preserve absent-vs-undefined serialization; capture checked state/capabilities
+  before async callbacks. Put response decoders with the entity/feature that owns
+  the contract; keep nullable fields, legacy variants and partial-review recovery.
+- Required extension template nodes use checked DOM access. Optional nodes,
+  including controls rendered only in some UI states, need a missing-node path.
+  Settings fields must use their actual control kind;
+  do not label a select or textarea as an input to access its value.
 - Do not disable checks or raise bundle/performance budgets just to make a change
   pass. A necessary narrow exception needs a reason beside it. Never add
   `@ts-ignore` or `@ts-nocheck`; an exceptional `@ts-expect-error` needs an explanation.

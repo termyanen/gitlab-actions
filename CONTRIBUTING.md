@@ -92,9 +92,11 @@ constitute a release, and none of these external actions is performed by `npm ru
 ## Linting and formatting
 
 `npm run lint` checks runtime TS, Node scripts and root tool configurations with
-zero warnings allowed. Type-aware rules catch unhandled/misused promises, invalid
-awaits, redundant assertions and incomplete union switches. Do not replace a
-missing catch with `void`; implement the error path appropriate to the operation.
+zero warnings allowed. Type-aware rules catch unhandled/misused promises, unsafe
+assignments/calls/member access/arguments/returns, narrowing assertions, non-null
+assertions, untyped Promise rejection callbacks and incomplete union switches.
+Do not replace a missing catch with `void`; implement the error path appropriate
+to the operation.
 
 `npm run format` applies the pinned Prettier style to TS, Node scripts, tool
 configurations, root JSON and `.github/` YAML (workflows and issue forms). `npm run format:check` checks those
@@ -138,13 +140,26 @@ need a clear tooling purpose and a compatible Node/TypeScript peer range.
 Do not edit generated `dist/`, reports or ZIPs. Keep package metadata and tests out
 of the extension archive. Do not increment the release version for tooling alone.
 
-## Further type-safety work
+## Type-safety contracts
 
-`strict` and library declaration checking are enabled. `noUncheckedIndexedAccess`,
-`exactOptionalPropertyTypes` and a blanket assertion ban are not yet enabled:
-existing dynamic API dictionaries, settings and DOM contracts need dedicated
-migrations first. Tighten one boundary at a time with regression coverage; do not
-turn errors into assertions or change absent-vs-undefined serialization silently.
+`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` and library
+declaration checking are enabled for every runtime source. Check array/dictionary
+lookups, capture validated state before async work, and omit absent optional fields
+instead of assigning `undefined` unless the contract explicitly permits it.
+
+GitLab/Jira transports return `unknown`. Validate consumed response fields with the
+owning entity's decoder, using `src/shared/lib/validation/` for small guards. Preserve
+optional/nullable fields and legacy response forms; unused write acknowledgements
+do not need a full resource schema. Messages, storage and imported JSON also need
+runtime evidence. An imported review can contain invalid rows: preserve their
+diagnostics and editable source without treating them as sendable comments.
+
+ESLint rejects unsafe narrowing assertions and non-null `!`; `as const` and type
+widening for empty default collections remain supported. Use checked DOM access for
+required extension templates. Optional GitLab nodes and controls rendered only in
+some UI states need a missing-node path. Settings helpers distinguish value
+controls, checkboxes, text fields and buttons.
+Do not silence errors with casts, suppressions or a generic assertion helper.
 See the [TypeScript index-access](https://www.typescriptlang.org/tsconfig/noUncheckedIndexedAccess.html)
 and [optional-property](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html)
 documentation. The chosen lint rules use [type information](https://typescript-eslint.io/getting-started/typed-linting/)

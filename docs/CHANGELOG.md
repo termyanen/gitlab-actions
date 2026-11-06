@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Validated external data** — reject malformed GitLab/Jira responses and worker messages before using them, and ignore invalid saved job checkpoints. Review imports retain invalid rows for correction; partial discussion exports and legacy nullable fields remain supported. Version-file paths no longer traverse inherited object properties. Group job buttons recover from missing pipeline mappings and clear an earlier error after a successful retry.
 - **Accurate feature guidance** — corrected README, website and onboarding descriptions of reviewer mentions, background job chains, confirmations, pipeline selection and compatibility. Updated seven interface translations and the settings screenshot; removed unsupported speed/setup claims. Runtime behavior is unchanged.
 - **Configurable display rules** — set MR size thresholds, failed-job preview count, log line count, reviewer-comment scan depth, and sensitive-file patterns/exclusions. All previous defaults are preserved; settings are validated and included in export/import.
 - **More accurate previews** — reviewer badges match complete usernames. Failed-job previews link to the full pipeline without presenting a partial count as a total. Thread previews and GitLab lower-bound file counts remain visibly partial.
