@@ -93,6 +93,9 @@ browser storage, or workflow waiting; they are not team-specific naming rules.
   delays, plus request time). This bounds how long a chain waits, not how long a
   GitLab job is allowed to run. Rebase/MR-ready/pipeline-discovery waits also have
   finite bounds and report failures. These are not currently settings.
+  Background chains need a signed-in tab on the same GitLab origin for API access.
+  Ship/rebase/auto-merge setup runs in the originating page; keep that tab open
+  until completion. Chain cancellation does not cancel a job already started in GitLab.
 - **Standup:** up to 50 MRs per category and 500 activity events; 180-second report
   timeout. Reaching a selection bound adds a warning to the report. The selected
   day is configurable; it does not increase the collection budgets.
