@@ -437,6 +437,32 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 - Any self-hosted GitLab instance
 - Any Jira Server / Data Center instance (Cloud support varies)
 
+## Development architecture
+
+Extension runtime lives in `src/` and uses strict TypeScript with FSD layers:
+`app → pages → widgets → features → entities → shared`. Imports between slices
+use their public APIs; CI checks layer direction, prohibits sibling-slice
+imports and rejects legacy JavaScript/blanket type suppressions. There are no
+runtime framework dependencies.
+
+esbuild emits a small isolated-world content bootstrap and packaged ESM chunks.
+Routes load their widgets; review operations, Jira/cherry-pick dialogs, palette
+and standup load on demand. Route scopes release listeners, observers and timers,
+and abort obsolete reads. Popup and welcome are separate extension pages.
+Static manifest, HTML/CSS, icons and locales remain at the repository root to
+preserve version/release tooling; only `dist/` is loaded or packaged.
+
+CI chains keep checkpoints in local storage and use a one-minute alarm to wake
+the worker. A live worker retains its 20-second job polling. Recovery keeps the
+selected pipeline and reconciles an interrupted job start before continuing;
+uncertain outcomes are reported for manual verification, without replaying a
+write. Preferences and exported settings keep their existing formats.
+
+See the [migration plan and checks](docs/REFACTOR_PLAN_RU.md). Run
+`npm run format` after editing sources. `npm run check` includes strict typing,
+lint, formatting, FSD boundaries, regressions, bundle budgets and ZIP checks.
+`npm run test:browser` checks the installed production artifact on local fixtures.
+
 ## Contributing
 
 1. Fork the repo
@@ -464,7 +490,7 @@ release:
    describe fixes and relevant technical changes, keeping older entries unchanged.
 3. Update `softwareVersion` in `docs/index.html` to match. The website loads release
    notes from the changelogs; the extension's update notice reads the manifest.
-4. Run `npm test` and the applicable [browser checks](tests/README.md). CI checks
+4. Run `npm run check` and `npm run test:browser` ([browser setup](tests/README.md)). CI checks
    version consistency, update behavior, and both ZIP packaging paths.
 5. Package with `bash pack.sh` when needed; the archive name comes from the manifest.
    If creating a GitHub release, use the same version in its tag and release notes.

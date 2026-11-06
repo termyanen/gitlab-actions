@@ -1,6 +1,7 @@
 # План перехода на FSD, TypeScript и esbuild
 
-Статус: выполняется. Исходная версия: `1.13.3`, коммит `1d97afe`.
+Статус: этапы 01–11 реализованы и проверены локально. Исходная версия: `1.13.3`,
+коммит `1d97afe`. Перед публикацией остаётся ручная проверка на реальных GitLab/Jira.
 Ветка: `codex/fsd-typescript-refactor`. Все этапы выполняются последовательно
 в этой ветке. Публикация и push — только по отдельному указанию владельца.
 В коммиты не добавляются подписи Codex, отметки об ИИ или Co-authored-by.
@@ -29,12 +30,11 @@ src/
   pages/
     settings/             # ui, model: глобальные и проектные настройки
     welcome/              # ui
-    gitlab/               # композиция расширения на страницах GitLab
   widgets/
     mr-toolbar/           # панель MR и связанные представления
     mr-list/              # дополнения списка MR
     review-dialog/        # picker и preview AI review
-    review-import/        # редактирование и подтверждение публикации
+    review-import-dialog/ # редактирование и подтверждение публикации
     jira-panel/           # sidebar и вложения
     task-tracker/         # отображение фоновых задач
     command-palette/
@@ -48,13 +48,13 @@ src/
     job-chains/           # выполнение последовательностей CI jobs
     jira-actions/
     standup/
-    settings-transfer/
+    manage-settings/
   entities/
     merge-request/        # api, model
     pipeline/             # api, model
     discussion/           # api, model
     jira-issue/           # api, model
-    settings/             # model: defaults, profiles, validation
+    settings/             # model: MR defaults, profiles, contracts
     review/               # model: scope, instructions, response contracts
   shared/
     api/                  # HTTP и Chrome messaging transport
@@ -62,7 +62,8 @@ src/
     config/               # среда выполнения и настройки приложения
     i18n/
     ui/                   # базовые элементы, toast, modal, общие стили
-public/                   # manifest, icons, locales, HTML/CSS-ресурсы
+manifest.json             # версия, permissions, content entrypoint
+content.css, popup.html, welcome.html, icons/, _locales/  # статические ресурсы
 scripts/                  # build, watch, package, архитектурные проверки
 tests/                    # регрессии, браузерные fixtures, performance checks
 dist/                     # только результат сборки, не хранится в Git
@@ -233,3 +234,19 @@ web-accessible resources. Дополнительные разрешения вв
   При отказе от закрытия dirty review после SPA-перехода draft сохраняется,
   повторного confirmation на том же маршруте нет. Проходят 825 Node-тестов
   и 7 browser-сценариев, включая SPA циклы и lazy UI при script/style-src none.
+- 11: удалены временные исключения архитектурной проверки; runtime JS внутри
+  src и импорты за его пределы запрещены. Форматирование включено в общий check.
+  Release-тесты проверяют локальные зависимости chunks, lazy loading тяжёлых
+  фич и бюджеты начальной загрузки. Итог: TypeScript strict, ESLint, Prettier,
+  FSD checks и 827 Node-тестов проходят; 7 browser-сценариев проходят на
+  production-сборке. Сформированы dist и локальный ZIP
+  `.reports/gitlab-mr-actions-v1.13.3-refactor.zip`.
+  README и документация тестов обновлены; privacy policy описывает хранение
+  CI-задач и разрешение alarms. Статические ресурсы оставлены в корне для
+  совместимости существующих инструментов версионирования и выпуска.
+  CSS сохранён declarative ради строгой CSP; его размер вырос с 66 443 до
+  80 498 байт из-за ограничения селекторов страницами GitLab. Сравнение JS
+  относится к размерам графов загрузки, а не CPU, памяти или задержкам.
+  Браузерные проверки используют fixtures и перехватывают HTTP(S); реальные
+  GitLab/Jira остаются в ручной матрице проверки перед выпуском (tests/README.md).
+  Все изменения локальные: push и публикация не выполнялись.

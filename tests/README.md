@@ -15,7 +15,10 @@ also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). 
 resources, CSP and packaging. A test-only module adapter supports moving
 regressions from legacy scripts to TypeScript exports without shipping test hooks.
 Initial source and production bundle sizes are recorded in
-`fixtures/refactor-baseline.json`; these are not browser performance measurements.
+`fixtures/refactor-baseline.json`. Release graph checks enforce 2 KiB for the
+all-HTTPS bootstrap, 20 KB for common GitLab startup and 160 KB for initial MR
+JavaScript. `.reports/performance.json` records the comparison; these are not
+browser CPU, memory or latency measurements.
 
 Browser smoke checks install the actual production build in a separate Chromium
 profile, intercept all HTTP(S) requests, and exercise real Chrome APIs:
@@ -25,8 +28,9 @@ PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/ms-playwright npx playwright instal
 npm run test:browser
 ```
 
-These checks cover settings autosave/reload, an unrelated HTTPS page, and review
-controls under repeated DOM updates. They use local fixtures and do not establish
+These checks cover settings autosave/reload, an unrelated HTTPS page, review
+controls under DOM updates, untrusted page messages, a real worker stop/restart,
+repeated SPA navigation, and lazy UI under a restrictive page CSP. They use local fixtures and do not establish
 compatibility with a live GitLab/Jira server. Each run removes its test profile.
 
 ## What is covered
@@ -35,7 +39,7 @@ compatibility with a live GitLab/Jira server. Each run removes its test profile.
 | --- | --- |
 | Version bump | Source/target version base, JSON/TOML/plain text, nested fields, preservation of source changes, Unicode, strategies, project overrides, failed reads/writes, concurrent source edits |
 | MR workflows | Ship with merge/semi-linear/fast-forward history, Force Ship, rebase + auto-merge, delayed SHA/diff-head updates, commits fallback, rebase/pipeline timeouts, temporary/fatal merge errors and retry limits, branch removal settings, pipeline actions, draft toggle, copy, fixed reviewers, custom job dispatch, configurable MR label/field actions, validation, API failures and project overrides |
-| Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, and a simulated fresh worker |
+| Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, durable checkpoints, restart reconciliation, persistence failure and alarms |
 | GitLab API relay | Originating tab preference, frozen tabs, no open tabs, API errors, no replay of ambiguously delivered mutations |
 | Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors; field-only and composite quick actions, add/remove/set payloads, custom fields, validation before writes, partial failures without retries |
 | Jira quick-action settings | Assignee/version-only actions, legacy status+assignee shape, list normalization, custom JSON including null/false/zero, duplicate fields and invalid dates/JSON preventing settings writes |
@@ -52,14 +56,14 @@ compatibility with a live GitLab/Jira server. Each run removes its test profile.
 | Extension integrity | JavaScript syntax, locale key parity, manifest resource paths, version consistency across the manifest, website metadata and both changelogs |
 | Distribution | Actual ZIP builds from both `pack.sh` and the workflow, required extension resources, exclusion of test files and `node_modules` |
 
-The harness evaluates the checked-in JavaScript in isolated Node VM contexts.
-It exposes the original functions **in tests only**; no test hooks or extra
+The harness evaluates the bundled TypeScript modules in isolated Node VM contexts.
+It exposes module functions and controlled UI bindings **in tests only**; no test hooks or extra
 modules are added to the extension. Network requests and Chrome APIs are mocked,
 timers are advanced deterministically, and presentation methods such as toasts
 are stubbed. No test sends requests to a real GitLab/Jira instance. Packaging runs
 in temporary directories, so existing release archives are untouched.
 
-Cherry-pick tests expose the original nested modal function in the VM and drive
+Cherry-pick tests call the public dialog factory in the VM and drive
 its event handlers through a small control/row fixture; the real API adapter,
 promise chains, diff replay and version parsers run unchanged. This fixture does
 not test HTML layout or GitLab selectors. Requests assert the GitLab

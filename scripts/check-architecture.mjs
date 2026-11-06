@@ -6,13 +6,13 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceRoot = join(root, "src");
 const layers = ["app", "pages", "widgets", "features", "entities", "shared"];
-const legacy = new Set([
-]);
 const violations = [];
 
 function files(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name);
+    if (entry.isFile() && /\.(?:js|jsx|mjs|cjs)$/.test(entry.name))
+      violations.push(`${relative(root, path)}: runtime must be TypeScript`);
     return entry.isDirectory()
       ? files(path)
       : path.endsWith(".ts")
@@ -39,15 +39,9 @@ function checkImport(file, specifier) {
   const from = relative(sourceRoot, file).split("/");
   const to = relative(sourceRoot, target).split("/");
   if (to[0] === "..") {
-    if (!(
-      from[0] === "app" &&
-      from[1] === "entrypoints" &&
-      legacy.has(relative(root, target))
-    )) {
-      violations.push(
-        `${relative(root, file)}: runtime import outside src: ${specifier}`,
-      );
-    }
+    violations.push(
+      `${relative(root, file)}: runtime import outside src: ${specifier}`,
+    );
     return;
   }
   const sameSlice =
