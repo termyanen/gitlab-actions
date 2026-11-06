@@ -11,6 +11,8 @@ import {
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { emptyRecord } from "../../../shared/lib/records";
+import { eventElement, requireElement } from "../../../shared/ui/dom";
 import type { JiraFieldEditors } from "./field-editors";
 export function createJiraTransitions(
   jiraState: JiraState,
@@ -30,14 +32,14 @@ export function createJiraTransitions(
   ) {
     const container = sidebar.querySelector<
       HTMLElement & { _jiraTransitionRequest?: object }
-    >("#gl-jira-sidebar-transitions")!;
+    >("#gl-jira-sidebar-transitions");
     if (!container || sidebar.dataset.ticket !== ticket) return;
     container.dataset.busy = "";
     const request = {};
     container._jiraTransitionRequest = request;
 
-    function render(transitions: JiraTransition[]) {
-      const transitionMap: Record<string, JiraTransition> = Object.create(null);
+    const render = function (transitions: JiraTransition[]) {
+      const transitionMap = emptyRecord<JiraTransition>();
       transitions.forEach(function (t) {
         if (t.name) transitionMap[t.name.toLowerCase()] = t;
         if (t.statusName && !transitionMap[t.statusName.toLowerCase()])
@@ -96,7 +98,7 @@ export function createJiraTransitions(
       container.innerHTML =
         html +
         (qaHtml ? '<div class="gl-jira-sidebar-qa-sep"></div>' + qaHtml : "");
-    }
+    };
 
     // Field-only actions do not depend on transition permissions or availability.
     render([]);
@@ -107,30 +109,30 @@ export function createJiraTransitions(
           sidebar.dataset.ticket !== ticket ||
           sidebar.querySelector<
             HTMLElement & { _jiraTransitionRequest?: object }
-          >("#gl-jira-sidebar-transitions")! !== container ||
+          >("#gl-jira-sidebar-transitions") !== container ||
           container.dataset.busy ||
           container._jiraTransitionRequest !== request
         )
           return;
-        if (resp && !resp._error) render(resp.transitions || []);
+        if (resp && resp._error === undefined) render(resp.transitions || []);
       }),
     );
 
     // Replace the handler when refreshing; repeated refreshes must not replay edits.
     container.onclick = function (e) {
       if (sidebar.dataset.ticket !== ticket || container.dataset.busy) return;
-      const quickBtn = (e.target as Element).closest<HTMLButtonElement>(
+      const quickBtn = eventElement(e.target)?.closest<HTMLButtonElement>(
         ".gl-jira-sidebar-quick-action",
       );
       if (quickBtn && !quickBtn.disabled) {
         executeQuickAction(sidebar, quickBtn, ticket, jiraUrl, quickActions);
         return;
       }
-      const btn = (e.target as Element).closest<HTMLButtonElement>(
+      const btn = eventElement(e.target)?.closest<HTMLButtonElement>(
         ".gl-jira-sidebar-transition",
       );
-      if (!btn || btn.disabled) return;
-      if (!jiraState.skipConfirmations && !confirm(btn.dataset.name! + "?"))
+      if (!btn || btn.disabled || !btn.dataset.id) return;
+      if (!jiraState.skipConfirmations && !confirm(btn.dataset.name + "?"))
         return;
       disableAllTransitionBtns(container);
       btn.style.opacity = "1";
@@ -139,9 +141,9 @@ export function createJiraTransitions(
         sidebar,
         ticket,
         jiraUrl,
-        btn.dataset.id!,
-        btn.dataset.name!,
-        btn.dataset.category!,
+        btn.dataset.id,
+        btn.dataset.name || "",
+        btn.dataset.category || "",
         quickActions,
       );
     };
@@ -163,7 +165,7 @@ export function createJiraTransitions(
   ) {
     const statusBadge = sidebar.querySelector<HTMLElement>(
       "#gl-jira-sidebar-status",
-    )!;
+    );
     if (!scope.disposed && sidebar.dataset.ticket === ticket && statusBadge) {
       const cls = getJiraCategoryClass(categoryKey, statusName);
       statusBadge.className = "gl-jira-badge " + cls;
@@ -217,9 +219,11 @@ export function createJiraTransitions(
   ) {
     const action = quickActions[Number(btn.dataset.actionIndex)];
     if (!action) return;
-    const container = sidebar.querySelector<
-      HTMLElement & { _jiraTransitionRequest?: object }
-    >("#gl-jira-sidebar-transitions")!;
+    const container = requireElement(
+      sidebar.querySelector<HTMLElement & { _jiraTransitionRequest?: object }>(
+        "#gl-jira-sidebar-transitions",
+      ),
+    );
     if (container.dataset.busy) return;
     container.dataset.busy = "true";
     disableAllTransitionBtns(container);
@@ -227,7 +231,7 @@ export function createJiraTransitions(
     btn.textContent = "...";
     const previousError = sidebar.querySelector<HTMLButtonElement>(
       ".gl-jira-quick-action-error",
-    )!;
+    );
     if (previousError) previousError.remove();
 
     function isCurrent() {
@@ -235,7 +239,7 @@ export function createJiraTransitions(
         sidebar.dataset.ticket === ticket &&
         sidebar.querySelector<
           HTMLElement & { _jiraTransitionRequest?: object }
-        >("#gl-jira-sidebar-transitions")! === container
+        >("#gl-jira-sidebar-transitions") === container
       );
     }
     sendJiraMessage(
@@ -256,8 +260,8 @@ export function createJiraTransitions(
           updateStatusAfterTransition(
             sidebar,
             ticket,
-            btn.dataset.statusName!,
-            btn.dataset.statusCategory!,
+            btn.dataset.statusName || "",
+            btn.dataset.statusCategory || "",
           );
         }
         if (scope.disposed || !isCurrent()) return;
@@ -277,19 +281,19 @@ export function createJiraTransitions(
           { type: "fetch-jira-issue", jiraUrl: jiraUrl, ticket: ticket },
           scope.once(function (data) {
             if (!isCurrent()) return;
-            if (data && !data._error) {
+            if (data && data._error === undefined) {
               const draft = sidebar.querySelector<HTMLTextAreaElement>(
                 "#gl-jira-sidebar-comment-input",
-              )!;
+              );
               const draftText = draft ? draft.value : "";
               renderJiraSidebarContent(sidebar, data, jiraUrl);
               const restoredDraft = sidebar.querySelector<HTMLTextAreaElement>(
                 "#gl-jira-sidebar-comment-input",
-              )!;
+              );
               if (restoredDraft) restoredDraft.value = draftText;
               const submitDraft = sidebar.querySelector<HTMLButtonElement>(
                 "#gl-jira-sidebar-comment-submit",
-              )!;
+              );
               if (submitDraft) submitDraft.disabled = !draftText.trim();
               initAssigneeEditor(sidebar, ticket, jiraUrl);
               initFixVersionsEditor(
@@ -308,11 +312,11 @@ export function createJiraTransitions(
                 "gl-jira-sidebar-error gl-jira-quick-action-error";
               notice.setAttribute("role", "alert");
               notice.textContent = error;
-              sidebar
-                .querySelector<
+              requireElement(
+                sidebar.querySelector<
                   HTMLElement & { _jiraTransitionRequest?: object }
-                >("#gl-jira-sidebar-transitions")!
-                .after(notice);
+                >("#gl-jira-sidebar-transitions"),
+              ).after(notice);
             }
           }),
         );

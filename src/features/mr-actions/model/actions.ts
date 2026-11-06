@@ -42,7 +42,8 @@ export function createMrActions(context: MrActionContext, ui: MrActionUI) {
         add_labels: "add_labels",
         set_labels: "labels",
       };
-      if (Object.prototype.hasOwnProperty.call(labelFields, action.type)) {
+      const labelField = labelFields[action.type];
+      if (labelField) {
         if (typeof action.labels !== "string")
           throw new Error(t("mrActionInvalid"));
         let labels = action.labels
@@ -55,7 +56,7 @@ export function createMrActions(context: MrActionContext, ui: MrActionUI) {
           return labels.indexOf(label) === i;
         });
         if (!labels.length) throw new Error(t("mrActionInvalid"));
-        body[labelFields[action.type]] = labels.join(",");
+        body[labelField] = labels.join(",");
       } else if (action.type === "clear_labels") body.labels = "";
       else if (action.type === "clear_assignees") body.assignee_ids = [0];
       else if (action.type === "clear_reviewers") body.reviewer_ids = [0];

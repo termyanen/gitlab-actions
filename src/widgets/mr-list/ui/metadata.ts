@@ -34,9 +34,9 @@ const readMrData = decoder(
 const readApprovals = decoder(
   objectOf<{ approved_by: Approval[] }>({
     approved_by: arrayOf(
-      objectOf({
+      objectOf<Approval>({
         user: optional(
-          objectOf({
+          objectOf<NonNullable<Approval["user"]>>({
             username: optional(isString),
             name: optional(isString),
           }),
@@ -54,7 +54,7 @@ const readDiscussionStates = decoder(
       { notes: { resolvable?: boolean; resolved?: boolean }[] }[][number]
     >({
       notes: arrayOf(
-        objectOf({
+        objectOf<{ resolvable?: boolean; resolved?: boolean }>({
           resolvable: optional(isBoolean),
           resolved: optional(isBoolean),
         }),
@@ -173,7 +173,7 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
         loader.appendChild(s1);
         loader.appendChild(arrow);
         loader.appendChild(s2);
-        infoRow.parentNode!.insertBefore(loader, infoRow.nextSibling);
+        infoRow.parentNode?.insertBefore(loader, infoRow.nextSibling);
       });
     }
 
@@ -241,7 +241,7 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
             (discussions || []).forEach(function (d) {
               if (
                 d.notes &&
-                d.notes.length &&
+                d.notes[0] &&
                 d.notes[0].resolvable &&
                 !d.notes[0].resolved
               ) {

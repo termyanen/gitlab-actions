@@ -1,8 +1,8 @@
 import type { Discussion, Note } from "../../../entities/discussion";
 import type { DiffRefs } from "../../../entities/merge-request";
 import type {
-  createReviewExporter,
   ReviewSnapshot,
+  createReviewExporter,
 } from "../../../features/review-export";
 import type { Translate } from "../../../shared/i18n";
 import { element } from "../../../shared/ui/dom";
@@ -106,18 +106,20 @@ export function createReviewThreads(
       label.appendChild(
         element("span", "gl-review-badge", t(stateKey || "aiReviewGeneral")),
       );
-      if (earlierRevision(thread, state.snapshot!))
+      if (state.snapshot && earlierRevision(thread, state.snapshot))
         label.appendChild(
           element("span", "gl-review-muted", t("aiReviewOutdated")),
         );
-      const location = positionText(notes[0]);
+      const first = notes[0];
+      if (!first) return;
+      const location = positionText(first);
       if (location)
         label.appendChild(element("span", "gl-review-path", location));
       heading.appendChild(label);
       const link = element("a", "gl-review-link", "↗");
       link.href =
-        notes[0].web_url ||
-        state.context.webUrl + "#note_" + encodeURIComponent(notes[0].id);
+        first.web_url ||
+        state.context.webUrl + "#note_" + encodeURIComponent(first.id);
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.setAttribute("aria-label", t("aiReviewLink"));
@@ -199,12 +201,12 @@ export function createReviewThreads(
     state.list
       .querySelectorAll<HTMLInputElement>("[data-review-note]")
       .forEach(function (check) {
-        check.checked = state.selected.has(check.dataset.reviewNote!);
+        check.checked = state.selected.has(check.dataset.reviewNote || "");
       });
     state.list
       .querySelectorAll<HTMLInputElement>("[data-review-thread]")
       .forEach(function (check) {
-        const thread = state.snapshot!.discussions.find(function (item) {
+        const thread = state.snapshot?.discussions.find(function (item) {
           return String(item.id) === check.dataset.reviewThread;
         });
         const notes = data.getNotes(thread);
@@ -248,7 +250,7 @@ export function createReviewThreads(
   function selection(state: ReviewDialogState) {
     const discussionIds: string[] = [];
     const noteIds: string[] = [];
-    state.snapshot!.discussions.forEach(function (thread) {
+    state.snapshot?.discussions.forEach(function (thread) {
       const notes = data.getNotes(thread);
       const chosen = notes.filter(function (note) {
         return state.selected.has(String(note.id));

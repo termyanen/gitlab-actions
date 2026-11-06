@@ -1,14 +1,34 @@
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import {
+  arrayOf,
+  isString,
+  isUnknownArray,
+  nullable,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
+import { requireElement } from "../../../shared/ui/dom";
 const TASK_STATUS_POLL_INTERVAL_MS = 10000;
 interface TaskStatus {
   taskId: string;
   jobs: string[];
   status: string;
-  error?: string;
+  error?: string | null;
   mrTitle?: string;
 }
+const isActiveTask = objectOf<TaskStatus>({
+  taskId: isString,
+  jobs: arrayOf(isString),
+  status: isString,
+  error: optional(nullable(isString)),
+  mrTitle: optional(isString),
+});
+const isTaskProgress = objectOf<Pick<TaskStatus, "status" | "error">>({
+  status: isString,
+  error: optional(nullable(isString)),
+});
 export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
   const polling = new Set<string>();
   // =========================================================================
@@ -48,15 +68,16 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
     header.className = "tracker-header";
     header.innerHTML =
       '<span class="tracker-title">Background Jobs</span><div class="tracker-header-actions"><button class="tracker-clear">Clear</button><button class="tracker-close" aria-label="Close">&times;</button></div>';
-    header
-      .querySelector(".tracker-close")!
-      .addEventListener("click", function () {
+    requireElement(header.querySelector(".tracker-close")).addEventListener(
+      "click",
+      function () {
         panel.classList.add("tracker-collapsed");
         getTrackerFab().classList.add("fab-visible");
-      });
-    header
-      .querySelector(".tracker-clear")!
-      .addEventListener("click", function () {
+      },
+    );
+    requireElement(header.querySelector(".tracker-clear")).addEventListener(
+      "click",
+      function () {
         const items = panel.querySelectorAll(
           ".tracker-item.done, .tracker-item.failed",
         );
@@ -66,7 +87,8 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
         if (!panel.querySelector(".tracker-item")) {
           panel.classList.add("tracker-collapsed");
         }
-      });
+      },
+    );
     panel.appendChild(header);
 
     const list = document.createElement("div");
@@ -95,7 +117,9 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
     const panel = getTrackerPanel();
     panel.classList.remove("tracker-collapsed");
     getTrackerFab().classList.remove("fab-visible");
-    const list = panel.querySelector<HTMLDivElement>(".tracker-list")!;
+    const list = requireElement(
+      panel.querySelector<HTMLDivElement>(".tracker-list"),
+    );
 
     let item = list.querySelector<HTMLDivElement>(
       '[data-task-id="' + taskId + '"]',
@@ -109,7 +133,7 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
 
     let currentJob = "";
     const statusMatch = currentStatus.match(/^running:\s*(.+)$/);
-    if (statusMatch) currentJob = statusMatch[1];
+    if (statusMatch?.[1]) currentJob = statusMatch[1];
 
     const isDone = currentStatus === "done";
     const isError = currentStatus === "error";
@@ -191,9 +215,9 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
       return;
     chrome.runtime.sendMessage(
       { type: "get-active-tasks" },
-      scope.guard(function (tasks: TaskStatus[]) {
-        if (chrome.runtime.lastError || !tasks || !tasks.length) return;
-        tasks.forEach(function (t: TaskStatus) {
+      scope.guard(function (tasks: unknown) {
+        if (chrome.runtime.lastError || !isUnknownArray(tasks)) return;
+        tasks.filter(isActiveTask).forEach(function (t) {
           updateTrackerItem(t.taskId, t.jobs, t.status, null, t.mrTitle);
           pollTaskStatus(t.taskId, t.jobs, t.mrTitle);
         });
@@ -211,10 +235,10 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
     const interval = scope.interval(function () {
       chrome.runtime.sendMessage(
         { type: "get-task-status", taskId: taskId },
-        scope.guard(function (resp: TaskStatus) {
+        scope.guard(function (resp: unknown) {
           if (
             chrome.runtime.lastError ||
-            !resp ||
+            !isTaskProgress(resp) ||
             resp.status === "not_found"
           ) {
             scope.cancelInterval(interval);

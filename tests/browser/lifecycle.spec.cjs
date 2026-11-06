@@ -81,7 +81,7 @@ async function mountJira(page) {
     window.jiraState = {cache: {}, myselfCache: {}, url: 'https://wrong.test', skipConfirmations: true, invalidateCommitTicket: ticket => invalidated.push(ticket)};
     window.panel = Widget.createJiraPanel(jiraState, scope);
     window.openTicket = ticket => panel.openJiraSidebar(ticket, 'https://jira.test');
-    window.issue = key => ({key, summary: key, status: 'Open', statusCategoryKey: 'new', description: '', labels: [], attachments: {}, attachmentList: [], components: [], versions: [], fixVersions: []});
+    window.issue = key => ({key, summary: key, status: 'Open', statusCategoryKey: 'new', description: '', assignee: '', reporter: '', priority: '', type: '', created: '', updated: '', resolution: '', epicLink: '', sprint: '', labels: [], attachments: {}, attachmentList: [], components: [], versions: [], fixVersions: []});
   });
 }
 
@@ -123,6 +123,33 @@ test('closing Jira cancels view callbacks while completed mutations still invali
   await expect(page.locator('.gl-jira-sidebar')).toHaveCount(0);
 });
 
+test('Jira comments handle first-page loading, posting into a nonempty list and deleting the last comment', async ({page}) => {
+  await mountJira(page);
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.evaluate(() => {
+    openTicket('ABC-1'); reply('fetch-jira-issue', issue('ABC-1'));
+    reply('fetch-jira-myself', {id: '7'});
+    reply('fetch-jira-comments', {comments: [{id: '1', author: 'Tester', authorId: '7', body: 'First', created: ''}], total: 1});
+  });
+  await expect(page.locator('.gl-jira-sidebar-comment')).toHaveCount(1);
+  await expect(page.locator('.gl-jira-sidebar-load-more')).toHaveCount(0);
+  await page.locator('#gl-jira-sidebar-comment-input').fill('Second');
+  await page.locator('#gl-jira-sidebar-comment-submit').click();
+  await page.evaluate(() => reply('post-jira-comment', {comment: {id: '2', author: 'Tester', authorId: '7', body: 'Second', created: ''}}));
+  await expect(page.locator('.gl-jira-sidebar-comment')).toHaveCount(2);
+  await expect(page.locator('#gl-jira-sidebar-comments-header')).toContainText('(2)');
+  for (let remaining = 1; remaining >= 0; remaining--) {
+    await page.locator('.gl-jira-sidebar-comment-delete').first().click();
+    await page.evaluate(() => reply('delete-jira-comment', {success: true}));
+    await expect(page.locator('.gl-jira-sidebar-comment')).toHaveCount(remaining);
+  }
+  await expect(page.locator('.gl-jira-sidebar-comments-empty')).toHaveText('jiraSidebarNoComments');
+  await expect(page.locator('#gl-jira-sidebar-comments-header')).toContainText('(0)');
+  expect(errors).toEqual([]);
+  await page.evaluate(() => scope.dispose());
+});
+
 test('reusing the Jira panel keeps one media handler and releases it on disposal', async ({page}) => {
   await mountJira(page);
   await page.evaluate(() => {
@@ -155,15 +182,15 @@ test('Jira assignee search ignores older results, including after clearing the i
   await expect.poll(() => page.evaluate(() => pending.filter(p => p.message.type === 'search-jira-assignable').length)).toBe(2);
   await page.evaluate(() => {
     const requests = pending.filter(p => p.message.type === 'search-jira-assignable');
-    requests[1].callback({users: [{key: 'second', name: 'Second user'}]});
-    requests[0].callback({users: [{key: 'first', name: 'First user'}]});
+    requests[1].callback({users: [{key: 'second', name: 'Second user', avatar: ''}]});
+    requests[0].callback({users: [{key: 'first', name: 'First user', avatar: ''}]});
     pending = pending.filter(p => p.message.type !== 'search-jira-assignable');
   });
   await expect(page.locator('.gl-jira-sidebar-assignee-results')).toHaveText('Second user');
   await input.fill('Third');
   await expect.poll(() => page.evaluate(() => pending.some(p => p.message.type === 'search-jira-assignable'))).toBe(true);
   await input.fill('');
-  await page.evaluate(() => reply('search-jira-assignable', {users: [{key: 'third', name: 'Third user'}]}));
+  await page.evaluate(() => reply('search-jira-assignable', {users: [{key: 'third', name: 'Third user', avatar: ''}]}));
   await expect(page.locator('.gl-jira-sidebar-assignee-results')).toBeEmpty();
 });
 

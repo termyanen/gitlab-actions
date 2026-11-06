@@ -269,7 +269,7 @@ export function createMergeActions(
             )
               .then(readCommitIds)
               .then(function (commits) {
-                if (commits && commits.length && commits[0].id === expectedSha)
+                if (commits && commits[0] && commits[0].id === expectedSha)
                   return getMR();
                 throw new Error(
                   "Timeout waiting for MR to sync with branch HEAD",
@@ -332,7 +332,7 @@ export function createMergeActions(
             .then(decodeArray(readPipeline))
             .then(function (pipelines) {
               if (
-                pipelines.length > 0 &&
+                pipelines[0] &&
                 activePipelineStatuses.indexOf(pipelines[0].status || "") !== -1
               ) {
                 return mr;

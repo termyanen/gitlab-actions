@@ -23,25 +23,28 @@ export function formatJiraWikiText(
   // Simple formatting: escape HTML first, then replace wiki markup
   let html = escHtml(text).replace(/\n/g, "<br>");
   // Replace Jira wiki image markup: !filename|params! or !filename!
-  html = html.replace(/!([^|!]+?)(?:\|[^!]*)?!/g, function (match, filename) {
-    const url = attachments[filename];
-    if (!url) return match;
-    const ext = filename.split(".").pop()!.toLowerCase();
-    if (ext === "mp4" || ext === "webm" || ext === "ogg" || ext === "mov") {
+  html = html.replace(
+    /!([^|!]+?)(?:\|[^!]*)?!/g,
+    function (match: string, filename: string) {
+      const url = attachments[filename];
+      if (!url) return match;
+      const ext = (filename.split(".").pop() || "").toLowerCase();
+      if (ext === "mp4" || ext === "webm" || ext === "ogg" || ext === "mov") {
+        return (
+          '<video src="' +
+          escHtml(url) +
+          '" controls class="gl-jira-sidebar-video"></video>'
+        );
+      }
       return (
-        '<video src="' +
+        '<img src="' +
         escHtml(url) +
-        '" controls class="gl-jira-sidebar-video"></video>'
+        '" alt="' +
+        escHtml(filename) +
+        '" class="gl-jira-sidebar-img">'
       );
-    }
-    return (
-      '<img src="' +
-      escHtml(url) +
-      '" alt="' +
-      escHtml(filename) +
-      '" class="gl-jira-sidebar-img">'
-    );
-  });
+    },
+  );
   // Replace Jira wiki links: [text|url] or [url]
   html = html.replace(
     /\[([^|\]\n]+)\|([^\]\n]+?)(?:\|[^\]\n]*)?\]/g,

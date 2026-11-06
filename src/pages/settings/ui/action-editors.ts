@@ -1,17 +1,18 @@
 import type {
-  CustomJob,
-  QuickComment,
-  MrAction,
-} from "../../../entities/settings";
-import type {
-  JiraQuickAction,
   JiraFieldUpdate,
+  JiraQuickAction,
 } from "../../../entities/jira-issue";
-import type { ButtonItem } from "../model/types";
+import type {
+  CustomJob,
+  MrAction,
+  QuickComment,
+} from "../../../entities/settings";
 import {
-  MR_ACTION_TYPES,
   JIRA_ACTION_FIELDS,
+  MR_ACTION_TYPES,
 } from "../../../features/manage-settings";
+import { requireElement } from "../../../shared/ui/dom";
+import type { ButtonItem } from "../model/types";
 import { byId, escHtml } from "./dom";
 export function createActionEditors({
   t,
@@ -52,7 +53,8 @@ export function createActionEditors({
 
     list.querySelectorAll<HTMLElement>(".remove-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        const idx = parseInt(btn.dataset.index!);
+        const idx = Number(btn.dataset.index);
+        if (!Number.isSafeInteger(idx) || idx < 0) return;
         const current = getCustomJobsFromUI(listId);
         current.splice(idx, 1);
         renderCustomJobs(current, listId, orderContainerId);
@@ -85,18 +87,21 @@ export function createActionEditors({
     document
       .querySelectorAll<HTMLElement>("#" + listId + " .mr-action")
       .forEach(function (row) {
-        const type = row.querySelector<HTMLSelectElement>(
-          '[data-field="type"]',
-        )!.value;
+        const type = requireElement(
+          row.querySelector<HTMLSelectElement>('[data-field="type"]'),
+        ).value;
+        const id = row.dataset.id;
+        if (!id) throw new Error(t("mrActionInvalid"));
         actions.push({
-          id: row.dataset.id!,
-          label: row
-            .querySelector<HTMLInputElement>('[data-field="label"]')!
-            .value.trim(),
+          id,
+          label: requireElement(
+            row.querySelector<HTMLInputElement>('[data-field="label"]'),
+          ).value.trim(),
           type: type,
           labels: /^(remove|add|set)_labels$/.test(type)
-            ? row
-                .querySelector<HTMLTextAreaElement>('[data-field="labels"]')!
+            ? requireElement(
+                row.querySelector<HTMLTextAreaElement>('[data-field="labels"]'),
+              )
                 .value.split(/[,\n]+/)
                 .map(function (label) {
                   return label.trim();
@@ -184,31 +189,32 @@ export function createActionEditors({
         escHtml(t("mrActionLabelsHint")) +
         "</div></div>";
       list.appendChild(row);
-      const select = row.querySelector<HTMLSelectElement>(
-        '[data-field="type"]',
-      )!;
+      const select = requireElement(
+        row.querySelector<HTMLSelectElement>('[data-field="type"]'),
+      );
       select.value = action.type;
       function updateType() {
-        row.querySelector<HTMLElement>(".mr-action-labels")!.hidden =
-          !/^(remove|add|set)_labels$/.test(select.value);
+        requireElement(
+          row.querySelector<HTMLElement>(".mr-action-labels"),
+        ).hidden = !/^(remove|add|set)_labels$/.test(select.value);
       }
       updateType();
       select.addEventListener("change", updateType);
-      row
-        .querySelector<HTMLInputElement>('[data-field="label"]')!
-        .addEventListener("input", function () {
-          rebuildMrActionOrder(listId, orderId);
+      requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="label"]'),
+      ).addEventListener("input", function () {
+        rebuildMrActionOrder(listId, orderId);
+      });
+      requireElement(
+        row.querySelector<HTMLElement>(".remove-btn"),
+      ).addEventListener("click", function () {
+        const current = getMrActionsFromUI(listId).filter(function (item) {
+          return item.id !== action.id;
         });
-      row
-        .querySelector<HTMLElement>(".remove-btn")!
-        .addEventListener("click", function () {
-          const current = getMrActionsFromUI(listId).filter(function (item) {
-            return item.id !== action.id;
-          });
-          renderMrActions(current, listId, orderId);
-          rebuildMrActionOrder(listId, orderId);
-          scheduleAutoSave();
-        });
+        renderMrActions(current, listId, orderId);
+        rebuildMrActionOrder(listId, orderId);
+        scheduleAutoSave();
+      });
     });
   }
   function setupMrActions(
@@ -259,21 +265,21 @@ export function createActionEditors({
       '<button type="button" class="add-btn jqa-add-field">+ ' +
       escHtml(t("jiraQuickActionAddField")) +
       "</button>";
-    row
-      .querySelector<HTMLElement>(".remove-btn")!
-      .addEventListener("click", function () {
-        row.remove();
-        scheduleAutoSave();
+    requireElement(
+      row.querySelector<HTMLElement>(".remove-btn"),
+    ).addEventListener("click", function () {
+      row.remove();
+      scheduleAutoSave();
+    });
+    requireElement(
+      row.querySelector<HTMLElement>(".jqa-add-field"),
+    ).addEventListener("click", function () {
+      addJiraQuickActionField(row, {
+        field: "labels",
+        operation: "add",
+        value: [],
       });
-    row
-      .querySelector<HTMLElement>(".jqa-add-field")!
-      .addEventListener("click", function () {
-        addJiraQuickActionField(row, {
-          field: "labels",
-          operation: "add",
-          value: [],
-        });
-      });
+    });
     list.appendChild(row);
     if (action.status)
       addJiraQuickActionField(row, { field: "status", value: action.status });
@@ -323,19 +329,21 @@ export function createActionEditors({
       escHtml(t("jiraQuickActionValue")) +
       '">' +
       '<div class="hint jqa-value-hint"></div>';
-    row.querySelector<HTMLElement>(".jqa-changes")!.appendChild(fieldRow);
-    const select = fieldRow.querySelector<HTMLSelectElement>(
-      '[data-part="field"]',
-    )!;
-    const custom = fieldRow.querySelector<HTMLInputElement>(
-      '[data-part="custom"]',
-    )!;
-    const operation = fieldRow.querySelector<HTMLSelectElement>(
-      '[data-part="operation"]',
-    )!;
-    const input = fieldRow.querySelector<HTMLInputElement>(
-      '[data-part="value"]',
-    )!;
+    requireElement(row.querySelector<HTMLElement>(".jqa-changes")).appendChild(
+      fieldRow,
+    );
+    const select = requireElement(
+      fieldRow.querySelector<HTMLSelectElement>('[data-part="field"]'),
+    );
+    const custom = requireElement(
+      fieldRow.querySelector<HTMLInputElement>('[data-part="custom"]'),
+    );
+    const operation = requireElement(
+      fieldRow.querySelector<HTMLSelectElement>('[data-part="operation"]'),
+    );
+    const input = requireElement(
+      fieldRow.querySelector<HTMLInputElement>('[data-part="value"]'),
+    );
     select.value = /^customfield_\d+$/.test(update.field)
       ? "custom"
       : update.field;
@@ -363,7 +371,9 @@ export function createActionEditors({
           : field === "assignee"
             ? "username"
             : "";
-      fieldRow.querySelector<HTMLElement>(".jqa-value-hint")!.textContent = t(
+      requireElement(
+        fieldRow.querySelector<HTMLElement>(".jqa-value-hint"),
+      ).textContent = t(
         field === "custom"
           ? "jiraQuickActionCustomHint"
           : multi
@@ -378,12 +388,12 @@ export function createActionEditors({
       operation.value = "add";
       updateControls();
     });
-    fieldRow
-      .querySelector<HTMLElement>(".remove-btn")!
-      .addEventListener("click", function () {
-        fieldRow.remove();
-        scheduleAutoSave();
-      });
+    requireElement(
+      fieldRow.querySelector<HTMLElement>(".remove-btn"),
+    ).addEventListener("click", function () {
+      fieldRow.remove();
+      scheduleAutoSave();
+    });
     updateControls();
   }
   function getJiraQuickActionsFromUI() {
@@ -392,29 +402,29 @@ export function createActionEditors({
     );
     const actions: JiraQuickAction[] = [];
     rows.forEach(function (row) {
-      const label = row
-        .querySelector<HTMLInputElement>('[data-field="label"]')!
-        .value.trim();
+      const label = requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="label"]'),
+      ).value.trim();
       const action: Required<
         Pick<JiraQuickAction, "label" | "status" | "assignee" | "updates">
       > = { label: label, status: "", assignee: "", updates: [] };
-      const seen = new Set();
+      const seen = new Set<string>();
       row
         .querySelectorAll<HTMLElement>(".jqa-change")
         .forEach(function (fieldRow) {
-          let field = fieldRow.querySelector<HTMLSelectElement>(
-            '[data-part="field"]',
-          )!.value;
-          const raw = fieldRow
-            .querySelector<HTMLInputElement>('[data-part="value"]')!
-            .value.trim();
+          let field = requireElement(
+            fieldRow.querySelector<HTMLSelectElement>('[data-part="field"]'),
+          ).value;
+          const raw = requireElement(
+            fieldRow.querySelector<HTMLInputElement>('[data-part="value"]'),
+          ).value.trim();
           if (!raw) return;
           let value: unknown = raw;
           let operation = "set";
           if (field === "custom") {
-            field = fieldRow
-              .querySelector<HTMLInputElement>('[data-part="custom"]')!
-              .value.trim();
+            field = requireElement(
+              fieldRow.querySelector<HTMLInputElement>('[data-part="custom"]'),
+            ).value.trim();
             if (!/^customfield_\d+$/.test(field))
               throw new Error(t("jiraQuickActionInvalid"));
             try {
@@ -435,10 +445,12 @@ export function createActionEditors({
                   .filter(Boolean),
               ),
             );
-            operation = fieldRow.querySelector<HTMLSelectElement>(
-              '[data-part="operation"]',
-            )!.value;
-            if (!(value as string[]).length) return;
+            operation = requireElement(
+              fieldRow.querySelector<HTMLSelectElement>(
+                '[data-part="operation"]',
+              ),
+            ).value;
+            if (!Array.isArray(value) || !value.length) return;
           } else if (
             field === "duedate" &&
             (!/^\d{4}-\d{2}-\d{2}$/.test(raw) ||
@@ -486,11 +498,11 @@ export function createActionEditors({
       escHtml(text) +
       '" style="width:100%">' +
       "</div>";
-    row
-      .querySelector<HTMLElement>(".remove-btn")!
-      .addEventListener("click", function () {
-        row.remove();
-      });
+    requireElement(
+      row.querySelector<HTMLElement>(".remove-btn"),
+    ).addEventListener("click", function () {
+      row.remove();
+    });
     list.appendChild(row);
   }
   function getQuickCommentsFromUI() {
@@ -499,12 +511,12 @@ export function createActionEditors({
     );
     const comments: QuickComment[] = [];
     rows.forEach(function (row) {
-      const label = row
-        .querySelector<HTMLInputElement>('[data-field="label"]')!
-        .value.trim();
-      const text = row
-        .querySelector<HTMLInputElement>('[data-field="text"]')!
-        .value.trim();
+      const label = requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="label"]'),
+      ).value.trim();
+      const text = requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="text"]'),
+      ).value.trim();
       if (label && text) comments.push({ label: label, text: text });
     });
     return comments;
@@ -527,11 +539,11 @@ export function createActionEditors({
       '" style="flex:1">' +
       '<span class="remove-btn" title="Remove">&times;</span>' +
       "</div>";
-    row
-      .querySelector<HTMLElement>(".remove-btn")!
-      .addEventListener("click", function () {
-        row.remove();
-      });
+    requireElement(
+      row.querySelector<HTMLElement>(".remove-btn"),
+    ).addEventListener("click", function () {
+      row.remove();
+    });
     list.appendChild(row);
   }
   function getCherryPickBranchesFromUI() {
@@ -540,9 +552,9 @@ export function createActionEditors({
     );
     const branches: string[] = [];
     rows.forEach(function (row) {
-      const branch = row
-        .querySelector<HTMLInputElement>('[data-field="branch"]')!
-        .value.trim();
+      const branch = requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="branch"]'),
+      ).value.trim();
       if (branch) branches.push(branch);
     });
     return branches;
@@ -553,12 +565,12 @@ export function createActionEditors({
     );
     const jobs: CustomJob[] = [];
     rows.forEach(function (row) {
-      const label = row
-        .querySelector<HTMLInputElement>('[data-field="label"]')!
-        .value.trim();
-      const jobName = row
-        .querySelector<HTMLInputElement>('[data-field="jobName"]')!
-        .value.trim();
+      const label = requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="label"]'),
+      ).value.trim();
+      const jobName = requireElement(
+        row.querySelector<HTMLInputElement>('[data-field="jobName"]'),
+      ).value.trim();
       if (label || jobName) jobs.push({ label: label, jobName: jobName });
     });
     return jobs;

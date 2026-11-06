@@ -17,7 +17,8 @@ export function parsePage(
     match = path.match(
       /^\/(.+)\/(merge_requests|issues|work_items)\/(\d+)(?:\/.*)?$/,
     );
-  if (!match || !match[1] || match[1].indexOf("/") < 0) return null;
+  if (!match || !match[1] || !match[3] || match[1].indexOf("/") < 0)
+    return null;
   let projectPath;
   try {
     projectPath = decodeURIComponent(match[1]);

@@ -39,7 +39,7 @@ const readActivityEvent = decoder(
       target_iid: isNumber,
       target_title: optional(isString),
       push_data: optional(
-        objectOf({
+        objectOf<{ ref: string; ref_type: string; commit_count?: number }>({
           ref: isString,
           ref_type: isString,
           commit_count: optional(isNumber),
@@ -58,7 +58,7 @@ const readActivityMr = decoder(
       created_at: optional(isString),
       merged_at: optional(isString),
       references: optional(
-        objectOf({
+        objectOf<{ full?: string }>({
           full: optional(isString),
         }),
       ),
@@ -112,7 +112,7 @@ export function generateStandup(
   const standupUrl = msg.gitlabUrl;
   const fakeTask = {
     gitlabUrl: standupUrl,
-    _tabId: sender.tab ? sender.tab.id : null,
+    _tabId: sender.tab?.id ?? null,
   };
 
   // Guarantee exactly one response so the modal never spins forever
@@ -439,6 +439,7 @@ export function generateStandup(
             lines.push("Commented:");
             commentedKeys.forEach(function (key) {
               const r = commentedMap[key];
+              if (!r) return;
               lines.push(
                 "  - !" +
                   r.iid +
@@ -458,6 +459,7 @@ export function generateStandup(
             lines.push("Approved:");
             approvedKeys.forEach(function (key) {
               const a = approvedMap[key];
+              if (!a) return;
               lines.push("  - !" + a.iid + " " + a.title);
             });
             lines.push("");
@@ -468,6 +470,7 @@ export function generateStandup(
             lines.push("Pushed:");
             pushKeys.forEach(function (key) {
               const p = pushMap[key];
+              if (!p) return;
               lines.push(
                 "  - " +
                   (p.project ? p.project + " - " : "") +
@@ -593,8 +596,7 @@ export function generateStandup(
                     // Annotate lines: append Jira summary after ticket ID
                     if (Object.keys(ticketSummaries).length) {
                       try {
-                        for (let i = 0; i < lines.length; i++) {
-                          const line = lines[i];
+                        for (const [i, line] of lines.entries()) {
                           if (line.indexOf("  - ") !== 0) continue;
                           // Reset regex for each line
                           let lp;

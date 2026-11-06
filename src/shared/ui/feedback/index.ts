@@ -1,5 +1,5 @@
-import { reportError } from "../../lib/errors";
 import { isExtensionValid } from "../../api/runtime";
+import { reportError } from "../../lib/errors";
 const TOAST_DURATION_MS = 5000;
 const SOUND_CONTEXT_LIFETIME_MS = 1000;
 export function createFeedback(
@@ -65,7 +65,7 @@ export function createFeedback(
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const now = ctx.currentTime;
-      const notes =
+      const notes: [frequency: number, start: number, duration: number][] =
         type === "error"
           ? [
               [400, 0, 0.15],

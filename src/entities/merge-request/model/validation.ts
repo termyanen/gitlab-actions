@@ -1,4 +1,5 @@
 import {
+  arrayOf,
   decoder,
   either,
   isBoolean,
@@ -8,17 +9,44 @@ import {
   objectOf,
   optional,
 } from "../../../shared/lib/validation";
-import {
-  type ActiveMergeRequest,
-  type FileDiff,
-  type MergeRequest,
+import type {
+  ActiveMergeRequest,
+  Commit,
+  DiffRefs,
+  FileDiff,
+  LegacyChanges,
+  MergeRequest,
+  RevisionComparison,
 } from "./types";
+
+const refs = objectOf<DiffRefs>({
+  base_sha: isString,
+  start_sha: isString,
+  head_sha: isString,
+});
+const mergeRequestFields = {
+  id: optional(isNumber),
+  iid: optional(either(isString, isNumber)),
+  title: optional(isString),
+  description: optional(nullable(isString)),
+  sha: optional(isString),
+  diff_refs: optional(refs),
+  project_id: optional(isNumber),
+  source_project_id: optional(isNumber),
+  target_project_id: optional(isNumber),
+  source_branch: optional(isString),
+  target_branch: optional(isString),
+  web_url: optional(isString),
+  changes_count: optional(either(isString, isNumber)),
+};
+export const isMergeRequest = objectOf<MergeRequest>(mergeRequestFields);
+export const readMergeRequest = decoder(
+  isMergeRequest,
+  "MergeRequest response",
+);
 export const readActiveMergeRequest = decoder(
   objectOf<ActiveMergeRequest>({
-    title: optional(isString),
-    source_branch: optional(isString),
-    target_branch: optional(isString),
-    web_url: optional(isString),
+    ...mergeRequestFields,
     state: optional(isString),
     created_at: optional(isString),
     rebase_in_progress: optional(isBoolean),
@@ -32,7 +60,7 @@ export const readActiveMergeRequest = decoder(
     diff_head_sha: optional(isString),
     head_pipeline: optional(
       nullable(
-        objectOf({
+        objectOf<NonNullable<ActiveMergeRequest["head_pipeline"]>>({
           id: optional(isNumber),
           project_id: optional(isNumber),
           sha: optional(isString),
@@ -41,65 +69,47 @@ export const readActiveMergeRequest = decoder(
         }),
       ),
     ),
-    id: optional(isNumber),
-    iid: optional(either(isString, isNumber)),
-    description: optional(nullable(isString)),
-    sha: optional(isString),
-    diff_refs: optional(
-      objectOf({
-        base_sha: isString,
-        start_sha: isString,
-        head_sha: isString,
-      }),
-    ),
-    project_id: optional(isNumber),
-    source_project_id: optional(isNumber),
-    target_project_id: optional(isNumber),
-    changes_count: optional(either(isString, isNumber)),
   }),
   "ActiveMergeRequest response",
 );
-export const readFileDiff = decoder(
-  objectOf<FileDiff>({
-    old_path: isString,
-    new_path: isString,
-    diff: optional(isString),
-    deleted_file: optional(isBoolean),
-    new_file: optional(isBoolean),
-    renamed_file: optional(isBoolean),
-    collapsed: optional(isBoolean),
-    too_large: optional(isBoolean),
-    generated_file: optional(isBoolean),
-    binary: optional(isBoolean),
-    is_binary: optional(isBoolean),
-    a_mode: optional(isString),
-    b_mode: optional(isString),
-    truncated: optional(isBoolean),
+export const isFileDiff = objectOf<FileDiff>({
+  old_path: isString,
+  new_path: isString,
+  diff: optional(isString),
+  deleted_file: optional(isBoolean),
+  new_file: optional(isBoolean),
+  renamed_file: optional(isBoolean),
+  collapsed: optional(isBoolean),
+  too_large: optional(isBoolean),
+  generated_file: optional(isBoolean),
+  binary: optional(isBoolean),
+  is_binary: optional(isBoolean),
+  a_mode: optional(isString),
+  b_mode: optional(isString),
+  truncated: optional(isBoolean),
+  overflow: optional(isBoolean),
+});
+export const readFileDiff = decoder(isFileDiff, "FileDiff response");
+export const isCommit = objectOf<Commit>({
+  id: isString,
+  title: optional(isString),
+  message: optional(isString),
+});
+export const readCommit = decoder(isCommit, "Commit response");
+export const readLegacyChanges = decoder(
+  objectOf<LegacyChanges>({
+    ...mergeRequestFields,
+    changes: arrayOf(isFileDiff),
     overflow: optional(isBoolean),
   }),
-  "FileDiff response",
+  "MR changes response",
 );
-export const readMergeRequest = decoder(
-  objectOf<MergeRequest>({
-    id: optional(isNumber),
-    iid: optional(either(isString, isNumber)),
-    title: optional(isString),
-    description: optional(nullable(isString)),
-    sha: optional(isString),
-    diff_refs: optional(
-      objectOf({
-        base_sha: isString,
-        start_sha: isString,
-        head_sha: isString,
-      }),
-    ),
-    project_id: optional(isNumber),
-    source_project_id: optional(isNumber),
-    target_project_id: optional(isNumber),
-    source_branch: optional(isString),
-    target_branch: optional(isString),
-    web_url: optional(isString),
-    changes_count: optional(either(isString, isNumber)),
+export const readRevisionComparison = decoder(
+  objectOf<RevisionComparison>({
+    commit: optional(isCommit),
+    diffs: arrayOf(isFileDiff),
+    compare_timeout: optional(isBoolean),
+    overflow: optional(isBoolean),
   }),
-  "MergeRequest response",
+  "revision comparison response",
 );

@@ -1,5 +1,6 @@
 import type { DiffRefs } from "../../../entities/merge-request";
-import type { ImportOptions, ImportError } from "./types";
+import { isRecord, isUnknownArray } from "../../../shared/lib/validation";
+import type { ImportError, ImportOptions } from "./types";
 
 export function abortError() {
   const e = new Error("Import cancelled.");
@@ -38,7 +39,24 @@ export function replyNotice(changed: boolean) {
 }
 
 export function clone<T>(value: T) {
-  return JSON.parse(JSON.stringify(value)) as T;
+  // These snapshots contain plain review DTOs. Keep the old JSON snapshot's
+  // omission of undefined properties while retaining its detached ownership.
+  const result = structuredClone(value);
+  function normalize(input: unknown): void {
+    if (isUnknownArray(input)) {
+      for (const [index, item] of input.entries()) {
+        if (item === undefined) input[index] = null;
+        else normalize(item);
+      }
+    } else if (isRecord(input)) {
+      for (const [key, item] of Object.entries(input)) {
+        if (item === undefined) delete input[key];
+        else normalize(item);
+      }
+    }
+  }
+  normalize(result);
+  return result;
 }
 
 export function sha(value: unknown): value is string {

@@ -1,12 +1,19 @@
 import type {
   Discussion,
-  DraftNote,
   Note,
   NotePosition,
 } from "../../../entities/discussion";
+import { readDiscussion, readDraftNote } from "../../../entities/discussion";
 import type { ReviewContext } from "../../../entities/review";
 import { digest } from "../../../shared/lib/digest";
 import { toError } from "../../../shared/lib/errors";
+import {
+  decodeArray,
+  decodeResponse,
+  decoder,
+  isNumber,
+  objectOf,
+} from "../../../shared/lib/validation";
 import { equalPosition } from "./diff";
 import { paginate, request } from "./transport";
 import type {
@@ -19,6 +26,12 @@ import type {
 } from "./types";
 import { positive, sha, unsupported } from "./utils";
 import { endpoint } from "./validation";
+const readCurrentUser = decoder(
+  objectOf<{ id: number }>({
+    id: isNumber,
+  }),
+  "GitLab current user response",
+);
 
 export function findExisting(existing: ExistingNotes, item: ImportItem) {
   return existing.notes.find(function (note) {
@@ -98,6 +111,7 @@ export async function loadDiscussions(
     function (d) {
       return d.id;
     },
+    readDiscussion,
   );
   return discussions.map(validateDiscussion);
 }
@@ -157,7 +171,12 @@ export function replyContext(
     url: context.webUrl + "#note_" + note.id,
   };
   if (note.author)
-    result.author = { name: note.author.name, username: note.author.username };
+    result.author = {
+      ...(note.author.name === undefined ? {} : { name: note.author.name }),
+      ...(note.author.username === undefined
+        ? {}
+        : { username: note.author.username }),
+    };
   let position = note.position || note.original_position;
   if (!position) {
     const anchored = discussion.notes.find(function (n) {
@@ -167,9 +186,14 @@ export function replyContext(
   }
   if (position) {
     result.side = positive(position.new_line) ? "new" : "old";
-    result.path =
-      position[`${result.side}_path`] || position.new_path || position.old_path;
-    result.line = position[`${result.side}_line`];
+    const path =
+      position[`${result.side}_path`] ||
+      position.new_path ||
+      position.old_path ||
+      undefined;
+    if (path !== undefined) result.path = path;
+    const line = position[`${result.side}_line`];
+    if (line !== undefined) result.line = line;
   }
   const state = discussionState(discussion);
   result.resolvable = state !== "general";
@@ -196,7 +220,9 @@ export function compactLocation(position?: NotePosition | null) {
     positive(position.new_line) ||
     (!positive(position.old_line) && position.new_path);
   const result: CompactLocation = {
-    path: newer ? position.new_path : position.old_path,
+    ...((newer ? position.new_path : position.old_path) == null
+      ? {}
+      : { path: (newer ? position.new_path : position.old_path) || "" }),
     side: newer ? "new" : "old",
   };
   const line = newer ? position.new_line : position.old_line;
@@ -210,7 +236,11 @@ export async function existingNotes(
   context: ReviewContext,
   options: ImportOptions,
 ) {
-  const user = (await request<{ id: number }>(context, "/user", options)).data;
+  const user = (
+    await request(context, "/user", options).then(
+      decodeResponse(readCurrentUser),
+    )
+  ).data;
   if (!user || !positive(user.id))
     throw new Error("Sign in to GitLab before importing comments.");
   const notes: ExistingNote[] = [];
@@ -239,10 +269,8 @@ export async function existingNotes(
     // The Draft Notes API returns all the current user's drafts and does not
     // paginate; probing page 2 would receive the same complete list again.
     const drafts = (
-      await request<(DraftNote & { author_id?: number })[]>(
-        context,
-        endpoint(context) + "/draft_notes",
-        options,
+      await request(context, endpoint(context) + "/draft_notes", options).then(
+        decodeResponse(decodeArray(readDraftNote)),
       )
     ).data;
     if (!Array.isArray(drafts))

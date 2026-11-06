@@ -1,6 +1,7 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { msg } from "../../../shared/i18n";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { requireElement } from "../../../shared/ui/dom";
 export function startPageLayout(scope: Lifecycle = createLifecycle()) {
   // Collapse top bars (#63)
   // =========================================================================
@@ -31,7 +32,7 @@ export function startPageLayout(scope: Lifecycle = createLifecycle()) {
             '<svg viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" d="M3 10l5-5 5 5"/></svg>';
           btn.addEventListener("click", function () {
             collapsed = !collapsed;
-            btn.querySelector("svg")!.style.transform = collapsed
+            requireElement(btn.querySelector("svg")).style.transform = collapsed
               ? "rotate(180deg)"
               : "";
             applyCollapse(collapsed);

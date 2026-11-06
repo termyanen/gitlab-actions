@@ -2,10 +2,19 @@ import type {
   Commit,
   FileDiff,
   MergeRequest,
-  MergeRequestVersion,
+} from "../../../entities/merge-request";
+import {
+  isCommit,
+  isFileDiff,
+  isMergeRequest,
 } from "../../../entities/merge-request";
 import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import { toError } from "../../../shared/lib/errors";
+import {
+  isRecord,
+  isUnknownArray,
+  type Decoder,
+} from "../../../shared/lib/validation";
 import { MAX_PAGES, PAGE_SIZE } from "./limits";
 import { addWarning, progress } from "./progress";
 import { apiUrl, checkAbort, header, request } from "./transport";
@@ -41,9 +50,10 @@ export async function reviewPages<T extends Commit | FileDiff>(
   kind: "commits" | "diffs",
   options: ExportOptions,
   warnings: string[],
+  read: Decoder<T>,
 ) {
   const items: T[] = [];
-  const seen = new Set();
+  const seen = new Set<string>();
   let page = 1;
   let complete = true;
   const endpoint = new URL(apiUrl(context, path));
@@ -51,12 +61,12 @@ export async function reviewPages<T extends Commit | FileDiff>(
     checkAbort(options.signal);
     let fetched;
     try {
-      fetched = await request<T[]>(
+      fetched = await request(
         context,
         path + "?per_page=" + PAGE_SIZE + "&page=" + page,
         Object.assign({}, options, { maxBytes: 4 * 1024 * 1024 }),
       );
-      if (!Array.isArray(fetched.data))
+      if (!isUnknownArray(fetched.data))
         throw new Error("GitLab did not return a " + kind + " list.");
     } catch (caught) {
       const error = toError(caught);
@@ -74,16 +84,26 @@ export async function reviewPages<T extends Commit | FileDiff>(
       break;
     }
     let added = 0;
+    if (!isUnknownArray(fetched.data))
+      throw new Error("GitLab did not return a list.");
     fetched.data.forEach(function (record) {
-      const item = record as Commit & FileDiff;
+      let item: T;
+      try {
+        item = read(record);
+      } catch {
+        complete = false;
+        addWarning(
+          warnings,
+          "GitLab returned an incomplete MR " +
+            kind +
+            " record; some context is missing.",
+        );
+        return;
+      }
       const valid =
-        item &&
-        (kind === "commits"
-          ? /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(item.id || "")
-          : typeof item.old_path === "string" &&
-            item.old_path &&
-            typeof item.new_path === "string" &&
-            item.new_path);
+        kind === "commits"
+          ? isCommit(item) && /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(item.id)
+          : isFileDiff(item) && item.old_path && item.new_path;
       if (!valid) {
         complete = false;
         addWarning(
@@ -94,13 +114,12 @@ export async function reviewPages<T extends Commit | FileDiff>(
         );
         return;
       }
-      const key =
-        kind === "commits"
-          ? item.id
-          : JSON.stringify([item.old_path, item.new_path]);
+      const key = isCommit(item)
+        ? item.id
+        : JSON.stringify([item.old_path, item.new_path]);
       if (!seen.has(key)) {
         seen.add(key);
-        items.push(record);
+        items.push(item);
         added++;
       }
     });
@@ -119,7 +138,7 @@ export async function reviewPages<T extends Commit | FileDiff>(
             : -1;
     else if (links) {
       const match = links.match(/<([^>]+)>\s*;\s*rel\s*=\s*"?next"?/i);
-      if (!match) next = 0;
+      if (!match?.[1]) next = 0;
       else {
         try {
           const url = new URL(match[1], endpoint);
@@ -185,10 +204,9 @@ export function completeReviewHunks(diff: string) {
   let oldLeft = 0;
   let newLeft = 0;
   let hunks = 0;
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+  for (const [i, line] of lines.entries()) {
     const match = line.match(/^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/);
-    if (match) {
+    if (match?.[1]) {
       if (oldLeft || newLeft) return false;
       hunks++;
       oldLeft = match[2] === undefined ? 1 : Number(match[2]);
@@ -227,12 +245,12 @@ export async function loadReviewVersions(
     checkAbort(options.signal);
     let fetched;
     try {
-      fetched = await request<MergeRequestVersion[]>(
+      fetched = await request(
         context,
         path + "?per_page=" + GITLAB_PAGE_SIZE + "&page=" + page,
         options,
       );
-      if (!Array.isArray(fetched.data))
+      if (!isUnknownArray(fetched.data))
         throw new Error("GitLab did not return MR versions.");
     } catch (caught) {
       const error = toError(caught);
@@ -246,13 +264,16 @@ export async function loadReviewVersions(
       break;
     }
     let added = 0;
+    if (!isUnknownArray(fetched.data))
+      throw new Error("GitLab did not return MR versions.");
     fetched.data.forEach(function (version) {
       if (
-        !version ||
+        !isRecord(version) ||
+        typeof version.head_commit_sha !== "string" ||
         !/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(
           version.head_commit_sha || "",
         ) ||
-        version.id == null
+        (typeof version.id !== "string" && typeof version.id !== "number")
       ) {
         addWarning(warnings, "An incomplete MR version was omitted.");
         return;
@@ -280,4 +301,12 @@ export async function loadReviewVersions(
       );
   }
   return { items: items, warnings: warnings };
+}
+
+export function readReviewEntity(value: unknown) {
+  if (!isMergeRequest(value))
+    throw new Error(
+      "The current MR revision is unavailable or still being prepared. Reload the MR and try again.",
+    );
+  return value;
 }

@@ -1,5 +1,8 @@
 import type { ReviewContext } from "../../../entities/review";
-import type { ImportItem } from "../../../features/review-import";
+import type {
+  ImportItem,
+  ImportResultItem,
+} from "../../../features/review-import";
 import type { Translate } from "../../../shared/i18n";
 import { createDialogKeydown } from "../../../shared/ui/dialog";
 import { element } from "../../../shared/ui/dom";
@@ -204,7 +207,7 @@ export function createImportWindow(
     const viewStop = button({ t }, "aiReviewImportStop", function () {
       if (state.busy !== "sending" || state.stopping) return;
       state.stopping = true;
-      state.controller!.abort();
+      state.controller?.abort();
       updateActions(state);
     });
     footer.appendChild(viewStop);
@@ -235,9 +238,9 @@ export function createImportWindow(
         document.activeElement instanceof HTMLElement
           ? document.activeElement
           : null,
-      selected: new Set(),
-      resolveSelected: new Set(),
-      results: new Map(),
+      selected: new Set<string>(),
+      resolveSelected: new Set<string>(),
+      results: new Map<string, ImportResultItem>(),
       plan: null,
       editor: null,
       manualId: 0,

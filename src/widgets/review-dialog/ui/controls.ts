@@ -4,8 +4,9 @@ import type { createReviewExporter } from "../../../features/review-export";
 import type { createReviewImporter } from "../../../features/review-import";
 import { ROUTE_POLL_INTERVAL_MS } from "../../../shared/config/runtime";
 import type { Translate } from "../../../shared/i18n";
+import { readMessages } from "../../../shared/i18n";
 import { errorMessage, reportError, toError } from "../../../shared/lib/errors";
-import { element } from "../../../shared/ui/dom";
+import { element, eventElement } from "../../../shared/ui/dom";
 import { createReviewDialogActions } from "./actions";
 import { createReviewThreads } from "./threads";
 import type {
@@ -67,8 +68,8 @@ export function startReviewControls(
     language: "auto",
     ai_review_confirm_close: false,
   };
-  if (getWorkflow())
-    Object.assign(settings, getWorkflow()!.instructionDefaults());
+  const workflow = getWorkflow();
+  if (workflow) Object.assign(settings, workflow.instructionDefaults());
   let messages: Record<string, { message: string }> | null = null;
   settings.ai_review_confirm_close = false;
   let active: ReviewDialogState | null = null;
@@ -186,13 +187,14 @@ export function startReviewControls(
     if (!prefix) {
       // gon is in the page's JS world; read just its JSON string, never execute it.
       const scripts = document.querySelectorAll("script:not([src])");
-      for (let i = 0; i < scripts.length; i++) {
-        const match = (scripts[i].textContent || "").match(
+      for (const currentScript of scripts) {
+        const match = (currentScript.textContent || "").match(
           /(?:gon\.)?"?relative_url_root"?\s*(?:=|:)\s*("(?:[^"\\]|\\.)*")/,
         );
-        if (match) {
+        if (match?.[1]) {
           try {
-            prefix = JSON.parse(match[1]);
+            const parsed: unknown = JSON.parse(match[1]);
+            if (typeof parsed === "string") prefix = parsed;
           } catch {
             /* The browser API may be unavailable. */
           }
@@ -344,7 +346,7 @@ export function startReviewControls(
     state.taskChanged = true;
     state.previewDetails.open = false;
     if (task === "fresh" && state.loading) {
-      state.loadController!.abort();
+      state.loadController?.abort();
       state.loadController = null;
       state.loading = false;
       state.needsLoad = true;
@@ -506,10 +508,7 @@ export function startReviewControls(
         document.querySelector(".gl-review-overlay, .gl-review-import-overlay")
       )
         return;
-      if (
-        close() === false ||
-        (getImportDialog() && getImportDialog()!.close() === false)
-      ) {
+      if (close() === false || getImportDialog()?.close() === false) {
         retainedRoute = nextKey;
         active?.loadController?.abort();
         active?.exportController?.abort();
@@ -520,7 +519,7 @@ export function startReviewControls(
           if (active.loading) active.needsLoad = true;
           active.loading = false;
           active.loadController = null;
-          active.versionsController = undefined;
+          delete active.versionsController;
           status(active, "");
           updateActions(active);
         }
@@ -587,7 +586,7 @@ export function startReviewControls(
             const current = route();
             if (!current || current.kind !== "merge_requests") return;
             if (close() === false) return;
-            getImportDialog()!.open(current, { t: t });
+            getImportDialog()?.open(current, { t: t });
           },
           "import",
         );
@@ -596,12 +595,14 @@ export function startReviewControls(
       }
       importLauncher.classList.toggle("gl-review-in-actions", !!actions);
       importLauncher.classList.toggle("gl-review-floating", !target);
-      const siblings = Array.from(launcher.parentElement!.children);
+      const parent = launcher.parentElement;
+      if (!parent) return;
+      const siblings = Array.from(parent.children);
       if (
         importLauncher.parentElement !== launcher.parentElement ||
         siblings.indexOf(importLauncher) + 1 !== siblings.indexOf(launcher)
       ) {
-        launcher.parentElement!.insertBefore(importLauncher, launcher);
+        parent.insertBefore(importLauncher, launcher);
       }
     }
     document.querySelectorAll(noteSelector).forEach(function (root) {
@@ -677,6 +678,7 @@ export function startReviewControls(
       .then(function (response) {
         return response.json();
       })
+      .then(readMessages)
       .then(function (value) {
         if (run === languageRun) messages = value;
       })
@@ -710,7 +712,7 @@ export function startReviewControls(
     });
     if (!relevant) return;
     if (close() === false) return;
-    if (getImportDialog() && getImportDialog()!.close() === false) return;
+    if (getImportDialog()?.close() === false) return;
     document
       .querySelectorAll(".gl-review-launcher, .gl-review-inline")
       .forEach(function (el) {
@@ -724,7 +726,7 @@ export function startReviewControls(
       records.some(function (record) {
         return (
           !("closest" in record.target) ||
-          !(record.target as Element).closest(
+          !eventElement(record.target)?.closest(
             ".gl-review-overlay, .gl-review-launcher, .gl-review-inline",
           )
         );

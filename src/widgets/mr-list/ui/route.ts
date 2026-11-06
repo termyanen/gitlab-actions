@@ -1,6 +1,6 @@
 export function parseMrPath(href: string) {
   const m = href.match(/^https?:\/\/[^/]+\/(.+?)\/-\/merge_requests\/(\d+)/);
-  if (!m) return null;
+  if (!m?.[1] || !m[2]) return null;
   return { projectPath: m[1], iid: m[2] };
 }
 

@@ -46,12 +46,12 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
   }
 
   function checkReviewerInNotes(notes: { body: string }[], username: string) {
-    for (let i = 0; i < notes.length; i++) {
-      const body = notes[i].body || "";
+    for (const note of notes) {
+      const body = note.body || "";
       if (!/reviewers?\s*:/i.test(body)) continue;
       for (const mention of body.matchAll(/(?:^|[^\w@])@([\w][\w.-]*)/g)) {
         if (
-          mention[1].replace(/[.-]+$/, "").toLowerCase() ===
+          mention[1]?.replace(/[.-]+$/, "").toLowerCase() ===
           username.toLowerCase()
         )
           return true;
@@ -67,8 +67,8 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
 
     const titleEl = q<HTMLAnchorElement>(mrItem, SEL.titleLink);
     if (!titleEl) return;
-    const titleContainer =
-      qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
+    const titleContainer = qUp(titleEl, SEL.titleWrap) || titleEl.parentElement;
+    if (!titleContainer) return;
 
     const badge = document.createElement("span");
     badge.className = "gl-reviewer-badge";
@@ -121,7 +121,8 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
       const titleEl = q<HTMLAnchorElement>(entry.item, SEL.titleLink);
       if (!titleEl) return;
       const titleContainer =
-        qUp(titleEl, SEL.titleWrap) || titleEl.parentElement!;
+        qUp(titleEl, SEL.titleWrap) || titleEl.parentElement;
+      if (!titleContainer) return;
       const loader = document.createElement("span");
       loader.className = "gl-reviewer-loader gl-jira-loader";
       titleContainer.appendChild(loader);
@@ -144,6 +145,7 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
         return;
       }
       const entry = toFetch[i];
+      if (!entry) return;
       fetchMrNotes(entry.projectPath, entry.iid, limit)
         .then(function (notes) {
           const isReviewer = checkReviewerInNotes(notes || [], username);

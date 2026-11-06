@@ -81,11 +81,11 @@ async function boundedText(response: Response, maxBytes?: number) {
   return text;
 }
 
-export async function request<T = unknown>(
+export async function request(
   context: ReviewContext,
   path: string,
   options: ExportOptions = {},
-): Promise<RequestResult<T>> {
+): Promise<RequestResult<unknown>> {
   options = options || {};
   checkAbort(options.signal);
   const controller = new AbortController();
@@ -140,9 +140,9 @@ export async function request<T = unknown>(
             throw new Error(
               "GitLab returned an HTML page instead of repository content.",
             );
-          return { data: text as T, response: response };
+          return { data: text, response: response };
         }
-        let data;
+        let data: unknown;
         try {
           data = JSON.parse(text);
         } catch {

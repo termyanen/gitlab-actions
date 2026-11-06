@@ -48,7 +48,7 @@ export function createFeedbackExporter({
         return String(discussion.id);
       }),
     );
-    const knownNotes = new Set();
+    const knownNotes = new Set<string>();
     let missingRequested = false;
     snapshot.discussions.forEach(function (discussion) {
       getNotes(discussion).forEach(function (note) {
@@ -185,9 +185,9 @@ export function createFeedbackExporter({
         sections.push("Attachments: " + descriptionLinks.join("\n"));
     }
     const readFile = fileLoader(snapshot, options, warnings);
-    for (let index = 0; index < selected.length; index++) {
+    for (const [index, selectedDiscussion] of selected.entries()) {
       checkAbort(options.signal);
-      const discussion = selected[index];
+      const discussion = selectedDiscussion;
       const notes = getNotes(discussion);
       const whole = all || discussionIds.has(String(discussion.id));
       const positionNote = notes.find(function (note) {
@@ -251,12 +251,13 @@ export function createFeedbackExporter({
           target = notes.find(function (note) {
             return !note.draft && /^[1-9]\d*$/.test(String(note.id));
           });
-        replyTargets.push({
-          discussion_id: String(discussion.id),
-          note_id: Number(target!.id),
-        });
+        if (target)
+          replyTargets.push({
+            discussion_id: String(discussion.id),
+            note_id: Number(target.id),
+          });
       }
-      const seenPositions = new Set();
+      const seenPositions = new Set<string>();
       function appendPosition(note: Note) {
         const anchor = positionSummary(
           note.original_position || note.position,
@@ -276,7 +277,7 @@ export function createFeedbackExporter({
         }
       }
       if (positionNote) appendPosition(positionNote);
-      const seenCommits = new Set();
+      const seenCommits = new Set<string>();
       notes.forEach(function (note, noteIndex) {
         const author = note.author || {};
         const authorLabel = author.username
@@ -349,7 +350,7 @@ export function createFeedbackExporter({
         total: selected.length,
       });
     }
-    if (replyTargets.length) {
+    if (replyTargets[0]) {
       intro.push(
         instruction(
           "fix_replies",

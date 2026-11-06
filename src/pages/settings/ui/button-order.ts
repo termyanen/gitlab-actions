@@ -1,5 +1,6 @@
 import type { CustomJob, MrAction } from "../../../entities/settings";
 import { BUILTIN_BUTTONS } from "../../../features/manage-settings";
+import { requireElement } from "../../../shared/ui/dom";
 import type { ButtonItem } from "../model/types";
 import { byId } from "./dom";
 export function createButtonOrderEditor(
@@ -39,7 +40,7 @@ export function createButtonOrderEditor(
           });
           return {
             key: key,
-            label: action!.label || t("mrActions"),
+            label: action?.label || t("mrActions"),
             enabled: true,
             isCustom: true,
           };
@@ -126,10 +127,11 @@ export function createButtonOrderEditor(
       // Drag events
       let enterCount = 0;
       row.addEventListener("dragstart", function (e) {
+        if (!e.dataTransfer) return;
         dragSrcEl = row;
         row.classList.add("dragging");
-        e.dataTransfer!.effectAllowed = "move";
-        e.dataTransfer!.setData("text/plain", i.toString());
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", i.toString());
       });
       row.addEventListener("dragend", function () {
         row.classList.remove("dragging");
@@ -141,7 +143,7 @@ export function createButtonOrderEditor(
       });
       row.addEventListener("dragover", function (e) {
         e.preventDefault();
-        e.dataTransfer!.dropEffect = "move";
+        if (e.dataTransfer) e.dataTransfer.dropEffect = "move";
       });
       row.addEventListener("dragenter", function (e) {
         e.preventDefault();
@@ -159,12 +161,19 @@ export function createButtonOrderEditor(
         e.preventDefault();
         enterCount = 0;
         row.classList.remove("drag-over");
-        if (dragSrcEl === row) return;
-        const fromIdx = parseInt(e.dataTransfer!.getData("text/plain"));
+        if (dragSrcEl === row || !e.dataTransfer) return;
+        const fromIdx = parseInt(e.dataTransfer.getData("text/plain"));
         const toIdx = Array.from(container.children).indexOf(row);
-        if (fromIdx === toIdx) return;
+        if (
+          !Number.isSafeInteger(fromIdx) ||
+          fromIdx < 0 ||
+          toIdx < 0 ||
+          fromIdx === toIdx
+        )
+          return;
         const currentItems = getButtonOrderFromUI(containerId);
         const moved = currentItems.splice(fromIdx, 1)[0];
+        if (!moved) return;
         currentItems.splice(toIdx, 0, moved);
         renderButtonOrder(currentItems, containerId);
         scheduleAutoSave();
@@ -180,12 +189,16 @@ export function createButtonOrderEditor(
     );
     const items: ButtonItem[] = [];
     rows.forEach(function (row) {
+      const key = row.getAttribute("data-key");
+      if (!key) throw new Error("Missing button key");
       items.push({
-        key: row.getAttribute("data-key")!,
-        label: row.querySelector<HTMLElement>(".btn-label")!.textContent,
-        enabled: row.querySelector<HTMLInputElement>('input[type="checkbox"]')!
-          .checked,
-        isCustom: /^(custom_|mr_action_)/.test(row.getAttribute("data-key")!),
+        key,
+        label: requireElement(row.querySelector<HTMLElement>(".btn-label"))
+          .textContent,
+        enabled: requireElement(
+          row.querySelector<HTMLInputElement>('input[type="checkbox"]'),
+        ).checked,
+        isCustom: /^(custom_|mr_action_)/.test(key),
       });
     });
     return items;

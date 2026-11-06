@@ -16,9 +16,8 @@ export function applyUnifiedDiff(content: string, diffText: string) {
   let cur: Hunk | null = null;
   let oldNoNewline = false;
   let newNoNewline = false;
-  let i, j;
-  for (i = 0; i < diffLines.length; i++) {
-    const line = diffLines[i];
+  let j;
+  for (const [i, line] of diffLines.entries()) {
     if (line === "" && i === diffLines.length - 1) break; // diff's own trailing newline
     if (line.indexOf("@@") === 0) {
       if (!/^@@ -\d+(,\d+)? \+\d+(,\d+)? @@/.test(line))
@@ -62,8 +61,7 @@ export function applyUnifiedDiff(content: string, diffText: string) {
   const out = [];
   let pos = 0;
   let hunkEnd = 0;
-  for (i = 0; i < hunks.length; i++) {
-    const h = hunks[i];
+  for (const h of hunks) {
     let found = -1;
     if (!h.oldLines.length) {
       // Pure addition with zero context — unambiguous only for an empty file
