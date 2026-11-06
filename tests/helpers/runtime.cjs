@@ -56,7 +56,7 @@ function readRuntime(file) {
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'welcome.js') return bundleForTest('src/app/entrypoints/welcome.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content_proxy.js') return bundleForTest('src/app/entrypoints/content_proxy.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content.js') {
-    return bundleForTest('src/app/entrypoints/content.ts');
+    return bundleForTest('src/widgets/mr-toolbar/index.ts');
   }
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'review-copy.js') {
     return bundleForTest('src/widgets/review-dialog/index.ts', {

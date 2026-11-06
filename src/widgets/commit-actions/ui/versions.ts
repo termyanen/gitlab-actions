@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 interface CommitEntry {
   row: Element;
   group: Element;
@@ -8,9 +10,9 @@ import { SEL } from "../../../shared/config/gitlab";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
 import { parseToml, getNestedValue } from "../../../shared/lib/version";
 
-export function startCommitVersions() {
+export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
-  const api = createSessionApi(() => GITLAB_URL);
+  const api = createSessionApi(() => GITLAB_URL, scope.signal);
   function isCommitsPage() {
     return (
       /\/-\/commits\//.test(window.location.pathname) ||
@@ -31,7 +33,7 @@ export function startCommitVersions() {
           versionFile: "package.json",
           versionPath: "version",
         },
-        function (s: {
+        scope.guard(function (s: {
           show_commit_version: boolean;
           versionFile: string;
           versionPath: string;
@@ -113,7 +115,7 @@ export function startCommitVersions() {
           function persistVersions(map: Record<string, string>) {
             chrome.storage.local.get(
               { gl_commit_versions: {} },
-              function (res: {
+              scope.guard(function (res: {
                 gl_commit_versions?: Record<string, { v: string; ts: number }>;
               }) {
                 if (chrome.runtime.lastError) return;
@@ -140,11 +142,12 @@ export function startCommitVersions() {
                     }
                   },
                 );
-              },
+              }),
             );
           }
 
           function renderCommitVersionBadges(entries: CommitEntry[]) {
+            if (scope.disposed) return;
             for (let i = 0; i < entries.length; i++) {
               const entry = entries[i];
               const loader = entry.row.querySelector(
@@ -172,6 +175,7 @@ export function startCommitVersions() {
           }
 
           function injectCommitVersionBadges() {
+            if (scope.disposed) return;
             if (_cvFetching) return;
             const entries = collectCommitEntries();
             if (!entries.length) return;
@@ -252,7 +256,7 @@ export function startCommitVersions() {
 
           chrome.storage.local.get(
             { gl_commit_versions: {} },
-            function (res: {
+            scope.guard(function (res: {
               gl_commit_versions?: Record<string, { v: string; ts: number }>;
             }) {
               const store =
@@ -265,20 +269,20 @@ export function startCommitVersions() {
               injectCommitVersionBadges();
 
               let _cvTimer: ReturnType<typeof setTimeout> | undefined;
-              const cvObserver = new MutationObserver(function () {
+              const cvObserver = scope.observer(function () {
                 clearTimeout(_cvTimer);
-                _cvTimer = setTimeout(injectCommitVersionBadges, 500);
+                _cvTimer = scope.timeout(injectCommitVersionBadges, 500);
               });
               cvObserver.observe(document.body, {
                 childList: true,
                 subtree: true,
               });
-              window.addEventListener("beforeunload", function () {
+              scope.listen(window, "beforeunload", function () {
                 cvObserver.disconnect();
               });
-            },
+            }),
           );
-        },
+        }),
       );
     } catch {
       /* Optional UI may be unavailable. */

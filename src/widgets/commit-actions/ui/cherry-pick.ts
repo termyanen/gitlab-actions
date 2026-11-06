@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { CherryPickSettings } from "../../../features/cherry-pick";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
@@ -13,6 +15,7 @@ export function startCommitCherryPick(
   ) => {
     open: (sha: string, message: string, settings: CherryPickSettings) => void;
   },
+  scope: Lifecycle = createLifecycle(),
 ) {
   const GITLAB_URL = window.location.origin;
   function isCommitsPage() {
@@ -44,7 +47,9 @@ export function startCommitCherryPick(
           versionStrategy: "patch",
           versionCommitTemplate: "fix: bump version to {version}",
         },
-        function (s) {
+        scope.guard(function (
+          s: CherryPickSettings & { show_cherry_pick: boolean },
+        ) {
           if (chrome.runtime.lastError || s.show_cherry_pick === false) return;
 
           const projectPath = (function () {
@@ -90,6 +95,7 @@ export function startCommitCherryPick(
           }
 
           function injectCherryPickButtons() {
+            if (scope.disposed) return;
             const shaGroups = findCommitShaGroups();
             if (!shaGroups.length) return;
 
@@ -148,7 +154,7 @@ export function startCommitCherryPick(
             toast.className = "gl-mr-actions-toast " + type;
             toast.textContent = message;
             document.body.appendChild(toast);
-            setTimeout(function () {
+            scope.timeout(function () {
               try {
                 toast.remove();
               } catch {
@@ -198,6 +204,7 @@ export function startCommitCherryPick(
             }
 
             function injectCherryPickHeaderBtn() {
+              if (scope.disposed) return;
               if (document.querySelector(".gl-cherry-pick-detail-btn")) return;
 
               const container = findCommitHeaderContainer();
@@ -250,16 +257,16 @@ export function startCommitCherryPick(
             // Header may be rendered by Vue, observe + retry
             let _cpDetailTimer: ReturnType<typeof setTimeout> | undefined;
             let _cpDetailAttempts = 0;
-            const cpDetailObserver = new MutationObserver(function () {
+            const cpDetailObserver = scope.observer(function () {
               if (document.querySelector(".gl-cherry-pick-detail-btn")) return;
               clearTimeout(_cpDetailTimer);
-              _cpDetailTimer = setTimeout(injectCherryPickHeaderBtn, 200);
+              _cpDetailTimer = scope.timeout(injectCherryPickHeaderBtn, 200);
             });
             cpDetailObserver.observe(document.body, {
               childList: true,
               subtree: true,
             });
-            window.addEventListener("beforeunload", function () {
+            scope.listen(window, "beforeunload", function () {
               cpDetailObserver.disconnect();
             });
 
@@ -272,7 +279,7 @@ export function startCommitCherryPick(
                 return;
               _cpDetailAttempts++;
               if (!findCommitHeaderContainer()) {
-                setTimeout(pollHeader, 500);
+                scope.timeout(pollHeader, 500);
               } else {
                 injectCherryPickHeaderBtn();
               }
@@ -282,19 +289,19 @@ export function startCommitCherryPick(
             injectCherryPickButtons();
 
             let _cpTimer: ReturnType<typeof setTimeout> | undefined;
-            const cpObserver = new MutationObserver(function () {
+            const cpObserver = scope.observer(function () {
               clearTimeout(_cpTimer);
-              _cpTimer = setTimeout(injectCherryPickButtons, 300);
+              _cpTimer = scope.timeout(injectCherryPickButtons, 300);
             });
             cpObserver.observe(document.body, {
               childList: true,
               subtree: true,
             });
-            window.addEventListener("beforeunload", function () {
+            scope.listen(window, "beforeunload", function () {
               cpObserver.disconnect();
             });
           }
-        },
+        }),
       );
     } catch {
       /* Optional UI may be unavailable. */

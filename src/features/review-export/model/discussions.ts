@@ -5,52 +5,7 @@ import { PAGE_SIZE, MAX_PAGES } from "./limits";
 import { addWarning, progress } from "./progress";
 import { checkAbort, header, apiUrl, request } from "./transport";
 
-export function getNotes(discussion: Discussion | null | undefined) {
-  return discussion && Array.isArray(discussion.notes)
-    ? discussion.notes.filter(function (note) {
-        return note && !note.system;
-      })
-    : [];
-}
-
-export function getStatus(discussion: Discussion) {
-  const notes = getNotes(discussion);
-  let resolvable = notes.filter(function (note) {
-    return (
-      note.resolvable === true ||
-      (note.resolvable !== false && note.resolved === true)
-    );
-  });
-  if (
-    resolvable.length ||
-    (discussion &&
-      (discussion.resolvable === true ||
-        (discussion.resolvable !== false && discussion.resolved === true)))
-  ) {
-    resolvable = notes.filter(function (note) {
-      return (
-        note.resolvable === true ||
-        (note.resolvable !== false && typeof note.resolved === "boolean")
-      );
-    });
-    if (resolvable.length)
-      return resolvable.every(function (note) {
-        return note.resolved === true;
-      })
-        ? "resolved"
-        : "unresolved";
-  }
-  if (
-    !notes.length ||
-    notes.every(function (note) {
-      return note.resolvable === false;
-    }) ||
-    discussion.resolvable === false
-  )
-    return "general";
-  if (discussion.resolved === true) return "resolved";
-  return discussion.resolvable === true ? "unresolved" : "general";
-}
+export { getNotes, getStatus } from "../../../entities/discussion/content";
 
 // Older installations and proxies sometimes omit all pagination headers. Probe
 // until an empty page in that case, even when the server caps per_page below 100.

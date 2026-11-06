@@ -5,14 +5,7 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const runtimeNames = [
-  "background",
-  "content",
-  "content_proxy",
-  "review-copy",
-  "popup",
-  "welcome",
-];
+export const runtimeNames = ["background", "content_proxy", "popup", "welcome"];
 const assets = [
   "manifest.json",
   "popup.html",
@@ -58,9 +51,19 @@ export async function buildExtension({
     metafile: true,
     logLevel: "warning",
   };
+  const moduleOptions = {
+    ...options,
+    entryPoints: { "modules/content": "src/app/content/runtime.ts" },
+    format: "esm",
+    splitting: true,
+    chunkNames: "modules/chunks/[name]-[hash]",
+  };
   if (watching) {
-    const builder = await context(options);
-    await builder.watch();
+    const builders = await Promise.all([
+      context(options),
+      context(moduleOptions),
+    ]);
+    await Promise.all(builders.map((builder) => builder.watch()));
     const watchers = assets.map((asset) =>
       watch(join(root, asset), { recursive: true }, () => {
         copyAssets(outdir).catch((error) => console.error(error));
@@ -71,14 +74,26 @@ export async function buildExtension({
     );
     const close = async () => {
       watchers.forEach((watcher) => watcher.close());
-      await builder.dispose();
+      await Promise.all(builders.map((builder) => builder.dispose()));
       process.exit(0);
     };
     process.once("SIGINT", close);
     process.once("SIGTERM", close);
     return;
   }
-  const result = await build(options);
+  const results = await Promise.all([build(options), build(moduleOptions)]);
+  const result = {
+    metafile: {
+      inputs: Object.assign(
+        {},
+        ...results.map((result) => result.metafile.inputs),
+      ),
+      outputs: Object.assign(
+        {},
+        ...results.map((result) => result.metafile.outputs),
+      ),
+    },
+  };
   const report = Object.fromEntries(
     Object.entries(result.metafile.outputs).map(([path, output]) => [
       path,

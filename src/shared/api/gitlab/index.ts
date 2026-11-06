@@ -7,7 +7,10 @@ export type SessionApi = <T = unknown>(
   path: string,
   body?: unknown,
 ) => Promise<T>;
-export function createSessionApi(origin: () => string): SessionApi {
+export function createSessionApi(
+  origin: () => string,
+  signal?: AbortSignal,
+): SessionApi {
   function getCsrfToken() {
     const meta = document.querySelector('meta[name="csrf-token"]');
     return meta ? meta.getAttribute("content") || "" : "";
@@ -30,6 +33,7 @@ export function createSessionApi(origin: () => string): SessionApi {
       method: method,
       headers: headers,
       credentials: "same-origin",
+      ...(method === "GET" && signal ? { signal } : {}),
     };
     if (body) opts.body = JSON.stringify(body);
     return fetch(url, opts).then(function (r) {

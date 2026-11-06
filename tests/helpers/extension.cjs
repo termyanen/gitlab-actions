@@ -139,6 +139,7 @@ function environment(options) {
   };
   var context = vm.createContext({
     console: console,
+    AbortController: AbortController,
     URL: URL,
     chrome: chrome,
     document: document,

@@ -1290,3 +1290,21 @@ test('dirty copy closes without asking by default and close setting changes pres
   await env.click('aiReviewClose');
   assert.equal(env.document.querySelector('.gl-review-overlay'), null);
 });
+
+test('declining SPA discard preserves the draft and does not repeatedly prompt on the same route', async function() {
+  var env = await picker({ settings: { ai_review_confirm_close: true } });
+  var original = env.document.querySelector('.gl-review-overlay');
+  var prompt = env.document.querySelector('.gl-review-task-prompt');
+  await env.change(prompt, 'Keep these unsaved instructions', 'input');
+  var confirmations = 0;
+  env.context.window.confirm = function() { confirmations++; return false; };
+  await env.navigate('/team/repo/-/merge_requests/13');
+  await env.navigate('/team/repo/-/merge_requests/13');
+  assert.equal(confirmations, 1);
+  assert.equal(env.document.querySelector('.gl-review-overlay'), original);
+  assert.equal(prompt.value, 'Keep these unsaved instructions');
+  assert.equal(env.loads[0].options.signal.aborted, true);
+  env.context.window.confirm = function() { return true; };
+  await env.click('aiReviewClose');
+  assert.equal(env.document.querySelector('.gl-review-overlay'), null);
+});

@@ -1,3 +1,5 @@
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type {
   JiraState,
   JiraIssue,
@@ -12,8 +14,13 @@ import {
 } from "../../../entities/jira-issue/content";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
-export function createJiraPanel(jiraState: JiraState) {
+export function createJiraPanel(
+  jiraState: JiraState,
+  scope: Lifecycle = createLifecycle(),
+) {
+  let removeEscape = () => {};
   function openJiraSidebar(ticket: string, jiraUrl: string) {
+    removeEscape();
     // Remove existing sidebar
     const existing = document.querySelector<HTMLElement>(".gl-jira-sidebar");
     let reuse = false;
@@ -63,7 +70,7 @@ export function createJiraPanel(jiraState: JiraState) {
       sidebar.addEventListener("animationend", function () {
         sidebar.remove();
       });
-      document.removeEventListener("keydown", onEsc);
+      removeEscape();
     }
 
     // Close button
@@ -83,7 +90,7 @@ export function createJiraPanel(jiraState: JiraState) {
         closeSidebar();
       }
     }
-    document.addEventListener("keydown", onEsc);
+    removeEscape = scope.listen(document, "keydown", onEsc);
 
     // Delegate click on images to open lightbox
     sidebar.addEventListener("click", function (e) {
@@ -110,7 +117,7 @@ export function createJiraPanel(jiraState: JiraState) {
         jiraUrl: jiraUrl,
         ticket: ticket,
       },
-      function (resp) {
+      scope.guard(function (resp) {
         if (sidebar.dataset.ticket !== ticket) return;
         if (!resp || resp._error) {
           const errMsg = resp ? resp._error : "No response";
@@ -126,14 +133,14 @@ export function createJiraPanel(jiraState: JiraState) {
         renderJiraSidebarContent(sidebar, resp, jiraUrl);
         chrome.storage.sync.get(
           { jiraQuickActions: [] },
-          function (s: { jiraQuickActions: JiraQuickAction[] }) {
+          scope.guard(function (s: { jiraQuickActions: JiraQuickAction[] }) {
             loadJiraTransitions(
               sidebar,
               resp.key,
               jiraUrl,
               s.jiraQuickActions || [],
             );
-          },
+          }),
         );
         initAssigneeEditor(sidebar, resp.key, jiraUrl);
         initFixVersionsEditor(
@@ -142,7 +149,7 @@ export function createJiraPanel(jiraState: JiraState) {
           jiraUrl,
           resp.fixVersions || [],
         );
-      },
+      }),
     );
   }
 
@@ -226,7 +233,7 @@ export function createJiraPanel(jiraState: JiraState) {
     render([]);
     sendJiraMessage(
       { type: "fetch-jira-transitions", jiraUrl: jiraUrl, ticket: ticket },
-      function (resp) {
+      scope.guard(function (resp) {
         if (
           sidebar.dataset.ticket !== ticket ||
           sidebar.querySelector<
@@ -237,7 +244,7 @@ export function createJiraPanel(jiraState: JiraState) {
         )
           return;
         if (resp && !resp._error) render(resp.transitions || []);
-      },
+      }),
     );
 
     // Replace the handler when refreshing; repeated refreshes must not replay edits.
@@ -322,7 +329,7 @@ export function createJiraPanel(jiraState: JiraState) {
         ticket: ticket,
         transitionId: transitionId,
       },
-      function (result) {
+      scope.guard(function (result) {
         if (sidebar.dataset.ticket !== ticket) return;
         if (result && result.success) {
           updateStatusAfterTransition(sidebar, ticket, statusName, categoryKey);
@@ -334,7 +341,7 @@ export function createJiraPanel(jiraState: JiraState) {
           if (container)
             loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
         }
-      },
+      }),
     );
   }
 
@@ -376,7 +383,7 @@ export function createJiraPanel(jiraState: JiraState) {
         transitionId: btn.dataset.transitionId,
         action: action,
       },
-      function (result) {
+      scope.guard(function (result) {
         delete jiraState.cache[ticket];
         if (jiraState.invalidateCommitTicket)
           jiraState.invalidateCommitTicket(ticket);
@@ -403,7 +410,7 @@ export function createJiraPanel(jiraState: JiraState) {
         // have succeeded even when the following field edit was rejected by Jira.
         sendJiraMessage(
           { type: "fetch-jira-issue", jiraUrl: jiraUrl, ticket: ticket },
-          function (data) {
+          scope.guard(function (data) {
             if (!isCurrent()) return;
             if (data && !data._error) {
               const draft = sidebar.querySelector<HTMLTextAreaElement>(
@@ -442,9 +449,9 @@ export function createJiraPanel(jiraState: JiraState) {
                 >("#gl-jira-sidebar-transitions")!
                 .after(notice);
             }
-          },
+          }),
         );
-      },
+      }),
     );
   }
 
@@ -489,7 +496,7 @@ export function createJiraPanel(jiraState: JiraState) {
             ticket: ticket,
             username: null,
           },
-          function (result) {
+          scope.guard(function (result) {
             if (result && result.success) {
               assigneeEl.innerHTML =
                 '<span style="opacity:0.5">' +
@@ -501,7 +508,7 @@ export function createJiraPanel(jiraState: JiraState) {
                 ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
               searchBox.style.display = "none";
             }
-          },
+          }),
         );
       });
 
@@ -512,7 +519,7 @@ export function createJiraPanel(jiraState: JiraState) {
         resultsEl.innerHTML = "";
         return;
       }
-      searchTimer = setTimeout(function () {
+      searchTimer = scope.timeout(function () {
         resultsEl.innerHTML =
           '<div class="gl-jira-sidebar-assignee-loading">...</div>';
         sendJiraMessage(
@@ -522,7 +529,7 @@ export function createJiraPanel(jiraState: JiraState) {
             ticket: ticket,
             query: query,
           },
-          function (resp) {
+          scope.guard(function (resp) {
             if (!resp || resp._error || !resp.users) {
               resultsEl.innerHTML = "";
               return;
@@ -557,7 +564,7 @@ export function createJiraPanel(jiraState: JiraState) {
                 );
               })
               .join("");
-          },
+          }),
         );
       }, 300);
     });
@@ -587,7 +594,7 @@ export function createJiraPanel(jiraState: JiraState) {
           ticket: ticket,
           username: username,
         },
-        function (result) {
+        scope.guard(function (result) {
           if (result && result.success) {
             assigneeEl.innerHTML =
               escHtml(displayName) +
@@ -595,7 +602,7 @@ export function createJiraPanel(jiraState: JiraState) {
             searchBox.style.display = "none";
           }
           input.disabled = false;
-        },
+        }),
       );
     });
   }
@@ -662,7 +669,7 @@ export function createJiraPanel(jiraState: JiraState) {
           jiraUrl: jiraUrl,
           ticket: ticket,
         },
-        function (resp) {
+        scope.guard(function (resp) {
           if (!resp || resp._error || !resp.versions) {
             listEl.innerHTML = "";
             return;
@@ -696,7 +703,7 @@ export function createJiraPanel(jiraState: JiraState) {
             filterList();
           }
           listEl.dataset.loaded = "1";
-        },
+        }),
       );
     }
 
@@ -742,7 +749,7 @@ export function createJiraPanel(jiraState: JiraState) {
           ticket: ticket,
           versions: newSelected,
         },
-        function (resp) {
+        scope.guard(function (resp) {
           cb.disabled = false;
           if (!resp || resp._error) {
             cb.checked = !cb.checked;
@@ -754,7 +761,7 @@ export function createJiraPanel(jiraState: JiraState) {
           }
           selected = newSelected;
           renderTags();
-        },
+        }),
       );
     });
   }
@@ -878,11 +885,11 @@ export function createJiraPanel(jiraState: JiraState) {
     }
     sendJiraMessage(
       { type: "fetch-jira-myself", jiraUrl: jiraUrl },
-      function (resp) {
+      scope.guard(function (resp) {
         const id = resp && !resp._error ? resp.id : "";
         jiraState.myselfCache[jiraUrl] = id;
         cb(id);
-      },
+      }),
     );
   }
 
@@ -960,7 +967,7 @@ export function createJiraPanel(jiraState: JiraState) {
           startAt: startAt,
           maxResults: 5,
         },
-        function (resp) {
+        scope.guard(function (resp) {
           if (!resp || resp._error) {
             if (startAt === 0) {
               listEl.innerHTML =
@@ -1022,7 +1029,7 @@ export function createJiraPanel(jiraState: JiraState) {
             });
             listEl.appendChild(btn);
           }
-        },
+        }),
       );
     });
   }
@@ -1060,7 +1067,7 @@ export function createJiraPanel(jiraState: JiraState) {
           ticket: ticket,
           text: text,
         },
-        function (resp) {
+        scope.guard(function (resp) {
           if (!resp || resp._error) {
             errorEl.textContent =
               chrome.i18n.getMessage("jiraSidebarCommentError") ||
@@ -1095,7 +1102,7 @@ export function createJiraPanel(jiraState: JiraState) {
           }
           input.value = "";
           submitBtn.disabled = true;
-        },
+        }),
       );
     }
 
@@ -1147,7 +1154,7 @@ export function createJiraPanel(jiraState: JiraState) {
           ticket: ticket,
           commentId: commentId,
         },
-        function (resp) {
+        scope.guard(function (resp) {
           if (!resp || resp._error) {
             btn.disabled = false;
             if (errorEl) {
@@ -1183,7 +1190,7 @@ export function createJiraPanel(jiraState: JiraState) {
                 "</div>";
             }
           }
-        },
+        }),
       );
     });
   }

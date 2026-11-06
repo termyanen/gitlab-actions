@@ -21,7 +21,12 @@ import type {
 export function startReviewControls(
   data: ReturnType<typeof createReviewExporter>,
   getWorkflow: () => typeof Workflow | null,
-  getImporter: () => ReturnType<typeof createReviewImporter> | undefined,
+  getImporter: () =>
+    | Pick<
+        ReturnType<typeof createReviewImporter>,
+        "DEFAULT_REPLY_PROMPT" | "getReplyPrompt"
+      >
+    | undefined,
   getImportDialog: () => ImportDialog | undefined,
 ) {
   if (!document.querySelector('meta[content="GitLab"], body[data-page]'))
@@ -45,6 +50,7 @@ export function startReviewControls(
   let active: ReviewDialogState | null = null;
   let disposed = false;
   let pageKey = "";
+  let retainedRoute = "";
   let mountTimer: ReturnType<typeof setTimeout> | null;
   let languageRun = 0;
   let descriptionSaveRun = 0;
@@ -1745,8 +1751,22 @@ export function startReviewControls(
     const context = route();
     const nextKey = contextKey(context);
     if (nextKey !== pageKey) {
-      close(true);
-      if (getImportDialog()) getImportDialog()!.close(true);
+      if (
+        retainedRoute === nextKey &&
+        document.querySelector(".gl-review-overlay, .gl-review-import-overlay")
+      )
+        return;
+      if (
+        close() === false ||
+        (getImportDialog() && getImportDialog()!.close() === false)
+      ) {
+        retainedRoute = nextKey;
+        active?.loadController?.abort();
+        active?.exportController?.abort();
+        active?.versionsController?.abort();
+        return;
+      }
+      retainedRoute = "";
       document
         .querySelectorAll(".gl-review-launcher, .gl-review-inline")
         .forEach(function (el) {
