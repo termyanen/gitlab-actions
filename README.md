@@ -134,7 +134,7 @@ existing discussions, and repeat review. Each has autosave and its own reset to 
 the appropriate prompt. Task tabs use the fresh, fix, reply and repeat prompts; the new-findings shortcut remains in Import. Task-specific edits in Advanced settings apply only to the open window. MR links, revision identifiers, discussion targets and the required JSON
 format are added automatically; they do not need to be included in your settings.
 
-**Automatic instructions (advanced)** exposes 31 additional instruction blocks,
+**Automatic instructions (advanced)** exposes 32 additional instruction blocks,
 including repository/worktree handling, task boundaries, reply style and output
 guidance. Each starts enabled and has independent text, enable/disable and reset
 controls (up to 1,500 characters). Blank text omits that block; reset restores its

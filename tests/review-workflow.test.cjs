@@ -230,6 +230,34 @@ test('missing selected discussion produces an explicit limitation without substi
   assert.doesNotMatch(result.text, /Fixed in latest push/);
 });
 
+test('new review existing discussions respect file scope, skip drafts and degrade to a warning when unavailable', async function() {
+  var threads = [
+    { id: THREAD, notes: [{ id: 11, body: 'Lock file churn', author: { name: 'Lock Reviewer' }, resolvable: true, resolved: false, position: { old_path: 'package-lock.json', new_path: 'package-lock.json', new_line: 1 } }] },
+    { id: '2'.repeat(40), notes: [{ id: 'draft:5', draft: true, body: 'My unpublished draft' }] },
+    { id: '3'.repeat(40), notes: [{ id: 21, body: 'x'.repeat(700), resolvable: false }] }
+  ];
+  var e = env({ threads: threads, settings: { ai_review_file_filter: { ignoreFiles: '*.json' } } });
+  var result = await e.api.prepareFreshReview(e.context, { includeExisting: true });
+  assert.equal(result.existingCount, 1);
+  assert.doesNotMatch(result.text, /Lock file churn|My unpublished draft/);
+  assert.match(result.text, /"state": "general"/);
+  assert.match(result.text, new RegExp('"summary": "x{600}…"'));
+  assert.equal(result.complete, true);
+  assert.ok(result.text.lastIndexOf('Existing discussions') > result.text.indexOf('Fresh review: merge request'));
+
+  var off = await env({ threads: threads }).api.prepareFreshReview(e.context, {});
+  assert.doesNotMatch(off.text, /Existing discussions/);
+
+  var none = await env({ threads: [] }).api.prepareFreshReview(e.context, { includeExisting: true });
+  assert.equal(none.existingCount, 0);
+  assert.doesNotMatch(none.text, /Existing discussions|duplicate filter/);
+
+  var denied = await env({ noDiscussions: true }).api.prepareFreshReview(e.context, { includeExisting: true });
+  assert.equal(denied.complete, false);
+  assert.match(denied.warnings.join(' '), /Existing discussions could not be loaded/);
+  assert.match(denied.text, /"version":1/);
+});
+
 test('response language applies to fresh, fix and repeat tasks without changing JSON fields', async function() {
   var e = env({ settings: { ai_review_response_language: 'ru' } });
   var snapshot = { context: e.context, entity: { iid: 42, title: 'MR', sha: HEAD }, complete: true, warnings: [], discussions: [] };
@@ -293,7 +321,7 @@ test('automatic instructions can be customized or disabled in every export mode 
   async function tasks() {
     return Promise.all([
       e.api.prepareFreshReview(e.context, { prompt: 'MAIN', fileFilter: { ignoreFiles: '*.json' } }),
-      e.api.prepareFreshReview(e.context, { prompt: 'MAIN', includeCode: true }),
+      e.api.prepareFreshReview(e.context, { prompt: 'MAIN', includeCode: true, includeExisting: true }),
       e.api.prepareExport(snapshot, { prompt: 'MAIN', discussionIds: [THREAD, 'missing'], includeDescription: false }),
       e.api.prepareExport(snapshot, { prompt: 'MAIN', includeReplies: false }),
       e.api.prepareExport(empty, { prompt: 'MAIN' }),
