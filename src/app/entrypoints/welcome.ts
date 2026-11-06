@@ -1,2 +1,2 @@
-// Transitional entrypoint; the implementation is migrated slice by slice.
-import "../../../welcome.js";
+import { startWelcome } from "../../pages/welcome";
+startWelcome();
