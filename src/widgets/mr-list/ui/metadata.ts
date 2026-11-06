@@ -1,8 +1,16 @@
-import { reportError } from "../../../shared/lib/errors";
 import type { SessionApi } from "../../../shared/api/gitlab";
 import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
 import { q, qAll } from "../../../shared/lib/dom";
+import { reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import {
+  arrayOf,
+  decoder,
+  isBoolean,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import type {
   Approval,
   ListSettings,
@@ -12,6 +20,49 @@ import type {
 } from "../model/types";
 import { createMetadataBadges } from "./metadata-badges";
 import { isMrListPage, parseMrPath } from "./route";
+const readMrData = decoder(
+  objectOf<MrData>({
+    additions: optional(isString),
+    deletions: optional(isString),
+    changes_count: optional(isString),
+    has_conflicts: optional(isBoolean),
+    source_branch: optional(isString),
+    target_branch: optional(isString),
+  }),
+  "GitLab/Jira response",
+);
+const readApprovals = decoder(
+  objectOf<{ approved_by: Approval[] }>({
+    approved_by: arrayOf(
+      objectOf({
+        user: optional(
+          objectOf({
+            username: optional(isString),
+            name: optional(isString),
+          }),
+        ),
+        username: optional(isString),
+        name: optional(isString),
+      }),
+    ),
+  }),
+  "GitLab/Jira response",
+);
+const readDiscussionStates = decoder(
+  arrayOf(
+    objectOf<
+      { notes: { resolvable?: boolean; resolved?: boolean }[] }[][number]
+    >({
+      notes: arrayOf(
+        objectOf({
+          resolvable: optional(isBoolean),
+          resolved: optional(isBoolean),
+        }),
+      ),
+    }),
+  ),
+  "GitLab/Jira response",
+);
 export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
   // =========================================================================
   // Unresolved threads count (#26) + MR size labels (#27)
@@ -130,28 +181,30 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
 
     function fetchOneEntry(entry: MrEntry) {
       const encodedPath = encodeURIComponent(entry.projectPath);
-      const mrPromise = api<MrData>(
+      const mrPromise = api(
         "GET",
         "/projects/" +
           encodedPath +
           "/merge_requests/" +
           entry.iid +
           "?include_rebase_in_progress=false",
-      );
+      ).then(readMrData);
       const approvalsPromise = showApprovals
-        ? api<{ approved_by: Approval[] }>(
+        ? api(
             "GET",
             "/projects/" +
               encodedPath +
               "/merge_requests/" +
               entry.iid +
               "/approvals",
-          ).catch(function () {
-            return null;
-          })
+          )
+            .then(readApprovals)
+            .catch(function () {
+              return null;
+            })
         : Promise.resolve(null);
       const threadsPromise = showThreads
-        ? api<{ notes: { resolvable?: boolean; resolved?: boolean }[] }[]>(
+        ? api(
             "GET",
             "/projects/" +
               encodedPath +
@@ -159,9 +212,11 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
               entry.iid +
               "/discussions?per_page=" +
               GITLAB_PAGE_SIZE,
-          ).catch(function () {
-            return null;
-          })
+          )
+            .then(readDiscussionStates)
+            .catch(function () {
+              return null;
+            })
         : Promise.resolve(null);
 
       return Promise.all([mrPromise, approvalsPromise, threadsPromise])

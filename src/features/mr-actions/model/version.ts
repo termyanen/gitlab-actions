@@ -1,5 +1,11 @@
 import { VERSION_DEFAULTS } from "../../../entities/settings";
 import {
+  decoder,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
+import {
   bumpVersion,
   getNestedValue,
   parseToml,
@@ -7,6 +13,13 @@ import {
   updateTomlVersion,
 } from "../../../shared/lib/version";
 import type { MrServices, RepositoryFile } from "./types";
+const readRepositoryFile = decoder(
+  objectOf<RepositoryFile>({
+    content: isString,
+    last_commit_id: optional(isString),
+  }),
+  "GitLab/Jira response",
+);
 export function createVersionActions({
   context,
   api,
@@ -24,6 +37,10 @@ export function createVersionActions({
 
       return getMR().then(function (mr) {
         const branch = mr.source_branch;
+        if (!branch) throw new Error("GitLab did not return the source branch");
+        const targetBranch = mr.target_branch;
+        if (settings.version_from_target && !targetBranch)
+          throw new Error("GitLab did not return the target branch");
         const fileUrl =
           "/projects/" +
           context.projectId +
@@ -31,16 +48,18 @@ export function createVersionActions({
           encodeURIComponent(filePath);
         // Always edit the source file. The target supplies only the version
         // number, never dependencies or other contents to copy into the MR.
-        const sourceFilePromise = api<RepositoryFile>(
+        const sourceFilePromise = api(
           "GET",
           fileUrl + "?ref=" + encodeURIComponent(branch),
-        );
+        ).then(readRepositoryFile);
         const versionFilePromise =
-          settings.version_from_target && mr.target_branch !== branch
-            ? api<RepositoryFile>(
+          settings.version_from_target &&
+          targetBranch &&
+          targetBranch !== branch
+            ? api(
                 "GET",
-                fileUrl + "?ref=" + encodeURIComponent(mr.target_branch),
-              )
+                fileUrl + "?ref=" + encodeURIComponent(targetBranch),
+              ).then(readRepositoryFile)
             : sourceFilePromise;
         return Promise.all([sourceFilePromise, versionFilePromise]).then(
           function (files) {

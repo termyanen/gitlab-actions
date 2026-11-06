@@ -1,5 +1,3 @@
-import { reportError } from "../../../shared/lib/errors";
-import { reportRuntimeError } from "../../../shared/api/runtime";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
@@ -7,16 +5,25 @@ import {
   readDisplayPreferences,
 } from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
+import { reportRuntimeError } from "../../../shared/api/runtime";
 import { SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
+import { reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { decoder, isString, objectOf } from "../../../shared/lib/validation";
 import type { ListSettings } from "../model/types";
 import { createListJiraBadges } from "./jira-badges";
 import { createMrMetadata } from "./metadata";
 import { createReviewerBadges } from "./reviewers";
 import { isMrListPage } from "./route";
+const readUsername = decoder(
+  objectOf<{ username: string }>({
+    username: isString,
+  }),
+  "GitLab/Jira response",
+);
 const COPIED_FEEDBACK_DURATION_MS = 1500;
 const LIST_REFRESH_DEBOUNCE_MS = 200;
 export function startMrList(
@@ -49,7 +56,8 @@ export function startMrList(
             return;
           }
           // Fetch from API
-          api<{ username: string }>("GET", "/user")
+          api("GET", "/user")
+            .then(readUsername)
             .then(function (user) {
               if (user && user.username) {
                 const toStore: Record<string, string> = {};

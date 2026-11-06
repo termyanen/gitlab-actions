@@ -1,25 +1,25 @@
-import { createMrSettingsReader } from "../../../entities/settings";
+import { readActiveMergeRequest } from "../../../entities/merge-request";
 import type { MrAction } from "../../../entities/settings";
-import type { ActiveMergeRequest } from "../../../entities/merge-request";
+import { createMrSettingsReader } from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
-import { createPipelineActions } from "./pipeline";
-import { createVersionActions } from "./version";
 import { createMergeActions } from "./merge";
+import { createPipelineActions } from "./pipeline";
 import type { MrActionContext, MrActionUI, MrServices } from "./types";
+import { createVersionActions } from "./version";
 export function createMrActions(context: MrActionContext, ui: MrActionUI) {
   const { t, showToast } = ui;
   const api = createSessionApi(() => context.origin);
   const getSettings = createMrSettingsReader(() => context.projectPath);
 
   function getMR(includeRebase?: boolean) {
-    return api<ActiveMergeRequest>(
+    return api(
       "GET",
       "/projects/" +
         context.projectId +
         "/merge_requests/" +
         context.mrIid +
         (includeRebase ? "?include_rebase_in_progress=true" : ""),
-    );
+    ).then(readActiveMergeRequest);
   }
 
   function doCopyMr() {

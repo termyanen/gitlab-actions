@@ -1,11 +1,26 @@
-import { reportError } from "../../../shared/lib/errors";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import type { MrSettings } from "../../../entities/settings";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { reportError } from "../../../shared/lib/errors";
+import {
+  arrayOf,
+  decoder,
+  isString,
+  objectOf,
+} from "../../../shared/lib/validation";
 import { createSensitiveFileMatcher } from "../model/sensitive-files";
+const readDiffPaths = decoder(
+  arrayOf(
+    objectOf<{ new_path: string; old_path: string }[][number]>({
+      new_path: isString,
+      old_path: isString,
+    }),
+  ),
+  "GitLab/Jira response",
+);
 
 import type {
-  createMrActions,
   MrActionContext,
+  createMrActions,
 } from "../../../features/mr-actions";
 import type { Translate } from "../../../shared/i18n";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
@@ -34,7 +49,7 @@ export function createSensitiveWarning(
     async function scan() {
       for (let page = 1; page <= SENSITIVE_SCAN_MAX_PAGES; page++) {
         if (scope.disposed) return;
-        const diffs = await api<{ new_path: string; old_path: string }[]>(
+        const diffs = await api(
           "GET",
           "/projects/" +
             context.projectId +
@@ -44,7 +59,7 @@ export function createSensitiveWarning(
             GITLAB_PAGE_SIZE +
             "&page=" +
             page,
-        );
+        ).then(readDiffPaths);
         for (const diff of diffs) {
           if (
             (diff.new_path && isSensitiveFile(diff.new_path)) ||

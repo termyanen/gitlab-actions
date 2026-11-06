@@ -4,6 +4,7 @@ import type {
   LegacyChanges,
   MergeRequest,
 } from "../../../entities/merge-request";
+import { toError } from "../../../shared/lib/errors";
 import type { ExportDependencies } from "./dependencies";
 import {
   MAX_REVIEW_DIFF_CHARS,
@@ -14,12 +15,7 @@ import { fence, inline } from "./markdown";
 import { addWarning, progress } from "./progress";
 import { completeReviewHunks, reviewPages, reviewRefs } from "./revisions";
 import { checkAbort, request } from "./transport";
-import type {
-  ExportOptions,
-  ReviewContext,
-  ReviewError,
-  ReviewResult,
-} from "./types";
+import type { ExportOptions, ReviewContext, ReviewResult } from "./types";
 export function createReviewContextLoader({
   reviewWorkflow,
   instruction,
@@ -67,7 +63,7 @@ export function createReviewContextLoader({
                   warnings,
                 );
               } catch (caught) {
-                const error = caught as ReviewError;
+                const error = toError(caught);
                 if (
                   error.name === "AbortError" ||
                   [404, 405].indexOf(error.httpStatus || 0) < 0

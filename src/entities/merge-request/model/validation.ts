@@ -1,0 +1,105 @@
+import {
+  decoder,
+  either,
+  isBoolean,
+  isNumber,
+  isString,
+  nullable,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
+import {
+  type ActiveMergeRequest,
+  type FileDiff,
+  type MergeRequest,
+} from "./types";
+export const readActiveMergeRequest = decoder(
+  objectOf<ActiveMergeRequest>({
+    title: optional(isString),
+    source_branch: optional(isString),
+    target_branch: optional(isString),
+    web_url: optional(isString),
+    state: optional(isString),
+    created_at: optional(isString),
+    rebase_in_progress: optional(isBoolean),
+    merge_error: optional(nullable(isString)),
+    merge_status: optional(isString),
+    has_conflicts: optional(isBoolean),
+    blocking_discussions_resolved: optional(isBoolean),
+    squash: optional(isBoolean),
+    force_remove_source_branch: optional(isBoolean),
+    should_remove_source_branch: optional(isBoolean),
+    diff_head_sha: optional(isString),
+    head_pipeline: optional(
+      nullable(
+        objectOf({
+          id: optional(isNumber),
+          project_id: optional(isNumber),
+          sha: optional(isString),
+          ref: optional(isString),
+          status: optional(isString),
+        }),
+      ),
+    ),
+    id: optional(isNumber),
+    iid: optional(either(isString, isNumber)),
+    description: optional(nullable(isString)),
+    sha: optional(isString),
+    diff_refs: optional(
+      objectOf({
+        base_sha: isString,
+        start_sha: isString,
+        head_sha: isString,
+      }),
+    ),
+    project_id: optional(isNumber),
+    source_project_id: optional(isNumber),
+    target_project_id: optional(isNumber),
+    changes_count: optional(either(isString, isNumber)),
+  }),
+  "ActiveMergeRequest response",
+);
+export const readFileDiff = decoder(
+  objectOf<FileDiff>({
+    old_path: isString,
+    new_path: isString,
+    diff: optional(isString),
+    deleted_file: optional(isBoolean),
+    new_file: optional(isBoolean),
+    renamed_file: optional(isBoolean),
+    collapsed: optional(isBoolean),
+    too_large: optional(isBoolean),
+    generated_file: optional(isBoolean),
+    binary: optional(isBoolean),
+    is_binary: optional(isBoolean),
+    a_mode: optional(isString),
+    b_mode: optional(isString),
+    truncated: optional(isBoolean),
+    overflow: optional(isBoolean),
+  }),
+  "FileDiff response",
+);
+export const readMergeRequest = decoder(
+  objectOf<MergeRequest>({
+    id: optional(isNumber),
+    iid: optional(either(isString, isNumber)),
+    title: optional(isString),
+    description: optional(nullable(isString)),
+    sha: optional(isString),
+    diff_refs: optional(
+      objectOf({
+        base_sha: isString,
+        start_sha: isString,
+        head_sha: isString,
+      }),
+    ),
+    project_id: optional(isNumber),
+    source_project_id: optional(isNumber),
+    target_project_id: optional(isNumber),
+    source_branch: optional(isString),
+    target_branch: optional(isString),
+    web_url: optional(isString),
+    changes_count: optional(either(isString, isNumber)),
+  }),
+  "MergeRequest response",
+);

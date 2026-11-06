@@ -1,12 +1,12 @@
-import { reportError } from "../../../shared/lib/errors";
 import type * as Workflow from "../../../entities/review";
 import type { FileFilter } from "../../../entities/review";
 import type {
-  createReviewExporter,
   ExportOptions,
+  createReviewExporter,
 } from "../../../features/review-export";
 import type { createReviewImporter } from "../../../features/review-import";
 import type { Translate } from "../../../shared/i18n";
+import { errorMessage, reportError, toError } from "../../../shared/lib/errors";
 import type { createReviewThreads } from "./threads";
 import type { ReviewDialogState } from "./types";
 export function createReviewDialogActions(
@@ -145,13 +145,13 @@ export function createReviewDialogActions(
         status(state, t("aiReviewReady"));
         if (copy) return copyPrepared(state);
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         if (
           isCurrent(state) &&
           run === state.exportRun &&
-          error.name !== "AbortError"
+          toError(error).name !== "AbortError"
         )
-          status(state, error.message, true);
+          status(state, errorMessage(error), true);
       })
       .then(function () {
         if (isCurrent(state) && run === state.exportRun) {
@@ -203,15 +203,15 @@ export function createReviewDialogActions(
         status(state, t("aiReviewReady"));
         if (copy) return copyPrepared(state);
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         if (
           isCurrent(state) &&
           run === state.exportRun &&
-          error.name !== "AbortError"
+          toError(error).name !== "AbortError"
         ) {
           status(
             state,
-            t("aiReviewImportPromptError") + ": " + error.message,
+            t("aiReviewImportPromptError") + ": " + errorMessage(error),
             true,
           );
         }
@@ -301,12 +301,12 @@ export function createReviewDialogActions(
         status(state, t("aiReviewReady"));
         if (copy) copyPrepared(state).catch(reportError);
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         if (!isCurrent(state) || run !== state.exportRun) return;
         state.busy = false;
         updateActions(state);
-        if (error.name !== "AbortError")
-          status(state, error.message || t("aiReviewLoadFailed"), true);
+        if (toError(error).name !== "AbortError")
+          status(state, errorMessage(error) || t("aiReviewLoadFailed"), true);
       });
   }
 
@@ -397,13 +397,17 @@ export function createReviewDialogActions(
             prepare(state, true);
         }
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         if (!isCurrent(state) || controller !== state.loadController) return;
         state.loading = false;
         state.snapshot = null;
         updateActions(state);
-        if (error.name !== "AbortError") {
-          status(state, t("aiReviewLoadFailed") + ": " + error.message, true);
+        if (toError(error).name !== "AbortError") {
+          status(
+            state,
+            t("aiReviewLoadFailed") + ": " + errorMessage(error),
+            true,
+          );
           state.retryButton.hidden = false;
         }
       });

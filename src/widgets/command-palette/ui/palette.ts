@@ -3,8 +3,29 @@ import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import {
+  arrayOf,
+  decoder,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import type { Command } from "../model/types";
 import { createPaletteCommands } from "./commands";
+const readDefaultBranch = decoder(
+  objectOf<{ default_branch?: string }>({
+    default_branch: optional(isString),
+  }),
+  "GitLab/Jira response",
+);
+const readRepositoryEntries = decoder(
+  arrayOf(
+    objectOf<{ filename?: string }[][number]>({
+      filename: optional(isString),
+    }),
+  ),
+  "GitLab/Jira response",
+);
 const FILE_SEARCH_DEBOUNCE_MS = 300;
 
 export function startCommandPalette(
@@ -55,10 +76,8 @@ export function startCommandPalette(
           if (_branchProject === projectPath && _defaultBranch) return;
           _branchProject = projectPath;
           _defaultBranch = "";
-          api<{ default_branch?: string }>(
-            "GET",
-            "/projects/" + encodeURIComponent(projectPath),
-          )
+          api("GET", "/projects/" + encodeURIComponent(projectPath))
+            .then(readDefaultBranch)
             .then(function (proj) {
               if (_branchProject === projectPath)
                 _defaultBranch = proj.default_branch || "main";
@@ -75,7 +94,7 @@ export function startCommandPalette(
         ) {
           const reqId = ++_fileSearchReqId;
           const encodedPath = encodeURIComponent(projectPath);
-          api<{ filename?: string }[]>(
+          api(
             "GET",
             "/projects/" +
               encodedPath +
@@ -83,6 +102,7 @@ export function startCommandPalette(
               encodeURIComponent(query) +
               "&per_page=20",
           )
+            .then(readRepositoryEntries)
             .then(function (results) {
               if (reqId !== _fileSearchReqId) return;
               // Deduplicate by file path

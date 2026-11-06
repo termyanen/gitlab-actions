@@ -1,16 +1,16 @@
-import { reportError } from "../../../shared/lib/errors";
-import { createImportWindow } from "./window";
-import { element } from "../../../shared/ui/dom";
 import type { ReviewContext } from "../../../entities/review";
 import type {
-  createReviewImporter,
   ImportEdit,
   ImportItem,
   ImportResultItem,
+  createReviewImporter,
 } from "../../../features/review-import";
 import type { Translate } from "../../../shared/i18n";
+import { errorMessage, reportError, toError } from "../../../shared/lib/errors";
+import { element } from "../../../shared/ui/dom";
 import { createImportRenderer } from "./render";
 import type { ImportDialogState } from "./types";
+import { createImportWindow } from "./window";
 export function createImportDialog(
   getImporter: () => ReturnType<typeof createReviewImporter> | undefined,
 ) {
@@ -326,11 +326,15 @@ export function createImportDialog(
           state.t("aiReviewImportChecked", [state.selected.size]),
         );
       })
-      .catch(function (error) {
-        if (!current(state) || state.run !== run || error.name === "AbortError")
+      .catch(function (error: unknown) {
+        if (
+          !current(state) ||
+          state.run !== run ||
+          toError(error).name === "AbortError"
+        )
           return;
         editor.error =
-          state.t("aiReviewImportEditError") + ": " + error.message;
+          state.t("aiReviewImportEditError") + ": " + errorMessage(error);
         setStatus(state, editor.error, true);
       })
       .then(function () {
@@ -408,11 +412,15 @@ export function createImportDialog(
           },
         );
       })
-      .catch(function (error) {
-        if (current(state) && state.run === run && error.name !== "AbortError")
+      .catch(function (error: unknown) {
+        if (
+          current(state) &&
+          state.run === run &&
+          toError(error).name !== "AbortError"
+        )
           setStatus(
             state,
-            state.t("aiReviewImportPromptError") + ": " + error.message,
+            state.t("aiReviewImportPromptError") + ": " + errorMessage(error),
             true,
           );
       })
@@ -465,11 +473,15 @@ export function createImportDialog(
           state.t("aiReviewImportChecked", [state.selected.size]),
         );
       })
-      .catch(function (error) {
-        if (current(state) && state.run === run && error.name !== "AbortError")
+      .catch(function (error: unknown) {
+        if (
+          current(state) &&
+          state.run === run &&
+          toError(error).name !== "AbortError"
+        )
           setStatus(
             state,
-            state.t("aiReviewImportError") + ": " + error.message,
+            state.t("aiReviewImportError") + ": " + errorMessage(error),
             true,
           );
       })
@@ -566,7 +578,7 @@ export function createImportDialog(
           ),
         );
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         if (!current(state) || state.run !== run) return;
         // A missing response must never expose an automatic resend action. The
         // data layer reconciles uncertain delivery when the user checks again.
@@ -574,22 +586,23 @@ export function createImportDialog(
           if (!completed.has(id))
             acceptResult(state, {
               id: id,
-              status: error.beforeSend
-                ? error.name === "AbortError"
+              status: toError(error).beforeSend
+                ? toError(error).name === "AbortError"
                   ? "skipped"
                   : "failed"
                 : "unknown",
-              message: error.name === "AbortError" ? "" : error.message,
+              message:
+                toError(error).name === "AbortError" ? "" : errorMessage(error),
             });
         });
         setStatus(
           state,
           state.t(
-            error.name === "AbortError"
+            toError(error).name === "AbortError"
               ? "aiReviewImportStopped"
               : "aiReviewImportError",
           ),
-          error.name !== "AbortError",
+          toError(error).name !== "AbortError",
         );
       })
       .then(function () {

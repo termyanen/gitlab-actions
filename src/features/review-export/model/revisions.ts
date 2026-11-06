@@ -1,14 +1,15 @@
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import type {
   Commit,
   FileDiff,
   MergeRequest,
   MergeRequestVersion,
 } from "../../../entities/merge-request";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { toError } from "../../../shared/lib/errors";
 import { MAX_PAGES, PAGE_SIZE } from "./limits";
 import { addWarning, progress } from "./progress";
 import { apiUrl, checkAbort, header, request } from "./transport";
-import type { ExportOptions, ReviewContext, ReviewError } from "./types";
+import type { ExportOptions, ReviewContext } from "./types";
 export function reviewRefs(entity: MergeRequest, context: ReviewContext) {
   const refs = entity && entity.diff_refs;
   if (
@@ -58,7 +59,7 @@ export async function reviewPages<T extends Commit | FileDiff>(
       if (!Array.isArray(fetched.data))
         throw new Error("GitLab did not return a " + kind + " list.");
     } catch (caught) {
-      const error = caught as ReviewError;
+      const error = toError(caught);
       if (error.name === "AbortError" || count === 0) throw error;
       addWarning(
         warnings,
@@ -234,7 +235,7 @@ export async function loadReviewVersions(
       if (!Array.isArray(fetched.data))
         throw new Error("GitLab did not return MR versions.");
     } catch (caught) {
-      const error = caught as ReviewError;
+      const error = toError(caught);
       if (error.name === "AbortError") throw error;
       addWarning(
         warnings,

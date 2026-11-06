@@ -1,9 +1,82 @@
-import type { RawJiraIssue } from "../../../entities/jira-issue/background";
-import { jiraApi } from "../../../entities/jira-issue/background";
+import {
+  jiraApi,
+  readRawJiraIssue,
+} from "../../../entities/jira-issue/background";
 import { api } from "../../../shared/api/background-proxy";
 import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import { JIRA_API_PREFIX } from "../../../shared/config/jira";
 import { msg as localize } from "../../../shared/i18n";
+import { errorMessage } from "../../../shared/lib/errors";
+import {
+  arrayOf,
+  decoder,
+  isNumber,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
+const readCurrentUser = decoder(
+  objectOf<{ id: number; username: string }>({
+    id: isNumber,
+    username: isString,
+  }),
+  "GitLab/Jira response",
+);
+const readActivityEvent = decoder(
+  arrayOf(
+    objectOf<ActivityEvent>({
+      project_id: isNumber,
+      created_at: optional(isString),
+      action_name: isString,
+      note: optional(
+        objectOf({
+          id: isNumber,
+          noteable_type: isString,
+          noteable_iid: isNumber,
+        }),
+      ),
+      target_type: optional(isString),
+      target_iid: isNumber,
+      target_title: optional(isString),
+      push_data: optional(
+        objectOf({
+          ref: isString,
+          ref_type: isString,
+          commit_count: optional(isNumber),
+        }),
+      ),
+    }),
+  ),
+  "GitLab/Jira response",
+);
+const readActivityMr = decoder(
+  arrayOf(
+    objectOf<ActivityMr>({
+      id: isNumber,
+      iid: isNumber,
+      title: isString,
+      created_at: optional(isString),
+      merged_at: optional(isString),
+      references: optional(
+        objectOf({
+          full: optional(isString),
+        }),
+      ),
+      pipeline: optional(
+        objectOf({
+          status: isString,
+        }),
+      ),
+    }),
+  ),
+  "GitLab/Jira response",
+);
+const readProjectPath = decoder(
+  objectOf<{ path_with_namespace: string }>({
+    path_with_namespace: isString,
+  }),
+  "GitLab/Jira response",
+);
 const REPORT_TIMEOUT_MS = 180000;
 const REPORT_EVENT_MAX_PAGES = 5;
 const REPORT_MR_LIMIT = 50;
@@ -62,7 +135,8 @@ export function generateStandup(
   }
 
   // Get current user
-  api<{ id: number; username: string }>(fakeTask, "GET", "/user")
+  api(fakeTask, "GET", "/user")
+    .then(readCurrentUser)
     .then(function (user) {
       if (!user || !user.id) throw new Error("Cannot get current user");
       const userId = user.id;
@@ -102,7 +176,7 @@ export function generateStandup(
           truncatedEvents = true;
           return Promise.resolve(collected);
         }
-        return api<ActivityEvent[]>(
+        return api(
           fakeTask,
           "GET",
           "/users/" +
@@ -115,18 +189,20 @@ export function generateStandup(
             GITLAB_PAGE_SIZE +
             "&page=" +
             page,
-        ).then(function (events) {
-          if (!events || !events.length) return collected;
-          collected = collected.concat(events);
-          if (events.length < GITLAB_PAGE_SIZE) return collected;
-          return fetchAllEvents(page + 1, collected);
-        });
+        )
+          .then(readActivityEvent)
+          .then(function (events) {
+            if (!events || !events.length) return collected;
+            collected = collected.concat(events);
+            if (events.length < GITLAB_PAGE_SIZE) return collected;
+            return fetchAllEvents(page + 1, collected);
+          });
       }
 
       // Fetch activity in parallel
       return Promise.all([
         // MRs created on target date
-        api<ActivityMr[]>(
+        api(
           fakeTask,
           "GET",
           "/merge_requests?scope=all&state=all&author_id=" +
@@ -137,9 +213,9 @@ export function generateStandup(
             nextDayStr +
             "T00:00:00Z&per_page=" +
             REPORT_MR_LIMIT,
-        ),
+        ).then(readActivityMr),
         // MRs merged on target date
-        api<ActivityMr[]>(
+        api(
           fakeTask,
           "GET",
           "/merge_requests?scope=all&state=merged&author_id=" +
@@ -150,11 +226,11 @@ export function generateStandup(
             nextDayStr +
             "T00:00:00Z&per_page=" +
             REPORT_MR_LIMIT,
-        ),
+        ).then(readActivityMr),
         // All events for target date (paginated)
         fetchAllEvents(1, []),
         // Open MRs updated on target date (for "in progress")
-        api<ActivityMr[]>(
+        api(
           fakeTask,
           "GET",
           "/merge_requests?scope=all&state=opened&author_id=" +
@@ -165,7 +241,7 @@ export function generateStandup(
             nextDayStr +
             "T00:00:00Z&per_page=" +
             REPORT_MR_LIMIT,
-        ),
+        ).then(readActivityMr),
       ]).then(function (results) {
         let createdMrs = results[0] || [];
         let mergedMrs = results[1] || [];
@@ -253,11 +329,12 @@ export function generateStandup(
           pidList.length
             ? Promise.all(
                 pidList.map(function (pid) {
-                  return api<{ path_with_namespace: string }>(
+                  return api(
                     fakeTask,
                     "GET",
                     "/projects/" + pid + "?simple=true",
                   )
+                    .then(readProjectPath)
                     .then(function (proj) {
                       if (proj && proj.path_with_namespace)
                         projectIds[pid] = proj.path_with_namespace;
@@ -492,13 +569,14 @@ export function generateStandup(
                   const batch = fetchQueue.splice(0, 5);
                   return Promise.all(
                     batch.map(function (ticket) {
-                      return jiraApi<RawJiraIssue>(
+                      return jiraApi(
                         jiraUrl,
                         JIRA_API_PREFIX +
                           "/issue/" +
                           ticket +
                           "?fields=summary",
                       )
+                        .then(readRawJiraIssue)
                         .then(function (data) {
                           if (data && data.fields && data.fields.summary) {
                             ticketSummaries[ticket] = data.fields.summary;
@@ -563,8 +641,8 @@ export function generateStandup(
         }); // end projectIds resolve
       }); // end main Promise.all
     })
-    .catch(function (err) {
-      standupRespond({ _error: err.message || String(err) });
+    .catch(function (err: unknown) {
+      standupRespond({ _error: errorMessage(err) || String(err) });
     });
   return true;
 }

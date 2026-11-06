@@ -1,11 +1,8 @@
-import { JIRA_API_PREFIX } from "../../../shared/config/jira";
 import type { JiraQuickAction } from "../../../entities/jira-issue";
 import type {
   JiraMessage,
   JiraNamed,
-  JiraUser,
   RawJiraComment,
-  RawJiraIssue,
 } from "../../../entities/jira-issue/background";
 import {
   buildJiraQuickActionEdit,
@@ -14,8 +11,79 @@ import {
   jiraApi,
   jiraQuickActionWrite,
   mapJiraComment,
+  readJiraUser,
+  readRawJiraIssue,
 } from "../../../entities/jira-issue/background";
 import type { JiraFieldValue } from "../../../entities/jira-issue/content";
+import { JIRA_API_PREFIX } from "../../../shared/config/jira";
+import { errorMessage, errorStatus } from "../../../shared/lib/errors";
+import {
+  arrayOf,
+  decodeArray,
+  decoder,
+  isBoolean,
+  isNumber,
+  isString,
+  objectOf,
+  optional,
+  recordOf,
+} from "../../../shared/lib/validation";
+const readJiraVersions = decoder(
+  arrayOf(
+    objectOf<
+      { name: string; archived?: boolean; released?: boolean }[][number]
+    >({
+      name: isString,
+      archived: optional(isBoolean),
+      released: optional(isBoolean),
+    }),
+  ),
+  "GitLab/Jira response",
+);
+const readJiraTransitions = decoder(
+  objectOf<{ transitions: { id: string; name: string; to?: JiraNamed }[] }>({
+    transitions: arrayOf(
+      objectOf({
+        id: isString,
+        name: isString,
+        to: optional(
+          objectOf({
+            name: isString,
+            iconUrl: optional(isString),
+            statusCategory: optional(
+              objectOf({
+                key: isString,
+              }),
+            ),
+          }),
+        ),
+      }),
+    ),
+  }),
+  "GitLab/Jira response",
+);
+const readJiraComments = decoder(
+  objectOf<{ comments: RawJiraComment[]; total: number }>({
+    comments: arrayOf(
+      objectOf({
+        id: isString,
+        author: optional(
+          objectOf({
+            accountId: optional(isString),
+            key: optional(isString),
+            name: optional(isString),
+            displayName: isString,
+            avatarUrls: optional(recordOf(isString)),
+          }),
+        ),
+        body: optional(isString),
+        created: optional(isString),
+      }),
+    ),
+    total: isNumber,
+  }),
+  "GitLab/Jira response",
+);
 export function handleJiraMessage(
   msg: JiraMessage,
   sendResponse: (response: unknown) => void,
@@ -57,8 +125,8 @@ export function handleJiraMessage(
       .then(function () {
         sendResponse({ success: true, completed: completed });
       })
-      .catch(function (error) {
-        sendResponse({ _error: error.message, completed: completed });
+      .catch(function (error: unknown) {
+        sendResponse({ _error: errorMessage(error), completed: completed });
       });
     return true;
   }
@@ -67,8 +135,8 @@ export function handleJiraMessage(
       .then(function (statuses) {
         sendResponse({ statuses: statuses });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -81,98 +149,100 @@ export function handleJiraMessage(
         let fieldsParam =
           "summary,status,description,assignee,reporter,priority,issuetype,created,updated,labels,attachment,components,versions,fixVersions,resolution";
         if (extraFields) fieldsParam += "," + extraFields;
-        return jiraApi<RawJiraIssue>(
+        return jiraApi(
           msg.jiraUrl,
           JIRA_API_PREFIX + "/issue/" + msg.ticket + "?fields=" + fieldsParam,
-        ).then(function (data) {
-          const f = data.fields;
-          const attachments: Record<string, string> = {};
-          const attachmentList: {
-            filename: string;
-            url: string;
-            size: number;
-            mimeType: string;
-          }[] = [];
-          if (f.attachment && f.attachment.length) {
-            f.attachment.forEach(function (a) {
-              attachments[a.filename] = a.content;
-              attachmentList.push({
-                filename: a.filename,
-                url: a.content,
-                size: a.size || 0,
-                mimeType: a.mimeType || "",
+        )
+          .then(readRawJiraIssue)
+          .then(function (data) {
+            const f = data.fields;
+            const attachments: Record<string, string> = {};
+            const attachmentList: {
+              filename: string;
+              url: string;
+              size: number;
+              mimeType: string;
+            }[] = [];
+            if (f.attachment && f.attachment.length) {
+              f.attachment.forEach(function (a) {
+                attachments[a.filename] = a.content;
+                attachmentList.push({
+                  filename: a.filename,
+                  url: a.content,
+                  size: a.size || 0,
+                  mimeType: a.mimeType || "",
+                });
               });
-            });
-          }
-          // Epic link & Sprint via dynamic field IDs
-          let epicLink = "";
-          const epicVal = fieldMap.epicField ? f[fieldMap.epicField] : null;
-          if (epicVal) {
-            epicLink =
-              typeof epicVal === "string"
-                ? epicVal
-                : typeof epicVal === "object"
-                  ? String(
-                      ("key" in epicVal && epicVal.key) ||
-                        ("name" in epicVal && epicVal.name) ||
-                        ("summary" in epicVal && epicVal.summary) ||
-                        "",
-                    )
-                  : "";
-          }
-          let sprint = "";
-          const sprintVal = fieldMap.sprintField
-            ? f[fieldMap.sprintField]
-            : null;
-          if (sprintVal) {
-            if (Array.isArray(sprintVal) && sprintVal.length) {
-              const last = sprintVal[sprintVal.length - 1];
-              if (typeof last === "object" && last.name) sprint = last.name;
-              else if (typeof last === "string") {
-                const sm = last.match(/name=([^,\]]+)/);
-                if (sm) sprint = sm[1];
-              }
-            } else if (typeof sprintVal === "string") {
-              sprint = sprintVal;
             }
-          }
-          sendResponse({
-            key: data.key,
-            summary: f.summary || "",
-            status: f.status ? f.status.name : "",
-            statusCategoryKey:
-              f.status && f.status.statusCategory
-                ? f.status.statusCategory.key
-                : "",
-            description: f.description || "",
-            assignee: f.assignee ? f.assignee.displayName : "",
-            reporter: f.reporter ? f.reporter.displayName : "",
-            priority: f.priority ? f.priority.name : "",
-            priorityIcon: f.priority ? f.priority.iconUrl : "",
-            type: f.issuetype ? f.issuetype.name : "",
-            typeIcon: f.issuetype ? f.issuetype.iconUrl : "",
-            created: f.created || "",
-            updated: f.updated || "",
-            labels: f.labels || [],
-            attachments: attachments,
-            attachmentList: attachmentList,
-            components: (f.components || []).map(function (c) {
-              return c.name;
-            }),
-            versions: (f.versions || []).map(function (v) {
-              return v.name;
-            }),
-            fixVersions: (f.fixVersions || []).map(function (v) {
-              return v.name;
-            }),
-            resolution: f.resolution ? f.resolution.name : "",
-            epicLink: epicLink,
-            sprint: sprint,
+            // Epic link & Sprint via dynamic field IDs
+            let epicLink = "";
+            const epicVal = fieldMap.epicField ? f[fieldMap.epicField] : null;
+            if (epicVal) {
+              epicLink =
+                typeof epicVal === "string"
+                  ? epicVal
+                  : typeof epicVal === "object"
+                    ? String(
+                        ("key" in epicVal && epicVal.key) ||
+                          ("name" in epicVal && epicVal.name) ||
+                          ("summary" in epicVal && epicVal.summary) ||
+                          "",
+                      )
+                    : "";
+            }
+            let sprint = "";
+            const sprintVal = fieldMap.sprintField
+              ? f[fieldMap.sprintField]
+              : null;
+            if (sprintVal) {
+              if (Array.isArray(sprintVal) && sprintVal.length) {
+                const last = sprintVal[sprintVal.length - 1];
+                if (typeof last === "object" && last.name) sprint = last.name;
+                else if (typeof last === "string") {
+                  const sm = last.match(/name=([^,\]]+)/);
+                  if (sm) sprint = sm[1];
+                }
+              } else if (typeof sprintVal === "string") {
+                sprint = sprintVal;
+              }
+            }
+            sendResponse({
+              key: data.key,
+              summary: f.summary || "",
+              status: f.status ? f.status.name : "",
+              statusCategoryKey:
+                f.status && f.status.statusCategory
+                  ? f.status.statusCategory.key
+                  : "",
+              description: f.description || "",
+              assignee: f.assignee ? f.assignee.displayName : "",
+              reporter: f.reporter ? f.reporter.displayName : "",
+              priority: f.priority ? f.priority.name : "",
+              priorityIcon: f.priority ? f.priority.iconUrl : "",
+              type: f.issuetype ? f.issuetype.name : "",
+              typeIcon: f.issuetype ? f.issuetype.iconUrl : "",
+              created: f.created || "",
+              updated: f.updated || "",
+              labels: f.labels || [],
+              attachments: attachments,
+              attachmentList: attachmentList,
+              components: (f.components || []).map(function (c) {
+                return c.name;
+              }),
+              versions: (f.versions || []).map(function (v) {
+                return v.name;
+              }),
+              fixVersions: (f.fixVersions || []).map(function (v) {
+                return v.name;
+              }),
+              resolution: f.resolution ? f.resolution.name : "",
+              epicLink: epicLink,
+              sprint: sprint,
+            });
           });
-        });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -187,10 +257,11 @@ export function handleJiraMessage(
     function fetchField(i: number): Promise<typeof results> {
       if (i >= tickets.length || authFailed) return Promise.resolve(results);
       const ticket = tickets[i];
-      return jiraApi<RawJiraIssue>(
+      return jiraApi(
         msg.jiraUrl,
         JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + apiFields,
       )
+        .then(readRawJiraIssue)
         .then(function (data) {
           const val = data && data.fields ? data.fields[field] : null;
           const values: string[] = [];
@@ -221,8 +292,8 @@ export function handleJiraMessage(
             if (categoryKey) results[ticket].categoryKey = categoryKey;
           }
         })
-        .catch(function (err) {
-          const status = err.httpStatus || 0;
+        .catch(function (err: unknown) {
+          const status = errorStatus(err) || 0;
           if (status === 401 || status === 403) {
             authFailed = true;
             results._authError = status;
@@ -236,13 +307,13 @@ export function handleJiraMessage(
       .then(function () {
         sendResponse({ values: results });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
   if (msg.type === "search-jira-assignable") {
-    jiraApi<JiraUser[]>(
+    jiraApi(
       msg.jiraUrl,
       JIRA_API_PREFIX +
         "/user/assignable/search?issueKey=" +
@@ -251,6 +322,7 @@ export function handleJiraMessage(
         encodeURIComponent(msg.query) +
         "&maxResults=10",
     )
+      .then(decodeArray(readJiraUser))
       .then(function (users) {
         sendResponse({
           users: users.map(function (u) {
@@ -262,17 +334,18 @@ export function handleJiraMessage(
           }),
         });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
   if (msg.type === "fetch-jira-versions") {
     const projectKey = msg.ticket.replace(/-\d+$/, "");
-    jiraApi<{ name: string; archived?: boolean; released?: boolean }[]>(
+    jiraApi(
       msg.jiraUrl,
       JIRA_API_PREFIX + "/project/" + projectKey + "/versions",
     )
+      .then(readJiraVersions)
       .then(function (versions) {
         const list = (versions || [])
           .filter(function (v) {
@@ -283,8 +356,8 @@ export function handleJiraMessage(
           });
         sendResponse({ versions: list });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -319,8 +392,8 @@ export function handleJiraMessage(
           });
         }
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -351,16 +424,17 @@ export function handleJiraMessage(
           });
         }
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
   if (msg.type === "fetch-jira-transitions") {
-    jiraApi<{ transitions: { id: string; name: string; to?: JiraNamed }[] }>(
+    jiraApi(
       msg.jiraUrl,
       JIRA_API_PREFIX + "/issue/" + msg.ticket + "/transitions",
     )
+      .then(readJiraTransitions)
       .then(function (data) {
         const transitions = (data.transitions || []).map(function (t) {
           return {
@@ -373,15 +447,15 @@ export function handleJiraMessage(
         });
         sendResponse({ transitions: transitions });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
   if (msg.type === "fetch-jira-comments") {
     const startAt = msg.startAt || 0;
     const maxResults = msg.maxResults || 5;
-    jiraApi<{ comments: RawJiraComment[]; total: number }>(
+    jiraApi(
       msg.jiraUrl,
       JIRA_API_PREFIX +
         "/issue/" +
@@ -391,22 +465,24 @@ export function handleJiraMessage(
         "&maxResults=" +
         maxResults,
     )
+      .then(readJiraComments)
       .then(function (data) {
         const comments = (data.comments || []).map(mapJiraComment);
         sendResponse({ comments: comments, total: data.total || 0 });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
   if (msg.type === "fetch-jira-myself") {
-    jiraApi<JiraUser>(msg.jiraUrl, JIRA_API_PREFIX + "/myself")
+    jiraApi(msg.jiraUrl, JIRA_API_PREFIX + "/myself")
+      .then(readJiraUser)
       .then(function (data) {
         sendResponse({ id: data.accountId || data.key || data.name || "" });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -440,8 +516,8 @@ export function handleJiraMessage(
           });
         }
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -477,8 +553,8 @@ export function handleJiraMessage(
       .then(function (c) {
         sendResponse({ comment: mapJiraComment(c) });
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }
@@ -508,8 +584,8 @@ export function handleJiraMessage(
           });
         }
       })
-      .catch(function (err) {
-        sendResponse({ _error: err.message });
+      .catch(function (err: unknown) {
+        sendResponse({ _error: errorMessage(err) });
       });
     return true;
   }

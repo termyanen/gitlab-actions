@@ -3,7 +3,7 @@ export interface Pipeline {
   project_id?: number;
   sha?: string;
   ref?: string;
-  status: string;
+  status?: string;
 }
 export interface PipelineSelection {
   id: number;
@@ -11,8 +11,8 @@ export interface PipelineSelection {
 }
 export interface Job {
   id: number;
-  name: string;
-  status: string;
+  name?: string;
+  status?: string;
   web_url?: string;
   stage?: string;
 }

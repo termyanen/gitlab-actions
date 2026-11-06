@@ -1,12 +1,13 @@
 import * as workflow from "../../entities/review";
+import type { createReviewExporter } from "../../features/review-export";
 import {
-  parsePage,
   getNotes,
   getStatus,
+  parsePage,
 } from "../../features/review-export/content";
-import { startReviewControls } from "../../widgets/review-dialog";
-import type { createReviewExporter } from "../../features/review-export";
 import type { createReviewImporter } from "../../features/review-import";
+import { errorMessage } from "../../shared/lib/errors";
+import { startReviewControls } from "../../widgets/review-dialog";
 import type { createImportDialog } from "../../widgets/review-import-dialog";
 
 export function startReview() {
@@ -60,10 +61,10 @@ export function startReview() {
           dialog ||= module.createImportDialog(() => model);
           dialog.open(...args);
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           if (generation === current)
             window.alert(
-              String(error instanceof Error ? error.message : error),
+              String(error instanceof Error ? errorMessage(error) : error),
             );
         });
     },

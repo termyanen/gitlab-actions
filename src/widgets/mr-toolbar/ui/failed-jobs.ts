@@ -1,15 +1,17 @@
-import { reportError } from "../../../shared/lib/errors";
-import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
 import type { ActiveMergeRequest } from "../../../entities/merge-request";
-import type { Job, Pipeline } from "../../../entities/pipeline";
+import type { Job } from "../../../entities/pipeline";
+import { readJob, readPipeline } from "../../../entities/pipeline";
 import type { MrSettings } from "../../../entities/settings";
 import type {
-  createMrActions,
   MrActionContext,
+  createMrActions,
 } from "../../../features/mr-actions";
+import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
 import type { Translate } from "../../../shared/i18n";
+import { reportError } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { decodeArray } from "../../../shared/lib/validation";
 // =========================================================================
 // Failed Job Quick View
 // =========================================================================
@@ -126,7 +128,7 @@ export function createFailedJobView(
 
     function renderForPipeline(pipelineId: number) {
       if (scope.disposed) return;
-      api<Job[]>(
+      api(
         "GET",
         "/projects/" +
           context.projectId +
@@ -135,6 +137,7 @@ export function createFailedJobView(
           "/jobs?scope[]=failed&per_page=" +
           (s.failed_jobs_limit + 1),
       )
+        .then(decodeArray(readJob))
         .then(function (jobs) {
           if (scope.disposed) return;
           if (!jobs || !jobs.length) return;
@@ -285,11 +288,14 @@ export function createFailedJobView(
         .catch(function () {});
     }
 
-    if (mr.head_pipeline && mr.head_pipeline.status === "failed") {
+    if (
+      mr.head_pipeline?.id !== undefined &&
+      mr.head_pipeline.status === "failed"
+    ) {
       renderForPipeline(mr.head_pipeline.id);
     } else {
       // GitLab 18.x: head_pipeline may lag or be absent — check pipelines API directly
-      api<Pipeline[]>(
+      api(
         "GET",
         "/projects/" +
           context.projectId +
@@ -297,6 +303,7 @@ export function createFailedJobView(
           context.mrIid +
           "/pipelines?per_page=1",
       )
+        .then(decodeArray(readPipeline))
         .then(function (pipelines) {
           if (
             pipelines &&

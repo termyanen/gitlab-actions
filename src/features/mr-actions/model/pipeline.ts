@@ -1,16 +1,31 @@
+import type { Job, PipelineSelection } from "../../../entities/pipeline";
 import {
   JOB_POLL_INTERVAL_MS,
   JOB_POLL_MAX_ATTEMPTS,
-} from "../../../entities/pipeline";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
-import type {
-  Job,
-  Pipeline,
-  PipelineSelection,
+  readJob,
+  readJobResult,
+  readPipeline,
 } from "../../../entities/pipeline";
 import { MR_DEFAULTS } from "../../../entities/settings";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { errorMessage } from "../../../shared/lib/errors";
 import { sleep } from "../../../shared/lib/time";
+import {
+  arrayOf,
+  decodeArray,
+  decoder,
+  isString,
+  objectOf,
+} from "../../../shared/lib/validation";
 import type { MrServices } from "./types";
+const readNoteBodies = decoder(
+  arrayOf(
+    objectOf<{ body: string }[][number]>({
+      body: isString,
+    }),
+  ),
+  "GitLab/Jira response",
+);
 export function createPipelineActions({
   context,
   api,
@@ -32,30 +47,32 @@ export function createPipelineActions({
       }
       // Older servers may omit head_pipeline. Never run a job for
       // an earlier commit just because its pipeline is first in the list.
-      return api<Pipeline[]>(
+      return api(
         "GET",
         "/projects/" +
           context.projectId +
           "/merge_requests/" +
           context.mrIid +
           "/pipelines",
-      ).then(function (pipelines) {
-        let latest = null;
-        for (let i = 0; i < pipelines.length; i++) {
-          const pipeline = pipelines[i];
-          if (mr.sha && pipeline.sha !== mr.sha) continue;
-          // GitLab prefers MR pipelines over branch pipelines, then orders
-          // each group newest first. Preserve that preference for this SHA.
-          latest = pipeline;
-          break;
-        }
-        if (!latest) throw new Error("No pipelines found");
-        return {
-          id: latest.id,
-          projectId:
-            latest.project_id || mr.source_project_id || context.projectId,
-        };
-      });
+      )
+        .then(decodeArray(readPipeline))
+        .then(function (pipelines) {
+          let latest = null;
+          for (let i = 0; i < pipelines.length; i++) {
+            const pipeline = pipelines[i];
+            if (mr.sha && pipeline.sha !== mr.sha) continue;
+            // GitLab prefers MR pipelines over branch pipelines, then orders
+            // each group newest first. Preserve that preference for this SHA.
+            latest = pipeline;
+            break;
+          }
+          if (!latest) throw new Error("No pipelines found");
+          return {
+            id: latest.id,
+            projectId:
+              latest.project_id || mr.source_project_id || context.projectId,
+          };
+        });
     });
   }
 
@@ -71,22 +88,24 @@ export function createPipelineActions({
         "/jobs?per_page=" +
         GITLAB_PAGE_SIZE;
       if (page > 1) path += "&page=" + page;
-      return api<Job[]>("GET", path).then(function (jobs) {
-        collected = collected.concat(jobs);
-        // GitLab sorts jobs newest first. Named lookups can stop as soon as
-        // the latest attempt is found; bulk retries need every page.
-        if (jobName && findLatestJobByName(jobs, jobName)) return collected;
-        if (jobs.length < GITLAB_PAGE_SIZE) return collected;
-        // Protect against a proxy/server ignoring the page parameter.
-        let hasNewJobs = false;
-        for (let i = 0; i < jobs.length; i++) {
-          if (!seen[jobs[i].id]) hasNewJobs = true;
-          seen[jobs[i].id] = true;
-        }
-        if (!hasNewJobs)
-          throw new Error(t("errorJobsPageRepeated", [String(pipeline.id)]));
-        return readPage(page + 1);
-      });
+      return api("GET", path)
+        .then(decodeArray(readJob))
+        .then(function (jobs) {
+          collected = collected.concat(jobs);
+          // GitLab sorts jobs newest first. Named lookups can stop as soon as
+          // the latest attempt is found; bulk retries need every page.
+          if (jobName && findLatestJobByName(jobs, jobName)) return collected;
+          if (jobs.length < GITLAB_PAGE_SIZE) return collected;
+          // Protect against a proxy/server ignoring the page parameter.
+          let hasNewJobs = false;
+          for (let i = 0; i < jobs.length; i++) {
+            if (!seen[jobs[i].id]) hasNewJobs = true;
+            seen[jobs[i].id] = true;
+          }
+          if (!hasNewJobs)
+            throw new Error(t("errorJobsPageRepeated", [String(pipeline.id)]));
+          return readPage(page + 1);
+        });
     }
     return readPage(1);
   }
@@ -126,7 +145,7 @@ export function createPipelineActions({
       });
     }
 
-    return api<{ body: string }[]>(
+    return api(
       "GET",
       "/projects/" +
         context.projectId +
@@ -134,75 +153,81 @@ export function createPipelineActions({
         context.mrIid +
         "/notes?per_page=" +
         GITLAB_PAGE_SIZE,
-    ).then(function (notes): Promise<{
-      action: string;
-      comment?: string | null;
-      jobId?: number;
-    }> {
-      let reviewerNote: string | null = null;
-      for (let i = notes.length - 1; i >= 0; i--) {
-        if (/Reviewers?\s*:/i.test(notes[i].body)) {
-          reviewerNote = notes[i].body;
-          break;
-        }
-      }
-
-      if (reviewerNote) {
-        showToast(t("toastRepostingReviewers"), "success");
-        return api(
-          "POST",
-          "/projects/" +
-            context.projectId +
-            "/merge_requests/" +
-            context.mrIid +
-            "/notes",
-          {
-            body: reviewerNote,
-          },
-        ).then(function () {
-          return { action: "reposted", comment: reviewerNote };
-        });
-      }
-
-      showToast(t("toastNoReviewersTriggering", [jobName]), "success");
-      let pipeline: PipelineSelection;
-      return getCurrentPipeline()
-        .then(function (selected) {
-          pipeline = selected;
-          return getPipelineJobs(pipeline, jobName);
-        })
-        .then(function (jobs) {
-          const job = findLatestJobByName(jobs, jobName);
-          if (!job)
-            throw new Error(
-              'Job "' +
-                jobName +
-                '" not found in pipeline #' +
-                pipeline.id +
-                " (project " +
-                pipeline.projectId +
-                ")",
-            );
-
-          if (job.status === "manual" || job.status === "skipped") {
-            return api<Job>(
-              "POST",
-              "/projects/" + pipeline.projectId + "/jobs/" + job.id + "/play",
-            ).then(function () {
-              return { action: "triggered", jobId: job.id };
-            });
-          } else if (job.status === "failed" || job.status === "canceled") {
-            return api<Job>(
-              "POST",
-              "/projects/" + pipeline.projectId + "/jobs/" + job.id + "/retry",
-            ).then(function () {
-              return { action: "retried", jobId: job.id };
-            });
-          } else {
-            return { action: "already " + job.status, jobId: job.id };
+    )
+      .then(readNoteBodies)
+      .then(function (notes): Promise<{
+        action: string;
+        comment?: string | null;
+        jobId?: number;
+      }> {
+        let reviewerNote: string | null = null;
+        for (let i = notes.length - 1; i >= 0; i--) {
+          if (/Reviewers?\s*:/i.test(notes[i].body)) {
+            reviewerNote = notes[i].body;
+            break;
           }
-        });
-    });
+        }
+
+        if (reviewerNote) {
+          showToast(t("toastRepostingReviewers"), "success");
+          return api(
+            "POST",
+            "/projects/" +
+              context.projectId +
+              "/merge_requests/" +
+              context.mrIid +
+              "/notes",
+            {
+              body: reviewerNote,
+            },
+          ).then(function () {
+            return { action: "reposted", comment: reviewerNote };
+          });
+        }
+
+        showToast(t("toastNoReviewersTriggering", [jobName]), "success");
+        let pipeline: PipelineSelection;
+        return getCurrentPipeline()
+          .then(function (selected) {
+            pipeline = selected;
+            return getPipelineJobs(pipeline, jobName);
+          })
+          .then(function (jobs) {
+            const job = findLatestJobByName(jobs, jobName);
+            if (!job)
+              throw new Error(
+                'Job "' +
+                  jobName +
+                  '" not found in pipeline #' +
+                  pipeline.id +
+                  " (project " +
+                  pipeline.projectId +
+                  ")",
+              );
+
+            if (job.status === "manual" || job.status === "skipped") {
+              return api(
+                "POST",
+                "/projects/" + pipeline.projectId + "/jobs/" + job.id + "/play",
+              ).then(function () {
+                return { action: "triggered", jobId: job.id };
+              });
+            } else if (job.status === "failed" || job.status === "canceled") {
+              return api(
+                "POST",
+                "/projects/" +
+                  pipeline.projectId +
+                  "/jobs/" +
+                  job.id +
+                  "/retry",
+              ).then(function () {
+                return { action: "retried", jobId: job.id };
+              });
+            } else {
+              return { action: "already " + job.status, jobId: job.id };
+            }
+          });
+      });
   }
 
   function doPipelineRestart() {
@@ -215,35 +240,45 @@ export function createPipelineActions({
   }
 
   function doPipelineCancel() {
-    return api<Pipeline[]>(
+    return api(
       "GET",
       "/projects/" +
         context.projectId +
         "/merge_requests/" +
         context.mrIid +
         "/pipelines",
-    ).then(function (pipelines) {
-      const running = pipelines.filter(function (p) {
-        return ["running", "pending", "created"].indexOf(p.status) !== -1;
+    )
+      .then(decodeArray(readPipeline))
+      .then(function (pipelines) {
+        const running = pipelines.filter(function (p) {
+          return (
+            ["running", "pending", "created"].indexOf(p.status || "") !== -1
+          );
+        });
+        if (!running.length) throw new Error(t("toastNoRunningPipelines"));
+        showToast(
+          t("toastCancellingPipelines", [String(running.length)]),
+          "success",
+        );
+        return Promise.all(
+          running.map(function (p) {
+            return api(
+              "POST",
+              "/projects/" +
+                context.projectId +
+                "/pipelines/" +
+                p.id +
+                "/cancel",
+            ).catch(function () {});
+          }),
+        );
       });
-      if (!running.length) throw new Error(t("toastNoRunningPipelines"));
-      showToast(
-        t("toastCancellingPipelines", [String(running.length)]),
-        "success",
-      );
-      return Promise.all(
-        running.map(function (p) {
-          return api(
-            "POST",
-            "/projects/" + context.projectId + "/pipelines/" + p.id + "/cancel",
-          ).catch(function () {});
-        }),
-      );
-    });
   }
 
   function doDraftToggle() {
     return getMR().then(function (mr) {
+      if (typeof mr.title !== "string")
+        throw new Error("GitLab did not return the MR title");
       const isDraft = mr.title.match(/^(\[Draft\]|Draft:|WIP:)\s*/i);
       let newTitle: string;
       if (isDraft) {
@@ -280,7 +315,7 @@ export function createPipelineActions({
         showToast(t("toastRetrying", [String(failed.length)]), "success");
         return Promise.all(
           failed.map(function (job) {
-            return api<Job>(
+            return api(
               "POST",
               "/projects/" + pipeline.projectId + "/jobs/" + job.id + "/retry",
             ).catch(function () {});
@@ -323,24 +358,27 @@ export function createPipelineActions({
       return Promise.resolve(job.id);
     } else if (job.status === "manual" || job.status === "skipped") {
       showToast(t("toastPlayingJob", [jobName]), "success");
-      return api<Job>(
+      return api(
         "POST",
         "/projects/" + pipeline.projectId + "/jobs/" + job.id + "/play",
-      ).then(function (resp) {
-        return resp.id || job.id;
-      });
+      )
+        .then(readJobResult)
+        .then(function (resp) {
+          return resp.id || job.id;
+        });
     } else if (job.status === "failed" || job.status === "canceled") {
       showToast(t("toastRetryingJob", [jobName]), "success");
-      return api<Job>(
+      return api(
         "POST",
         "/projects/" + pipeline.projectId + "/jobs/" + job.id + "/retry",
       )
+        .then(readJobResult)
         .then(function (resp) {
           return resp.id || job.id;
         })
-        .catch(function (err) {
+        .catch(function (err: unknown) {
           // 403 = job already retried, refetch and find the new one
-          if (err.message && err.message.indexOf("403") !== -1) {
+          if (errorMessage(err) && errorMessage(err).indexOf("403") !== -1) {
             return getPipelineJobs(pipeline, jobName).then(
               function (freshJobs) {
                 const fresh = findLatestJobByName(freshJobs, jobName);
@@ -364,9 +402,12 @@ export function createPipelineActions({
         "preparing",
         "waiting_for_resource",
         "scheduled",
-      ].indexOf(job.status) !== -1
+      ].indexOf(job.status || "") !== -1
     ) {
-      showToast(t("toastJobAlreadyStatus", [jobName, job.status]), "success");
+      showToast(
+        t("toastJobAlreadyStatus", [jobName, job.status || ""]),
+        "success",
+      );
       return Promise.resolve(job.id);
     } else {
       throw new Error(
@@ -384,7 +425,7 @@ export function createPipelineActions({
     let attempt = 0;
     function findJobByName(name: string) {
       // Find the latest job with this name in the pipeline (retry creates new jobs)
-      return api<Pipeline[]>(
+      return api(
         "GET",
         "/projects/" +
           context.projectId +
@@ -392,9 +433,10 @@ export function createPipelineActions({
           context.mrIid +
           "/pipelines",
       )
+        .then(decodeArray(readPipeline))
         .then(function (pipelines) {
           if (!pipelines.length) return null;
-          return api<Job[]>(
+          return api(
             "GET",
             "/projects/" +
               context.projectId +
@@ -402,7 +444,7 @@ export function createPipelineActions({
               pipelines[0].id +
               "/jobs?per_page=" +
               GITLAB_PAGE_SIZE,
-          );
+          ).then(decodeArray(readJob));
         })
         .then(function (jobs) {
           if (!jobs) return null;
@@ -423,14 +465,17 @@ export function createPipelineActions({
         })
         .then(function (job) {
           if (!job)
-            return api<Job>(
+            return api(
               "GET",
               "/projects/" + context.projectId + "/jobs/" + jobId,
-            );
+            ).then(readJob);
           return job;
         })
         .then(function (job) {
-          showToast(t("toastWaitingForJob", [jobName, job.status]), "success");
+          showToast(
+            t("toastWaitingForJob", [jobName, job.status || ""]),
+            "success",
+          );
           if (job.status === "success") return job;
           if (job.status === "failed")
             throw new Error('Job "' + jobName + '" failed');
