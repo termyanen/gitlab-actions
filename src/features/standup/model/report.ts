@@ -3,7 +3,10 @@ import { jiraApi } from "../../../entities/jira-issue/background";
 import { api } from "../../../shared/api/background-proxy";
 import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import { JIRA_API_PREFIX } from "../../../shared/config/jira";
+import { msg as localize } from "../../../shared/i18n";
 const REPORT_TIMEOUT_MS = 180000;
+const REPORT_EVENT_MAX_PAGES = 5;
+const REPORT_MR_LIMIT = 50;
 interface ActivityMr {
   id: number;
   iid: number;
@@ -88,13 +91,17 @@ export function generateStandup(
       const dayBefore = new Date(todayStr + "T12:00:00");
       dayBefore.setDate(dayBefore.getDate() - 1);
       const dayBeforeStr = localDateStr(dayBefore);
+      let truncatedEvents = false;
 
       // Helper: fetch all event pages for the day (up to 5 pages)
       function fetchAllEvents(
         page: number,
         collected: ActivityEvent[],
       ): Promise<ActivityEvent[]> {
-        if (page > 5) return Promise.resolve(collected);
+        if (page > REPORT_EVENT_MAX_PAGES) {
+          truncatedEvents = true;
+          return Promise.resolve(collected);
+        }
         return api<ActivityEvent[]>(
           fakeTask,
           "GET",
@@ -128,7 +135,8 @@ export function generateStandup(
             todayStr +
             "T00:00:00Z&created_before=" +
             nextDayStr +
-            "T00:00:00Z&per_page=50",
+            "T00:00:00Z&per_page=" +
+            REPORT_MR_LIMIT,
         ),
         // MRs merged on target date
         api<ActivityMr[]>(
@@ -140,7 +148,8 @@ export function generateStandup(
             todayStr +
             "T00:00:00Z&updated_before=" +
             nextDayStr +
-            "T00:00:00Z&per_page=50",
+            "T00:00:00Z&per_page=" +
+            REPORT_MR_LIMIT,
         ),
         // All events for target date (paginated)
         fetchAllEvents(1, []),
@@ -154,7 +163,8 @@ export function generateStandup(
             todayStr +
             "T00:00:00Z&updated_before=" +
             nextDayStr +
-            "T00:00:00Z&per_page=50",
+            "T00:00:00Z&per_page=" +
+            REPORT_MR_LIMIT,
         ),
       ]).then(function (results) {
         let createdMrs = results[0] || [];
@@ -296,6 +306,20 @@ export function generateStandup(
 
           // Build report
           const lines: string[] = [];
+          if (
+            truncatedEvents ||
+            [results[0], results[1], results[3]].some(
+              (items) => items?.length >= REPORT_MR_LIMIT,
+            )
+          ) {
+            lines.push(
+              localize("standupPartialWarning", [
+                REPORT_MR_LIMIT,
+                REPORT_EVENT_MAX_PAGES * GITLAB_PAGE_SIZE,
+              ]),
+              "",
+            );
+          }
 
           if (createdMrs.length) {
             lines.push("Created:");

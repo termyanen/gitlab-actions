@@ -1,3 +1,4 @@
+import { DISPLAY_DEFAULTS } from "../../../entities/settings";
 import { reportError } from "../../../shared/lib/errors";
 import type { SessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
@@ -16,7 +17,7 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
 
   let _reviewerRefreshPending = false;
 
-  function fetchMrNotes(projectPath: string, iid: string) {
+  function fetchMrNotes(projectPath: string, iid: string, limit: number) {
     const encodedProject = encodeURIComponent(projectPath);
     return api<{ body: string }[]>(
       "GET",
@@ -24,15 +25,22 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
         encodedProject +
         "/merge_requests/" +
         iid +
-        "/notes?per_page=10&sort=asc",
+        "/notes?per_page=" +
+        limit +
+        "&sort=asc",
     );
   }
 
   function checkReviewerInNotes(notes: { body: string }[], username: string) {
     for (let i = 0; i < notes.length; i++) {
       const body = notes[i].body || "";
-      if (/reviewers?\s*:/i.test(body) && body.indexOf("@" + username) !== -1) {
-        return true;
+      if (!/reviewers?\s*:/i.test(body)) continue;
+      for (const mention of body.matchAll(/(?:^|[^\w@])@([\w][\w.-]*)/g)) {
+        if (
+          mention[1].replace(/[.-]+$/, "").toLowerCase() ===
+          username.toLowerCase()
+        )
+          return true;
       }
     }
     return false;
@@ -55,7 +63,10 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
     titleContainer.appendChild(badge);
   }
 
-  function fetchAndRenderReviewerBadges(username: string) {
+  function fetchAndRenderReviewerBadges(
+    username: string,
+    limit = DISPLAY_DEFAULTS.reviewer_notes_limit,
+  ) {
     if (_reviewerFetching) {
       _reviewerRefreshPending = true;
       return;
@@ -105,6 +116,7 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
     _reviewerFetching = true;
 
     function fetchOne(i: number) {
+      if (scope.disposed) return;
       if (i >= toFetch.length) {
         _reviewerFetching = false;
         const loaders = document.querySelectorAll(".gl-reviewer-loader");
@@ -113,12 +125,12 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
         });
         if (_reviewerRefreshPending) {
           _reviewerRefreshPending = false;
-          if (isMrListPage()) fetchAndRenderReviewerBadges(username);
+          if (isMrListPage()) fetchAndRenderReviewerBadges(username, limit);
         }
         return;
       }
       const entry = toFetch[i];
-      fetchMrNotes(entry.projectPath, entry.iid)
+      fetchMrNotes(entry.projectPath, entry.iid, limit)
         .then(function (notes) {
           const isReviewer = checkReviewerInNotes(notes || [], username);
           _reviewerCache[entry.href] = {

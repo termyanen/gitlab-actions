@@ -1,4 +1,5 @@
 import * as workflow from "../../../entities/review";
+import { validDisplayPreferences } from "../../../entities/settings";
 import type { JiraFieldUpdate } from "../../../entities/jira-issue";
 import {
   DEFAULTS,
@@ -64,6 +65,8 @@ export function createSettingsValidation(t: (key: string) => string) {
     return JSON.parse(JSON.stringify(settings)) as Settings;
   }
   function validateSharedSettings(settings: Settings) {
+    if (!validDisplayPreferences(settings))
+      throw new Error(t("displayPreferencesInvalid"));
     const job = { label: "", jobName: "" };
     const mrAction = { id: "", label: "", type: "", labels: "" };
     const profileShape = {
