@@ -11,6 +11,11 @@ browser and performance results. Fixtures do not establish live-server compatibi
 
 ## Compatibility
 
+When module boundaries changed, name the owning slice, new public exports or
+dependencies, and execution context (content script, worker, settings page).
+Explain why a new slice/dependency is needed and record `npm run lint:architecture`
+or `npm run check` above. See `docs/ARCHITECTURE.md`; write "unchanged" otherwise.
+
 Mention changes to permissions, supported Chrome/GitLab versions, settings/storage
 formats, runtime dependencies or package contents. Write "unchanged" if applicable.
 

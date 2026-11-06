@@ -87,9 +87,14 @@ validation after an interrupted import send. Test counts describe this review
 snapshot, not a whole-extension coverage percentage.
 
 Architecture fixtures verify downward imports, slice and Shared public APIs,
-runtime cycle detection, type-only dependency handling, explicit exports, named
-timer policies, and the packaged bootstrap exception for dynamic imports. They
-exercise both accepted and rejected dependency graphs. TypeScript also checks
+cycles through barrels, re-exports and literal lazy imports, mixed/type-only
+dependency handling, explicit exports, named timer policies, and the packaged
+bootstrap exception for dynamic imports. CommonJS loads, unsupported source
+extensions and source symlinks are rejected instead of bypassing the graph.
+They exercise both accepted and rejected dependency graphs; run them directly
+with `node --test tests/architecture.test.cjs` after a rule change. See the
+[implementation guide](../docs/ARCHITECTURE.md) for module ownership and cycle fixes.
+TypeScript also checks
 unused locals/parameters, accidental switch fallthrough and missing overrides.
 
 ## What is covered

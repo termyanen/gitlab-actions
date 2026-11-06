@@ -1,6 +1,6 @@
 import ts from "typescript";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -12,13 +12,23 @@ export function checkArchitecture(sourceRoot) {
   sourceRoot = resolve(sourceRoot);
   const violations = [];
   const graph = new Map();
-  const label = (file) => relative(sourceRoot, file);
+  const label = (file) => relative(sourceRoot, file).split(sep).join("/");
 
   function files(directory) {
     return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
       const path = join(directory, entry.name);
-      if (entry.isFile() && /\.(?:js|jsx|mjs|cjs)$/.test(entry.name))
-        violations.push(`${label(path)}: runtime must be TypeScript`);
+      if (entry.isSymbolicLink()) {
+        violations.push(`${label(path)}: runtime source must not use symlinks`);
+        return [];
+      }
+      if (
+        entry.isFile() &&
+        /\.[cm]?[jt]sx?$/.test(entry.name) &&
+        !entry.name.endsWith(".ts")
+      )
+        violations.push(
+          `${label(path)}: runtime must be TypeScript .ts covered by typecheck and architecture checks`,
+        );
       return entry.isDirectory()
         ? files(path)
         : path.endsWith(".ts")
@@ -53,6 +63,12 @@ export function checkArchitecture(sourceRoot) {
       );
       return;
     }
+    if (!graph.has(target)) {
+      violations.push(
+        `${label(file)}: import target is outside the checked source graph: ${specifier}`,
+      );
+      return;
+    }
     const sameSlice =
       from[0] === to[0] &&
       (["app", "shared"].includes(from[0]) || from[1] === to[1]);
@@ -80,7 +96,7 @@ export function checkArchitecture(sourceRoot) {
     if (runtime) graph.get(file).add(target);
   }
 
-  const sourceFiles = files(sourceRoot);
+  const sourceFiles = files(sourceRoot).sort();
   sourceFiles.forEach((file) => graph.set(file, new Set()));
   for (const file of sourceFiles) {
     const source = ts.createSourceFile(
@@ -94,6 +110,16 @@ export function checkArchitecture(sourceRoot) {
     if (/@ts-(?:nocheck|ignore)\b/.test(source.text))
       violations.push(`${label(file)}: blanket TypeScript suppression`);
     function visit(node) {
+      if (
+        (ts.isImportEqualsDeclaration(node) &&
+          ts.isExternalModuleReference(node.moduleReference)) ||
+        (ts.isCallExpression(node) &&
+          ts.isIdentifier(node.expression) &&
+          node.expression.text === "require")
+      )
+        violations.push(
+          `${label(file)}: CommonJS require is unsupported; use explicit ESM imports`,
+        );
       if (
         (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
         node.moduleSpecifier &&
