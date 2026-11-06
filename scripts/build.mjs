@@ -3,9 +3,9 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { watch } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { moduleEntryPoints, scriptEntryPoints } from "./entrypoints.mjs";
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const runtimeNames = ["background", "content_proxy", "popup", "welcome"];
 const assets = [
   "manifest.json",
   "popup.html",
@@ -40,9 +40,7 @@ export async function buildExtension({
   );
   const options = {
     absWorkingDir: root,
-    entryPoints: Object.fromEntries(
-      runtimeNames.map((name) => [name, `src/app/entrypoints/${name}.ts`]),
-    ),
+    entryPoints: scriptEntryPoints,
     outdir,
     bundle: true,
     format: "iife",
@@ -56,7 +54,7 @@ export async function buildExtension({
   };
   const moduleOptions = {
     ...options,
-    entryPoints: { "modules/content": "src/app/content/runtime.ts" },
+    entryPoints: moduleEntryPoints,
     format: "esm",
     splitting: true,
     chunkNames: "modules/chunks/[name]-[hash]",

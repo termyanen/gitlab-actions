@@ -4,6 +4,13 @@ GitLab MR Actions is a Manifest V3 extension built with TypeScript and esbuild.
 Read [AGENTS.md](AGENTS.md) for architecture and behavioral constraints; the same
 rules apply to human contributions and agent-assisted changes.
 
+## Report a problem or propose a feature
+
+Use the [issue forms](https://github.com/termyanen/gitlab-actions/issues/new/choose)
+for reproducible bugs and workflow proposals. English and Russian are welcome.
+Include relevant versions, settings and sanitized reproduction steps. Security
+issues follow [SECURITY.md](SECURITY.md) and the private reporting channel.
+
 ## Setup
 
 Use Node 22.13+ on the 22.x line, or Node 24+. `.nvmrc` selects the CI major;
@@ -45,7 +52,7 @@ npm run test:browser
 npm run test:performance
 ```
 
-`npm run check` runs TypeScript, ESLint, Prettier, FSD boundary/cycle checks and
+`npm run check` runs TypeScript, ESLint, Prettier, FSD boundary/cycle/reachability checks and
 regression tests. Tests first build production output. `npm test` runs the build and regressions
 without the other static checks. Fixtures do not use production credentials.
 Read [tests/README.md](tests/README.md) for coverage and manual scenarios.
@@ -54,11 +61,33 @@ For fast dependency feedback, run `npm run lint:architecture`. When changing
 its rules, also run `node --test tests/architecture.test.cjs`; the fixtures must
 prove both rejection of invalid graphs and acceptance of supported imports.
 Runtime-only cycles are rejected; type-only edges still undergo boundary checks.
+Source reachability includes type-only and lazy imports, using the same entry points
+as the build. Ambient declarations are included without explicit imports.
 
 The shared CI workflow verifies a ZIP, unpacks it for browser/performance checks,
 then makes that same artifact available to the store job. Local success does not
 prove GitHub-hosted execution or store credentials work. Store configuration and
 release/version rules are in [README.md](README.md#ci-and-chrome-web-store-configuration).
+
+## Repository setup and release readiness
+
+Local checks cannot establish these external conditions. The maintainer verifies
+them for the repository and the release revision:
+
+- Enable GitHub Private Vulnerability Reporting and confirm that the report form
+  linked in [SECURITY.md](SECURITY.md) is available.
+- Configure repository rules/branch protection to require the verification jobs
+  from `.github/workflows/verify.yml`; confirm their actual check names from a CI run.
+- Verify GitHub-hosted CI and the Chrome Web Store publisher variable/OAuth secrets
+  described in README. Store upload/submission is a separate authorized delivery
+  step; mocked API tests do not verify live credentials.
+- Run the [manual browser scenarios](tests/README.md#browser-verification) on supported
+  GitLab/Jira deployments, including an update with existing settings. Record the
+  browser/server versions tested. Local fixtures do not establish universal compatibility.
+
+Follow [the delivery procedure](docs/DELIVERY.md) for version selection, notes,
+website updates and the final archive. A cleanup or tooling change does not itself
+constitute a release, and none of these external actions is performed by `npm run check`.
 
 ## Linting and formatting
 
@@ -68,7 +97,7 @@ awaits, redundant assertions and incomplete union switches. Do not replace a
 missing catch with `void`; implement the error path appropriate to the operation.
 
 `npm run format` applies the pinned Prettier style to TS, Node scripts, tool
-configurations, root JSON and workflow YAML. `npm run format:check` checks those
+configurations, root JSON and `.github/` YAML (workflows and issue forms). `npm run format:check` checks those
 same files in CI. `.editorconfig` supplies encoding, indentation and line endings
 to editors. Formatting is intentionally separate from ESLint.
 
