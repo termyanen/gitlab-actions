@@ -10,6 +10,36 @@ const SIZE_LIMITS = {
 };
 
 export function createMetadataBadges(scope: Lifecycle) {
+  // GitLab replaces rows without changing the route (pagination/filtering).
+  // Weak keys allow those detached rows to be collected before route disposal.
+  const originals = new WeakMap<
+    HTMLElement,
+    {
+      title: string | null;
+      text: string;
+      enhancedText: string;
+      names: string;
+    }
+  >();
+  scope.onCleanup(() => {
+    document
+      .querySelectorAll<HTMLElement>(".gl-mr-ext-approval-done")
+      .forEach((badge) => {
+        const original = originals.get(badge);
+        if (!original) return;
+        badge.classList.remove("gl-mr-ext-approval-done");
+        if (badge.title === original.names) {
+          if (original.title === null) badge.removeAttribute("title");
+          else badge.setAttribute("title", original.title);
+        }
+        const content = badge.querySelector(".gl-badge-content");
+        if (content?.textContent === original.enhancedText)
+          content.textContent = original.text;
+      });
+    document
+      .querySelectorAll(".gl-mr-ext-approval-item")
+      .forEach((item) => item.remove());
+  });
   function renderThreadsBadge(mrItem: HTMLElement, count: number) {
     if (scope.disposed) return;
     if (mrItem.querySelector(".gl-mr-ext-threads-badge")) return;
@@ -232,14 +262,11 @@ export function createMetadataBadges(scope: Lifecycle) {
       if (contentSpan) {
         contentSpan.textContent = enhancedText;
       }
-      scope.onCleanup(() => {
-        nativeBadge.classList.remove("gl-mr-ext-approval-done");
-        if (nativeBadge.title === names) {
-          if (originalTitle === null) nativeBadge.removeAttribute("title");
-          else nativeBadge.setAttribute("title", originalTitle);
-        }
-        if (contentSpan?.textContent === enhancedText)
-          contentSpan.textContent = originalText;
+      originals.set(nativeBadge, {
+        title: originalTitle,
+        text: originalText,
+        enhancedText,
+        names,
       });
       return;
     }
@@ -249,6 +276,7 @@ export function createMetadataBadges(scope: Lifecycle) {
     if (!controlsUl) return;
 
     const li = document.createElement("li");
+    li.className = "gl-mr-ext-approval-item";
     li.style.cssText =
       "display:inline-flex;align-items:center;margin-right:0;margin-left:0";
     const badge = document.createElement("span");
@@ -262,7 +290,6 @@ export function createMetadataBadges(scope: Lifecycle) {
       "</span>";
     li.appendChild(badge);
     controlsUl.insertBefore(li, controlsUl.firstChild);
-    scope.onCleanup(() => li.remove());
   }
   return {
     renderThreadsBadge,

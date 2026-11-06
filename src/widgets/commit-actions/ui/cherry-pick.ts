@@ -264,7 +264,7 @@ export function startCommitCherryPick(
             let _cpDetailAttempts = 0;
             const cpDetailObserver = scope.observer(function () {
               if (document.querySelector(".gl-cherry-pick-detail-btn")) return;
-              clearTimeout(_cpDetailTimer);
+              scope.cancelTimeout(_cpDetailTimer);
               _cpDetailTimer = scope.timeout(
                 injectCherryPickHeaderBtn,
                 DETAIL_MOUNT_DEBOUNCE_MS,
@@ -298,7 +298,7 @@ export function startCommitCherryPick(
 
             let _cpTimer: ReturnType<typeof setTimeout> | undefined;
             const cpObserver = scope.observer(function () {
-              clearTimeout(_cpTimer);
+              scope.cancelTimeout(_cpTimer);
               _cpTimer = scope.timeout(
                 injectCherryPickButtons,
                 LIST_MOUNT_DEBOUNCE_MS,

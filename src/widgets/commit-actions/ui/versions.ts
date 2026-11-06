@@ -272,7 +272,7 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
 
               let _cvTimer: ReturnType<typeof setTimeout> | undefined;
               const cvObserver = scope.observer(function () {
-                clearTimeout(_cvTimer);
+                scope.cancelTimeout(_cvTimer);
                 _cvTimer = scope.timeout(
                   injectCommitVersionBadges,
                   BADGE_MOUNT_DEBOUNCE_MS,

@@ -22,6 +22,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       ".gl-jira-sidebar-assignee-results",
     )!;
     let searchTimer: ReturnType<typeof setTimeout> | undefined;
+    let searchRequest = 0;
 
     assigneeEl.addEventListener("click", function () {
       const isOpen = searchBox.style.display !== "none";
@@ -45,7 +46,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
             ticket: ticket,
             username: null,
           },
-          scope.guard(function (result) {
+          scope.once(function (result) {
             if (result && result.success) {
               assigneeEl.innerHTML =
                 '<span style="opacity:0.5">' +
@@ -62,8 +63,9 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       });
 
     input.addEventListener("input", function () {
+      const request = ++searchRequest;
       const query = input.value.trim();
-      clearTimeout(searchTimer);
+      scope.cancelTimeout(searchTimer);
       if (query.length < 2) {
         resultsEl.innerHTML = "";
         return;
@@ -78,7 +80,8 @@ export function createJiraFieldEditors(scope: Lifecycle) {
             ticket: ticket,
             query: query,
           },
-          scope.guard(function (resp) {
+          scope.once(function (resp) {
+            if (request !== searchRequest) return;
             if (!resp || resp._error || !resp.users) {
               resultsEl.innerHTML = "";
               return;
@@ -143,7 +146,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           ticket: ticket,
           username: username,
         },
-        scope.guard(function (result) {
+        scope.once(function (result) {
           if (result && result.success) {
             assigneeEl.innerHTML =
               escHtml(displayName) +
@@ -218,7 +221,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           jiraUrl: jiraUrl,
           ticket: ticket,
         },
-        scope.guard(function (resp) {
+        scope.once(function (resp) {
           if (!resp || resp._error || !resp.versions) {
             listEl.innerHTML = "";
             return;
@@ -298,7 +301,7 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           ticket: ticket,
           versions: newSelected,
         },
-        scope.guard(function (resp) {
+        scope.once(function (resp) {
           cb.disabled = false;
           if (!resp || resp._error) {
             cb.checked = !cb.checked;

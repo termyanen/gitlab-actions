@@ -306,7 +306,7 @@ export function startMrList(
             let _observerTimer: ReturnType<typeof setTimeout> | undefined;
             const listObserver = scope.observer(function (mutations) {
               if (!isMrListPage() || !mutations.some(isListMutation)) return;
-              clearTimeout(_observerTimer);
+              scope.cancelTimeout(_observerTimer);
               _observerTimer = scope.timeout(
                 runAllListFeatures,
                 LIST_REFRESH_DEBOUNCE_MS,
@@ -322,7 +322,7 @@ export function startMrList(
             runAllListFeatures();
             scope.listen(window, "beforeunload", function () {
               listObserver.disconnect();
-              clearTimeout(_observerTimer);
+              scope.cancelTimeout(_observerTimer);
             });
           });
         }),
