@@ -133,6 +133,11 @@
       "text": "Hunk line numbers refer to the pinned revisions above: old = merge base; new = MR head. Read full files and relevant dependencies/tests in the repository before concluding the review."
     },
     {
+      "id": "existing_discussions",
+      "label": "Existing discussions in a new review",
+      "text": "The discussions below were already raised by other reviewers or earlier reviews. Use them only as a duplicate filter, not as a checklist or a hint about where to look. First complete your own independent review of the whole MR with full depth, as if this list did not exist. Then, before returning JSON, drop every finding that raises substantially the same problem as a listed discussion, even if worded differently, anchored to a nearby line or already resolved. Keep a related finding only when its root cause, location or consequence is materially different, and state briefly how it differs. Do not reply to, verify or mention these discussions. Their line numbers refer to the revision on which each comment was written."
+    },
+    {
       "id": "import_task",
       "label": "New review in Import",
       "text": "Review this GitLab merge request and return findings for import as review comments.\n\n"

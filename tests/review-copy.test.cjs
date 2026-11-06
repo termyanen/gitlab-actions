@@ -1067,7 +1067,7 @@ test('explicit review tab uses real fresh MR data with paginated commits, cumula
     diff_refs: { base_sha: 'c'.repeat(40), start_sha: 'd'.repeat(40), head_sha: head }
   };
   var env = await ui.create({
-    settings: { ai_review_include_description: false, ai_review_fresh_prompt: 'Review the entire MR and check reliability. Answer in Spanish.' },
+    settings: { ai_review_include_description: false, ai_review_fresh_existing: false, ai_review_fresh_prompt: 'Review the entire MR and check reliability. Answer in Spanish.' },
     realFresh: true,
     fetch: async function(url, init) {
       calls.push({ url: url, init: init });
@@ -1109,6 +1109,65 @@ test('explicit review tab uses real fresh MR data with paginated commits, cumula
   await env.click('aiReviewCopyTask');
   assert.deepEqual(env.clipboard, [output]);
   assert.equal(calls.length, 5, 'copy retains exactly the validated preview');
+});
+
+test('new review appends existing discussions as a duplicate filter only when enabled and remembers the checkbox', async function() {
+  var head = 'a'.repeat(40), calls = [];
+  var entity = { iid: 12, title: 'Second reviewer', description: '', source_branch: 'feature', target_branch: 'main', sha: head, changes_count: '1',
+    diff_refs: { base_sha: 'c'.repeat(40), start_sha: 'd'.repeat(40), head_sha: head } };
+  var discussions = [
+    { id: 'e'.repeat(40), notes: [
+      { id: 71, body: 'Missing error handling when fetch fails', author: { username: 'petya' }, resolvable: true, resolved: false, position: { old_path: 'api.js', new_path: 'api.js', new_line: 42, head_sha: head } },
+      { id: 72, body: 'Author reply that must stay out', author: { username: 'author' }, resolvable: true, resolved: false }
+    ] },
+    { id: 'f'.repeat(40), notes: [{ id: 73, body: 'Rename looks risky', author: { username: 'vasya' }, resolvable: true, resolved: true, position: { old_path: 'old.js', new_path: 'old.js', old_line: 5, new_line: null } }] },
+    { id: 'note-74', individual_note: true, notes: [{ id: 74, body: 'system update', system: true }] }
+  ];
+  var env = await ui.create({
+    settings: { ai_review_include_description: false },
+    realFresh: true,
+    fetch: async function(url, init) {
+      calls.push(url);
+      var path = new URL(url), body;
+      if (path.pathname.endsWith('/discussions')) body = discussions;
+      else if (/\/merge_requests\/12$/.test(path.pathname)) body = entity;
+      else throw new Error('Unexpected request: ' + url);
+      return { ok: true, status: 200, headers: { get: function(name) { return name === 'X-Next-Page' ? '' : null; } }, text: async function() { return JSON.stringify(body); } };
+    }
+  });
+  await env.click('aiReviewOpen');
+  await env.respond([]);
+  await env.click('aiReviewTaskReview');
+  var toggle = env.document.querySelector('.gl-review-existing-toggle');
+  assert.equal(toggle.hidden, false);
+  assert.equal(toggle.querySelector('input').checked, false, 'the checkbox is off by default');
+  assert.match(env.document.body.textContent, /Existing discussions are not added/);
+  await env.click('aiReviewPreview');
+  assert.doesNotMatch(preview(env).value, /Existing discussions|petya/);
+  assert.ok(calls.every(function(url) { return !/\/discussions/.test(url); }), 'discussions are not requested while the checkbox is off');
+
+  await env.change(toggle.querySelector('input'), true);
+  assert.deepEqual(env.settingsWrites, [{ ai_review_fresh_existing: true }]);
+  assert.equal(preview(env).value, '', 'changing the checkbox invalidates the prepared task');
+  assert.match(env.document.body.textContent, /Existing discussions are added only as a duplicate filter/);
+  await env.click('aiReviewPreview');
+  var output = preview(env).value;
+  var section = output.indexOf('## Existing discussions — duplicate filter only');
+  assert.ok(section > output.indexOf('Return exactly one JSON object'), 'the list follows the review task and output format');
+  assert.match(output, /only as a duplicate filter/);
+  assert.match(output, /"path": "api.js",\s+"line": 42/);
+  assert.match(output, /"author": "petya"/);
+  assert.match(output, /Missing error handling when fetch fails/);
+  assert.match(output, /"state": "resolved"/);
+  assert.match(output, /"line": 5,\s+"side": "old"/);
+  assert.match(output, /"replies": 1/);
+  assert.doesNotMatch(output, /Author reply that must stay out|system update|"type":"reply"/);
+  assert.ok(calls.some(function(url) { return /\/discussions/.test(url); }));
+
+  await env.change(toggle.querySelector('input'), false);
+  assert.deepEqual(env.settingsWrites, [{ ai_review_fresh_existing: true }, { ai_review_fresh_existing: false }]);
+  await env.click('aiReviewTaskFix');
+  assert.equal(toggle.hidden, true, 'the checkbox belongs only to the new review tab');
 });
 
 test('unresolved quick filter clears search and previous selections, selecting all unresolved threads and their replies', async function() {

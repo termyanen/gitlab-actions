@@ -10,7 +10,7 @@ Open **AI review…** and choose a tab. Every tab has the same main action: **Co
 
 | Tab | Use it to | Choose |
 |---|---|---|
-| **New review** | Run a first or independent review of the whole MR | Description, code inclusion and optional file filters |
+| **New review** | Run a first or independent review of the whole MR, including after other reviewers | Description, code inclusion, existing discussions and optional file filters |
 | **Fix review findings** | Implement fixes in code | Findings for your coding AI; unresolved discussions are selected initially |
 | **Prepare replies** | Explain fixes after pushing them | Published discussions you want to answer |
 | **Follow-up review** | Verify fixes and find new defects | Discussions and the previously reviewed revision; without one, check the full current MR |
@@ -36,19 +36,21 @@ Open an MR and hover over the extension icons to find **AI review…** and **Imp
 
 ## Configure automatic instructions
 
-Open **AI review → Automatic instructions (advanced)** in extension settings. All 31 blocks start enabled and apply only to relevant tasks. Expand a block to edit its text, disable it while keeping the text, or clear the text to omit it. Reset restores its English default and enables that block. Each text supports up to 1,500 characters. `{language}` inserts the selected response language; `{selection}` inserts whether replies cover selected or unresolved discussions.
+Open **AI review → Automatic instructions (advanced)** in extension settings. All 32 blocks start enabled and apply only to relevant tasks. Expand a block to edit its text, disable it while keeping the text, or clear the text to omit it. Reset restores its English default and enables that block. Each text supports up to 1,500 characters. `{language}` inserts the selected response language; `{selection}` inserts whether replies cover selected or unresolved discussions.
 
 The main task prompts remain independently editable and can contain similar instructions. The full task preview shows the resulting combination. MR identifiers, JSON examples and loading notices are generated from the current context; editing instructions does not disable file filters, targeting checks or publication validation. The format-only shortcut always copies the supported import format without task instructions.
 
 ## Review an MR from scratch
 
 1. Open **AI review…** and choose the **New review** tab.
-2. Set file filters and the description/code options. Optionally edit the prompt for this copy.
+2. Set file filters and the description/code options. Enable **Account for existing discussions** if the MR already has comments. Optionally edit the prompt for this copy.
 3. Click **Preview**, then **Copy task**, or copy directly.
 4. Paste the task into your AI with access to the pinned source. Ask it to inspect the combined result of every MR commit and the necessary surrounding code and tests. This task produces findings, without modifying code.
 5. Import and review the returned JSON using the next section.
 
 Discussion selection does not affect New review: it always checks the whole MR within the configured file scope.
+
+**Account for existing discussions** (disabled by default, remembered) appends published discussions at the end of the task in a compact form: file and line, status, author, the first 600 characters of the opening comment and the reply count. Replies, drafts and discussions outside the file filters are not included. The AI is told to review the whole MR independently first and only then drop findings that substantially repeat a listed discussion, including resolved ones; it does not verify or reply to those discussions. This lets a second reviewer run their own review without repeating the first one. How strictly the AI ignores the list while reviewing depends on the model, so still check the preview for duplicates. If discussions cannot be loaded, the task is still prepared with a warning.
 
 Import retains a **Copy review prompt** shortcut under **Advanced settings** for a repository-based task without description or diff. Use the New review tab for those options.
 
@@ -124,8 +126,9 @@ Each participant has their own AI, settings and comparison revision. Shared cont
 
 | Situation | How to work |
 |---|---|
-| Two independent reviews | Each uses fresh review. Both check existing discussions and remove duplicates before publication |
-| Continue someone else's review | Select relevant threads or all threads, then repeat review with no previous revision for a full current check |
+| Two independent reviews | Each uses New review. The second reviewer enables **Account for existing discussions** so the AI does not repeat published findings; still remove remaining duplicates before publication |
+| Review after someone else without re-checking their findings | New review with **Account for existing discussions**. The AI reviews the whole MR independently and does not reply to existing threads |
+| Verify whether someone else's findings were fixed | Select relevant threads or all threads, then repeat review with no previous revision for a full current check |
 | Split review by area | Agree on file ownership and filters, and decide who checks interactions between those areas |
 | Split fixes | Each person copies only their selected feedback and coordinates work on the shared branch |
 | Reply only about your own fixes | Select your threads in the Prepare replies tab and click Copy task |

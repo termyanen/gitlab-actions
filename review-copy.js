@@ -7,7 +7,7 @@
   if (!document.querySelector('meta[content="GitLab"], body[data-page]')) return;
   window.__glReviewCopyLoaded = true;
   var data = window.GlReviewExport;
-  var settings = { show_ai_review_copy: true, ai_review_prompt: data.DEFAULT_PROMPT, ai_review_fresh_prompt: data.DEFAULT_FRESH_REVIEW_PROMPT, ai_review_file_filter: {}, ai_review_include_description: null, ai_review_reply_prompt: '', ai_review_repeat_prompt: '', language: 'auto' };
+  var settings = { show_ai_review_copy: true, ai_review_prompt: data.DEFAULT_PROMPT, ai_review_fresh_prompt: data.DEFAULT_FRESH_REVIEW_PROMPT, ai_review_file_filter: {}, ai_review_include_description: null, ai_review_fresh_existing: false, ai_review_reply_prompt: '', ai_review_repeat_prompt: '', language: 'auto' };
   if (window.GlReviewWorkflow) Object.assign(settings, window.GlReviewWorkflow.instructionDefaults());
   var messages = null;
   settings.ai_review_confirm_close = false;
@@ -86,7 +86,7 @@
     if (state.promptMode) prompts[state.promptMode] = state.prompt.value;
     return JSON.stringify([prompts, state.filterFields.map(function(field) { return field.input.value; }),
       state.filter.value, state.search.value, state.includeGeneral.checked, state.includeDescription.checked,
-      state.includeCode.checked, state.includeReplies.checked, state.baseline.value, state.baselineSha.value]);
+      state.includeCode.checked, state.includeExisting.checked, state.includeReplies.checked, state.baseline.value, state.baselineSha.value]);
   }
 
   function hasChanges(state) {
@@ -141,6 +141,15 @@
         failed(chrome.runtime.lastError);
       });
     } catch (error) { failed(error); }
+  }
+
+  function rememberExisting(state) {
+    settings.ai_review_fresh_existing = state.includeExisting.checked;
+    try {
+      chrome.storage.sync.set({ ai_review_fresh_existing: settings.ai_review_fresh_existing }, function() {
+        if (chrome.runtime.lastError && isCurrent(state)) status(state, t('settingsSaveFailed'), true);
+      });
+    } catch (error) { if (isCurrent(state)) status(state, t('settingsSaveFailed'), true); }
   }
 
   function chosenCount(state) { return state.selected.size; }
@@ -219,6 +228,8 @@
     state.descriptionToggle.hidden = mode === 'replies';
     state.codeToggle.hidden = !fresh && mode !== 'repeat';
     state.codeHint.hidden = state.codeToggle.hidden;
+    state.existingToggle.hidden = !fresh;
+    state.existingHint.hidden = !fresh;
     var enabled = !!state.snapshot && !state.loading && !state.busy;
     var hasContent = chosenCount(state) > 0 || (!mr && state.includeDescription.checked);
     var missingIntent = state.intent.noteId && !state.intentFound && !chosenCount(state);
@@ -249,6 +260,7 @@
       summary += ' ' + t(state.includeCode.checked ? 'aiReviewSummaryCodeOn' : 'aiReviewSummaryCodeOff');
       if (state.filterFields.some(function(field) { return field.input.value.trim(); })) summary += ' ' + t('aiReviewSummaryFiltered');
     }
+    if (fresh) summary += ' ' + t(state.includeExisting.checked ? 'aiReviewSummaryExistingOn' : 'aiReviewSummaryExistingOff');
     if (mode === 'repeat' && !state.baseline.value) summary += ' ' + t('aiReviewSummaryFullRepeat');
     if (mode === 'replies' && state.snapshot && state.snapshot.discussions.filter(function(thread) { return data.getNotes(thread).some(function(note) { return state.selected.has(String(note.id)); }); }).length !== replyCount) summary += ' ' + t('aiReviewSummaryDraftsExcluded');
     state.taskSummary.textContent = summary;
@@ -530,6 +542,7 @@
     try { if (fresh) opts.fileFilter = fileFilter(state); } catch (error) { state.busy = false; updateActions(state); status(state, t('aiReviewFilterInvalid'), true); return; }
     opts.prompt = state.prompt.value;
     opts.includeCode = state.includeCode.checked;
+    if (fresh) opts.includeExisting = state.includeExisting.checked;
     opts.includeDescription = state.includeDescription.checked;
     opts.includeReplies = state.context.kind === 'merge_requests' && state.includeReplies.checked;
     opts.signal = state.exportController.signal;
@@ -812,6 +825,18 @@
     var codeHint = element('p', 'gl-review-muted', t('aiReviewIncludeCodeHint'));
     codeHint.hidden = codeToggle.hidden;
     state.codeHint = codeHint; right.appendChild(codeHint);
+    state.existingToggle = element('label', 'gl-review-description-toggle gl-review-existing-toggle');
+    state.existingToggle.hidden = true;
+    state.includeExisting = element('input');
+    state.includeExisting.type = 'checkbox';
+    state.includeExisting.checked = settings.ai_review_fresh_existing === true;
+    state.includeExisting.addEventListener('change', function() { invalidate(state); rememberExisting(state); });
+    state.existingToggle.appendChild(state.includeExisting);
+    state.existingToggle.appendChild(element('span', '', t('aiReviewIncludeExisting')));
+    right.appendChild(state.existingToggle);
+    state.existingHint = element('p', 'gl-review-muted', t('aiReviewIncludeExistingHint'));
+    state.existingHint.hidden = true;
+    right.appendChild(state.existingHint);
     var promptDetails = element('details', 'gl-review-prompt-details');
     state.promptLabel = element('summary', '', t('aiReviewPrompt'));
     promptDetails.appendChild(state.promptLabel);
@@ -1045,7 +1070,7 @@
         settings[key] = changes[key].newValue;
         // A remembered checkbox value applies to future pickers. Saving it (or
         // receiving another tab's choice) must not close an ongoing export.
-        if (key !== 'ai_review_include_description' && key !== 'ai_review_confirm_close') relevant = true;
+        if (key !== 'ai_review_include_description' && key !== 'ai_review_fresh_existing' && key !== 'ai_review_confirm_close') relevant = true;
       }
     });
     if (!relevant) return;

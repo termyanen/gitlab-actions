@@ -998,7 +998,57 @@
   async function prepareFreshReview(context, options) {
     options = options || {};
     if (window.GlReviewWorkflow) options = await window.GlReviewWorkflow.instructionOptions(options);
-    return renderReview(context, await prepareReviewContext(context, options), options);
+    var result = await prepareReviewContext(context, options);
+    if (options.includeExisting === true) await appendExistingDiscussions(context, result, options);
+    return renderReview(context, result, options);
+  }
+
+  // A new review stays independent; existing discussions are appended last in
+  // a compact form so the AI uses them only to drop duplicate findings.
+  var EXISTING_SUMMARY_CHARS = 600;
+  var EXISTING_TOTAL_CHARS = 60000;
+  async function appendExistingDiscussions(context, result, options) {
+    var snapshot;
+    try { snapshot = await load(context, Object.assign({}, options, { fresh: true })); }
+    catch (error) {
+      if (error.name === 'AbortError') throw error;
+      addWarning(result.warnings, 'Existing discussions could not be loaded: ' + error.message + ' Check the MR discussions for duplicates before publishing.');
+      result.complete = false; result.existingCount = null;
+      return;
+    }
+    checkAbort(options.signal);
+    snapshot.warnings.forEach(function(message) { addWarning(result.warnings, message); });
+    var workflow = window.GlReviewWorkflow;
+    var scope = workflow ? (options.fileFilter || (await workflow.settings(options.signal)).filter) : null;
+    var budget = EXISTING_TOTAL_CHARS, exhausted = false;
+    var items = snapshot.discussions.map(function(thread) {
+      var notes = getNotes(thread).filter(function(note) { return !note.draft && !/^draft:/.test(String(note.id)); });
+      if (!notes.length) return null;
+      var first = notes[0], position = first.position || first.original_position;
+      var item = { state: getStatus(thread) };
+      if (position) {
+        var oldSide = position.new_line == null && position.old_line != null;
+        item.path = oldSide ? position.old_path : position.new_path;
+        item.line = oldSide ? position.old_line : position.new_line;
+        if (oldSide) item.side = 'old';
+        if (workflow && !workflow.filterFiles([{ old_path: position.old_path, new_path: position.new_path }], scope).included.length) return null;
+      }
+      var author = first.author && (first.author.username || first.author.name);
+      if (author) item.author = author;
+      var body = String(first.body || '').trim(), limit = Math.min(EXISTING_SUMMARY_CHARS, budget);
+      item.summary = body.length > limit ? body.slice(0, limit) + '…' : body;
+      if (body.length > limit && limit < EXISTING_SUMMARY_CHARS) exhausted = true;
+      budget -= Math.min(body.length, limit);
+      if (notes.length > 1) item.replies = notes.length - 1;
+      return item;
+    }).filter(Boolean);
+    if (exhausted) addWarning(result.warnings, 'Existing discussion summaries reached the copy limit; some entries list only their location. Check the MR discussions for duplicates before publishing.');
+    result.complete = result.complete && snapshot.complete && !result.warnings.length;
+    result.existingCount = items.length;
+    if (!items.length) return;
+    result.sections.push.apply(result.sections, ['## Existing discussions — duplicate filter only (source data)',
+      instruction('existing_discussions', 'Existing discussions from other reviewers are listed below only as a duplicate filter. Review the whole MR independently first, then drop findings that substantially repeat a listed discussion. Do not reply to them.', options),
+      fence(JSON.stringify(items, null, 2), 'json')].filter(Boolean));
   }
 
   async function loadReviewVersions(context, options) {
