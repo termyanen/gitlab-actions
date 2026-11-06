@@ -1,6 +1,6 @@
 # Privacy Policy — GitLab MR Actions
 
-**Last updated:** October 13, 2026
+**Last updated:** November 7, 2026
 
 ## Overview
 
@@ -53,7 +53,7 @@ The extension runs bundled JavaScript and does not download executable code or e
 | `alarms` | Wake the service worker to restore unfinished CI tasks |
 | `notifications` | Completion notifications for background jobs |
 | `tabs` | Communicate with GitLab tabs and locate tabs needed for user-triggered work |
-| `cookies` | Existing GitLab/Jira session authentication used by integration features |
+| `cookies` | Read session cookies for the configured Jira integration; GitLab requests use the signed-in tab |
 | Optional HTTPS host access | Requested for the configured Jira domain |
 | Content scripts on HTTPS pages | Recognize self-hosted GitLab installations on different domains and provide GitLab features there |
 
@@ -67,4 +67,4 @@ Clearing extension data does not delete comments or drafts already saved in GitL
 
 ## 7. Children, updates and contact
 
-This developer tool is not directed at children under 13. Policy updates are posted with a new date. The source is available for inspection in the [GitHub repository](https://github.com/termyanen/gitlab-actions). For questions, open a [GitHub issue](https://github.com/termyanen/gitlab-actions/issues).
+This developer tool is not directed at children under 13. Policy updates are posted with a new date. The source is available for inspection in the [GitHub repository](https://github.com/termyanen/gitlab-actions). For general questions, open a [GitHub issue](https://github.com/termyanen/gitlab-actions/issues). Report vulnerabilities through the [private security reporting procedure](https://github.com/termyanen/gitlab-actions/security/policy).

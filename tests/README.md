@@ -1,6 +1,6 @@
 # Regression tests
 
-Run from the repository root with Node.js 22.13+ or 24+:
+Run from the repository root with Node.js 22.x (22.13+) or 24+:
 
 ```sh
 npm ci
@@ -79,12 +79,13 @@ without replaying its play request. They use local fixtures and do not establish
 compatibility with a live GitLab/Jira server. Each run removes its test profile.
 
 The refactor review against `main` (`1d97afe`) ran the same 659 behavioral checks
-against both implementations; all passed on both. After the architecture pass,
-the full suite has 839 Node tests and 14 production-browser scenarios. Review UI regressions also cover
+against both implementations; all passed on both. This is a historical comparison,
+documented in [the refactor audit](../docs/REFACTOR_PLAN_RU.md). Current test counts
+come from the command output. Review UI regressions also cover
 keeping an edited draft when navigation is declined, ignoring late validation
 responses, recovering from an aborted export after returning, and requiring new
-validation after an interrupted import send. Test counts describe this review
-snapshot, not a whole-extension coverage percentage.
+validation after an interrupted import send. Test counts are not a
+whole-extension coverage percentage.
 
 Architecture fixtures verify downward imports, slice and Shared public APIs,
 cycles through barrels, re-exports and literal lazy imports, mixed/type-only
@@ -343,7 +344,7 @@ still need tests; their absence does not establish a bug.
 | Priority | Area | Scenarios still missing |
 | --- | --- | --- |
 | Next | Real browser lifecycle | Natural idle suspension, browser shutdown/relaunch, offline request completion and page reloads. Explicit Chromium worker stop/restart and active job-chain recovery are covered; persisted checkpoints reconcile the pinned pipeline before continuing and do not blindly replay an uncertain mutation. Cherry-pick retry checkpoints last only while its modal remains open. |
-| Next | Popup/settings | Debounced autosave, profile switching, button reordering, language changes and permission approval/denial in Chrome. |
+| Next | Popup/settings | Drag-and-drop button reordering and actual host-permission approval/denial dialogs. Autosave/reload, draft preservation across profile/language switches and display-rule validation already have Chromium coverage. |
 | Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
 | Next | Group play | Parent/child pipelines with matching stage names, pagination, status changes while starting a group and partial API failures. |
 | Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog, Jira enrichment failures and malformed/empty-matching ticket regexes. |

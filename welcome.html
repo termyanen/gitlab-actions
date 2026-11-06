@@ -142,11 +142,11 @@
   <ol class="steps">
     <li>
       <strong data-i18n="welcomeStep1Title">Open any Merge Request page</strong>
-      <span data-i18n="welcomeStep1Desc">Navigate to any MR on your GitLab instance (self-hosted or gitlab.com)</span>
+      <span data-i18n="welcomeStep1Desc">Open an HTTPS MR page while signed in to GitLab.com or your self-hosted GitLab. Allow the extension access to that site.</span>
     </li>
     <li>
       <strong data-i18n="welcomeStep2Title">See action buttons appear</strong>
-      <span data-i18n="welcomeStep2Desc">Buttons will show at the bottom of the MR widget area. We enabled the most popular ones for you.</span>
+      <span data-i18n="welcomeStep2Desc">Buttons appear on the MR page. A starter set is enabled on first installation.</span>
     </li>
     <li>
       <strong data-i18n="welcomeStep3Title">Customize via extension popup</strong>
@@ -166,11 +166,15 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardCancelPipelineTitle">Cancel pipeline</h3>
-      <p data-i18n="cardCancelPipelineDesc">Cancel all running pipelines on the MR instantly.</p>
+      <p data-i18n="cardCancelPipelineDesc">Request cancellation of running or pending MR pipelines.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardDraftToggleTitle">Draft toggle</h3>
       <p data-i18n="cardDraftToggleDesc">Switch MR between Draft and Ready status without editing the title.</p>
+    </div>
+    <div class="card">
+      <h3 data-i18n="cardRetryFailedTitle">Retry failed jobs</h3>
+      <p data-i18n="cardRetryFailedDesc">Retry failed jobs in the MR’s current pipeline. Successful jobs are not affected.</p>
     </div>
   </div>
 
@@ -197,19 +201,15 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardShipTitle">Ship (Version + Merge)</h3>
-      <p data-i18n="cardShipDesc">Bump version, wait for pipeline, auto-merge. Full release flow in one click.</p>
+      <p data-i18n="cardShipDesc">Rebase when needed, bump the version and request auto-merge. Keep the MR tab open until the action completes.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardForceMergeTitle">Force merge</h3>
-      <p data-i18n="cardForceMergeDesc">Skip pipeline and merge immediately. Use with caution.</p>
+      <p data-i18n="cardForceMergeDesc">Request merge without waiting for pipeline success. GitLab permissions and merge rules still apply.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardReviewersTitle">Reviewers</h3>
-      <p data-i18n="cardReviewersDesc">Repost last reviewer assignment comment or trigger a reviewer pipeline job.</p>
-    </div>
-    <div class="card">
-      <h3 data-i18n="cardRetryFailedTitle">Retry failed jobs</h3>
-      <p data-i18n="cardRetryFailedDesc">Retry all failed jobs in the latest pipeline. Already succeeded jobs are not affected.</p>
+      <p data-i18n="cardReviewersDesc">Mention configured usernames in a comment, reuse a reviewer comment, or run a CI job. Does not assign GitLab’s native reviewer field.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardCopyMrTitle">Copy MR</h3>
@@ -229,7 +229,7 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardFailedJobViewTitle">Failed job quick view</h3>
-      <p data-i18n="cardFailedJobViewDesc">When a pipeline fails, shows failed job names and last lines of the error log directly on the MR page. No need to click through to find the error.</p>
+      <p data-i18n="cardFailedJobViewDesc">Preview failed jobs and log tails on the MR page. Job and line counts are configurable in Display rules and limits.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardQuickCommentsTitle">Quick comments</h3>
@@ -253,15 +253,15 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardCherryPickTitle">Cherry-pick to branches</h3>
-      <p data-i18n="cardCherryPickDesc">Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries — it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira badges next to each commit open the full ticket sidebar.</p>
+      <p data-i18n="cardCherryPickDesc">Cherry-pick to selected branches directly or through new MRs. With Smart fallback enabled, verified version-file conflicts can be replayed without that file, optionally bumping the version. Unsafe changes stop for inspection.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardSensitiveTitle">Sensitive file warning</h3>
-      <p data-i18n="cardSensitiveDesc">Shows a warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.</p>
+      <p data-i18n="cardSensitiveDesc">Flags sensitive files using built-in rules, additional patterns and exclusions. Configure them in Display rules and limits.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardGitCommandsTitle">Git command buttons</h3>
-      <p data-i18n="cardGitCommandsDesc">Copy git checkout and fetch commands for the MR branch with one click. Useful for local testing.</p>
+      <p data-i18n="cardGitCommandsDesc">Copy checkout, pull and hard-reset commands. Check your repository and origin remote before running them; hard reset discards local changes.</p>
     </div>
   </div>
 
@@ -281,7 +281,7 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardReviewerBadgeTitle">"Your review" badge</h3>
-      <p data-i18n="cardReviewerBadgeDesc">Scans first 10 comments for "Reviewer(s): @you" pattern and shows a badge if you are assigned. Separate from GitLab's built-in reviewer feature.</p>
+      <p data-i18n="cardReviewerBadgeDesc">Searches the oldest comments for “Reviewer(s): @you”. Scan depth is configurable (10 by default). Separate from GitLab’s built-in reviewer feature.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardNeedsReviewTitle">"Needs my review" toggle</h3>
@@ -293,11 +293,11 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardThreadsTitle">Unresolved threads count</h3>
-      <p data-i18n="cardThreadsDesc">Shows a red badge with the number of unresolved discussion threads on each MR in the list.</p>
+      <p data-i18n="cardThreadsDesc">Show unresolved thread counts. “+” marks a full first page; “?” means the count is unavailable.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardSizeTitle">MR size labels</h3>
-      <p data-i18n="cardSizeDesc">Color-coded size badges (S/M/L/XL) based on the number of changed lines. S: 1-50, M: 51-200, L: 201-500, XL: 500+.</p>
+      <p data-i18n="cardSizeDesc">S/M/L/XL badges with configurable line and file thresholds in Display rules and limits.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardBranchesTitle">Branch names on MR list</h3>
@@ -305,11 +305,11 @@
     </div>
     <div class="card">
       <h3 data-i18n="cardJiraTitle">Jira status badges</h3>
-      <p data-i18n="cardJiraDesc">Shows Jira ticket statuses on the MR list page. Parses ticket IDs from MR titles (e.g. CCS-1111) and displays colored status badges. Set your Jira URL in settings.</p>
+      <p data-i18n="cardJiraDesc">Shows Jira ticket statuses on the MR list page. Parses ticket IDs from MR titles (e.g. CCT-1111) and displays colored status badges. Set your Jira URL in settings.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardJiraRegexTitle">Custom ticket regex</h3>
-      <p data-i18n="cardJiraRegexDesc">Configure a custom regular expression for parsing Jira ticket IDs from MR titles. Useful for non-standard ticket prefixes.</p>
+      <p data-i18n="cardJiraRegexDesc">Configure a custom regular expression for parsing Jira ticket IDs from MR titles. Useful when your project uses non-standard ticket prefixes.</p>
     </div>
     <div class="card">
       <h3 data-i18n="cardJiraSidebarTitle">Jira ticket sidebar</h3>
@@ -336,7 +336,7 @@
       <p data-i18n="cardJiraQuickActionsDesc">One-click buttons for status, assignee, labels, versions and other fields. Each button can update one field or several.</p>
     </div>
     <div class="card">
-      <h3 data-i18n="cardJiraDetailsTitle">Issue type & priority icons</h3>
+      <h3 data-i18n="cardJiraDetailsTitle">Issue type &amp; priority icons</h3>
       <p data-i18n="cardJiraDetailsDesc">Show Jira issue type and priority icons next to status badges on MR list and detail pages. Uses native Jira icons.</p>
     </div>
   </div>
@@ -357,9 +357,9 @@
     <h2 data-i18n="welcomeHowItWorks">How it works</h2>
     <p data-i18n="welcomeHowDesc">This extension uses your existing GitLab session (cookies) to call the GitLab API on your behalf. No personal access tokens needed.</p>
     <ul style="color:#555; font-size:14px;">
-      <li data-i18n="welcomeHowList1">Works with any self-hosted GitLab instance and gitlab.com</li>
+      <li data-i18n="welcomeHowList1">For GitLab.com and self-hosted GitLab over HTTPS; features depend on server APIs, page layout and your permissions.</li>
       <li data-i18n="welcomeHowList2">Actions use the same permissions as your logged-in user</li>
-      <li data-i18n="welcomeHowList3">Long-running job chains run in the background and survive page navigation</li>
+      <li data-i18n="welcomeHowList3">Custom job chains run in the background. Keep a signed-in tab on the same GitLab open for API access.</li>
       <li data-i18n="welcomeHowList4">Per-project profiles let you customize buttons for different repositories</li>
     </ul>
   </div>
