@@ -716,5 +716,7 @@
   "mrAction_clear_reviewers": {"message": "Снять ревьюеров"},
   "mrAction_clear_milestone": {"message": "Убрать milestone"},
   "mrActionInvalid": {"message": "Введите название кнопки, выберите доступное действие и укажите хотя бы одну метку для добавления, удаления или замены."},
-  "mrActionConfirm": {"message": "Применить «$1» к этому MR?\n$2"}
+  "mrActionConfirm": {"message": "Применить «$1» к этому MR?\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab не вернул статус rebase. Обновите страницу MR и попробуйте снова."},
+  "errorJobsPageRepeated": {"message": "GitLab вернул повторную страницу джоб пайплайна #$1. Не удалось полностью загрузить список джоб."}
 }

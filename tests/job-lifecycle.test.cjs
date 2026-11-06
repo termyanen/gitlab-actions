@@ -32,7 +32,7 @@ async function assertCancelled(env, id) {
     var held = deferred();
     var jobReads = 0;
     var env = harness.background({ gitlab: function(req) {
-      if (req.path.endsWith('/merge_requests/12/pipelines')) return stage === 'pipeline lookup' ? held.promise : [{ id: 100 }];
+      if (req.path === '/projects/37/merge_requests/12') return stage === 'pipeline lookup' ? held.promise : { head_pipeline: { id: 100, project_id: 37 } };
       if (req.path.includes('/pipelines/100/jobs')) {
         jobReads++;
         if ((stage === 'job lookup' && jobReads === 1) || (stage === 'poll response' && jobReads === 2)) return held.promise;
@@ -47,7 +47,7 @@ async function assertCancelled(env, id) {
     if (stage === 'poll response') await env.clock.next();
     var before = env.requests.length;
     await cancel(env, started.taskId);
-    if (stage === 'pipeline lookup') held.resolve([{ id: 100 }]);
+    if (stage === 'pipeline lookup') held.resolve({ head_pipeline: { id: 100, project_id: 37 } });
     if (stage === 'job lookup') held.resolve([{ id: 8, name: 'build', status: 'manual' }]);
     if (stage === 'play response') held.resolve({ id: 8 });
     if (stage === 'poll response') held.resolve([{ id: 8, name: 'build', status: 'success' }]);
@@ -72,7 +72,7 @@ test('a late failed request cannot replace the cancellation reason', async funct
 test('cancellation after retry rejection prevents the 403 refetch and retry', async function() {
   var held = deferred();
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     if (req.method === 'GET') return [{ id: 8, name: 'build', status: 'failed' }];
     return held.promise;
   } });
@@ -89,7 +89,7 @@ test('cancellation after retry rejection prevents the 403 refetch and retry', as
 test('explicit chain starts from two tabs retain independent trackers', async function() {
   var played = false;
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     if (req.method === 'GET') return [{ id: 8, name: 'build', status: played ? 'running' : 'manual' }];
     played = true;
     return { id: 8 };
@@ -119,7 +119,7 @@ test('closing the initiating tab lets a chain use another GitLab tab', async fun
   var tabs = [{ id: 1 }, { id: 2 }];
   var reads = 0;
   var env = harness.background({ tabs: tabs, gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     reads++;
     return [{ id: 8, name: 'build', status: reads === 1 ? 'running' : 'success' }];
   } });
@@ -134,7 +134,7 @@ test('closing the initiating tab lets a chain use another GitLab tab', async fun
 test('closing all GitLab tabs ends the chain without starting its next job', async function() {
   var tabs = [{ id: 1 }];
   var env = harness.background({ tabs: tabs, gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     return [{ id: 8, name: 'build', status: 'running' }];
   } });
   var started = await start(env);
@@ -149,7 +149,7 @@ test('closing all GitLab tabs ends the chain without starting its next job', asy
 
 test('a fresh worker reports lost in-memory tasks and never replays mutations automatically', async function() {
   var oldWorker = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     return [{ id: 8, name: 'build', status: 'running' }];
   } });
   var started = await start(oldWorker);
@@ -189,7 +189,7 @@ test('cancelling while Chrome finds tabs prevents delivery of the API request', 
 
 test('a completed chain can be started again as a new task', async function() {
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     return [{ id: 8, name: 'build', status: 'success' }];
   } });
   var first = await start(env, { jobs: ['build'] });
@@ -204,7 +204,7 @@ test('a completed chain can be started again as a new task', async function() {
 test('an explicit chain on a newer pipeline is independent of an older active chain', async function() {
   var latest = 100;
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/pipelines')) return [{ id: latest }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: latest, project_id: 37 } };
     if (req.method === 'GET') return [{ id: req.path.includes('/100/') ? 1000 : 1010, name: 'build', status: 'manual' }];
     return { id: Number(req.path.split('/').slice(-2)[0]) };
   } });

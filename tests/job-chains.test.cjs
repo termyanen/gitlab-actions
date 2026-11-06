@@ -11,7 +11,7 @@ function task() {
 test('job lookups stay on the initial pipeline when a new MR pipeline appears', async function() {
   var latest = 100;
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/merge_requests/12/pipelines')) return [{ id: latest }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: latest, project_id: 37 } };
     if (req.path === '/projects/37/pipelines/100/jobs?per_page=100') return [{ id: 1000, name: 'build', status: 'running' }];
     if (req.path === '/projects/37/pipelines/101/jobs?per_page=100') return [{ id: 1010, name: 'build', status: 'success' }];
     throw new Error('Unexpected path: ' + req.path);
@@ -21,7 +21,7 @@ test('job lookups stay on the initial pipeline when a new MR pipeline appears', 
   latest = 101;
   assert.equal((await env.finish(env.context.findJobByName(chain, 'build'))).id, 1000);
   assert.equal(chain.pipelineId, 100);
-  assert.equal(env.requests.filter(function(req) { return req.path.endsWith('/merge_requests/12/pipelines'); }).length, 1);
+  assert.equal(env.requests.filter(function(req) { return req.path === '/projects/37/merge_requests/12'; }).length, 1);
 });
 
 test('complete chain never runs the next job on a newer pipeline', async function() {
@@ -29,7 +29,7 @@ test('complete chain never runs the next job on a newer pipeline', async functio
   var buildStatus = 'manual';
   var deployStatus = 'manual';
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/merge_requests/12/pipelines')) return [{ id: latest }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: latest, project_id: 37 } };
     if (req.path.includes('/pipelines/')) {
       var wrongPipeline = req.path.includes('/101/');
       return [
@@ -92,9 +92,9 @@ test('missing or deleted pinned pipeline stops instead of switching pipelines', 
 });
 
 test('empty MR pipelines fail without playing jobs', async function() {
-  var env = harness.background({ gitlab: function() { return []; } });
+  var env = harness.background({ gitlab: function(req) { return req.path.endsWith('/pipelines') ? [] : {}; } });
   await assert.rejects(env.finish(env.context.startJobByName(task(), 'build')), /not found/);
-  assert.equal(env.requests.length, 1);
+  assert.equal(env.requests.length, 2);
 });
 
 ['failed', 'canceled'].forEach(function(status) {
@@ -128,7 +128,7 @@ test('a cancelled chain starts no further jobs', function() {
     var latest = 100;
     var attempted = false;
     var env = harness.background({ gitlab: function(req) {
-      if (req.path.endsWith('/merge_requests/12/pipelines')) return [{ id: latest }];
+      if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: latest, project_id: 37 } };
       if (req.path === '/projects/37/pipelines/100/jobs?per_page=100') {
         return [{ id: attempted && alreadyRetried ? 9 : 8, name: 'build', status: attempted && alreadyRetried ? 'running' : 'failed' }];
       }
@@ -143,7 +143,7 @@ test('a cancelled chain starts no further jobs', function() {
     if (alreadyRetried) assert.equal((await result).id, 9);
     else await assert.rejects(result, /403/);
     assert.equal(env.requests.filter(function(req) { return req.method === 'POST'; }).length, 1);
-    assert.equal(env.requests.filter(function(req) { return req.path.endsWith('/merge_requests/12/pipelines'); }).length, 1);
+    assert.equal(env.requests.filter(function(req) { return req.path === '/projects/37/merge_requests/12'; }).length, 1);
   });
 });
 
@@ -162,7 +162,7 @@ test('polling follows a retried job inside the original pipeline', async functio
 test('each chain resolves its own pipeline independently', async function() {
   var latest = 100;
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/merge_requests/12/pipelines')) return [{ id: latest }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: latest, project_id: 37 } };
     return [{ id: req.path.includes('/100/') ? 1000 : 1010, name: 'build', status: 'running' }];
   } });
   var first = task();
@@ -177,7 +177,7 @@ test('each chain resolves its own pipeline independently', async function() {
 
 test('a failed first job stops the chain before deploy', async function() {
   var env = harness.background({ gitlab: function(req) {
-    if (req.path.endsWith('/merge_requests/12/pipelines')) return [{ id: 100 }];
+    if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     if (req.method === 'GET') return [{ id: 8, name: 'build', status: 'running' }];
     throw new Error('Unexpected mutation: ' + req.path);
   } });

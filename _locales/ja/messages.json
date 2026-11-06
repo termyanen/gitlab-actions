@@ -706,5 +706,7 @@
   "mrAction_clear_reviewers": {"message": "レビュアーを解除"},
   "mrAction_clear_milestone": {"message": "マイルストーンを解除"},
   "mrActionInvalid": {"message": "ボタン名と有効なアクションを指定してください。追加・削除・置換には少なくとも1つのラベルが必要です。"},
-  "mrActionConfirm": {"message": "このMRに「$1」を適用しますか？\n$2"}
+  "mrActionConfirm": {"message": "このMRに「$1」を適用しますか？\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab からリベースの状態が返されませんでした。マージリクエストを再読み込みして、もう一度お試しください。"},
+  "errorJobsPageRepeated": {"message": "GitLab からパイプライン #$1 の同じジョブページが返されました。ジョブ一覧をすべて読み込めませんでした。"}
 }

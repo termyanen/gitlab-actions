@@ -125,41 +125,69 @@ function findJobByName(task, jobName) {
   // chain to another pipeline, including while waiting for or retrying a job.
   var pipelinePromise = task.pipelineId
     ? Promise.resolve(task.pipelineId)
-    : api(task, 'GET', '/projects/' + task.projectId + '/merge_requests/' + task.mrIid + '/pipelines')
-      .then(function(pipelines) {
-        if (!pipelines.length) return null;
-        task.pipelineId = pipelines[0].id;
-        return task.pipelineId;
+    : api(task, 'GET', '/projects/' + task.projectId + '/merge_requests/' + task.mrIid)
+      .then(function(mr) {
+        if (task._cancelled) throw new Error('Cancelled by user');
+        if (mr.head_pipeline && mr.head_pipeline.id) {
+          task.pipelineId = mr.head_pipeline.id;
+          task.pipelineProjectId = mr.head_pipeline.project_id || mr.source_project_id || task.projectId;
+          return task.pipelineId;
+        }
+        return api(task, 'GET', '/projects/' + task.projectId + '/merge_requests/' + task.mrIid + '/pipelines')
+          .then(function(pipelines) {
+            if (task._cancelled) throw new Error('Cancelled by user');
+            var latest = null;
+            for (var i = 0; i < pipelines.length; i++) {
+              var pipeline = pipelines[i];
+              if (mr.sha && pipeline.sha !== mr.sha) continue;
+              // Preserve GitLab's MR-pipeline preference within this SHA.
+              latest = pipeline;
+              break;
+            }
+            if (!latest) return null;
+            task.pipelineId = latest.id;
+            task.pipelineProjectId = latest.project_id || mr.source_project_id || task.projectId;
+            return task.pipelineId;
+          });
       });
+  var seen = {};
+  function readPage(pipelineId, page) {
+    var path = '/projects/' + (task.pipelineProjectId || task.projectId) + '/pipelines/' + pipelineId + '/jobs?per_page=100';
+    if (page > 1) path += '&page=' + page;
+    return api(task, 'GET', path).then(function(jobs) {
+      if (task._cancelled) throw new Error('Cancelled by user');
+      // Pick the newest attempt within this pipeline; pagination must never
+      // redirect polling or a retry to a newly created MR pipeline.
+      var found = null;
+      var hasNewJobs = false;
+      for (var i = 0; i < jobs.length; i++) {
+        if (jobs[i].name === jobName && (!found || jobs[i].id > found.id)) found = jobs[i];
+        if (!seen[jobs[i].id]) hasNewJobs = true;
+        seen[jobs[i].id] = true;
+      }
+      if (found || jobs.length < 100) return found;
+      if (!hasNewJobs) throw new Error(chrome.i18n.getMessage('errorJobsPageRepeated', [String(pipelineId)]));
+      return readPage(pipelineId, page + 1);
+    });
+  }
   return pipelinePromise
     .then(function(pipelineId) {
       if (!pipelineId) return null;
-      return api(task, 'GET', '/projects/' + task.projectId + '/pipelines/' + pipelineId + '/jobs?per_page=100');
-    })
-    .then(function(jobs) {
-      if (!jobs) return null;
-      // Pick the job with the highest ID (most recent, handles retries)
-      var found = null;
-      for (var i = 0; i < jobs.length; i++) {
-        if (jobs[i].name === jobName) {
-          if (!found || jobs[i].id > found.id) found = jobs[i];
-        }
-      }
-      return found;
+      return readPage(pipelineId, 1);
     });
 }
 
 function startJobByName(task, jobName) {
   return findJobByName(task, jobName).then(function(job) {
-    if (!job) throw new Error('Job "' + jobName + '" not found in pipeline');
+    if (!job) throw new Error('Job "' + jobName + '" not found in pipeline' + (task.pipelineId ? ' #' + task.pipelineId : ''));
 
     if (job.status === 'success') {
       return { id: job.id, name: jobName, skipped: true };
     } else if (job.status === 'manual' || job.status === 'skipped') {
-      return api(task, 'POST', '/projects/' + task.projectId + '/jobs/' + job.id + '/play')
+      return api(task, 'POST', '/projects/' + (task.pipelineProjectId || task.projectId) + '/jobs/' + job.id + '/play')
         .then(function(resp) { return { id: resp.id || job.id, name: jobName }; });
     } else if (job.status === 'failed' || job.status === 'canceled') {
-      return api(task, 'POST', '/projects/' + task.projectId + '/jobs/' + job.id + '/retry')
+      return api(task, 'POST', '/projects/' + (task.pipelineProjectId || task.projectId) + '/jobs/' + job.id + '/retry')
         .then(function(resp) { return { id: resp.id || job.id, name: jobName }; })
         .catch(function(err) {
           // 403 = already retried, refetch to find the new job
@@ -172,7 +200,7 @@ function startJobByName(task, jobName) {
           }
           throw err;
         });
-    } else if (job.status === 'running' || job.status === 'pending' || job.status === 'created') {
+    } else if (['running', 'pending', 'created', 'preparing', 'waiting_for_resource', 'scheduled'].indexOf(job.status) !== -1) {
       return { id: job.id, name: jobName };
     } else {
       throw new Error('Job "' + jobName + '" has unexpected status: ' + job.status);

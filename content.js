@@ -105,8 +105,9 @@
     });
   }
 
-  function getMR() {
-    return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID);
+  function getMR(includeRebase) {
+    return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID +
+      (includeRebase ? '?include_rebase_in_progress=true' : ''));
   }
 
   var _mergeMethod = null;
@@ -137,15 +138,6 @@
       skipCI ? { skip_ci: true } : {}
     ).then(function() {
       return pollRebase(0);
-    }).catch(function(err) {
-      var msg = (err.message || '').toLowerCase();
-      // 403/405 = rebase not supported for this project merge method — skip silently
-      if (msg.indexOf('403') !== -1 || msg.indexOf('forbidden') !== -1 ||
-          msg.indexOf('405') !== -1) {
-        return getMR();
-      }
-      // Re-throw real errors (conflict, closed MR, API changes) so user sees them
-      throw err;
     });
   }
 
@@ -153,8 +145,9 @@
     attempt = (attempt || 0) + 1;
     if (attempt > 60) throw new Error('Timeout waiting for rebase to complete');
     return sleep(2000).then(function() {
-      return getMR();
+      return getMR(true);
     }).then(function(mr) {
+      if (typeof mr.rebase_in_progress !== 'boolean') throw new Error(t('errorRebaseStatusMissing'));
       if (mr.rebase_in_progress) return pollRebase(attempt);
       if (mr.merge_error) throw new Error('Rebase failed: ' + mr.merge_error);
       return mr;
@@ -313,6 +306,58 @@
     });
   }
 
+  function getCurrentPipeline() {
+    return getMR().then(function(mr) {
+      if (mr.head_pipeline && mr.head_pipeline.id) {
+        return {
+          id: mr.head_pipeline.id,
+          projectId: mr.head_pipeline.project_id || mr.source_project_id || PROJECT_ID,
+        };
+      }
+      // Older servers may omit head_pipeline. Never run a job for
+      // an earlier commit just because its pipeline is first in the list.
+      return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
+        .then(function(pipelines) {
+          var latest = null;
+          for (var i = 0; i < pipelines.length; i++) {
+            var pipeline = pipelines[i];
+            if (mr.sha && pipeline.sha !== mr.sha) continue;
+            // GitLab prefers MR pipelines over branch pipelines, then orders
+            // each group newest first. Preserve that preference for this SHA.
+            latest = pipeline;
+            break;
+          }
+          if (!latest) throw new Error('No pipelines found');
+          return { id: latest.id, projectId: latest.project_id || mr.source_project_id || PROJECT_ID };
+        });
+    });
+  }
+
+  function getPipelineJobs(pipeline, jobName) {
+    var seen = {};
+    var collected = [];
+    function readPage(page) {
+      var path = '/projects/' + pipeline.projectId + '/pipelines/' + pipeline.id + '/jobs?per_page=100';
+      if (page > 1) path += '&page=' + page;
+      return api('GET', path).then(function(jobs) {
+        collected = collected.concat(jobs);
+        // GitLab sorts jobs newest first. Named lookups can stop as soon as
+        // the latest attempt is found; bulk retries need every page.
+        if (jobName && findLatestJobByName(jobs, jobName)) return collected;
+        if (jobs.length < 100) return collected;
+        // Protect against a proxy/server ignoring the page parameter.
+        var hasNewJobs = false;
+        for (var i = 0; i < jobs.length; i++) {
+          if (!seen[jobs[i].id]) hasNewJobs = true;
+          seen[jobs[i].id] = true;
+        }
+        if (!hasNewJobs) throw new Error(t('errorJobsPageRepeated', [String(pipeline.id)]));
+        return readPage(page + 1);
+      });
+    }
+    return readPage(1);
+  }
+
   function doReviewers(jobName, fixedReviewers) {
     jobName = jobName || 'get-reviewers';
     fixedReviewers = fixedReviewers || [];
@@ -347,23 +392,21 @@
         }
 
         showToast(t('toastNoReviewersTriggering', [jobName]), 'success');
-        return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
-          .then(function(pipelines) {
-            if (!pipelines.length) throw new Error('No pipelines found');
-            return api('GET', '/projects/' + PROJECT_ID + '/pipelines/' + pipelines[0].id + '/jobs?per_page=100');
+        var pipeline;
+        return getCurrentPipeline()
+          .then(function(selected) {
+            pipeline = selected;
+            return getPipelineJobs(pipeline, jobName);
           })
           .then(function(jobs) {
-            var job = null;
-            for (var i = 0; i < jobs.length; i++) {
-              if (jobs[i].name === jobName) { job = jobs[i]; break; }
-            }
-            if (!job) throw new Error('Job "' + jobName + '" not found in pipeline');
+            var job = findLatestJobByName(jobs, jobName);
+            if (!job) throw new Error('Job "' + jobName + '" not found in pipeline #' + pipeline.id + ' (project ' + pipeline.projectId + ')');
 
             if (job.status === 'manual' || job.status === 'skipped') {
-              return api('POST', '/projects/' + PROJECT_ID + '/jobs/' + job.id + '/play')
+              return api('POST', '/projects/' + pipeline.projectId + '/jobs/' + job.id + '/play')
                 .then(function() { return { action: 'triggered', jobId: job.id }; });
             } else if (job.status === 'failed' || job.status === 'canceled') {
-              return api('POST', '/projects/' + PROJECT_ID + '/jobs/' + job.id + '/retry')
+              return api('POST', '/projects/' + pipeline.projectId + '/jobs/' + job.id + '/retry')
                 .then(function() { return { action: 'retried', jobId: job.id }; });
             } else {
               return { action: 'already ' + job.status, jobId: job.id };
@@ -479,17 +522,18 @@
   }
 
   function doRetryFailed() {
-    return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
-      .then(function(pipelines) {
-        if (!pipelines.length) throw new Error(t('toastNoPipelines'));
-        return api('GET', '/projects/' + PROJECT_ID + '/pipelines/' + pipelines[0].id + '/jobs?per_page=100');
+    var pipeline;
+    return getCurrentPipeline()
+      .then(function(selected) {
+        pipeline = selected;
+        return getPipelineJobs(pipeline);
       })
       .then(function(jobs) {
         var failed = jobs.filter(function(j) { return j.status === 'failed'; });
         if (!failed.length) throw new Error(t('toastNoFailedJobs'));
         showToast(t('toastRetrying', [String(failed.length)]), 'success');
         return Promise.all(failed.map(function(job) {
-          return api('POST', '/projects/' + PROJECT_ID + '/jobs/' + job.id + '/retry').catch(function() {});
+          return api('POST', '/projects/' + pipeline.projectId + '/jobs/' + job.id + '/retry').catch(function() {});
         }));
       });
   }
@@ -506,37 +550,36 @@
     return found;
   }
 
-  function startJob(jobs, jobName) {
+  function startJob(jobs, jobName, pipeline) {
     var job = findLatestJobByName(jobs, jobName);
-    if (!job) throw new Error('Job "' + jobName + '" not found in pipeline');
+    if (!job) throw new Error('Job "' + jobName + '" not found in pipeline #' + pipeline.id + ' (project ' + pipeline.projectId + ')');
 
     if (job.status === 'success') {
       showToast(t('toastJobAlreadySucceeded', [jobName]), 'success');
       return Promise.resolve(job.id);
     } else if (job.status === 'manual' || job.status === 'skipped') {
       showToast(t('toastPlayingJob', [jobName]), 'success');
-      return api('POST', '/projects/' + PROJECT_ID + '/jobs/' + job.id + '/play').then(function(resp) {
+      return api('POST', '/projects/' + pipeline.projectId + '/jobs/' + job.id + '/play').then(function(resp) {
         return resp.id || job.id;
       });
     } else if (job.status === 'failed' || job.status === 'canceled') {
       showToast(t('toastRetryingJob', [jobName]), 'success');
-      return api('POST', '/projects/' + PROJECT_ID + '/jobs/' + job.id + '/retry')
+      return api('POST', '/projects/' + pipeline.projectId + '/jobs/' + job.id + '/retry')
         .then(function(resp) { return resp.id || job.id; })
         .catch(function(err) {
           // 403 = job already retried, refetch and find the new one
           if (err.message && err.message.indexOf('403') !== -1) {
-            return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
-              .then(function(p) { return api('GET', '/projects/' + PROJECT_ID + '/pipelines/' + p[0].id + '/jobs?per_page=100'); })
+            return getPipelineJobs(pipeline, jobName)
               .then(function(freshJobs) {
                 var fresh = findLatestJobByName(freshJobs, jobName);
                 if (!fresh) throw new Error('Job "' + jobName + '" not found after refetch');
-                if (fresh.id !== job.id) return startJob(freshJobs, jobName);
+                if (fresh.id !== job.id) return startJob(freshJobs, jobName, pipeline);
                 throw err;
               });
           }
           throw err;
         });
-    } else if (job.status === 'running' || job.status === 'pending' || job.status === 'created') {
+    } else if (['running', 'pending', 'created', 'preparing', 'waiting_for_resource', 'scheduled'].indexOf(job.status) !== -1) {
       showToast(t('toastJobAlreadyStatus', [jobName, job.status]), 'success');
       return Promise.resolve(job.id);
     } else {
@@ -588,13 +631,14 @@
 
     // Single job — run directly in content script
     if (jobNames.length === 1) {
-      return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
-        .then(function(pipelines) {
-          if (!pipelines.length) throw new Error('No pipelines found');
-          return api('GET', '/projects/' + PROJECT_ID + '/pipelines/' + pipelines[0].id + '/jobs?per_page=100');
+      var pipeline;
+      return getCurrentPipeline()
+        .then(function(selected) {
+          pipeline = selected;
+          return getPipelineJobs(pipeline, jobNames[0]);
         })
         .then(function(jobs) {
-          return startJob(jobs, jobNames[0]);
+          return startJob(jobs, jobNames[0], pipeline);
         });
     }
 
@@ -885,6 +929,19 @@
     // Wait until GitLab processes the new commit: pipeline started
     maxAttempts = maxAttempts || 40;
     var activePipelineStatuses = ['running', 'pending', 'created', 'waiting_for_resource', 'preparing', 'scheduled'];
+    function isReady(pipeline, mr, isHead) {
+      if (!pipeline) return false;
+      var sha = mr.diff_head_sha || (mr.diff_refs && mr.diff_refs.head_sha) || mr.sha;
+      // Merged-results and merge-train pipelines run a synthetic commit. Its
+      // SHA differs from the source SHA; trust the MR's own head reference.
+      var syntheticHead = isHead && (pipeline.ref === 'refs/merge-requests/' + MR_IID + '/merge' ||
+        pipeline.ref === 'refs/merge-requests/' + MR_IID + '/train');
+      if (!syntheticHead && sha && pipeline.sha && pipeline.sha !== sha) return false;
+      if (activePipelineStatuses.indexOf(pipeline.status) !== -1) return true;
+      // A short pipeline can finish before the next poll. Its matching SHA
+      // proves it belongs to this revision even though it is no longer active.
+      return !!((syntheticHead || (sha && pipeline.sha === sha)) && ['success', 'failed', 'canceled'].indexOf(pipeline.status) !== -1);
+    }
     var attempt = 0;
     function check() {
       attempt++;
@@ -894,11 +951,11 @@
       }).then(function(mr) {
         showToast(t('toastWaitingPipeline') + ' (' + attempt + '/' + maxAttempts + ')', 'success');
         var hp = mr.head_pipeline;
-        if (hp && hp.status && activePipelineStatuses.indexOf(hp.status) !== -1) return mr;
+        if (isReady(hp, mr, true)) return mr;
         // GitLab 18.x: head_pipeline may lag — check pipelines API directly
         return api('GET', '/projects/' + PROJECT_ID + '/merge_requests/' + MR_IID + '/pipelines')
           .then(function(pipelines) {
-            if (pipelines.length > 0 && activePipelineStatuses.indexOf(pipelines[0].status) !== -1) return mr;
+            if (pipelines.some(function(pipeline) { return isReady(pipeline, mr); })) return mr;
             return check();
           });
       });

@@ -121,6 +121,16 @@ checkbox applies to fresh and repeat reviews and starts unchecked; short code
 excerpts in copied feedback remain included. Fresh review loads MR data independently
 of discussions, so a discussion-loading failure does not prevent starting it.
 
+For a new review after another reviewer, enable **Account for existing discussions**
+in **New review**. It is off by default and remembers your choice. Published
+threads are appended as compact summaries so the AI can review the whole MR
+independently first, then remove substantially duplicate findings, including
+resolved ones. Drafts, reply bodies and threads outside the file filters are
+excluded. The **Existing discussions in a new review** automatic instruction
+controls this guidance; uncheck the option to exclude the summaries themselves.
+See the [review guide](docs/AI_REVIEW_GUIDE_EN.md) for the steps and the distinction
+from Follow-up review and Prepare replies.
+
 **Prompt for a fresh review** has its own saved setting and reset button. You can also
 edit it for the current export without changing your prompt for fixing existing
 feedback. Specify the response language there if desired. Review and reply
