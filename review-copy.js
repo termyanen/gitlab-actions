@@ -7,7 +7,7 @@
   if (!document.querySelector('meta[content="GitLab"], body[data-page]')) return;
   window.__glReviewCopyLoaded = true;
   var data = window.GlReviewExport;
-  var settings = { show_ai_review_copy: true, ai_review_prompt: data.DEFAULT_PROMPT, ai_review_fresh_prompt: data.DEFAULT_FRESH_REVIEW_PROMPT, ai_review_file_filter: {}, ai_review_include_description: null, ai_review_fresh_existing: true, ai_review_reply_prompt: '', ai_review_repeat_prompt: '', language: 'auto' };
+  var settings = { show_ai_review_copy: true, ai_review_prompt: data.DEFAULT_PROMPT, ai_review_fresh_prompt: data.DEFAULT_FRESH_REVIEW_PROMPT, ai_review_file_filter: {}, ai_review_include_description: null, ai_review_fresh_existing: false, ai_review_reply_prompt: '', ai_review_repeat_prompt: '', language: 'auto' };
   if (window.GlReviewWorkflow) Object.assign(settings, window.GlReviewWorkflow.instructionDefaults());
   var messages = null;
   settings.ai_review_confirm_close = false;
@@ -829,7 +829,7 @@
     state.existingToggle.hidden = true;
     state.includeExisting = element('input');
     state.includeExisting.type = 'checkbox';
-    state.includeExisting.checked = settings.ai_review_fresh_existing !== false;
+    state.includeExisting.checked = settings.ai_review_fresh_existing === true;
     state.includeExisting.addEventListener('change', function() { invalidate(state); rememberExisting(state); });
     state.existingToggle.appendChild(state.includeExisting);
     state.existingToggle.appendChild(element('span', '', t('aiReviewIncludeExisting')));

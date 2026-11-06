@@ -43,14 +43,14 @@ The main task prompts remain independently editable and can contain similar inst
 ## Review an MR from scratch
 
 1. Open **AI review…** and choose the **New review** tab.
-2. Set file filters and the description/code options. Keep **Account for existing discussions** enabled if the MR already has comments. Optionally edit the prompt for this copy.
+2. Set file filters and the description/code options. Enable **Account for existing discussions** if the MR already has comments. Optionally edit the prompt for this copy.
 3. Click **Preview**, then **Copy task**, or copy directly.
 4. Paste the task into your AI with access to the pinned source. Ask it to inspect the combined result of every MR commit and the necessary surrounding code and tests. This task produces findings, without modifying code.
 5. Import and review the returned JSON using the next section.
 
 Discussion selection does not affect New review: it always checks the whole MR within the configured file scope.
 
-**Account for existing discussions** (enabled by default, remembered) appends published discussions at the end of the task in a compact form: file and line, status, author, the first 600 characters of the opening comment and the reply count. Replies, drafts and discussions outside the file filters are not included. The AI is told to review the whole MR independently first and only then drop findings that substantially repeat a listed discussion, including resolved ones; it does not verify or reply to those discussions. This lets a second reviewer run their own review without repeating the first one. How strictly the AI ignores the list while reviewing depends on the model, so still check the preview for duplicates. If discussions cannot be loaded, the task is still prepared with a warning.
+**Account for existing discussions** (disabled by default, remembered) appends published discussions at the end of the task in a compact form: file and line, status, author, the first 600 characters of the opening comment and the reply count. Replies, drafts and discussions outside the file filters are not included. The AI is told to review the whole MR independently first and only then drop findings that substantially repeat a listed discussion, including resolved ones; it does not verify or reply to those discussions. This lets a second reviewer run their own review without repeating the first one. How strictly the AI ignores the list while reviewing depends on the model, so still check the preview for duplicates. If discussions cannot be loaded, the task is still prepared with a warning.
 
 Import retains a **Copy review prompt** shortcut under **Advanced settings** for a repository-based task without description or diff. Use the New review tab for those options.
 
@@ -126,7 +126,7 @@ Each participant has their own AI, settings and comparison revision. Shared cont
 
 | Situation | How to work |
 |---|---|
-| Two independent reviews | Each uses New review. The second reviewer keeps **Account for existing discussions** enabled so the AI does not repeat published findings; still remove remaining duplicates before publication |
+| Two independent reviews | Each uses New review. The second reviewer enables **Account for existing discussions** so the AI does not repeat published findings; still remove remaining duplicates before publication |
 | Review after someone else without re-checking their findings | New review with **Account for existing discussions**. The AI reviews the whole MR independently and does not reply to existing threads |
 | Verify whether someone else's findings were fixed | Select relevant threads or all threads, then repeat review with no previous revision for a full current check |
 | Split review by area | Agree on file ownership and filters, and decide who checks interactions between those areas |

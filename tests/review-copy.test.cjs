@@ -1111,7 +1111,7 @@ test('explicit review tab uses real fresh MR data with paginated commits, cumula
   assert.equal(calls.length, 5, 'copy retains exactly the validated preview');
 });
 
-test('new review appends existing discussions as a duplicate filter by default and remembers the checkbox', async function() {
+test('new review appends existing discussions as a duplicate filter only when enabled and remembers the checkbox', async function() {
   var head = 'a'.repeat(40), calls = [];
   var entity = { iid: 12, title: 'Second reviewer', description: '', source_branch: 'feature', target_branch: 'main', sha: head, changes_count: '1',
     diff_refs: { base_sha: 'c'.repeat(40), start_sha: 'd'.repeat(40), head_sha: head } };
@@ -1140,7 +1140,15 @@ test('new review appends existing discussions as a duplicate filter by default a
   await env.click('aiReviewTaskReview');
   var toggle = env.document.querySelector('.gl-review-existing-toggle');
   assert.equal(toggle.hidden, false);
-  assert.equal(toggle.querySelector('input').checked, true);
+  assert.equal(toggle.querySelector('input').checked, false, 'the checkbox is off by default');
+  assert.match(env.document.body.textContent, /Existing discussions are not added/);
+  await env.click('aiReviewPreview');
+  assert.doesNotMatch(preview(env).value, /Existing discussions|petya/);
+  assert.ok(calls.every(function(url) { return !/\/discussions/.test(url); }), 'discussions are not requested while the checkbox is off');
+
+  await env.change(toggle.querySelector('input'), true);
+  assert.deepEqual(env.settingsWrites, [{ ai_review_fresh_existing: true }]);
+  assert.equal(preview(env).value, '', 'changing the checkbox invalidates the prepared task');
   assert.match(env.document.body.textContent, /Existing discussions are added only as a duplicate filter/);
   await env.click('aiReviewPreview');
   var output = preview(env).value;
@@ -1157,12 +1165,7 @@ test('new review appends existing discussions as a duplicate filter by default a
   assert.ok(calls.some(function(url) { return /\/discussions/.test(url); }));
 
   await env.change(toggle.querySelector('input'), false);
-  assert.deepEqual(env.settingsWrites, [{ ai_review_fresh_existing: false }]);
-  assert.equal(preview(env).value, '', 'changing the checkbox invalidates the prepared task');
-  var before = calls.length;
-  await env.click('aiReviewPreview');
-  assert.doesNotMatch(preview(env).value, /Existing discussions|petya/);
-  assert.ok(calls.slice(before).every(function(url) { return !/\/discussions/.test(url); }));
+  assert.deepEqual(env.settingsWrites, [{ ai_review_fresh_existing: true }, { ai_review_fresh_existing: false }]);
   await env.click('aiReviewTaskFix');
   assert.equal(toggle.hidden, true, 'the checkbox belongs only to the new review tab');
 });
