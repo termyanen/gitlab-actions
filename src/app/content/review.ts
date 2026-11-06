@@ -42,6 +42,9 @@ export function startReview() {
   let dialog: ReturnType<typeof createImportDialog> | undefined;
   let generation = 0;
   const lazyDialog = {
+    syncRoute() {
+      dialog?.syncRoute();
+    },
     close(force?: boolean) {
       generation++;
       return dialog ? dialog.close(force) : true;

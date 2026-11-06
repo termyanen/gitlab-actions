@@ -1308,3 +1308,27 @@ test('declining SPA discard preserves the draft and does not repeatedly prompt o
   await env.click('aiReviewClose');
   assert.equal(env.document.querySelector('.gl-review-overlay'), null);
 });
+
+for (const destination of ['/team/repo/-/merge_requests/13', '/team/repo/-/pipelines/100']) {
+  test('a retained draft can prepare again after navigating to ' + destination + ' and returning', async function() {
+    var env = await picker({ settings: { ai_review_confirm_close: true }, deferredExports: true });
+    var prompt = env.document.querySelector('.gl-review-task-prompt');
+    await env.change(prompt, 'Keep these instructions', 'input');
+    await env.click('aiReviewPreview');
+    var request = env.exports[0];
+    var confirmations = 0;
+    env.context.window.confirm = function() { confirmations++; return false; };
+    await env.navigate(destination);
+    await env.navigate(destination);
+    assert.equal(confirmations, 1);
+    assert.equal(request.options.signal.aborted, true);
+    assert.equal(env.button('aiReviewPreview').disabled, true);
+    request.reject(Object.assign(new Error('Cancelled'), {name: 'AbortError'}));
+    await env.drain();
+    await env.navigate('/team/repo/-/merge_requests/12');
+    assert.equal(prompt.value, 'Keep these instructions');
+    assert.equal(env.button('aiReviewPreview').disabled, false);
+    await env.click('aiReviewPreview');
+    assert.equal(env.exports.length, 2);
+  });
+}
