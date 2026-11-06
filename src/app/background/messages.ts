@@ -1,7 +1,7 @@
 import type { ChainMessage } from "../../features/job-chains";
 import type { StandupMessage } from "../../features/standup";
 import type { JiraMessage } from "../../entities/jira-issue/background";
-export type BackgroundMessage =
+type BackgroundMessage =
   ChainMessage | StandupMessage | JiraMessage | { type: "open-options" };
 const jiraTypes = new Set([
   "execute-jira-quick-action",

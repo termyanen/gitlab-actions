@@ -3,7 +3,7 @@ import { reportRuntimeError } from "../../../shared/api/runtime";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
-  DISPLAY_DEFAULTS,
+  LIST_DEFAULTS,
   readDisplayPreferences,
 } from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
@@ -209,28 +209,9 @@ export function startMrList(
   // =========================================================================
 
   if (isMrListPage()) {
-    const listDefaults = {
-      ...DISPLAY_DEFAULTS,
-      dim_drafts: false,
-      highlight_own_mrs: false,
-      show_only_mine: false,
-      show_needs_review: false,
-      show_copy_mr: false,
-      show_reviewer_badge: false,
-      show_threads_badge: false,
-      show_size_badge: false,
-      show_conflicts_badge: false,
-      show_approval_badge: false,
-      show_branches: true,
-      show_branches_links: false,
-      show_jira_details: false,
-      skip_confirmations: false,
-      jira_url: "",
-      jira_ticket_regex: "",
-    };
     try {
       chrome.storage.sync.get(
-        listDefaults,
+        LIST_DEFAULTS,
         scope.guard(function (s: ListSettings) {
           if (chrome.runtime.lastError) return;
           Object.assign(s, readDisplayPreferences(s));

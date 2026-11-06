@@ -126,7 +126,6 @@ export function createSettingsPersistence(context: SettingsFormContext) {
     settings.show_branches_links = byId<HTMLInputElement>(
       "show_branches_links",
     ).checked;
-    // settings.show_group_by_author = byId<HTMLInputElement>('show_group_by_author').checked;
     settings.collapse_bars = byId<HTMLInputElement>("collapse_bars").checked;
     settings.hide_right_sidebar =
       byId<HTMLInputElement>("hide_right_sidebar").checked;

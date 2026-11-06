@@ -9,7 +9,7 @@ export { getNotes, getStatus } from "../../../entities/discussion/content";
 
 // Older installations and proxies sometimes omit all pagination headers. Probe
 // until an empty page in that case, even when the server caps per_page below 100.
-export async function paginate<K extends "notes" | "discussions">(
+async function paginate<K extends "notes" | "discussions">(
   context: ReviewContext,
   path: string,
   options: ExportOptions,
@@ -174,7 +174,7 @@ export async function paginate<K extends "notes" | "discussions">(
   };
 }
 
-export function containsNote(discussions: Discussion[], noteId: string) {
+function containsNote(discussions: Discussion[], noteId: string) {
   return discussions.some(function (thread) {
     return thread.notes.some(function (note) {
       return (
@@ -186,7 +186,7 @@ export function containsNote(discussions: Discussion[], noteId: string) {
   });
 }
 
-export function mergeDiscussions(previous: Discussion[], fresh: Discussion[]) {
+function mergeDiscussions(previous: Discussion[], fresh: Discussion[]) {
   // Prefer refreshed content and ownership if an ordinary comment was turned
   // into a thread, while retaining replies absent from a partial refresh.
   const ownership = new Map();
@@ -235,7 +235,7 @@ export function mergeDiscussions(previous: Discussion[], fresh: Discussion[]) {
   });
 }
 
-export function draftUrl(context: ReviewContext, id: string, anchor?: string) {
+function draftUrl(context: ReviewContext, id: string, anchor?: string) {
   const anchors = ["draft_" + id, "note_" + id, "note-" + id];
   return (
     context.webUrl +
@@ -244,7 +244,7 @@ export function draftUrl(context: ReviewContext, id: string, anchor?: string) {
   );
 }
 
-export async function recoverRequestedDraft(
+async function recoverRequestedDraft(
   context: ReviewContext,
   path: string,
   discussions: Discussion[],
@@ -366,7 +366,7 @@ export async function recoverRequestedDraft(
   };
 }
 
-export async function recoverRequestedNote(
+async function recoverRequestedNote(
   context: ReviewContext,
   path: string,
   discussions: Discussion[],
