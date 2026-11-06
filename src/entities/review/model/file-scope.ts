@@ -1,5 +1,5 @@
+import { REVIEW_FILE_FILTER_MAX_LENGTH } from "./limits";
 import type { FileFilter, ReviewFile } from "./types";
-
 export const FILTER_FIELDS = [
   "includeExtensions",
   "includeFiles",
@@ -21,7 +21,7 @@ export function normalizeFilter(value?: unknown): FileFilter {
     if (text != null && typeof text !== "string")
       throw new Error("File filters must be text.");
     result[key] = (text || "").trim();
-    if (result[key].length > 1500)
+    if (result[key].length > REVIEW_FILE_FILTER_MAX_LENGTH)
       throw new Error("Each file filter must be at most 1500 characters.");
   });
   if (new TextEncoder().encode(JSON.stringify(result)).length + 21 > 8192)

@@ -1,19 +1,19 @@
 import { readStorage } from "../../../shared/api/storage";
-import { INSTRUCTION_BLOCKS } from "./instructions-data";
-import { DEFAULT_REPEAT_PROMPT } from "./prompts";
 import {
   DEFAULT_FILTER,
   FILTER_FIELDS,
   normalizeFilter,
   patterns,
 } from "./file-scope";
+import { INSTRUCTION_BLOCKS } from "./instructions-data";
+import { REVIEW_PROMPT_MAX_LENGTH } from "./limits";
+import { DEFAULT_REPEAT_PROMPT } from "./prompts";
 import type {
   FileFilter,
   InstructionBlock,
   InstructionOptions,
   InstructionSetting,
 } from "./types";
-
 export const INSTRUCTION_PREFIX = "ai_review_rule_";
 export const RESPONSE_LANGUAGES = {
   auto: "",
@@ -54,7 +54,7 @@ export function normalizeInstruction(
   }
   const result = { enabled: value.enabled, text: value.text.trim() };
   if (
-    result.text.length > 1500 ||
+    result.text.length > REVIEW_PROMPT_MAX_LENGTH ||
     new TextEncoder().encode(JSON.stringify(result)).length +
       INSTRUCTION_PREFIX.length +
       block.id.length >

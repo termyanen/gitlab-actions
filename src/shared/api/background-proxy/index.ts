@@ -1,3 +1,5 @@
+const READ_TIMEOUT_MS = 20000;
+const MUTATION_TIMEOUT_MS = 60000;
 export interface ProxyTask {
   gitlabUrl: string;
   _tabId?: number | null;
@@ -96,7 +98,11 @@ export function api<T = unknown>(
           throw new Error(
             "No GitLab tab with content script found. Open any MR page.",
           );
-        return sendMessageWithTimeout(tabIds[i], msg, isGet ? 20000 : 60000)
+        return sendMessageWithTimeout(
+          tabIds[i],
+          msg,
+          isGet ? READ_TIMEOUT_MS : MUTATION_TIMEOUT_MS,
+        )
           .then(function (resp) {
             if (resp && typeof resp === "object" && "_error" in resp)
               throw new Error(String(resp._error));

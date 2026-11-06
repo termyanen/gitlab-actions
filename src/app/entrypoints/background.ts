@@ -1,8 +1,9 @@
-import { registerInstallHandler } from "../background/install";
-import { parseBackgroundMessage, isJiraMessage } from "../background/messages";
-import { createJobChains } from "../../features/job-chains";
 import { handleJiraMessage } from "../../features/jira-actions";
+import { createJobChains } from "../../features/job-chains";
 import { generateStandup } from "../../features/standup";
+import { SETTINGS_PAGE } from "../../shared/config/extension";
+import { registerInstallHandler } from "../background/install";
+import { isJiraMessage, parseBackgroundMessage } from "../background/messages";
 
 const chains = createJobChains();
 registerInstallHandler();
@@ -17,7 +18,7 @@ chrome.runtime.onMessage.addListener((raw: unknown, sender, sendResponse) => {
   if (message.type === "generate-standup")
     return generateStandup(message, sender, sendResponse);
   if (message.type === "open-options") {
-    chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") });
+    chrome.tabs.create({ url: chrome.runtime.getURL(SETTINGS_PAGE) });
     return;
   }
   return chains.handleMessage(message, sender, sendResponse);

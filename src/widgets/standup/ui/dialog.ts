@@ -1,7 +1,8 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+const COPIED_FEEDBACK_DURATION_MS = 2000;
 
 export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
@@ -134,7 +135,7 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
         copyBtn.textContent = "\u2713 " + msg("standupCopied");
         scope.timeout(function () {
           copyBtn.textContent = orig;
-        }, 2000);
+        }, COPIED_FEEDBACK_DURATION_MS);
       });
     });
 

@@ -1,10 +1,15 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { VERSION_DEFAULTS } from "../../../entities/settings";
 import type { CherryPickSettings } from "../../../features/cherry-pick";
-import { msg } from "../../../shared/i18n";
-import { escHtml } from "../../../shared/lib/html";
 import { SEL } from "../../../shared/config/gitlab";
+import { msg } from "../../../shared/i18n";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
+import { escHtml } from "../../../shared/lib/html";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+const TOAST_DURATION_MS = 5000;
+const DETAIL_MOUNT_DEBOUNCE_MS = 200;
+const HEADER_POLL_INTERVAL_MS = 500;
+const LIST_MOUNT_DEBOUNCE_MS = 300;
 
 export function startCommitCherryPick(
   createCherryPickDialog: (
@@ -42,10 +47,10 @@ export function startCommitCherryPick(
           cherry_pick_create_mr: true,
           cherry_pick_smart_fallback: true,
           cherry_pick_bump_version: false,
-          versionFile: "package.json",
-          versionPath: "version",
-          versionStrategy: "patch",
-          versionCommitTemplate: "fix: bump version to {version}",
+          versionFile: VERSION_DEFAULTS.versionFile,
+          versionPath: VERSION_DEFAULTS.versionPath,
+          versionStrategy: VERSION_DEFAULTS.versionStrategy,
+          versionCommitTemplate: VERSION_DEFAULTS.versionCommitTemplate,
         },
         scope.guard(function (
           s: CherryPickSettings & { show_cherry_pick: boolean },
@@ -160,7 +165,7 @@ export function startCommitCherryPick(
               } catch {
                 /* Optional UI may be unavailable. */
               }
-            }, 5000);
+            }, TOAST_DURATION_MS);
           }
 
           if (isCommitDetailPage()) {
@@ -260,7 +265,10 @@ export function startCommitCherryPick(
             const cpDetailObserver = scope.observer(function () {
               if (document.querySelector(".gl-cherry-pick-detail-btn")) return;
               clearTimeout(_cpDetailTimer);
-              _cpDetailTimer = scope.timeout(injectCherryPickHeaderBtn, 200);
+              _cpDetailTimer = scope.timeout(
+                injectCherryPickHeaderBtn,
+                DETAIL_MOUNT_DEBOUNCE_MS,
+              );
             });
             cpDetailObserver.observe(document.body, {
               childList: true,
@@ -279,7 +287,7 @@ export function startCommitCherryPick(
                 return;
               _cpDetailAttempts++;
               if (!findCommitHeaderContainer()) {
-                scope.timeout(pollHeader, 500);
+                scope.timeout(pollHeader, HEADER_POLL_INTERVAL_MS);
               } else {
                 injectCherryPickHeaderBtn();
               }
@@ -291,7 +299,10 @@ export function startCommitCherryPick(
             let _cpTimer: ReturnType<typeof setTimeout> | undefined;
             const cpObserver = scope.observer(function () {
               clearTimeout(_cpTimer);
-              _cpTimer = scope.timeout(injectCherryPickButtons, 300);
+              _cpTimer = scope.timeout(
+                injectCherryPickButtons,
+                LIST_MOUNT_DEBOUNCE_MS,
+              );
             });
             cpObserver.observe(document.body, {
               childList: true,

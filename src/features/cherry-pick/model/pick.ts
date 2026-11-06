@@ -1,19 +1,20 @@
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import type { FileDiff, MergeRequest } from "../../../entities/merge-request";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { applyUnifiedDiff } from "../../../shared/lib/diff";
 import {
   bumpVersion,
   getNestedValue,
-  setNestedValue,
   parseToml,
+  setNestedValue,
   updateTomlVersion,
 } from "../../../shared/lib/version";
-import type { FileDiff, MergeRequest } from "../../../entities/merge-request";
 import type {
   CherryPickSettings,
-  PickOperation,
   CommitInfo,
-  RepositoryFile,
   FileAction,
+  PickOperation,
+  RepositoryFile,
 } from "./types";
 export function createCherryPicker(
   origin: string,
@@ -49,11 +50,13 @@ export function createCherryPicker(
         encodedProject +
         "/repository/commits/" +
         sha +
-        "/diff?per_page=100&page=" +
+        "/diff?per_page=" +
+        GITLAB_PAGE_SIZE +
+        "&page=" +
         page,
     ).then(function (chunk) {
       const all = acc.concat(chunk);
-      if (chunk.length < 100) return all;
+      if (chunk.length < GITLAB_PAGE_SIZE) return all;
       if (page >= 10)
         throw new Error("Commit has too many files for smart fallback");
       return fetchCommitDiffs(page + 1, all);

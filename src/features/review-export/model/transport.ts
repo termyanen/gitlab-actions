@@ -1,11 +1,11 @@
-import type {
-  ReviewContext,
-  ExportOptions,
-  ReviewError,
-  RequestResult,
-} from "./types";
+import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
 import { REQUEST_TIMEOUT } from "./limits";
-
+import type {
+  ExportOptions,
+  RequestResult,
+  ReviewContext,
+  ReviewError,
+} from "./types";
 export function abortError() {
   const error = new Error("Review export cancelled.");
   error.name = "AbortError";
@@ -23,7 +23,7 @@ export function header(response: Response, name: string) {
 }
 
 export function apiUrl(context: ReviewContext, path: string) {
-  const root = new URL(context.apiRoot || "/api/v4", context.origin);
+  const root = new URL(context.apiRoot || GITLAB_API_PREFIX, context.origin);
   if (root.origin !== context.origin || !/^https?:$/.test(root.protocol))
     throw new Error("GitLab API must use the current site.");
   return root.href.replace(/\/$/, "") + path;
@@ -91,7 +91,7 @@ export async function request<T = unknown>(
   const controller = new AbortController();
   let timer: ReturnType<typeof setTimeout> | undefined;
   let cancel: (() => void) | undefined;
-  const timeout = new Promise<never>(function (resolve, reject) {
+  const timeout = new Promise<never>(function (_resolve, reject) {
     cancel = function () {
       controller.abort();
       reject(abortError());

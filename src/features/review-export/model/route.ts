@@ -1,5 +1,5 @@
+import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
 import type { ReviewContext, ReviewLocation } from "./types";
-
 export function parsePage(
   location: ReviewLocation | null | undefined,
 ): ReviewContext | null {
@@ -40,6 +40,6 @@ export function parsePage(
     iid: match[3],
     projectUrl: location.origin + root + "/" + match[1],
     webUrl: location.origin + root + suffix,
-    apiRoot: location.origin + root + "/api/v4",
+    apiRoot: location.origin + root + GITLAB_API_PREFIX,
   };
 }

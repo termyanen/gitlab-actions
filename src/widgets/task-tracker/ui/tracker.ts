@@ -1,6 +1,7 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { escHtml } from "../../../shared/lib/html";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+const TASK_STATUS_POLL_INTERVAL_MS = 10000;
 interface TaskStatus {
   taskId: string;
   jobs: string[];
@@ -227,7 +228,7 @@ export function createTaskTracker(scope: Lifecycle = createLifecycle()) {
           }
         }),
       );
-    }, 10000);
+    }, TASK_STATUS_POLL_INTERVAL_MS);
   }
   return { updateTrackerItem, restoreActiveTasks, pollTaskStatus };
 }

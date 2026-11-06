@@ -1,6 +1,5 @@
 import type { NotePosition } from "../../../entities/discussion";
-import { validLine, anchorLine } from "./code-context";
-
+import { anchorLine, validLine } from "./position";
 export function fence(input: unknown, language?: string) {
   const text = String(input == null ? "" : input);
   const runs = text.match(/`+/g) || [];
