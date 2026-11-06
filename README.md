@@ -419,6 +419,13 @@ Click the extension icon to open settings:
 - **Jira** — set Jira URL, ticket regex, quick actions
 - **Project Profiles** — per-project overrides for action buttons, jobs and version settings
 - **AI review** — show/hide copy controls and customize all five prompts and file filters, with independent resets
+- **Display rules and limits** — MR size thresholds, failed-job/log preview limits, reviewer-comment scan depth, and sensitive file patterns/exclusions
+
+The display policies are global and included in settings export/import. Existing
+defaults remain unchanged. Reload GitLab tabs after changing them. Incomplete
+file scans, thread counts and standup selections are marked explicitly. See
+[Configuration and operational limits](docs/CONFIGURATION.md) for defaults,
+accepted values, profile inheritance and fixed network/storage budgets.
 
 ## How It Works
 

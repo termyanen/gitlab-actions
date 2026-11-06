@@ -632,16 +632,17 @@ export function startMrToolbar(
           container.insertBefore(timeEl, container.firstChild);
         }
 
-        if (container.children.length > 0) {
-          widgetSection.appendChild(container);
-        }
+        // Keep the mount marker even with every button disabled. It prevents
+        // repeated MR fetches and gives asynchronous warnings a stable target.
+        if (!container.children.length) container.style.display = "none";
+        widgetSection.appendChild(container);
 
         // Failed job quick view
         injectFailedJobView(mr, s, widgetSection);
 
         // Sensitive file warning (#13)
         if (s.show_sensitive_warning) {
-          injectSensitiveWarning(mr);
+          injectSensitiveWarning(s);
         }
 
         // Git command generator (#12) — injected into description block, not action bar

@@ -11,6 +11,10 @@ import {
   BUTTON_DEFAULTS,
 } from "../../../features/manage-settings";
 import { byId, escHtml } from "./dom";
+import {
+  displayPreferencesSection,
+  populateDisplayPreferences,
+} from "./display-preferences";
 import type { SettingsFormContext } from "./form-context";
 export function createDefaultSettingsForm(context: SettingsFormContext) {
   const {
@@ -456,7 +460,8 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       '<button class="add-btn" id="addCustomJob">' +
       escHtml(t("addJobButton")) +
       "</button>" +
-      mrActionsSection("mrActionsList", "addMrAction");
+      mrActionsSection("mrActionsList", "addMrAction") +
+      displayPreferencesSection(t);
 
     const enabledMap: Record<string, boolean> = {};
     BUILTIN_BUTTONS.forEach(function (b) {
@@ -467,6 +472,7 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
     });
 
     const customJobs = state.data.customJobs || [];
+    populateDisplayPreferences(state.data);
     const ordered = buildOrderedList(
       state.data.buttonOrder || [],
       enabledMap,

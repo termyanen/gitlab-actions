@@ -1,3 +1,4 @@
+import type { DisplayPreferences } from "./display-preferences";
 export interface MrAction {
   id: string;
   label: string;
@@ -24,7 +25,7 @@ export interface ProjectProfile {
   buttonOrder?: string[];
   buttons?: Record<string, boolean>;
 }
-export interface MrSettings {
+export interface MrSettings extends DisplayPreferences {
   [key: string]: unknown;
   btn_version: boolean;
   btn_rebase: boolean;

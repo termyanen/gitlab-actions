@@ -1,5 +1,6 @@
 import { isExtensionValid } from "../../../shared/api/runtime";
 import { MR_DEFAULTS } from "./defaults";
+import { readDisplayPreferences } from "./display-preferences";
 import type { MrSettings, ProjectProfile } from "./types";
 function findProjectProfile(
   profiles: Record<string, ProjectProfile> | undefined,
@@ -23,6 +24,7 @@ export function createMrSettingsReader(projectPath: () => string | null) {
             resolve(MR_DEFAULTS);
             return;
           }
+          Object.assign(data, readDisplayPreferences(data));
           // Merge project-specific profile over defaults
           const profile = findProjectProfile(
             data.projectProfiles,

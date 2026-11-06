@@ -1,4 +1,5 @@
-export interface ListSettings {
+import type { DisplayPreferences } from "../../../entities/settings";
+export interface ListSettings extends DisplayPreferences {
   dim_drafts: boolean;
   highlight_own_mrs: boolean;
   show_only_mine: boolean;
@@ -33,8 +34,10 @@ export interface Approval {
 }
 export interface MrMeta {
   threads: number;
+  threadsPartial: boolean;
   changesLines: number;
   changesFiles: number;
+  changesFilesTruncated: boolean;
   conflicts: boolean;
   approvedBy: Approval[];
   sourceBranch: string;

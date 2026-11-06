@@ -188,3 +188,21 @@ test('invalid or ambiguous MR actions are rejected before importing any settings
   });
   assert.equal(env.writes.length, 0);
 });
+
+test('display policies round-trip through settings export and import', function() {
+  var env = environment();
+  var preferences = {failed_jobs_limit: 12, failed_job_trace_lines: 150, reviewer_notes_limit: 80, mr_size_lines: '20, 80, 250', mr_size_files: '2, 4, 8', sensitive_file_defaults: false, sensitive_file_patterns: 'private/*\n*.token', sensitive_file_exclusions: '*.example'};
+  var restored = env.context.parseSettingsFile(file(env.context.settingsSnapshot(preferences)));
+  for (var key of Object.keys(preferences)) assert.equal(restored[key], preferences[key], key);
+  var legacy = env.context.parseSettingsFile(file({language: 'en'}));
+  assert.equal(legacy.failed_jobs_limit, 5);
+  assert.equal(legacy.sensitive_file_defaults, true);
+});
+
+test('invalid display policies cannot enter storage through JSON imports', function() {
+  var env = environment();
+  for (var invalid of [{failed_jobs_limit: 0}, {failed_job_trace_lines: 501}, {reviewer_notes_limit: 1.5}, {mr_size_lines: '200, 50, 500'}, {mr_size_files: '1, 1, 2'}, {mr_size_files: '1, 2, Infinity'}, {sensitive_file_defaults: 'false'}, {sensitive_file_exclusions: 'x'.repeat(1501)}]) {
+    assert.throws(() => env.context.parseSettingsFile(file(invalid)));
+  }
+  assert.equal(env.writes.length, 0);
+});

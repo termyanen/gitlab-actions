@@ -3,7 +3,13 @@ import type { SessionApi } from "../../../shared/api/gitlab";
 import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
 import { q, qAll } from "../../../shared/lib/dom";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
-import type { Approval, MrData, MrEntry, MrMeta } from "../model/types";
+import type {
+  Approval,
+  ListSettings,
+  MrData,
+  MrEntry,
+  MrMeta,
+} from "../model/types";
 import { createMetadataBadges } from "./metadata-badges";
 import { isMrListPage, parseMrPath } from "./route";
 export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
@@ -27,14 +33,17 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
   } = createMetadataBadges(scope);
 
   function fetchAndRenderMrMeta(
-    showThreads: boolean,
-    showSize: boolean,
-    showConflicts: boolean,
-    showApprovals: boolean,
-    showBranches: boolean,
-    showBranchesLinks: boolean,
+    settings: ListSettings,
     username: string | null,
   ) {
+    const {
+      show_threads_badge: showThreads,
+      show_size_badge: showSize,
+      show_conflicts_badge: showConflicts,
+      show_approval_badge: showApprovals,
+      show_branches: showBranches,
+      show_branches_links: showBranchesLinks,
+    } = settings;
     if (_mrMetaFetching) {
       _mrMetaRefreshPending = true;
       return;
@@ -52,9 +61,16 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
       const href = titleEl.href;
       const cached = _mrMetaCache[href];
       if (cached && now - cached.ts < MR_META_CACHE_TTL) {
-        if (showThreads) renderThreadsBadge(item, cached.threads);
+        if (showThreads)
+          renderThreadsBadge(item, cached.threads, cached.threadsPartial);
         if (showSize)
-          renderSizeBadge(item, cached.changesLines, cached.changesFiles);
+          renderSizeBadge(
+            item,
+            cached.changesLines,
+            cached.changesFiles,
+            settings,
+            cached.changesFilesTruncated,
+          );
         if (showConflicts && cached.conflicts) renderConflictBadge(item);
         if (showApprovals && cached.approvedBy)
           renderApprovalIndicator(item, cached.approvedBy, username);
@@ -144,7 +160,7 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
               "/discussions?per_page=" +
               GITLAB_PAGE_SIZE,
           ).catch(function () {
-            return [];
+            return null;
           })
         : Promise.resolve(null);
 
@@ -180,8 +196,12 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
           }
           return {
             threads: unresolvedCount,
+            threadsPartial:
+              showThreads &&
+              (discussions === null || discussions.length >= GITLAB_PAGE_SIZE),
             changesLines: changesLines,
             changesFiles: changesFiles,
+            changesFilesTruncated: !!mr.changes_count?.endsWith("+"),
             conflicts: conflicts,
             approvedBy: approvedBy,
             sourceBranch: mr.source_branch || "",
@@ -189,19 +209,17 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
           };
         })
         .then(function (meta) {
-          _mrMetaCache[entry.href] = {
-            threads: meta.threads,
-            changesLines: meta.changesLines,
-            changesFiles: meta.changesFiles,
-            conflicts: meta.conflicts,
-            approvedBy: meta.approvedBy,
-            sourceBranch: meta.sourceBranch,
-            targetBranch: meta.targetBranch,
-            ts: Date.now(),
-          };
-          if (showThreads) renderThreadsBadge(entry.item, meta.threads);
+          _mrMetaCache[entry.href] = { ...meta, ts: Date.now() };
+          if (showThreads)
+            renderThreadsBadge(entry.item, meta.threads, meta.threadsPartial);
           if (showSize)
-            renderSizeBadge(entry.item, meta.changesLines, meta.changesFiles);
+            renderSizeBadge(
+              entry.item,
+              meta.changesLines,
+              meta.changesFiles,
+              settings,
+              meta.changesFilesTruncated,
+            );
           if (showConflicts && meta.conflicts) renderConflictBadge(entry.item);
           if (showApprovals && meta.approvedBy)
             renderApprovalIndicator(entry.item, meta.approvedBy, username);
@@ -221,16 +239,7 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
         _mrMetaFetching = false;
         if (_mrMetaRefreshPending) {
           _mrMetaRefreshPending = false;
-          if (isMrListPage())
-            fetchAndRenderMrMeta(
-              showThreads,
-              showSize,
-              showConflicts,
-              showApprovals,
-              showBranches,
-              showBranchesLinks,
-              username,
-            );
+          if (isMrListPage()) fetchAndRenderMrMeta(settings, username);
         }
         return;
       }

@@ -415,3 +415,117 @@ test('SPA disposal restores native approval badges and removes generated approva
   }
   expect(runtimeErrors).toEqual([]);
 });
+
+test('display preferences save, survive reload and reject invalid policies atomically', async () => {
+  const keys = ['language', 'failed_jobs_limit', 'failed_job_trace_lines', 'reviewer_notes_limit', 'mr_size_lines', 'mr_size_files', 'sensitive_file_defaults', 'sensitive_file_patterns', 'sensitive_file_exclusions'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en'}));
+    await page.setViewportSize({width:420, height:900});
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    const details = page.locator('details').filter({has:page.locator('#failed_jobs_limit')});
+    await details.locator('summary').click();
+    await page.locator('#failed_jobs_limit').fill('3');
+    await page.locator('#failed_job_trace_lines').fill('100');
+    await page.locator('#reviewer_notes_limit').fill('25');
+    await page.locator('#mr_size_lines').fill('20, 80, 300');
+    await page.locator('#mr_size_files').fill('2, 8, 20');
+    await page.locator('#sensitive_file_defaults').uncheck();
+    await page.locator('#sensitive_file_patterns').fill('private/*\n*.token');
+    await page.locator('#sensitive_file_exclusions').fill('*.example');
+    await expect.poll(() => worker.evaluate(keys => chrome.storage.sync.get(keys), keys)).toMatchObject({
+      failed_jobs_limit:3, failed_job_trace_lines:100, reviewer_notes_limit:25,
+      mr_size_lines:'20, 80, 300', mr_size_files:'2, 8, 20', sensitive_file_defaults:false,
+      sensitive_file_patterns:'private/*\n*.token', sensitive_file_exclusions:'*.example',
+    });
+    await page.reload();
+    await details.locator('summary').click();
+    await expect(page.locator('#failed_jobs_limit')).toHaveValue('3');
+    await expect(page.locator('#sensitive_file_patterns')).toHaveValue('private/*\n*.token');
+    await fs.mkdir(path.resolve('.reports'), {recursive:true});
+    await expect(page.locator("#status")).not.toBeVisible();
+    await details.screenshot({path:path.resolve('.reports/display-preferences-en.png')});
+    await page.locator('#mr_size_lines').fill('30, 10, 20');
+    await page.locator('#failed_jobs_limit').fill('4');
+    await expect(page.locator('#status')).toContainText('three increasing');
+    expect(await worker.evaluate(() => chrome.storage.sync.get(['mr_size_lines', 'failed_jobs_limit']))).toEqual({mr_size_lines:'20, 80, 300', failed_jobs_limit:3});
+    await page.locator('#mr_size_lines').fill('30, 60, 90');
+    await page.locator('#language').selectOption('ru');
+    await expect(page.locator('#failed_jobs_limit')).toHaveValue('4');
+    await details.locator('summary').click();
+    await expect(details.locator('summary')).toHaveText('Правила отображения и ограничения');
+    await expect(page.locator("#status")).not.toBeVisible();
+    await details.screenshot({path:path.resolve('.reports/display-preferences-ru.png')});
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
+
+test('failed-job preview respects job and line limits and links to the complete pipeline', async () => {
+  const keys = ['language', 'show_failed_job_view', 'failed_jobs_limit', 'failed_job_trace_lines'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  const traces = [];
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', show_failed_job_view:true, failed_jobs_limit:2, failed_job_trace_lines:10}));
+    await page.route('**/api/v4/**', async route => {
+      const url = new URL(route.request().url());
+      let body;
+      if (url.pathname.endsWith('/merge_requests/42')) body = fixtureMr(42, {head_pipeline:{id:100, status:'failed'}});
+      else if (url.pathname.endsWith('/pipelines/100/jobs')) {
+        expect(url.searchParams.get('per_page')).toBe('3');
+        body = [1,2,3].map(id => ({id, name:'failed-'+id, stage:'test'}));
+      } else if (/\/jobs\/\d+\/trace$/.test(url.pathname)) {
+        traces.push(url.pathname);
+        return route.fulfill({body:Array.from({length:15}, (_, i) => 'line-'+(i+1)).join('\n\n')});
+      } else return route.fallback();
+      await route.fulfill({contentType:'application/json', body:JSON.stringify(body)});
+    });
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    await expect(page.locator('.gl-mr-actions-failed-job-item')).toHaveCount(2);
+    await expect(page.locator('.gl-mr-actions-failed-jobs-title')).toHaveText('Preview: 2 failed job(s) — last 10 non-empty lines');
+    const lines = (await page.locator('.gl-mr-actions-failed-job-trace').first().textContent()).split('\n');
+    expect(lines).toHaveLength(10);
+    expect(lines[0]).toBe('line-6');
+    expect(traces).toHaveLength(2);
+    await expect(page.locator('a.gl-mr-actions-failed-jobs-more')).toHaveAttribute('href', 'https://gitlab.test/team/repo/-/pipelines/100');
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
+
+test('sensitive-file rules scan later pages, honor exclusions and disclose API failure', async () => {
+  const keys = ['language', 'show_sensitive_warning', 'sensitive_file_defaults', 'sensitive_file_patterns', 'sensitive_file_exclusions', 'show_time_tracker', 'btn_rebase_automerge', 'btn_pipeline_restart', 'btn_pipeline_cancel', 'btn_draft_toggle', 'btn_retry_failed'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  let failSecondPage = false;
+  const pages = [];
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', show_sensitive_warning:true, sensitive_file_defaults:false, sensitive_file_patterns:'private/*.txt', sensitive_file_exclusions:'private/public.txt', show_time_tracker:false, btn_rebase_automerge:false, btn_pipeline_restart:false, btn_pipeline_cancel:false, btn_draft_toggle:false, btn_retry_failed:false}));
+    await page.route('**/api/v4/**/merge_requests/42/diffs?*', async route => {
+      const current = Number(new URL(route.request().url()).searchParams.get('page'));
+      pages.push(current);
+      if (current === 2 && failSecondPage) return route.fulfill({status:503, body:'Unavailable'});
+      const paths = current === 1 ? ['.env', 'private/public.txt', ...Array.from({length:98}, (_, i) => 'src/'+i+'.ts')] : ['private/secret.txt'];
+      await route.fulfill({contentType:'application/json', body:JSON.stringify(paths.map(path => ({new_path:path, old_path:path})))});
+    });
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    const badge = page.locator('.gl-mr-ext-sensitive-warning');
+    await expect(badge).toContainText('1');
+    await expect(badge).toBeVisible();
+    await expect(page.locator('.gl-mr-actions-ext button')).toHaveCount(0);
+    await expect(badge).toHaveAttribute('title', /private\/secret\.txt/);
+    expect(await badge.getAttribute('title')).not.toContain('private/public.txt');
+    expect(pages).toEqual([1,2]);
+    failSecondPage = true;
+    await page.reload();
+    await expect(badge).toHaveText('Sensitive-file scan incomplete');
+    await expect(badge).toHaveAttribute('title', /1000-file scan limit/);
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
