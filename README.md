@@ -449,8 +449,13 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 Extension runtime lives in `src/` and uses strict TypeScript with FSD layers:
 `app → pages → widgets → features → entities → shared`. Imports between slices
 use their public APIs; CI checks layer direction, prohibits sibling-slice
-imports and rejects legacy JavaScript/blanket type suppressions. There are no
-runtime framework dependencies.
+imports, detects runtime cycles and rejects legacy JavaScript/blanket type
+suppressions. There are no runtime framework dependencies.
+
+Use the [feature implementation and architecture guide](docs/ARCHITECTURE.md)
+to choose an owning module, wire content/background/settings behavior, define
+public APIs and resolve dependency cycles. The same guide is linked from the
+shared agent instructions and contributor workflow.
 
 esbuild emits a small isolated-world content bootstrap and packaged ESM chunks.
 Routes load their widgets; review operations, Jira/cherry-pick dialogs, palette

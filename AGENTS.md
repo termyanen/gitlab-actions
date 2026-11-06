@@ -16,6 +16,9 @@ instruction files as pointers here, rather than maintaining competing rules.
 
 ## Project map
 
+- Before adding or moving a feature, read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+  for the ownership map, wiring steps and cycle fixes. Extend an existing owner
+  when appropriate; a helper or button does not automatically need a new slice.
 - Chrome Manifest V3 extension, TypeScript + esbuild, framework-free DOM UI.
 - `src/app/entrypoints/` contains browser entry points; `src/app/` composes features.
 - FSD layers descend through `app → pages → widgets → features → entities → shared`.
@@ -23,6 +26,10 @@ instruction files as pointers here, rather than maintaining competing rules.
   `index.ts`, `content.ts` or `background.ts` public API. Shared units expose `index.ts`.
 - `scripts/check-architecture.mjs` enforces imports, runtime cycles and named timer
   policies. Do not bypass it with dynamic imports, wildcard exports or test hooks.
+- Inside a slice, import implementation files directly rather than its own public
+  barrel. Compose independent slices in a higher layer or inject a small capability.
+  Type-only imports still obey boundaries. Runtime sources use `.ts` and ESM;
+  CommonJS, alternative source extensions and symlinks inside `src/` are rejected.
 - Root manifest, HTML, CSS, icons and `_locales/` are source assets. Root runtime
   JavaScript files are obsolete: edit `src/`, build, then load `dist/` in Chrome.
 - `scripts/` is Node tooling; `tests/` holds VM regressions and Chromium fixtures.
