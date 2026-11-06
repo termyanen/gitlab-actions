@@ -20,6 +20,32 @@ all-HTTPS bootstrap, 20 KB for common GitLab startup and 160 KB for initial MR
 JavaScript. `.reports/performance.json` records the comparison; these are not
 browser CPU, memory or latency measurements.
 
+Run `npm run test:performance` for a real Chromium resource-retention check.
+It loads the packaged extension into a temporary profile, intercepts every
+HTTP(S) request, and writes `.reports/runtime-performance.json`. The workload
+replaces 20 MR rows 60 times on one route, then opens both review dialogs and
+navigates away/back 20 times. Warm-up precedes each measurement. CDP forces GC
+and records live DOM nodes, listeners, JS heap, script/task time and list latency.
+The latter includes the intentional list debounce; it is not network latency.
+Resource budgets fail the command if a scenario retains more than 600 extra
+nodes, 5 listeners or 2 MiB of JS heap. Timing is reported without a flaky
+machine-dependent pass/fail threshold.
+
+To compare existing production builds without rebuilding either:
+
+```sh
+node scripts/profile-runtime.mjs /absolute/path/to/old/dist .reports/runtime-before.json
+node scripts/profile-runtime.mjs dist .reports/runtime-after.json --check
+```
+
+`tests/browser/lifecycle.spec.cjs` additionally tests delayed/out-of-order Jira
+and standup replies, ticket switching, completed Jira mutations, and 100 dialog
+openings with deliberately undelivered responses. Memory assertions wait for
+rendering frames before GC so transient renderer references are not mistaken
+for leaks. These focused fixtures bundle production widget modules with a fake
+Chrome transport; `extension.spec.cjs` and the profiler use the installed
+production extension and real Chrome extension APIs.
+
 Browser smoke checks install the actual production build in a separate Chromium
 profile, intercept all HTTP(S) requests, and exercise real Chrome APIs:
 
