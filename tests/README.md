@@ -28,7 +28,8 @@ PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/ms-playwright npx playwright instal
 npm run test:browser
 ```
 
-These checks cover settings autosave/reload, an unrelated HTTPS page, review
+These checks cover settings autosave/reload, preserving edits across profile and
+language changes, an unrelated HTTPS page, review
 controls under DOM updates, untrusted page messages, and lazy UI under a restrictive
 page CSP. They also cover SPA cleanup of Git commands, failed-job panels and
 approval badges, late API responses, stale palette actions, and an in-flight MR
@@ -38,12 +39,18 @@ without replaying its play request. They use local fixtures and do not establish
 compatibility with a live GitLab/Jira server. Each run removes its test profile.
 
 The refactor review against `main` (`1d97afe`) ran the same 659 behavioral checks
-against both implementations; all passed on both. The current full suite has 831
-Node tests and 13 production-browser scenarios. Review UI regressions also cover
+against both implementations; all passed on both. After the architecture pass,
+the full suite has 839 Node tests and 14 production-browser scenarios. Review UI regressions also cover
 keeping an edited draft when navigation is declined, ignoring late validation
 responses, recovering from an aborted export after returning, and requiring new
 validation after an interrupted import send. Test counts describe this review
 snapshot, not a whole-extension coverage percentage.
+
+Architecture fixtures verify downward imports, slice and Shared public APIs,
+runtime cycle detection, type-only dependency handling, explicit exports, named
+timer policies, and the packaged bootstrap exception for dynamic imports. They
+exercise both accepted and rejected dependency graphs. TypeScript also checks
+unused locals/parameters, accidental switch fallthrough and missing overrides.
 
 ## What is covered
 
