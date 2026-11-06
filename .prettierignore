@@ -1,0 +1,6 @@
+dist/
+node_modules/
+.reports/
+docs/index.html
+docs/guide.js
+docs/guide.css

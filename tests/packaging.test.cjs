@@ -17,12 +17,16 @@ var root = require('./helpers/extension.cjs').root;
       var required = ['manifest.json', 'background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
       Object.keys(manifest.icons).forEach(function(size) { required.push(manifest.icons[size]); });
       ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
-      required.concat(['pack.sh', 'package.json']).forEach(function(file) {
+      required.concat(['pack.sh', 'package.json', 'tsconfig.json']).forEach(function(file) {
         var destination = path.join(staging, file);
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.copyFileSync(path.join(root, file), destination);
       });
-      ['tests/example.test.cjs', 'tests/helpers/mock.cjs', 'node_modules/mock/index.js', '.git/config', '.github/workflows/tests.yml', 'docs/index.html', 'promo/example.txt', 'package-lock.json', 'CLAUDE.md', 'ROADMAP.md', '_locales/.DS_Store', 'icons/.DS_Store'].forEach(function(file) {
+      ['src', 'scripts'].forEach(function(directory) {
+        fs.cpSync(path.join(root, directory), path.join(staging, directory), { recursive: true });
+      });
+      fs.symlinkSync(path.join(root, 'node_modules'), path.join(staging, 'node_modules'), 'dir');
+      ['tests/example.test.cjs', 'tests/helpers/mock.cjs', '.git/config', '.github/workflows/tests.yml', 'docs/index.html', 'promo/example.txt', 'package-lock.json', 'CLAUDE.md', 'ROADMAP.md', '_locales/.DS_Store', 'icons/.DS_Store'].forEach(function(file) {
         var destination = path.join(staging, file);
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.writeFileSync(destination, 'Must not ship');
@@ -46,7 +50,8 @@ var root = require('./helpers/extension.cjs').root;
       required.forEach(function(file) { assert.ok(entries.includes(file), 'Missing packaged resource: ' + file); });
       entries.forEach(function(file) {
         assert.equal(file.split('/').some(function(part) { return part.startsWith('.'); }), false, 'Hidden file must not ship: ' + file);
-        assert.equal(/^(tests\/|node_modules\/|\.|docs\/|promo\/|package(?:-lock)?\.json$|pack\.sh$|CLAUDE\.md$|ROADMAP\.md$)/.test(file), false, 'Unexpected packaged file: ' + file);
+        assert.equal(/^(tests\/|node_modules\/|src\/|scripts\/|\.|docs\/|promo\/|package(?:-lock)?\.json$|pack\.sh$|CLAUDE\.md$|ROADMAP\.md$)/.test(file), false, 'Unexpected packaged file: ' + file);
+        assert.equal(/\.(?:ts|map)$/.test(file), false, 'Development source must not ship: ' + file);
       });
     } finally {
       fs.rmSync(staging, { recursive: true, force: true });
