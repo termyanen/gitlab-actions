@@ -20,7 +20,7 @@ export function createImportRenderer(actions: {
   const { startEditor, updateActions, saveEditor, cancelEditor } = actions;
 
   function button(
-    state: ImportDialogState,
+    state: Pick<ImportDialogState, "t">,
     key: string,
     handler: (event: MouseEvent) => void,
     className?: string,
