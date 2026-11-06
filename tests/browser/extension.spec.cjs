@@ -100,3 +100,25 @@ test('page messages cannot invoke merge request actions', async () => {
   expect(mutations).toEqual([]);
   await page.close();
 });
+
+test('installed worker restores task status after Chromium stops the service worker', async () => {
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${extensionId}/popup.html`);
+  await expect(page.locator('#exportSettings')).toBeEnabled();
+  await worker.evaluate(async () => chrome.storage.local.set({job_chain_state_v1: {
+    'task-browser-recovery': {gitlabUrl: 'https://gitlab.test', projectId: 37, mrIid: 42, jobs: ['build'], currentIndex: 0, pipelineId: 100, status: 'error', error: 'Cancelled by user', _cancelled: true, phase: 'waiting'}
+  }}));
+  const cdp = await context.newCDPSession(page);
+  const versions = [];
+  cdp.on('ServiceWorker.workerVersionUpdated', event => versions.push(...event.versions));
+  await cdp.send('ServiceWorker.enable');
+  await expect.poll(() => versions.find(version => version.scriptURL === `chrome-extension://${extensionId}/background.js`)?.versionId).toBeTruthy();
+  const version = versions.find(version => version.scriptURL === `chrome-extension://${extensionId}/background.js`);
+  await cdp.send('ServiceWorker.stopWorker', {versionId: version.versionId});
+  const response = await page.evaluate(async () => chrome.runtime.sendMessage({type: 'get-task-status', taskId: 'task-browser-recovery'}));
+  expect(response).toEqual({status: 'error', error: 'Cancelled by user'});
+  [worker] = context.serviceWorkers();
+  await cdp.detach();
+  await page.close();
+  expect(runtimeErrors).toEqual([]);
+});

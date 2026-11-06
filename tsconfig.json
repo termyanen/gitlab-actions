@@ -9,8 +9,6 @@
     "noEmit": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "allowJs": true,
-    "checkJs": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
