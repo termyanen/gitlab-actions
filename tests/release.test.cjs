@@ -6,6 +6,7 @@ const path = require('node:path');
 const {transformSync} = require('esbuild');
 const {root} = require('./helpers/runtime.cjs');
 const baseline = require('./fixtures/refactor-baseline.json');
+const manifestSource = require('../manifest.json');
 
 function graph() {
   const report = JSON.parse(fs.readFileSync(path.join(root, '.reports/build.json')));
@@ -63,13 +64,14 @@ test('all packaged ESM dependencies resolve locally and content CSS parses', () 
       assert.equal(dependency.external, undefined, 'Runtime dependencies must be bundled: ' + dependency.path);
       assert.ok(outputs[dependency.path], 'Missing runtime dependency: ' + dependency.path);
     }
-    const result = transformSync(fs.readFileSync(path.join(root, file), 'utf8'), {loader: 'js', format: file.includes('/modules/') ? 'esm' : 'iife', target: 'chrome88'});
+    const result = transformSync(fs.readFileSync(path.join(root, file), 'utf8'), {loader: 'js', format: file.includes('/modules/') ? 'esm' : 'iife', target: 'chrome' + manifestSource.minimum_chrome_version});
     assert.deepEqual(result.warnings, [], file);
   }
   const css = fs.readFileSync(path.join(root, 'dist/content.css'), 'utf8');
   assert.deepEqual(transformSync(css, {loader: 'css'}).warnings, []);
   assert.ok(css.includes(':where(html.gl-actions-host) .gl-mr-actions-ext'));
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist/manifest.json')));
+  assert.ok(Number(manifest.minimum_chrome_version) >= 110, 'The worker lifetime and CSS/API baseline requires Chrome 110+');
   assert.deepEqual(manifest.permissions, ['storage', 'notifications', 'tabs', 'cookies', 'alarms']);
   assert.deepEqual(manifest.content_scripts.map(group => group.js), [['content_proxy.js']]);
   assert.ok(manifest.web_accessible_resources.some(group => group.resources.includes('modules/chunks/*.js')));

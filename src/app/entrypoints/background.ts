@@ -8,6 +8,7 @@ import { isJiraMessage, parseBackgroundMessage } from "../background/messages";
 const chains = createJobChains();
 registerInstallHandler();
 chrome.alarms.onAlarm.addListener(chains.wake);
+chrome.runtime.onStartup.addListener(chains.startup);
 chrome.runtime.onMessage.addListener((raw: unknown, sender, sendResponse) => {
   const message = parseBackgroundMessage(raw);
   if (!message) {

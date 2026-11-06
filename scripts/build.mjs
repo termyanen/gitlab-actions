@@ -35,6 +35,9 @@ export async function buildExtension({
 } = {}) {
   await rm(outdir, { recursive: true, force: true });
   await copyAssets(outdir);
+  const manifest = JSON.parse(
+    await readFile(join(outdir, "manifest.json"), "utf8"),
+  );
   const options = {
     absWorkingDir: root,
     entryPoints: Object.fromEntries(
@@ -44,7 +47,7 @@ export async function buildExtension({
     bundle: true,
     format: "iife",
     platform: "browser",
-    target: "chrome88",
+    target: `chrome${manifest.minimum_chrome_version}`,
     minify: !development,
     sourcemap: development ? "external" : false,
     legalComments: "none",
@@ -105,9 +108,6 @@ export async function buildExtension({
     join(root, ".reports/build.json"),
     JSON.stringify({ outputs: report, metafile: result.metafile }, null, 2) +
       "\n",
-  );
-  const manifest = JSON.parse(
-    await readFile(join(outdir, "manifest.json"), "utf8"),
   );
   console.log(`Built extension ${manifest.version} in ${outdir}`);
   return result;

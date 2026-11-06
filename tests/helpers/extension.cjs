@@ -87,6 +87,7 @@ function environment(options) {
       getURL: function(file) { return 'chrome-extension://test-extension/' + file; },
       getManifest: function() { return JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'))); },
       onInstalled: { addListener: function(fn) { listeners.installed = fn; } },
+      onStartup: { addListener: function(fn) { listeners.startup = fn; } },
       onMessage: { addListener: function(fn) { listeners.message = fn; } },
       sendMessage: function(message, callback) {
         messages.push(plain(message));

@@ -35,6 +35,16 @@ export function createJobChains() {
   function wake(alarm: chrome.alarms.Alarm) {
     if (alarm.name === TASK_ALARM) void ready.then(resume).catch(() => {});
   }
+  function startup() {
+    // Chrome may discard alarms across browser restarts. Recreate them even
+    // when no GitLab tab has sent a message to this worker yet.
+    void ready
+      .then(() => {
+        store.syncAlarm();
+        resume();
+      })
+      .catch(() => {});
+  }
   async function mutateJob(
     task: ChainTask,
     job: Job,
@@ -444,6 +454,7 @@ export function createJobChains() {
     handleMessage,
     ready,
     wake,
+    startup,
     tasks,
     findJobByName,
     startJobByName,

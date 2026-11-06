@@ -8,7 +8,7 @@ var os = require('node:os');
 var execFileSync = require('node:child_process').execFileSync;
 var root = require('./helpers/extension.cjs').root;
 
-['pack.sh', 'Chrome Web Store workflow'].forEach(function(builder) {
+['pack.sh', 'Shared CI workflow'].forEach(function(builder) {
   test(builder + ' includes extension resources and excludes test/development files', function() {
     // Build in an isolated fixture, never next to the user's existing archives.
     var staging = fs.mkdtempSync(path.join(os.tmpdir(), 'gitlab-actions-package-'));
@@ -42,9 +42,11 @@ var root = require('./helpers/extension.cjs').root;
       } else {
         // Execute only the checked-in local "Build zip" step. Never run the
         // credential/upload/publish steps or contact the Chrome Web Store.
-        var workflow = fs.readFileSync(path.join(root, '.github/workflows/chrome-web-store.yml'), 'utf8');
+        var workflow = fs.readFileSync(path.join(root, '.github/workflows/verify.yml'), 'utf8');
         var build = workflow.match(/      - name: Build zip\n        run: \|\n([\s\S]*?)(?=\n      - name:)/);
         assert.ok(build, 'Build zip step must be found');
+        // The shared workflow has already built dist during npm run check.
+        execFileSync(process.execPath, ['scripts/build.mjs'], {cwd: staging, stdio: 'pipe'});
         var command = build[1].split('\n').map(function(line) { return line.slice(10); }).join('\n');
         execFileSync('bash', ['-c', command], { cwd: staging, stdio: 'pipe' });
         archive = 'extension.zip';

@@ -1,6 +1,6 @@
 # Regression tests
 
-Run from the repository root with Node.js 22.12 or newer:
+Run from the repository root with Node.js 22.13+ or 24+:
 
 ```sh
 npm ci
@@ -10,6 +10,13 @@ npm test
 The esbuild/TypeScript toolchain is installed from the lockfile. Packaging checks
 also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI runs on Node.js
 22 on pushes and pull requests, and before Chrome Web Store uploads.
+
+The shared verification workflow packages once, then runs the browser suite and
+profiler against the unpacked ZIP. The store upload job consumes the same
+artifact only after both verification jobs succeed. `chrome-web-store.test.cjs`
+uses injected transport responses to cover API v2 upload, polling, explicit
+submission, HTTP/application failures, OAuth form encoding and version/tag
+validation. No test reads deployment credentials or contacts the store.
 
 `npm test` first builds the production extension and verifies its manifest,
 resources, CSP and packaging. A test-only module adapter supports moving
