@@ -165,3 +165,10 @@ web-accessible resources. Дополнительные разрешения вв
   3 Playwright-сценария с установленным расширением: autosave/reload настроек,
   посторонняя HTTPS-страница, повторное изменение DOM GitLab fixture.
   Chromium запускается в отдельном удаляемом профиле; HTTP(S) перехватывается.
+- 04: review workflow перенесён из глобального JS в `entities/review`:
+  инструкции, промпты, file scope, typed storage и cancellation. Добавлена
+  библиотека version/TOML для дальнейшего подключения к MR/cherry-pick.
+  Импорты FSD и отсутствие `any`/blanket suppressions проверяются автоматически.
+  Общие настройки popup переносятся вместе с их потребителями на шаге 08,
+  чтобы не создать зависимость между слайсами entities/settings и entities/review.
+  Проходят typecheck, lint, architecture, 817 Node-тестов и 3 browser-сценария.

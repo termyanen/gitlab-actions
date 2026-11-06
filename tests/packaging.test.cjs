@@ -18,6 +18,9 @@ var root = require('./helpers/extension.cjs').root;
       Object.keys(manifest.icons).forEach(function(size) { required.push(manifest.icons[size]); });
       ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
       required.concat(['pack.sh', 'package.json', 'tsconfig.json']).forEach(function(file) {
+        // Migrated runtime scripts are built from src; only legacy entrypoints
+        // and static assets still exist at the repository root.
+        if (!fs.existsSync(path.join(root, file)) && file.endsWith('.js')) return;
         var destination = path.join(staging, file);
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.copyFileSync(path.join(root, file), destination);
