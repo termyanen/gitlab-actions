@@ -28,6 +28,14 @@ with the pinned `docs/requirements.txt` and fails on a generated-file diff. See
 `npm test` first builds the production extension and verifies its manifest,
 resources, CSP and packaging. A test-only module adapter supports moving
 regressions from legacy scripts to TypeScript exports without shipping test hooks.
+
+`type-boundaries.test.cjs` exercises malformed and legacy API responses, unknown
+errors, Jira message/authentication/partial-write results, durable task validation,
+invalid review rows, detached snapshots, version paths containing prototype names,
+SHA-256 journal identities and checked settings controls. Existing review regressions
+also verify partial discussion recovery and prevention of ambiguous write retries.
+`npm run check` enforces strict indexed/optional-property checks and the unsafe-value,
+unsafe-assertion and non-null assertion ESLint rules; tests alone do not run those gates.
 Initial source and production bundle sizes are recorded in
 `fixtures/refactor-baseline.json`. Release graph checks enforce 2 KiB for the
 all-HTTPS bootstrap, 20 KB for common GitLab startup and 160 KB for initial MR
@@ -53,8 +61,9 @@ node scripts/profile-runtime.mjs dist .reports/runtime-after.json --check
 ```
 
 `tests/browser/lifecycle.spec.cjs` additionally tests delayed/out-of-order Jira
-and standup replies, ticket switching, completed Jira mutations, and 100 dialog
-openings with deliberately undelivered responses. Memory assertions wait for
+and standup replies, ticket switching, loading/posting/deleting Jira comments,
+completed Jira mutations, and 100 dialog openings with deliberately undelivered
+responses. Memory assertions wait for
 rendering frames before GC so transient renderer references are not mistaken
 for leaks. These focused fixtures bundle production widget modules with a fake
 Chrome transport; `extension.spec.cjs` and the profiler use the installed
@@ -352,7 +361,7 @@ still need tests; their absence does not establish a bug.
 | Next | Real browser lifecycle | Natural idle suspension, browser shutdown/relaunch, offline request completion and page reloads. Explicit Chromium worker stop/restart and active job-chain recovery are covered; persisted checkpoints reconcile the pinned pipeline before continuing and do not blindly replay an uncertain mutation. Cherry-pick retry checkpoints last only while its modal remains open. |
 | Next | Popup/settings | Drag-and-drop button reordering and actual host-permission approval/denial dialogs. Autosave/reload, draft preservation across profile/language switches and display-rule validation already have Chromium coverage. |
 | Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
-| Next | Group play | Parent/child pipelines with matching stage names, pagination, status changes while starting a group and partial API failures. |
+| Partial | Group play | Chromium covers unrelated graph columns, a disappearing pipeline mapping and a successful retry without an unintended write. Still verify parent/child pipelines with matching stage names, pagination and partial API failures on real deployments. |
 | Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog, Jira enrichment failures and malformed/empty-matching ticket regexes. |
 | Next | Jira sidebar and quick actions | Full issue/custom-field mapping, comment pagination, attachments/media, real cookie sessions and instance-specific edit permissions. API-handler tests cover multi-step quick actions with partial failures; a local Chrome fixture covers field-only availability, refreshes and duplicate clicks. |
 | Next | Badges and caches | Cache persistence/expiry/eviction, failed fetches, incremental multi-ticket rendering and commit version comparisons across pages. |
