@@ -19,18 +19,24 @@ GitLab's UI requires multiple clicks and page reloads for common MR operations. 
 | **Version Bump** | Commit version increment (patch/minor/major) via GitLab API |
 | **Rebase + Version** | Rebase, then bump version |
 | **Rebase + Auto-merge** | Rebase and enable auto-merge when pipeline passes |
-| **Ship** | Rebase + Version + Auto-merge — full release flow in one click |
-| **Force Merge** | Merge immediately, bypass pipeline wait |
-| **Retry Failed** | Retry all failed CI jobs |
+| **Ship** | Rebase when needed, bump the version, wait for MR/pipeline readiness, then request auto-merge |
+| **Force Merge / Force Ship** | Request merge without waiting for pipeline success; Force Ship also bumps the version. GitLab permissions and merge rules still apply |
+| **Retry Failed** | Retry failed jobs in the MR's current pipeline |
 | **New Pipeline** | Trigger a new pipeline |
-| **Cancel Pipeline** | Cancel running pipeline |
+| **Cancel Pipeline** | Request cancellation of running/pending MR pipelines |
 | **Draft Toggle** | Mark/unmark MR as draft |
 | **Copy MR** | Copy MR title + link to clipboard |
-| **Reviewers** | Quick-set reviewers from a preconfigured list |
+| **Reviewers** | Mention configured usernames in a comment, reuse a reviewer comment, or run the configured CI job |
 | **Custom Jobs** | Trigger any manually-configured CI job |
 | **MR Actions** | Named buttons to remove selected/all labels, add/replace labels, or clear assignees, reviewers or milestone |
 
 All buttons are configurable — show/hide, reorder via drag & drop. Per-project profiles let you override settings for specific repositories.
+
+Reviewers uses the team's `Reviewer:` / `Reviewers:` comment convention; it does
+not assign GitLab's native reviewer field. Keep the MR tab open until Ship,
+rebase or auto-merge setup finishes. Once auto-merge is enabled, GitLab handles
+the merge when its conditions are met. Custom job chains have a separate
+background tracker described below.
 
 In settings, open **MR actions → Add MR action**, enter a button name and choose
 an action. For selected labels, enter exact names separated by commas or new
@@ -51,7 +57,9 @@ configured Jira site when needed. Browser permissions, sessions and caches are
 not transferred. The file includes configured URLs, usernames and comment or
 prompt text. The ↗ button opens settings in a separate browser tab.
 
-### Copy Review Feedback for AI
+<a id="copy-review-feedback-for-ai"></a>
+
+### AI review: copy, fix, reply and recheck
 
 [AI review guide / Гайд по ревью с ИИ](https://termyanen.github.io/gitlab-actions/review-guide.html) — step-by-step scenarios for authors and reviewers.
 Source guides: [English](docs/AI_REVIEW_GUIDE_EN.md), [Русский](docs/AI_REVIEW_GUIDE_RU.md).
@@ -198,8 +206,9 @@ cannot retrieve the old commit. Truncated diffs,
 missing discussions and context limits remain visible; the prompt requires the
 AI to obtain missing material before claiming complete verification. All three MR
 revision references are checked again before returning the packet. Import still
-validates revisions for new findings and discussion targets for replies before publishing; it never
-resolves discussions automatically.
+validates revisions for new findings and discussion targets for replies before publishing.
+Replies leave discussions open unless you explicitly select **Resolve discussion
+after publishing** in the import preview.
 
 ### File Filters
 
@@ -361,7 +370,32 @@ so identical answers to different threads remain independent.
 - **Dim Draft MRs** — visually de-emphasize draft MRs
 - **Highlight your MRs** — blue left border on your own MRs
 - **Copy MR from list** — copy title + link without opening the MR
-- **MR age badge** — shows time since MR was created
+- **Thread, size, conflict and approval badges** — show MR metadata, with incomplete counts marked
+- **Branch names** — source and target branches, with optional links
+
+### Page tools and background jobs
+
+- **MR detail tools:** age badge, failed-job log previews, sensitive-file reminders,
+  quick comments and copyable Git commands. Check commands against your local
+  repository before running them; hard reset discards local changes.
+- **Command palette:** Cmd+K on macOS or Ctrl+K elsewhere opens navigation,
+  available MR actions and repository file-name search.
+- **Daily activity report:** choose a day, collect created/merged/reviewed/open MRs
+  and optionally enrich them with Jira titles. Incomplete selections are marked.
+- **Custom job chains:** configure job names in order. The background tracker shows
+  progress and cancellation; checkpoints allow recovery after worker restarts.
+  Keep at least one signed-in tab on the same GitLab origin open for API access.
+  Cancelling a chain prevents subsequent actions; it does not cancel a job already
+  started in GitLab.
+- **Pipeline groups:** run remaining manual jobs from a group in the pipeline graph.
+- **Commit tools:** version badges use the configured version file; cherry-pick
+  commits to selected branches directly or through new MRs. With Smart fallback
+  enabled, a verified version-file conflict can be replayed without that file,
+  optionally bumping the target version in the same commit. Other conflicts,
+  unsafe changes and uncertain request outcomes stop for inspection.
+
+See [configuration and limits](docs/CONFIGURATION.md) for defaults, inheritance,
+cache lifetimes and collection limits.
 
 ### Jira Integration
 
@@ -380,7 +414,7 @@ Deep integration with Jira via session cookies (no API tokens needed):
 Flexible configuration for automatic version bumping:
 
 - Supports `package.json`, `pyproject.toml`, `version.txt`, or any custom file
-- Configurable JSON path (e.g., `version`, `tool.poetry.version`)
+- Configurable JSON/TOML field path (e.g., `version`, `tool.poetry.version`)
 - Strategies: patch, minor, major
 - Custom commit message template
 
@@ -398,10 +432,10 @@ Flexible configuration for automatic version bumping:
    ```bash
    git clone https://github.com/termyanen/gitlab-actions.git
    ```
-2. Use Node.js 22.13+ (or 24+) (`nvm use`), then run `npm ci` and `npm run build`.
+2. Use Node.js 22.x (22.13+) or 24+ (`nvm use`), then run `npm ci` and `npm run build`.
 3. Open `chrome://extensions/` and enable "Developer mode".
 4. Click "Load unpacked" and select the generated `dist/` folder.
-5. Open any GitLab merge request page.
+5. Open a GitLab merge request over HTTPS and allow the extension access to that site.
 
 Use `npm run dev` to rebuild JavaScript and copy changed assets during development.
 Reload the unpacked extension and the GitLab tab after a rebuild. Production
@@ -441,8 +475,12 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 ## Compatibility
 
 - Chrome 110+ / corresponding Chromium-based browsers (Edge, Brave, Arc, etc.)
-- Any self-hosted GitLab instance
-- Any Jira Server / Data Center instance (Cloud support varies)
+- HTTPS GitLab.com and self-hosted GitLab, with site access allowed for the extension.
+  Features depend on the server's API, page layout and your permissions; see
+  [audited compatibility and live-test gaps](tests/README.md).
+- Optional Jira integration uses a signed-in browser session and access to the
+  configured HTTPS origin. It targets Server / Data Center APIs; Jira Cloud and
+  instance-specific authentication or custom fields require separate verification.
 
 ## Development architecture
 
@@ -491,7 +529,7 @@ maintainer verification are listed in [CONTRIBUTING.md](CONTRIBUTING.md#reposito
 
 ## Testing
 
-Run `npm ci`, then `npm run check` with Node.js 22.13+ (or 24+). This checks TypeScript,
+Run `npm ci`, then `npm run check` with Node.js 22.x (22.13+) or 24+. This checks TypeScript,
 lint, regressions and the production build. Use `npm test` for regressions only. The
 regression suite covers version bumps, MR actions, CI job chains, API relay, Jira
 handlers, cherry-pick flows and diff helpers, locales, and release packaging. Tests run in
