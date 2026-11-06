@@ -8,7 +8,6 @@ const sourceRoot = join(root, "src");
 const layers = ["app", "pages", "widgets", "features", "entities", "shared"];
 const legacy = new Set([
   "background.js",
-  "content.js",
   "content_proxy.js",
   "popup.js",
   "welcome.js",

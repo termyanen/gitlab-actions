@@ -196,6 +196,14 @@ function environment(options) {
 
 function content(options) {
   var env = environment(options);
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
+    const { bundleForTest } = require('./runtime.cjs');
+    vm.runInContext(bundleForTest('src/features/mr-actions/index.ts', { globalName: 'MrActions' }), env.context);
+    vm.runInContext(bundleForTest('src/shared/lib/version/index.ts', { globalName: 'Version' }), env.context);
+    vm.runInContext(`globalThis.actions = { ...Version, ...MrActions.createMrActions({ origin: window.location.origin, projectId: 37, mrIid: 12, projectPath: 'team/repo' }, { t: chrome.i18n.getMessage, showToast() {}, pollTaskStatus() {} }) };`, env.context);
+    env.actions = env.context.actions;
+    return env;
+  }
   var source = readRuntime('content.js');
   var end = source.lastIndexOf('})();');
   assert.ok(end > 0, 'content.js IIFE must be present');
