@@ -29,6 +29,12 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '' } = {}) {
 }
 
 function readRuntime(file) {
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'review-workflow.js') {
+    return bundleForTest('src/entities/review/index.ts', {
+      globalName: 'ReviewWorkflowModule',
+      footer: 'window.GlReviewWorkflow = { ...ReviewWorkflowModule };',
+    });
+  }
   return fs.readFileSync(path.join(process.env.EXTENSION_TEST_SOURCE_DIR || root, file), 'utf8');
 }
 
