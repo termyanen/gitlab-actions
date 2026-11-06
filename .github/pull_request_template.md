@@ -1,6 +1,7 @@
 ## Change
 
-Describe the problem and the resulting behavior. Link the issue if there is one.
+Describe the problem and resulting behavior across the complete PR. Link the issue
+if there is one. Mention changed defaults and meaningful user-visible examples.
 
 ## Validation
 
@@ -12,3 +13,22 @@ browser and performance results. Fixtures do not establish live-server compatibi
 
 Mention changes to permissions, supported Chrome/GitLab versions, settings/storage
 formats, runtime dependencies or package contents. Write "unchanged" if applicable.
+
+## Documentation and release
+
+For each applicable surface, name the updated files; otherwise explain why it is
+unaffected. See `docs/DELIVERY.md` in the repository.
+
+| Surface | Updated files or reason not applicable |
+| --- | --- |
+| EN/RU changelog / Unreleased notes | |
+| README and site feature/usage copy (EN/RU) | |
+| Welcome page and seven extension locales | |
+| AI review guides / privacy policies and generated pages | |
+| Contributor/agent instructions and development commands | |
+| Version and generated site metadata | |
+
+Release intent: no release / pending changes / preparing version …
+For a release PR, include the target version, release notes and package location,
+the result of `npm run release:check -- --ready`, and remaining publication steps.
+Do not describe local preparation as a deployed website or published extension.

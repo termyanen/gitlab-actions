@@ -584,3 +584,50 @@ API, индексы массивов, nullable DOM-контракты и absent/
 [Chrome alarms.create](https://developer.chrome.com/docs/extensions/reference/api/alarms#method-create),
 [indexed access](https://www.typescriptlang.org/tsconfig/noUncheckedIndexedAccess.html),
 [exact optional properties](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html).
+
+## Общий процесс PR и релиза для агентов (база `67b65e2`)
+
+Добавлена единая процедура `docs/DELIVERY.md` с матрицей изменений: changelog
+EN/RU, README, сайт EN/RU, welcome и семь локалей, review guides, privacy,
+инструкции контрибьюторов и версия. PR template требует назвать затронутые файлы
+либо объяснить, почему поверхность не меняется, указать release intent и реальные
+результаты проверок. Удалён дублирующий раздел Contributing из README.
+
+Portable skills `prepare-pr` и `prepare-release` находятся в `.agents/skills/`;
+описания соответствуют формату Agent Skills. В них нет внешних интеграций,
+автоматического push или публикации. `CLAUDE.md` и `GEMINI.md` — относительные
+symlink на `AGENTS.md`; Claude видит те же skills через symlink отдельных папок
+в `.claude/skills/`. Copilot instructions ссылаются на общий источник. Для клиентов
+без автоматического discovery документированы прямые пути к инструкциям.
+Схема discovery сверена с официальными документами Codex, Cursor, Copilot, Gemini
+и Claude; запуск каждого из этих клиентов в этом проходе не выполнялся.
+
+Добавлены read-only команды:
+
+- `npm run release:check`: формат версии, одинаковая EN/RU история, отсутствие
+  дубликатов/нарушений порядка, актуальные changelog copies, JSON-LD и оба footer.
+- `npm run release:check -- --ready`: дополнительно запрещает pending Unreleased.
+- `npm run --silent release:notes`: текущие EN/RU разделы в Markdown, без чужих
+  старых релизов и без публикации. Семантическую точность заметок проверяет автор.
+- `npm run docs:build`: существующий генератор страниц и changelog copies.
+
+Версия остаётся в manifest; `package.json` и lockfile не получают вторую версию.
+Согласованность release metadata включена в `npm run check`. Для генератора
+документации закреплён Mistune 3.4.0 с SHA256 в `docs/requirements.txt`; вывод
+совпал побайтово с существующими страницами. CI теперь регенерирует сайт в venv
+и отклоняет diff забытых generated files. Добавлен Dependabot для Python-пакета.
+
+Исправлен тест сайта, требовавший, чтобы заметки 1.13.3 всегда были первыми:
+теперь проверяется текущая версия и отдельно сохраняются проверки старой истории.
+Усилена проверка ZIP: инструкции, skills и документация не должны попадать в пакет.
+
+Проверки: validators skill-creator приняли оба skills; относительные ссылки и
+symlink разрешаются внутри репозитория. `npm run check` — 874 теста, actionlint
+проходит. В отдельной временной копии подготовлен условный 1.13.4: до регенерации
+release check правильно отклонил устаревшие copies; после генерации прошли ready,
+экспорт EN/RU notes, все 874 теста и `bash pack.sh`. ZIP содержит 48 runtime-файлов
+и manifest 1.13.4 в корне, без инструкций/исходников. Эта копия не публиковалась.
+
+В рабочем репозитории версия осталась 1.13.3. Runtime и вид сайта не менялись;
+повторный Chromium/performance прогон не требовался. Реальный GitHub CI, PR,
+release, Pages deployment и Chrome Web Store upload не запускались.

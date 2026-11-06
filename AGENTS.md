@@ -4,6 +4,16 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup and validation commands.
 This file is the shared instruction source for coding agents. Keep tool-specific
 instruction files as pointers here, rather than maintaining competing rules.
 
+## Delivery workflows
+
+- For PR preparation, read `.agents/skills/prepare-pr/SKILL.md`.
+- For release preparation, read `.agents/skills/prepare-release/SKILL.md`.
+- [docs/DELIVERY.md](docs/DELIVERY.md) is the shared PR/release procedure and source
+  map for README, website, locales, changelogs, privacy and version updates. Follow
+  its impact matrix before declaring a change ready. An unaffected surface needs
+  a reason, not a cosmetic edit. Instructions apply to every agent, not just Claude.
+- `CLAUDE.md` and `GEMINI.md` are symlinks to this file. Edit this canonical file.
+
 ## Project map
 
 - Chrome Manifest V3 extension, TypeScript + esbuild, framework-free DOM UI.
@@ -77,4 +87,6 @@ instruction files as pointers here, rather than maintaining competing rules.
 - When local commits are requested, use the configured author, do not add agent
   signatures/Co-authored-by trailers, and do not enable commit signing for the task.
 - Version bumps are release work: update `manifest.json`, site `softwareVersion`
-  and both changelogs together. Tooling-only work does not need a version bump.
+  and both changelogs, then regenerate website copies and version footers with
+  `npm run docs:build`. Run `npm run release:check -- --ready` before handing off a
+  release. Tooling-only work does not need a version bump.

@@ -466,17 +466,11 @@ lint, formatting, FSD boundaries, regressions, bundle budgets and ZIP checks.
 
 ## Contributing
 
-1. Fork the repo
-2. Create a feature branch
-3. Make your changes
-4. Test on a GitLab MR page
-5. Submit a pull request
-
-## Contributing
-
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification and review
 expectations. [AGENTS.md](AGENTS.md) documents architecture and safety constraints
-for contributors and coding agents; `CLAUDE.md` points to that shared source.
+for contributors and coding agents; `CLAUDE.md` and `GEMINI.md` are symlinks to it.
+The [delivery procedure](docs/DELIVERY.md) defines PR contents, documentation
+updates and release preparation. Portable skills live in `.agents/skills/`.
 
 ## Testing
 
@@ -489,18 +483,17 @@ for details and the remaining end-to-end coverage gaps.
 
 ## Preparing a release
 
-`manifest.json` is the source of truth for the extension version. For each patch
-release:
+Follow the [release procedure and documentation matrix](docs/DELIVERY.md#prepare-a-release-locally).
+`manifest.json` is the version source. Update both root changelogs and the site's
+`softwareVersion`, then run `npm run docs:build` to regenerate site changelog copies
+and guide/privacy version footers. Record user-facing changes in EN/RU Unreleased
+sections until preparing a particular release; keep published history unchanged.
 
-1. Increment the patch component in `manifest.json`.
-2. Add or promote the release section in both `CHANGELOG.md` and `CHANGELOG_RU.md`;
-   describe fixes and relevant technical changes, keeping older entries unchanged.
-3. Update `softwareVersion` in `docs/index.html` to match. The website loads release
-   notes from the changelogs; the extension's update notice reads the manifest.
-4. Run `npm run check` and `npm run test:browser` ([browser setup](tests/README.md)). CI checks
-   version consistency, update behavior, and both ZIP packaging paths.
-5. Package with `bash pack.sh` when needed; the archive name comes from the manifest.
-   If creating a GitHub release, use the same version in its tag and release notes.
+`npm run release:check` checks consistency during development and is included in
+`npm run check`. Before release, `npm run release:check -- --ready` also rejects
+pending Unreleased notes. `npm run --silent release:notes` prints the current
+bilingual release notes. These commands do not modify files or publish anything.
+The procedure covers validation, ZIP packaging, PR contents and publication.
 
 The private `package.json` configures the development toolchain and has no separate
 release version. Both packaging paths build and package only `dist/`.

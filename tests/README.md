@@ -18,6 +18,13 @@ uses injected transport responses to cover API v2 upload, polling, explicit
 submission, HTTP/application failures, OAuth form encoding and version/tag
 validation. No test reads deployment credentials or contacts the store.
 
+`npm run release:check` validates versions, EN/RU changelog history and generated
+site copies/footers without changing files. `-- --ready` also rejects pending
+Unreleased notes. Regression fixtures cover stale pages, translations, duplicate
+or misordered versions and release-note extraction. CI regenerates the website
+with the pinned `docs/requirements.txt` and fails on a generated-file diff. See
+[the delivery procedure](../docs/DELIVERY.md) for PR and release requirements.
+
 `npm test` first builds the production extension and verifies its manifest,
 resources, CSP and packaging. A test-only module adapter supports moving
 regressions from legacy scripts to TypeScript exports without shipping test hooks.

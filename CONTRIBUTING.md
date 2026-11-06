@@ -69,6 +69,11 @@ No automatic hooks or install-time scripts modify your working tree.
 
 ## Reviewable contributions
 
+Follow [Preparing a PR and a release](docs/DELIVERY.md) for the PR body, release
+notes, documentation impact matrix and all version locations. The repository ships
+portable `prepare-pr` and `prepare-release` skills in `.agents/skills/`; the same
+procedure is readable directly by any contributor or coding agent.
+
 Describe the concrete problem, resulting behavior and checks actually run in the
 PR. Include screenshots for UI changes and note compatibility/permission/storage
 changes. Add focused failure regressions for behavioral fixes. Never upload traces
