@@ -9,6 +9,7 @@ gitlab-mr-actions-v*.zip
 node_modules/
 dist/
 .reports/
+.venv-docs/
 playwright-report/
 test-results/
 extension.zip
