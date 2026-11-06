@@ -8,6 +8,7 @@ var messages = require('../../_locales/en/messages.json');
 // This fixture implements only the tree, form controls and events used by the
 // copy picker. The shipped initializer and every click handler run unchanged.
 function dom() {
+  class HTMLElement {}
   var observers = [];
   var document;
   function mutate(record) {
@@ -25,6 +26,7 @@ function dom() {
   function element(tag) {
     var text = '';
     var el = { tagName: tag.toUpperCase(), children: [], parentElement: null, attributes: {}, events: {}, value: '', checked: false, disabled: false, hidden: false, style: {} };
+    Object.setPrototypeOf(el, HTMLElement.prototype);
     Object.defineProperties(el, {
       className: { get: function() { return el.attributes.class || ''; }, set: function(value) { el.attributes.class = String(value); } },
       id: { get: function() { return el.attributes.id || ''; }, set: function(value) { el.setAttribute('id', value); } },
@@ -120,7 +122,7 @@ function dom() {
   document.getElementById = function(id) { return document.querySelector('#' + id); };
   function MutationObserver(callback) { this.callback = callback; this.records = []; observers.push(this); }
   MutationObserver.prototype.observe = function(target, options) { this.target = target; this.options = options; };
-  return { document: document, MutationObserver: MutationObserver };
+  return { document: document, MutationObserver: MutationObserver, HTMLElement };
 }
 
 function deferred() {
@@ -160,7 +162,7 @@ async function create(options) {
   var timerId = 0;
   env.context = vm.createContext({
     window: { location: { origin: 'https://gitlab.test', pathname: options.pathname || '/team/repo/-/merge_requests/12' }, GlReviewImportUI: options.importUI, addEventListener: function(type, fn) { env.windowEvents[type] = fn; } },
-    document: document, MutationObserver: tree.MutationObserver, AbortController: AbortController, URL: URL,
+    document: document, HTMLElement: tree.HTMLElement, MutationObserver: tree.MutationObserver, AbortController: AbortController, URL: URL,
     setTimeout: function(fn) { env.timers.set(++timerId, fn); return timerId; }, clearTimeout: function(id) { env.timers.delete(id); },
     setInterval: function(fn) { env.intervals.push(fn); },
     navigator: { clipboard: { writeText: function(text) {
