@@ -472,6 +472,12 @@ lint, formatting, FSD boundaries, regressions, bundle budgets and ZIP checks.
 4. Test on a GitLab MR page
 5. Submit a pull request
 
+## Contributing
+
+Start with [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification and review
+expectations. [AGENTS.md](AGENTS.md) documents architecture and safety constraints
+for contributors and coding agents; `CLAUDE.md` points to that shared source.
+
 ## Testing
 
 Run `npm ci`, then `npm run check` with Node.js 22.13+ (or 24+). This checks TypeScript,

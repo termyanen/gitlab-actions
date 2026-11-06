@@ -12,7 +12,6 @@ dist/
 playwright-report/
 test-results/
 extension.zip
-CLAUDE.md
 ROADMAP.md
 _metadata/
 promo/
