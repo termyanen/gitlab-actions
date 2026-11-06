@@ -6,7 +6,7 @@ var fs = require('node:fs');
 var path = require('node:path');
 var vm = require('node:vm');
 
-var source = fs.readFileSync(path.join(__dirname, '../review-export.js'), 'utf8');
+var source = require('./helpers/runtime.cjs').readRuntime('review-export.js');
 
 function environment(handler, options) {
   options = options || {};

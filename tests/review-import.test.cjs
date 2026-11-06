@@ -6,7 +6,7 @@ var fs = require('node:fs');
 var path = require('node:path');
 var vm = require('node:vm');
 var crypto = require('node:crypto');
-var source = fs.readFileSync(path.join(__dirname, '../review-import.js'), 'utf8');
+var source = require('./helpers/runtime.cjs').readRuntime('review-import.js');
 var HEAD = 'a'.repeat(40), BASE = 'b'.repeat(40), START = 'c'.repeat(40);
 
 function response(value, status, headers) { return new Response(JSON.stringify(value), { status: status || 200, headers: Object.assign({ 'content-type': 'application/json' }, headers) }); }
@@ -77,7 +77,7 @@ function environment(options) {
       return defaults(url, init);
     }
   });
-  if (options.workflow) vm.runInContext(fs.readFileSync(path.join(__dirname, '../review-workflow.js'), 'utf8'), sandbox);
+  if (options.workflow) vm.runInContext(require('./helpers/runtime.cjs').readRuntime('review-workflow.js'), sandbox);
   vm.runInContext(source, sandbox, { filename: 'review-import.js' });
   return {
     chrome: chrome, api: window.GlReviewImport, context: context, state: state, window: window, requests: requests, stored: stored, writes: writes, notes: notes, drafts: drafts,

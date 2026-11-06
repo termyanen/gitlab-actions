@@ -11,6 +11,24 @@ The esbuild/TypeScript toolchain is installed from the lockfile. Packaging check
 also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI runs on Node.js
 22 on pushes and pull requests, and before Chrome Web Store uploads.
 
+`npm test` first builds the production extension and verifies its manifest,
+resources, CSP and packaging. A test-only module adapter supports moving
+regressions from legacy scripts to TypeScript exports without shipping test hooks.
+Initial source and production bundle sizes are recorded in
+`fixtures/refactor-baseline.json`; these are not browser performance measurements.
+
+Browser smoke checks install the actual production build in a separate Chromium
+profile, intercept all HTTP(S) requests, and exercise real Chrome APIs:
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/ms-playwright npx playwright install chromium
+npm run test:browser
+```
+
+These checks cover settings autosave/reload, an unrelated HTTPS page, and review
+controls under repeated DOM updates. They use local fixtures and do not establish
+compatibility with a live GitLab/Jira server. Each run removes its test profile.
+
 ## What is covered
 
 | Area | Automated checks |
