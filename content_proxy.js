@@ -4050,7 +4050,7 @@
         if (isMrDetail && window.__glMrActionsLoaded && window.__glMrPaletteActions) {
           window.__glMrPaletteActions.forEach(function(a) {
             cmds.push({ id: a.id, label: a.label, group: msg('cmdGroupMr'), icon: a.icon || 'action', action: function() {
-              window.postMessage({ type: 'gl-mr-ext-palette-action', actionId: a.id }, '*');
+              if (window.__glMrPaletteRun) window.__glMrPaletteRun(a.id);
             }});
           });
         }

@@ -86,3 +86,17 @@ test('review controls mount once on GitLab and tolerate repeated DOM updates', a
   await page.close();
   expect(runtimeErrors).toEqual([]);
 });
+
+test('page messages cannot invoke merge request actions', async () => {
+  const page = await context.newPage();
+  const mutations = [];
+  page.on('request', (request) => {
+    if (request.url().includes('/api/v4/') && request.method() !== 'GET') mutations.push(request.url());
+  });
+  await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+  await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+  await page.evaluate(() => window.postMessage({type: 'gl-mr-ext-palette-action', actionId: 'mr-pipeline-restart'}, '*'));
+  await page.waitForTimeout(250);
+  expect(mutations).toEqual([]);
+  await page.close();
+});

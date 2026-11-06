@@ -61,3 +61,29 @@ export interface MergeRequestVersion {
   head_commit_sha: string;
   created_at?: string;
 }
+
+/** Full MR metadata returned by the actions API. */
+export interface ActiveMergeRequest extends MergeRequest {
+  title: string;
+  source_branch: string;
+  target_branch: string;
+  web_url: string;
+  state: string;
+  created_at: string;
+  rebase_in_progress?: boolean;
+  merge_error?: string | null;
+  merge_status?: string;
+  has_conflicts?: boolean;
+  blocking_discussions_resolved?: boolean;
+  squash?: boolean;
+  force_remove_source_branch?: boolean;
+  should_remove_source_branch?: boolean;
+  diff_head_sha?: string;
+  head_pipeline?: {
+    id: number;
+    project_id?: number;
+    sha?: string;
+    ref?: string;
+    status: string;
+  } | null;
+}
