@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.13.3
+
+- **CI job lookup** — fix reviewers, custom job buttons, background chains and failed-job retries by selecting the MR head pipeline and reading later job pages when needed. If the head pipeline is unavailable, keep GitLab’s MR-pipeline preference for the current commit. Fork jobs use their own project, including older responses without a pipeline project ID; retry recovery stays in the original pipeline. Missing-job errors identify the checked pipeline.
+- **Queued job states** — treat `preparing`, `waiting_for_resource` and `scheduled` as already queued, without sending another play/retry request or reporting an unexpected status. Repeated jobs pages stop with a translated error instead of looping.
+- **Rebase completion** — explicitly request the rebase status while polling. A missing status or rejected rebase stops the workflow before version writes and merging, instead of being treated as successful completion.
+- **Fast pipeline completion** — Ship recognizes a pipeline that finished between polls when its SHA matches the MR revision. Older commit pipelines are excluded when their SHA is available; merged-results and merge-train head references remain supported.
+- **Existing discussions in a new AI review** — the optional “Account for existing discussions” checkbox adds compact summaries of published discussions to help avoid duplicate findings. It is off by default and remembers your choice. An editable automatic instruction asks the AI to review the whole MR independently first, then remove substantially duplicate findings, including resolved ones, without replying to or verifying existing threads. Drafts, reply bodies and discussions outside the file scope are excluded; loading failures produce a warning. The preference is included in settings export/import, and older settings files default it to off.
+- **Backward compatibility checks** — regression fixtures cover GitLab API contracts from 12.10.14 through 18.11.0, including legacy pipeline fields, rebase status and merge readiness responses. All 813 tests pass; 74 behavior-parity scenarios also pass on the original 1.13.2 runtime. These are source-contract and simulated-workflow checks, not certification on live installations.
+
 ## 1.13.2
 
 - **AI review diff recovery** — import automatically retries missing or truncated file changes directly from GitLab's Git storage. Recovered comments still require an exact verified code line and the current MR revision; unavailable files do not block other ready comments.

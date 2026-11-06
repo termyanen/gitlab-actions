@@ -706,5 +706,7 @@
   "mrAction_clear_reviewers": {"message": "Quitar revisores"},
   "mrAction_clear_milestone": {"message": "Quitar hito"},
   "mrActionInvalid": {"message": "Introduce un nombre, elige una acción válida e indica al menos una etiqueta para añadir, quitar o reemplazar."},
-  "mrActionConfirm": {"message": "¿Aplicar «$1» a este MR?\n$2"}
+  "mrActionConfirm": {"message": "¿Aplicar «$1» a este MR?\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab no devolvió el estado del rebase. Recarga la solicitud de fusión e inténtalo de nuevo."},
+  "errorJobsPageRepeated": {"message": "GitLab devolvió una página de trabajos repetida para el pipeline #$1. No se pudo cargar la lista completa de trabajos."}
 }

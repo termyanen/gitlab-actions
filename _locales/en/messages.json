@@ -716,5 +716,7 @@
   "mrAction_clear_reviewers": {"message": "Clear reviewers"},
   "mrAction_clear_milestone": {"message": "Clear milestone"},
   "mrActionInvalid": {"message": "Enter a button name, choose a supported action and specify at least one label for add, remove or replace."},
-  "mrActionConfirm": {"message": "Apply “$1” to this MR?\n$2"}
+  "mrActionConfirm": {"message": "Apply “$1” to this MR?\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab did not return the rebase status. Reload the merge request and try again."},
+  "errorJobsPageRepeated": {"message": "GitLab returned a repeated jobs page for pipeline #$1. The job list could not be fully loaded."}
 }

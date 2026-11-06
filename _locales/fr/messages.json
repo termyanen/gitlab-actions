@@ -706,5 +706,7 @@
   "mrAction_clear_reviewers": {"message": "Retirer les réviseurs"},
   "mrAction_clear_milestone": {"message": "Retirer le jalon"},
   "mrActionInvalid": {"message": "Saisissez un nom, choisissez une action valide et indiquez au moins une étiquette à ajouter, retirer ou remplacer."},
-  "mrActionConfirm": {"message": "Appliquer « $1 » à cette MR ?\n$2"}
+  "mrActionConfirm": {"message": "Appliquer « $1 » à cette MR ?\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab n’a pas renvoyé l’état du rebase. Rechargez la merge request et réessayez."},
+  "errorJobsPageRepeated": {"message": "GitLab a renvoyé une page de jobs déjà reçue pour le pipeline #$1. La liste des jobs n’a pas pu être chargée intégralement."}
 }

@@ -40,6 +40,8 @@ Open **AI review → Automatic instructions (advanced)** in extension settings. 
 
 The main task prompts remain independently editable and can contain similar instructions. The full task preview shows the resulting combination. MR identifiers, JSON examples and loading notices are generated from the current context; editing instructions does not disable file filters, targeting checks or publication validation. The format-only shortcut always copies the supported import format without task instructions.
 
+The **Existing discussions in a new review** block tells the AI to review the whole MR independently first, then remove findings that substantially repeat published discussions, including resolved ones. It applies to **New review** when **Account for existing discussions** is checked. Disabling the instruction block removes only that instruction; uncheck the option in New review to exclude the discussion summaries themselves.
+
 ## Review an MR from scratch
 
 1. Open **AI review…** and choose the **New review** tab.
@@ -50,11 +52,21 @@ The main task prompts remain independently editable and can contain similar inst
 
 Discussion selection does not affect New review: it always checks the whole MR within the configured file scope.
 
-**Account for existing discussions** (disabled by default, remembered) appends published discussions at the end of the task in a compact form: file and line, status, author, the first 600 characters of the opening comment and the reply count. Replies, drafts and discussions outside the file filters are not included. The AI is told to review the whole MR independently first and only then drop findings that substantially repeat a listed discussion, including resolved ones; it does not verify or reply to those discussions. This lets a second reviewer run their own review without repeating the first one. How strictly the AI ignores the list while reviewing depends on the model, so still check the preview for duplicates. If discussions cannot be loaded, the task is still prepared with a warning.
-
 Import retains a **Copy review prompt** shortcut under **Advanced settings** for a repository-based task without description or diff. Use the New review tab for those options.
 
 If the AI already has the task and code context, use **Copy response format** next to the prompt shortcuts in Import. It copies only the JSON structure and field rules for inline comments, general comments and replies, without saved prompts or loading MR data. The AI must fill the example placeholders from verified context, including the revision actually reviewed for new findings and existing discussion IDs for replies. Replies-only JSON may omit `head_sha`.
+
+### Run a new review after another reviewer
+
+If findings are already published and you want to review the MR independently, use **New review** with **Account for existing discussions**. The option is off by default; your choice is remembered and included in settings export/import.
+
+1. Set the file scope and enable the checkbox before preparing the task.
+2. Click **Preview** and check the discussion summaries at the end of the task. They contain the status, author, first 600 characters of the opening comment, reply count and, for inline findings, the file and line. Reply bodies, drafts and discussions outside the file filters are excluded.
+3. Give the task to your AI, then compare the result with the GitLab discussions before publishing and remove any remaining duplicates.
+
+The automatic instruction asks the AI to review the whole MR independently first, then drop findings that repeat an already published problem, even when its discussion is resolved. This task does not ask it to verify fixes or reply to existing threads. Following the instruction depends on the model, so you still need to check for duplicates before publishing. If the summaries cannot be loaded, the task is prepared with a warning.
+
+To check **whether earlier findings were fixed**, use **Follow-up review**. To draft answers in existing threads, use **Prepare replies**.
 
 ## Preview and publish results
 

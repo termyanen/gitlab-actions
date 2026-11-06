@@ -78,9 +78,15 @@ test('homepage renders the current patch, unified 1.13 and older sectioned relea
     assert.equal(versions[0].sections[0].title, '');
     var currentItems = versions[0].sections[0].items;
     assert.ok(currentItems.length > 0);
-    assert.match(currentItems[0].bold, lang === 'ru' ? /Догрузка diff/ : /AI review diff recovery/);
-    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Обмен настройками/ : /Share settings/).test(item.bold); }));
-    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Настройки в отдельной вкладке/ : /Settings in a separate tab/).test(item.bold); }));
+    assert.match(currentItems[0].bold, lang === 'ru' ? /Поиск CI-джоб/ : /CI job lookup/);
+    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Ожидание rebase/ : /Rebase completion/).test(item.bold); }));
+    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Проверка обратной совместимости/ : /Backward compatibility checks/).test(item.bold); }));
+    assert.ok(currentItems.some(function(item) { return (lang === 'ru' ? /Существующие обсуждения в новом ревью/ : /Existing discussions in a new AI review/).test(item.bold); }));
+    var previousRelease = versions.find(function(release) { return release.version === '1.13.2'; });
+    assert.equal(previousRelease.sections[0].items.length, 5);
+    assert.match(previousRelease.sections[0].items[0].bold, lang === 'ru' ? /Догрузка diff/ : /AI review diff recovery/);
+    assert.ok(previousRelease.sections[0].items.some(function(item) { return (lang === 'ru' ? /Обмен настройками/ : /Share settings/).test(item.bold); }));
+    assert.ok(previousRelease.sections[0].items.some(function(item) { return (lang === 'ru' ? /Настройки в отдельной вкладке/ : /Settings in a separate tab/).test(item.bold); }));
     var previousPatch = versions.find(function(release) { return release.version === '1.13.1'; });
     assert.equal(previousPatch.sections[0].items.length, 1);
     assert.match(previousPatch.sections[0].items[0].bold, lang === 'ru' ? /Быстрые действия Jira/i : /Jira quick actions/);

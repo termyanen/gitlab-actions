@@ -35,7 +35,7 @@ function plain(value) { return JSON.parse(JSON.stringify(value)); }
 
 function sharedConfig() {
   return {
-    language: 'ru', show_ai_review_copy: false, ai_review_response_language: 'de',
+    language: 'ru', show_ai_review_copy: false, ai_review_response_language: 'de', ai_review_fresh_existing: true,
     ai_review_prompt: 'Team review prompt', ai_review_rule_repository: { enabled: false, text: 'Team repository rules' },
     jira_url: 'https://jira.example.com/jira', jira_ticket_regex: 'TEAM-\\d+',
     jiraQuickActions: [{ label: 'Update', status: '', assignee: 'alice', updates: [{field:'fixVersions',operation:'add',value:['1.2']},{field:'customfield_123',operation:'set',value:{id:'42', enabled:true}}] }],
@@ -55,14 +55,16 @@ test('settings round trip includes every current setting and nested profile, wit
   assert.equal(imported.update_version, undefined);
   assert.equal(imported.unknown_future_setting, undefined);
   assert.equal(imported.ai_review_rule_repository.enabled, false);
+  assert.equal(imported.ai_review_fresh_existing, true);
 });
 
 test('missing configuration fields use extension defaults, so importing replaces old profiles and settings', function() {
   var env = environment();
-  env.stored.projectProfiles = { 'old/project': {} }; env.stored.sound_enabled = true;
+  env.stored.projectProfiles = { 'old/project': {} }; env.stored.sound_enabled = true; env.stored.ai_review_fresh_existing = true;
   env.import({language:'en', sound_enabled:false});
   assert.deepEqual(env.stored.projectProfiles, {});
   assert.equal(env.stored.sound_enabled, false);
+  assert.equal(env.stored.ai_review_fresh_existing, false);
   assert.equal(env.stored.update_version, '1.13.1');
   assert.equal(env.writes.length, 1);
   assert.equal(env.control('status').textContent, messages.settingsImported.message);

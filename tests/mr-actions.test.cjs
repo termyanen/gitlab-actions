@@ -17,7 +17,7 @@ function fixture(options) {
     settings: Object.assign({ version_from_target: true }, options.settings),
     gitlab: function(req) {
       if (req.path === '/projects/37') return { merge_method: options.mergeMethod || 'merge' };
-      if (req.path === '/projects/37/merge_requests/12') {
+      if (req.path.split('?')[0] === '/projects/37/merge_requests/12') {
         if (req.method === 'PUT') Object.assign(mr, req.body);
         return Object.assign({}, mr, { sha: bumped ? 'new-head' : 'old-head', rebase_in_progress: false, merge_error: options.rebaseError || null });
       }

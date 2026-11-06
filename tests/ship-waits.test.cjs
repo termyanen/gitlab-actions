@@ -9,9 +9,9 @@ function flow(options) {
   var state = { bumped: false, rebased: false, mrReads: 0, pipelineReads: 0, mergeAttempts: 0 };
   var env = harness.content({ gitlab: function(req) {
     if (req.path === '/projects/37') return { merge_method: options.mergeMethod || 'merge' };
-    if (req.path === '/projects/37/merge_requests/12') {
+    if (req.path.split('?')[0] === '/projects/37/merge_requests/12') {
       state.mrReads++;
-      return Object.assign({ source_branch: 'feature/fix', target_branch: 'main', sha: state.bumped ? 'new-head' : 'old-head', head_pipeline: { id: 100, status: 'running' }, squash: true, should_remove_source_branch: false }, options.mr ? options.mr(state) : {});
+      return Object.assign({ source_branch: 'feature/fix', target_branch: 'main', sha: state.bumped ? 'new-head' : 'old-head', head_pipeline: { id: 100, status: 'running' }, rebase_in_progress: false, squash: true, should_remove_source_branch: false }, options.mr ? options.mr(state) : {});
     }
     if (req.path.endsWith('/rebase')) { state.rebased = true; return {}; }
     if (req.path.includes('/repository/files/')) {
@@ -72,7 +72,7 @@ test('Ship waits for an in-progress rebase before bumping and merging', async fu
   await env.finish(env.actions.doShip());
   assert.deepEqual(env.requests.filter(function(req) { return req.method !== 'GET'; }).map(function(req) { return req.path.split('/').pop(); }), ['rebase', 'package.json', 'merge']);
   var bumpIndex = env.requests.findIndex(function(req) { return req.method === 'PUT' && req.path.endsWith('/package.json'); });
-  assert.equal(env.requests.slice(0, bumpIndex).filter(function(req) { return req.path === '/projects/37/merge_requests/12'; }).length, 4);
+  assert.equal(env.requests.slice(0, bumpIndex).filter(function(req) { return req.path.split('?')[0] === '/projects/37/merge_requests/12'; }).length, 4);
 });
 
 test('a rebase timeout stops Ship before any version write or merge', async function() {
@@ -184,14 +184,13 @@ test('newer MR response fields do not alter the merge request options', async fu
   { status: 403, body: { message: '403 Forbidden' } },
   { status: 405, body: { error: '405 Method Not Allowed' } }
 ].forEach(function(example) {
-  test('rebase retains its existing handling of a GitLab response: ' + JSON.stringify(example), async function() {
+  test('rebase surfaces a rejected GitLab response: ' + JSON.stringify(example), async function() {
     var env = harness.content({ gitlab: function(req) {
       if (req.path.endsWith('/rebase')) return harness.response(example.status, example.body);
       return { sha: 'same-head', rebase_in_progress: false };
     } });
-    var result = await env.finish(env.actions.doRebase(false));
-    assert.equal(result.sha, 'same-head');
-    assert.deepEqual(env.requests.map(function(req) { return req.method; }), ['PUT', 'GET']);
+    await assert.rejects(env.finish(env.actions.doRebase(false)), /Forbidden|Method Not Allowed/);
+    assert.deepEqual(env.requests.map(function(req) { return req.method; }), ['PUT']);
     assert.deepEqual(env.requests[0].body, {});
   });
 });

@@ -35,8 +35,8 @@
 <tbody>
 <tr>
   <td><strong>New review</strong></td>
-  <td>Run a first or independent review of the whole MR</td>
-  <td>Description, code inclusion and optional file filters</td>
+  <td>Run a first or independent review of the whole MR, including after other reviewers</td>
+  <td>Description, code inclusion, existing discussions and optional file filters</td>
 </tr>
 <tr>
   <td><strong>Fix review findings</strong></td>
@@ -69,12 +69,13 @@
 <li><strong>Language and criteria:</strong> <strong>AI review</strong> settings have separate prompts for fixing feedback, fresh review, new findings, replies and repeat review. Choose <strong>AI response language</strong> for all tasks and import prompts: Automatic follows the AI conversation, or select Russian, English, German, Spanish, French, Japanese or Simplified Chinese. This is independent of the interface language and overrides conflicting language instructions in saved prompts. JSON keys, paths and code remain unchanged. Copy response format stays language-neutral. Set review criteria and style in the task prompts. The extension adds MR details and the required JSON format automatically.</li>
 </ul>
 <h2 id="en-section-3">Configure automatic instructions</h2>
-<p>Open <strong>AI review → Automatic instructions (advanced)</strong> in extension settings. All 31 blocks start enabled and apply only to relevant tasks. Expand a block to edit its text, disable it while keeping the text, or clear the text to omit it. Reset restores its English default and enables that block. Each text supports up to 1,500 characters. <code>{language}</code> inserts the selected response language; <code>{selection}</code> inserts whether replies cover selected or unresolved discussions.</p>
+<p>Open <strong>AI review → Automatic instructions (advanced)</strong> in extension settings. All 32 blocks start enabled and apply only to relevant tasks. Expand a block to edit its text, disable it while keeping the text, or clear the text to omit it. Reset restores its English default and enables that block. Each text supports up to 1,500 characters. <code>{language}</code> inserts the selected response language; <code>{selection}</code> inserts whether replies cover selected or unresolved discussions.</p>
 <p>The main task prompts remain independently editable and can contain similar instructions. The full task preview shows the resulting combination. MR identifiers, JSON examples and loading notices are generated from the current context; editing instructions does not disable file filters, targeting checks or publication validation. The format-only shortcut always copies the supported import format without task instructions.</p>
+<p>The <strong>Existing discussions in a new review</strong> block tells the AI to review the whole MR independently first, then remove findings that substantially repeat published discussions, including resolved ones. It applies to <strong>New review</strong> when <strong>Account for existing discussions</strong> is checked. Disabling the instruction block removes only that instruction; uncheck the option in New review to exclude the discussion summaries themselves.</p>
 <h2 id="en-section-4">Review an MR from scratch</h2>
 <ol>
 <li>Open <strong>AI review…</strong> and choose the <strong>New review</strong> tab.</li>
-<li>Set file filters and the description/code options. Optionally edit the prompt for this copy.</li>
+<li>Set file filters and the description/code options. Enable <strong>Account for existing discussions</strong> if the MR already has comments. Optionally edit the prompt for this copy.</li>
 <li>Click <strong>Preview</strong>, then <strong>Copy task</strong>, or copy directly.</li>
 <li>Paste the task into your AI with access to the pinned source. Ask it to inspect the combined result of every MR commit and the necessary surrounding code and tests. This task produces findings, without modifying code.</li>
 <li>Import and review the returned JSON using the next section.</li>
@@ -82,6 +83,15 @@
 <p>Discussion selection does not affect New review: it always checks the whole MR within the configured file scope.</p>
 <p>Import retains a <strong>Copy review prompt</strong> shortcut under <strong>Advanced settings</strong> for a repository-based task without description or diff. Use the New review tab for those options.</p>
 <p>If the AI already has the task and code context, use <strong>Copy response format</strong> next to the prompt shortcuts in Import. It copies only the JSON structure and field rules for inline comments, general comments and replies, without saved prompts or loading MR data. The AI must fill the example placeholders from verified context, including the revision actually reviewed for new findings and existing discussion IDs for replies. Replies-only JSON may omit <code>head_sha</code>.</p>
+<h3>Run a new review after another reviewer</h3>
+<p>If findings are already published and you want to review the MR independently, use <strong>New review</strong> with <strong>Account for existing discussions</strong>. The option is off by default; your choice is remembered and included in settings export/import.</p>
+<ol>
+<li>Set the file scope and enable the checkbox before preparing the task.</li>
+<li>Click <strong>Preview</strong> and check the discussion summaries at the end of the task. They contain the status, author, first 600 characters of the opening comment, reply count and, for inline findings, the file and line. Reply bodies, drafts and discussions outside the file filters are excluded.</li>
+<li>Give the task to your AI, then compare the result with the GitLab discussions before publishing and remove any remaining duplicates.</li>
+</ol>
+<p>The automatic instruction asks the AI to review the whole MR independently first, then drop findings that repeat an already published problem, even when its discussion is resolved. This task does not ask it to verify fixes or reply to existing threads. Following the instruction depends on the model, so you still need to check for duplicates before publishing. If the summaries cannot be loaded, the task is prepared with a warning.</p>
+<p>To check <strong>whether earlier findings were fixed</strong>, use <strong>Follow-up review</strong>. To draft answers in existing threads, use <strong>Prepare replies</strong>.</p>
 <h2 id="en-section-5">Preview and publish results</h2>
 <p>These steps apply to new findings, replies and repeat reviews.</p>
 <ol>
@@ -142,10 +152,14 @@
 <tbody>
 <tr>
   <td>Two independent reviews</td>
-  <td>Each uses fresh review. Both check existing discussions and remove duplicates before publication</td>
+  <td>Each uses New review. The second reviewer enables <strong>Account for existing discussions</strong> so the AI does not repeat published findings; still remove remaining duplicates before publication</td>
 </tr>
 <tr>
-  <td>Continue someone else's review</td>
+  <td>Review after someone else without re-checking their findings</td>
+  <td>New review with <strong>Account for existing discussions</strong>. The AI reviews the whole MR independently and does not reply to existing threads</td>
+</tr>
+<tr>
+  <td>Verify whether someone else's findings were fixed</td>
   <td>Select relevant threads or all threads, then repeat review with no previous revision for a full current check</td>
 </tr>
 <tr>
@@ -262,8 +276,8 @@
 <tbody>
 <tr>
   <td><strong>Новое ревью</strong></td>
-  <td>Первое или независимое ревью всего MR</td>
-  <td>Описание, включение кода и при необходимости фильтры файлов</td>
+  <td>Первое или независимое ревью всего MR, в том числе после других ревьюеров</td>
+  <td>Описание, включение кода, существующие обсуждения и при необходимости фильтры файлов</td>
 </tr>
 <tr>
   <td><strong>Исправить замечания</strong></td>
@@ -296,12 +310,13 @@
 <li><strong>Язык и стиль.</strong> В настройках <strong>«Ревью с ИИ»</strong> есть отдельные промпты для исправлений, ревью с нуля, новых замечаний, ответов и повторного ревью. В поле <strong>«Язык ответа ИИ»</strong> выберите русский или другой язык для всех заданий и промптов импорта. Автоматический режим ориентируется на язык диалога с ИИ. Настройка не зависит от языка интерфейса и имеет приоритет над языковыми указаниями в сохранённых промптах. Имена полей JSON, пути и код не переводятся; копирование только формата не добавляет указание языка. Критерии и стиль задавайте в промптах. Адрес MR, версии и формат результата расширение добавляет само.</li>
 </ul>
 <h2 id="ru-section-3">Настройка автоматических инструкций</h2>
-<p>Откройте <strong>«Ревью с ИИ → Автоматические инструкции (дополнительно)»</strong> в настройках расширения. Все 31 блока изначально включены и применяются к соответствующим задачам. Раскройте блок, чтобы изменить текст, отключить его с сохранением текста или очистить текст для исключения из задания. Сброс восстанавливает английский текст по умолчанию и включает блок. Лимит каждого текста — 1500 символов. <code>{language}</code> подставляет выбранный язык ответа, <code>{selection}</code> — выбранные или нерешённые обсуждения для ответа.</p>
+<p>Откройте <strong>«Ревью с ИИ → Автоматические инструкции (дополнительно)»</strong> в настройках расширения. Все 32 блока изначально включены и применяются к соответствующим задачам. Раскройте блок, чтобы изменить текст, отключить его с сохранением текста или очистить текст для исключения из задания. Сброс восстанавливает английский текст по умолчанию и включает блок. Лимит каждого текста — 1500 символов. <code>{language}</code> подставляет выбранный язык ответа, <code>{selection}</code> — выбранные или нерешённые обсуждения для ответа.</p>
 <p>Основные промпты задач редактируются отдельно и тоже могут содержать похожие инструкции. Итоговое сочетание видно в полном предпросмотре задания. Идентификаторы MR, JSON-примеры и сообщения о загрузке формируются из текущего контекста; изменение инструкций не отключает фильтры файлов, проверку привязок и проверки перед публикацией. Кнопка копирования только формата всегда выдаёт поддерживаемый формат импорта без инструкций задачи.</p>
+<p>Блок <strong>«Существующие обсуждения в новом ревью»</strong> задаёт правило для ИИ: сначала независимо проверить весь MR, затем убрать замечания, которые по сути уже опубликованы, включая решённые. Он применяется во вкладке <strong>«Новое ревью»</strong>, когда включена галочка <strong>«Учесть существующие обсуждения»</strong>. Отключение блока убирает только эту инструкцию; чтобы не передавать сами сводки обсуждений, снимите галочку во вкладке нового ревью.</p>
 <h2 id="ru-section-4">Ревьюер проверяет MR с нуля</h2>
 <ol>
 <li>Откройте <strong>«Ревью с ИИ…»</strong> и выберите вкладку <strong>«Новое ревью»</strong>.</li>
-<li>Настройте файлы, описание и включение кода. При необходимости измените промпт для этого копирования.</li>
+<li>Настройте файлы, описание и включение кода. Если в MR уже есть комментарии, включите галочку <strong>«Учесть существующие обсуждения»</strong>. При необходимости измените промпт для этого копирования.</li>
 <li>Нажмите <strong>«Предпросмотр»</strong>, затем <strong>«Скопировать задание»</strong>. Можно сразу скопировать без предпросмотра.</li>
 <li>Вставьте задание ИИ с доступом к нужной версии репозитория. Он должен проверить совокупный результат всех коммитов, прочитать необходимый контекст и вернуть JSON с замечаниями. В этом сценарии код не исправляется.</li>
 <li>Проверьте результат и опубликуйте нужное по инструкции ниже.</li>
@@ -309,6 +324,15 @@
 <p>Выбор обсуждений не влияет на вкладку «Новое ревью»: она всегда проверяет весь MR в заданной области файлов.</p>
 <p>В дополнительных настройках окна импорта остаётся короткий путь: <strong>«Копировать промпт для нового ревью»</strong>. Он не прикладывает описание и diff. Обычный путь с этими опциями — вкладка «Новое ревью».</p>
 <p>Если задача и контекст кода уже переданы ИИ, нажмите <strong>«Копировать формат ответа»</strong> рядом с кнопками промптов в импорте. Скопируются только структура JSON и правила полей для замечаний к строкам, общих комментариев и ответов — без настроенных промптов и загрузки данных MR. ИИ должен заполнить примеры из проверенного контекста: для новых замечаний указать реально проверенную версию кода, а для ответов — настоящие ID обсуждений и комментариев. В JSON только с ответами <code>head_sha</code> можно не указывать.</p>
+<h3>Новое ревью после другого ревьюера</h3>
+<p>Если замечания уже опубликованы и вы хотите самостоятельно проверить MR, используйте <strong>«Новое ревью»</strong> с опцией <strong>«Учесть существующие обсуждения»</strong>. Она выключена по умолчанию; выбор запоминается и переносится при экспорте и импорте настроек.</p>
+<ol>
+<li>Настройте область файлов и включите галочку перед подготовкой задания.</li>
+<li>Нажмите <strong>«Предпросмотр»</strong> и проверьте сводки обсуждений в конце задания. Они содержат статус, автора, первые 600 символов первого комментария, число ответов и, для замечаний к коду, файл и строку. Тексты ответов, черновики и обсуждения вне файловых фильтров не передаются.</li>
+<li>Передайте задание ИИ, затем сравните результат с обсуждениями GitLab перед публикацией и уберите оставшиеся повторы.</li>
+</ol>
+<p>Автоматическая инструкция предлагает сначала независимо проверить весь MR, затем убрать находки, повторяющие уже опубликованную проблему, даже если обсуждение решено. Проверять исправление этих замечаний и отвечать в существующие ветки в этом сценарии не нужно. Следование инструкции зависит от модели, поэтому проверка повторов перед публикацией остаётся за вами. Если сводки не загрузились, задание будет подготовлено с предупреждением.</p>
+<p>Для проверки, <strong>исправлены ли прежние замечания</strong>, используйте вкладку <strong>«Повторное ревью»</strong>. Для подготовки ответов в существующие ветки — <strong>«Подготовить ответы»</strong>.</p>
 <h2 id="ru-section-5">Проверка и публикация результата ИИ</h2>
 <p>Эти шаги одинаковы для новых замечаний, ответов и повторного ревью.</p>
 <ol>
@@ -370,10 +394,14 @@
 <tbody>
 <tr>
   <td>Два человека делают независимое ревью</td>
-  <td>Каждый запускает «Новое ревью». Перед публикацией оба смотрят существующие обсуждения и убирают повторы</td>
+  <td>Каждый запускает «Новое ревью». Второй включает галочку <strong>«Учесть существующие обсуждения»</strong>, чтобы ИИ не повторял уже опубликованные замечания; оставшиеся повторы убираются перед публикацией</td>
 </tr>
 <tr>
-  <td>Нужно учесть уже проведённое чужое ревью</td>
+  <td>Нужно сделать своё ревью после чужого, не перепроверяя его замечания</td>
+  <td>«Новое ревью» с галочкой <strong>«Учесть существующие обсуждения»</strong>. ИИ проверяет весь MR самостоятельно и не отвечает в существующие ветки</td>
+</tr>
+<tr>
+  <td>Нужно проверить, исправлены ли чужие замечания</td>
   <td>Выберите нужные ветки или все обсуждения, затем запустите «Повторное ревью» с полной проверкой без прежней версии</td>
 </tr>
 <tr>
@@ -465,5 +493,5 @@
 </table></div>
 <p>Для issue доступны копирование замечаний и описание для работы с ИИ. Ревью кода с нуля, повторное ревью версий и импорт комментариев из этого гайда относятся к MR.</p>
 </article></div></div></main>
-<footer><a href="./" data-en="← All features" data-ru="← Все возможности">← All features</a><a href="https://github.com/termyanen/gitlab-actions" rel="noreferrer">GitHub</a><span>GitLab MR Actions · 1.13.2</span></footer>
+<footer><a href="./" data-en="← All features" data-ru="← Все возможности">← All features</a><a href="https://github.com/termyanen/gitlab-actions" rel="noreferrer">GitHub</a><span>GitLab MR Actions · 1.13.3</span></footer>
 </body></html>

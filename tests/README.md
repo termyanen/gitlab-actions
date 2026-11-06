@@ -166,6 +166,85 @@ version and operation selectors show one right-aligned chevron in light and dark
 themes. The fixtures used simulated extension APIs and Jira responses, without
 mutating a real Jira instance.
 
+## GitLab 18.11 compatibility audit
+
+The CI and rebase paths were checked against GitLab 18.11 API source and the
+documented REST contracts. A supplied saved MR page from GitLab 18.11.14 was
+parsed locally to check the widget, project, description and review action
+selectors. The saved page contained the extension's action bar and review
+launchers; it did not contain loaded pipeline jobs or an ordinary published
+comment suitable for checking the inline copy controls. The supplied page is
+not stored in this repository.
+
+`gitlab-18-compat.test.cjs` covers head-pipeline selection, job pagination,
+fork project IDs, retry recovery without switching pipelines, queued job states,
+bulk retry read failures, cancellation during pagination, explicit rebase status
+polling, rejected or incomplete rebase responses, and quickly finished pipelines.
+Merged-results and merge-train head references are checked separately because
+their synthetic commit SHA differs from the source branch SHA.
+
+| Contract | Audit outcome | Primary source |
+| --- | --- | --- |
+| MR responses expose the selected head pipeline. Pipeline job results are paginated and ordered newest first. | Reviewers, custom jobs, chains and bulk failed-job retry share this selection policy. Named lookups follow later pages when needed; chains retain their pipeline and project. | [MR API](https://docs.gitlab.com/api/merge_requests/#retrieve-a-merge-request), [18.11 pipeline jobs endpoint](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/lib/api/ci/pipelines.rb#L160), [Jobs API](https://docs.gitlab.com/api/jobs/#list-all-jobs-by-pipeline) |
+| Rebase is asynchronous; the read endpoint returns its status when `include_rebase_in_progress` is requested. A 403 indicates inability to rebase, including source-branch permissions. | Poll with the parameter; fail on missing status or a rejected request before continuing Ship. These were existing assumptions, not a proven new regression introduced by 18.11. | [18.11 MR read parameters](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/lib/api/merge_requests.rb#L385), [rebase API](https://docs.gitlab.com/api/merge_requests/#rebase-a-merge-request) |
+| `preparing`, `waiting_for_resource` and `scheduled` are valid nonterminal job states. | Treat them as already queued and poll them in background chains without replaying play/retry. | [Job status values](https://docs.gitlab.com/api/jobs/#job-status-values) |
+| 18.11 accepts both `merge_when_pipeline_succeeds` and `auto_merge`. | Retain the existing request parameter to preserve older-server compatibility. No removal was found in this path. | [18.11 merge endpoint](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/lib/api/merge_requests.rb#L734) |
+| The pipeline bridges route still exists in 18.11. | Group play can retain `/bridges`; this audit does not certify its live graph selectors. | [18.11 bridges endpoint](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/lib/api/ci/pipelines.rb#L193) |
+
+The saved overview HTML cannot establish compatibility for MR-list rendering,
+expanded pipeline graphs, or unpublished drafts. No live GitLab mutations were
+performed during the audit. The automated checks use simulated API responses;
+they are not certification of every GitLab 18.11 configuration.
+
+### Backward compatibility verification (2026-11-06)
+
+`gitlab-backward-compat.test.cjs` and `helpers/gitlab-contracts.cjs` exercise the
+production actions against minimal, source-derived response shapes for these
+official GitLab tags:
+
+| GitLab tag | Pipeline response differences | Merge-readiness response | Primary sources |
+| --- | --- | --- | --- |
+| 12.10.14 | No `project_id`, `source` or `iid` in the pipeline entity | 406 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v12.10.14/lib/api/entities/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v12.10.14/lib/api/merge_requests.rb) |
+| 13.12.15 | `project_id` present; `source` and `iid` absent | 406 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v13.12.15/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v13.12.15/lib/api/merge_requests.rb) |
+| 14.10.5 | `project_id`, `source` and `iid` present | 406 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v14.10.5/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v14.10.5/lib/api/merge_requests.rb) |
+| 15.11.13 | Same pipeline fields; old auto-merge parameter retained | 422 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v15.11.13/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v15.11.13/lib/api/merge_requests.rb) |
+| 16.11.10 | Same pipeline fields; old auto-merge parameter retained | 422 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v16.11.10/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v16.11.10/lib/api/merge_requests.rb) |
+| 17.11.0 | Adds `auto_merge` as an alternative; old parameter still accepted | 422 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v17.11.0/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v17.11.0/lib/api/merge_requests.rb) |
+| 18.4.0 | Both auto-merge parameter names accepted | 422 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v18.4.0/lib/api/merge_requests.rb) |
+| 18.11.0 | Both auto-merge parameter names accepted | 422 | [Pipeline entity](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/lib/api/entities/ci/pipeline_basic.rb), [MR API](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/lib/api/merge_requests.rb) |
+
+Every checked tag supports `include_rebase_in_progress`; the MR entity exposes
+the boolean only when requested. Fixtures omit it on ordinary reads and reject
+a version write or merge while their asynchronous rebase is still running.
+Tests exercise reviewers, single jobs, complete background chains, missing head
+pipeline data, bulk failed-job retries, source-preserving version bumps, Force
+Ship ordering, merge readiness retries, forks and Ship after rebase.
+
+The check caught a regression introduced during the 18.11 repair: selecting the
+maximum pipeline ID in the legacy fallback disregarded GitLab's preference for
+MR pipelines over branch pipelines. The fallback now keeps the first eligible
+pipeline in the server's order while excluding other commit SHAs. That ordering
+exists in the checked [12.10 finder](https://github.com/gitlabhq/gitlabhq/blob/v12.10.14/app/finders/ci/pipelines_for_merge_request_finder.rb)
+and [18.11 finder](https://github.com/gitlabhq/gitlabhq/blob/v18.11.0/app/finders/ci/pipelines_for_merge_request_finder.rb).
+
+**74 backward-parity scenarios pass on both** the unmodified 1.13.2 runtime
+(`9e727c2882075d75b5c10161fd908b509069c2a1`) and the revised runtime. These compare
+observable writes and outcomes; extra reads needed to select the MR head are
+permitted. **24 additional scenarios pass on the revised runtime** for the
+intentional rebase-completion and fork-project fixes. The baseline comparison
+can be repeated using the exported baseline runtime files:
+
+```sh
+EXTENSION_TEST_SOURCE_DIR=/absolute/path/to/baseline \
+  node --test --test-name-pattern='backward parity' tests/gitlab-backward-compat.test.cjs
+```
+
+This is a matrix of API contracts and simulated workflows, not a run against
+eight installed GitLab servers. It neither asserts support for every feature of
+those releases nor establishes a whole-extension minimum version. For example,
+the GitLab 10.8.7 CE source lacks the MR pipelines and rebase routes used here;
+those pre-existing limitations are not treated as newly supported behavior.
+
 ## Remaining coverage gaps
 
 This suite covers selected behaviors, not every path or combination of settings.

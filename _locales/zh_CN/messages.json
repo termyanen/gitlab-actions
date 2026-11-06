@@ -706,5 +706,7 @@
   "mrAction_clear_reviewers": {"message": "清空审核者"},
   "mrAction_clear_milestone": {"message": "清空里程碑"},
   "mrActionInvalid": {"message": "请输入按钮名称，选择有效操作，并为添加、移除或替换操作指定至少一个标签。"},
-  "mrActionConfirm": {"message": "将“$1”应用于此 MR？\n$2"}
+  "mrActionConfirm": {"message": "将“$1”应用于此 MR？\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab 未返回变基状态。请重新加载合并请求后重试。"},
+  "errorJobsPageRepeated": {"message": "GitLab 返回了流水线 #$1 的重复作业页面。无法完整加载作业列表。"}
 }

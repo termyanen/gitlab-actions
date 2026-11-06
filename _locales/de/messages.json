@@ -691,5 +691,7 @@
   "mrAction_clear_reviewers": {"message": "Reviewer entfernen"},
   "mrAction_clear_milestone": {"message": "Meilenstein entfernen"},
   "mrActionInvalid": {"message": "Geben Sie einen Namen ein, wählen Sie eine unterstützte Aktion und mindestens ein Label zum Hinzufügen, Entfernen oder Ersetzen."},
-  "mrActionConfirm": {"message": "„$1“ auf diesen MR anwenden?\n$2"}
+  "mrActionConfirm": {"message": "„$1“ auf diesen MR anwenden?\n$2"},
+  "errorRebaseStatusMissing": {"message": "GitLab hat den Rebase-Status nicht zurückgegeben. Laden Sie den Merge Request neu und versuchen Sie es erneut."},
+  "errorJobsPageRepeated": {"message": "GitLab hat eine wiederholte Job-Seite für Pipeline #$1 zurückgegeben. Die Job-Liste konnte nicht vollständig geladen werden."}
 }
