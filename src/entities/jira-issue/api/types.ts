@@ -17,7 +17,7 @@ export interface JiraNamed {
   iconUrl?: string;
   statusCategory?: { key: string };
 }
-export interface JiraFields {
+interface JiraFields {
   [key: string]: unknown;
   summary?: string;
   status?: JiraNamed;

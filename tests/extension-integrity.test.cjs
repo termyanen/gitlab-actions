@@ -7,7 +7,7 @@ var path = require('node:path');
 var vm = require('node:vm');
 var root = require('./helpers/extension.cjs').root;
 
-test('all shipped JavaScript parses', function() {
+test('isolated regression adapters for current runtime modules parse', function() {
   ['background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js', 'popup.js', 'welcome.js'].forEach(function(file) {
     assert.doesNotThrow(function() { new vm.Script(require('./helpers/runtime.cjs').readRuntime(file), { filename: file }); });
   });

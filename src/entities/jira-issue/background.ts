@@ -10,7 +10,6 @@ export type {
   JiraUser,
   RawJiraComment,
   JiraNamed,
-  JiraFields,
   RawJiraIssue,
   JiraMessage,
 } from "./api/types";

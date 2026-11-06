@@ -17,7 +17,7 @@ import { warning, positive, unsupported, sameRefs } from "./utils";
 import { endpoint } from "./validation";
 import { request, paginate } from "./transport";
 
-export function parseDiff(diff: string) {
+function parseDiff(diff: string) {
   const old = new Map<number, DiffLine>();
   const fresh = new Map<number, DiffLine>();
   let hunk: {
@@ -82,7 +82,7 @@ export function parseDiff(diff: string) {
   return { old: old, new: fresh };
 }
 
-export function diffKey(file: Pick<FileDiff, "old_path" | "new_path">) {
+function diffKey(file: Pick<FileDiff, "old_path" | "new_path">) {
   return file &&
     typeof file.old_path === "string" &&
     typeof file.new_path === "string"
@@ -90,7 +90,7 @@ export function diffKey(file: Pick<FileDiff, "old_path" | "new_path">) {
     : null;
 }
 
-export function verifiedDiff(file: FileDiff) {
+function verifiedDiff(file: FileDiff) {
   const result: VerifiedDiff = {
     old_path: file.old_path,
     new_path: file.new_path,
@@ -108,7 +108,7 @@ export function verifiedDiff(file: FileDiff) {
   return result;
 }
 
-export function changeFiles(
+function changeFiles(
   data: LegacyChanges,
   context: ReviewContext,
   refs: DiffRefs,

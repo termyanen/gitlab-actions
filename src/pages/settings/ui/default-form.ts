@@ -126,7 +126,6 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       '<div class="toggle" style="margin-left:18px"><input type="checkbox" id="show_branches_links"><label for="show_branches_links">' +
       escHtml(t("showBranchesLinks")) +
       "</label></div>" +
-      // '<div class="toggle"><input type="checkbox" id="show_group_by_author"><label for="show_group_by_author">' + escHtml(t('showGroupByAuthor')) + '</label></div>' +
       '<div class="sep"></div>' +
       "<h4>" +
       escHtml(t("uiCustomization")) +
@@ -522,7 +521,6 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       state.data.show_branches !== false;
     byId<HTMLInputElement>("show_branches_links").checked =
       state.data.show_branches_links || false;
-    // byId<HTMLInputElement>('show_group_by_author').checked = allData.show_group_by_author || false;
     byId<HTMLInputElement>("collapse_bars").checked =
       state.data.collapse_bars || false;
     byId<HTMLInputElement>("hide_right_sidebar").checked =

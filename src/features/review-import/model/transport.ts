@@ -10,13 +10,13 @@ import {
   endpoint,
   readRefs,
 } from "./validation";
-export function header(response: Response, name: string) {
+function header(response: Response, name: string) {
   return response.headers && response.headers.get
     ? response.headers.get(name)
     : null;
 }
 
-export async function boundedDiffText(response: Response, maxBytes: number) {
+async function boundedDiffText(response: Response, maxBytes: number) {
   function tooLarge() {
     return new Error(
       (typeof chrome !== "undefined" &&

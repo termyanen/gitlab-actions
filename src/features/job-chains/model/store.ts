@@ -3,7 +3,7 @@ import { reportError } from "../../../shared/lib/errors";
 import type { ChainTask } from "./types";
 const COMPLETED_TASK_RETENTION = 50;
 const TASK_WAKEUP_INTERVAL_MINUTES = 1;
-export const TASK_STORAGE_KEY = "job_chain_state_v1";
+const TASK_STORAGE_KEY = "job_chain_state_v1";
 export const TASK_ALARM = "job-chain-wakeup";
 
 function isTask(value: unknown): value is ChainTask {

@@ -18,7 +18,7 @@ export const DISPLAY_DEFAULTS = {
   sensitive_file_exclusions: "",
 };
 export type DisplayPreferences = typeof DISPLAY_DEFAULTS;
-export type SizeThresholds = [number, number, number];
+type SizeThresholds = [number, number, number];
 
 export function parseSizeThresholds(value: unknown): SizeThresholds | null {
   if (typeof value !== "string") return null;
