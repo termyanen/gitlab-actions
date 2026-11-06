@@ -9,10 +9,11 @@
     "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.mjs\"",
     "test": "node --test tests/*.test.cjs",
     "package": "npm run build && node scripts/package.mjs",
-    "check": "npm run typecheck && npm run lint && npm run lint:architecture && npm test",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run lint:architecture && npm test",
     "pretest": "npm run build",
     "test:browser": "npm run build && playwright test",
-    "lint:architecture": "node scripts/check-architecture.mjs"
+    "lint:architecture": "node scripts/check-architecture.mjs",
+    "format:check": "prettier --check \"src/**/*.ts\" \"scripts/**/*.mjs\""
   },
   "engines": {
     "node": ">=22.12"

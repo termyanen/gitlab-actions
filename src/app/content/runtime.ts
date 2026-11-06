@@ -46,7 +46,12 @@ let pageScope: Lifecycle | undefined;
 let reviewStarted = false;
 let paletteStarted = false;
 let paletteEnabled = false;
-chrome.storage.sync.get({show_cmd_palette: true}, lifetime.guard((settings: {show_cmd_palette: boolean}) => {paletteEnabled = settings.show_cmd_palette;}));
+chrome.storage.sync.get(
+  { show_cmd_palette: true },
+  lifetime.guard((settings: { show_cmd_palette: boolean }) => {
+    paletteEnabled = settings.show_cmd_palette;
+  }),
+);
 let toolbar: ReturnType<typeof startMrToolbar> | undefined;
 let standupOpen: (() => void) | undefined;
 const fail = (error: unknown) => console.error("[GitLab Actions]", error);
@@ -55,7 +60,8 @@ lifetime.listen(
   "keydown",
   (event) => {
     if (
-      !paletteEnabled || paletteStarted ||
+      !paletteEnabled ||
+      paletteStarted ||
       !(event.metaKey || event.ctrlKey) ||
       event.key !== "k"
     )
