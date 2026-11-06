@@ -1,10 +1,10 @@
-import { reportError } from "../../../shared/lib/errors";
 import type * as Workflow from "../../../entities/review";
 import type { ReviewContext } from "../../../entities/review";
 import type { createReviewExporter } from "../../../features/review-export";
 import type { createReviewImporter } from "../../../features/review-import";
 import { ROUTE_POLL_INTERVAL_MS } from "../../../shared/config/runtime";
 import type { Translate } from "../../../shared/i18n";
+import { errorMessage, reportError, toError } from "../../../shared/lib/errors";
 import { element } from "../../../shared/ui/dom";
 import { createReviewDialogActions } from "./actions";
 import { createReviewThreads } from "./threads";
@@ -396,14 +396,14 @@ export function startReviewControls(
           state.versionsHint.textContent =
             t("aiReviewPreviousHint") + " " + result.warnings.join(" ");
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         if (
           isCurrent(state) &&
           controller === state.versionsController &&
-          error.name !== "AbortError"
+          toError(error).name !== "AbortError"
         )
           state.versionsHint.textContent =
-            t("aiReviewPreviousHint") + " " + error.message;
+            t("aiReviewPreviousHint") + " " + errorMessage(error);
       });
   }
 

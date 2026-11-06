@@ -1,11 +1,18 @@
-import { reportError } from "../../../shared/lib/errors";
 import { VERSION_DEFAULTS } from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
+import { errorMessage, reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { decoder, isString, objectOf } from "../../../shared/lib/validation";
 import { getNestedValue, parseToml } from "../../../shared/lib/version";
+const readFileContent = decoder(
+  objectOf<{ content: string }>({
+    content: isString,
+  }),
+  "GitLab/Jira response",
+);
 const BADGE_MOUNT_DEBOUNCE_MS = 500;
 interface CommitEntry {
   row: Element;
@@ -228,7 +235,7 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
               idx += 5;
               Promise.all(
                 batch.map(function (sha) {
-                  return api<{ content: string }>(
+                  return api(
                     "GET",
                     "/projects/" +
                       encodedProject +
@@ -237,6 +244,7 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
                       "?ref=" +
                       sha,
                   )
+                    .then(readFileContent)
                     .then(function (f) {
                       const version = parseVersionFromContent(
                         decodeURIComponent(escape(atob(f.content))),
@@ -244,11 +252,11 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
                       _versionCache[sha] = version;
                       fetched[sha] = version;
                     })
-                    .catch(function (err) {
+                    .catch(function (err: unknown) {
                       // 404 = file absent at this commit — permanent, safe to persist.
                       // Other errors (network, auth) stay session-only to avoid poisoning the cache.
                       _versionCache[sha] = "";
-                      if (err && /404|not found/i.test(err.message || ""))
+                      if (err && /404|not found/i.test(errorMessage(err) || ""))
                         fetched[sha] = "";
                     });
                 }),

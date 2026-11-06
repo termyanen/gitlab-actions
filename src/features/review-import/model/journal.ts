@@ -1,11 +1,11 @@
 import type { Note } from "../../../entities/discussion";
 import type { ReviewContext } from "../../../entities/review";
 import { digest } from "../../../shared/lib/digest";
+import { toError } from "../../../shared/lib/errors";
 import { normalizedPosition } from "./diff";
 import { request } from "./transport";
 import type {
   ExistingNotes,
-  ImportError,
   ImportItem,
   ImportOptions,
   JournalEntry,
@@ -151,7 +151,7 @@ export function createDeliveryJournal() {
             "GitLab could not verify the previously published comment. Check the review again.",
           );
       } catch (errorValue) {
-        const error = errorValue as ImportError;
+        const error = toError(errorValue);
         if (error.httpStatus !== 404) throw error;
         await forget(key);
         return null;

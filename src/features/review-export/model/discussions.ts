@@ -1,9 +1,10 @@
-import type { Note, Discussion, DraftNote } from "../../../entities/discussion";
+import type { Discussion, DraftNote, Note } from "../../../entities/discussion";
 import type { MergeRequest } from "../../../entities/merge-request";
-import type { ReviewContext, ExportOptions, ReviewError } from "./types";
-import { PAGE_SIZE, MAX_PAGES } from "./limits";
+import { toError } from "../../../shared/lib/errors";
+import { MAX_PAGES, PAGE_SIZE } from "./limits";
 import { addWarning, progress } from "./progress";
-import { checkAbort, header, apiUrl, request } from "./transport";
+import { apiUrl, checkAbort, header, request } from "./transport";
+import type { ExportOptions, ReviewContext } from "./types";
 
 export { getNotes, getStatus } from "../../../entities/discussion/content";
 
@@ -51,7 +52,7 @@ async function paginate<K extends "notes" | "discussions">(
       if (!Array.isArray(fetched.data))
         throw new Error("GitLab did not return a comment list.");
     } catch (caught) {
-      const error = caught as ReviewError;
+      const error = toError(caught);
       if (error.name === "AbortError" || !result.length) throw error;
       addWarning(
         warnings,
@@ -280,7 +281,7 @@ async function recoverRequestedDraft(
       throw new Error("GitLab did not return the requested draft comment.");
     }
   } catch (caught) {
-    const error = caught as ReviewError;
+    const error = toError(caught);
     if (error.name === "AbortError") throw error;
     const visible = options.visibleNote;
     if (
@@ -400,7 +401,7 @@ async function recoverRequestedNote(
       throw new Error("GitLab did not return the requested human comment.");
     }
   } catch (caught) {
-    const error = caught as ReviewError;
+    const error = toError(caught);
     if (error.name === "AbortError") throw error;
     addWarning(
       warnings,
@@ -433,7 +434,7 @@ async function recoverRequestedNote(
     discussions = mergeDiscussions(discussions, refreshed.items);
     complete = refreshed.complete;
   } catch (caught) {
-    const error = caught as ReviewError;
+    const error = toError(caught);
     if (error.name === "AbortError") throw error;
     complete = false;
     addWarning(
@@ -486,7 +487,7 @@ export async function load(
           "discussions",
         );
       } catch (caught) {
-        const error = caught as ReviewError;
+        const error = toError(caught);
         if (
           error.name === "AbortError" ||
           error.httpStatus === 401 ||

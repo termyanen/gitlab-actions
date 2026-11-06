@@ -1,4 +1,5 @@
 import { DEFAULT_FRESH_REVIEW_PROMPT } from "../../../entities/review";
+import { toError } from "../../../shared/lib/errors";
 import type { ReviewContextLoader } from "./context";
 import type { ExportDependencies } from "./dependencies";
 import { getNotes, getStatus, load } from "./discussions";
@@ -6,12 +7,7 @@ import { EXISTING_SUMMARY_CHARS, EXISTING_TOTAL_CHARS } from "./limits";
 import { fence } from "./markdown";
 import { addWarning } from "./progress";
 import { checkAbort } from "./transport";
-import type {
-  ExportOptions,
-  ReviewContext,
-  ReviewError,
-  ReviewResult,
-} from "./types";
+import type { ExportOptions, ReviewContext, ReviewResult } from "./types";
 export function createFreshReviewExporter(
   { reviewWorkflow, instruction }: ExportDependencies,
   prepareReviewContext: ReviewContextLoader,
@@ -143,7 +139,7 @@ export function createFreshReviewExporter(
         Object.assign({}, options, { fresh: true }),
       );
     } catch (caught) {
-      const error = caught as ReviewError;
+      const error = toError(caught);
       if (error.name === "AbortError") throw error;
       addWarning(
         result.warnings,

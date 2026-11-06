@@ -1,15 +1,17 @@
 export {
-  jiraApi,
-  mapJiraComment,
   buildJiraQuickActionEdit,
-  jiraQuickActionWrite,
   fetchJiraStatuses,
   getFieldMap,
+  jiraApi,
+  jiraQuickActionWrite,
+  mapJiraComment,
 } from "./api/background";
 export type {
+  JiraMessage,
+  JiraNamed,
   JiraUser,
   RawJiraComment,
-  JiraNamed,
   RawJiraIssue,
-  JiraMessage,
 } from "./api/types";
+
+export { readJiraUser, readRawJiraIssue } from "./api/validation";
