@@ -51,3 +51,5 @@ export const SEL = {
   pipelineLinkedGraph:
     '.pipeline-show-container, .linked-pipelines-column, [data-testid="linked-pipeline-container"]',
 };
+
+export { GITLAB_API_PREFIX, GITLAB_PAGE_SIZE } from "./api";

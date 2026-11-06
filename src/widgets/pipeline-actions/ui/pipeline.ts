@@ -1,6 +1,12 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { Job } from "../../../entities/pipeline";
+import { createSessionApi } from "../../../shared/api/gitlab";
+import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
+import { msg } from "../../../shared/i18n";
+import { q, qAll, qUp } from "../../../shared/lib/dom";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+const GRAPH_MOUNT_DEBOUNCE_MS = 300;
+const GRAPH_REFRESH_INTERVAL_MS = 3000;
 interface PipelineEntry {
   projectRef: string;
   stages: Record<string, Job[]>;
@@ -10,10 +16,6 @@ interface Bridge {
   downstream_pipeline?: { id: number; web_url: string };
 }
 type PlayButton = HTMLButtonElement & { _glBusy?: boolean };
-import { createSessionApi } from "../../../shared/api/gitlab";
-import { msg } from "../../../shared/i18n";
-import { SEL } from "../../../shared/config/gitlab";
-import { q, qAll, qUp } from "../../../shared/lib/dom";
 
 export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
@@ -48,15 +50,16 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
           ): Promise<T[]> {
             page = page || 1;
             acc = acc || [];
-            return api<T[]>("GET", path + "?per_page=100&page=" + page).then(
-              function (items) {
-                if (!items || !items.length) return acc;
-                acc = acc.concat(items);
-                if (items.length === 100 && page < 20)
-                  return fetchPaged(path, page + 1, acc);
-                return acc;
-              },
-            );
+            return api<T[]>(
+              "GET",
+              path + "?per_page=" + GITLAB_PAGE_SIZE + "&page=" + page,
+            ).then(function (items) {
+              if (!items || !items.length) return acc;
+              acc = acc.concat(items);
+              if (items.length === GITLAB_PAGE_SIZE && page < 20)
+                return fetchPaged(path, page + 1, acc);
+              return acc;
+            });
           }
 
           // Pipeline entry: { projectRef, stages: {stageName: [job]}, jobIds: {id: true} }
@@ -309,7 +312,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
             _injectTimer = scope.timeout(function () {
               _injectTimer = undefined;
               injectGroupPlayButtons();
-            }, 300);
+            }, GRAPH_MOUNT_DEBOUNCE_MS);
           }
 
           // Mutation is "ours" only when it purely adds our button(s) — everything
@@ -337,7 +340,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
             // safety net (jobs API is cached, so ~1 request per 10s at most).
             scope.interval(function () {
               if (!document.hidden) scheduleInject();
-            }, 3000);
+            }, GRAPH_REFRESH_INTERVAL_MS);
 
             const target = q(document, SEL.pipelineGraph) || document.body;
             const mo = scope.observer(function (mutations) {

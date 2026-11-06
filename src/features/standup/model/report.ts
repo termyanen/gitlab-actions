@@ -1,4 +1,9 @@
 import type { RawJiraIssue } from "../../../entities/jira-issue/background";
+import { jiraApi } from "../../../entities/jira-issue/background";
+import { api } from "../../../shared/api/background-proxy";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { JIRA_API_PREFIX } from "../../../shared/config/jira";
+const REPORT_TIMEOUT_MS = 180000;
 interface ActivityMr {
   id: number;
   iid: number;
@@ -23,8 +28,6 @@ export interface StandupMessage {
   gitlabUrl: string;
   date?: string;
 }
-import { api } from "../../../shared/api/background-proxy";
-import { jiraApi } from "../../../entities/jira-issue/background";
 export function generateStandup(
   msg: StandupMessage,
   sender: chrome.runtime.MessageSender,
@@ -43,7 +46,7 @@ export function generateStandup(
       _error:
         "Timed out generating the report (180s). Check that GitLab is reachable and reload the tab.",
     });
-  }, 180000);
+  }, REPORT_TIMEOUT_MS);
   function standupRespond(payload: { text?: string; _error?: string }) {
     if (standupDone) return;
     standupDone = true;
@@ -101,12 +104,14 @@ export function generateStandup(
             dayBeforeStr +
             "&before=" +
             nextDayStr +
-            "&per_page=100&page=" +
+            "&per_page=" +
+            GITLAB_PAGE_SIZE +
+            "&page=" +
             page,
         ).then(function (events) {
           if (!events || !events.length) return collected;
           collected = collected.concat(events);
-          if (events.length < 100) return collected;
+          if (events.length < GITLAB_PAGE_SIZE) return collected;
           return fetchAllEvents(page + 1, collected);
         });
       }
@@ -465,7 +470,10 @@ export function generateStandup(
                     batch.map(function (ticket) {
                       return jiraApi<RawJiraIssue>(
                         jiraUrl,
-                        "/rest/api/2/issue/" + ticket + "?fields=summary",
+                        JIRA_API_PREFIX +
+                          "/issue/" +
+                          ticket +
+                          "?fields=summary",
                       )
                         .then(function (data) {
                           if (data && data.fields && data.fields.summary) {

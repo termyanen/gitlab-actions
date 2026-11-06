@@ -1,12 +1,8 @@
-import * as workflow from "../../../entities/review";
-import type { FileFilter } from "../../../entities/review";
-import type {
-  CustomJob,
-  QuickComment,
-  MrAction,
-  ProjectProfile,
-} from "../../../entities/settings";
 import type { JiraQuickAction } from "../../../entities/jira-issue";
+import type { FileFilter } from "../../../entities/review";
+import * as workflow from "../../../entities/review";
+import { MR_DEFAULTS } from "../../../entities/settings";
+export { BUTTON_DEFAULTS } from "../../../entities/settings";
 export const BUILTIN_BUTTONS = [
   { key: "btn_version", labelKey: "btnVersion", hintKey: "hintVersion" },
   { key: "btn_rebase", labelKey: "btnRebase", hintKey: "hintRebase" },
@@ -50,22 +46,7 @@ export const BUILTIN_BUTTONS = [
   },
   { key: "btn_copy_mr", labelKey: "btnCopyMr", hintKey: "hintCopyMr" },
 ];
-export const BUTTON_DEFAULTS = {
-  btn_version: false,
-  btn_rebase: false,
-  btn_rebase_version: false,
-  btn_rebase_automerge: false,
-  btn_rebase_force: false,
-  btn_ship: false,
-  btn_force_ship: false,
-  btn_reviewers: false,
-  btn_pipeline_restart: false,
-  btn_pipeline_cancel: false,
-  btn_draft_toggle: false,
-  btn_retry_failed: false,
-  btn_copy_mr: false,
-};
-export const AI_REVIEW_PROMPT_MAX_LENGTH = 1500;
+export const AI_REVIEW_PROMPT_MAX_LENGTH = workflow.REVIEW_PROMPT_MAX_LENGTH;
 export const AI_REVIEW_DEFAULT_PROMPT = workflow.DEFAULT_PROMPT;
 export const AI_REVIEW_DEFAULT_FRESH_PROMPT =
   workflow.DEFAULT_FRESH_REVIEW_PROMPT;
@@ -123,15 +104,8 @@ export const AI_REVIEW_PROMPTS = [
 ];
 export const AI_REVIEW_RULES = workflow.INSTRUCTION_BLOCKS;
 const BASE_DEFAULTS = {
-  ...BUTTON_DEFAULTS,
+  ...MR_DEFAULTS,
   language: "auto",
-  sound_enabled: false,
-  notifications_enabled: true,
-  show_time_tracker: true,
-  show_failed_job_view: true,
-  skip_confirmations: false,
-  dim_drafts: false,
-  highlight_own_mrs: false,
   show_only_mine: false,
   show_needs_review: false,
   show_reviewer_badge: false,
@@ -149,8 +123,6 @@ const BASE_DEFAULTS = {
   show_cmd_palette: true,
   show_standup: true,
   standup_jira_enrich: true,
-  show_sensitive_warning: false,
-  show_git_commands: false,
   show_ai_review_copy: true,
   ai_review_prompt: AI_REVIEW_DEFAULT_PROMPT,
   ai_review_fresh_prompt: AI_REVIEW_DEFAULT_FRESH_PROMPT,
@@ -176,20 +148,7 @@ const BASE_DEFAULTS = {
   commits_jira_field: "fixVersions, status",
   jira_url: "",
   jira_ticket_regex: "",
-  quickComments: [] as QuickComment[],
   jiraQuickActions: [] as JiraQuickAction[],
-  reviewersList: "",
-  reviewersJob: "get-reviewers",
-  customJobs: [] as CustomJob[],
-  mrActions: [] as MrAction[],
-  buttonOrder: [] as string[],
-  projectProfiles: {} as Record<string, ProjectProfile>,
-  // Version bump settings
-  versionFile: "package.json",
-  versionPath: "version",
-  versionStrategy: "patch",
-  versionCommitTemplate: "fix: bump version to {version}",
-  version_from_target: false,
 };
 export const MR_ACTION_TYPES = [
   "remove_labels",

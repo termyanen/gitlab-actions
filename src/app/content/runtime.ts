@@ -1,13 +1,13 @@
-import type { startMrToolbar } from "../../widgets/mr-toolbar";
-import type { createJiraPanel } from "../../widgets/jira-panel";
-import { createLifecycle } from "../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../shared/lib/lifecycle";
-import { createSessionApi } from "../../shared/api/gitlab";
-import { addRuntimeListener } from "../../shared/api/runtime";
-import { createTaskTracker } from "../../widgets/task-tracker";
+import { ROUTE_POLL_INTERVAL_MS } from "../../shared/config/runtime";
 import { createJiraState } from "../../entities/jira-issue";
 import { startPageLayout } from "../../features/page-layout";
-
+import { createSessionApi } from "../../shared/api/gitlab";
+import { addRuntimeListener } from "../../shared/api/runtime";
+import type { Lifecycle } from "../../shared/lib/lifecycle";
+import { createLifecycle } from "../../shared/lib/lifecycle";
+import type { createJiraPanel } from "../../widgets/jira-panel";
+import type { startMrToolbar } from "../../widgets/mr-toolbar";
+import { createTaskTracker } from "../../widgets/task-tracker";
 const lifetime = createLifecycle();
 const tracker = createTaskTracker(lifetime);
 const jira = createJiraState();
@@ -224,7 +224,7 @@ mountRoute();
 lifetime.listen(window, "popstate", mountRoute);
 // Isolated worlds cannot observe page pushState directly. One low-frequency
 // route check replaces the independent page initializers and polling loops.
-lifetime.interval(mountRoute, 1000);
+lifetime.interval(mountRoute, ROUTE_POLL_INTERVAL_MS);
 lifetime.listen(window, "pagehide", (event) => {
   if (!event.persisted) {
     pageScope?.dispose();

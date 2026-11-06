@@ -52,7 +52,7 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '', exposeBi
 
 function readRuntime(file) {
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'background.js') return bundleForTest('src/shared/api/background-proxy/index.ts', {globalName: 'ProxyModule'}) + bundleForTest('src/app/entrypoints/background.ts', {exposeBindings: true, footer: 'Object.assign(globalThis, ProxyModule, chains);'});
-  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'popup.js') return bundleForTest('src/pages/settings/ui/settings.ts', {exposeBindings: true, footer: 'for (const key of Object.keys(SettingsConfigModule)) if (!(key in globalThis)) globalThis[key] = SettingsConfigModule[key]; startSettings();'}) .replace(/^/, bundleForTest('src/features/manage-settings/index.ts', {globalName: 'SettingsConfigModule'}));
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'popup.js') return bundleForTest('src/pages/settings/ui/settings.ts', {exposeBindings: true, footer: 'Object.defineProperties(globalThis, { allData: {get: () => state.data, set: value => { state.data = value; }}, _autoSaveTimer: {get: () => state.autoSaveTimer} }); for (const key of Object.keys(SettingsConfigModule)) if (!(key in globalThis)) globalThis[key] = SettingsConfigModule[key]; startSettings();'}) .replace(/^/, bundleForTest('src/features/manage-settings/index.ts', {globalName: 'SettingsConfigModule'}));
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'welcome.js') return bundleForTest('src/app/entrypoints/welcome.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content_proxy.js') return bundleForTest('src/app/entrypoints/content_proxy.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content.js') {

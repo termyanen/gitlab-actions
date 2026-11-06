@@ -1,4 +1,6 @@
 import { isExtensionValid } from "../../api/runtime";
+const TOAST_DURATION_MS = 5000;
+const SOUND_CONTEXT_LIFETIME_MS = 1000;
 export function createFeedback(
   getSettings: () => Promise<{
     sound_enabled: boolean;
@@ -30,7 +32,7 @@ export function createFeedback(
         } catch {
           /* Optional browser feedback is best effort. */
         }
-      }, 5000);
+      }, TOAST_DURATION_MS);
 
       // Sound & notification — skip if extension was reloaded or quiet mode
       if (!quiet && isExtensionValid()) {
@@ -92,7 +94,7 @@ export function createFeedback(
         } catch {
           /* Optional browser feedback is best effort. */
         }
-      }, 1000);
+      }, SOUND_CONTEXT_LIFETIME_MS);
     } catch {
       /* Optional browser feedback is best effort. */
     }

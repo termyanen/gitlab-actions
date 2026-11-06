@@ -1,14 +1,14 @@
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import type {
-  MergeRequest,
   Commit,
   FileDiff,
+  MergeRequest,
   MergeRequestVersion,
 } from "../../../entities/merge-request";
-import type { ReviewContext, ExportOptions, ReviewError } from "./types";
-import { PAGE_SIZE, MAX_PAGES } from "./limits";
+import { MAX_PAGES, PAGE_SIZE } from "./limits";
 import { addWarning, progress } from "./progress";
-import { checkAbort, header, apiUrl, request } from "./transport";
-
+import { apiUrl, checkAbort, header, request } from "./transport";
+import type { ExportOptions, ReviewContext, ReviewError } from "./types";
 export function reviewRefs(entity: MergeRequest, context: ReviewContext) {
   const refs = entity && entity.diff_refs;
   if (
@@ -228,7 +228,7 @@ export async function loadReviewVersions(
     try {
       fetched = await request<MergeRequestVersion[]>(
         context,
-        path + "?per_page=100&page=" + page,
+        path + "?per_page=" + GITLAB_PAGE_SIZE + "&page=" + page,
         options,
       );
       if (!Array.isArray(fetched.data))

@@ -1,15 +1,20 @@
-import { addRuntimeListener } from "../../../shared/api/runtime";
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
-import { escHtml } from "../../../shared/lib/html";
-import { createFeedback } from "../../../shared/ui/feedback";
-import { createMrActions } from "../../../features/mr-actions";
+import type { MrAction } from "../../../entities/settings";
+import { MR_DEFAULTS } from "../../../entities/settings";
 import type { MrActionContext } from "../../../features/mr-actions";
-import type { MrSettings, MrAction } from "../../../entities/settings";
-import type { ActiveMergeRequest } from "../../../entities/merge-request";
-import type { Job, Pipeline } from "../../../entities/pipeline";
+import { createMrActions } from "../../../features/mr-actions";
+import { addRuntimeListener } from "../../../shared/api/runtime";
 import type { Translate } from "../../../shared/i18n";
-import type { ToolbarButton, PaletteAction, Tracker } from "./types";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { createFeedback } from "../../../shared/ui/feedback";
+import { formatElapsed } from "./display";
+import { createFailedJobView } from "./failed-jobs";
+import { createGitCommands } from "./git-commands";
+import { createSensitiveWarning } from "./sensitive-warning";
+import type { PaletteAction, ToolbarButton, Tracker } from "./types";
+const ACTION_RELOAD_DELAY_MS = 5000;
+const ACTION_FEEDBACK_DURATION_MS = 2000;
+const TOOLBAR_RETRY_DELAY_MS = 500;
 
 export function startMrToolbar(
   context: MrActionContext,
@@ -41,6 +46,21 @@ export function startMrToolbar(
     doMrAction,
     getSettings,
   } = actions;
+  const { injectFailedJobView } = createFailedJobView(
+    context,
+    api,
+    t,
+    scope,
+    parsePage,
+  );
+  const { injectSensitiveWarning } = createSensitiveWarning(
+    context,
+    api,
+    scope,
+    parsePage,
+    t,
+  );
+  const { injectGitCommands } = createGitCommands(t, scope);
 
   // i18n helper with manual language override
   let _i18nMessages: Record<string, { message: string }> | null = null;
@@ -204,7 +224,7 @@ export function startMrToolbar(
         if (opts.reloadOnSuccess) {
           scope.timeout(function () {
             window.location.reload();
-          }, 5000);
+          }, ACTION_RELOAD_DELAY_MS);
         }
       })
       .catch(function (err) {
@@ -272,7 +292,7 @@ export function startMrToolbar(
 
         const blocked =
           mr.has_conflicts || mr.blocking_discussions_resolved === false;
-        const reviewersJob = s.reviewersJob || "get-reviewers";
+        const reviewersJob = s.reviewersJob || MR_DEFAULTS.reviewersJob;
         const fixedReviewers = (s.reviewersList || "")
           .split(/[,\s]+/)
           .map(function (u) {
@@ -386,7 +406,7 @@ export function startMrToolbar(
 
         // Build ordered list of all buttons (builtins + custom)
         const allKeys = Object.keys(builtinDefs);
-        (s.customJobs || []).forEach(function (j, i) {
+        (s.customJobs || []).forEach(function (_job, i) {
           allKeys.push("custom_" + i);
         });
 
@@ -472,7 +492,7 @@ export function startMrToolbar(
                     scope.timeout(function () {
                       btn.textContent = origText;
                       btn.disabled = false;
-                    }, 2000);
+                    }, ACTION_FEEDBACK_DURATION_MS);
                   })
                   .catch(function () {
                     btn.disabled = false;
@@ -512,7 +532,7 @@ export function startMrToolbar(
                 scope.timeout(function () {
                   qcBtn.textContent = origText;
                   qcBtn.disabled = false;
-                }, 2000);
+                }, ACTION_FEEDBACK_DURATION_MS);
               })
               .catch(function (err) {
                 showToast(err.message, "error");
@@ -628,420 +648,13 @@ export function startMrToolbar(
           // Delay slightly to let Vue render description
           scope.timeout(function () {
             injectGitCommands(mr);
-          }, 500);
+          }, TOOLBAR_RETRY_DELAY_MS);
         }
       })
       .catch(function () {})
       .finally(function () {
         _injecting = false;
       });
-  }
-
-  function formatElapsed(createdAt: string) {
-    const diff = Date.now() - new Date(createdAt).getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-
-    if (days > 0) return days + "d " + (hours % 24) + "h";
-    if (hours > 0) return hours + "h " + (minutes % 60) + "m";
-    return minutes + "m";
-  }
-
-  // =========================================================================
-  // Failed Job Quick View
-  // =========================================================================
-
-  const ANSI_COLORS: Record<string, string> = {
-    "30": "#555",
-    "31": "#e05d44",
-    "32": "#3fb950",
-    "33": "#d29922",
-    "34": "#58a6ff",
-    "35": "#bc8cff",
-    "36": "#76e4f7",
-    "37": "#e6e6e6",
-    "90": "#888",
-    "91": "#ff7b72",
-    "92": "#7ee787",
-    "93": "#e3b341",
-    "94": "#79c0ff",
-    "95": "#d2a8ff",
-    "96": "#a5d6ff",
-    "97": "#ffffff",
-  };
-
-  function ansiToHtml(text: string) {
-    // Strip GitLab section markers
-    text = text.replace(/section_(start|end):[^\r\n]*/g, "");
-    let result = "";
-    let open = false;
-    let i = 0;
-    while (i < text.length) {
-      if (text.charCodeAt(i) === 0x1b && text.charAt(i + 1) === "[") {
-        const end = text.indexOf("m", i + 2);
-        if (end === -1) {
-          i++;
-          continue;
-        }
-        const codes = text.substring(i + 2, end).split(";");
-        if (open) {
-          result += "</span>";
-          open = false;
-        }
-        for (let c = 0; c < codes.length; c++) {
-          const color = ANSI_COLORS[codes[c]];
-          if (color) {
-            result += '<span style="color:' + color + '">';
-            open = true;
-            break;
-          }
-          if (codes[c] === "0" || codes[c] === "") {
-            break;
-          }
-          if (codes[c] === "1") {
-            result += '<span style="font-weight:700">';
-            open = true;
-            break;
-          }
-        }
-        i = end + 1;
-      } else {
-        const ch = text.charAt(i);
-        if (ch === "<") result += "&lt;";
-        else if (ch === ">") result += "&gt;";
-        else if (ch === "&") result += "&amp;";
-        else result += ch;
-        i++;
-      }
-    }
-    if (open) result += "</span>";
-    return result;
-  }
-
-  function fetchJobTrace(jobId: number) {
-    const url =
-      context.origin +
-      "/api/v4/projects/" +
-      context.projectId +
-      "/jobs/" +
-      jobId +
-      "/trace";
-    return fetch(url, { credentials: "same-origin", signal: scope.signal })
-      .then(function (r) {
-        if (!r.ok) return escHtml(t("failedJobTraceError"));
-        return r.text().then(function (text) {
-          const lines = text.split("\n").filter(function (l) {
-            return l.replace(/\x1b\[[0-9;]*[a-zA-Z]/g, "").trim() !== "";
-          });
-          return ansiToHtml(lines.slice(-50).join("\n"));
-        });
-      })
-      .catch(function () {
-        return escHtml(t("failedJobTraceError"));
-      });
-  }
-
-  const CHEVRON_SVG =
-    '<svg viewBox="0 0 16 16" width="12" height="12"><path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" d="M3 10l5-5 5 5"/></svg>';
-
-  function injectFailedJobView(
-    mr: ActiveMergeRequest,
-    s: MrSettings,
-    widgetSection: Element,
-  ) {
-    if (scope.disposed) return;
-    if (s.show_failed_job_view === false) return;
-    if (document.querySelector(".gl-mr-actions-failed-jobs")) return;
-
-    function renderForPipeline(pipelineId: number) {
-      if (scope.disposed) return;
-      api<Job[]>(
-        "GET",
-        "/projects/" +
-          context.projectId +
-          "/pipelines/" +
-          pipelineId +
-          "/jobs?scope[]=failed&per_page=10",
-      )
-        .then(function (jobs) {
-          if (scope.disposed) return;
-          if (!jobs || !jobs.length) return;
-          if (document.querySelector(".gl-mr-actions-failed-jobs")) return;
-
-          const wrapper = document.createElement("div");
-          wrapper.className = "gl-mr-actions-failed-jobs";
-
-          const header = document.createElement("div");
-          header.className = "gl-mr-actions-failed-jobs-header";
-          header.innerHTML =
-            '<span class="gl-mr-actions-failed-jobs-title">' +
-            escHtml(t("failedJobsCount", [jobs.length])) +
-            "</span>" +
-            '<span class="gl-mr-actions-failed-jobs-toggle">' +
-            CHEVRON_SVG +
-            "</span>";
-          wrapper.appendChild(header);
-
-          const list = document.createElement("div");
-          list.className = "gl-mr-actions-failed-jobs-list";
-          wrapper.appendChild(list);
-
-          header.addEventListener("click", function () {
-            const visible = list.style.display !== "none";
-            list.style.display = visible ? "none" : "";
-            wrapper.classList.toggle("collapsed", visible);
-          });
-
-          const displayJobs = jobs.slice(0, 5);
-          const tracePromises = displayJobs.map(function (job) {
-            return fetchJobTrace(job.id).then(function (trace) {
-              return { job: job, trace: trace };
-            });
-          });
-
-          Promise.all(tracePromises).then(function (results) {
-            if (scope.disposed || !parsePage()) return;
-            results.forEach(function (r, i) {
-              const item = document.createElement("div");
-              item.className = "gl-mr-actions-failed-job-item";
-
-              const jobUrl =
-                context.origin +
-                "/" +
-                context.projectPath +
-                "/-/jobs/" +
-                r.job.id;
-              const nameRow = document.createElement("div");
-              nameRow.className = "gl-mr-actions-failed-job-name";
-              nameRow.innerHTML =
-                '<a href="' +
-                escHtml(jobUrl) +
-                '" target="_blank">' +
-                escHtml(r.job.name) +
-                "</a>" +
-                (r.job.stage
-                  ? ' <span class="gl-mr-actions-failed-job-stage">' +
-                    escHtml(r.job.stage) +
-                    "</span>"
-                  : "") +
-                '<span class="gl-mr-actions-failed-job-expand">' +
-                CHEVRON_SVG +
-                "</span>";
-              item.appendChild(nameRow);
-
-              const trace = document.createElement("pre");
-              trace.className = "gl-mr-actions-failed-job-trace";
-              trace.innerHTML = r.trace;
-              if (i !== 0) {
-                trace.style.display = "none";
-                item.classList.add("collapsed");
-              }
-              item.appendChild(trace);
-
-              nameRow.addEventListener("click", function (e) {
-                if ((e.target as Element).closest("a")) return;
-                const visible = trace.style.display !== "none";
-                trace.style.display = visible ? "none" : "";
-                item.classList.toggle("collapsed", visible);
-                if (!visible) {
-                  requestAnimationFrame(function () {
-                    requestAnimationFrame(function () {
-                      trace.scrollTop = trace.scrollHeight;
-                    });
-                  });
-                }
-              });
-
-              list.appendChild(item);
-            });
-
-            if (jobs.length > 5) {
-              const more = document.createElement("div");
-              more.className = "gl-mr-actions-failed-jobs-more";
-              more.textContent = t("failedJobsMore", [jobs.length - 5]);
-              list.appendChild(more);
-            }
-
-            widgetSection.appendChild(wrapper);
-            requestAnimationFrame(function () {
-              const traces = wrapper.querySelectorAll<HTMLElement>(
-                ".gl-mr-actions-failed-job-trace",
-              );
-              for (let i = 0; i < traces.length; i++) {
-                if (traces[i].style.display !== "none") {
-                  traces[i].scrollTop = traces[i].scrollHeight;
-                }
-              }
-            });
-          });
-        })
-        .catch(function () {});
-    }
-
-    if (mr.head_pipeline && mr.head_pipeline.status === "failed") {
-      renderForPipeline(mr.head_pipeline.id);
-    } else {
-      // GitLab 18.x: head_pipeline may lag or be absent — check pipelines API directly
-      api<Pipeline[]>(
-        "GET",
-        "/projects/" +
-          context.projectId +
-          "/merge_requests/" +
-          context.mrIid +
-          "/pipelines?per_page=1",
-      )
-        .then(function (pipelines) {
-          if (
-            pipelines &&
-            pipelines.length &&
-            pipelines[0].status === "failed"
-          ) {
-            renderForPipeline(pipelines[0].id);
-          }
-        })
-        .catch(function () {});
-    }
-  }
-
-  // =========================================================================
-  // Sensitive file warning (#13)
-  // =========================================================================
-
-  const SENSITIVE_PATTERNS = [
-    /^\.env(\..*)?$/i,
-    /^Dockerfile(\..*)?$/i,
-    /^docker-compose[^/]*\.ya?ml$/i,
-    /^\.gitlab-ci\.yml$/i,
-    /^\.github\/workflows\//i,
-    /^Jenkinsfile$/i,
-    /credentials/i,
-    /secrets?\.(json|ya?ml|toml|xml|properties|cfg|conf|ini)$/i,
-    /^\.ssh\//i,
-    /^\.npmrc$/i,
-    /^\.pypirc$/i,
-    /^\.htpasswd$/i,
-    /^\.pgpass$/i,
-    /^id_rsa/i,
-    /\.pem$/i,
-    /\.key$/i,
-  ];
-
-  function isSensitiveFile(filepath: string) {
-    const name = filepath.replace(/^.*\//, "");
-    for (let i = 0; i < SENSITIVE_PATTERNS.length; i++) {
-      if (
-        SENSITIVE_PATTERNS[i].test(name) ||
-        SENSITIVE_PATTERNS[i].test(filepath)
-      )
-        return true;
-    }
-    return false;
-  }
-
-  function injectSensitiveWarning(_mr: ActiveMergeRequest) {
-    if (scope.disposed) return;
-    if (document.querySelector(".gl-mr-ext-sensitive-warning")) return;
-
-    api<{ new_path: string; old_path: string }[]>(
-      "GET",
-      "/projects/" +
-        context.projectId +
-        "/merge_requests/" +
-        context.mrIid +
-        "/diffs?per_page=100",
-    )
-      .then(function (diffs) {
-        if (scope.disposed || !parsePage()) return;
-        if (!diffs || !diffs.length) return;
-        const sensitiveFiles = [];
-        for (let i = 0; i < diffs.length; i++) {
-          const path = diffs[i].new_path || diffs[i].old_path;
-          if (path && isSensitiveFile(path)) {
-            sensitiveFiles.push(path);
-          }
-        }
-        if (!sensitiveFiles.length) return;
-        if (document.querySelector(".gl-mr-ext-sensitive-warning")) return;
-
-        const container = document.querySelector(".gl-mr-actions-ext");
-        if (!container) return;
-
-        const badge = document.createElement("span");
-        badge.className = "gl-mr-ext-sensitive-warning";
-        badge.textContent = t("sensitiveWarningBadge", [sensitiveFiles.length]);
-        badge.title =
-          t("sensitiveWarningHint") + "\n" + sensitiveFiles.join("\n");
-        container.insertBefore(badge, container.firstChild);
-      })
-      .catch(function () {});
-  }
-
-  // =========================================================================
-  // Git command generator (#12)
-  // =========================================================================
-
-  function injectGitCommands(mr: ActiveMergeRequest) {
-    if (scope.disposed) return;
-    if (document.querySelector(".gl-mr-ext-git-commands")) return;
-
-    const descBlock = document.querySelector(
-      '.detail-page-description, .js-detail-page-description, [data-testid="description-content"], [data-testid="merge-request-description"]',
-    );
-    if (!descBlock) return;
-
-    const branch = mr.source_branch;
-    const wrapper = document.createElement("div");
-    wrapper.className = "gl-mr-ext-git-commands";
-
-    const commands = [
-      {
-        key: "gitCmdCheckout",
-        cmd: "git fetch origin " + branch + " && git checkout " + branch,
-      },
-      {
-        key: "gitCmdPull",
-        cmd: "git checkout " + branch + " && git pull origin " + branch,
-      },
-      {
-        key: "gitCmdReset",
-        cmd:
-          "git checkout " +
-          branch +
-          " && git fetch origin " +
-          branch +
-          " && git reset --hard origin/" +
-          branch,
-      },
-    ];
-
-    for (let i = 0; i < commands.length; i++) {
-      (function (c) {
-        const btn = document.createElement("button");
-        btn.className = "gl-mr-ext-git-cmd-btn";
-        btn.textContent = t(c.key);
-        btn.title = c.cmd;
-        btn.addEventListener("click", function () {
-          copyToClipboard(c.cmd, btn);
-        });
-        wrapper.appendChild(btn);
-      })(commands[i]);
-    }
-
-    descBlock.appendChild(wrapper);
-  }
-
-  function copyToClipboard(text: string, btn: HTMLButtonElement) {
-    navigator.clipboard
-      .writeText(text)
-      .then(function () {
-        const orig = btn.textContent;
-        btn.textContent = "\u2713";
-        scope.timeout(function () {
-          btn.textContent = orig;
-        }, 2000);
-      })
-      .catch(function () {});
   }
 
   // =========================================================================
@@ -1122,7 +735,7 @@ export function startMrToolbar(
               return u.replace(/^@/, "").trim();
             })
             .filter(Boolean);
-          return doReviewers(s.reviewersJob || "get-reviewers", list);
+          return doReviewers(s.reviewersJob || MR_DEFAULTS.reviewersJob, list);
         });
       },
     };

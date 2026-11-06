@@ -1,4 +1,6 @@
 import type { ChainTask } from "./types";
+const COMPLETED_TASK_RETENTION = 50;
+const TASK_WAKEUP_INTERVAL_MINUTES = 1;
 export const TASK_STORAGE_KEY = "job_chain_state_v1";
 export const TASK_ALARM = "job-chain-wakeup";
 
@@ -47,7 +49,8 @@ export function createTaskStore(tasks: Record<string, ChainTask>) {
     const completed = Object.entries(tasks)
       .filter(([, task]) => task.status === "done" || task.status === "error")
       .sort((a, b) => (b[1].updatedAt || 0) - (a[1].updatedAt || 0));
-    for (const [id] of completed.slice(50)) delete tasks[id];
+    for (const [id] of completed.slice(COMPLETED_TASK_RETENTION))
+      delete tasks[id];
     const snapshot = JSON.parse(JSON.stringify(tasks)) as Record<
       string,
       ChainTask
@@ -73,7 +76,9 @@ export function createTaskStore(tasks: Record<string, ChainTask>) {
         (task) => task.status !== "done" && task.status !== "error",
       )
     )
-      chrome.alarms.create(TASK_ALARM, { periodInMinutes: 1 });
+      chrome.alarms.create(TASK_ALARM, {
+        periodInMinutes: TASK_WAKEUP_INTERVAL_MINUTES,
+      });
     else chrome.alarms.clear(TASK_ALARM);
   }
   return { load, save, syncAlarm };

@@ -1,36 +1,21 @@
-import type { NotePosition, Discussion } from "../../../entities/discussion";
-import type {
-  ExportOptions,
-  ReviewSnapshot,
-  ReviewError,
-  FileReader,
-} from "./types";
+import type { Discussion, NotePosition } from "../../../entities/discussion";
+import { getNotes } from "./discussions";
 import {
   MAX_FILE_BYTES,
   MAX_FILE_REQUESTS,
-  MAX_SNIPPET_LINES,
   MAX_SNIPPET_CHARS,
+  MAX_SNIPPET_LINES,
 } from "./limits";
+import { fence, inline, positionSummary, revision } from "./markdown";
+import { anchorLine, validLine } from "./position";
 import { addWarning, progress } from "./progress";
 import { checkAbort, request } from "./transport";
-import { getNotes } from "./discussions";
-import { fence, inline, revision, positionSummary } from "./markdown";
-
-export function validLine(value: unknown) {
-  return Number.isSafeInteger(Number(value)) && Number(value) > 0
-    ? Number(value)
-    : null;
-}
-
-export function anchorLine(position: NotePosition, side: "old" | "new") {
-  const range = position.line_range || {};
-  return (
-    validLine(range.start && range.start[`${side}_line`]) ||
-    validLine(position[`${side}_line`]) ||
-    validLine(range.end && range.end[`${side}_line`])
-  );
-}
-
+import type {
+  ExportOptions,
+  FileReader,
+  ReviewError,
+  ReviewSnapshot,
+} from "./types";
 export function excerpt(
   content: string,
   position: NotePosition,

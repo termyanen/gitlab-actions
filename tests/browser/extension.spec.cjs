@@ -81,6 +81,43 @@ test('a non-GitLab HTTPS page receives no extension controls or API requests', a
   await page.close();
 });
 
+test('settings forms preserve drafts across profile switches and language re-rendering', async () => {
+  const keys = ['projectProfiles', 'ai_review_prompt', 'language'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  await worker.evaluate(() => chrome.storage.sync.set({
+    projectProfiles: {'team/form-fixture': {versionFile: 'VERSION', versionStrategy: 'major'}},
+    ai_review_prompt: 'Saved instruction', language: 'en',
+  }));
+  const page = await context.newPage();
+  try {
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(page.locator('#ai_review_prompt')).toHaveValue('Saved instruction');
+    await page.locator('#ai_review_prompt').fill('Preserve this edited instruction');
+    await page.locator('#tabs [data-tab="team/form-fixture"]').click();
+    await expect(page.locator('#profileVersionStrategy')).toHaveValue('major');
+    await page.locator('#profileVersionStrategy').selectOption('patch');
+    await page.locator('#tabs [data-tab="default"]').click();
+    await expect(page.locator('#ai_review_prompt')).toHaveValue('Preserve this edited instruction');
+    await page.locator('#language').selectOption('ru');
+    await expect(page.locator('#language')).toHaveValue('ru');
+    await expect.poll(() => worker.evaluate(() => chrome.storage.sync.get(['ai_review_prompt', 'projectProfiles', 'language']))).toMatchObject({
+      ai_review_prompt: 'Preserve this edited instruction', language: 'ru',
+      projectProfiles: {'team/form-fixture': {versionFile: 'VERSION', versionStrategy: 'patch'}},
+    });
+    await page.reload();
+    await expect(page.locator('#ai_review_prompt')).toHaveValue('Preserve this edited instruction');
+    await page.locator('#tabs [data-tab="team/form-fixture"]').click();
+    await expect(page.locator('#profileVersionStrategy')).toHaveValue('patch');
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => {
+      await chrome.storage.sync.remove(keys);
+      await chrome.storage.sync.set(previous);
+    }, {keys, previous});
+  }
+  expect(runtimeErrors).toEqual([]);
+});
+
 test('review controls mount once on GitLab and tolerate repeated DOM updates', async () => {
   const page = await context.newPage();
   await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');

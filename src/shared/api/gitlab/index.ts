@@ -1,3 +1,4 @@
+import { GITLAB_API_PREFIX } from "../../config/gitlab";
 export interface ApiError extends Error {
   httpStatus?: number;
   errorCode?: string;
@@ -22,7 +23,7 @@ export function createSessionApi(
     path: string,
     body?: unknown,
   ): Promise<T> {
-    const url = origin() + "/api/v4" + path;
+    const url = origin() + GITLAB_API_PREFIX + path;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     };

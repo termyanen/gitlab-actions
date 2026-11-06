@@ -1,8 +1,14 @@
-import { createTaskStore, TASK_ALARM } from "./store";
-import type { ChainTask, ChainMessage } from "./types";
-import type { Job, Pipeline } from "../../../entities/pipeline";
+import {
+  JOB_POLL_INTERVAL_MS,
+  JOB_POLL_MAX_ATTEMPTS,
+} from "../../../entities/pipeline";
+import { NOTIFICATION_ICON } from "../../../shared/config/extension";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import type { ActiveMergeRequest } from "../../../entities/merge-request";
+import type { Job, Pipeline } from "../../../entities/pipeline";
 import { api } from "../../../shared/api/background-proxy";
+import { createTaskStore, TASK_ALARM } from "./store";
+import type { ChainMessage, ChainTask } from "./types";
 export function createJobChains() {
   const tasks: Record<string, ChainTask> = {};
   let taskSequence = 0;
@@ -116,7 +122,8 @@ export function createJobChains() {
         (task.pipelineProjectId || task.projectId) +
         "/pipelines/" +
         pipelineId +
-        "/jobs?per_page=100";
+        "/jobs?per_page=" +
+        GITLAB_PAGE_SIZE;
       if (page > 1) path += "&page=" + page;
       return api<Job[]>(task, "GET", path).then(function (jobs) {
         if (task._cancelled) throw new Error("Cancelled by user");
@@ -130,7 +137,7 @@ export function createJobChains() {
           if (!seen[jobs[i].id]) hasNewJobs = true;
           seen[jobs[i].id] = true;
         }
-        if (found || jobs.length < 100) return found;
+        if (found || jobs.length < GITLAB_PAGE_SIZE) return found;
         if (!hasNewJobs)
           throw new Error(
             chrome.i18n.getMessage("errorJobsPageRepeated", [
@@ -206,7 +213,7 @@ export function createJobChains() {
     jobName: string,
     maxAttempts?: number,
   ) {
-    maxAttempts = maxAttempts || 120;
+    maxAttempts = maxAttempts || JOB_POLL_MAX_ATTEMPTS;
     let attempt = task.waitAttempts || 0;
     function check(): Promise<Job> {
       attempt++;
@@ -218,7 +225,7 @@ export function createJobChains() {
         .then(
           () =>
             new Promise<void>(function (resolve) {
-              setTimeout(resolve, 20000);
+              setTimeout(resolve, JOB_POLL_INTERVAL_MS);
             }),
         )
         .then(function () {
@@ -338,7 +345,7 @@ export function createJobChains() {
       if (s.notifications_enabled !== false) {
         chrome.notifications.create("task-" + taskId, {
           type: "basic",
-          iconUrl: "icons/icon128.png",
+          iconUrl: NOTIFICATION_ICON,
           title: success ? "Job Chain Completed" : "Job Chain Failed",
           message: message,
         });

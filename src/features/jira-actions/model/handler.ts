@@ -1,20 +1,21 @@
+import { JIRA_API_PREFIX } from "../../../shared/config/jira";
+import type { JiraQuickAction } from "../../../entities/jira-issue";
 import type {
   JiraMessage,
-  RawJiraIssue,
-  JiraUser,
   JiraNamed,
+  JiraUser,
   RawJiraComment,
+  RawJiraIssue,
 } from "../../../entities/jira-issue/background";
-import type { JiraQuickAction } from "../../../entities/jira-issue";
-import type { JiraFieldValue } from "../../../entities/jira-issue/content";
 import {
-  jiraApi,
-  mapJiraComment,
   buildJiraQuickActionEdit,
-  jiraQuickActionWrite,
   fetchJiraStatuses,
   getFieldMap,
+  jiraApi,
+  jiraQuickActionWrite,
+  mapJiraComment,
 } from "../../../entities/jira-issue/background";
+import type { JiraFieldValue } from "../../../entities/jira-issue/content";
 export function handleJiraMessage(
   msg: JiraMessage,
   sendResponse: (response: unknown) => void,
@@ -82,7 +83,7 @@ export function handleJiraMessage(
         if (extraFields) fieldsParam += "," + extraFields;
         return jiraApi<RawJiraIssue>(
           msg.jiraUrl,
-          "/rest/api/2/issue/" + msg.ticket + "?fields=" + fieldsParam,
+          JIRA_API_PREFIX + "/issue/" + msg.ticket + "?fields=" + fieldsParam,
         ).then(function (data) {
           const f = data.fields;
           const attachments: Record<string, string> = {};
@@ -188,7 +189,7 @@ export function handleJiraMessage(
       const ticket = tickets[i];
       return jiraApi<RawJiraIssue>(
         msg.jiraUrl,
-        "/rest/api/2/issue/" + ticket + "?fields=" + apiFields,
+        JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + apiFields,
       )
         .then(function (data) {
           const val = data && data.fields ? data.fields[field] : null;
@@ -244,7 +245,8 @@ export function handleJiraMessage(
   if (msg.type === "search-jira-assignable") {
     jiraApi<JiraUser[]>(
       msg.jiraUrl,
-      "/rest/api/2/user/assignable/search?issueKey=" +
+      JIRA_API_PREFIX +
+        "/user/assignable/search?issueKey=" +
         encodeURIComponent(msg.ticket) +
         "&username=" +
         encodeURIComponent(msg.query) +
@@ -270,7 +272,7 @@ export function handleJiraMessage(
     const projectKey = msg.ticket.replace(/-\d+$/, "");
     jiraApi<{ name: string; archived?: boolean; released?: boolean }[]>(
       msg.jiraUrl,
-      "/rest/api/2/project/" + projectKey + "/versions",
+      JIRA_API_PREFIX + "/project/" + projectKey + "/versions",
     )
       .then(function (versions) {
         const list = (versions || [])
@@ -288,7 +290,7 @@ export function handleJiraMessage(
     return true;
   }
   if (msg.type === "set-jira-fix-versions") {
-    const fvUrl = msg.jiraUrl + "/rest/api/2/issue/" + msg.ticket;
+    const fvUrl = msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket;
     chrome.cookies
       .getAll({ url: msg.jiraUrl })
       .then(function (cookies) {
@@ -324,7 +326,7 @@ export function handleJiraMessage(
     return true;
   }
   if (msg.type === "set-jira-assignee") {
-    const url = msg.jiraUrl + "/rest/api/2/issue/" + msg.ticket;
+    const url = msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket;
     chrome.cookies
       .getAll({ url: msg.jiraUrl })
       .then(function (cookies) {
@@ -358,7 +360,7 @@ export function handleJiraMessage(
   if (msg.type === "fetch-jira-transitions") {
     jiraApi<{ transitions: { id: string; name: string; to?: JiraNamed }[] }>(
       msg.jiraUrl,
-      "/rest/api/2/issue/" + msg.ticket + "/transitions",
+      JIRA_API_PREFIX + "/issue/" + msg.ticket + "/transitions",
     )
       .then(function (data) {
         const transitions = (data.transitions || []).map(function (t) {
@@ -382,7 +384,8 @@ export function handleJiraMessage(
     const maxResults = msg.maxResults || 5;
     jiraApi<{ comments: RawJiraComment[]; total: number }>(
       msg.jiraUrl,
-      "/rest/api/2/issue/" +
+      JIRA_API_PREFIX +
+        "/issue/" +
         msg.ticket +
         "/comment?orderBy=-created&startAt=" +
         startAt +
@@ -399,7 +402,7 @@ export function handleJiraMessage(
     return true;
   }
   if (msg.type === "fetch-jira-myself") {
-    jiraApi<JiraUser>(msg.jiraUrl, "/rest/api/2/myself")
+    jiraApi<JiraUser>(msg.jiraUrl, JIRA_API_PREFIX + "/myself")
       .then(function (data) {
         sendResponse({ id: data.accountId || data.key || data.name || "" });
       })
@@ -411,7 +414,8 @@ export function handleJiraMessage(
   if (msg.type === "delete-jira-comment") {
     const deleteUrl =
       msg.jiraUrl +
-      "/rest/api/2/issue/" +
+      JIRA_API_PREFIX +
+      "/issue/" +
       msg.ticket +
       "/comment/" +
       msg.commentId;
@@ -444,7 +448,7 @@ export function handleJiraMessage(
   }
   if (msg.type === "post-jira-comment") {
     const commentUrl =
-      msg.jiraUrl + "/rest/api/2/issue/" + msg.ticket + "/comment";
+      msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket + "/comment";
     chrome.cookies
       .getAll({ url: msg.jiraUrl })
       .then(function (cookies) {
@@ -481,7 +485,7 @@ export function handleJiraMessage(
   }
   if (msg.type === "do-jira-transition") {
     const url =
-      msg.jiraUrl + "/rest/api/2/issue/" + msg.ticket + "/transitions";
+      msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket + "/transitions";
     chrome.cookies
       .getAll({ url: msg.jiraUrl })
       .then(function (cookies) {

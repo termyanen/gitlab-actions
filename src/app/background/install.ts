@@ -1,3 +1,4 @@
+import { WELCOME_PAGE } from "../../shared/config/extension";
 export function registerInstallHandler() {
   chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason === "install") {
@@ -13,7 +14,7 @@ export function registerInstallHandler() {
       chrome.storage.sync.set(smartDefaults);
 
       // Open welcome page
-      chrome.tabs.create({ url: "welcome.html" });
+      chrome.tabs.create({ url: WELCOME_PAGE });
     }
 
     if (details.reason === "update") {

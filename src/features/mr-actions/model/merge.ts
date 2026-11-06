@@ -1,9 +1,15 @@
 import type { ActiveMergeRequest } from "../../../entities/merge-request";
 import type { Pipeline } from "../../../entities/pipeline";
-import { sleep } from "../../../shared/lib/time";
 import type { ApiError } from "../../../shared/api/gitlab";
-import type { MrServices, MergeOptions } from "./types";
+import { sleep } from "../../../shared/lib/time";
+import type { MergeOptions, MrServices } from "./types";
 import type { createVersionActions } from "./version";
+const REBASE_MAX_POLLS = 60;
+const MR_READY_MAX_POLLS = 40;
+const NEW_PIPELINE_MAX_POLLS = 15;
+const REBASE_POLL_INTERVAL_MS = 2000;
+const MR_READY_POLL_INTERVAL_MS = 3000;
+const FORCE_SHIP_SETTLE_MS = 15000;
 export function createMergeActions(
   { context, api, getMR, t, showToast }: MrServices,
   { doVersionBump }: ReturnType<typeof createVersionActions>,
@@ -47,8 +53,9 @@ export function createMergeActions(
 
   function pollRebase(attempt = 0): Promise<ActiveMergeRequest> {
     attempt = (attempt || 0) + 1;
-    if (attempt > 60) throw new Error("Timeout waiting for rebase to complete");
-    return sleep(2000)
+    if (attempt > REBASE_MAX_POLLS)
+      throw new Error("Timeout waiting for rebase to complete");
+    return sleep(REBASE_POLL_INTERVAL_MS)
       .then(function () {
         return getMR(true);
       })
@@ -92,7 +99,10 @@ export function createMergeActions(
           _rebase ? t("toastStep22Automerge") : t("toastEnablingAutomerge"),
           "success",
         );
-        return doAutoMergeWithRetry(40, 3000);
+        return doAutoMergeWithRetry(
+          MR_READY_MAX_POLLS,
+          MR_READY_POLL_INTERVAL_MS,
+        );
       });
   }
 
@@ -145,7 +155,7 @@ export function createMergeActions(
         });
       })
       .then(function (mergeOpts) {
-        return sleep(2000).then(function () {
+        return sleep(REBASE_POLL_INTERVAL_MS).then(function () {
           return api(
             "PUT",
             "/projects/" +
@@ -197,8 +207,8 @@ export function createMergeActions(
     });
   }
 
-  function waitForBranchInMR(branch: string, maxAttempts = 40) {
-    maxAttempts = maxAttempts || 40;
+  function waitForBranchInMR(branch: string, maxAttempts = MR_READY_MAX_POLLS) {
+    maxAttempts = maxAttempts || MR_READY_MAX_POLLS;
     // Step 1: get actual branch HEAD from repository API
     return api<{ commit: { id: string } }>(
       "GET",
@@ -228,7 +238,7 @@ export function createMergeActions(
             throw new Error("Timeout waiting for MR to sync with branch HEAD");
           });
         }
-        return sleep(3000)
+        return sleep(MR_READY_POLL_INTERVAL_MS)
           .then(function () {
             return getMR();
           })
@@ -246,8 +256,11 @@ export function createMergeActions(
     });
   }
 
-  function waitForNewPipeline(oldSha: string, maxAttempts = 15) {
-    maxAttempts = maxAttempts || 15;
+  function waitForNewPipeline(
+    oldSha: string,
+    maxAttempts = NEW_PIPELINE_MAX_POLLS,
+  ) {
+    maxAttempts = maxAttempts || NEW_PIPELINE_MAX_POLLS;
     const activePipelineStatuses = [
       "running",
       "pending",
@@ -261,7 +274,7 @@ export function createMergeActions(
       attempt++;
       if (attempt > maxAttempts)
         throw new Error("Timeout waiting for new pipeline");
-      return sleep(3000)
+      return sleep(MR_READY_POLL_INTERVAL_MS)
         .then(function () {
           return getMR();
         })
@@ -291,9 +304,12 @@ export function createMergeActions(
     return check();
   }
 
-  function doAutoMergeWithRetry(maxRetries = 40, interval = 3000) {
-    maxRetries = maxRetries || 40;
-    interval = interval || 3000;
+  function doAutoMergeWithRetry(
+    maxRetries = MR_READY_MAX_POLLS,
+    interval = MR_READY_POLL_INTERVAL_MS,
+  ) {
+    maxRetries = maxRetries || MR_READY_MAX_POLLS;
+    interval = interval || MR_READY_POLL_INTERVAL_MS;
     let attempt = 0;
     let _mergeOpts: MergeOptions;
     // GitLab also returns 405 while mergeability is being calculated. Keep
@@ -341,9 +357,9 @@ export function createMergeActions(
     });
   }
 
-  function waitMRReady(maxAttempts = 40) {
+  function waitMRReady(maxAttempts = MR_READY_MAX_POLLS) {
     // Wait until GitLab processes the new commit: pipeline started
-    maxAttempts = maxAttempts || 40;
+    maxAttempts = maxAttempts || MR_READY_MAX_POLLS;
     const activePipelineStatuses = [
       "running",
       "pending",
@@ -385,7 +401,7 @@ export function createMergeActions(
             maxAttempts * 3 +
             "s",
         );
-      return sleep(3000)
+      return sleep(MR_READY_POLL_INTERVAL_MS)
         .then(function () {
           return getMR();
         })
@@ -447,7 +463,10 @@ export function createMergeActions(
       })
       .then(function () {
         showToast(t("toastEnablingAutomerge"), "success");
-        return doAutoMergeWithRetry(40, 3000);
+        return doAutoMergeWithRetry(
+          MR_READY_MAX_POLLS,
+          MR_READY_POLL_INTERVAL_MS,
+        );
       });
   }
 
@@ -471,7 +490,7 @@ export function createMergeActions(
       })
       .then(function () {
         showToast(t("toastWaiting15s"), "success");
-        return sleep(15000);
+        return sleep(FORCE_SHIP_SETTLE_MS);
       })
       .then(function () {
         showToast(t("toastStep22Cancelling"), "success");
@@ -509,7 +528,7 @@ export function createMergeActions(
         });
       })
       .then(function (mergeOpts) {
-        return sleep(2000).then(function () {
+        return sleep(REBASE_POLL_INTERVAL_MS).then(function () {
           return api(
             "PUT",
             "/projects/" +

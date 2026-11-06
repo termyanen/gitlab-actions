@@ -1,9 +1,10 @@
+import { SETTINGS_PAGE } from "../../shared/config/extension";
 export function startWelcome() {
   document
     .getElementById("openSettings")!
     .addEventListener("click", function (e) {
       e.preventDefault();
-      chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") });
+      chrome.tabs.create({ url: chrome.runtime.getURL(SETTINGS_PAGE) });
     });
 
   // i18n: localize all elements with data-i18n attribute

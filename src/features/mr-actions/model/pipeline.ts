@@ -1,8 +1,14 @@
+import {
+  JOB_POLL_INTERVAL_MS,
+  JOB_POLL_MAX_ATTEMPTS,
+} from "../../../entities/pipeline";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import type {
-  Pipeline,
   Job,
+  Pipeline,
   PipelineSelection,
 } from "../../../entities/pipeline";
+import { MR_DEFAULTS } from "../../../entities/settings";
 import { sleep } from "../../../shared/lib/time";
 import type { MrServices } from "./types";
 export function createPipelineActions({
@@ -62,14 +68,15 @@ export function createPipelineActions({
         pipeline.projectId +
         "/pipelines/" +
         pipeline.id +
-        "/jobs?per_page=100";
+        "/jobs?per_page=" +
+        GITLAB_PAGE_SIZE;
       if (page > 1) path += "&page=" + page;
       return api<Job[]>("GET", path).then(function (jobs) {
         collected = collected.concat(jobs);
         // GitLab sorts jobs newest first. Named lookups can stop as soon as
         // the latest attempt is found; bulk retries need every page.
         if (jobName && findLatestJobByName(jobs, jobName)) return collected;
-        if (jobs.length < 100) return collected;
+        if (jobs.length < GITLAB_PAGE_SIZE) return collected;
         // Protect against a proxy/server ignoring the page parameter.
         let hasNewJobs = false;
         for (let i = 0; i < jobs.length; i++) {
@@ -85,7 +92,7 @@ export function createPipelineActions({
   }
 
   function doReviewers(
-    jobName = "get-reviewers",
+    jobName = MR_DEFAULTS.reviewersJob,
     fixedReviewers: string[] = [],
   ): Promise<{
     action: string;
@@ -93,7 +100,7 @@ export function createPipelineActions({
     comment?: string | null;
     jobId?: number;
   }> {
-    jobName = jobName || "get-reviewers";
+    jobName = jobName || MR_DEFAULTS.reviewersJob;
     fixedReviewers = fixedReviewers || [];
 
     // If fixed reviewers configured — post comment mentioning them
@@ -125,7 +132,8 @@ export function createPipelineActions({
         context.projectId +
         "/merge_requests/" +
         context.mrIid +
-        "/notes?per_page=100",
+        "/notes?per_page=" +
+        GITLAB_PAGE_SIZE,
     ).then(function (notes): Promise<{
       action: string;
       comment?: string | null;
@@ -367,8 +375,12 @@ export function createPipelineActions({
     }
   }
 
-  function waitForJob(jobId: number, jobName: string, maxAttempts = 120) {
-    maxAttempts = maxAttempts || 120;
+  function waitForJob(
+    jobId: number,
+    jobName: string,
+    maxAttempts = JOB_POLL_MAX_ATTEMPTS,
+  ) {
+    maxAttempts = maxAttempts || JOB_POLL_MAX_ATTEMPTS;
     let attempt = 0;
     function findJobByName(name: string) {
       // Find the latest job with this name in the pipeline (retry creates new jobs)
@@ -388,7 +400,8 @@ export function createPipelineActions({
               context.projectId +
               "/pipelines/" +
               pipelines[0].id +
-              "/jobs?per_page=100",
+              "/jobs?per_page=" +
+              GITLAB_PAGE_SIZE,
           );
         })
         .then(function (jobs) {
@@ -403,7 +416,7 @@ export function createPipelineActions({
       attempt++;
       if (attempt > maxAttempts)
         throw new Error('Timeout waiting for job "' + jobName + '"');
-      return sleep(20000)
+      return sleep(JOB_POLL_INTERVAL_MS)
         .then(function () {
           // Look up by name in pipeline (handles retry creating new job IDs)
           return findJobByName(jobName);

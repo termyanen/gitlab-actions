@@ -1,14 +1,16 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { VERSION_DEFAULTS } from "../../../entities/settings";
+import { createSessionApi } from "../../../shared/api/gitlab";
+import { SEL } from "../../../shared/config/gitlab";
+import { q, qAll, qUp } from "../../../shared/lib/dom";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+import { getNestedValue, parseToml } from "../../../shared/lib/version";
+const BADGE_MOUNT_DEBOUNCE_MS = 500;
 interface CommitEntry {
   row: Element;
   group: Element;
   sha: string;
 }
-import { createSessionApi } from "../../../shared/api/gitlab";
-import { SEL } from "../../../shared/config/gitlab";
-import { q, qAll, qUp } from "../../../shared/lib/dom";
-import { parseToml, getNestedValue } from "../../../shared/lib/version";
 
 export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
   const GITLAB_URL = window.location.origin;
@@ -30,8 +32,8 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
       chrome.storage.sync.get(
         {
           show_commit_version: false,
-          versionFile: "package.json",
-          versionPath: "version",
+          versionFile: VERSION_DEFAULTS.versionFile,
+          versionPath: VERSION_DEFAULTS.versionPath,
         },
         scope.guard(function (s: {
           show_commit_version: boolean;
@@ -271,7 +273,10 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
               let _cvTimer: ReturnType<typeof setTimeout> | undefined;
               const cvObserver = scope.observer(function () {
                 clearTimeout(_cvTimer);
-                _cvTimer = scope.timeout(injectCommitVersionBadges, 500);
+                _cvTimer = scope.timeout(
+                  injectCommitVersionBadges,
+                  BADGE_MOUNT_DEBOUNCE_MS,
+                );
               });
               cvObserver.observe(document.body, {
                 childList: true,
