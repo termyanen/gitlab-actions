@@ -218,8 +218,7 @@ export function handleJiraMessage(
           }
           if (values.length) {
             results[ticket] = { values: values };
-            if (categoryKey)
-              (results[ticket] as JiraFieldValue).categoryKey = categoryKey;
+            if (categoryKey) results[ticket].categoryKey = categoryKey;
           }
         })
         .catch(function (err) {

@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import type { SessionApi } from "../../../shared/api/gitlab";
 import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
 import { q, qAll } from "../../../shared/lib/dom";
@@ -234,9 +235,11 @@ export function createMrMetadata(api: SessionApi, scope: Lifecycle) {
         return;
       }
       const batch = toFetch.slice(start, start + BATCH_SIZE);
-      Promise.all(batch.map(fetchOneEntry)).then(function () {
-        fetchBatch(start + BATCH_SIZE);
-      });
+      Promise.all(batch.map(fetchOneEntry))
+        .then(function () {
+          fetchBatch(start + BATCH_SIZE);
+        })
+        .catch(reportError);
     }
 
     fetchBatch(0);

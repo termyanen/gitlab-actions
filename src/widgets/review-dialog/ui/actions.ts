@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import type * as Workflow from "../../../entities/review";
 import type { FileFilter } from "../../../entities/review";
 import type {
@@ -109,7 +110,7 @@ export function createReviewDialogActions(
       status(state, t("aiReviewFilterInvalid"), true);
       return;
     }
-    if (state.loadController) state.loadController!.abort();
+    if (state.loadController) state.loadController.abort();
     state.loadController = null;
     state.loading = false;
     invalidate(state);
@@ -157,7 +158,8 @@ export function createReviewDialogActions(
           state.busy = false;
           updateActions(state);
         }
-      });
+      })
+      .catch(reportError);
   }
 
   function prepareReplies(state: ReviewDialogState, copy: boolean) {
@@ -171,7 +173,7 @@ export function createReviewDialogActions(
     const discussionIds = selectedDiscussionIds(state, true);
     if (state.loading || !discussionIds.length) return;
     // This export loads its own context; a late picker response must not replace it.
-    if (state.loadController) state.loadController!.abort();
+    if (state.loadController) state.loadController.abort();
     state.loadController = null;
     state.loading = false;
     invalidate(state);
@@ -218,13 +220,14 @@ export function createReviewDialogActions(
         if (!isCurrent(state) || run !== state.exportRun) return;
         state.busy = false;
         updateActions(state);
-      });
+      })
+      .catch(reportError);
   }
 
   function prepare(state: ReviewDialogState, copy: boolean) {
     if (!isCurrent(state) || state.busy || state.copyButton.disabled) return;
     if (state.prepared) {
-      if (copy) copyPrepared(state);
+      if (copy) copyPrepared(state).catch(reportError);
       else state.previewDetails.open = true;
       return;
     }
@@ -296,7 +299,7 @@ export function createReviewDialogActions(
         state.busy = false;
         updateActions(state);
         status(state, t("aiReviewReady"));
-        if (copy) copyPrepared(state);
+        if (copy) copyPrepared(state).catch(reportError);
       })
       .catch(function (error) {
         if (!isCurrent(state) || run !== state.exportRun) return;
@@ -308,7 +311,7 @@ export function createReviewDialogActions(
   }
 
   function load(state: ReviewDialogState, preserve: boolean) {
-    if (state.loadController) state.loadController!.abort();
+    if (state.loadController) state.loadController.abort();
     invalidate(state);
     const controller = new AbortController();
     state.loadController = controller;
@@ -345,7 +348,7 @@ export function createReviewDialogActions(
         state.selected = new Set();
         let foundIntent = false;
         snapshot.discussions.forEach(function (thread) {
-          const notes = data.getNotes(thread!);
+          const notes = data.getNotes(thread);
           const matchesFilter = matchesStatus(state, thread);
           const matchesIntent = notes.some(function (note) {
             return String(note.id) === state.intent.noteId;
@@ -528,7 +531,7 @@ export function createReviewDialogActions(
     if (
       mode === "replies" &&
       state.snapshot &&
-      state.snapshot!.discussions.filter(function (thread) {
+      state.snapshot.discussions.filter(function (thread) {
         return data.getNotes(thread).some(function (note) {
           return state.selected.has(String(note.id));
         });
@@ -555,7 +558,7 @@ export function createReviewDialogActions(
     return (
       state.snapshot &&
       state.intent.noteId &&
-      state.snapshot!.discussions.find(function (thread) {
+      state.snapshot.discussions.find(function (thread) {
         return data.getNotes(thread).some(function (note) {
           return String(note.id) === state.intent.noteId;
         });

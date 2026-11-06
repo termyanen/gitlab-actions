@@ -187,7 +187,7 @@ export function createJiraPanel(
 
   function openJiraLightbox(src: string, type: string) {
     const existing = document.querySelector<HTMLElement>(".gl-jira-lightbox");
-    if (existing) existing!.remove();
+    if (existing) existing.remove();
 
     const overlay = document.createElement("div");
     overlay.className = "gl-jira-lightbox";

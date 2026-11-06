@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
 import type { ActiveMergeRequest } from "../../../entities/merge-request";
 import type { Job, Pipeline } from "../../../entities/pipeline";
@@ -168,81 +169,83 @@ export function createFailedJobView(
             });
           });
 
-          Promise.all(tracePromises).then(function (results) {
-            if (scope.disposed || !parsePage()) return;
-            results.forEach(function (r, i) {
-              const item = document.createElement("div");
-              item.className = "gl-mr-actions-failed-job-item";
+          Promise.all(tracePromises)
+            .then(function (results) {
+              if (scope.disposed || !parsePage()) return;
+              results.forEach(function (r, i) {
+                const item = document.createElement("div");
+                item.className = "gl-mr-actions-failed-job-item";
 
-              const jobUrl =
-                context.origin +
-                "/" +
-                context.projectPath +
-                "/-/jobs/" +
-                r.job.id;
-              const nameRow = document.createElement("div");
-              nameRow.className = "gl-mr-actions-failed-job-name";
-              nameRow.innerHTML =
-                '<a href="' +
-                escHtml(jobUrl) +
-                '" target="_blank">' +
-                escHtml(r.job.name) +
-                "</a>" +
-                (r.job.stage
-                  ? ' <span class="gl-mr-actions-failed-job-stage">' +
-                    escHtml(r.job.stage) +
-                    "</span>"
-                  : "") +
-                '<span class="gl-mr-actions-failed-job-expand">' +
-                CHEVRON_SVG +
-                "</span>";
-              item.appendChild(nameRow);
+                const jobUrl =
+                  context.origin +
+                  "/" +
+                  context.projectPath +
+                  "/-/jobs/" +
+                  r.job.id;
+                const nameRow = document.createElement("div");
+                nameRow.className = "gl-mr-actions-failed-job-name";
+                nameRow.innerHTML =
+                  '<a href="' +
+                  escHtml(jobUrl) +
+                  '" target="_blank">' +
+                  escHtml(r.job.name) +
+                  "</a>" +
+                  (r.job.stage
+                    ? ' <span class="gl-mr-actions-failed-job-stage">' +
+                      escHtml(r.job.stage) +
+                      "</span>"
+                    : "") +
+                  '<span class="gl-mr-actions-failed-job-expand">' +
+                  CHEVRON_SVG +
+                  "</span>";
+                item.appendChild(nameRow);
 
-              const trace = document.createElement("pre");
-              trace.className = "gl-mr-actions-failed-job-trace";
-              trace.innerHTML = r.trace;
-              if (i !== 0) {
-                trace.style.display = "none";
-                item.classList.add("collapsed");
-              }
-              item.appendChild(trace);
-
-              nameRow.addEventListener("click", function (e) {
-                if ((e.target as Element).closest("a")) return;
-                const visible = trace.style.display !== "none";
-                trace.style.display = visible ? "none" : "";
-                item.classList.toggle("collapsed", visible);
-                if (!visible) {
-                  requestAnimationFrame(function () {
-                    requestAnimationFrame(function () {
-                      trace.scrollTop = trace.scrollHeight;
-                    });
-                  });
+                const trace = document.createElement("pre");
+                trace.className = "gl-mr-actions-failed-job-trace";
+                trace.innerHTML = r.trace;
+                if (i !== 0) {
+                  trace.style.display = "none";
+                  item.classList.add("collapsed");
                 }
+                item.appendChild(trace);
+
+                nameRow.addEventListener("click", function (e) {
+                  if ((e.target as Element).closest("a")) return;
+                  const visible = trace.style.display !== "none";
+                  trace.style.display = visible ? "none" : "";
+                  item.classList.toggle("collapsed", visible);
+                  if (!visible) {
+                    requestAnimationFrame(function () {
+                      requestAnimationFrame(function () {
+                        trace.scrollTop = trace.scrollHeight;
+                      });
+                    });
+                  }
+                });
+
+                list.appendChild(item);
               });
 
-              list.appendChild(item);
-            });
-
-            if (jobs.length > 5) {
-              const more = document.createElement("div");
-              more.className = "gl-mr-actions-failed-jobs-more";
-              more.textContent = t("failedJobsMore", [jobs.length - 5]);
-              list.appendChild(more);
-            }
-
-            widgetSection.appendChild(wrapper);
-            requestAnimationFrame(function () {
-              const traces = wrapper.querySelectorAll<HTMLElement>(
-                ".gl-mr-actions-failed-job-trace",
-              );
-              for (let i = 0; i < traces.length; i++) {
-                if (traces[i].style.display !== "none") {
-                  traces[i].scrollTop = traces[i].scrollHeight;
-                }
+              if (jobs.length > 5) {
+                const more = document.createElement("div");
+                more.className = "gl-mr-actions-failed-jobs-more";
+                more.textContent = t("failedJobsMore", [jobs.length - 5]);
+                list.appendChild(more);
               }
-            });
-          });
+
+              widgetSection.appendChild(wrapper);
+              requestAnimationFrame(function () {
+                const traces = wrapper.querySelectorAll<HTMLElement>(
+                  ".gl-mr-actions-failed-job-trace",
+                );
+                for (let i = 0; i < traces.length; i++) {
+                  if (traces[i].style.display !== "none") {
+                    traces[i].scrollTop = traces[i].scrollHeight;
+                  }
+                }
+              });
+            })
+            .catch(reportError);
         })
         .catch(function () {});
     }

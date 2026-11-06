@@ -1,3 +1,4 @@
+import { reportError } from "../../../shared/lib/errors";
 import type { MrAction } from "../../../entities/settings";
 import { MR_DEFAULTS } from "../../../entities/settings";
 import type { MrActionContext } from "../../../features/mr-actions";
@@ -185,7 +186,7 @@ export function startMrToolbar(
           "Notification" in window &&
           Notification.permission === "default"
         ) {
-          Notification.requestPermission();
+          Notification.requestPermission().catch(reportError);
         }
       })
       .catch(function () {});
@@ -752,39 +753,43 @@ export function startMrToolbar(
     // Custom jobs
     if (actionId.indexOf("custom-job-") === 0) {
       const jobIdx = parseInt(actionId.replace("custom-job-", ""));
-      getSettings().then(function (s) {
-        const job = (s.customJobs || [])[jobIdx];
-        if (job && job.jobName) {
-          doTriggerJob(job.jobName).catch(function (err) {
-            showToast(err.message || String(err), "error");
-          });
-        }
-      });
+      getSettings()
+        .then(function (s) {
+          const job = (s.customJobs || [])[jobIdx];
+          if (job && job.jobName) {
+            doTriggerJob(job.jobName).catch(function (err) {
+              showToast(err.message || String(err), "error");
+            });
+          }
+        })
+        .catch(reportError);
       return;
     }
     // Quick comments
     if (actionId.indexOf("quick-comment-") === 0) {
       const qcIdx = parseInt(actionId.replace("quick-comment-", ""));
-      getSettings().then(function (s) {
-        const qc = (s.quickComments || [])[qcIdx];
-        if (qc && qc.text) {
-          api(
-            "POST",
-            "/projects/" +
-              context.projectId +
-              "/merge_requests/" +
-              context.mrIid +
-              "/notes",
-            { body: qc.text },
-          )
-            .then(function () {
-              showToast(qc.label + " \u2713", "success");
-            })
-            .catch(function (err) {
-              showToast(err.message || String(err), "error");
-            });
-        }
-      });
+      getSettings()
+        .then(function (s) {
+          const qc = (s.quickComments || [])[qcIdx];
+          if (qc && qc.text) {
+            api(
+              "POST",
+              "/projects/" +
+                context.projectId +
+                "/merge_requests/" +
+                context.mrIid +
+                "/notes",
+              { body: qc.text },
+            )
+              .then(function () {
+                showToast(qc.label + " \u2713", "success");
+              })
+              .catch(function (err) {
+                showToast(err.message || String(err), "error");
+              });
+          }
+        })
+        .catch(reportError);
       return;
     }
     if (actionMap[actionId]) {

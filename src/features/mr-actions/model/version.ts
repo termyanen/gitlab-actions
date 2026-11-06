@@ -97,7 +97,7 @@ export function createVersionActions({
                     currentVersion +
                     '"',
                 );
-              newVersion = bumpVersion(currentVersion as string, strategy);
+              newVersion = bumpVersion(currentVersion, strategy);
               newRawContent = newVersion + "\n";
             }
 
