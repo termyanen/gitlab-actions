@@ -7,3 +7,4 @@ export type {
   RevisionComparison,
   MergeRequestVersion,
 } from "./model/types";
+export type { ActiveMergeRequest } from "./model/types";

@@ -182,3 +182,12 @@ web-accessible resources. Дополнительные разрешения вв
   подключения; итог: typecheck/lint/FSD, 817 Node-тестов и 3 browser-теста проходят.
   Права, CSP, форматы сохранённых настроек и журнал неопределённых отправок
   сохранены. Контроллеры UI имеют dispose для будущего общего lifecycle.
+- 06: MR workflows вынесены в `features/mr-actions` (merge, pipeline, version),
+  панель — в `widgets/mr-toolbar`, tracker — в отдельный widget. Добавлены
+  typed session API, настройки проектных MR-профилей и pipeline contracts.
+  Общая библиотека version подключена к реальным операциям вместо копии.
+  Тесты действий вызывают public factory с test UI callbacks; assertions сохранены.
+  Палитра вызывает extension-функцию в isolated world вместо принимающего
+  команды страницы postMessage listener. Дополнительный browser-сценарий
+  проверяет отсутствие мутаций API при сообщении веб-страницы.
+  Проходят typecheck/lint/FSD, 817 Node-тестов и 4 browser-теста.

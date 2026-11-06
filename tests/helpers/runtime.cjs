@@ -29,6 +29,9 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '' } = {}) {
 }
 
 function readRuntime(file) {
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content.js') {
+    return bundleForTest('src/app/entrypoints/content.ts');
+  }
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'review-copy.js') {
     return bundleForTest('src/widgets/review-dialog/index.ts', {
       globalName: 'ReviewCopyModule',
