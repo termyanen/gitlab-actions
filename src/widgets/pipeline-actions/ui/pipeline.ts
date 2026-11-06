@@ -251,6 +251,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
             if (!titles.length) return;
             getPipelines()
               .then(function (list) {
+                if (scope.disposed) return;
                 for (let i = 0; i < titles.length; i++) {
                   const titleEl = titles[i];
                   const ourBtn =

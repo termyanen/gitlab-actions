@@ -434,6 +434,7 @@ export function startCommandPalette(
         function openPalette() {
           if (_paletteOpen) return;
           _paletteOpen = true;
+          const openedPath = window.location.pathname;
 
           const projectPath = getProjectPath();
           if (projectPath) fetchDefaultBranch(projectPath);
@@ -558,16 +559,18 @@ export function startCommandPalette(
           function execSelected() {
             if (filtered[selectedIdx]) {
               closePalette();
+              if (scope.disposed || window.location.pathname !== openedPath)
+                return;
               filtered[selectedIdx].action();
             }
           }
 
           let removeKey = () => {};
-          function closePalette() {
+          const closePalette = scope.onCleanup(() => {
             _paletteOpen = false;
             overlay.remove();
             removeKey();
-          }
+          });
 
           function onKey(e: KeyboardEvent) {
             if (e.key === "Escape") {
