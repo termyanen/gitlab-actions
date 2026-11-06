@@ -59,7 +59,7 @@ export function createImportDialog(
   function current(state: ImportDialogState) {
     if (active !== state) return false;
     if (samePage(state.context)) return true;
-    close(true);
+    if (state.retainedRoute !== window.location.pathname) close();
     return false;
   }
 
@@ -104,8 +104,23 @@ export function createImportDialog(
             : "aiReviewConfirmDiscard",
         ),
       )
-    )
+    ) {
+      if (!samePage(active.context)) {
+        active.retainedRoute = window.location.pathname;
+        active.controller?.abort();
+        active.run++;
+        // A send may have reached GitLab. Preserve the input, but require a
+        // new validation (including the delivery journal) before any retry.
+        if (active.busy === "sending") {
+          active.plan = null;
+          active.selected.clear();
+          active.resolveSelected.clear();
+        }
+        active.busy = "";
+        render(active);
+      }
       return false;
+    }
     const old = active;
     active = null;
     if (old.controller) old.controller.abort();
@@ -182,7 +197,7 @@ export function createImportDialog(
 
   function updateActions(state: ImportDialogState) {
     const busy = !!state.busy;
-    const locked = busy || !!state.editor;
+    const locked = busy || !!state.editor || !samePage(state.context);
     const count = state.selected.size;
     state.copyPrompt.disabled = locked;
     state.copyReplyPrompt.disabled = locked;
@@ -1226,6 +1241,12 @@ export function createImportDialog(
   return {
     open,
     close,
+    syncRoute() {
+      if (active?.retainedRoute && samePage(active.context)) {
+        active.retainedRoute = undefined;
+        updateActions(active);
+      }
+    },
     dispose() {
       close(true);
       if (typeof chrome !== "undefined")

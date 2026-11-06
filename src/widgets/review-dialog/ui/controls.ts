@@ -50,7 +50,8 @@ export function startReviewControls(
   let active: ReviewDialogState | null = null;
   let disposed = false;
   let pageKey = "";
-  let retainedRoute = "";
+  // An empty context key is a valid destination (for example, a pipeline).
+  let retainedRoute: string | null = null;
   let mountTimer: ReturnType<typeof setTimeout> | null;
   let languageRun = 0;
   let descriptionSaveRun = 0;
@@ -347,14 +348,17 @@ export function startReviewControls(
   }
 
   function loadVersions(state: ReviewDialogState) {
-    if (state.versionsController || !getWorkflow()) return;
-    state.versionsController = new AbortController();
+    if (state.versionsController || state.versionsLoaded || !getWorkflow())
+      return;
+    const controller = (state.versionsController = new AbortController());
     data
       .loadReviewVersions(state.context, {
-        signal: state.versionsController.signal,
+        signal: controller.signal,
       })
       .then(function (result) {
-        if (!isCurrent(state)) return;
+        if (!isCurrent(state) || controller !== state.versionsController)
+          return;
+        state.versionsLoaded = true;
         result.items.forEach(function (entry) {
           const date = new Date(entry.createdAt || "");
           const option = element(
@@ -376,7 +380,11 @@ export function startReviewControls(
             t("aiReviewPreviousHint") + " " + result.warnings.join(" ");
       })
       .catch(function (error) {
-        if (isCurrent(state) && error.name !== "AbortError")
+        if (
+          isCurrent(state) &&
+          controller === state.versionsController &&
+          error.name !== "AbortError"
+        )
           state.versionsHint.textContent =
             t("aiReviewPreviousHint") + " " + error.message;
       });
@@ -440,13 +448,15 @@ export function startReviewControls(
     const missingIntent =
       state.intent.noteId && !state.intentFound && !chosenCount(state);
     const replyCount = selectedDiscussionIds(state, true).length;
-    const disabled = fresh
-      ? !!state.busy
-      : mode === "repeat"
-        ? !!state.busy || !!state.loading
-        : mode === "replies"
-          ? !enabled || !replyCount
-          : !enabled || !hasContent || !!missingIntent;
+    const disabled =
+      !isCurrent(state) ||
+      (fresh
+        ? !!state.busy
+        : mode === "repeat"
+          ? !!state.busy || !!state.loading
+          : mode === "replies"
+            ? !enabled || !replyCount
+            : !enabled || !hasContent || !!missingIntent);
     state.previewButton.disabled = disabled;
     state.copyButton.disabled = disabled;
     state.baseline.disabled = !!state.busy;
@@ -1750,6 +1760,15 @@ export function startReviewControls(
     if (disposed) return;
     const context = route();
     const nextKey = contextKey(context);
+    getImportDialog()?.syncRoute?.();
+    if (retainedRoute !== null && nextKey === pageKey) {
+      retainedRoute = null;
+      if (active) {
+        updateActions(active);
+        if (active.needsLoad && active.task !== "fresh") load(active, true);
+        if (active.task === "repeat") loadVersions(active);
+      }
+    }
     if (nextKey !== pageKey) {
       if (
         retainedRoute === nextKey &&
@@ -1764,9 +1783,19 @@ export function startReviewControls(
         active?.loadController?.abort();
         active?.exportController?.abort();
         active?.versionsController?.abort();
+        if (active) {
+          active.exportRun++;
+          active.busy = false;
+          if (active.loading) active.needsLoad = true;
+          active.loading = false;
+          active.loadController = null;
+          active.versionsController = undefined;
+          status(active, "");
+          updateActions(active);
+        }
         return;
       }
-      retainedRoute = "";
+      retainedRoute = null;
       document
         .querySelectorAll(".gl-review-launcher, .gl-review-inline")
         .forEach(function (el) {
@@ -1983,7 +2012,7 @@ export function startReviewControls(
   document.addEventListener("turbolinks:load", scheduleMount);
   // pushState does not emit popstate; avoid altering GitLab's history functions.
   const routeTimer = setInterval(function () {
-    if (contextKey(route()) !== pageKey) mount();
+    if (retainedRoute !== null || contextKey(route()) !== pageKey) mount();
   }, 1000);
   return () => {
     disposed = true;
