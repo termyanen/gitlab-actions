@@ -31,4 +31,6 @@ export type {
   InstructionOptions,
   FileFilter,
   ReviewFile,
+  ReviewContext,
+  ReviewLocation,
 } from "./model/types";

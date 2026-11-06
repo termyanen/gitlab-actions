@@ -26,3 +26,19 @@ export interface ReviewFile {
   new_path?: string;
   deleted_file?: boolean;
 }
+
+export interface ReviewContext {
+  origin: string;
+  projectPath: string;
+  kind: "merge_requests" | "issues";
+  iid: string;
+  projectUrl?: string;
+  webUrl: string;
+  apiRoot: string;
+}
+
+export interface ReviewLocation {
+  origin: string;
+  pathname: string;
+  relativeUrlRoot?: string;
+}

@@ -10,10 +10,6 @@ const legacy = new Set([
   "background.js",
   "content.js",
   "content_proxy.js",
-  "review-export.js",
-  "review-import.js",
-  "review-import-ui.js",
-  "review-copy.js",
   "popup.js",
   "welcome.js",
 ]);

@@ -15,6 +15,10 @@ test('production manifest resources exist and shipped scripts parse', () => {
     for (const file of entry.js || []) scripts.add(file);
     assets.push(...entry.css || []);
   }
+  for (const html of ['popup.html', 'welcome.html']) {
+    const content = fs.readFileSync(path.join(dist, html), 'utf8');
+    for (const match of content.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/g)) scripts.add(match[1]);
+  }
   for (const file of assets) assert.ok(fs.existsSync(path.join(dist, file)), file);
   for (const file of scripts) assert.doesNotThrow(() => new vm.Script(fs.readFileSync(path.join(dist, file), 'utf8')));
   assert.equal(manifest.content_scripts.every((entry) => entry.run_at === 'document_idle'), true);
