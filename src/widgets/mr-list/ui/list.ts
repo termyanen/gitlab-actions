@@ -847,13 +847,24 @@ export function startMrList(
       : String(approvedBy.length);
 
     if (nativeBadge) {
+      const originalTitle = nativeBadge.getAttribute("title");
       nativeBadge.classList.add("gl-mr-ext-approval-done");
       nativeBadge.title = names;
       const contentSpan = nativeBadge.querySelector(".gl-badge-content");
+      const originalText = contentSpan?.textContent || "";
+      const enhancedText = originalText.trim() + " \u00b7 " + suffix;
       if (contentSpan) {
-        const origText = (contentSpan.textContent || "").trim();
-        contentSpan.textContent = origText + " \u00b7 " + suffix;
+        contentSpan.textContent = enhancedText;
       }
+      scope.onCleanup(() => {
+        nativeBadge.classList.remove("gl-mr-ext-approval-done");
+        if (nativeBadge.title === names) {
+          if (originalTitle === null) nativeBadge.removeAttribute("title");
+          else nativeBadge.setAttribute("title", originalTitle);
+        }
+        if (contentSpan?.textContent === enhancedText)
+          contentSpan.textContent = originalText;
+      });
       return;
     }
 
@@ -875,6 +886,7 @@ export function startMrList(
       "</span>";
     li.appendChild(badge);
     controlsUl.insertBefore(li, controlsUl.firstChild);
+    scope.onCleanup(() => li.remove());
   }
 
   function fetchAndRenderMrMeta(

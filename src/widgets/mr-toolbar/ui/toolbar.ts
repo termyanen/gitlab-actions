@@ -107,6 +107,13 @@ export function startMrToolbar(
       /\/(.+?)\/-\/merge_requests\/(\d+)/,
     );
     if (!match) return false;
+    // A running action owns the original MR even before the app observes a
+    // pushState. Never redirect its subsequent requests to a new route.
+    if (
+      context.projectPath !== null &&
+      (context.projectPath !== match[1] || context.mrIid !== Number(match[2]))
+    )
+      return false;
     context.projectPath = match[1];
     context.mrIid = parseInt(match[2]);
     return true;
@@ -242,7 +249,7 @@ export function startMrToolbar(
 
     Promise.all([getMR(), getSettings(), getMergeMethod(), _languageReady])
       .then(function (results) {
-        if (scope.disposed) return;
+        if (scope.disposed || !parsePage()) return;
         const mr = results[0];
         const s = results[1];
         const mergeMethod = results[2];
@@ -252,6 +259,16 @@ export function startMrToolbar(
 
         const container = document.createElement("div");
         container.className = "gl-mr-actions-ext";
+        container.addEventListener(
+          "click",
+          (event) => {
+            if (scope.disposed || !parsePage()) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+            }
+          },
+          true,
+        );
 
         const blocked =
           mr.has_conflicts || mr.blocking_discussions_resolved === false;
@@ -710,7 +727,7 @@ export function startMrToolbar(
       "/jobs/" +
       jobId +
       "/trace";
-    return fetch(url, { credentials: "same-origin" })
+    return fetch(url, { credentials: "same-origin", signal: scope.signal })
       .then(function (r) {
         if (!r.ok) return escHtml(t("failedJobTraceError"));
         return r.text().then(function (text) {
@@ -784,6 +801,7 @@ export function startMrToolbar(
           });
 
           Promise.all(tracePromises).then(function (results) {
+            if (scope.disposed || !parsePage()) return;
             results.forEach(function (r, i) {
               const item = document.createElement("div");
               item.className = "gl-mr-actions-failed-job-item";
@@ -934,6 +952,7 @@ export function startMrToolbar(
         "/diffs?per_page=100",
     )
       .then(function (diffs) {
+        if (scope.disposed || !parsePage()) return;
         if (!diffs || !diffs.length) return;
         const sensitiveFiles = [];
         for (let i = 0; i < diffs.length; i++) {
@@ -1057,6 +1076,7 @@ export function startMrToolbar(
     // Commands are called through the extension's isolated-world composition.
   }
   function runPaletteAction(actionId: string) {
+    if (scope.disposed || !parsePage()) return;
     const actionMap: Record<string, () => Promise<unknown>> = {
       "mr-copy": function () {
         return doCopyMr();

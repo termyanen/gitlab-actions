@@ -6,6 +6,15 @@ const path = require('node:path');
 let context, worker, extensionId, profile;
 const runtimeErrors = [];
 
+function fixtureMr(iid, overrides = {}) {
+  return {
+    id: iid, iid, project_id: 37, title: 'Fixture merge request ' + iid, state: 'opened',
+    source_branch: 'feature-' + iid, target_branch: 'main', sha: 'a'.repeat(40),
+    source_project_id: 37, target_project_id: 37, merge_status: 'can_be_merged',
+    ...overrides,
+  };
+}
+
 test.beforeAll(async () => {
   profile = await fs.mkdtemp(path.join(os.tmpdir(), 'gitlab-extension-browser-'));
   const extension = path.resolve(__dirname, '../../dist');
@@ -24,11 +33,7 @@ test.beforeAll(async () => {
     if (url.pathname.includes('/api/v4/')) {
       let body = {};
       if (url.pathname.endsWith('/user')) body = { id: 7, username: 'tester' };
-      else if (url.pathname.endsWith('/merge_requests/42')) body = {
-        id: 42, iid: 42, project_id: 37, title: 'Fixture merge request', state: 'opened',
-        source_branch: 'feature', target_branch: 'main', sha: 'a'.repeat(40),
-        source_project_id: 37, target_project_id: 37, merge_status: 'can_be_merged',
-      };
+      else if (/\/merge_requests\/\d+$/.test(url.pathname)) body = fixtureMr(Number(url.pathname.split('/').pop()));
       else if (url.pathname.endsWith('/projects/37')) body = { id: 37, path_with_namespace: 'team/repo', merge_method: 'merge' };
       else body = [];
       await route.fulfill({ contentType: 'application/json', body: JSON.stringify(body), headers: { 'x-next-page': '' } });
@@ -39,7 +44,7 @@ test.beforeAll(async () => {
       ${gitlab ? '<meta content="GitLab"><meta name="csrf-token" content="fixture">' : ''}
       <title>Extension fixture</title></head><body ${gitlab ? 'data-page="projects:merge_requests:show" data-project-id="37"' : ''}>
       <main><h1>Fixture</h1><div class="merge-request-details"><div class="detail-page-header"></div>
-      <div class="mr-widget"><div class="mr-widget-section"></div></div></div><div class="notes"></div></main>
+      <div class="mr-widget"><div class="mr-widget-section"></div></div></div><div class="detail-page-description"></div><div class="notes"></div></main>
       </body></html>` });
   });
 });
@@ -162,5 +167,196 @@ test('packaged lazy dialogs and palette work under a restrictive page CSP', asyn
   await page.keyboard.press('Control+k');
   await expect(page.locator('.gl-cmd-palette-overlay')).toHaveCount(1);
   await page.close();
+  expect(runtimeErrors).toEqual([]);
+});
+
+test('SPA navigation replaces Git commands and removes the previous MR failed jobs', async () => {
+  await worker.evaluate(() => chrome.storage.sync.set({show_git_commands: true, show_failed_job_view: true}));
+  const page = await context.newPage();
+  try {
+    await page.route('**/api/v4/**', async route => {
+      const url = new URL(route.request().url());
+      let body;
+      if (url.pathname.endsWith('/merge_requests/42')) body = fixtureMr(42, {head_pipeline: {id: 100, status: 'failed'}});
+      else if (url.pathname.endsWith('/pipelines/100/jobs')) body = [{id: 8, name: 'old-build', stage: 'test'}];
+      else if (url.pathname.endsWith('/jobs/8/trace')) return route.fulfill({body: 'old trace'});
+      else return route.fallback();
+      await route.fulfill({contentType: 'application/json', body: JSON.stringify(body)});
+    });
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    await expect(page.locator('.gl-mr-actions-failed-jobs')).toContainText('old-build');
+    await expect(page.locator('.gl-mr-ext-git-cmd-btn').first()).toHaveAttribute('title', /feature-42/);
+    await page.evaluate(() => history.pushState({}, '', '/team/repo/-/merge_requests/43'));
+    await expect(page.locator('.gl-mr-ext-git-cmd-btn').first()).toHaveAttribute('title', /feature-43/);
+    await expect(page.locator('.gl-mr-actions-failed-jobs')).toHaveCount(0);
+  } finally {
+    await page.close();
+    await worker.evaluate(() => chrome.storage.sync.remove('show_git_commands'));
+  }
+});
+
+test('late trace and sensitive-file responses cannot render into another MR', async () => {
+  await worker.evaluate(() => chrome.storage.sync.set({show_sensitive_warning: true}));
+  const page = await context.newPage();
+  let release;
+  const held = new Promise(resolve => {release = resolve;});
+  let waiting = 0;
+  try {
+    await page.route('**/api/v4/**', async route => {
+      const url = new URL(route.request().url());
+      let body;
+      if (url.pathname.endsWith('/merge_requests/42')) body = fixtureMr(42, {head_pipeline: {id: 100, status: 'failed'}});
+      else if (url.pathname.endsWith('/pipelines/100/jobs')) body = [{id: 8, name: 'old-build', stage: 'test'}];
+      else if (url.pathname.endsWith('/jobs/8/trace')) {
+        waiting++; await held; return route.fulfill({body: 'old trace'});
+      } else if (url.pathname.endsWith('/merge_requests/42/diffs')) {
+        waiting++; await held; body = [{new_path: '.env', old_path: '.env'}];
+      } else return route.fallback();
+      await route.fulfill({contentType: 'application/json', body: JSON.stringify(body)});
+    });
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    await expect.poll(() => waiting).toBe(2);
+    await page.evaluate(() => history.pushState({}, '', '/team/repo/-/merge_requests/43'));
+    await page.waitForResponse(response => response.url().endsWith('/merge_requests/43'));
+    await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+    release();
+    await page.waitForTimeout(300);
+    await expect(page.locator('.gl-mr-actions-failed-jobs, .gl-mr-ext-sensitive-warning')).toHaveCount(0);
+  } finally {
+    release();
+    await page.close();
+    await worker.evaluate(() => chrome.storage.sync.remove('show_sensitive_warning'));
+  }
+});
+
+test('SPA navigation closes a palette with actions belonging to the previous MR', async () => {
+  const page = await context.newPage();
+  const writes = [];
+  page.on('request', request => {
+    if (request.url().includes('/api/v4/') && request.method() !== 'GET') writes.push(request.url());
+  });
+  try {
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+    await page.keyboard.press('Control+k');
+    await expect(page.locator('.gl-cmd-palette-overlay')).toBeVisible();
+    await page.locator('.gl-cmd-palette-input').fill(await worker.evaluate(() => chrome.i18n.getMessage('labelMarkDraft')));
+    await expect(page.locator('.gl-cmd-palette-item')).toHaveCount(1);
+    await page.evaluate(() => {
+      history.pushState({}, '', '/team/repo/-/merge_requests/43');
+      // Before the route timer runs, a stale Enter must not invoke an MR action.
+      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true}));
+    });
+    await expect(page.locator('.gl-cmd-palette-overlay')).toHaveCount(0);
+    await page.waitForResponse(response => response.url().endsWith('/merge_requests/43'));
+    expect(writes).toEqual([]);
+    await page.keyboard.press('Control+k');
+    await expect(page.locator('.gl-cmd-palette-overlay')).toHaveCount(1);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.gl-cmd-palette-overlay')).toHaveCount(0);
+  } finally {
+    await page.close();
+  }
+  expect(runtimeErrors).toEqual([]);
+});
+
+test('a live job chain survives a real worker restart without replaying its play request', async () => {
+  test.setTimeout(60_000);
+  const gitlab = await context.newPage();
+  const popup = await context.newPage();
+  const writes = [];
+  let completed = false;
+  try {
+    await gitlab.route('**/api/v4/**', async route => {
+      const request = route.request();
+      const url = new URL(request.url());
+      let body;
+      if (url.pathname.endsWith('/merge_requests/42')) body = fixtureMr(42, {head_pipeline: {id: 100, project_id: 37, status: 'running'}});
+      else if (url.pathname.endsWith('/pipelines/100/jobs')) body = [{id: 8, name: 'build', status: completed ? 'success' : writes.length ? 'running' : 'manual'}];
+      else if (url.pathname.endsWith('/jobs/8/play') && request.method() === 'POST') {
+        writes.push(url.pathname); body = {id: 8};
+      } else return route.fallback();
+      await route.fulfill({contentType: 'application/json', body: JSON.stringify(body)});
+    });
+    await gitlab.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    await expect(gitlab.locator('.gl-mr-actions-ext')).toHaveCount(1);
+    await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+    const {taskId} = await popup.evaluate(() => chrome.runtime.sendMessage({type: 'start-job-chain', gitlabUrl: 'https://gitlab.test', projectId: 37, mrIid: 42, jobs: ['build']}));
+    await expect.poll(() => popup.evaluate(async id => (await chrome.storage.local.get('job_chain_state_v1')).job_chain_state_v1[id]?.phase, taskId)).toBe('waiting');
+    expect(writes).toHaveLength(1);
+    const cdp = await context.newCDPSession(popup);
+    const versions = [];
+    cdp.on('ServiceWorker.workerVersionUpdated', event => versions.push(...event.versions));
+    await cdp.send('ServiceWorker.enable');
+    await expect.poll(() => versions.find(version => version.scriptURL === `chrome-extension://${extensionId}/background.js`)?.versionId).toBeTruthy();
+    completed = true;
+    await cdp.send('ServiceWorker.stopWorker', {versionId: versions.find(version => version.scriptURL === `chrome-extension://${extensionId}/background.js`).versionId});
+    await expect.poll(() => popup.evaluate(id => chrome.runtime.sendMessage({type: 'get-task-status', taskId: id}), taskId).then(response => response.status), {timeout: 30_000}).toBe('done');
+    expect(writes).toEqual(['/api/v4/projects/37/jobs/8/play']);
+    [worker] = context.serviceWorkers();
+    await cdp.detach();
+  } finally {
+    await popup.close();
+    await gitlab.close();
+  }
+  expect(runtimeErrors).toEqual([]);
+});
+
+test('an in-flight MR action keeps its original target during SPA DOM replacement', async () => {
+  const page = await context.newPage();
+  let release;
+  const held = new Promise(resolve => {release = resolve;});
+  let waiting = false;
+  const writes = [];
+  try {
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+    await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+    await page.route('**/api/v4/**', async route => {
+      const request = route.request();
+      const url = new URL(request.url());
+      if (request.method() === 'PUT') {
+        writes.push(url.pathname);
+        return route.fulfill({contentType: 'application/json', body: JSON.stringify(fixtureMr(42))});
+      }
+      if (url.pathname.endsWith('/merge_requests/42')) {
+        waiting = true;
+        await held;
+        return route.fulfill({contentType: 'application/json', body: JSON.stringify(fixtureMr(42))});
+      }
+      return route.fallback();
+    });
+    await page.locator('.gl-mr-actions-ext .btn-draft').click();
+    await expect.poll(() => waiting).toBe(true);
+    await page.evaluate(() => {
+      history.pushState({}, '', '/team/repo/-/merge_requests/43');
+      document.querySelector('.gl-mr-actions-ext').remove();
+    });
+    await expect(page.locator('.gl-mr-actions-ext')).toHaveCount(1);
+    release();
+    await expect.poll(() => writes).toEqual(['/api/v4/projects/37/merge_requests/42']);
+  } finally {
+    release();
+    await page.close();
+  }
+});
+
+test('SPA disposal restores native approval badges and removes generated approval badges', async () => {
+  await worker.evaluate(() => chrome.storage.sync.set({show_approval_badge: true}));
+  const page = await context.newPage();
+  try {
+    await page.route('**/api/v4/**/approvals', route => route.fulfill({contentType: 'application/json', body: JSON.stringify({approved_by: [{user: {username: 'tester', name: 'Tester'}}]})}));
+    await page.route('https://gitlab.test/team/repo/-/merge_requests', route => route.fulfill({contentType: 'text/html', body: `<!doctype html><html><head><meta content="GitLab"></head><body data-page="projects:merge_requests:index" data-project-id="37">
+      <ul class="issuable-list">${[42, 43].map(iid => `<li class="merge-request"><span class="merge-request-title-text"><a href="/team/repo/-/merge_requests/${iid}">MR ${iid}</a></span><ul class="controls">${iid === 42 ? '<li><span data-testid="mr-approvals" title="Native title"><span class="gl-badge-content">Approved</span></span></li>' : ''}</ul></li>`).join('')}</ul></body></html>`}));
+    await page.goto('https://gitlab.test/team/repo/-/merge_requests');
+    await expect(page.locator('.gl-mr-ext-approval-done')).toHaveCount(2);
+    await page.evaluate(() => history.pushState({}, '', '/team/repo/-/tree/main'));
+    await expect(page.locator('.gl-mr-ext-approval-done')).toHaveCount(0);
+    await expect(page.locator('[data-testid="mr-approvals"]')).toHaveAttribute('title', 'Native title');
+    await expect(page.locator('.gl-badge-content')).toHaveText('Approved');
+    await expect(page.locator('.merge-request').nth(1).locator('.controls > li')).toHaveCount(0);
+  } finally {
+    await page.close();
+    await worker.evaluate(() => chrome.storage.sync.remove('show_approval_badge'));
+  }
   expect(runtimeErrors).toEqual([]);
 });

@@ -66,11 +66,13 @@ lifetime.listen(
       event.key !== "k"
     )
       return;
+    const paletteScope = pageScope;
+    if (!paletteScope || paletteScope.disposed) return;
     event.preventDefault();
     paletteStarted = true;
     void import("../../widgets/command-palette")
       .then(({ startCommandPalette }) => {
-        if (lifetime.disposed) return;
+        if (paletteScope.disposed) return;
         startCommandPalette(
           () => {
             void import("../../widgets/standup")
@@ -82,7 +84,7 @@ lifetime.listen(
               })
               .catch(fail);
           },
-          lifetime,
+          paletteScope,
           true,
           {
             actions: () => toolbar?.getPaletteActions() || [],
@@ -91,7 +93,7 @@ lifetime.listen(
         );
       })
       .catch((error) => {
-        paletteStarted = false;
+        if (pageScope === paletteScope) paletteStarted = false;
         fail(error);
       });
   },
@@ -123,12 +125,13 @@ function mountRoute() {
   };
   scope.onCleanup(() => {
     toolbar = undefined;
+    paletteStarted = false;
     jira.invalidateCommitTicket = null;
     jira.fetching = false;
     jira.refreshPending = false;
     document
       .querySelectorAll(
-        ".gl-mr-actions-ext, .gl-mr-ext-toolbar, .gl-cherry-pick-btn, .gl-cherry-pick-detail-btn, .gl-commit-version-badge, .gl-cherry-pick-overlay, .gl-jira-sidebar, .gl-jira-lightbox, .gl-group-play-btn, .gl-sensitive-warning, .gl-git-commands",
+        ".gl-mr-actions-ext, .gl-mr-actions-failed-jobs, .gl-mr-ext-git-commands, .gl-mr-ext-toolbar, .gl-cherry-pick-btn, .gl-cherry-pick-detail-btn, .gl-commit-version-badge, .gl-commit-version-loader, .gl-commit-jira-loader, .gl-cherry-pick-overlay, .gl-jira-sidebar, .gl-jira-lightbox, .gl-group-play-btn",
       )
       .forEach((node) => node.remove());
     document.body.classList.remove("gl-mr-ext-hide-right-sidebar");
