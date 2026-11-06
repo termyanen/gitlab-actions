@@ -21,10 +21,10 @@ interface JiraFields {
   [key: string]: unknown;
   summary?: string;
   status?: JiraNamed;
-  description?: string;
-  assignee?: JiraUser;
-  reporter?: JiraUser;
-  priority?: JiraNamed;
+  description?: string | null;
+  assignee?: JiraUser | null;
+  reporter?: JiraUser | null;
+  priority?: JiraNamed | null;
   issuetype?: JiraNamed;
   created?: string;
   updated?: string;
@@ -38,10 +38,10 @@ interface JiraFields {
   components?: JiraNamed[];
   versions?: JiraNamed[];
   fixVersions?: JiraNamed[];
-  resolution?: JiraNamed;
+  resolution?: JiraNamed | null;
 }
 export interface RawJiraIssue {
-  key: string;
+  key?: string;
   fields: JiraFields;
 }
 export type JiraMessage =

@@ -1,4 +1,5 @@
 import type { Discussion, NotePosition } from "../../../entities/discussion";
+import { toError } from "../../../shared/lib/errors";
 import { getNotes } from "./discussions";
 import {
   MAX_FILE_BYTES,
@@ -10,12 +11,7 @@ import { fence, inline, positionSummary, revision } from "./markdown";
 import { anchorLine, validLine } from "./position";
 import { addWarning, progress } from "./progress";
 import { checkAbort, request } from "./transport";
-import type {
-  ExportOptions,
-  FileReader,
-  ReviewError,
-  ReviewSnapshot,
-} from "./types";
+import type { ExportOptions, FileReader, ReviewSnapshot } from "./types";
 function excerpt(content: string, position: NotePosition, side: "old" | "new") {
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const range = position.line_range || {};
@@ -89,7 +85,7 @@ export function fileLoader(
           )
         ).data;
       } catch (caught) {
-        const error = caught as ReviewError;
+        const error = toError(caught);
         if (
           error.name === "AbortError" ||
           (error.httpStatus !== 404 && error.httpStatus !== 405)
@@ -252,7 +248,7 @@ export async function codeContext(
         try {
           content = await readFile(task.project, task.path, task.ref);
         } catch (caught) {
-          const error = caught as ReviewError;
+          const error = toError(caught);
           if (
             error.name === "AbortError" ||
             task.fallback === task.project ||
@@ -287,7 +283,7 @@ export async function codeContext(
           (snippet.text ? "\n\n" + fence(snippet.text, "text") : "")
         );
       } catch (caught) {
-        const error = caught as ReviewError;
+        const error = toError(caught);
         if (error.name === "AbortError") throw error;
         addWarning(
           warnings,

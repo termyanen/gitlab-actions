@@ -2,6 +2,7 @@ import type {
   MergeRequest,
   RevisionComparison,
 } from "../../../entities/merge-request";
+import { toError } from "../../../shared/lib/errors";
 import type { ReviewContextLoader } from "./context";
 import type { ExportDependencies } from "./dependencies";
 import { getNotes, getStatus, load } from "./discussions";
@@ -11,7 +12,7 @@ import { fence, inline } from "./markdown";
 import { addWarning } from "./progress";
 import { completeReviewHunks, reviewRefs } from "./revisions";
 import { checkAbort, request } from "./transport";
-import type { ExportOptions, ReviewContext, ReviewError } from "./types";
+import type { ExportOptions, ReviewContext } from "./types";
 export function createRepeatReviewExporter(
   { reviewWorkflow, instruction }: ExportDependencies,
   prepareReviewContext: ReviewContextLoader,
@@ -186,7 +187,7 @@ export function createRepeatReviewExporter(
             budget -= Math.min(diff.length, limit);
           });
         } catch (caught) {
-          const error = caught as ReviewError;
+          const error = toError(caught);
           if (error.name === "AbortError") throw error;
           needsFullCode = true;
           addWarning(
@@ -341,7 +342,7 @@ export function createRepeatReviewExporter(
           fence(JSON.stringify(threads, null, 2), "json"),
         );
       } catch (caught) {
-        const error = caught as ReviewError;
+        const error = toError(caught);
         if (error.name === "AbortError") throw error;
         addWarning(
           warnings,

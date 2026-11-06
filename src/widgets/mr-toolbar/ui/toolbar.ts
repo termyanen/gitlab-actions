@@ -1,10 +1,10 @@
-import { reportError } from "../../../shared/lib/errors";
 import type { MrAction } from "../../../entities/settings";
 import { MR_DEFAULTS } from "../../../entities/settings";
 import type { MrActionContext } from "../../../features/mr-actions";
 import { createMrActions } from "../../../features/mr-actions";
 import { addRuntimeListener } from "../../../shared/api/runtime";
 import type { Translate } from "../../../shared/i18n";
+import { errorMessage, reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
 import { createFeedback } from "../../../shared/ui/feedback";
@@ -228,19 +228,19 @@ export function startMrToolbar(
           }, ACTION_RELOAD_DELAY_MS);
         }
       })
-      .catch(function (err) {
+      .catch(function (err: unknown) {
         _actionInProgress = false;
         btn.innerHTML = origHtml;
         btn.disabled = false;
         const msg =
-          t("toastFailed", [actionName, err.message]) +
+          t("toastFailed", [actionName, errorMessage(err)]) +
           (titleText ? "\n" + titleText : "");
         showToast(msg, "error");
         updateTrackerItem(
           singleTaskId,
           [actionName],
           "error",
-          err.message,
+          errorMessage(err),
           "!" + context.mrIid + " " + titleText,
         );
       });
@@ -300,7 +300,7 @@ export function startMrToolbar(
             return u.replace(/^@/, "").trim();
           })
           .filter(Boolean);
-        const isDraft = /^(\[Draft\]|Draft:|WIP:)/i.test(mr.title);
+        const isDraft = /^(\[Draft\]|Draft:|WIP:)/i.test(mr.title || "");
         const rb = mergeMethod === "rebase_merge" || mergeMethod === "ff"; // needs rebase
 
         const builtinDefs: Record<string, ToolbarButton> = {
@@ -535,8 +535,8 @@ export function startMrToolbar(
                   qcBtn.disabled = false;
                 }, ACTION_FEEDBACK_DURATION_MS);
               })
-              .catch(function (err) {
-                showToast(err.message, "error");
+              .catch(function (err: unknown) {
+                showToast(errorMessage(err), "error");
                 qcBtn.textContent = origText;
                 qcBtn.disabled = false;
               });
@@ -622,7 +622,7 @@ export function startMrToolbar(
         }
 
         // Time tracker — show MR age
-        if (s.show_time_tracker !== false) {
+        if (s.show_time_tracker !== false && mr.created_at) {
           const timeEl = document.createElement("span");
           timeEl.className = "gl-mr-actions-time";
           timeEl.title = t("timeTrackerTitle", [
@@ -758,8 +758,8 @@ export function startMrToolbar(
         .then(function (s) {
           const job = (s.customJobs || [])[jobIdx];
           if (job && job.jobName) {
-            doTriggerJob(job.jobName).catch(function (err) {
-              showToast(err.message || String(err), "error");
+            doTriggerJob(job.jobName).catch(function (err: unknown) {
+              showToast(errorMessage(err) || String(err), "error");
             });
           }
         })
@@ -785,8 +785,8 @@ export function startMrToolbar(
               .then(function () {
                 showToast(qc.label + " \u2713", "success");
               })
-              .catch(function (err) {
-                showToast(err.message || String(err), "error");
+              .catch(function (err: unknown) {
+                showToast(errorMessage(err) || String(err), "error");
               });
           }
         })
@@ -794,8 +794,8 @@ export function startMrToolbar(
       return;
     }
     if (actionMap[actionId]) {
-      actionMap[actionId]().catch(function (err) {
-        showToast(err.message || String(err), "error");
+      actionMap[actionId]().catch(function (err: unknown) {
+        showToast(errorMessage(err) || String(err), "error");
       });
     }
   }

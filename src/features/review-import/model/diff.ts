@@ -1,21 +1,21 @@
-import type { ReviewContext } from "../../../entities/review";
 import type { NotePosition } from "../../../entities/discussion";
 import type {
   DiffRefs,
   FileDiff,
   LegacyChanges,
 } from "../../../entities/merge-request";
-import type {
-  ImportOptions,
-  ImportComment,
-  ImportError,
-  VerifiedDiff,
-  DiffLine,
-} from "./types";
+import type { ReviewContext } from "../../../entities/review";
+import { toError } from "../../../shared/lib/errors";
 import { MAX_RAW_DIFF_BYTES } from "./limits";
-import { warning, positive, unsupported, sameRefs } from "./utils";
+import { paginate, request } from "./transport";
+import type {
+  DiffLine,
+  ImportComment,
+  ImportOptions,
+  VerifiedDiff,
+} from "./types";
+import { positive, sameRefs, unsupported, warning } from "./utils";
 import { endpoint } from "./validation";
-import { request, paginate } from "./transport";
 
 function parseDiff(diff: string) {
   const old = new Map<number, DiffLine>();
@@ -102,7 +102,7 @@ function verifiedDiff(file: FileDiff) {
       );
     result.lines = parseDiff(file.diff);
   } catch (errorValue) {
-    const error = errorValue as ImportError;
+    const error = toError(errorValue);
     result.error = error.message;
   }
   return result;
@@ -150,7 +150,7 @@ export async function loadDiffs(
       diffKey,
     );
   } catch (errorValue) {
-    const error = errorValue as ImportError;
+    const error = toError(errorValue);
     if (error.name === "AbortError") throw error;
     if (!unsupported(error)) {
       warning(
@@ -174,7 +174,7 @@ export async function loadDiffs(
           "GitLab limited the file changes. Only comments on verified lines can be imported.",
         );
     } catch (fallbackErrorValue) {
-      const fallbackError = fallbackErrorValue as ImportError;
+      const fallbackError = toError(fallbackErrorValue);
       if (fallbackError.name === "AbortError") throw fallbackError;
       warning(
         warnings,
@@ -245,7 +245,7 @@ export async function loadDiffs(
         "GitLab limited the file changes. Only comments on verified lines can be imported.",
       );
   } catch (errorValue) {
-    const error = errorValue as ImportError;
+    const error = toError(errorValue);
     if (error.name === "AbortError") throw error;
     const message =
       typeof chrome !== "undefined" &&

@@ -1,11 +1,12 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
-import { createCherryPicker } from "../../../features/cherry-pick";
 import type {
-  CherryPickSettings,
   BranchState,
+  CherryPickSettings,
 } from "../../../features/cherry-pick";
+import { createCherryPicker } from "../../../features/cherry-pick";
+import { errorMessage } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
 export function createCherryPickDialog(
   origin: string,
   encodedProject: string,
@@ -339,9 +340,9 @@ export function createCherryPickDialog(
             idx++;
             processNext();
           })
-          .catch(function (err) {
+          .catch(function (err: unknown) {
             branchState.status = "error";
-            branchState.error = err.message || String(err);
+            branchState.error = errorMessage(err) || String(err);
             renderBranches();
             idx++;
             processNext();

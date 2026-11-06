@@ -1,7 +1,24 @@
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
-import type { FileDiff, MergeRequest } from "../../../entities/merge-request";
+import type { FileDiff } from "../../../entities/merge-request";
+import {
+  readFileDiff,
+  readMergeRequest,
+} from "../../../entities/merge-request";
 import { createSessionApi } from "../../../shared/api/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import { applyUnifiedDiff } from "../../../shared/lib/diff";
+import {
+  errorCode,
+  errorMessage,
+  errorStatus,
+} from "../../../shared/lib/errors";
+import {
+  arrayOf,
+  decodeArray,
+  decoder,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import {
   bumpVersion,
   getNestedValue,
@@ -16,6 +33,22 @@ import type {
   PickOperation,
   RepositoryFile,
 } from "./types";
+const readRepositoryFile = decoder(
+  objectOf<RepositoryFile>({
+    content: isString,
+    last_commit_id: optional(isString),
+  }),
+  "GitLab/Jira response",
+);
+const readCommitInfo = decoder(
+  objectOf<CommitInfo>({
+    parent_ids: arrayOf(isString),
+    message: optional(isString),
+    author_name: optional(isString),
+    author_email: optional(isString),
+  }),
+  "GitLab/Jira response",
+);
 export function createCherryPicker(
   origin: string,
   encodedProject: string,
@@ -27,7 +60,7 @@ export function createCherryPicker(
   const api = createSessionApi(() => origin);
   const shortSha = sha.substring(0, 8);
   function readOptionalFile(filePath: string, ref: string) {
-    return api<RepositoryFile>(
+    return api(
       "GET",
       "/projects/" +
         encodedProject +
@@ -35,16 +68,18 @@ export function createCherryPicker(
         encodeURIComponent(filePath) +
         "?ref=" +
         encodeURIComponent(ref),
-    ).catch(function (err) {
-      if (err.httpStatus === 404) return null;
-      throw err;
-    });
+    )
+      .then(readRepositoryFile)
+      .catch(function (err: unknown) {
+        if (errorStatus(err) === 404) return null;
+        throw err;
+      });
   }
   function fetchCommitDiffs(
     page: number,
     acc: FileDiff[],
   ): Promise<FileDiff[]> {
-    return api<FileDiff[]>(
+    return api(
       "GET",
       "/projects/" +
         encodedProject +
@@ -54,20 +89,22 @@ export function createCherryPicker(
         GITLAB_PAGE_SIZE +
         "&page=" +
         page,
-    ).then(function (chunk) {
-      const all = acc.concat(chunk);
-      if (chunk.length < GITLAB_PAGE_SIZE) return all;
-      if (page >= 10)
-        throw new Error("Commit has too many files for smart fallback");
-      return fetchCommitDiffs(page + 1, all);
-    });
+    )
+      .then(decodeArray(readFileDiff))
+      .then(function (chunk) {
+        const all = acc.concat(chunk);
+        if (chunk.length < GITLAB_PAGE_SIZE) return all;
+        if (page >= 10)
+          throw new Error("Commit has too many files for smart fallback");
+        return fetchCommitDiffs(page + 1, all);
+      });
   }
   function doFallbackCommit(commitBranch: string, requireFileChanges: boolean) {
     return Promise.all([
-      api<CommitInfo>(
+      api(
         "GET",
         "/projects/" + encodedProject + "/repository/commits/" + sha,
-      ),
+      ).then(readCommitInfo),
       fetchCommitDiffs(1, []),
     ]).then(function (results) {
       const commitInfo = results[0];
@@ -115,7 +152,7 @@ export function createCherryPicker(
       const isPlainText = versionFile.indexOf(".txt") !== -1;
 
       const versionOnlyCheck = Promise.all([
-        api<RepositoryFile>(
+        api(
           "GET",
           "/projects/" +
             encodedProject +
@@ -123,8 +160,8 @@ export function createCherryPicker(
             encodeURIComponent(versionFile) +
             "?ref=" +
             parentSha,
-        ),
-        api<RepositoryFile>(
+        ).then(readRepositoryFile),
+        api(
           "GET",
           "/projects/" +
             encodedProject +
@@ -132,7 +169,7 @@ export function createCherryPicker(
             encodeURIComponent(versionFile) +
             "?ref=" +
             sha,
-        ),
+        ).then(readRepositoryFile),
       ]).then(function (pair) {
         const parentVFile = pair[0];
         const commitVFile = pair[1];
@@ -212,7 +249,7 @@ export function createCherryPicker(
             if (d.new_file) {
               // New file — verify it doesn't already exist in target branch
               return Promise.all([
-                api<RepositoryFile>(
+                api(
                   "GET",
                   "/projects/" +
                     encodedProject +
@@ -220,7 +257,7 @@ export function createCherryPicker(
                     encodeURIComponent(d.new_path) +
                     "?ref=" +
                     sha,
-                ),
+                ).then(readRepositoryFile),
                 readOptionalFile(d.new_path, commitBranch),
               ]).then(function (pair) {
                 const sourceFile = pair[0];
@@ -251,7 +288,7 @@ export function createCherryPicker(
             return Promise.all([
               readOptionalFile(d.new_path, parentSha),
               readOptionalFile(d.new_path, commitBranch),
-              api<RepositoryFile>(
+              api(
                 "GET",
                 "/projects/" +
                   encodedProject +
@@ -259,7 +296,7 @@ export function createCherryPicker(
                   encodeURIComponent(d.new_path) +
                   "?ref=" +
                   sha,
-              ),
+              ).then(readRepositoryFile),
             ]).then(function (triple) {
               const parentFile = triple[0];
               const targetFile = triple[1];
@@ -365,7 +402,7 @@ export function createCherryPicker(
           const vPath = settings.versionPath || "version";
           const strategy = settings.versionStrategy || "patch";
 
-          return api<RepositoryFile>(
+          return api(
             "GET",
             "/projects/" +
               encodedProject +
@@ -373,61 +410,63 @@ export function createCherryPicker(
               encodeURIComponent(vFile) +
               "?ref=" +
               encodeURIComponent(commitBranch),
-          ).then(function (file) {
-            const rawContent = decodeURIComponent(escape(atob(file.content)));
-            let currentVersion: unknown;
-            let newContent: string;
-            let newVersion: string;
-            const isToml = vFile.indexOf(".toml") !== -1;
-            const isPlainText = vFile.indexOf(".txt") !== -1;
+          )
+            .then(readRepositoryFile)
+            .then(function (file) {
+              const rawContent = decodeURIComponent(escape(atob(file.content)));
+              let currentVersion: unknown;
+              let newContent: string;
+              let newVersion: string;
+              const isToml = vFile.indexOf(".toml") !== -1;
+              const isPlainText = vFile.indexOf(".txt") !== -1;
 
-            if (isPlainText) {
-              currentVersion = rawContent.trim();
-              newVersion = bumpVersion(currentVersion as string, strategy);
-              newContent = newVersion + "\n";
-            } else if (isToml) {
-              const parsed = parseToml(rawContent);
-              currentVersion = getNestedValue(parsed, vPath);
-              if (!currentVersion)
-                throw new Error("Version not found at " + vPath);
-              newVersion = bumpVersion(currentVersion as string, strategy);
-              newContent = updateTomlVersion(rawContent, vPath, newVersion);
-            } else {
-              const json = JSON.parse(rawContent);
-              currentVersion = getNestedValue(json, vPath);
-              if (!currentVersion)
-                throw new Error("Version not found at " + vPath);
-              newVersion = bumpVersion(currentVersion as string, strategy);
-              setNestedValue(json, vPath, newVersion);
-              newContent = JSON.stringify(json, null, 2) + "\n";
-            }
+              if (isPlainText) {
+                currentVersion = rawContent.trim();
+                newVersion = bumpVersion(currentVersion as string, strategy);
+                newContent = newVersion + "\n";
+              } else if (isToml) {
+                const parsed = parseToml(rawContent);
+                currentVersion = getNestedValue(parsed, vPath);
+                if (!currentVersion)
+                  throw new Error("Version not found at " + vPath);
+                newVersion = bumpVersion(currentVersion as string, strategy);
+                newContent = updateTomlVersion(rawContent, vPath, newVersion);
+              } else {
+                const json = JSON.parse(rawContent);
+                currentVersion = getNestedValue(json, vPath);
+                if (!currentVersion)
+                  throw new Error("Version not found at " + vPath);
+                newVersion = bumpVersion(currentVersion as string, strategy);
+                setNestedValue(json, vPath, newVersion);
+                newContent = JSON.stringify(json, null, 2) + "\n";
+              }
 
-            // Add version file update to the same actions array
-            actions.push({
-              action: "update",
-              file_path: vFile,
-              content: btoa(unescape(encodeURIComponent(newContent))),
-              encoding: "base64",
-              last_commit_id: file.last_commit_id,
+              // Add version file update to the same actions array
+              actions.push({
+                action: "update",
+                file_path: vFile,
+                content: btoa(unescape(encodeURIComponent(newContent))),
+                encoding: "base64",
+                last_commit_id: file.last_commit_id,
+              });
+
+              const commitMsg =
+                (commitInfo.message || "") +
+                "\n\n(cherry picked from commit " +
+                sha +
+                ")";
+              return api(
+                "POST",
+                "/projects/" + encodedProject + "/repository/commits",
+                {
+                  branch: commitBranch,
+                  commit_message: commitMsg,
+                  actions: actions,
+                  author_name: commitInfo.author_name,
+                  author_email: commitInfo.author_email,
+                },
+              );
             });
-
-            const commitMsg =
-              (commitInfo.message || "") +
-              "\n\n(cherry picked from commit " +
-              sha +
-              ")";
-            return api(
-              "POST",
-              "/projects/" + encodedProject + "/repository/commits",
-              {
-                branch: commitBranch,
-                commit_message: commitMsg,
-                actions: actions,
-                author_name: commitInfo.author_name,
-                author_email: commitInfo.author_email,
-              },
-            );
-          });
         });
       }); // versionOnlyCheck.then
     });
@@ -464,20 +503,22 @@ export function createCherryPicker(
             branch: commitBranch,
           },
         )
-          .catch(function (cherryPickErr) {
+          .catch(function (cherryPickErr: unknown) {
             // GitLab 10.x used this same message for conflicts and empty
             // picks, without error_code. In that case verify actual file
             // changes before allowing a commit (never a bump-only replay).
             const legacyFailure =
-              cherryPickErr.httpStatus === 400 &&
-              !cherryPickErr.errorCode &&
-              (cherryPickErr.message || "").replace(/\s+/g, " ").trim() ===
+              errorStatus(cherryPickErr) === 400 &&
+              !errorCode(cherryPickErr) &&
+              (errorMessage(cherryPickErr) || "")
+                .replace(/\s+/g, " ")
+                .trim() ===
                 "Sorry, we cannot cherry-pick this commit automatically. This commit may already have been cherry-picked, or a more recent commit may have updated some of its content.";
             // Network/unknown failures may follow an applied commit;
             // explicit "empty" means there is nothing to replay.
             if (
               !useFallback ||
-              (cherryPickErr.errorCode !== "conflict" && !legacyFailure)
+              (errorCode(cherryPickErr) !== "conflict" && !legacyFailure)
             )
               throw cherryPickErr;
             return doFallbackCommit(commitBranch, legacyFailure);
@@ -491,7 +532,7 @@ export function createCherryPicker(
         if (!createMr) return;
         // A previous MR response may have been lost after creation.
         const existingMr = operation.mrAttempted
-          ? api<MergeRequest[]>(
+          ? api(
               "GET",
               "/projects/" +
                 encodedProject +
@@ -499,25 +540,27 @@ export function createCherryPicker(
                 encodeURIComponent(commitBranch) +
                 "&target_branch=" +
                 encodeURIComponent(targetBranch),
-            ).then(function (mrs) {
-              for (let mi = 0; mi < mrs.length; mi++) {
-                const mr = mrs[mi];
-                // Project MR lists can also contain requests from forks.
-                if (
-                  mr.source_branch === commitBranch &&
-                  mr.target_branch === targetBranch &&
-                  mr.source_project_id != null &&
-                  mr.source_project_id === mr.target_project_id
-                )
-                  return mr;
-              }
-              return null;
-            })
+            )
+              .then(decodeArray(readMergeRequest))
+              .then(function (mrs) {
+                for (let mi = 0; mi < mrs.length; mi++) {
+                  const mr = mrs[mi];
+                  // Project MR lists can also contain requests from forks.
+                  if (
+                    mr.source_branch === commitBranch &&
+                    mr.target_branch === targetBranch &&
+                    mr.source_project_id != null &&
+                    mr.source_project_id === mr.target_project_id
+                  )
+                    return mr;
+                }
+                return null;
+              })
           : Promise.resolve(null);
         return existingMr.then(function (mr) {
           if (mr) return mr;
           operation.mrAttempted = true;
-          return api<MergeRequest>(
+          return api(
             "POST",
             "/projects/" + encodedProject + "/merge_requests",
             {
@@ -526,7 +569,7 @@ export function createCherryPicker(
               title: "Cherry-pick " + shortSha + " into " + targetBranch,
               remove_source_branch: true,
             },
-          );
+          ).then(readMergeRequest);
         });
       });
   }

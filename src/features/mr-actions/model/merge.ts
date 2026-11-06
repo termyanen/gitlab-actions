@@ -1,9 +1,40 @@
 import type { ActiveMergeRequest } from "../../../entities/merge-request";
 import type { Pipeline } from "../../../entities/pipeline";
-import type { ApiError } from "../../../shared/api/gitlab";
+import { readPipeline } from "../../../entities/pipeline";
+import { errorMessage, errorStatus } from "../../../shared/lib/errors";
 import { sleep } from "../../../shared/lib/time";
+import {
+  arrayOf,
+  decodeArray,
+  decoder,
+  isString,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
 import type { MergeOptions, MrServices } from "./types";
 import type { createVersionActions } from "./version";
+const readMergeMethod = decoder(
+  objectOf<{ merge_method?: string }>({
+    merge_method: optional(isString),
+  }),
+  "GitLab/Jira response",
+);
+const readBranchHead = decoder(
+  objectOf<{ commit: { id: string } }>({
+    commit: objectOf({
+      id: isString,
+    }),
+  }),
+  "GitLab/Jira response",
+);
+const readCommitIds = decoder(
+  arrayOf(
+    objectOf<{ id: string }[][number]>({
+      id: isString,
+    }),
+  ),
+  "GitLab/Jira response",
+);
 const REBASE_MAX_POLLS = 60;
 const MR_READY_MAX_POLLS = 40;
 const NEW_PIPELINE_MAX_POLLS = 15;
@@ -18,13 +49,12 @@ export function createMergeActions(
 
   function getMergeMethod() {
     if (_mergeMethod) return Promise.resolve(_mergeMethod);
-    return api<{ merge_method?: string }>(
-      "GET",
-      "/projects/" + context.projectId,
-    ).then(function (project) {
-      _mergeMethod = project.merge_method || "merge";
-      return _mergeMethod;
-    });
+    return api("GET", "/projects/" + context.projectId)
+      .then(readMergeMethod)
+      .then(function (project) {
+        _mergeMethod = project.merge_method || "merge";
+        return _mergeMethod;
+      });
   }
 
   function needsRebase() {
@@ -123,14 +153,14 @@ export function createMergeActions(
         );
         return Promise.all([
           getMergeOptions(),
-          api<Pipeline[]>(
+          api(
             "GET",
             "/projects/" +
               context.projectId +
               "/merge_requests/" +
               context.mrIid +
               "/pipelines",
-          ),
+          ).then(decodeArray(readPipeline)),
         ]);
       })
       .then(function (results) {
@@ -138,7 +168,9 @@ export function createMergeActions(
         const pipelines = results[1];
         const cancelPromises = pipelines
           .filter(function (p) {
-            return ["running", "pending", "created"].indexOf(p.status) !== -1;
+            return (
+              ["running", "pending", "created"].indexOf(p.status || "") !== -1
+            );
           })
           .map(function (p) {
             return api(
@@ -210,50 +242,56 @@ export function createMergeActions(
   function waitForBranchInMR(branch: string, maxAttempts = MR_READY_MAX_POLLS) {
     maxAttempts = maxAttempts || MR_READY_MAX_POLLS;
     // Step 1: get actual branch HEAD from repository API
-    return api<{ commit: { id: string } }>(
+    return api(
       "GET",
       "/projects/" +
         context.projectId +
         "/repository/branches/" +
         encodeURIComponent(branch),
-    ).then(function (branchData) {
-      const expectedSha = branchData.commit.id;
-      // Step 2: poll MR until sha matches
-      // GitLab 18.x: check both sha and diff_head_sha — either may update first
-      let attempt = 0;
-      function check(): Promise<ActiveMergeRequest> {
-        attempt++;
-        if (attempt > maxAttempts) {
-          // GitLab 18.x bug: sha fields may lag — verify via MR commits API as fallback
-          return api<{ id: string }[]>(
-            "GET",
-            "/projects/" +
-              context.projectId +
-              "/merge_requests/" +
-              context.mrIid +
-              "/commits",
-          ).then(function (commits) {
-            if (commits && commits.length && commits[0].id === expectedSha)
+    )
+      .then(readBranchHead)
+      .then(function (branchData) {
+        const expectedSha = branchData.commit.id;
+        // Step 2: poll MR until sha matches
+        // GitLab 18.x: check both sha and diff_head_sha — either may update first
+        let attempt = 0;
+        function check(): Promise<ActiveMergeRequest> {
+          attempt++;
+          if (attempt > maxAttempts) {
+            // GitLab 18.x bug: sha fields may lag — verify via MR commits API as fallback
+            return api(
+              "GET",
+              "/projects/" +
+                context.projectId +
+                "/merge_requests/" +
+                context.mrIid +
+                "/commits",
+            )
+              .then(readCommitIds)
+              .then(function (commits) {
+                if (commits && commits.length && commits[0].id === expectedSha)
+                  return getMR();
+                throw new Error(
+                  "Timeout waiting for MR to sync with branch HEAD",
+                );
+              });
+          }
+          return sleep(MR_READY_POLL_INTERVAL_MS)
+            .then(function () {
               return getMR();
-            throw new Error("Timeout waiting for MR to sync with branch HEAD");
-          });
+            })
+            .then(function (mr) {
+              showToast(
+                t("toastWaitingMrSync", [String(attempt), String(maxAttempts)]),
+                "success",
+              );
+              if (mr.sha === expectedSha || mr.diff_head_sha === expectedSha)
+                return mr;
+              return check();
+            });
         }
-        return sleep(MR_READY_POLL_INTERVAL_MS)
-          .then(function () {
-            return getMR();
-          })
-          .then(function (mr) {
-            showToast(
-              t("toastWaitingMrSync", [String(attempt), String(maxAttempts)]),
-              "success",
-            );
-            if (mr.sha === expectedSha || mr.diff_head_sha === expectedSha)
-              return mr;
-            return check();
-          });
-      }
-      return check();
-    });
+        return check();
+      });
   }
 
   function waitForNewPipeline(
@@ -283,22 +321,24 @@ export function createMergeActions(
           const currentSha = mr.sha || mr.diff_head_sha;
           if (currentSha === oldSha) return check();
           // SHA changed, now check pipeline
-          return api<Pipeline[]>(
+          return api(
             "GET",
             "/projects/" +
               context.projectId +
               "/merge_requests/" +
               context.mrIid +
               "/pipelines",
-          ).then(function (pipelines) {
-            if (
-              pipelines.length > 0 &&
-              activePipelineStatuses.indexOf(pipelines[0].status) !== -1
-            ) {
-              return mr;
-            }
-            return check();
-          });
+          )
+            .then(decodeArray(readPipeline))
+            .then(function (pipelines) {
+              if (
+                pipelines.length > 0 &&
+                activePipelineStatuses.indexOf(pipelines[0].status || "") !== -1
+              ) {
+                return mr;
+              }
+              return check();
+            });
         });
     }
     return check();
@@ -319,9 +359,9 @@ export function createMergeActions(
       "conflict",
       "you don't have permissions",
     ];
-    function isFatal(err: ApiError) {
-      if ([401, 403, 404].indexOf(err.httpStatus || 0) !== -1) return true;
-      const lower = (err.message || "").toLowerCase();
+    function isFatal(err: unknown) {
+      if ([401, 403, 404].indexOf(errorStatus(err) || 0) !== -1) return true;
+      const lower = errorMessage(err).toLowerCase();
       return fatalPatterns.some(function (p) {
         return lower.indexOf(p) !== -1;
       });
@@ -344,7 +384,7 @@ export function createMergeActions(
           squash: _mergeOpts.squash,
           should_remove_source_branch: _mergeOpts.should_remove_source_branch,
         },
-      ).catch(function (err) {
+      ).catch(function (err: unknown) {
         if (attempt < maxRetries && !isFatal(err)) {
           return sleep(interval).then(tryMerge);
         }
@@ -369,7 +409,7 @@ export function createMergeActions(
       "scheduled",
     ];
     function isReady(
-      pipeline: Pipeline | null | undefined,
+      pipeline: Pick<Pipeline, "sha" | "ref" | "status"> | null | undefined,
       mr: ActiveMergeRequest,
       isHead?: boolean,
     ) {
@@ -384,12 +424,13 @@ export function createMergeActions(
           pipeline.ref === "refs/merge-requests/" + context.mrIid + "/train");
       if (!syntheticHead && sha && pipeline.sha && pipeline.sha !== sha)
         return false;
-      if (activePipelineStatuses.indexOf(pipeline.status) !== -1) return true;
+      if (activePipelineStatuses.indexOf(pipeline.status || "") !== -1)
+        return true;
       // A short pipeline can finish before the next poll. Its matching SHA
       // proves it belongs to this revision even though it is no longer active.
       return !!(
         (syntheticHead || (sha && pipeline.sha === sha)) &&
-        ["success", "failed", "canceled"].indexOf(pipeline.status) !== -1
+        ["success", "failed", "canceled"].indexOf(pipeline.status || "") !== -1
       );
     }
     let attempt = 0;
@@ -418,22 +459,24 @@ export function createMergeActions(
           const hp = mr.head_pipeline;
           if (isReady(hp, mr, true)) return mr;
           // GitLab 18.x: head_pipeline may lag — check pipelines API directly
-          return api<Pipeline[]>(
+          return api(
             "GET",
             "/projects/" +
               context.projectId +
               "/merge_requests/" +
               context.mrIid +
               "/pipelines",
-          ).then(function (pipelines) {
-            if (
-              pipelines.some(function (pipeline) {
-                return isReady(pipeline, mr);
-              })
-            )
-              return mr;
-            return check();
-          });
+          )
+            .then(decodeArray(readPipeline))
+            .then(function (pipelines) {
+              if (
+                pipelines.some(function (pipeline) {
+                  return isReady(pipeline, mr);
+                })
+              )
+                return mr;
+              return check();
+            });
         });
     }
     return check();
@@ -496,14 +539,14 @@ export function createMergeActions(
         showToast(t("toastStep22Cancelling"), "success");
         return Promise.all([
           getMergeOptions(),
-          api<Pipeline[]>(
+          api(
             "GET",
             "/projects/" +
               context.projectId +
               "/merge_requests/" +
               context.mrIid +
               "/pipelines",
-          ),
+          ).then(decodeArray(readPipeline)),
         ]);
       })
       .then(function (results) {
@@ -511,7 +554,9 @@ export function createMergeActions(
         const pipelines = results[1];
         const cancelPromises = pipelines
           .filter(function (p) {
-            return ["running", "pending", "created"].indexOf(p.status) !== -1;
+            return (
+              ["running", "pending", "created"].indexOf(p.status || "") !== -1
+            );
           })
           .map(function (p) {
             return api(

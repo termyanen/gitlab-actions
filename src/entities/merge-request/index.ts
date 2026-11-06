@@ -1,10 +1,16 @@
 export type {
-  DiffRefs,
-  MergeRequest,
+  ActiveMergeRequest,
   Commit,
+  DiffRefs,
   FileDiff,
   LegacyChanges,
-  RevisionComparison,
+  MergeRequest,
   MergeRequestVersion,
+  RevisionComparison,
 } from "./model/types";
-export type { ActiveMergeRequest } from "./model/types";
+
+export {
+  readActiveMergeRequest,
+  readFileDiff,
+  readMergeRequest,
+} from "./model/validation";

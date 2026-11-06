@@ -8,6 +8,7 @@ import {
   DEFAULT_REPLY_PROMPT,
   DEFAULT_REVIEW_PROMPT,
 } from "../../../entities/review";
+import { toError } from "../../../shared/lib/errors";
 import { equalPosition } from "./diff";
 import {
   discussionFingerprint,
@@ -180,7 +181,7 @@ export function createReviewImporter(
         );
       result.resolveStatus = "resolved";
     } catch (errorValue) {
-      const error = errorValue as ImportError;
+      const error = toError(errorValue);
       result.resolveStatus =
         began &&
         !(
@@ -225,7 +226,7 @@ export function createReviewImporter(
         },
       );
     } catch (errorValue) {
-      const error = errorValue as ImportError;
+      const error = toError(errorValue);
       if (error.beforeSend === undefined) error.beforeSend = true;
       throw error;
     }
@@ -249,7 +250,7 @@ export function createReviewImporter(
     try {
       context = safeContext(internal.context);
     } catch (errorValue) {
-      const error = errorValue as ImportError;
+      const error = toError(errorValue);
       error.beforeSend = true;
       throw error;
     }
@@ -567,7 +568,7 @@ export function createReviewImporter(
             );
           append(result);
         } catch (errorValue) {
-          const error = errorValue as ImportError;
+          const error = toError(errorValue);
           if (
             !began ||
             ((error.httpStatus || 0) >= 400 &&
@@ -617,7 +618,7 @@ export function createReviewImporter(
       }
       return output;
     } catch (errorValue) {
-      const error = errorValue as ImportError;
+      const error = toError(errorValue);
       error.beforeSend = !everBegan;
       throw error;
     } finally {

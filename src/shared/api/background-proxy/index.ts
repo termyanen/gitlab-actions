@@ -1,3 +1,4 @@
+import { errorMessage } from "../../lib/errors";
 const READ_TIMEOUT_MS = 20000;
 const MUTATION_TIMEOUT_MS = 60000;
 export interface ProxyTask {
@@ -24,13 +25,13 @@ function sendMessageWithTimeout(
       reject(new Error("api-proxy tab timeout"));
     }, timeoutMs);
     chrome.tabs.sendMessage(tabId, msg).then(
-      function (resp) {
+      function (resp: unknown) {
         if (done) return;
         done = true;
         clearTimeout(timer);
         resolve(resp);
       },
-      function (err) {
+      function (err: unknown) {
         if (done) return;
         done = true;
         clearTimeout(timer);
@@ -39,12 +40,12 @@ function sendMessageWithTimeout(
     );
   });
 }
-export function api<T = unknown>(
+export function api(
   task: ProxyTask,
   method: string,
   path: string,
   body?: unknown,
-): Promise<T> {
+): Promise<unknown> {
   if (task._cancelled) return Promise.reject(new Error("Cancelled by user"));
   const msg: ProxyRequest = {
     type: "api-proxy",
@@ -69,10 +70,11 @@ export function api<T = unknown>(
         );
       // Prefer the tab that initiated the task — its content script is proven alive.
       // Only if it still matches the GitLab origin (the user may have navigated away).
-      const initIdx = task._tabId ? tabIds.indexOf(task._tabId) : -1;
-      if (initIdx > 0) {
+      const initialTabId = task._tabId;
+      const initIdx = initialTabId ? tabIds.indexOf(initialTabId) : -1;
+      if (initIdx > 0 && initialTabId !== null && initialTabId !== undefined) {
         tabIds.splice(initIdx, 1);
-        tabIds.unshift(task._tabId!);
+        tabIds.unshift(initialTabId);
       }
 
       // Message provably never reached a content script — safe to retry on any method
@@ -92,24 +94,25 @@ export function api<T = unknown>(
         );
       }
 
-      function tryTab(i: number): Promise<T> {
+      function tryTab(i: number): Promise<unknown> {
         if (task._cancelled) throw new Error("Cancelled by user");
-        if (i >= tabIds.length)
+        const tabId = tabIds[i];
+        if (tabId === undefined)
           throw new Error(
             "No GitLab tab with content script found. Open any MR page.",
           );
         return sendMessageWithTimeout(
-          tabIds[i],
+          tabId,
           msg,
           isGet ? READ_TIMEOUT_MS : MUTATION_TIMEOUT_MS,
         )
           .then(function (resp) {
             if (resp && typeof resp === "object" && "_error" in resp)
               throw new Error(String(resp._error));
-            return resp as T;
+            return resp;
           })
-          .catch(function (err) {
-            const emsg = err.message || "";
+          .catch(function (err: unknown) {
+            const emsg = errorMessage(err);
             if (isUndeliveredError(emsg) || (isGet && isAmbiguousError(emsg))) {
               return tryTab(i + 1);
             }

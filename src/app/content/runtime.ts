@@ -1,8 +1,9 @@
-import { ROUTE_POLL_INTERVAL_MS } from "../../shared/config/runtime";
 import { createJiraState } from "../../entities/jira-issue";
 import { startPageLayout } from "../../features/page-layout";
 import { createSessionApi } from "../../shared/api/gitlab";
 import { addRuntimeListener } from "../../shared/api/runtime";
+import { ROUTE_POLL_INTERVAL_MS } from "../../shared/config/runtime";
+import { errorMessage } from "../../shared/lib/errors";
 import type { Lifecycle } from "../../shared/lib/lifecycle";
 import { createLifecycle } from "../../shared/lib/lifecycle";
 import type { createJiraPanel } from "../../widgets/jira-panel";
@@ -17,7 +18,9 @@ lifetime.onCleanup(
     if (message.type === "api-proxy") {
       api(message.method, message.path, message.body)
         .then(sendResponse)
-        .catch((error) => sendResponse({ _error: error.message }));
+        .catch((error: unknown) =>
+          sendResponse({ _error: errorMessage(error) }),
+        );
       return true;
     }
     if (message.type === "task-result")
@@ -92,7 +95,7 @@ lifetime.listen(
           },
         );
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         if (pageScope === paletteScope) paletteStarted = false;
         fail(error);
       });
@@ -214,7 +217,7 @@ function mountRoute() {
       .then(({ startReview }) => {
         if (!lifetime.disposed) lifetime.onCleanup(startReview());
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         reviewStarted = false;
         fail(error);
       });

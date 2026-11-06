@@ -1,13 +1,14 @@
 import { GITLAB_API_PREFIX } from "../../config/gitlab";
+import { isRecord } from "../../lib/validation";
 export interface ApiError extends Error {
   httpStatus?: number;
   errorCode?: string;
 }
-export type SessionApi = <T = unknown>(
+export type SessionApi = (
   method: string,
   path: string,
   body?: unknown,
-) => Promise<T>;
+) => Promise<unknown>;
 export function createSessionApi(
   origin: () => string,
   signal?: AbortSignal,
@@ -18,11 +19,7 @@ export function createSessionApi(
   }
 
   // GitLab API helper — uses session cookies + CSRF token, no personal token needed
-  function api<T = unknown>(
-    method: string,
-    path: string,
-    body?: unknown,
-  ): Promise<T> {
+  function api(method: string, path: string, body?: unknown): Promise<unknown> {
     const url = origin() + GITLAB_API_PREFIX + path;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -38,13 +35,9 @@ export function createSessionApi(
     };
     if (body) opts.body = JSON.stringify(body);
     return fetch(url, opts).then(function (r) {
-      if (r.status === 204) return {} as T;
+      if (r.status === 204) return {};
       return r.text().then(function (text) {
-        let data: {
-          message?: unknown;
-          error?: unknown;
-          error_code?: string;
-        } | null;
+        let data: unknown;
         try {
           data = JSON.parse(text);
         } catch {
@@ -52,15 +45,18 @@ export function createSessionApi(
         }
         if (!r.ok) {
           let msg =
-            (data && (data.message || data.error)) ||
+            (isRecord(data) && (data.message || data.error)) ||
             r.status + " " + r.statusText;
           if (typeof msg === "object") msg = JSON.stringify(msg);
           const err: ApiError = new Error(String(msg));
           err.httpStatus = r.status;
-          err.errorCode = data?.error_code;
+          if (isRecord(data) && typeof data.error_code === "string")
+            err.errorCode = data.error_code;
           throw err;
         }
-        return (data || {}) as T;
+        if (data === null && text.trim())
+          throw new Error("Invalid GitLab JSON response");
+        return data ?? {};
       });
     });
   }

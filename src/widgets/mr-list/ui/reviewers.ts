@@ -1,12 +1,26 @@
 import { DISPLAY_DEFAULTS } from "../../../entities/settings";
-import { reportError } from "../../../shared/lib/errors";
 import type { SessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
+import { reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import {
+  arrayOf,
+  decoder,
+  isString,
+  objectOf,
+} from "../../../shared/lib/validation";
 import type { MrEntry } from "../model/types";
 import { isMrListPage, parseMrPath } from "./route";
+const readNoteBodies = decoder(
+  arrayOf(
+    objectOf<{ body: string }[][number]>({
+      body: isString,
+    }),
+  ),
+  "GitLab/Jira response",
+);
 export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
   const _reviewerCache: Record<string, { isReviewer: boolean; ts: number }> =
     {};
@@ -19,7 +33,7 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
 
   function fetchMrNotes(projectPath: string, iid: string, limit: number) {
     const encodedProject = encodeURIComponent(projectPath);
-    return api<{ body: string }[]>(
+    return api(
       "GET",
       "/projects/" +
         encodedProject +
@@ -28,7 +42,7 @@ export function createReviewerBadges(api: SessionApi, scope: Lifecycle) {
         "/notes?per_page=" +
         limit +
         "&sort=asc",
-    );
+    ).then(readNoteBodies);
   }
 
   function checkReviewerInNotes(notes: { body: string }[], username: string) {

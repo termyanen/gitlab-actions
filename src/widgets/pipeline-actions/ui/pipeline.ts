@@ -1,10 +1,27 @@
 import type { Job } from "../../../entities/pipeline";
+import { readJob } from "../../../entities/pipeline";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
+import {
+  decodeArray,
+  decoder,
+  isNumber,
+  isString,
+  objectOf,
+  optional,
+  type Decoder,
+} from "../../../shared/lib/validation";
+const readBridge = decoder(
+  objectOf<Bridge>({
+    downstream_pipeline: optional(
+      objectOf({ id: isNumber, web_url: isString }),
+    ),
+  }),
+);
 const GRAPH_MOUNT_DEBOUNCE_MS = 300;
 const GRAPH_REFRESH_INTERVAL_MS = 3000;
 interface PipelineEntry {
@@ -45,21 +62,24 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
 
           function fetchPaged<T>(
             path: string,
+            read: Decoder<T>,
             page = 1,
             acc: T[] = [],
           ): Promise<T[]> {
             page = page || 1;
             acc = acc || [];
-            return api<T[]>(
+            return api(
               "GET",
               path + "?per_page=" + GITLAB_PAGE_SIZE + "&page=" + page,
-            ).then(function (items) {
-              if (!items || !items.length) return acc;
-              acc = acc.concat(items);
-              if (items.length === GITLAB_PAGE_SIZE && page < 20)
-                return fetchPaged(path, page + 1, acc);
-              return acc;
-            });
+            )
+              .then(decodeArray(read))
+              .then(function (items) {
+                if (!items || !items.length) return acc;
+                acc = acc.concat(items);
+                if (items.length === GITLAB_PAGE_SIZE && page < 20)
+                  return fetchPaged(path, read, page + 1, acc);
+                return acc;
+              });
           }
 
           // Pipeline entry: { projectRef, stages: {stageName: [job]}, jobIds: {id: true} }
@@ -91,8 +111,8 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
             const base =
               "/projects/" + encodedProject + "/pipelines/" + pipelineId;
             _pipelinesPromise = Promise.all([
-              fetchPaged<Job>(base + "/jobs"),
-              fetchPaged<Bridge>(base + "/bridges").catch(function () {
+              fetchPaged(base + "/jobs", readJob),
+              fetchPaged(base + "/bridges", readBridge).catch(function () {
                 return [];
               }),
             ]).then(function (res) {
@@ -114,12 +134,13 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
               }
               return Promise.all(
                 children.map(function (child) {
-                  return fetchPaged<Job>(
+                  return fetchPaged(
                     "/projects/" +
                       child.ref +
                       "/pipelines/" +
                       child.id +
                       "/jobs",
+                    readJob,
                   )
                     .then(function (jobs) {
                       return buildPipelineEntry(child.ref, jobs);

@@ -1,10 +1,24 @@
 import { JIRA_API_PREFIX } from "../../../shared/config/jira";
+import { errorStatus } from "../../../shared/lib/errors";
+import {
+  arrayOf,
+  decoder,
+  isString,
+  objectOf,
+} from "../../../shared/lib/validation";
+import { readRawJiraIssue } from "./validation";
 import type { JiraQuickAction, JiraStatus } from "../model/types";
-import type { RawJiraComment, RawJiraIssue } from "./types";
-export function jiraApi<T = unknown>(
-  jiraUrl: string,
-  path: string,
-): Promise<T> {
+import type { RawJiraComment } from "./types";
+const readJiraFields = decoder(
+  arrayOf(
+    objectOf<{ id: string; name: string }[][number]>({
+      id: isString,
+      name: isString,
+    }),
+  ),
+  "GitLab/Jira response",
+);
+export function jiraApi(jiraUrl: string, path: string): Promise<unknown> {
   const url = jiraUrl + path;
   return chrome.cookies
     .getAll({ url: jiraUrl })
@@ -159,10 +173,11 @@ export function fetchJiraStatuses(
   function fetchOne(i: number): Promise<typeof results> {
     if (i >= tickets.length || authFailed) return Promise.resolve(results);
     const ticket = tickets[i];
-    return jiraApi<RawJiraIssue>(
+    return jiraApi(
       jiraUrl,
       JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + fields,
     )
+      .then(readRawJiraIssue)
       .then(function (data) {
         if (data && data.fields && data.fields.status) {
           const r: JiraStatus = {
@@ -184,8 +199,8 @@ export function fetchJiraStatuses(
           results[ticket] = r;
         }
       })
-      .catch(function (err) {
-        const status = err.httpStatus || 0;
+      .catch(function (err: unknown) {
+        const status = errorStatus(err) || 0;
         if (status === 401 || status === 403) {
           authFailed = true;
           results._authError = status;
@@ -200,10 +215,8 @@ export function fetchJiraStatuses(
 }
 export function getFieldMap(jiraUrl: string) {
   if (_fieldMapCache[jiraUrl]) return Promise.resolve(_fieldMapCache[jiraUrl]);
-  return jiraApi<{ id: string; name: string }[]>(
-    jiraUrl,
-    JIRA_API_PREFIX + "/field",
-  )
+  return jiraApi(jiraUrl, JIRA_API_PREFIX + "/field")
+    .then(readJiraFields)
     .then(function (fields) {
       const map = { epicField: "", sprintField: "" };
       if (Array.isArray(fields)) {

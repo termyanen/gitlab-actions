@@ -1,16 +1,31 @@
-import { reportRuntimeError } from "../../../shared/api/runtime";
-import { reportError } from "../../../shared/lib/errors";
+import { readActiveMergeRequest } from "../../../entities/merge-request";
+import type { Job } from "../../../entities/pipeline";
 import {
   JOB_POLL_INTERVAL_MS,
   JOB_POLL_MAX_ATTEMPTS,
+  readJob,
+  readPipeline,
 } from "../../../entities/pipeline";
+import { api } from "../../../shared/api/background-proxy";
+import { reportRuntimeError } from "../../../shared/api/runtime";
 import { NOTIFICATION_ICON } from "../../../shared/config/extension";
 import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
-import type { ActiveMergeRequest } from "../../../entities/merge-request";
-import type { Job, Pipeline } from "../../../entities/pipeline";
-import { api } from "../../../shared/api/background-proxy";
-import { createTaskStore, TASK_ALARM } from "./store";
+import { errorMessage, reportError } from "../../../shared/lib/errors";
+import {
+  decodeArray,
+  decoder,
+  isNumber,
+  objectOf,
+  optional,
+} from "../../../shared/lib/validation";
+import { TASK_ALARM, createTaskStore } from "./store";
 import type { ChainMessage, ChainTask } from "./types";
+const readJobResult = decoder(
+  objectOf<{ id?: number }>({
+    id: optional(isNumber),
+  }),
+  "GitLab/Jira response",
+);
 export function createJobChains() {
   const tasks: Record<string, ChainTask> = {};
   let taskSequence = 0;
@@ -22,7 +37,7 @@ export function createJobChains() {
   });
   // The rejection is returned to every task request; never start a mutation when
   // durable state could not be read. Attach a handler before the first message.
-  void ready.catch((error) =>
+  void ready.catch((error: unknown) =>
     console.error("Could not restore job chains", error),
   );
   function checkpoint(task: ChainTask) {
@@ -57,7 +72,7 @@ export function createJobChains() {
     task.pendingOperation = operation;
     await checkpoint(task);
     if (task._cancelled) throw new Error("Cancelled by user");
-    return api<{ id?: number }>(
+    return api(
       task,
       "POST",
       "/projects/" +
@@ -66,14 +81,14 @@ export function createJobChains() {
         job.id +
         "/" +
         operation,
-    );
+    ).then(readJobResult);
   }
   async function reconcile(task: ChainTask, jobName: string) {
     const job = await findJobByName(task, jobName);
     if (
       !job ||
       (task.pendingOperation === "retry" && job.id === task.pendingJobId) ||
-      ["manual", "skipped", "failed", "canceled"].includes(job.status)
+      ["manual", "skipped", "failed", "canceled"].includes(job.status || "")
     ) {
       throw new Error(
         "Job start outcome is unknown after worker restart. Check the pipeline before starting a new chain.",
@@ -88,45 +103,49 @@ export function createJobChains() {
     // chain to another pipeline, including while waiting for or retrying a job.
     const pipelinePromise = task.pipelineId
       ? Promise.resolve(task.pipelineId)
-      : api<ActiveMergeRequest>(
+      : api(
           task,
           "GET",
           "/projects/" + task.projectId + "/merge_requests/" + task.mrIid,
-        ).then(function (mr) {
-          if (task._cancelled) throw new Error("Cancelled by user");
-          if (mr.head_pipeline && mr.head_pipeline.id) {
-            task.pipelineId = mr.head_pipeline.id;
-            task.pipelineProjectId =
-              mr.head_pipeline.project_id ||
-              mr.source_project_id ||
-              task.projectId;
-            return task.pipelineId;
-          }
-          return api<Pipeline[]>(
-            task,
-            "GET",
-            "/projects/" +
-              task.projectId +
-              "/merge_requests/" +
-              task.mrIid +
-              "/pipelines",
-          ).then(function (pipelines) {
+        )
+          .then(readActiveMergeRequest)
+          .then(function (mr) {
             if (task._cancelled) throw new Error("Cancelled by user");
-            let latest = null;
-            for (let i = 0; i < pipelines.length; i++) {
-              const pipeline = pipelines[i];
-              if (mr.sha && pipeline.sha !== mr.sha) continue;
-              // Preserve GitLab's MR-pipeline preference within this SHA.
-              latest = pipeline;
-              break;
+            if (mr.head_pipeline && mr.head_pipeline.id) {
+              task.pipelineId = mr.head_pipeline.id;
+              task.pipelineProjectId =
+                mr.head_pipeline.project_id ||
+                mr.source_project_id ||
+                task.projectId;
+              return task.pipelineId;
             }
-            if (!latest) return null;
-            task.pipelineId = latest.id;
-            task.pipelineProjectId =
-              latest.project_id || mr.source_project_id || task.projectId;
-            return task.pipelineId;
+            return api(
+              task,
+              "GET",
+              "/projects/" +
+                task.projectId +
+                "/merge_requests/" +
+                task.mrIid +
+                "/pipelines",
+            )
+              .then(decodeArray(readPipeline))
+              .then(function (pipelines) {
+                if (task._cancelled) throw new Error("Cancelled by user");
+                let latest = null;
+                for (let i = 0; i < pipelines.length; i++) {
+                  const pipeline = pipelines[i];
+                  if (mr.sha && pipeline.sha !== mr.sha) continue;
+                  // Preserve GitLab's MR-pipeline preference within this SHA.
+                  latest = pipeline;
+                  break;
+                }
+                if (!latest) return null;
+                task.pipelineId = latest.id;
+                task.pipelineProjectId =
+                  latest.project_id || mr.source_project_id || task.projectId;
+                return task.pipelineId;
+              });
           });
-        });
     const seen: Record<number, boolean> = {};
     function readPage(pipelineId: number, page: number): Promise<Job | null> {
       let path =
@@ -137,27 +156,29 @@ export function createJobChains() {
         "/jobs?per_page=" +
         GITLAB_PAGE_SIZE;
       if (page > 1) path += "&page=" + page;
-      return api<Job[]>(task, "GET", path).then(function (jobs) {
-        if (task._cancelled) throw new Error("Cancelled by user");
-        // Pick the newest attempt within this pipeline; pagination must never
-        // redirect polling or a retry to a newly created MR pipeline.
-        let found: Job | null = null;
-        let hasNewJobs = false;
-        for (let i = 0; i < jobs.length; i++) {
-          if (jobs[i].name === jobName && (!found || jobs[i].id > found.id))
-            found = jobs[i];
-          if (!seen[jobs[i].id]) hasNewJobs = true;
-          seen[jobs[i].id] = true;
-        }
-        if (found || jobs.length < GITLAB_PAGE_SIZE) return found;
-        if (!hasNewJobs)
-          throw new Error(
-            chrome.i18n.getMessage("errorJobsPageRepeated", [
-              String(pipelineId),
-            ]),
-          );
-        return readPage(pipelineId, page + 1);
-      });
+      return api(task, "GET", path)
+        .then(decodeArray(readJob))
+        .then(function (jobs) {
+          if (task._cancelled) throw new Error("Cancelled by user");
+          // Pick the newest attempt within this pipeline; pagination must never
+          // redirect polling or a retry to a newly created MR pipeline.
+          let found: Job | null = null;
+          let hasNewJobs = false;
+          for (let i = 0; i < jobs.length; i++) {
+            if (jobs[i].name === jobName && (!found || jobs[i].id > found.id))
+              found = jobs[i];
+            if (!seen[jobs[i].id]) hasNewJobs = true;
+            seen[jobs[i].id] = true;
+          }
+          if (found || jobs.length < GITLAB_PAGE_SIZE) return found;
+          if (!hasNewJobs)
+            throw new Error(
+              chrome.i18n.getMessage("errorJobsPageRepeated", [
+                String(pipelineId),
+              ]),
+            );
+          return readPage(pipelineId, page + 1);
+        });
     }
     return pipelinePromise.then(function (pipelineId) {
       if (!pipelineId) return null;
@@ -188,9 +209,9 @@ export function createJobChains() {
           .then(function (resp) {
             return { id: resp.id || job.id, name: jobName };
           })
-          .catch(function (err) {
+          .catch(function (err: unknown) {
             // 403 = already retried, refetch to find the new job
-            if (err.message && err.message.indexOf("403") !== -1) {
+            if (errorMessage(err) && errorMessage(err).indexOf("403") !== -1) {
               return findJobByName(task, jobName).then(function (fresh) {
                 if (!fresh)
                   throw new Error(
@@ -210,7 +231,7 @@ export function createJobChains() {
           "preparing",
           "waiting_for_resource",
           "scheduled",
-        ].indexOf(job.status) !== -1
+        ].indexOf(job.status || "") !== -1
       ) {
         return { id: job.id, name: jobName };
       } else {
@@ -375,7 +396,7 @@ export function createJobChains() {
   ) {
     void ready
       .then(() => dispatch(msg, sender, sendResponse))
-      .catch((error) => sendResponse({ _error: error.message }));
+      .catch((error: unknown) => sendResponse({ _error: errorMessage(error) }));
     return true;
   }
   async function dispatch(

@@ -1,24 +1,24 @@
-import type { ReviewContext } from "../../../entities/review";
 import type {
-  Note,
-  NotePosition,
   Discussion,
   DraftNote,
+  Note,
+  NotePosition,
 } from "../../../entities/discussion";
+import type { ReviewContext } from "../../../entities/review";
 import { digest } from "../../../shared/lib/digest";
-import type {
-  ImportOptions,
-  ImportItem,
-  ExistingNotes,
-  ExistingNote,
-  ImportError,
-  ReplyContext,
-  CompactLocation,
-} from "./types";
-import { sha, positive, unsupported } from "./utils";
-import { endpoint } from "./validation";
-import { request, paginate } from "./transport";
+import { toError } from "../../../shared/lib/errors";
 import { equalPosition } from "./diff";
+import { paginate, request } from "./transport";
+import type {
+  CompactLocation,
+  ExistingNote,
+  ExistingNotes,
+  ImportItem,
+  ImportOptions,
+  ReplyContext,
+} from "./types";
+import { positive, sha, unsupported } from "./utils";
+import { endpoint } from "./validation";
 
 export function findExisting(existing: ExistingNotes, item: ImportItem) {
   return existing.notes.find(function (note) {
@@ -267,7 +267,7 @@ export async function existingNotes(
       });
     });
   } catch (errorValue) {
-    const error = errorValue as ImportError;
+    const error = toError(errorValue);
     if (!unsupported(error)) throw error;
     draftSupported = false;
   }
