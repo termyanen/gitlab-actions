@@ -1,8 +1,9 @@
+import { VERSION_DEFAULTS } from "../../../entities/settings";
 import {
   bumpVersion,
   getNestedValue,
-  setNestedValue,
   parseToml,
+  setNestedValue,
   updateTomlVersion,
 } from "../../../shared/lib/version";
 import type { MrServices, RepositoryFile } from "./types";
@@ -18,7 +19,8 @@ export function createVersionActions({
       const versionPath = settings.versionPath || "version";
       const strategy = settings.versionStrategy || "patch";
       const commitTemplate =
-        settings.versionCommitTemplate || "fix: bump version to {version}";
+        settings.versionCommitTemplate ||
+        VERSION_DEFAULTS.versionCommitTemplate;
 
       return getMR().then(function (mr) {
         const branch = mr.source_branch;

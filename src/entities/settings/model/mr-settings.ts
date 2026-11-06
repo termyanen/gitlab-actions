@@ -1,43 +1,6 @@
 import { isExtensionValid } from "../../../shared/api/runtime";
+import { MR_DEFAULTS } from "./defaults";
 import type { MrSettings, ProjectProfile } from "./types";
-
-const SETTINGS_DEFAULTS: MrSettings = {
-  btn_version: false,
-  btn_rebase: false,
-  btn_rebase_version: false,
-  btn_rebase_automerge: false,
-  btn_rebase_force: false,
-  btn_ship: false,
-  btn_force_ship: false,
-  btn_reviewers: false,
-  btn_pipeline_restart: false,
-  btn_pipeline_cancel: false,
-  btn_draft_toggle: false,
-  btn_retry_failed: false,
-  btn_copy_mr: false,
-  sound_enabled: false,
-  notifications_enabled: true,
-  show_time_tracker: true,
-  show_failed_job_view: true,
-  skip_confirmations: false,
-  dim_drafts: false,
-  highlight_own_mrs: false,
-  show_sensitive_warning: false,
-  show_git_commands: false,
-  reviewersList: "",
-  reviewersJob: "get-reviewers",
-  quickComments: [],
-  customJobs: [],
-  mrActions: [],
-  buttonOrder: [],
-  projectProfiles: {},
-  versionFile: "package.json",
-  versionPath: "version",
-  versionStrategy: "patch",
-  versionCommitTemplate: "fix: bump version to {version}",
-  version_from_target: false,
-};
-
 function findProjectProfile(
   profiles: Record<string, ProjectProfile> | undefined,
   projectPath: string | null,
@@ -51,13 +14,13 @@ function findProjectProfile(
   return null;
 }
 export function createMrSettingsReader(projectPath: () => string | null) {
-  function getSettings() {
-    if (!isExtensionValid()) return Promise.resolve(SETTINGS_DEFAULTS);
+  function getSettings(): Promise<MrSettings> {
+    if (!isExtensionValid()) return Promise.resolve(MR_DEFAULTS);
     return new Promise<MrSettings>(function (resolve) {
       try {
-        chrome.storage.sync.get(SETTINGS_DEFAULTS, function (data: MrSettings) {
+        chrome.storage.sync.get(MR_DEFAULTS, function (data: MrSettings) {
           if (!isExtensionValid()) {
-            resolve(SETTINGS_DEFAULTS);
+            resolve(MR_DEFAULTS);
             return;
           }
           // Merge project-specific profile over defaults
@@ -91,7 +54,7 @@ export function createMrSettingsReader(projectPath: () => string | null) {
           }
         });
       } catch {
-        resolve(SETTINGS_DEFAULTS);
+        resolve(MR_DEFAULTS);
       }
     });
   }

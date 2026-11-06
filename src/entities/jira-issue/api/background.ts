@@ -1,5 +1,6 @@
+import { JIRA_API_PREFIX } from "../../../shared/config/jira";
 import type { JiraQuickAction, JiraStatus } from "../model/types";
-import type { RawJiraIssue, RawJiraComment } from "./types";
+import type { RawJiraComment, RawJiraIssue } from "./types";
 export function jiraApi<T = unknown>(
   jiraUrl: string,
   path: string,
@@ -120,7 +121,11 @@ export function jiraQuickActionWrite(
     .getAll({ url: jiraUrl })
     .then(function (cookies) {
       return fetch(
-        jiraUrl + "/rest/api/2/issue/" + encodeURIComponent(ticket) + suffix,
+        jiraUrl +
+          JIRA_API_PREFIX +
+          "/issue/" +
+          encodeURIComponent(ticket) +
+          suffix,
         {
           method: method,
           headers: {
@@ -156,7 +161,7 @@ export function fetchJiraStatuses(
     const ticket = tickets[i];
     return jiraApi<RawJiraIssue>(
       jiraUrl,
-      "/rest/api/2/issue/" + ticket + "?fields=" + fields,
+      JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + fields,
     )
       .then(function (data) {
         if (data && data.fields && data.fields.status) {
@@ -195,7 +200,10 @@ export function fetchJiraStatuses(
 }
 export function getFieldMap(jiraUrl: string) {
   if (_fieldMapCache[jiraUrl]) return Promise.resolve(_fieldMapCache[jiraUrl]);
-  return jiraApi<{ id: string; name: string }[]>(jiraUrl, "/rest/api/2/field")
+  return jiraApi<{ id: string; name: string }[]>(
+    jiraUrl,
+    JIRA_API_PREFIX + "/field",
+  )
     .then(function (fields) {
       const map = { epicField: "", sprintField: "" };
       if (Array.isArray(fields)) {

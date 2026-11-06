@@ -1,15 +1,15 @@
-import type { ReviewContext } from "../../../entities/review";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
 import type { MergeRequest } from "../../../entities/merge-request";
-import type { ImportOptions, ImportError } from "./types";
-import { TIMEOUT, MAX_PAGES } from "./limits";
+import type { ReviewContext } from "../../../entities/review";
+import { MAX_PAGES, TIMEOUT } from "./limits";
+import type { ImportError, ImportOptions } from "./types";
 import { abortError, checkAbort } from "./utils";
 import {
-  currentOrigin,
   assertCurrentPage,
+  currentOrigin,
   endpoint,
   readRefs,
 } from "./validation";
-
 export function header(response: Response, name: string) {
   return response.headers && response.headers.get
     ? response.headers.get(name)
@@ -173,7 +173,7 @@ export async function paginate<T>(
     pages.add(page);
     const fetched = await request<T[]>(
       context,
-      path + "?per_page=100&page=" + page,
+      path + "?per_page=" + GITLAB_PAGE_SIZE + "&page=" + page,
       options,
     );
     if (!Array.isArray(fetched.data))

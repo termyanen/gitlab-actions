@@ -1,5 +1,3 @@
-import { createLifecycle } from "../../../shared/lib/lifecycle";
-import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
@@ -8,6 +6,9 @@ import {
 } from "../../../entities/jira-issue/content";
 import { SEL } from "../../../shared/config/gitlab";
 import { qAll, qUp } from "../../../shared/lib/dom";
+import type { Lifecycle } from "../../../shared/lib/lifecycle";
+import { createLifecycle } from "../../../shared/lib/lifecycle";
+const BADGE_MOUNT_DEBOUNCE_MS = 500;
 interface CommitTicketEntry {
   row: HTMLElement;
   lastMsgEl: HTMLElement;
@@ -332,7 +333,10 @@ export function startCommitJira(
           let _cjTimer: ReturnType<typeof setTimeout> | undefined;
           const cjObserver = scope.observer(function () {
             clearTimeout(_cjTimer);
-            _cjTimer = scope.timeout(injectCommitJiraBadges, 500);
+            _cjTimer = scope.timeout(
+              injectCommitJiraBadges,
+              BADGE_MOUNT_DEBOUNCE_MS,
+            );
           });
           cjObserver.observe(document.body, { childList: true, subtree: true });
           scope.listen(window, "beforeunload", function () {
