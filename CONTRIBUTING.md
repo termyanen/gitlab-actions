@@ -106,6 +106,20 @@ formatting/lint expansion. Keep their surrounding style; avoid reformatting them
 as part of a feature change. They still run through regression/browser tests.
 No automatic hooks or install-time scripts modify your working tree.
 
+## UI changes on GitLab pages
+
+Follow [the GitLab UI integration guide](docs/GITLAB_UI.md) before adding a button,
+badge, field, menu or dialog. Reuse GitLab's existing visual patterns and theme
+tokens, and extend the owning widget's integration before adding styles. The guide
+maps the actual helpers, native markup examples and compatibility fallbacks; there
+is no universal version-independent button factory in this repository.
+
+New custom CSS must solve a specific layout, missing-control or compatibility need.
+Explain that need in the PR and include the affected light/dark, keyboard and
+modern/legacy DOM checks. Existing custom styles are not a reason to create another
+visual system. Extension settings/welcome pages and the website have their own
+styles; they cannot rely on a GitLab page's stylesheet.
+
 ## Reviewable contributions
 
 Follow [Preparing a PR and a release](docs/DELIVERY.md) for the PR body, release
