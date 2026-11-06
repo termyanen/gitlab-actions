@@ -1,3 +1,5 @@
+import { createImportWindow } from "./window";
+import { element } from "../../../shared/ui/dom";
 import type { ReviewContext } from "../../../entities/review";
 import type {
   createReviewImporter,
@@ -6,7 +8,6 @@ import type {
   ImportResultItem,
 } from "../../../features/review-import";
 import type { Translate } from "../../../shared/i18n";
-import { element } from "../../../shared/ui/dom";
 import { createImportRenderer } from "./render";
 import type { ImportDialogState } from "./types";
 export function createImportDialog(
@@ -19,6 +20,18 @@ export function createImportDialog(
       saveEditor,
       cancelEditor,
     });
+  const buildWindow = createImportWindow(
+    { button, selectable },
+    {
+      close,
+      copyPrompt,
+      invalidate,
+      prepare,
+      updateActions,
+      startEditor,
+      publish,
+    },
+  );
   let active: ImportDialogState | null = null;
   let confirmClose = false;
 
@@ -592,250 +605,9 @@ export function createImportDialog(
     )
       return;
     if (close() === false) return;
-    const state = {
-      context: context,
-      t:
-        (options && options.t) ||
-        function (key) {
-          return key;
-        },
-      previousFocus: document.activeElement,
-      selected: new Set(),
-      resolveSelected: new Set(),
-      results: new Map(),
-      plan: null,
-      editor: null,
-      manualId: 0,
-      busy: "",
-      run: 0,
-    } as ImportDialogState;
+
+    const state = buildWindow(context, options);
     active = state;
-    state.overlay = element(
-      "div",
-      "gl-review-overlay gl-review-import-overlay",
-    );
-    const dialog = (state.dialog = element(
-      "section",
-      "gl-review-dialog gl-review-import-dialog",
-    ));
-    dialog.setAttribute("role", "dialog");
-    dialog.setAttribute("aria-modal", "true");
-    dialog.setAttribute("aria-labelledby", "gl-review-import-title");
-    const header = element("header", "gl-review-header");
-    const titleBox = element("div");
-    const title = element("h2", "", state.t("aiReviewImportTitle"));
-    title.id = "gl-review-import-title";
-    titleBox.appendChild(title);
-    state.subject = element(
-      "p",
-      "gl-review-subject",
-      context.projectPath + " !" + context.iid,
-    );
-    titleBox.appendChild(state.subject);
-    header.appendChild(titleBox);
-    header.appendChild(button(state, "aiReviewClose", close));
-    dialog.appendChild(header);
-    state.status = element("div", "gl-review-status");
-    state.status.setAttribute("role", "status");
-    dialog.appendChild(state.status);
-    state.warning = element("div", "gl-review-warning");
-    state.warning.hidden = true;
-    dialog.appendChild(state.warning);
-    const columns = element(
-      "div",
-      "gl-review-columns gl-review-import-columns",
-    );
-    const inputPane = element(
-      "section",
-      "gl-review-output gl-review-import-input-pane",
-    );
-    inputPane.appendChild(
-      element(
-        "p",
-        "gl-review-muted gl-review-import-help",
-        state.t("aiReviewImportHelp"),
-      ),
-    );
-    const promptActions = element("div", "gl-review-copy-prompt-actions");
-    state.copyPrompt = button(state, "aiReviewImportCopyPrompt", function () {
-      copyPrompt(state, false);
-    });
-    state.copyReplyPrompt = button(
-      state,
-      "aiReviewImportCopyAllReplyPrompt",
-      function () {
-        copyPrompt(state, true);
-      },
-    );
-    state.copyFormat = button(state, "aiReviewImportCopyFormat", function () {
-      copyPrompt(state, "format");
-    });
-    promptActions.appendChild(state.copyPrompt);
-    promptActions.appendChild(state.copyReplyPrompt);
-    promptActions.appendChild(state.copyFormat);
-    const promptShortcuts = element("details", "gl-review-advanced");
-    promptShortcuts.appendChild(
-      element("summary", "", state.t("aiReviewAdvanced")),
-    );
-    promptShortcuts.appendChild(promptActions);
-    inputPane.appendChild(promptShortcuts);
-    state.promptDetails = element("details", "gl-review-prompt-details");
-    state.promptDetails.hidden = true;
-    state.promptSummary = element(
-      "summary",
-      "",
-      state.t("aiReviewImportPrompt"),
-    );
-    state.promptDetails.appendChild(state.promptSummary);
-    state.prompt = element("textarea", "gl-review-prompt");
-    state.prompt.readOnly = true;
-    state.prompt.spellcheck = false;
-    state.prompt.setAttribute("aria-label", state.t("aiReviewImportPrompt"));
-    state.promptDetails.appendChild(state.prompt);
-    inputPane.appendChild(state.promptDetails);
-    const inputLabel = element(
-      "label",
-      "gl-review-preview-label",
-      state.t("aiReviewImportInput"),
-    );
-    inputLabel.htmlFor = "gl-review-import-input";
-    inputPane.appendChild(inputLabel);
-    state.input = element(
-      "textarea",
-      "gl-review-preview gl-review-import-input",
-    );
-    state.input.id = "gl-review-import-input";
-    state.input.spellcheck = false;
-    state.input.placeholder = state.t("aiReviewImportInputHint");
-    state.input.setAttribute("aria-label", state.t("aiReviewImportInput"));
-    state.input.addEventListener("input", function () {
-      invalidate(state);
-    });
-    inputPane.appendChild(state.input);
-    state.validate = button(state, "aiReviewImportValidate", function () {
-      prepare(state);
-    });
-    inputPane.appendChild(state.validate);
-    columns.appendChild(inputPane);
-    const previewPane = element(
-      "section",
-      "gl-review-picker gl-review-import-preview-pane",
-    );
-    previewPane.appendChild(
-      element(
-        "h3",
-        "gl-review-import-preview-title",
-        state.t("aiReviewImportPreview"),
-      ),
-    );
-    const actions = element("div", "gl-review-tools");
-    state.select = button(state, "aiReviewImportSelectReady", function () {
-      if (!state.plan || state.busy || state.editor) return;
-      state.plan.items.forEach(function (item) {
-        if (selectable(state, item)) state.selected.add(item.id);
-      });
-      updateActions(state);
-    });
-    state.clear = button(state, "aiReviewClear", function () {
-      if (!state.busy && !state.editor) {
-        state.selected.clear();
-        updateActions(state);
-      }
-    });
-    state.add = button(state, "aiReviewImportAddComment", function () {
-      startEditor(state);
-    });
-    actions.appendChild(state.select);
-    actions.appendChild(state.clear);
-    actions.appendChild(state.add);
-    previewPane.appendChild(actions);
-    state.count = element("div", "gl-review-count");
-    previewPane.appendChild(state.count);
-    state.list = element("div", "gl-review-list");
-    previewPane.appendChild(state.list);
-    columns.appendChild(previewPane);
-    dialog.appendChild(columns);
-    const footer = element(
-      "footer",
-      "gl-review-footer gl-review-import-footer",
-    );
-    footer.appendChild(
-      element(
-        "p",
-        "gl-review-muted gl-review-import-send-hint",
-        state.t("aiReviewImportSendHint"),
-      ),
-    );
-    state.replyHint = element(
-      "p",
-      "gl-review-muted gl-review-import-send-hint",
-      state.t("aiReviewImportReplyHint"),
-    );
-    state.replyHint.hidden = true;
-    footer.appendChild(state.replyHint);
-    state.stop = button(state, "aiReviewImportStop", function () {
-      if (state.busy !== "sending" || state.stopping) return;
-      state.stopping = true;
-      state.controller!.abort();
-      updateActions(state);
-    });
-    footer.appendChild(state.stop);
-    state.drafts = button(state, "aiReviewImportAddDrafts", function () {
-      publish(state, "draft");
-    });
-    footer.appendChild(state.drafts);
-    state.publish = button(
-      state,
-      "aiReviewImportPublish",
-      function () {
-        publish(state, "publish");
-      },
-      "gl-review-primary",
-    );
-    footer.appendChild(state.publish);
-    dialog.appendChild(footer);
-    state.overlay.appendChild(dialog);
-    state.overlay.addEventListener("click", function (event) {
-      if (event.target === state.overlay) close();
-    });
-    state.onKeydown = function (event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        close();
-      }
-      if (event.key !== "Tab") return;
-      const targets = Array.from(
-        dialog.querySelectorAll<HTMLElement>(
-          "button, input, textarea, summary, a[href]",
-        ),
-      ).filter(function (el) {
-        return (
-          !("disabled" in el && el.disabled) &&
-          !el.hidden &&
-          !el.closest("[hidden]") &&
-          el.getClientRects().length
-        );
-      });
-      if (!targets.length) return;
-      const first = targets[0];
-      const last = targets[targets.length - 1];
-      if (
-        event.shiftKey &&
-        (document.activeElement === first ||
-          !dialog.contains(document.activeElement))
-      ) {
-        event.preventDefault();
-        last.focus();
-      } else if (
-        !event.shiftKey &&
-        (document.activeElement === last ||
-          !dialog.contains(document.activeElement))
-      ) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
     document.addEventListener("keydown", state.onKeydown, true);
     document.body.appendChild(state.overlay);
     render(state);
