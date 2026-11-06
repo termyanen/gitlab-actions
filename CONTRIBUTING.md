@@ -22,6 +22,11 @@ The extension requires Chrome 110+; tests use the pinned Playwright Chromium.
 
 ## Choose the right verification
 
+Before implementing a feature, use [the architecture guide](docs/ARCHITECTURE.md)
+to choose its owner, public API and content/worker/settings integration. It maps
+common changes to existing modules and explains how to compose them without
+cycles. Add only the slices and segments the feature actually needs.
+
 | Change | Checks |
 | --- | --- |
 | Runtime, types, configuration or tooling | `npm run check` |
@@ -40,10 +45,15 @@ npm run test:browser
 npm run test:performance
 ```
 
-`npm run check` runs TypeScript, ESLint, Prettier, FSD boundary checks and regression
-tests. Tests first build production output. `npm test` runs the build and regressions
+`npm run check` runs TypeScript, ESLint, Prettier, FSD boundary/cycle checks and
+regression tests. Tests first build production output. `npm test` runs the build and regressions
 without the other static checks. Fixtures do not use production credentials.
 Read [tests/README.md](tests/README.md) for coverage and manual scenarios.
+
+For fast dependency feedback, run `npm run lint:architecture`. When changing
+its rules, also run `node --test tests/architecture.test.cjs`; the fixtures must
+prove both rejection of invalid graphs and acceptance of supported imports.
+Runtime-only cycles are rejected; type-only edges still undergo boundary checks.
 
 The shared CI workflow verifies a ZIP, unpacks it for browser/performance checks,
 then makes that same artifact available to the store job. Local success does not
