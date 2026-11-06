@@ -6,7 +6,7 @@ const path = require('node:path');
 const os = require('node:os');
 const {pathToFileURL} = require('node:url');
 
-async function inspect(t, sources) {
+async function inspect(t, sources, options) {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'extension-architecture-'));
   t.after(() => fs.rm(directory, {recursive: true, force: true}));
   for (const [file, source] of Object.entries(sources)) {
@@ -15,7 +15,7 @@ async function inspect(t, sources) {
     await fs.writeFile(target, source);
   }
   const {checkArchitecture} = await import(pathToFileURL(path.resolve(__dirname, '../scripts/check-architecture.mjs')).href);
-  return checkArchitecture(directory);
+  return checkArchitecture(directory, options);
 }
 
 test('architecture accepts downward public APIs and ignores cycles made only of type imports', async t => {
@@ -169,4 +169,36 @@ test('architecture rejects symlink files and directories instead of skipping the
   const violations = checkArchitecture(directory);
   assert.equal(violations.filter(v => v.includes('must not use symlinks')).length, 2);
   assert.equal(violations.filter(v => v.includes('outside the checked source graph')).length, 2);
+});
+
+test('architecture rejects detached modules even when they reference each other', async t => {
+  const violations = await inspect(t, {
+    'app/index.ts': 'export {};',
+    'features/old/index.ts': 'export {run} from "./run";',
+    'features/old/run.ts': 'import "./index"; export const run = () => {};',
+  }, {entryPoints: ['app/index.ts']});
+  const detached = violations.filter(v => v.includes('not reachable'));
+  assert.equal(detached.length, 2);
+  assert.ok(detached.some(v => v.startsWith('features/old/index.ts:')));
+  assert.ok(detached.some(v => v.startsWith('features/old/run.ts:')));
+  assert.ok(violations.some(v => v.includes('Circular runtime dependency')));
+});
+
+test('architecture follows public APIs, lazy and type-only imports and ambient declarations for reachability', async t => {
+  const violations = await inspect(t, {
+    'app/index.ts': 'import("../features/example"); import type {Model} from "../entities/model";',
+    'features/example/index.ts': 'export {run} from "./run";',
+    'features/example/run.ts': 'export const run = () => {};',
+    'entities/model/index.ts': 'export interface Model {}',
+    'app/browser.d.ts': 'import type {Context} from "../shared/lib/context"; declare global { interface Window { context: Context; } }',
+    'shared/lib/context/index.ts': 'export interface Context {}',
+  }, {entryPoints: ['app/index.ts']});
+  assert.deepEqual(violations, []);
+});
+
+test('architecture reports a missing build entry point', async t => {
+  const violations = await inspect(t, {'app/index.ts': 'export {};'}, {
+    entryPoints: ['app/index.ts', 'app/missing.ts'],
+  });
+  assert.deepEqual(violations, ['app/missing.ts: entry point is outside the checked source graph']);
 });

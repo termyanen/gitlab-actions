@@ -388,7 +388,7 @@ Flexible configuration for automatic version bumping:
 
 ### From Chrome Web Store
 
-1. Install from [Chrome Web Store](https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak) (link coming soon)
+1. Install from [Chrome Web Store](https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak)
 2. Open any GitLab merge request page
 3. Action buttons appear automatically
 
@@ -405,8 +405,8 @@ Flexible configuration for automatic version bumping:
 
 Use `npm run dev` to rebuild JavaScript and copy changed assets during development.
 Reload the unpacked extension and the GitLab tab after a rebuild. Production
-builds contain no development server or source maps. The architecture and commit
-sequence are documented in [the FSD migration plan](docs/REFACTOR_PLAN_RU.md).
+builds contain no development server or source maps. Start with
+[the contributor guide](CONTRIBUTING.md) and [architecture map](docs/ARCHITECTURE.md).
 
 ## Configuration
 
@@ -449,7 +449,7 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 Extension runtime lives in `src/` and uses strict TypeScript with FSD layers:
 `app → pages → widgets → features → entities → shared`. Imports between slices
 use their public APIs; CI checks layer direction, prohibits sibling-slice
-imports, detects runtime cycles and rejects legacy JavaScript/blanket type
+imports, detects runtime cycles and unreachable source modules, and rejects legacy JavaScript/blanket type
 suppressions. There are no runtime framework dependencies.
 
 Use the [feature implementation and architecture guide](docs/ARCHITECTURE.md)
@@ -471,7 +471,7 @@ selected pipeline and reconciles an interrupted job start before continuing;
 uncertain outcomes are reported for manual verification, without replaying a
 write. Preferences and exported settings keep their existing formats.
 
-See the [migration plan and checks](docs/REFACTOR_PLAN_RU.md). Run
+The [migration plan](docs/REFACTOR_PLAN_RU.md) records the refactor history. Run
 `npm run format` after editing sources. `npm run check` includes strict typing,
 lint, formatting, FSD boundaries, regressions, bundle budgets and ZIP checks.
 `npm run test:browser` checks the installed production artifact on local fixtures.
@@ -483,6 +483,11 @@ expectations. [AGENTS.md](AGENTS.md) documents architecture and safety constrain
 for contributors and coding agents; `CLAUDE.md` and `GEMINI.md` are symlinks to it.
 The [delivery procedure](docs/DELIVERY.md) defines PR contents, documentation
 updates and release preparation. Portable skills live in `.agents/skills/`.
+
+Use the [issue forms](https://github.com/termyanen/gitlab-actions/issues/new/choose)
+for bugs and feature requests. Report vulnerabilities privately using
+[SECURITY.md](SECURITY.md). Repository configuration and release checks that need
+maintainer verification are listed in [CONTRIBUTING.md](CONTRIBUTING.md#repository-setup-and-release-readiness).
 
 ## Testing
 

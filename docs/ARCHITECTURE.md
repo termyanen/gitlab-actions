@@ -128,7 +128,7 @@ together instead of disabling a check.
    long-running job, use durable checkpoints and restart/reconciliation behavior;
    an in-memory callback is not a service-worker persistence mechanism.
 5. Keep heavy dialogs/operations lazy. The static graph, source assets and archive
-   are controlled by `scripts/build.mjs`, root `manifest.json`, and
+   are controlled by `scripts/build.mjs`, its shared `scripts/entrypoints.mjs`, root `manifest.json`, and
    `tests/release.test.cjs`. Standard new chunks need no manual hash list. Review
    manifest/WAR/permissions only if the feature actually changes those contracts.
 6. Complete settings UI, consumers, import/export, locales and user-facing
@@ -141,14 +141,15 @@ together instead of disabling a check.
 ## What is checked automatically
 
 `npm run lint:architecture` parses source with the already installed TypeScript
-compiler API. It builds a runtime dependency graph without executing application
-code. There is no additional graph-checking dependency or production overhead.
+compiler API. It builds runtime and source dependency graphs without executing
+application code. There is no additional graph-checking dependency or production overhead.
 
 It rejects:
 
 - imports upwards or between sibling slices, including type-only dependencies;
 - private cross-slice/Shared imports, unknown layers and imports outside `src/`;
 - runtime cycles through imports, re-exports, slice barrels and literal lazy imports;
+- source modules unreachable from the build entry points in `scripts/entrypoints.mjs`;
 - wildcard exports and unresolvable/non-relative imports;
 - CommonJS `require` and external `import = require` loads;
 - JavaScript, JSX, `.tsx`, `.mts` and `.cts` runtime sources outside the current
@@ -160,6 +161,13 @@ Runtime `.ts` files (including ambient `.d.ts`) are covered. If another source
 format becomes necessary, update TypeScript, lint, build and architecture coverage
 together. The source-symlink rule applies only within `src/`; the agent instruction
 and skill symlinks outside `src/` are unaffected.
+
+Reachability includes type-only imports and literal lazy imports. Ambient `.d.ts`
+files are additional roots because TypeScript includes them without imports.
+The checker detects detached files and groups of files; it does not detect every
+unused exported symbol or prove that a reachable branch executes. Remove obsolete
+exports after checking actual callers. `noUnusedLocals`/`noUnusedParameters` then
+help catch unused private code. Do not add artificial imports to keep dead files.
 
 The fixtures in `tests/architecture.test.cjs` exercise both allowed and rejected
 cases. A cycle failure prints the file chain, for example

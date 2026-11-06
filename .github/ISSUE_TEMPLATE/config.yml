@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/termyanen/gitlab-actions/security/policy
+    about: Read the private vulnerability reporting procedure before sharing security-sensitive details.

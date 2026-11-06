@@ -1,0 +1,25 @@
+name: Feature request
+description: Describe a workflow the extension could improve.
+body:
+  - type: markdown
+    attributes:
+      value: English and Russian requests are welcome. Search existing issues and check the extension settings first.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Which workflow is difficult today?
+      description: Explain the concrete task, who needs it and the current workaround.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Desired behavior
+      description: Give an example of how you would use the feature. Mention whether it should be optional or configured per project.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Alternatives and compatibility
+      description: Mention relevant GitLab/Jira versions, existing native functionality and alternatives considered. An implementation proposal is optional.

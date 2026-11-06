@@ -24,8 +24,9 @@ instruction files as pointers here, rather than maintaining competing rules.
 - FSD layers descend through `app → pages → widgets → features → entities → shared`.
   Sibling slices cannot import each other. Import through a slice's explicit
   `index.ts`, `content.ts` or `background.ts` public API. Shared units expose `index.ts`.
-- `scripts/check-architecture.mjs` enforces imports, runtime cycles and named timer
-  policies. Do not bypass it with dynamic imports, wildcard exports or test hooks.
+- `scripts/check-architecture.mjs` enforces imports, runtime cycles, source reachability
+  and named timer policies. Build entry points live in `scripts/entrypoints.mjs`.
+  Do not bypass checks with dynamic imports, wildcard exports or test hooks.
 - Inside a slice, import implementation files directly rather than its own public
   barrel. Compose independent slices in a higher layer or inject a small capability.
   Type-only imports still obey boundaries. Runtime sources use `.ts` and ESM;

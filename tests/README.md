@@ -91,6 +91,8 @@ cycles through barrels, re-exports and literal lazy imports, mixed/type-only
 dependency handling, explicit exports, named timer policies, and the packaged
 bootstrap exception for dynamic imports. CommonJS loads, unsupported source
 extensions and source symlinks are rejected instead of bypassing the graph.
+Reachability fixtures catch detached modules (including detached cycles), accept
+type-only/lazy dependencies and ambient declarations, and reject missing entry points.
 They exercise both accepted and rejected dependency graphs; run them directly
 with `node --test tests/architecture.test.cjs` after a rule change. See the
 [implementation guide](../docs/ARCHITECTURE.md) for module ownership and cycle fixes.
