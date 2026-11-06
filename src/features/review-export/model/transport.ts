@@ -6,7 +6,7 @@ import type {
   ReviewContext,
   ReviewError,
 } from "./types";
-export function abortError() {
+function abortError() {
   const error = new Error("Review export cancelled.");
   error.name = "AbortError";
   return error;
@@ -29,7 +29,7 @@ export function apiUrl(context: ReviewContext, path: string) {
   return root.href.replace(/\/$/, "") + path;
 }
 
-export async function boundedText(response: Response, maxBytes?: number) {
+async function boundedText(response: Response, maxBytes?: number) {
   if (!maxBytes) return response.text();
   const length = Number(header(response, "Content-Length"));
   if (length > maxBytes)

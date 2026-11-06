@@ -6,7 +6,6 @@ export {
 } from "./model/file-scope";
 export {
   INSTRUCTION_PREFIX,
-  RESPONSE_LANGUAGES,
   applyRepositoryInstructions,
   applyResponseLanguage,
   instruction,

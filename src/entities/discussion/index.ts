@@ -1,6 +1,5 @@
 export type {
   NoteAuthor,
-  NoteLine,
   NotePosition,
   Note,
   DraftNote,

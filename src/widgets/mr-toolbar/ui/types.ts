@@ -8,13 +8,6 @@ export interface ToolbarButton {
   quiet?: boolean;
   reloadOnSuccess?: boolean;
 }
-export interface TaskStatus {
-  taskId: string;
-  jobs: string[];
-  status: string;
-  error?: string;
-  mrTitle?: string;
-}
 export interface PaletteAction {
   id: string;
   label: string;

@@ -16,11 +16,7 @@ import type {
   ReviewError,
   ReviewSnapshot,
 } from "./types";
-export function excerpt(
-  content: string,
-  position: NotePosition,
-  side: "old" | "new",
-) {
+function excerpt(content: string, position: NotePosition, side: "old" | "new") {
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const range = position.line_range || {};
   let first = anchorLine(position, side);

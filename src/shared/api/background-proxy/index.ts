@@ -5,13 +5,13 @@ export interface ProxyTask {
   _tabId?: number | null;
   _cancelled?: boolean;
 }
-export interface ProxyRequest {
+interface ProxyRequest {
   type: "api-proxy";
   method: string;
   path: string;
   body?: unknown;
 }
-export function sendMessageWithTimeout(
+function sendMessageWithTimeout(
   tabId: number,
   msg: ProxyRequest,
   timeoutMs: number,

@@ -4,7 +4,7 @@ export interface NoteAuthor {
   name?: string;
 }
 
-export interface NoteLine {
+interface NoteLine {
   old_line?: number | null;
   new_line?: number | null;
   line_code?: string;

@@ -49,3 +49,23 @@ export const MR_DEFAULTS = {
   buttonOrder: [] as string[],
   projectProfiles: {} as Record<string, ProjectProfile>,
 };
+
+export const LIST_DEFAULTS = {
+  ...DISPLAY_DEFAULTS,
+  dim_drafts: MR_DEFAULTS.dim_drafts,
+  highlight_own_mrs: MR_DEFAULTS.highlight_own_mrs,
+  show_only_mine: false,
+  show_needs_review: false,
+  show_copy_mr: false,
+  show_reviewer_badge: false,
+  show_threads_badge: false,
+  show_size_badge: false,
+  show_conflicts_badge: false,
+  show_approval_badge: false,
+  show_branches: true,
+  show_branches_links: false,
+  show_jira_details: false,
+  skip_confirmations: MR_DEFAULTS.skip_confirmations,
+  jira_url: "",
+  jira_ticket_regex: "",
+};

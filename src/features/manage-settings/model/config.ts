@@ -1,7 +1,7 @@
 import type { JiraQuickAction } from "../../../entities/jira-issue";
 import type { FileFilter } from "../../../entities/review";
 import * as workflow from "../../../entities/review";
-import { MR_DEFAULTS } from "../../../entities/settings";
+import { MR_DEFAULTS, LIST_DEFAULTS } from "../../../entities/settings";
 export { BUTTON_DEFAULTS } from "../../../entities/settings";
 export const BUILTIN_BUTTONS = [
   { key: "btn_version", labelKey: "btnVersion", hintKey: "hintVersion" },
@@ -47,12 +47,6 @@ export const BUILTIN_BUTTONS = [
   { key: "btn_copy_mr", labelKey: "btnCopyMr", hintKey: "hintCopyMr" },
 ];
 export const AI_REVIEW_PROMPT_MAX_LENGTH = workflow.REVIEW_PROMPT_MAX_LENGTH;
-export const AI_REVIEW_DEFAULT_PROMPT = workflow.DEFAULT_PROMPT;
-export const AI_REVIEW_DEFAULT_FRESH_PROMPT =
-  workflow.DEFAULT_FRESH_REVIEW_PROMPT;
-export const AI_REVIEW_DEFAULT_IMPORT_PROMPT = workflow.DEFAULT_REVIEW_PROMPT;
-export const AI_REVIEW_DEFAULT_REPLY_PROMPT = workflow.DEFAULT_REPLY_PROMPT;
-export const AI_REVIEW_DEFAULT_REPEAT_PROMPT = workflow.DEFAULT_REPEAT_PROMPT;
 export const AI_REVIEW_FILTER_FIELDS: (keyof FileFilter)[] = [
   "includeExtensions",
   "includeFiles",
@@ -68,35 +62,35 @@ export const AI_REVIEW_FILTER_LABELS = [
 export const AI_REVIEW_PROMPTS = [
   {
     key: "ai_review_prompt",
-    value: AI_REVIEW_DEFAULT_PROMPT,
+    value: workflow.DEFAULT_PROMPT,
     label: "aiReviewFeedbackPrompt",
     hint: "aiReviewPromptHint",
     reset: "resetAiReviewPrompt",
   },
   {
     key: "ai_review_fresh_prompt",
-    value: AI_REVIEW_DEFAULT_FRESH_PROMPT,
+    value: workflow.DEFAULT_FRESH_REVIEW_PROMPT,
     label: "aiReviewFreshPrompt",
     hint: "aiReviewFreshPromptHint",
     reset: "resetAiReviewFreshPrompt",
   },
   {
     key: "ai_review_import_prompt",
-    value: AI_REVIEW_DEFAULT_IMPORT_PROMPT,
+    value: workflow.DEFAULT_REVIEW_PROMPT,
     label: "aiReviewImportPromptSetting",
     hint: "aiReviewImportPromptSettingHint",
     reset: "resetAiReviewImportPrompt",
   },
   {
     key: "ai_review_reply_prompt",
-    value: AI_REVIEW_DEFAULT_REPLY_PROMPT,
+    value: workflow.DEFAULT_REPLY_PROMPT,
     label: "aiReviewReplyPromptSetting",
     hint: "aiReviewReplyPromptSettingHint",
     reset: "resetAiReviewReplyPrompt",
   },
   {
     key: "ai_review_repeat_prompt",
-    value: AI_REVIEW_DEFAULT_REPEAT_PROMPT,
+    value: workflow.DEFAULT_REPEAT_PROMPT,
     label: "aiReviewRepeatPrompt",
     hint: "aiReviewPromptHint",
     reset: "resetAiReviewRepeatPrompt",
@@ -105,30 +99,19 @@ export const AI_REVIEW_PROMPTS = [
 export const AI_REVIEW_RULES = workflow.INSTRUCTION_BLOCKS;
 const BASE_DEFAULTS = {
   ...MR_DEFAULTS,
+  ...LIST_DEFAULTS,
   language: "auto",
-  show_only_mine: false,
-  show_needs_review: false,
-  show_reviewer_badge: false,
-  show_jira_details: false,
-  show_copy_mr: false,
-  show_threads_badge: false,
-  show_size_badge: false,
-  show_conflicts_badge: false,
-  show_approval_badge: false,
-  show_branches: true,
-  show_branches_links: false,
-  // show_group_by_author: false,
   collapse_bars: false,
   hide_right_sidebar: false,
   show_cmd_palette: true,
   show_standup: true,
   standup_jira_enrich: true,
   show_ai_review_copy: true,
-  ai_review_prompt: AI_REVIEW_DEFAULT_PROMPT,
-  ai_review_fresh_prompt: AI_REVIEW_DEFAULT_FRESH_PROMPT,
-  ai_review_import_prompt: AI_REVIEW_DEFAULT_IMPORT_PROMPT,
-  ai_review_reply_prompt: AI_REVIEW_DEFAULT_REPLY_PROMPT,
-  ai_review_repeat_prompt: AI_REVIEW_DEFAULT_REPEAT_PROMPT,
+  ai_review_prompt: workflow.DEFAULT_PROMPT,
+  ai_review_fresh_prompt: workflow.DEFAULT_FRESH_REVIEW_PROMPT,
+  ai_review_import_prompt: workflow.DEFAULT_REVIEW_PROMPT,
+  ai_review_reply_prompt: workflow.DEFAULT_REPLY_PROMPT,
+  ai_review_repeat_prompt: workflow.DEFAULT_REPEAT_PROMPT,
   ai_review_file_filter: {
     includeExtensions: "",
     includeFiles: "",
@@ -146,8 +129,6 @@ const BASE_DEFAULTS = {
   cherry_pick_smart_fallback: true,
   cherry_pick_bump_version: false,
   commits_jira_field: "fixVersions, status",
-  jira_url: "",
-  jira_ticket_regex: "",
   jiraQuickActions: [] as JiraQuickAction[],
 };
 export const MR_ACTION_TYPES = [

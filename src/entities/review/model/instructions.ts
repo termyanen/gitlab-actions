@@ -15,7 +15,7 @@ import type {
   InstructionSetting,
 } from "./types";
 export const INSTRUCTION_PREFIX = "ai_review_rule_";
-export const RESPONSE_LANGUAGES = {
+const RESPONSE_LANGUAGES = {
   auto: "",
   en: "English",
   ru: "Russian",

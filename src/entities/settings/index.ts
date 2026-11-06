@@ -1,6 +1,7 @@
 export {
   BUTTON_DEFAULTS,
   MR_DEFAULTS,
+  LIST_DEFAULTS,
   VERSION_DEFAULTS,
 } from "./model/defaults";
 export { createMrSettingsReader } from "./model/mr-settings";
@@ -12,10 +13,7 @@ export {
   readDisplayPreferences,
   validDisplayPreferences,
 } from "./model/display-preferences";
-export type {
-  DisplayPreferences,
-  SizeThresholds,
-} from "./model/display-preferences";
+export type { DisplayPreferences } from "./model/display-preferences";
 export type {
   CustomJob,
   MrAction,

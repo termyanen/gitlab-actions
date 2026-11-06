@@ -65,7 +65,7 @@ test('missing shared script still has an English fallback and a blank prompt res
   assert.match(env.control('ai_review_prompt').value, /^Review the feedback for this GitLab/);
   env.control('ai_review_prompt').value = ' \n ';
   env.save();
-  assert.equal(env.writes[0].data.ai_review_prompt, env.context.AI_REVIEW_DEFAULT_PROMPT);
+  assert.equal(env.writes[0].data.ai_review_prompt, env.context.DEFAULTS.ai_review_prompt);
 });
 
 test('prompt size validation permits Unicode but prevents invalid sync storage items without dropping the draft', function() {
@@ -184,12 +184,12 @@ test('fresh review fallback matches the shared default and blank instructions re
   var shared = vm.createContext({ window: {} });
   vm.runInContext(harness.readRuntime('review-export.js'), shared);
   var env = popup();
-  assert.equal(env.context.AI_REVIEW_DEFAULT_FRESH_PROMPT, shared.window.GlReviewExport.DEFAULT_FRESH_REVIEW_PROMPT);
+  assert.equal(env.context.DEFAULTS.ai_review_fresh_prompt, shared.window.GlReviewExport.DEFAULT_FRESH_REVIEW_PROMPT);
   assert.match(env.control('ai_review_fresh_prompt').value, /every commit/);
   assert.match(env.control('ai_review_fresh_prompt').value, /conversation language/);
   env.control('ai_review_fresh_prompt').value = ' \n ';
   env.save();
-  assert.equal(env.writes[0].data.ai_review_fresh_prompt, env.context.AI_REVIEW_DEFAULT_FRESH_PROMPT);
+  assert.equal(env.writes[0].data.ai_review_fresh_prompt, env.context.DEFAULTS.ai_review_fresh_prompt);
 });
 
 test('fresh review textarea participates in autosave without replacing feedback instructions', function() {
