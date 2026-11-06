@@ -24,37 +24,15 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Run regression tests
-        run: npm test
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
 
       - name: Build zip
         run: |
-          zip -r extension.zip . \
-            -x "pack.sh" \
-            -x ".*" \
-            -x "*/.*" \
-            -x ".git/*" \
-            -x ".github/*" \
-            -x ".idea/*" \
-            -x ".vscode/*" \
-            -x "_metadata/*" \
-            -x "CLAUDE.md" \
-            -x "README.md" \
-            -x "CHANGELOG.md" \
-            -x "CHANGELOG_RU.md" \
-            -x "ROADMAP.md" \
-            -x "PRIVACY_POLICY.md" \
-            -x "LICENSE" \
-            -x "screenshots/*" \
-            -x "docs/*" \
-            -x "promo/*" \
-            -x "tests/*" \
-            -x "node_modules/*" \
-            -x "package.json" \
-            -x "package-lock.json" \
-            -x "*.crx" \
-            -x "*.pem" \
-            -x "*.zip"
+          npm run package -- extension.zip
 
       - name: Get access token
         id: token

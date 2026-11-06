@@ -1,13 +1,14 @@
 # Regression tests
 
-Run from the repository root with Node.js 18.18 or newer:
+Run from the repository root with Node.js 22.12 or newer:
 
 ```sh
+npm ci
 npm test
 ```
 
-No npm dependencies or install step are needed. Packaging checks also use Bash,
-`zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI runs on Node.js
+The esbuild/TypeScript toolchain is installed from the lockfile. Packaging checks
+also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI runs on Node.js
 22 on pushes and pull requests, and before Chrome Web Store uploads.
 
 ## What is covered
