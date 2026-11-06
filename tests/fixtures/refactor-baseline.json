@@ -1,0 +1,23 @@
+{
+  "baselineCommit": "1d97afe",
+  "version": "1.13.3",
+  "note": "Byte sizes only; browser latency and memory are not inferred from these values.",
+  "contentScripts": [
+    {
+      "matches": [
+        "https://*/*/-/merge_requests/*"
+      ],
+      "sourceJsBytes": 77511,
+      "builtJsBytes": 40213,
+      "cssBytes": 66443
+    },
+    {
+      "matches": [
+        "https://*/*"
+      ],
+      "sourceJsBytes": 473121,
+      "builtJsBytes": 268249,
+      "cssBytes": 66443
+    }
+  ]
+}

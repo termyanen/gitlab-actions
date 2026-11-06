@@ -4,12 +4,8 @@ var fs = require('node:fs');
 var path = require('node:path');
 var vm = require('node:vm');
 var assert = require('node:assert/strict');
-var root = path.resolve(__dirname, '../..');
-
-// Optional local baseline comparison; ordinary tests always use the workspace.
-function readRuntime(file) {
-  return fs.readFileSync(path.join(process.env.EXTENSION_TEST_SOURCE_DIR || root, file), 'utf8');
-}
+var root = require('./runtime.cjs').root;
+var readRuntime = require('./runtime.cjs').readRuntime;
 
 function plain(value) {
   return JSON.parse(JSON.stringify(value));
