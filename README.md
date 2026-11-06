@@ -398,7 +398,7 @@ Flexible configuration for automatic version bumping:
    ```bash
    git clone https://github.com/termyanen/gitlab-actions.git
    ```
-2. Use Node.js 22.12+ (`nvm use`), then run `npm ci` and `npm run build`.
+2. Use Node.js 22.13+ (or 24+) (`nvm use`), then run `npm ci` and `npm run build`.
 3. Open `chrome://extensions/` and enable "Developer mode".
 4. Click "Load unpacked" and select the generated `dist/` folder.
 5. Open any GitLab merge request page.
@@ -433,7 +433,7 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
 
 ## Compatibility
 
-- Chrome / Chromium-based browsers (Edge, Brave, Arc, etc.)
+- Chrome 110+ / corresponding Chromium-based browsers (Edge, Brave, Arc, etc.)
 - Any self-hosted GitLab instance
 - Any Jira Server / Data Center instance (Cloud support varies)
 
@@ -453,7 +453,8 @@ Static manifest, HTML/CSS, icons and locales remain at the repository root to
 preserve version/release tooling; only `dist/` is loaded or packaged.
 
 CI chains keep checkpoints in local storage and use a one-minute alarm to wake
-the worker. A live worker retains its 20-second job polling. Recovery keeps the
+the worker. Browser startup re-creates the alarm if Chrome discarded it. A live
+worker retains its 20-second job polling. Recovery keeps the
 selected pipeline and reconciles an interrupted job start before continuing;
 uncertain outcomes are reported for manual verification, without replaying a
 write. Preferences and exported settings keep their existing formats.
@@ -473,7 +474,7 @@ lint, formatting, FSD boundaries, regressions, bundle budgets and ZIP checks.
 
 ## Testing
 
-Run `npm ci`, then `npm run check` with Node.js 22.12+. This checks TypeScript,
+Run `npm ci`, then `npm run check` with Node.js 22.13+ (or 24+). This checks TypeScript,
 lint, regressions and the production build. Use `npm test` for regressions only. The
 regression suite covers version bumps, MR actions, CI job chains, API relay, Jira
 handlers, cherry-pick flows and diff helpers, locales, and release packaging. Tests run in
@@ -497,6 +498,42 @@ release:
 
 The private `package.json` configures the development toolchain and has no separate
 release version. Both packaging paths build and package only `dist/`.
+
+### CI and Chrome Web Store configuration
+
+Pushes, pull requests and store uploads share `.github/workflows/verify.yml`
+on Ubuntu 24.04; the runner label is explicit to avoid an unplanned OS migration.
+It installs from the lockfile, validates workflows with actionlint, audits dev
+dependencies, and runs `npm run check`. It packages `extension.zip` once and
+stores it as the `extension-package` artifact. A separate job unpacks that ZIP
+for the Chromium regression and memory/performance checks. The store job waits
+for both jobs and uploads the same ZIP. Build and browser reports are retained
+for 14 days. `bash pack.sh` still creates `gitlab-mr-actions-v<version>.zip`.
+Both archives contain `manifest.json` at their root and packaged MV3 runtime,
+icons, CSS, HTML and locales, without development files.
+
+The store workflow uses Chrome Web Store API v2. Configure the following under
+**Settings → Secrets and variables → Actions**:
+
+| Setting | Storage | Value |
+| --- | --- | --- |
+| `CWS_PUBLISHER_ID` | Repository variable | Publisher ID from Developer Dashboard → Publisher → Settings; not a credential |
+| `CWS_EXTENSION_ID` | Existing repository secret | The store item ID |
+| `CWS_CLIENT_ID` | Existing repository secret | OAuth client ID |
+| `CWS_CLIENT_SECRET` | Repository secret | OAuth client secret |
+| `CWS_REFRESH_TOKEN` | Repository secret | Refresh token with the `chromewebstore` scope |
+
+A published GitHub release uploads the ZIP without submitting it for review.
+The manual workflow defaults to `upload`; selecting `publish` explicitly
+uploads and submits after successful processing. HTTP success alone does not
+count as successful submission. Release tags must match the manifest version
+(`v` prefix optional); bump the version before a new store release.
+
+The minimatch override fixes [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)
+in the development toolchain. Remove it when upstream dependency ranges include
+the fixed version. TypeScript remains on 6.0.3 because the installed
+typescript-eslint packages require `<6.1.0`; moving to TypeScript 7 requires a
+compatible linter release. Dependabot tracks npm and pinned GitHub Actions updates.
 
 ## License
 

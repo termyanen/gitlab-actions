@@ -7,26 +7,10 @@ on:
 permissions:
   contents: read
 
-jobs:
-  regression:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm ci
-      - run: npm run check
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
 
-  browser:
-    runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: node_modules/.cache/ms-playwright
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:browser
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml

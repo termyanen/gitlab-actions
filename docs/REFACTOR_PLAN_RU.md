@@ -443,3 +443,82 @@ Chrome, GPU-памяти или скорости реального GitLab/Jira;
 различия серверных версий требуют проверки на живом окружении.
 
 Все изменения остаются локальными, без push.
+
+## Аудит CI, зависимостей и требований Chrome — 2026-11-06
+
+База прохода — `256f968`. Исправлены следующие подтверждённые проблемы:
+
+1. Workflow магазина использовал API v1, поддержку которого Google завершил
+   15 октября 2026. Добавлен клиент API v2 с отдельной конфигурацией publisher ID,
+   ожиданием завершения асинхронной загрузки, проверкой состояния submission,
+   тайм-аутами и ограниченным polling. HTTP 200 с ошибкой или неизвестным
+   состоянием не считается успехом. Запросы записи автоматически не повторяются.
+   OAuth-параметры кодируются через `URLSearchParams`; секреты не подставляются
+   в shell-код, access token и тела ответов не выводятся в лог.
+2. Загрузка в магазин обходила браузерные проверки. Теперь push/PR и release
+   используют один reusable workflow: `npm ci` → actionlint/audit/check → ZIP →
+   Chromium и runtime-профилирование распакованного ZIP. Store job зависит от
+   успешного завершения всей проверки и использует тот же artifact. Release
+   по-прежнему только загружает пакет; submission выполняется при явном ручном
+   выборе `publish`. Версии manifest, ZIP и release tag проверяются до OAuth.
+3. CI не сохранял результат сборки и диагностику. Теперь сохраняются
+   `extension-package`, `build-reports`, `browser-reports` на 14 дней. Actions
+   закреплены полными проверенными SHA; права — `contents: read`, есть timeout
+   и concurrency. Ubuntu зафиксирован на 24.04: согласно runner-images,
+   `ubuntu-latest` меняется на 26.04 в ноябре 2026.
+4. `engines.node >=22.12` противоречил требованию ESLint 10 — Node 22.13+.
+   Исправлены engines, документация и проверка версии через `.npmrc`;
+   CI читает Node из `.nvmrc`.
+5. npm audit выявил один advisory minimatch, распространявшийся на десять
+   dev-пакетов. Override на 11.0.1 устранил его; чистый `npm ci`, lint,
+   архитектурные проверки и все тесты проходят. После обновления audit: 0
+   известных уязвимостей. Runtime npm-зависимостей по-прежнему нет.
+   TypeScript 7 не устанавливался: peer range текущего typescript-eslint —
+   `>=4.8.4 <6.1.0`. Добавлены еженедельные проверки обновлений Dependabot.
+6. Сборщик указывал Chrome 88, хотя runtime использует более новые Promise API,
+   CSS `:has()` и поведение service worker. `minimum_chrome_version: 110`
+   теперь явно задан в manifest и используется esbuild как единый target.
+   Добавлен синхронный `runtime.onStartup` listener для восстановления alarm;
+   повторные startup-события не создают второй исполнитель той же цепочки.
+
+Сверка с рекомендациями Google:
+
+| Область | Проверенный результат |
+| --- | --- |
+| Manifest V3 / worker | Локальный IIFE worker; события зарегистрированы синхронно; checkpoints сохраняются в storage, alarm восстанавливается при старте |
+| CSP / удалённый код | `script-src 'self'; object-src 'none'`, нет dev server/eval/удалённых runtime imports; ESM-граф замкнут внутри пакета |
+| Content scripts | Isolated world, GitLab detection, CSS scope, нет публичного page-message интерфейса для запуска мутаций |
+| Permissions | storage — настройки/задачи; notifications — результаты; tabs — поиск вкладок GitLab; cookies — Jira session; alarms — пробуждение цепочек |
+| Hosts / WAR | HTTPS; произвольные self-hosted домены сохранены. WAR содержит локали и локальные модули, необходимые динамическим загрузкам |
+| ZIP | Manifest в корне, все модули/локали/icons/CSS/HTML присутствуют, source/test/docs/maps/node_modules отсутствуют |
+| Версии / локализация | Manifest — источник версии; согласованность сайта и changelog, ключи локалей и лимит описания магазина проверяются тестами |
+
+Результат локальной проверки: чистая отдельная копия проекта без node_modules,
+успешный `npm ci`, полный `npm run check` — 857 тестов; 21 Chromium-сценарий
+на пакете, который сначала был создан, затем распакован вместо исходного dist.
+Actionlint 1.7.12 проверил workflow. Оба штатных пути упаковки проверены:
+`bash pack.sh` → `gitlab-mr-actions-v1.13.3.zip`, CI → `extension.zip`.
+Готовый локальный архив содержит 47 файлов, побайтово совпадающих с dist.
+
+На распакованном CI ZIP runtime-проверка прошла: после 60 замен MR-списка
+рост DOM/обработчиков 0/0, медиана 216,58 мс; после 20 циклов review/SPA — 0/0.
+Начальный MR JS — 135 645 байт, bootstrap — 281, CSS — 80 498 байт.
+Формат ZIP, названия локальных архивов и фичи расширения сохранены.
+
+Границы проверки: GitHub-hosted Linux job не запускался (push запрещён),
+Docker daemon локально не работал. Фактически выполнены проверки на macOS,
+actionlint и чистая установка; Chromium/API tests используют локальные fixtures.
+Реальная загрузка/публикация не выполнялась, OAuth-секреты не читались.
+Перед первым запуском v2 необходимо задать repository variable
+`CWS_PUBLISHER_ID` присланным пользователем ID. Сам ID не является credential;
+реальные права определяются OAuth. Настройки GitHub в этом проходе не менялись.
+
+Источники: [Google: API v1 sunset](https://developer.chrome.com/docs/webstore/api/v1/),
+[API v2 upload](https://developer.chrome.com/docs/webstore/api/reference/rest/v2/media/upload),
+[API v2 publish](https://developer.chrome.com/docs/webstore/api/reference/rest/v2/publishers.items/publish),
+[подготовка ZIP](https://developer.chrome.com/docs/webstore/prepare),
+[безопасность расширений](https://developer.chrome.com/docs/extensions/develop/security-privacy/stay-secure),
+[жизненный цикл worker](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle),
+[Manifest V3: локальный исполняемый код](https://developer.chrome.com/docs/webstore/program-policies/mv3-requirements),
+[minimatch advisory](https://github.com/advisories/GHSA-g3hv-75wg-m249),
+[Ubuntu runner image](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md).
