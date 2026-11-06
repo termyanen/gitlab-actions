@@ -1,0 +1,33 @@
+'use strict';
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const { root } = require('./helpers/runtime.cjs');
+
+test('production manifest resources exist and shipped scripts parse', () => {
+  const dist = path.join(root, 'dist');
+  const manifest = JSON.parse(fs.readFileSync(path.join(dist, 'manifest.json')));
+  const scripts = new Set([manifest.background.service_worker]);
+  const assets = [manifest.action.default_popup, ...Object.values(manifest.icons)];
+  for (const entry of manifest.content_scripts) {
+    for (const file of entry.js || []) scripts.add(file);
+    assets.push(...entry.css || []);
+  }
+  for (const file of assets) assert.ok(fs.existsSync(path.join(dist, file)), file);
+  for (const file of scripts) assert.doesNotThrow(() => new vm.Script(fs.readFileSync(path.join(dist, file), 'utf8')));
+  assert.equal(manifest.content_scripts.every((entry) => entry.run_at === 'document_idle'), true);
+  assert.equal(manifest.content_scripts.some((entry) => entry.world === 'MAIN'), false);
+});
+
+test('build does not add host access or weaken the production CSP', () => {
+  const expected = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
+  const actual = JSON.parse(fs.readFileSync(path.join(root, 'dist/manifest.json')));
+  for (const key of ['permissions', 'host_permissions', 'optional_host_permissions', 'content_security_policy']) {
+    assert.deepEqual(actual[key], expected[key], key);
+  }
+  const files = fs.readdirSync(path.join(root, 'dist'), { recursive: true });
+  assert.equal(files.some((file) => /\.(?:map|ts|tsx)$/.test(file)), false);
+  assert.equal(files.some((file) => /(^|\/)(node_modules|tests|src|scripts)(\/|$)/.test(file)), false);
+});
