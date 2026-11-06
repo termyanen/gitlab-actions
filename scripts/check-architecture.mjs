@@ -7,7 +7,6 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceRoot = join(root, "src");
 const layers = ["app", "pages", "widgets", "features", "entities", "shared"];
 const legacy = new Set([
-  "background.js",
 ]);
 const violations = [];
 

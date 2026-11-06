@@ -147,7 +147,7 @@ test('closing all GitLab tabs ends the chain without starting its next job', asy
   assert.equal(env.requests.some(function(req) { return req.method === 'POST'; }), false);
 });
 
-test('a fresh worker reports lost in-memory tasks and never replays mutations automatically', async function() {
+test('a worker with empty storage never adopts tasks from another profile', async function() {
   var oldWorker = harness.background({ gitlab: function(req) {
     if (req.path === '/projects/37/merge_requests/12') return { head_pipeline: { id: 100, project_id: 37 } };
     return [{ id: 8, name: 'build', status: 'running' }];
