@@ -21,6 +21,18 @@ export function createLifecycle() {
     return (...args: A): R | undefined =>
       disposed ? undefined : callback(...args);
   }
+  /** One-shot async replies must release their view even if delivery stalls. */
+  function once<A extends unknown[], R>(callback: (...args: A) => R) {
+    let pending: ((...args: A) => R) | undefined = callback;
+    const release = onCleanup(() => {
+      pending = undefined;
+    });
+    return (...args: A): R | undefined => {
+      const current = pending;
+      release();
+      return current?.(...args);
+    };
+  }
   function timeout(callback: () => void, delay?: number) {
     const id = setTimeout(() => {
       timers.delete(id);
@@ -30,6 +42,11 @@ export function createLifecycle() {
     else timers.add(id);
     return id;
   }
+  function cancelTimeout(id: ReturnType<typeof setTimeout> | undefined) {
+    if (id === undefined) return;
+    clearTimeout(id);
+    timers.delete(id);
+  }
   function interval(callback: () => void, delay?: number) {
     const id = setInterval(() => {
       if (!disposed) callback();
@@ -37,6 +54,11 @@ export function createLifecycle() {
     if (disposed) clearInterval(id);
     else intervals.add(id);
     return id;
+  }
+  function cancelInterval(id: ReturnType<typeof setInterval> | undefined) {
+    if (id === undefined) return;
+    clearInterval(id);
+    intervals.delete(id);
   }
   function observer(callback: MutationCallback): MutationObserver {
     const instance = new MutationObserver((records, observer) => {
@@ -83,11 +105,22 @@ export function createLifecycle() {
     signal: abort.signal,
     onCleanup,
     guard,
+    once,
     timeout,
+    cancelTimeout,
     interval,
+    cancelInterval,
     observer,
     listen,
     dispose,
   };
 }
 export type Lifecycle = ReturnType<typeof createLifecycle>;
+
+/** A dialog can end before its route. Release the parent's registration too. */
+export function createChildLifecycle(parent: Lifecycle): Lifecycle {
+  const child = createLifecycle();
+  const release = parent.onCleanup(child.dispose);
+  child.onCleanup(release);
+  return child;
+}

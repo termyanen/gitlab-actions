@@ -13,7 +13,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
     }
     sendJiraMessage(
       { type: "fetch-jira-myself", jiraUrl: jiraUrl },
-      scope.guard(function (resp) {
+      scope.once(function (resp) {
         const id = resp && !resp._error ? resp.id : "";
         jiraState.myselfCache[jiraUrl] = id;
         cb(id);
@@ -95,7 +95,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           startAt: startAt,
           maxResults: 5,
         },
-        scope.guard(function (resp) {
+        scope.once(function (resp) {
           if (!resp || resp._error) {
             if (startAt === 0) {
               listEl.innerHTML =
@@ -195,7 +195,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           ticket: ticket,
           text: text,
         },
-        scope.guard(function (resp) {
+        scope.once(function (resp) {
           if (!resp || resp._error) {
             errorEl.textContent =
               chrome.i18n.getMessage("jiraSidebarCommentError") ||
@@ -282,7 +282,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           ticket: ticket,
           commentId: commentId,
         },
-        scope.guard(function (resp) {
+        scope.once(function (resp) {
           if (!resp || resp._error) {
             btn.disabled = false;
             if (errorEl) {
