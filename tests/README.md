@@ -1,19 +1,24 @@
 # Regression tests
 
-Run from the repository root with Node.js 22.x (22.13+) or 24+:
+Run from the repository root with Node.js 26 LTS selected by `.nvmrc`:
 
 ```sh
+nvm install
+nvm use
 npm ci
 npm test
 ```
 
 The esbuild/TypeScript toolchain is installed from the lockfile. Packaging checks
-also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI runs on Node.js
-22 on pushes and pull requests, and before Chrome Web Store uploads.
+also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI
+builds/packages and runs Chromium on Node 26. Separate jobs run static and regression
+checks on the supported Node 22.x (22.13+) and 24.x lines, on pushes and pull requests
+and before Chrome Web Store uploads. Other majors are not included in the support
+contract; use the latest security patch of a supported line.
 
 The shared verification workflow packages once, then runs the browser suite and
 profiler against the unpacked ZIP. The store upload job consumes the same
-artifact only after both verification jobs succeed. `chrome-web-store.test.cjs`
+artifact only after all verification jobs succeed. `chrome-web-store.test.cjs`
 uses injected transport responses to cover API v2 upload, polling, explicit
 submission, HTTP/application failures, OAuth form encoding and version/tag
 validation. No test reads deployment credentials or contacts the store.
