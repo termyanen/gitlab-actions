@@ -432,7 +432,7 @@ Flexible configuration for automatic version bumping:
    ```bash
    git clone https://github.com/termyanen/gitlab-actions.git
    ```
-2. Use Node.js 22.x (22.13+) or 24+ (`nvm use`), then run `npm ci` and `npm run build`.
+2. Use Node.js 26 LTS (`nvm install`, then `nvm use`), then run `npm ci` and `npm run build`. Node 22.x (22.13+) and 24.x are also supported; use the latest patch of your chosen line. Node is needed only to build from source.
 3. Open `chrome://extensions/` and enable "Developer mode".
 4. Click "Load unpacked" and select the generated `dist/` folder.
 5. Open a GitLab merge request over HTTPS and allow the extension access to that site.
@@ -529,7 +529,8 @@ maintainer verification are listed in [CONTRIBUTING.md](CONTRIBUTING.md#reposito
 
 ## Testing
 
-Run `npm ci`, then `npm run check` with Node.js 22.x (22.13+) or 24+. This checks TypeScript,
+Run `npm ci`, then `npm run check` with Node.js 26 LTS (`nvm use`). Node 22.x
+(22.13+) and 24.x also have CI compatibility checks. This checks TypeScript,
 lint, regressions and the production build. Use `npm test` for regressions only. The
 regression suite covers version bumps, MR actions, CI job chains, API relay, Jira
 handlers, cherry-pick flows and diff helpers, locales, and release packaging. Tests run in

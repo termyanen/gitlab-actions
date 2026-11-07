@@ -20,7 +20,10 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"scripts/**/*.mjs\" \"*.config.{mjs,cjs}\" \"*.json\" \".prettierrc.json\" \".github/**/*.yml\""
   },
   "engines": {
-    "node": "^22.13.0 || >=24"
+    "node": "^22.13.0 || ^24.0.0 || ^26.0.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   },
   "overrides": {
     "minimatch": "11.0.1"
