@@ -13,11 +13,22 @@ issues follow [SECURITY.md](SECURITY.md) and the private reporting channel.
 
 ## Setup
 
-Use Node 22.13+ on the 22.x line, or Node 24+. `.nvmrc` selects the CI major;
-`.npmrc` rejects incompatible engines. Use npm and commit `package-lock.json`
-alongside intentional dependency changes.
+Use the latest Node 26 LTS patch selected by `.nvmrc` for development and release
+builds. Node 22.x (22.13+) and 24.x remain supported and have separate CI checks;
+use their latest security patches. Other majors are not supported implicitly:
+`package.json` lists the supported lines and `.npmrc` rejects incompatible engines.
+Node runs the build/test tooling; users of the installed Chrome extension do not
+need Node. Use npm and commit `package-lock.json` alongside intentional dependency
+changes. See the upstream [Node release schedule](https://nodejs.org/en/about/previous-releases).
+
+Recent npm versions require dependency [install-script approvals](https://docs.npmjs.com/cli/v11/commands/npm-install-scripts/). `allowScripts`
+permits only the pinned esbuild installer, which selects/verifies its native build
+binary. Review that script and update its pinned approval when upgrading esbuild;
+do not use blanket script approval. Older npm versions do not enforce this policy,
+so use the default Node 26 toolchain for the maintained release path.
 
 ```sh
+nvm install
 nvm use
 npm ci
 npm run build
@@ -68,6 +79,11 @@ The shared CI workflow verifies a ZIP, unpacks it for browser/performance checks
 then makes that same artifact available to the store job. Local success does not
 prove GitHub-hosted execution or store credentials work. Store configuration and
 release/version rules are in [README.md](README.md#ci-and-chrome-web-store-configuration).
+
+The primary build, browser checks and store tooling use Node 26 from `.nvmrc`;
+the Node 22/24 compatibility jobs run the same static and regression checks but
+do not produce competing release artifacts. Keep `engines`, `.nvmrc`, this matrix
+and the documented support policy aligned when changing supported Node lines.
 
 ## Repository setup and release readiness
 
