@@ -1,0 +1,88 @@
+Язык: Французский (fr)
+
+Simplifiez votre travail avec les merge requests GitLab grâce à l’automatisation en un clic. Remplacez les opérations manuelles en plusieurs étapes — rebase, mise à jour de version, gestion des pipelines et fusion — par un seul bouton. Compatible avec GitLab auto-hébergé en HTTPS et gitlab.com ; la disponibilité des fonctions dépend du serveur et des droits de votre compte. Aucun jeton API requis : votre session de navigateur existante est utilisée.
+
+★ REVUE PAR IA AVEC VOS PROPRES OUTILS
+
+• Revue complète du MR — préparez une tâche couvrant tous les commits du MR, avec des filtres de fichiers configurables
+• Correction et réponse — copiez les remarques sélectionnées dans votre assistant de programmation IA et préparez des réponses prêtes à publier
+• Revue de suivi — revérifiez les corrections et les changements depuis une révision choisie, y compris après un force push
+• Import modifiable — collez les commentaires et réponses de l’IA au format JSON, modifiez les textes puis publiez les éléments sélectionnés ou enregistrez des brouillons de revue. Vous pouvez aussi résoudre les discussions après la publication des réponses
+• Instructions personnalisées — adaptez les prompts et les blocs d’instructions automatiques ; choisissez la langue de réponse
+• Partage manuel — utilisez votre outil d’IA préféré. Aucune clé API d’IA dans l’extension et aucun envoi automatique de code
+
+★ ACTIONS SUR LES MERGE REQUESTS
+
+• Fusion automatique — effectuez un rebase et activez la fusion après réussite du pipeline en un clic
+• Ship — cycle de publication complet : mise à jour de version → pipeline → fusion automatique
+• Fusion forcée — fusionnez sans attendre le pipeline lorsque la CI n’est pas nécessaire
+• Mise à jour de version — incrémentez la version dans package.json, pyproject.toml ou un autre fichier : patch / minor / major
+• Rebase — rebasez la branche avec ou sans mise à jour de version
+• Brouillon / Prêt — changez l’état du MR sans modifier son titre
+• Commentaires rapides — publiez des modèles de commentaires sur le MR en un clic
+• Copier le MR — copiez instantanément le titre et le lien dans le presse-papiers
+
+★ COMMANDES DES PIPELINES CI/CD
+
+• Nouveau pipeline / Annuler — créez ou annulez des pipelines directement
+• Relancer tous les jobs en échec — redémarrez ensemble tous les jobs échoués du dernier pipeline
+• Boutons de jobs personnalisés — lancez un job CI en un clic ou enchaînez plusieurs jobs, par exemple compilation → déploiement
+• Aperçu des erreurs — consultez les noms des jobs échoués et les lignes de journal d’erreur directement sur la page du MR
+• Exécution en arrière-plan — les chaînes de jobs personnalisées continuent après un changement de page
+
+★ INTÉGRATION JIRA SANS JETONS API
+
+• Badges de statut Jira — statuts colorés : Terminé, En cours, QA, À faire ; les clés de tickets sont extraites des titres de MR
+• Panneau latéral du ticket — cliquez sur un badge pour afficher le titre, le statut, la personne assignée, la priorité, le sprint, l’epic, les étiquettes, la description et les pièces jointes
+• Statut et assignation — changez le statut ou la personne assignée sans quitter GitLab
+• Actions rapides Jira — combinez plusieurs opérations, comme changer le statut et assigner le ticket, en un clic
+• Icônes de type et de priorité — icônes natives de Jira dans la liste et les pages détaillées des MR
+• Champs Jira sur les commits — affichez Fix Version, le statut ou un autre champ à côté des commits
+• Jira dans les rapports quotidiens — ajoutez automatiquement les titres de tickets aux résumés d’activité
+
+★ AMÉLIORATIONS DE LA LISTE DES MR
+
+• Taille des MR — badges colorés S / M / L / XL selon le nombre de lignes modifiées
+• Indicateur de conflits — badge rouge lorsque la branche présente des conflits de fusion
+• Discussions non résolues — voyez immédiatement le nombre de discussions ouvertes
+• Noms des branches — branche source → branche cible sur chaque MR
+• Indicateur d’approbation — voyez si vous avez approuvé chaque MR
+• Atténuation des brouillons — réduisez leur visibilité pour vous concentrer sur les MR actifs
+• Mise en évidence de vos MR — bordure bleue pour les repérer rapidement
+• Filtres « Les miens », « À examiner » et « Grouper par auteur »
+• Badge « Votre revue » — détecte les mentions dans le job de reviewers configuré et dans les commentaires
+• Copie depuis la liste — bouton de copie sur chaque MR
+
+★ OUTILS DE PRODUCTIVITÉ
+
+• Palette de commandes (Cmd+K / Ctrl+K) — accédez aux MR, pipelines, branches et tickets ou déclenchez des actions
+• Recherche de fichiers — trouvez et ouvrez un fichier du projet par son nom dans la palette
+• Rapport quotidien — résumé des MR créés, fusionnés, commentés et approuvés ; copiez-le pour Slack ou Jira
+• Cherry-pick vers plusieurs branches — appliquez un commit à plusieurs branches à la fois avec création automatique de MR
+• Reprise du cherry-pick — en cas de conflit, réappliquez automatiquement le commit sans le fichier de version
+• Avertissement de fichiers sensibles — badge orange si le MR touche .env, Dockerfile, les configurations CI ou des fichiers d’identifiants
+• Commandes Git — copiez git checkout et git fetch pour la branche du MR
+• Ancienneté du MR — voyez depuis combien de temps il est ouvert
+• Mise en évidence de vos commentaires — bordure colorée autour de vos propres commentaires dans les discussions
+
+★ PERSONNALISATION
+
+• Profils par projet — boutons, fichiers de version et jobs CI distincts pour chaque dépôt
+• Ordre par glisser-déposer — disposez les boutons d’action comme vous le souhaitez
+• Largeur de tabulation dans les diffs — affichage sur 2, 4 ou 8 espaces
+• Replier les barres supérieures / Masquer le panneau droit — agrandissez votre espace de travail
+• Sons et notifications — soyez averti de la réussite ou de l’échec des actions
+• Thème sombre — suit automatiquement la préférence du système
+
+★ POURQUOI GITLAB MR ACTIONS ?
+
+✓ Aucun jeton d’accès personnel — utilise les cookies de votre session GitLab existante
+✓ Aucun service intermédiaire — les requêtes GitLab et Jira vont directement vers vos serveurs configurés
+✓ GitLab auto-hébergé en HTTPS et gitlab.com ; consultez le guide de compatibilité pour les contrats API testés
+✓ Jira sans jetons API — utilise la session du navigateur
+✓ Configuration indépendante pour chaque projet
+✓ Léger — les vérifications en arrière-plan concernent les actions que vous lancez ; aucune télémétrie ni aucun envoi automatique à une IA
+✓ Interface disponible en 27 langues
+✓ Open source
+
+Pour les développeurs qui veulent passer moins de temps à cliquer dans GitLab et plus de temps à écrire du code.

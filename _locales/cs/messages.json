@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Automatizace, Jira, CI/CD a AI review"
+  },
+  "extDescription": {
+    "message": "Automatizujte MR v GitLabu: sloučení, verze, Jira, CI/CD a review s vaší AI. Bez API tokenů."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Jak to funguje"
+  },
+  "openSettingsInTab": {
+    "message": "Otevřít nastavení v nové záložce"
+  },
+  "exportSettings": {
+    "message": "Exportovat nastavení"
+  },
+  "importSettings": {
+    "message": "Importovat nastavení"
+  },
+  "settingsTransferHint": {
+    "message": "Sdílejte všechna nastavení a profily projektů jako JSON soubor."
+  },
+  "settingsImportReplace": {
+    "message": "Toto nahradí všechna aktuální nastavení a profily projektů."
+  },
+  "applySettingsImport": {
+    "message": "Nahradit nastavení"
+  },
+  "cancelSettingsImport": {
+    "message": "Zrušit"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — profily projektů: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Neplatný soubor nastavení nebo nepodporovaný formát."
+  },
+  "settingsFileTooLarge": {
+    "message": "Soubor nastavení přesahuje limity úložiště Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Nepodařilo se exportovat nastavení. Zkuste to prosím znovu."
+  },
+  "settingsImportFailed": {
+    "message": "Nepodařilo se importovat nastavení. Vaše aktuální konfigurace zůstává nezměněna."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Povolit přístup na stránky Jira pro import těchto nastavení."
+  },
+  "settingsImported": {
+    "message": "Nastavení importováno!"
+  },
+  "buttonOrder": {
+    "message": "Pořadí tlačítek"
+  },
+  "buttonOrderHint": {
+    "message": "Přetáhněte pro změnu pořadí. Najetím myši zobrazíte popis. Vlastní úkoly modře."
+  },
+  "general": {
+    "message": "Obecné"
+  },
+  "soundNotifications": {
+    "message": "Zvuková upozornění"
+  },
+  "desktopNotifications": {
+    "message": "Upozornění na ploše"
+  },
+  "showTimeTracker": {
+    "message": "Zobrazit věk MR odznaku"
+  },
+  "skipConfirmations": {
+    "message": "Přeskočit potvrzení akcí MR"
+  },
+  "uxEnhancer": {
+    "message": "Vylepšení seznamu MR"
+  },
+  "dimDrafts": {
+    "message": "Ztlumit koncepty MR v seznamu"
+  },
+  "highlightOwnMrs": {
+    "message": "Zvýraznit vaše MR v seznamu"
+  },
+  "showOnlyMine": {
+    "message": "Přepínač \"Jen moje\" na stránce seznamu"
+  },
+  "toggleOnlyMine": {
+    "message": "Jen moje"
+  },
+  "versionBump": {
+    "message": "Zvýšení verze"
+  },
+  "filePath": {
+    "message": "Cesta k souboru"
+  },
+  "filePathHint": {
+    "message": "Soubor obsahující číslo verze"
+  },
+  "versionField": {
+    "message": "Pole verze"
+  },
+  "versionFieldHint": {
+    "message": "Klíč JSON nebo klíč TOML (např. \"version\" nebo \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategie"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Zpráva commit"
+  },
+  "commitMessageHint": {
+    "message": "Použijte {version} jako zástupný symbol"
+  },
+  "quickComments": {
+    "message": "Rychlé komentáře"
+  },
+  "quickCommentsHint": {
+    "message": "Jedno-klikací tlačítka, která okamžitě zveřejní obecný komentář k MR (ne přímo kódu). Tlačítka se zobrazují v akčním panelu."
+  },
+  "quickCommentsAdd": {
+    "message": "Přidat komentář"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Rychlé komentáře"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Konfigurovatelná tlačítka s šablonami komentářů na stránce MR. Jeden klik pro odeslání LGTM, Needs fixes nebo jakéhokoli vlastního komentáře."
+  },
+  "reviewers": {
+    "message": "Recenzenti"
+  },
+  "reviewersList": {
+    "message": "Seznam recenzentů"
+  },
+  "reviewersListHint": {
+    "message": "Uživatelská jména k zmínění v komentáři Reviewers: (@user1, @user2). Pokud jsou nastavena, přeskočí hledání komentáře a CI job. Nemění přiřazení recenzentů v GitLab."
+  },
+  "jobName": {
+    "message": "Název jobu"
+  },
+  "jobNameHint": {
+    "message": "Náhradní job, pokud žádný komentář neodpovídá vzoru \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Vlastní tlačítka jobů"
+  },
+  "customJobsHint": {
+    "message": "Použijte čárky k propojení: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Přidat tlačítko jobu"
+  },
+  "addProfileFor": {
+    "message": "+ Přidat profil pro $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Aktuální: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Uloženo!"
+  },
+  "unsavedChanges": {
+    "message": "Neuložené změny..."
+  },
+  "customFile": {
+    "message": "Vlastní soubor..."
+  },
+  "plainText": {
+    "message": "prostý text"
+  },
+  "removeProfile": {
+    "message": "Odstranit profil pro $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Výchozí"
+  },
+  "buttonsFor": {
+    "message": "Tlačítka pro $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Přepsat, která tlačítka se mají zobrazit pro tento projekt."
+  },
+  "leaveEmptyDefault": {
+    "message": "Nechte prázdné pro použití výchozího nastavení"
+  },
+  "projectSpecificJobs": {
+    "message": "Práce specifické pro projekt. Použijte čárky pro propojení."
+  },
+  "languageLabel": {
+    "message": "Jazyk"
+  },
+  "languageAuto": {
+    "message": "Automaticky (prohlížeč)"
+  },
+  "btnVersion": {
+    "message": "Zvýšení verze"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + verze"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + automatické sloučení"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + nucené sloučení"
+  },
+  "btnShip": {
+    "message": "Rebase + verze + automatické sloučení"
+  },
+  "btnForceShip": {
+    "message": "Rebase + verze + nucené sloučení"
+  },
+  "btnReviewers": {
+    "message": "Recenzenti"
+  },
+  "btnPipelineRestart": {
+    "message": "Nová pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Zrušit pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Přepínač koncept / připraveno"
+  },
+  "btnRetryFailed": {
+    "message": "Opakovat neúspěšné úlohy"
+  },
+  "btnCopyMr": {
+    "message": "Kopírovat MR"
+  },
+  "hintVersion": {
+    "message": "Přečte nakonfigurovaný soubor (např. package.json), zvýší verzi podle vybrané strategie (patch/minor/major), provede commit s vaší šablonou zprávy."
+  },
+  "hintRebase": {
+    "message": "Přepíše (rebase) zdrojovou větev na cílovou větev. Neslučuje a neumožňuje automatické slučování."
+  },
+  "hintRebaseVersion": {
+    "message": "Přepíše větev na cíl (pokud je potřeba), poté zvýší verzi v nakonfigurovaném souboru. Neslučuje."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Přepíše větev na cíl (pokud projekt používá rebase/ff). Poté povolí „sloučit, když pipeline uspěje“. Používá nastavení squash/smazat větev z MR."
+  },
+  "hintRebaseForce": {
+    "message": "Přepíše s přeskočením CI, zruší všechny probíhající pipeline, poté okamžitě sloučí bez čekání na CI. Používá nastavení squash/smazat větev z MR."
+  },
+  "hintShip": {
+    "message": "Kompletní postup: rebase → zvýšit verzi v nakonfigurovaném souboru → čekat na synchronizaci MR → čekat na novou pipeline → povolit automatické sloučení."
+  },
+  "hintForceShip": {
+    "message": "Rychlý postup: rebase (přeskočit CI) → zvýšit verzi → čekat 15 s → zrušit pipeline → okamžitě sloučit. Přeskočit kontroly CI."
+  },
+  "hintReviewers": {
+    "message": "Uveďte nakonfigurované připomínky recenzenta, znovu použijte komentář Recenzenta(tel) z nedávných poznámek nebo spusťte nakonfigurovanou CI úlohu."
+  },
+  "hintPipelineRestart": {
+    "message": "Vytváří zcela novou pipeline pro zdrojovou větev přes API. Užitečné, když je pipeline zaseknutá nebo potřebujete nové spuštění."
+  },
+  "hintPipelineCancel": {
+    "message": "Požaduje zrušení spuštěných, čekajících nebo vytvořených pipeline vrácených pro tohoto MR."
+  },
+  "hintDraftToggle": {
+    "message": "Přidává nebo odstraňuje předponu \"Draft:\" z názvu MR. Nemění žádná jiná nastavení MR."
+  },
+  "hintRetryFailed": {
+    "message": "Pokouší se znovu spustit selhané úlohy v aktuální pipeline MR. Úspěšné úlohy nejsou ovlivněny."
+  },
+  "hintCopyMr": {
+    "message": "Kopíruje název MR a odkaz do schránky."
+  },
+  "toastRebasing": {
+    "message": "Provádí rebase..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Povolení automatického spojení..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Krok 1/2: Provádí rebase..."
+  },
+  "toastStep22Automerge": {
+    "message": "Krok 2/2: Povolení automatického spojení..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Krok 1/2: Provádí rebase (preskočit CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Krok 2/2: Rušení pipeline a spojování..."
+  },
+  "toastCancellingMerging": {
+    "message": "Rušení pipeline a slučování..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Vytváření nové pipeline pro $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Rušení $1 pipeline(y)...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Označení jako Připraveno..."
+  },
+  "toastMarkingDraft": {
+    "message": "Označení jako Koncept..."
+  },
+  "toastRetrying": {
+    "message": "Opakování $1 neúspěšné(i) úlohy...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Žádné neúspěšné úlohy v aktuální MR pipeline"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Žádné běžící pipeline k rušení"
+  },
+  "toastAssigningReviewers": {
+    "message": "Zveřejňování zmínek recenzentů…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Opětovné zveřejnění komentáře recenzentů..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Nalezen žádný komentář recenzenta, spouští se $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Zvýšení verze..."
+  },
+  "toastWaitingSync": {
+    "message": "Čekání na synchronizaci MR s v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Čekání na pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Pokus o automatické sloučení $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Čekání na synchronizaci MR... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Čekání na \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Spouštění úlohy \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Opakování úlohy \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Úloha \"$1\" již byla úspěšná, přeskočeno",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Úloha \"$1\" je již $2, čekání...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 dokončeno",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 selhalo: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Název MR a odkaz zkopírovány!"
+  },
+  "toastWaiting15s": {
+    "message": "Čekání 15 s před sloučením..."
+  },
+  "confirmRebase": {
+    "message": "Provedete rebase větve?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Zvýšení verze?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Automatické sloučení?"
+  },
+  "confirmAutomerge": {
+    "message": "Povolit automatické sloučení?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → SLUČ TEĎ?"
+  },
+  "confirmForce": {
+    "message": "⚠️ SLUČ TEĎ (přeskočit pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Zvýšení verze → Automatické sloučení?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Zvýšení verze → Automatické sloučení?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Zvýšení verze → SLUČ TEĎ?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Zvýšení verze → SLUČ TEĎ?"
+  },
+  "confirmNewPipeline": {
+    "message": "Vytvořit novou pipeline pro tuto větev?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Zrušit všechny spuštěné pipeline?"
+  },
+  "labelAutomerge": {
+    "message": "Automatické sloučení"
+  },
+  "labelForceMerge": {
+    "message": "Vynucené sloučení"
+  },
+  "labelVersionAutomerge": {
+    "message": "Verze + Automatické sloučení"
+  },
+  "labelVersionForceMerge": {
+    "message": "Verze + Vynucené sloučení"
+  },
+  "labelMarkReady": {
+    "message": "Označit jako připravené"
+  },
+  "labelMarkDraft": {
+    "message": "Označit jako koncept"
+  },
+  "labelRetryFailed": {
+    "message": "Opakovat selhání"
+  },
+  "labelNewPipeline": {
+    "message": "Nová pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Čas od vytvoření MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Akce GitLab MR"
+  },
+  "welcomeSubtitle": {
+    "message": "Zrychlete svůj pracovní postup s žádostmi o sloučení pomocí akcí jedním kliknutím."
+  },
+  "welcomeQuickStart": {
+    "message": "Rychlý start"
+  },
+  "welcomeStep1Title": {
+    "message": "Otevřete libovolnou stránku žádosti o sloučení"
+  },
+  "welcomeStep1Desc": {
+    "message": "Otevřete stránku HTTPS MR, zatímco jste přihlášeni do GitLab.com nebo svého self-hosted GitLabu. Umožněte rozšíření přístup k této stránce."
+  },
+  "welcomeStep2Title": {
+    "message": "Sledujte, jak se objeví tlačítka akcí"
+  },
+  "welcomeStep2Desc": {
+    "message": "Tlačítka se objeví na stránce MR. Sada pro začátečníky je aktivní při první instalaci."
+  },
+  "welcomeStep3Title": {
+    "message": "Přizpůsobení přes vyskakovací okno rozšíření"
+  },
+  "welcomeStep3Desc": {
+    "message": "Klikněte na ikonu rozšíření pro povolení/zakázání tlačítek, nastavení souboru pro zvýšení verze, přidání vlastních tlačítek úloh a další."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Ve výchozím nastavení povoleno"
+  },
+  "welcomeMoreActions": {
+    "message": "Další akce (povolte v nastavení)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Jak to funguje"
+  },
+  "welcomeHowDesc": {
+    "message": "Toto rozšíření používá vaši stávající relaci GitLab (cookies) k volání GitLab API vaším jménem. Není potřeba žádný osobní přístupový token."
+  },
+  "welcomeHowList1": {
+    "message": "Pro GitLab.com a self-hosted GitLab přes HTTPS; funkce závisí na serverových API, rozvržení stránek a vašich oprávněních."
+  },
+  "welcomeHowList2": {
+    "message": "Akce používají stejná oprávnění jako váš přihlášený uživatel"
+  },
+  "welcomeHowList3": {
+    "message": "Vlastní řetězce úloh běží na pozadí. Pro přístup k API mějte otevřenou kartu se stejným GitLab přihlášenou."
+  },
+  "welcomeHowList4": {
+    "message": "Profily na úrovni projektu vám umožňují přizpůsobit tlačítka pro různé repozitáře"
+  },
+  "welcomeTip": {
+    "message": "Můžete si vytvořit profily na úrovni projektu v nastavení vyskakovacího okna. To je užitečné, když různé projekty potřebují různé soubory verzí nebo vlastní CI úlohy."
+  },
+  "welcomeOpenSettings": {
+    "message": "Otevřít nastavení"
+  },
+  "cardAutomergeTitle": {
+    "message": "Automatické sloučení"
+  },
+  "cardAutomergeDesc": {
+    "message": "Proveďte rebase větve (pokud je potřeba) a povolte sloučení, když pipeline uspěje."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Nová pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Vytvořte novou pipeline pro zdrojovou větev jedním kliknutím."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Zrušit pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Požádat o zrušení běžících nebo čekajících MR pipeline."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Přepínač konceptu"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Přepněte MR mezi stavem Koncept a Připravený bez úpravy názvu."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Zvýšení verze"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Zvýšení verze v package.json, pyproject.toml nebo v jakémkoli vlastním souboru. Konfigurovatelná strategie (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Odeslat (Verze + Sloučení)"
+  },
+  "cardShipDesc": {
+    "message": "Proveďte rebase, pokud je potřeba, zvýšte verzi a požádejte o automatické sloučení. Nechte kartu MR otevřenou, dokud se akce nedokončí."
+  },
+  "cardForceMergeTitle": {
+    "message": "Vynutit sloučení"
+  },
+  "cardForceMergeDesc": {
+    "message": "Požádat o sloučení bez čekání na úspěch pipeline. Stále platí oprávnění GitLabu a pravidla sloučení."
+  },
+  "cardReviewersTitle": {
+    "message": "Recenzenti"
+  },
+  "cardReviewersDesc": {
+    "message": "Zmínit nakonfigurovaná uživatelská jména v komentáři, znovu použít komentář recenzenta nebo spustit CI úlohu. Nepřiřazuje nativní pole recenzenta GitLabu."
+  },
+  "uiCustomization": {
+    "message": "Přizpůsobení UI"
+  },
+  "collapseBars": {
+    "message": "Tlačítko sbalit horní lišty"
+  },
+  "hideRightSidebar": {
+    "message": "Skrýt pravý postranní panel na stránkách MR"
+  },
+  "collapseTopBars": {
+    "message": "Přepnout horní panely"
+  },
+  "cardCollapseTitle": {
+    "message": "Sbalit horní panely"
+  },
+  "cardCollapseDesc": {
+    "message": "Přidává tlačítko pro sbalení/rozbalení navigačních panelů GitLab. Šetří místo a pomáhá se soustředit na obsah."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Skrýt sekce uživatelského rozhraní"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Skrýt pravý postranní panel na stránkách MR pro zobrazení obsahu na celou šířku."
+  },
+  "jiraIntegration": {
+    "message": "Integrace Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL serveru/datového centra Jira, např. https://jira.company.com — přihlaste se do Jira a potom klikněte na Povolit přístup k webu Jira. Cloud není plně podporován."
+  },
+  "jiraGrantAccess": {
+    "message": "Povolit přístup k webu Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Přístup k webu udělen. Přihlaste se do Jira v tomto prohlížeči."
+  },
+  "jiraUrlInvalid": {
+    "message": "Zadejte základní URL Jira přes HTTPS, bez přihlašovacích údajů/dotazů/fragmentů."
+  },
+  "jiraErrorAuth": {
+    "message": "Vaše relace Jira vypršela nebo je vyžadováno přihlášení. Otevřete Jira, přihlaste se a potom zkuste znovu načíst."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira odepřela přístup k tomuto úkolu nebo operaci. Zkontrolujte svůj účet a oprávnění v Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Rozšíření nemůže získat přístup k tomuto webu Jira. Zkontrolujte jeho oprávnění k webu a URL Jira v nastavení rozšíření."
+  },
+  "jiraErrorNetwork": {
+    "message": "Nepodařilo se připojit k Jira. Zkontrolujte své připojení, VPN a URL Jira, a poté zkuste načíst znovu."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira je dočasně nedostupná nebo omezuje požadavky. Počkejte a zkuste načíst znovu."
+  },
+  "jiraErrorNotFound": {
+    "message": "Nepodařilo se najít problém v Jira nebo není viditelný pro váš účet."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira vrátila nepodporovanou odpověď. Zkontrolujte URL a kompatibilitu serveru/datacentra."
+  },
+  "jiraErrorUnknown": {
+    "message": "Požadavek na Jira selhal. Otevřete Jira a zkontrolujte problém a svůj přístup."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Změna již mohla být provedena. Před opakováním akce zkontrolujte úkol v Jira."
+  },
+  "jiraErrorTransitions": {
+    "message": "Nepodařilo se načíst přechody v Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Otevřít Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Zkusit načíst znovu"
+  },
+  "jiraDismissError": {
+    "message": "Zavřít"
+  },
+  "jiraTicketRegex": {
+    "message": "Ticket regex"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Vlastní regex pro parsování ID ticketů z názvů MR. Výchozí: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Zobrazit ikony typu problému a priority v seznamu MR"
+  },
+  "jiraQuickActions": {
+    "message": "Rychlé akce"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Vyberte libovolnou kombinaci polí pro každé tlačítko. Nechte pouze ty změny, které má provést. Verze a komponenty musí již existovat v projektu Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Přidat akci"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Štítek"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Stav"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Uživatelské jméno"
+  },
+  "jiraSidebarStatus": {
+    "message": "Stav"
+  },
+  "jiraSidebarType": {
+    "message": "Typ"
+  },
+  "jiraSidebarPriority": {
+    "message": "Priorita"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Přiřazeno"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Nepřiřazeno"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Hledat uživatele..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Uživatele nenalezeno"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Odstranit přiřazení"
+  },
+  "jiraSidebarReporter": {
+    "message": "Odesílatel"
+  },
+  "jiraSidebarLabels": {
+    "message": "Štítky"
+  },
+  "jiraSidebarCreated": {
+    "message": "Vytvořeno"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Aktualizováno"
+  },
+  "jiraSidebarDescription": {
+    "message": "Popis"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epický úkol"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Komponenty"
+  },
+  "jiraSidebarResolution": {
+    "message": "Řešení"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Ovlivňuje"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Verze opravy"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Žádné"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Nebyly nalezeny žádné verze"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Hledat verze..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Nepodařilo se aktualizovat opravy verzí"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Přílohy"
+  },
+  "jiraSidebarComments": {
+    "message": "Komentáře"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Přidat komentář..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Komentář"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Zobrazit více komentářů"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Zatím žádné komentáře"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Nepodařilo se zveřejnit komentář"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Smazat komentář"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Smazat tento komentář?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Nepodařilo se smazat komentář"
+  },
+  "cardJiraTitle": {
+    "message": "Odznaky stavu Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Zobrazuje stavy tiketů Jira na stránce seznamu MR. Parsuje ID tiketů z názvů MR (např. CCT-1111) a zobrazuje barevné odznaky stavu. Nastavte svou URL Jira v nastavení."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Vlastní regulární výraz pro tiket"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Nakonfigurujte vlastní regulární výraz pro parsování ID tiketů Jira z názvů MR. Užitečné, pokud váš projekt používá nestandardní předpony tiketů."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Postranní panel tiketů Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Klikněte na libovolný odznak Jira pro otevření postranního panelu s úplnými údaji o úkolu — souhrn, stav, typ, priorita, přiřazená osoba a popis. Čtěte, přidávejte a mazejte své vlastní komentáře, aniž byste opustili GitLab. Opravené verze lze vybírat z dostupných verzí projektu přímo v postranním panelu."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Přílohy v postranním panelu"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Prohlížejte obrázky, videa a soubory z úkolů Jira přímo v postranním panelu. Obrázky a videa se otevřou v režimu celé obrazovky."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Odznaky Jira na stránce MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Stavové odznaky úkolů Jira se zobrazují v názvu MR na stránce s detaily. Klikněte na odznak pro otevření postranního panelu s úplnými údaji o úkolu."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Změna stavu Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Změňte stav úkolu přímo z postranního panelu. Zobrazuje pouze dostupné přechody z aktuálního stavu."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Změna přiřazené osoby v Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Klikněte na přiřazeného uživatele pro vyhledání a přeřazení. Automatické dokončování s avatary, tlačítko zrušit přiřazení pro odstranění přiřazeného uživatele."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Rychlé akce Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Jednotlačítkové ovládání stavu, přiřazeného uživatele, štítků, verzí a dalších polí. Každé tlačítko může aktualizovat jedno pole nebo několik."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Ikony typu a priority úkolu"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Zobrazit ikony typu a priority úkolu Jira vedle odznaků stavu na seznamu MR a stránkách s detailem. Používá nativní ikony Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Přeneste zdrojovou větev na cílovou větev bez slučování."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Verze"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Přeneste větev a zvýšte verzi jedním kliknutím. Neslučuje."
+  },
+  "cardCopyMrTitle": {
+    "message": "Kopírovat MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Kopíruje název MR a odkaz do schránky jedním kliknutím."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Znovu spustit neúspěšné úlohy"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Znovu spustit neúspěšné úlohy v aktuálním pipeline MR. Úspěšné úlohy nejsou ovlivněny."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Vylepšení stránky seznamu MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Ztlumení návrhů MR"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Vizualně ztlumte návrhy MR na stránce seznamu požadavků na sloučení, abyste se mohli soustředit na aktivní."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Zvýraznění vašich MR"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Zvýrazněte své vlastní MR v seznamu modrým rámečkem pro rychlou identifikaci."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Přepínač \"Pouze moje\""
+  },
+  "cardOnlyMineDesc": {
+    "message": "Jedním kliknutím přepnete filtr seznamu MR, aby se zobrazovaly pouze vaše požadavky na sloučení."
+  },
+  "cardMrAgeTitle": {
+    "message": "Odznak stáří MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Zobrazuje, jak dlouho byl MR vytvořen, zobrazený jako odznak na stránce MR."
+  },
+  "showReviewerBadge": {
+    "message": "Odznak \"Vaše recenze\" z komentářů"
+  },
+  "badgeYourReview": {
+    "message": "Vaše recenze"
+  },
+  "badgeYourReviewHint": {
+    "message": "Jste zmíněni jako recenzent v komentářích k MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Odznak \"Vaše recenze\""
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Vyhledává v nejstarších komentářích „Reviewer(s): @you“. Hloubku vyhledávání lze nastavit (výchozí hodnota je 10). Jde o funkci oddělenou od vestavěného přiřazení reviewerů v GitLabu."
+  },
+  "showNeedsReview": {
+    "message": "Přepínač \"Potřebuje moji recenzi\" na stránce seznamu"
+  },
+  "toggleNeedsReview": {
+    "message": "Potřebuje mou recenzi"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Přepínač „Potřebuje mou recenzi“"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Jedním kliknutím můžete filtrovat seznam MR a zobrazit pouze požadavky na sloučení, kde jste přiřazeni jako recenzent."
+  },
+  "showCopyMr": {
+    "message": "Tlačítko Kopírovat u položek seznamu MR"
+  },
+  "showThreadsBadge": {
+    "message": "Počet nevyřešených vláken na seznamu MR"
+  },
+  "showSizeBadge": {
+    "message": "Štítky velikosti MR (S/M/L/XL) na seznamu MR"
+  },
+  "showConflictsBadge": {
+    "message": "Zobrazit indikátor konfliktů na seznamu MR"
+  },
+  "showApprovalBadge": {
+    "message": "Zobrazit počet schválení a můj indikátor schválení na seznamu MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Schválil jste"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Vy"
+  },
+  "cardThreadsTitle": {
+    "message": "Počet nevyřešených vláken"
+  },
+  "cardThreadsDesc": {
+    "message": "Zobrazit počty nevyřešených vláken. „+“ označuje úplnou první stránku; „?“ znamená, že počet není k dispozici."
+  },
+  "cardSizeTitle": {
+    "message": "Štítky velikosti MR"
+  },
+  "cardSizeDesc": {
+    "message": "Odznaky S/M/L/XL s konfigurovatelnými prahovými hodnotami řádků a souborů v Pravidlech a limitech zobrazení."
+  },
+  "conflictsBadge": {
+    "message": "Konflikty"
+  },
+  "conflictsBadgeHint": {
+    "message": "Tento MR má konflikty při sloučení, které je nutné vyřešit"
+  },
+  "cardConflictsTitle": {
+    "message": "Indikátor konfliktů"
+  },
+  "cardConflictsDesc": {
+    "message": "Zobrazuje červenou značku KONFLIKTY na stránce detailu MR, když má větev konflikty při sloučení."
+  },
+  "cardApprovalTitle": {
+    "message": "Můj indikátor schválení"
+  },
+  "cardApprovalDesc": {
+    "message": "Zobrazuje, zda jste schválili každý MR na stránce seznamu. Rozlišuje vaše schválení od schválení ostatních."
+  },
+  "showBranches": {
+    "message": "Zobrazit zdrojové a cílové větve na seznamu MR"
+  },
+  "showBranchesLinks": {
+    "message": "Zpřístupnit jména větví kliknutelná (otevřít strom větví)"
+  },
+  "cardBranchesTitle": {
+    "message": "Jména větví na seznamu MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Zobrazuje názvy zdrojových a cílových větví u každého MR v seznamu, takže můžete vidět, odkud kód pochází a kam se slučuje."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Kopírovat MR ze seznamu"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Přidává tlačítko kopírování k jednotlivým MR na stránce seznamu. Kopíruje název MR a odkaz do schránky jedním kliknutím."
+  },
+  "versionFromTarget": {
+    "message": "Číst verzi z cílové větve"
+  },
+  "versionFromTargetHint": {
+    "message": "Číst aktuální verzi z cílové větve (např. main) místo zdrojové větve. Použijte toto s strategií merge commit, abyste se vyhnuli zastaralým verzím."
+  },
+  "showFailedJobView": {
+    "message": "Zobrazit rychlý náhled selhaného úkolu na stránce MR"
+  },
+  "failedJobTraceError": {
+    "message": "Nepodařilo se načíst stopu"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Rychlý náhled selhaného úkolu"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Náhled selhaných úkolů a závěrů protokolu na stránce MR. Počet úkolů a řádků je možné nastavit v Pravidlech a limitech zobrazení."
+  },
+  "showCmdPalette": {
+    "message": "Příkazová paleta (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Denní přehled činnosti"
+  },
+  "standupJiraEnrich": {
+    "message": "Zobrazit tituly tiketů Jira v přehledu"
+  },
+  "cmdPlaceholder": {
+    "message": "Zadejte příkaz..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navigovat"
+  },
+  "cmdFooterSelect": {
+    "message": "vybrat"
+  },
+  "cmdFooterClose": {
+    "message": "zavřít"
+  },
+  "cmdEmpty": {
+    "message": "Žádné odpovídající příkazy"
+  },
+  "cmdGroupNav": {
+    "message": "Navigace"
+  },
+  "cmdGroupMr": {
+    "message": "Akce MR"
+  },
+  "cmdGroupExt": {
+    "message": "Rozšíření"
+  },
+  "cmdGroupFiles": {
+    "message": "Soubory"
+  },
+  "cmdNavMrs": {
+    "message": "Přejít na Merge Requests"
+  },
+  "cmdNavIssues": {
+    "message": "Přejít na Issues"
+  },
+  "cmdNavPipelines": {
+    "message": "Přejít na Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Přejít na Branches"
+  },
+  "cmdNavRepo": {
+    "message": "Přejít na Repository"
+  },
+  "cmdNavTags": {
+    "message": "Přejít na Tags"
+  },
+  "cmdNavCommits": {
+    "message": "Přejít na Commits"
+  },
+  "cmdNavWiki": {
+    "message": "Přejít na Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Přejít na Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Přejít na Nastavení"
+  },
+  "cmdCopyPath": {
+    "message": "Kopírovat cestu projektu"
+  },
+  "cmdGroupPinned": {
+    "message": "Připnuté"
+  },
+  "cmdExtSettings": {
+    "message": "Otevřít nastavení rozšíření"
+  },
+  "cmdExtStandup": {
+    "message": "Vygenerovat zprávu o aktivitě"
+  },
+  "standupTitle": {
+    "message": "Denní aktivita"
+  },
+  "standupCopy": {
+    "message": "Kopírovat do schránky"
+  },
+  "standupCopied": {
+    "message": "Zkopírováno!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Paleta příkazů"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Stiskněte Cmd+K (Mac) nebo Ctrl+K (Win) na kterékoliv stránce GitLab. Procházejte, spouštějte akce MR, vyhledávejte soubory podle názvu a otevírejte je v repozitáři."
+  },
+  "cardStandupTitle": {
+    "message": "Denní zpráva o aktivitě"
+  },
+  "cardStandupDesc": {
+    "message": "Vygenerujte denní zprávu o aktivitě z vašich dat GitLab. Ukazuje vytvořené, sloučené a zkontrolované MR. Kopírujte a vložte do Slack nebo Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick do větví"
+  },
+  "showGroupPlay": {
+    "message": "Tlačítko pro spuštění skupiny v pipeline (spustí zbývající manuální úlohy)"
+  },
+  "showCommitVersion": {
+    "message": "Odznak verze na stránce commits"
+  },
+  "showCommitVersionHint": {
+    "message": "Zobrazuje verzi ze souboru s verzí (viz Nastavení navýšení verze) u každého commitu; zvýrazněno tam, kde se verze změnila"
+  },
+  "groupPlayTooltip": {
+    "message": "Spustit zbývající manuální úlohy v této skupině"
+  },
+  "groupPlayError": {
+    "message": "Některé úlohy se nepodařilo spustit"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Tlačítko přehrát pro skupinu"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Na grafu pipeline spustí tlačítko přehrát vedle skupiny úloh všechny zbývající manuální úlohy — i poté, co některé úlohy ve skupině již byly spuštěny a vlastní tlačítko GitLabu zmizelo."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Odznak verze u commitů"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Na stránce commitů větve každý commit zobrazuje verzi projektu ze souboru s verzí v daném commitu. Ve výchozím nastavení ztlumené, zvýrazněno tam, kde se verze změnila — na první pohled vidíte, které commity patří do kterého vydání."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick větve"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Výchozí cílové větve pro cherry-pick. V rámci modálního okna můžete přidat nebo odebrat větve."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Přidat větev"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick do větví"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Zavřít"
+  },
+  "cherryPickInProgress": {
+    "message": "Cherry-pickování..."
+  },
+  "cherryPickRemove": {
+    "message": "Odstranit"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Název větve"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-pickováno do větví $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Zahájit nový merge request s těmito změnami"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Vytvořit MR automaticky při cherry-pickování"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Při konfliktu — commit bez souboru verze"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Pokud cherry-pick selže kvůli konfliktu souboru verze, zopakujte změny jako nový commit bez souboru verze"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Zvýšit verzi při záložním postupu"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Zvýšit verzi v cílové větvi ve stejném záložním commitu"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Chytrý záložní postup řeší pouze konflikty ve souboru verze. Konflikt je v jiném souboru"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Soubor byl upraven v cílové větvi — nelze bezpečně provést cherry-pick"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Soubor verze obsahuje změny nad rámec verze — nelze jej bezpečně přeskočit"
+  },
+  "commitsJiraField": {
+    "message": "Pole Jira pro odznaky commitů"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Název pole Jira k zobrazení jako odznaky na stránce commitů (např. fixVersions, status, labels, components). Vyžaduje URL Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick do větví"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick do vybraných větví přímo nebo přes nové MR. S povoleným Smart fallback lze ověřené konflikty souborů verzí přehrát bez tohoto souboru, případně zvýšit verzi. Nezabezpečené změny se zastaví k inspekci."
+  },
+  "mrDetailEnhancements": {
+    "message": "Vylepšení detailů MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Varování o citlivém souboru v diffu"
+  },
+  "showGitCommands": {
+    "message": "Tlačítka příkazů Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "CITLIVÉ: soubor(y) $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Tento MR mění soubory citlivé na bezpečnost:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Varování o citlivém souboru"
+  },
+  "cardSensitiveDesc": {
+    "message": "Označuje citlivé soubory pomocí vestavěných pravidel, dalších vzorů a vyloučení. Konfigurujte je v Pravidlech zobrazení a limitech."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Tlačítka příkazů Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Kopírovat příkazy checkout, pull a hard-reset. Před jejich spuštěním zkontrolujte svůj repozitář a vzdálený origin; hard reset zahodí místní změny."
+  },
+  "updateBannerText": {
+    "message": "Nová verze je dostupná! Podívejte se, co je nového:"
+  },
+  "updateChangelog": {
+    "message": "Záznam změn"
+  },
+  "updateReviewAsk": {
+    "message": "Líbí se vám rozšíření?"
+  },
+  "updateReviewLink": {
+    "message": "Zanechte recenzi"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Recenze s asistencí AI, od začátku do konce"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Přezkoumejte MR, opravte vybrané připomínky, připravte odpovědi a znovu zkontrolujte změny. Náhled a úpravy komentářů před jejich zveřejněním na GitLabu."
+  },
+  "aiReviewGuide": {
+    "message": "Průvodce recenzí AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Žádné automatické nahrávání AI. Kontext zkopírujte sami; komentáře jsou zasílány na GitLab pouze, když zvolíte Publikovat nebo Přidat do recenze."
+  },
+  "aiReviewTitle": {
+    "message": "Recenze AI"
+  },
+  "aiReviewOpen": {
+    "message": "Recenze AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Zkopírujte komentář pro AI"
+  },
+  "aiReviewLoading": {
+    "message": "Načítání diskuzí…"
+  },
+  "aiReviewRetry": {
+    "message": "Zkusit znovu"
+  },
+  "aiReviewRefresh": {
+    "message": "Obnovit"
+  },
+  "aiReviewClose": {
+    "message": "Zavřít"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Potvrdit zavření dialogů pro kontrolu s neuloženou prací"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Zavřít tento dialog? Neuložené úpravy a zadaná data budou ztracena."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Zavřít tento dialog a přestat dále odesílat? Komentáře, které byly již odeslány, zůstanou v GitLabu. Neuložené úpravy budou ztraceny."
+  },
+  "aiReviewAll": {
+    "message": "Vše"
+  },
+  "aiReviewUnresolved": {
+    "message": "Nevyřešené"
+  },
+  "aiReviewResolved": {
+    "message": "Vyřešené"
+  },
+  "aiReviewGeneral": {
+    "message": "Obecné komentáře"
+  },
+  "aiReviewSearch": {
+    "message": "Hledat komentáře nebo cesty k souborům"
+  },
+  "aiReviewSelectShown": {
+    "message": "Vybrat zobrazené"
+  },
+  "aiReviewClear": {
+    "message": "Zrušit výběr"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Zahrnout změny kódu"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Pro nové a opakované kontroly. Nechte vypnuto, pokud AI může číst repozitář. Krátké úryvky připojené k zpětné vazbě zůstávají zahrnuty."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Zohlednit existující diskuze"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Přidává již zveřejněné komentáře jako filtr duplicit: AI nezávisle prochází celý MR a poté odstraní zjištění, která se opakují. Na tyto diskuse neodpovídá."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Zahrnout popis"
+  },
+  "aiReviewPrompt": {
+    "message": "Pokyny pro AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Obnovit výchozí prompt"
+  },
+  "aiReviewPreview": {
+    "message": "Náhled"
+  },
+  "aiReviewCopied": {
+    "message": "Zkopírováno!"
+  },
+  "aiReviewEmpty": {
+    "message": "Nenašly se odpovídající komentáře."
+  },
+  "aiReviewPartial": {
+    "message": "Některá data nelze načíst. Export obsahuje varování a pouze dostupný kontext."
+  },
+  "aiReviewSelectedCount": {
+    "message": "Vybráno $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Vyberte náhledový text a zkopírujte jej ručně."
+  },
+  "aiReviewScopeComment": {
+    "message": "Vybraný komentář"
+  },
+  "aiReviewScopeThread": {
+    "message": "Vybraná diskuse"
+  },
+  "aiReviewPreparing": {
+    "message": "Příprava kontextu kódu…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Nepodařilo se načíst diskuse. Zkuste to znovu nebo zkopírujte dostupný kontext."
+  },
+  "aiReviewShowReplies": {
+    "message": "Zobrazit odpovědi"
+  },
+  "aiReviewSize": {
+    "message": "Přibližně $1 znaků",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Zrušit"
+  },
+  "showAiReviewCopy": {
+    "message": "Zobrazit kopii recenze AI a ovládací prvky importu"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Zkopírujte celý MR pro novou kontrolu, vybranou zpětnou vazbu pro opravy, nebo importujte komentáře a odpovědi AI s editovatelnou ukázkou před odesláním."
+  },
+  "aiReviewFresh": {
+    "message": "Kontrola od začátku"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Výzva k nové kontrole"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Až 1 500 znaků. Používá se k revizi celého MR a všech jeho commitů, odděleně od opravných zpětných vazeb. Můžete specifikovat jazyk odpovědi. Nechte prázdné pro výchozí anglickou výzvu."
+  },
+  "aiReviewPromptHint": {
+    "message": "Až 1 500 znaků. Nechte prázdné pro použití výchozí anglické výzvy. Platí pro všechny projekty."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Výzva nebyla uložena. Použijte maximálně 1 500 znaků a odstraňte zvláštní řídicí znaky."
+  },
+  "settingsSaveFailed": {
+    "message": "Nastavení nebylo možné uložit. Pro znovupokus proveďte změnu."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Změny zde platí pro tento export. Nastavte výchozí výzvu v nastavení rozšíření."
+  },
+  "aiReviewReady": {
+    "message": "Náhled je připraven k kopírování."
+  },
+  "aiReviewLoadHint": {
+    "message": "Načítá diskuse přímo z GitLabu, včetně komentářů, které nejsou viditelné na této stránce."
+  },
+  "aiReviewCommentContext": {
+    "message": "Další odpovědi jsou zahrnuty jako kontext. K akci jsou vybírány pouze vybrané komentáře."
+  },
+  "aiReviewOutdated": {
+    "message": "Předchozí revize"
+  },
+  "aiReviewLink": {
+    "message": "Otevřená diskuse"
+  },
+  "aiReviewLoaded": {
+    "message": "Načteny diskuse $1"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Příprava kontextu kódu: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Tento komentář není k dispozici z GitLabu. Stále se může ukládat nebo mohl být odstraněn. Obnovte stránku a zkuste to znovu."
+  },
+  "aiReviewImportOpen": {
+    "message": "Import AI revize…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Import AI revize"
+  },
+  "aiReviewImportHelp": {
+    "message": "Vložte AI odpověď níže pro kontrolu, úpravu a výběr, co publikovat. Zkratky promptu jsou v pokročilém nastavení."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Kopírovat prompt pro novou revizi"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Příprava promptu…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI odpověď (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Vložte kompletní JSON odpověď obsahující nové komentáře nebo odpovědi k diskuzím. Můžete upravit text a vybrat, co odeslat v náhledu."
+  },
+  "aiReviewImportValidate": {
+    "message": "Zkontrolovat a náhled"
+  },
+  "aiReviewImportChecking": {
+    "message": "Kontrola revize MR, řádků a existujících komentářů…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Zkontrolujte odpověď na náhled komentářů. Můžete upravit jejich text, vymazat zaškrtávací políčka pro vyloučení položek nebo přidat obecný komentář."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Vybrat připravené komentáře"
+  },
+  "aiReviewImportPreview": {
+    "message": "Komentáře k odeslání"
+  },
+  "aiReviewImportReady": {
+    "message": "Připraveno"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Potřebuje opravu"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Nebylo možné načíst změny v dalším souboru: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Další rozdíl přesahuje limit importu 16 MiB. Lze importovat pouze komentáře k ověřeným řádkům."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Již existuje"
+  },
+  "aiReviewImportPublished": {
+    "message": "Publikováno"
+  },
+  "aiReviewImportDraft": {
+    "message": "Přidáno do recenze"
+  },
+  "aiReviewImportFailed": {
+    "message": "Neposláno"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Doručení nepotvrzeno"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Neposláno"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Nový řádek $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Starý řádek $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Publikovat vybrané"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Přidat k recenzi"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Publikovat ihned odesílá komentáře. Přidat k recenzi ukládá nepublikované komentáře pro vaši recenzi na GitLabu."
+  },
+  "aiReviewImportSending": {
+    "message": "Odesílání vybraných komentářů…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Dokončeno. Zkontrolujte výsledek u každého komentáře."
+  },
+  "aiReviewImportStopped": {
+    "message": "Zastaveno. Zkontrolujte výsledek u každého komentáře před opětovným pokusem."
+  },
+  "aiReviewImportEdited": {
+    "message": "Odpověď se změnila. Zkontrolujte ji znovu před odesláním."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Schránka není k dispozici. Vyberte níže text a zkopírujte jej ručně."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Potvrzení o doručení se nezdařilo. Zkontrolujte GitLab před opětovným pokusem."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Výzva pro AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Připraveno: $1. Další komentáře vyžadují pozornost.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Zastavit odesílání"
+  },
+  "aiReviewImportError": {
+    "message": "Operaci se nepodařilo dokončit"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Nepodařilo se připravit výzvu"
+  },
+  "aiReviewImportWarning": {
+    "message": "Upozornění na recenzi"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Recenze AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Jazyk odpovědi AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automaticky — jazyk konverzace"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Platí pro všechny úkoly revize a importní výzvy. Klíče JSON, cesty a kód se nepřekládají. Pouhé kopírování formátu nepřidává jazykové pokyny."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Výzva k opravě zpětné vazby"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Výzva pro nové komentáře k revizi"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Výzva pro odpovědi na zpětnou vazbu"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Až 1500 znaků. Pro zkratku nové revize v Importu. Karty úkolů používají své vlastní výzvy. Kontext MR a formát JSON jsou přidány automaticky."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Až 1500 znaků. Pro odpovědi na vybrané diskuze v Copy nebo všechny nevyřešené diskuze v Importu. Nastavte styl a jazyk; kontext a formát odpovědi jsou přidány automaticky."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Výzva k odpovědi na všechny nevyřešené diskuze"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Zkopírujte formát odpovědi"
+  },
+  "aiReviewImportFormat": {
+    "message": "Formát odpovědi pro AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Připravte odpovědi"
+  },
+  "aiReviewImportReply": {
+    "message": "Odpovězte na diskuzi"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Původní komentář"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Vaše odpověď"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Vyřešit diskusi po publikování"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Diskuse vyřešena."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Odpověď byla publikována, ale diskuse nebyla vyřešena. Můžete ji vyřešit v GitLabu."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Odpověď byla publikována. Řešení nebylo potvrzeno; zkontrolujte diskusi v GitLabu."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Řešení je volitelné a ve výchozím nastavení vypnuto. Probíhá pouze po publikování odpovědi. Přidání konceptu nikdy diskusi nevyřeší."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Verze MR se změnila. Odpovědi zůstávají propojené s jejich diskuzemi; ověřte jejich text vůči odeslaným opravám. Nové nálezy ze staré revize jsou blokovány."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Tyto odpovědi jsou propojené s diskuzemi, nikoli s revizí kódu. Před publikováním ověřte, že popsané opravy byly odeslány do tohoto MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Upravit text"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Přidat komentář"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Uložit změny"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Zrušit"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Text komentáře"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Upravte text a poté jej uložte, abyste mohli zkontrolovat změny před publikací."
+  },
+  "aiReviewImportEditError": {
+    "message": "Nepodařilo se uložit změny"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Náhled může obsahovat maximálně 200 komentářů."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Výzva k opakovanému přezkoumání"
+  },
+  "aiReviewFileFilters": {
+    "message": "Soubory k přezkoumání"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Platí pro nové a opakované review a prompty pro nové nálezy, nikoli pro vybranou zpětnou vazbu nebo odpovědi. Jeden vzor na řádek nebo oddělený čárkou; # začíná komentář. Používejte *, **, ?. Vyloučení mají přednost, a to i u původních cest přejmenovaných souborů. Prázdné seznamy zahrnují vše. Příklad: src/**, *.test.js, dist/. Nejvýše 1500 znaků na seznam."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Zahrnout přípony (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Zahrnout cesty k souborům"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Vyloučit cesty k souborům"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Vyloučit složky"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Filtry souborů nebylo možné uložit nebo použít. Použijte maximálně 1500 znaků a odstraňte neobvyklé řídicí znaky."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Verze, kterou jste přezkoumali"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Plná recenze — žádná předchozí verze"
+  },
+  "aiReviewRepeat": {
+    "message": "Opakovaná recenze"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Zadejte SHA commitu"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Zadejte plné SHA recenzovaného commitu (40 nebo 64 hexadecimálních znaků)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Vyberte verzi MR, kterou jste recenzovali před přidáním svých komentářů. Všechny následné změny až po aktuální verzi jsou zahrnuty automaticky; nemusíte vybírat jednotlivé commity. Pokud si verzi nepamatujete, zvolte plnou recenzi."
+  },
+  "aiReviewChooseTask": {
+    "message": "Vyberte úkol"
+  },
+  "aiReviewTaskReview": {
+    "message": "Nová recenze"
+  },
+  "aiReviewTaskFix": {
+    "message": "Opravit zjištění recenze"
+  },
+  "aiReviewTaskReply": {
+    "message": "Připravit odpovědi"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Následná recenze"
+  },
+  "aiReviewCopyTask": {
+    "message": "Kopírovat úkol"
+  },
+  "aiReviewPasteResult": {
+    "message": "Vložit odpověď AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "Pokročilé nastavení"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Pokyny k úkolu"
+  },
+  "aiReviewSelectThread": {
+    "message": "Vybrat tuto diskusi"
+  },
+  "aiReviewSelectAll": {
+    "message": "Vybrat všechny diskuze"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Recenzovat všechny MR commity najednou. AI vrátí nová zjištění, aniž by měnila kód."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Vyberte zpětnou vazbu k opravě. U MR AI také připravuje odpovědi vysvětlující, co bylo provedeno, co zbývá a proč. Nevyřešené diskuze jsou vybírány jako první."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Připravte také odpovědi"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Vyberte zpětnou vazbu, kterou má opravit váš kódovací AI. Nevyřešené diskuze jsou vybírány jako první."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Dejte úkol svému kódovacímu AI a zkontrolujte jeho změny a testy. Výsledkem jsou opravy a běžné shrnutí, bez připravených k odpovědi textů."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Po odeslání oprav požádejte AI, aby ověřila kód a vysvětlila výsledek ve vybraných diskuzích."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Ověřte vybranou zpětnou vazbu a hledejte nové chyby. Vyberte verzi, kterou jste předtím kontrolovali, nebo zkontrolujte celý aktuální MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Úkol: celý MR, ve všech commitech."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Vybrané komentáře: $1; kontext diskuze a dostupné úryvky kódu jsou zahrnuty."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Diskuse pro odpovědi: $1, s jejich úplnou konverzací. AI potřebuje přístup k repozitáři."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Diskuse k ověření: $1, plus přehled změn kódu."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Popis zahrnut."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Popis vynechán."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Změny kódu zahrnuty, s ohledem na limity načítání."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI musí číst kód z repozitáře."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Existující diskuse jsou přidány pouze jako filtr duplicit."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Existující diskuse nejsou přidány."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Filtry souborů jsou aktivní."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Žádná dřívější verze nebyla vybrána: bude zkontrolován celý aktuální MR."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Nezveřejněné návrhové diskuse nemohou dostávat odpovědi a jsou vyjmuty."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Vyberte zpětnou vazbu vlevo. Pro novou recenzi použijte kartu Nová recenze."
+  },
+  "aiReviewNextStep": {
+    "message": "Zkopírujte úkol do svého AI nástroje. Pokud vrátí komentáře nebo odpovědi, použijte funkci Vložit AI odpověď k jejich kontrole a úpravě před zveřejněním."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Zkontrolujte opravy a testy, pushejte všechny commity do MR, poté použijte Vložit AI odpověď k revizi připravených odpovědí před zveřejněním. Nové commity nevyžadují generování odpovědí znovu."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Automatické pokyny (pokročilé)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Všechny bloky jsou ve výchozím nastavení povoleny a používají se pouze pro relevantní úkoly. Upravit, zakázat nebo vymazat jakýkoli blok. Prompt úkolů mají také své vlastní instrukce. Data MR, příklady JSON a oznámení o načítání jsou generovány samostatně; kontroly publikace se vždy uplatňují."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Přidat do úkolu, pokud je to relevantní"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Až 1500 znaků. Prázdný text nic nepřidává. Obnovení obnoví výchozí text a povolí tento blok."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Použijte {language} pro vybraný jazyk odpovědi. Až 1500 znaků; prázdný text nepřidává nic."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Použijte {selection} pro vybrané nebo nevyřešené diskuse. Až 1500 znaků; prázdný text nepřidává nic."
+  },
+  "aiReviewRule_repository": {
+    "message": "Lokální úložiště a vzdálené"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Pracovní kopie pro opravy"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Pracovní kopie pro recenzi"
+  },
+  "aiReviewRule_language": {
+    "message": "Jazyk odpovědi"
+  },
+  "aiReviewRule_scope": {
+    "message": "Interpretace filtru souborů"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Kontext zpětné vazby"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Opravy bez odpovědí"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Úkol pouze s popisem"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Chybějící vybraná zpětná vazba"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Připravené odpovědi k publikování po opravách"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Hranice recenze"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Zdroj k recenzi"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Zahrnuté změny kódu"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Recenze bez zahrnutého kódu"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Nedostupný zdroj"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Odpověď v JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Hledání umístění a výstup"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Styl následné odpovědi"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Beze změny hlavička"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Pozice řádků ve srovnání"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Porovnání místní revize"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Změny cílové větve"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Kontrola bez porovnávací revize"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Přezkoumání bez diskusí"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Vybraný rozsah diskusí"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Kumulativní kontext rozdílů"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Existující diskuse v nové kontrole"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Nová kontrola při importu"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Hranice importní kontroly"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Formát nálezu při importu"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Hranice a formát odpovědi"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Rozsah úkolu odpovědi"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Přidat pole"
+  },
+  "jiraQuickActionField": {
+    "message": "Pole"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Operace"
+  },
+  "jiraQuickActionValue": {
+    "message": "Hodnota"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Odstranit"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Přidat"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Odstranit"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Nahradit vše"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Termín"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Vlastní pole (pokročilé)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Hodnoty oddělené čárkami. Přidávání/odstraňování zachovává ostatní hodnoty; nahradit vše přepíše seznam."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID pole: customfield_12345. Zadejte hodnotu jako JSON ve formátu očekávaném tímto polem Jira."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Přesný název přechodu Jira (nebo cílový stav)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Prázdná hodnota: žádná změna."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Zkontrolujte hodnotu pole: vlastní pole vyžadují platné ID a JSON; pro datum se používá YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Každé pole používejte pouze jednou na tlačítko."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Akce selhala."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Stav se změnil, ale aktualizace pole selhala."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Nepodařilo se obnovit úkol. Znovu otevřete panel, abyste zkontrolovali jeho aktuální hodnoty."
+  },
+  "mrActions": {
+    "message": "Akce MR"
+  },
+  "mrActionsHint": {
+    "message": "Vytvořte pojmenovaná tlačítka pro změnu štítků nebo vymazání jiných MR polí. Přetahujte je v seznamu tlačítek pro změnu jejich pořadí."
+  },
+  "mrActionsProfileHint": {
+    "message": "Tento projekt používá po uložení vlastní seznam akcí. Odstraňte všechny položky pro skrytí těchto tlačítek pro tento projekt."
+  },
+  "mrActionAdd": {
+    "message": "Přidat akci MR"
+  },
+  "mrActionLabel": {
+    "message": "Název tlačítka"
+  },
+  "mrActionDelete": {
+    "message": "Odstranit akci"
+  },
+  "mrActionType": {
+    "message": "Akce"
+  },
+  "mrActionLabels": {
+    "message": "Štítky"
+  },
+  "mrActionLabelsHint": {
+    "message": "Přesné názvy štítků, oddělené čárkami nebo novými řádky. Mezera uvnitř názvů se zachovává. Přidání/nahrazení může vytvořit chybějící štítky projektu."
+  },
+  "mrAction_remove_labels": {
+    "message": "Odebrat specifikované štítky"
+  },
+  "mrAction_clear_labels": {
+    "message": "Vymazat všechny štítky"
+  },
+  "mrAction_add_labels": {
+    "message": "Přidat štítky"
+  },
+  "mrAction_set_labels": {
+    "message": "Nahradit všechny štítky"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Vymazat přiřazené osoby"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Vymazat recenzenty"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Vymazat milník"
+  },
+  "mrActionInvalid": {
+    "message": "Zadejte název tlačítka, vyberte podporovanou akci a určete alespoň jeden štítek pro přidání, odebrání nebo nahrazení."
+  },
+  "mrActionConfirm": {
+    "message": "Použít „$1“ pro tento MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab nevrátil stav rebase. Znovu načtěte žádost o sloučení a zkuste to znovu."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab vrátil opakovanou stránku úloh pro pipeline #$1. Seznam úloh nelze úplně načíst."
+  },
+  "displayPreferencesTitle": {
+    "message": "Zobrazit pravidla a limity"
+  },
+  "displayPreferencesHint": {
+    "message": "Globální nastavení; po jejich změně znovu načíst karty GitLabu. Více úloh nebo komentářů zvyšuje přenos dat. Náhledy protokolů stahují celý záznam před výběrem neprázdných řádků. Odznaky recenzenta vyhledávají nejstarší komentáře obsahující „Reviewer(s): @username“."
+  },
+  "failedJobsLimit": {
+    "message": "Selhané úlohy k náhledu"
+  },
+  "failedJobTraceLines": {
+    "message": "Neprázdné řádky protokolu na úlohu"
+  },
+  "reviewerNotesLimit": {
+    "message": "Komentáře ke skenování pro odznaky recenzenta"
+  },
+  "mrSizeLines": {
+    "message": "Prahové hodnoty velikosti MR: řádky (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Prahové hodnoty velikosti MR: soubory (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Další vzory citlivých souborů"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Vyloučení citlivých souborů"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Použít vestavěná pravidla citlivých souborů"
+  },
+  "sizeThresholdsHint": {
+    "message": "Tři rostoucí kladná čísla oddělená čárkami. Limity jsou včetně; větší změny jsou XL. Prahové hodnoty souborů platí, pokud nejsou k dispozici počty řádků."
+  },
+  "sensitivePatternsHint": {
+    "message": "Jeden vzor na řádek, bez rozlišování velkých a malých písmen. * odpovídá libovolnému textu (včetně /), ? jednomu znaku. Vzory bez / odpovídají názvům souborů; ostatní vzory odpovídají celé cestě v repozitáři. Vyloučení mají přednost. Vestavěná pravidla pokrývají soubory prostředí, kontejneru/CI, přihlašovací údaje a soukromé klíče. Vypněte je, pokud chcete použít pouze své vzory."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Zkontrolujte číselné rozsahy, tři prahové hodnoty zvyšující se velikosti a délku vzorů souborů."
+  },
+  "failedJobsPreview": {
+    "message": "Náhled: $1 neúspěšné úlohy — posledních $2 neprázdných řádků",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Více neúspěšných úloh — otevřete celý pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 řádků, $2 souborů",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 souborů změněno",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Skenování citlivých souborů neúplné"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Nelze zkontrolovat každý soubor: požadavek API selhal nebo byl dosažen limit skenování $1 souborů. Uvedené shody jsou částečné; zkontrolujte celý rozdíl MR.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Upozornění: tato zpráva může být neúplná. Sběr je omezen na $1 MR v každé kategorii a $2 akcí.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 nevyřešené vlákno(a)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Tento náhled může být neúplný: chyba API nebo byly zkontrolovány pouze první $2 diskuse. Známá nevyřešená vlákna: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

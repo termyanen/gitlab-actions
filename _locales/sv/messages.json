@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Automatisering, Jira, CI/CD och AI-granskning"
+  },
+  "extDescription": {
+    "message": "Automatisera GitLab-MR: sammanslagning, versioner, Jira, CI/CD och granskning med din AI. Utan API-token."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Hur det fungerar"
+  },
+  "openSettingsInTab": {
+    "message": "Öppna inställningar i en ny flik"
+  },
+  "exportSettings": {
+    "message": "Exportera inställningar"
+  },
+  "importSettings": {
+    "message": "Importera inställningar"
+  },
+  "settingsTransferHint": {
+    "message": "Dela alla inställningar och projektprofiler som en JSON-fil."
+  },
+  "settingsImportReplace": {
+    "message": "Detta ersätter alla nuvarande inställningar och projektprofiler."
+  },
+  "applySettingsImport": {
+    "message": "Ersätt inställningar"
+  },
+  "cancelSettingsImport": {
+    "message": "Avbryt"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — projektprofiler: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Ogiltig inställningsfil eller format som inte stöds."
+  },
+  "settingsFileTooLarge": {
+    "message": "Inställningsfilen överskrider Chrome Sync-lagringsgränser."
+  },
+  "settingsExportFailed": {
+    "message": "Kunde inte exportera inställningar. Försök igen."
+  },
+  "settingsImportFailed": {
+    "message": "Kunde inte importera inställningar. Din nuvarande konfiguration är oförändrad."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Tillåt åtkomst till Jira-sidan för att importera dessa inställningar."
+  },
+  "settingsImported": {
+    "message": "Inställningarna importerade!"
+  },
+  "buttonOrder": {
+    "message": "Knappar ordning"
+  },
+  "buttonOrderHint": {
+    "message": "Dra för att omordna. Håll musen över för beskrivning. Anpassade jobb i blått."
+  },
+  "general": {
+    "message": "Allmänt"
+  },
+  "soundNotifications": {
+    "message": "Ljudnotiser"
+  },
+  "desktopNotifications": {
+    "message": "Skrivbordsnotiser"
+  },
+  "showTimeTracker": {
+    "message": "Visa MR-åldersmärke"
+  },
+  "skipConfirmations": {
+    "message": "Hoppa över bekräftelser av MR-åtgärder"
+  },
+  "uxEnhancer": {
+    "message": "Förbättringar av MR-listan"
+  },
+  "dimDrafts": {
+    "message": "Dämpa utkast-MR i listan"
+  },
+  "highlightOwnMrs": {
+    "message": "Markera dina MR i listan"
+  },
+  "showOnlyMine": {
+    "message": "Växla 'Endast mina' på list-sidan"
+  },
+  "toggleOnlyMine": {
+    "message": "Endast mina"
+  },
+  "versionBump": {
+    "message": "Versionshöjning"
+  },
+  "filePath": {
+    "message": "Filväg"
+  },
+  "filePathHint": {
+    "message": "Fil som innehåller versionsnummer"
+  },
+  "versionField": {
+    "message": "Versionsfält"
+  },
+  "versionFieldHint": {
+    "message": "JSON-nyckel eller TOML-nyckel (t.ex. \"version\" eller \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategi"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Commit-meddelande"
+  },
+  "commitMessageHint": {
+    "message": "Använd {version} som platshållare"
+  },
+  "quickComments": {
+    "message": "Snabba kommentarer"
+  },
+  "quickCommentsHint": {
+    "message": "Enklicksknappar som omedelbart postar en generell kommentar till MR (inte in-line till kod). Knapparna visas i handlingsfältet."
+  },
+  "quickCommentsAdd": {
+    "message": "Lägg till kommentar"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Snabbbkommentarer"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Konfigurerbara mallknappar för kommentarer på MR-sidan. Posta LGTM, Behöver fixas, eller valfri anpassad kommentar med ett klick."
+  },
+  "reviewers": {
+    "message": "Granskare"
+  },
+  "reviewersList": {
+    "message": "Lista över granskare"
+  },
+  "reviewersListHint": {
+    "message": "Användarnamn som ska nämnas i en Reviewers:-kommentar (@user1, @user2). När detta anges hoppas kommentarsökningen och CI-jobbet över. Ändrar inte GitLabs tilldelade granskare."
+  },
+  "jobName": {
+    "message": "Jobbnamn"
+  },
+  "jobNameHint": {
+    "message": "Reservjobb om ingen kommentar matchar mönstret \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Anpassade jobbknappar"
+  },
+  "customJobsHint": {
+    "message": "Använd kommatecken för att kedja: bygg, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Lägg till jobbknapp"
+  },
+  "addProfileFor": {
+    "message": "+ Lägg till profil för $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Nuvarande: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Sparat!"
+  },
+  "unsavedChanges": {
+    "message": "Osparade ändringar..."
+  },
+  "customFile": {
+    "message": "Anpassad fil..."
+  },
+  "plainText": {
+    "message": "vanlig text"
+  },
+  "removeProfile": {
+    "message": "Ta bort profil för $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Standard"
+  },
+  "buttonsFor": {
+    "message": "Knappar för $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Åsidosätt vilka knappar som ska visas för detta projekt."
+  },
+  "leaveEmptyDefault": {
+    "message": "Lämna tomt för att använda standard"
+  },
+  "projectSpecificJobs": {
+    "message": "Projektspecifika jobb. Använd kommatecken för att kedja."
+  },
+  "languageLabel": {
+    "message": "Språk"
+  },
+  "languageAuto": {
+    "message": "Auto (webbläsare)"
+  },
+  "btnVersion": {
+    "message": "Versionsökning"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Version"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Automatisk sammanslagning"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Tvingad sammanslagning"
+  },
+  "btnShip": {
+    "message": "Rebase + Version + Automatisk sammanslagning"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Version + Tvingad sammanslagning"
+  },
+  "btnReviewers": {
+    "message": "Granskare"
+  },
+  "btnPipelineRestart": {
+    "message": "Ny pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Avbryt pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Utkast / Klar växlingsknapp"
+  },
+  "btnRetryFailed": {
+    "message": "Kör om misslyckade jobb"
+  },
+  "btnCopyMr": {
+    "message": "Kopiera MR"
+  },
+  "hintVersion": {
+    "message": "Läser den konfigurerade filen (t.ex. package.json), ökar versionen enligt vald strategi (patch/minor/major), committar med din mallmeddelande."
+  },
+  "hintRebase": {
+    "message": "Flyttar källgrenen ovanpå målgrenen. Slår inte ihop eller aktiverar automatisk sammanslagning."
+  },
+  "hintRebaseVersion": {
+    "message": "Flyttar grenen ovanpå målgrenen (om det behövs), och uppdaterar sedan versionen i den konfigurerade filen. Slår inte ihop."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Flyttar grenen ovanpå målgrenen (om projektet använder rebase/ff). Aktiverar sedan \"slå ihop när pipeline lyckas\". Använder squash/radera-gren-inställningar från MR."
+  },
+  "hintRebaseForce": {
+    "message": "Rebasar med skip CI, avbryter alla aktiva pipelines, och slår sedan ihop direkt utan att vänta på CI. Använder squash/radera-gren-inställningar från MR."
+  },
+  "hintShip": {
+    "message": "Full flöde: rebase → uppdatera version i konfigurerad fil → vänta på MR-synk → vänta på ny pipeline → aktivera automatisk sammanslagning."
+  },
+  "hintForceShip": {
+    "message": "Snabbflöde: rebase (skip CI) → uppdatera version → vänta 15s → avbryt pipeline → slå ihop direkt. Hoppar över CI-kontroller."
+  },
+  "hintReviewers": {
+    "message": "Posta konfigurerade granskarnämnanden, återanvänd en Granskare(s): kommentar från senaste anteckningarna, eller kör det konfigurerade CI-jobbet."
+  },
+  "hintPipelineRestart": {
+    "message": "Skapar en helt ny pipeline för källgrenen via API. Användbart när pipelinen står still eller när du behöver en ny körning."
+  },
+  "hintPipelineCancel": {
+    "message": "Begär avbokning av körande, väntande eller skapade pipelines som returnerades för detta MR."
+  },
+  "hintDraftToggle": {
+    "message": "Lägger till eller tar bort prefixet \"Draft:\" från MR-titeln. Ändrar inga andra MR-inställningar."
+  },
+  "hintRetryFailed": {
+    "message": "Försöker om misslyckade jobb i MR:ens nuvarande pipeline. Framgångsrika jobb påverkas inte."
+  },
+  "hintCopyMr": {
+    "message": "Kopierar MR-titeln och länken till urklipp."
+  },
+  "toastRebasing": {
+    "message": "Rebasar..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Aktiverar automatisk sammanslagning..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Steg 1/2: Rebasar..."
+  },
+  "toastStep22Automerge": {
+    "message": "Steg 2/2: Aktiverar automatisk sammanslagning..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Steg 1/2: Rebasar (hoppa CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Steg 2/2: Avbryter pipeline & slår ihop..."
+  },
+  "toastCancellingMerging": {
+    "message": "Avbryter pipeline & mergar..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Skapar ny pipeline för $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Avbryter $1 pipeline(s)...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Markerar som Klar..."
+  },
+  "toastMarkingDraft": {
+    "message": "Markerar som Utkast..."
+  },
+  "toastRetrying": {
+    "message": "Försöker om $1 misslyckade jobb...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Inga misslyckade jobb i den nuvarande MR-pipelinen"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Inga pågående pipelines att avbryta"
+  },
+  "toastAssigningReviewers": {
+    "message": "Postar reviewer-omnämnanden…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Postar om reviewers kommentar..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Ingen reviewers kommentar hittades, triggar $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Versionshöjning..."
+  },
+  "toastWaitingSync": {
+    "message": "Väntar på att MR ska synka med v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Väntar på pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Försöker auto-merge $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Väntar på att MR ska synka... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Väntar på \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Kör jobb \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Försöker om jobb \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Jobb \"$1\" lyckades redan, hoppar över",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Jobb \"$1\" är redan $2, väntar...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 slutfört",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 misslyckades: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR-titel och länk kopierad!"
+  },
+  "toastWaiting15s": {
+    "message": "Väntar 15 sek innan sammanslagning..."
+  },
+  "confirmRebase": {
+    "message": "Rebase grenen?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Versionsuppdatering?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Automatisk sammanslagning?"
+  },
+  "confirmAutomerge": {
+    "message": "Aktivera automatisk sammanslagning?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → SLÅ IHOP NU?"
+  },
+  "confirmForce": {
+    "message": "⚠️ SLÅ IHOP NU (hoppa över pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Versionsuppdatering → Automatisk sammanslagning?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Versionsuppdatering → Automatisk sammanslagning?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Versionsuppdatering → SLÅ IHOP NU?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Versionsuppdatering → SLÅ IHOP NU?"
+  },
+  "confirmNewPipeline": {
+    "message": "Skapa en ny pipeline för den här grenen?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Avbryt alla pågående pipelines?"
+  },
+  "labelAutomerge": {
+    "message": "Automatisk sammanslagning"
+  },
+  "labelForceMerge": {
+    "message": "Tvinga sammanslagning"
+  },
+  "labelVersionAutomerge": {
+    "message": "Version + Automatisk sammanslagning"
+  },
+  "labelVersionForceMerge": {
+    "message": "Version + Tvinga sammanslagning"
+  },
+  "labelMarkReady": {
+    "message": "Markera som Redo"
+  },
+  "labelMarkDraft": {
+    "message": "Markera som Utkast"
+  },
+  "labelRetryFailed": {
+    "message": "Försök igen efter misslyckande"
+  },
+  "labelNewPipeline": {
+    "message": "Ny pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Tid sedan MR skapades: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR-åtgärder"
+  },
+  "welcomeSubtitle": {
+    "message": "Snabba upp din merge request-arbetsflöde med klickbara åtgärder."
+  },
+  "welcomeQuickStart": {
+    "message": "Kom igång snabbt"
+  },
+  "welcomeStep1Title": {
+    "message": "Öppna vilken Merge Request-sida som helst"
+  },
+  "welcomeStep1Desc": {
+    "message": "Öppna en HTTPS MR-sida medan du är inloggad på GitLab.com eller din egen hostade GitLab. Ge tillåtelse för tillägget att komma åt den sidan."
+  },
+  "welcomeStep2Title": {
+    "message": "Se åtgärdsknappar dyka upp"
+  },
+  "welcomeStep2Desc": {
+    "message": "Knappar visas på MR-sidan. Ett startset aktiveras vid första installation."
+  },
+  "welcomeStep3Title": {
+    "message": "Anpassa via tilläggspopup"
+  },
+  "welcomeStep3Desc": {
+    "message": "Klicka på tilläggsikonen för att aktivera/inaktivera knappar, ställa in version bump-fil, lägga till egna jobbknappar och mer."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Aktiverat som standard"
+  },
+  "welcomeMoreActions": {
+    "message": "Fler åtgärder (aktivera i inställningar)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Så här fungerar det"
+  },
+  "welcomeHowDesc": {
+    "message": "Det här tillägget använder din befintliga GitLab-session (cookies) för att använda GitLab API åt dig. Inga personliga access tokens behövs."
+  },
+  "welcomeHowList1": {
+    "message": "För GitLab.com och självhostade GitLab över HTTPS; funktioner beror på server-API:er, sidlayout och dina behörigheter."
+  },
+  "welcomeHowList2": {
+    "message": "Åtgärder använder samma behörigheter som den inloggade användaren"
+  },
+  "welcomeHowList3": {
+    "message": "Anpassade jobbkedjor körs i bakgrunden. Håll en inloggad flik på samma GitLab öppen för API-åtkomst."
+  },
+  "welcomeHowList4": {
+    "message": "Profil per projekt låter dig anpassa knappar för olika repositories"
+  },
+  "welcomeTip": {
+    "message": "Du kan skapa profiler per projekt i popup-inställningarna. Detta är användbart när olika projekt behöver olika versionsfiler eller anpassade CI-jobb."
+  },
+  "welcomeOpenSettings": {
+    "message": "Öppna inställningar"
+  },
+  "cardAutomergeTitle": {
+    "message": "Automatisk sammanslagning"
+  },
+  "cardAutomergeDesc": {
+    "message": "Rebase-grenen (om det behövs) och aktivera sammanslagning när pipelinen lyckas."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Ny pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Skapa en ny pipeline för källgrenen med ett klick."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Avbryt pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Begär avbokning av pågående eller väntande MR-pipelines."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Draft-växling"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Växla MR mellan Draft och Ready-status utan att redigera titeln."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Versionshöjning"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Öka versionen i package.json, pyproject.toml eller någon valfri fil. Kan ställa in strategi (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Skicka (Version + Merge)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase vid behov, höj versionen och begär automatisk merge. Håll MR-fliken öppen tills åtgärden är klar."
+  },
+  "cardForceMergeTitle": {
+    "message": "Tvinga merge"
+  },
+  "cardForceMergeDesc": {
+    "message": "Begär merge utan att vänta på att pipelinen lyckas. GitLab-behörigheter och merge-regler gäller fortfarande."
+  },
+  "cardReviewersTitle": {
+    "message": "Granskare"
+  },
+  "cardReviewersDesc": {
+    "message": "Nämn konfigurerade användarnamn i en kommentar, återanvänd en granskningskommentar eller kör ett CI-jobb. Tilldelar inte GitLabs inbyggda granskare."
+  },
+  "uiCustomization": {
+    "message": "UI-anpassning"
+  },
+  "collapseBars": {
+    "message": "Kollapsa toppbarsknapp"
+  },
+  "hideRightSidebar": {
+    "message": "Dölj högra sidofältet på MR-sidor"
+  },
+  "collapseTopBars": {
+    "message": "Växla toppfält"
+  },
+  "cardCollapseTitle": {
+    "message": "Komprimera toppfält"
+  },
+  "cardCollapseDesc": {
+    "message": "Lägger till en knapp för att komprimera/expandera GitLab-navigeringsfält. Sparar plats och hjälper dig att fokusera på innehållet."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Dölj UI-sektioner"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Dölj högra sidofältet på MR-sidor för att få ett fullbreddsinnehållsområde."
+  },
+  "jiraIntegration": {
+    "message": "Jira-integration"
+  },
+  "jiraUrl": {
+    "message": "Jira-URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center-URL, t.ex. https://jira.company.com — logga in på Jira och klicka sedan på Tillåt åtkomst för Jira-webbplatsen. Cloud stöds inte helt."
+  },
+  "jiraGrantAccess": {
+    "message": "Tillåt åtkomst för Jira-webbplatsen"
+  },
+  "jiraAccessGranted": {
+    "message": "Åtkomst till webbplatsen beviljad. Logga in på Jira i den här webbläsaren."
+  },
+  "jiraUrlInvalid": {
+    "message": "Ange en HTTPS Jira-bas-URL, utan inloggningsuppgifter/frågeparametrar/fragment."
+  },
+  "jiraErrorAuth": {
+    "message": "Din Jira-session har gått ut eller inloggning krävs. Öppna Jira, logga in och försök sedan ladda igen."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira nekade åtkomst till detta ärende eller denna operation. Kontrollera ditt konto och dina rättigheter i Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Tillägget kan inte komma åt den här Jira-sidan. Kontrollera dess sidbehörighet och Jira-URL i tilläggsinställningarna."
+  },
+  "jiraErrorNetwork": {
+    "message": "Kunde inte nå Jira. Kontrollera din anslutning, VPN och Jira-URL, och försök sedan ladda igen."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira är tillfälligt otillgängligt eller begränsar förfrågningar. Vänta och försök ladda igen."
+  },
+  "jiraErrorNotFound": {
+    "message": "Ett Jira-ärende kunde inte hittas eller är inte synligt för ditt konto."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira returnerade ett icke-stödjat svar. Kontrollera URL och Server/Data Center-kompatibilitet."
+  },
+  "jiraErrorUnknown": {
+    "message": "Jira-förfrågan misslyckades. Öppna Jira för att kontrollera ärendet och din åtkomst."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Ändringen kan redan ha tillämpats. Kontrollera ärendet i Jira innan du upprepar åtgärden."
+  },
+  "jiraErrorTransitions": {
+    "message": "Kunde inte ladda Jira-övergångar."
+  },
+  "jiraOpenSite": {
+    "message": "Öppna Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Försök ladda om"
+  },
+  "jiraDismissError": {
+    "message": "Stäng"
+  },
+  "jiraTicketRegex": {
+    "message": "Biljett-regex"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Anpassad regex för att tolka biljett-ID från MR-titlar. Standard: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Visa ikon för ärendetyp & prioritet i MR-listan"
+  },
+  "jiraQuickActions": {
+    "message": "Snabbåtgärder"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Välj vilken kombination av fält som helst för varje knapp. Lämna bara de ändringar som ska göras. Versioner och komponenter måste redan finnas i Jira-projektet."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Lägg till åtgärd"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Etikett"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Status"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Användarnamn"
+  },
+  "jiraSidebarStatus": {
+    "message": "Status"
+  },
+  "jiraSidebarType": {
+    "message": "Typ"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioritet"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Tilldelad"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Oassignerad"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Sök användare..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Inga användare hittades"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Ta bort tilldelning"
+  },
+  "jiraSidebarReporter": {
+    "message": "Rapportör"
+  },
+  "jiraSidebarLabels": {
+    "message": "Etiketter"
+  },
+  "jiraSidebarCreated": {
+    "message": "Skapad"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Uppdaterad"
+  },
+  "jiraSidebarDescription": {
+    "message": "Beskrivning"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epik"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Komponenter"
+  },
+  "jiraSidebarResolution": {
+    "message": "Lösning"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Påverkar"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Fix-version"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Ingen"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Inga versioner hittades"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Sök versioner..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Kunde inte uppdatera fix-versioner"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Bilagor"
+  },
+  "jiraSidebarComments": {
+    "message": "Kommentarer"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Lägg till en kommentar..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Kommentar"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Visa fler kommentarer"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Inga kommentarer än"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Kunde inte posta kommentar"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Radera kommentar"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Radera den här kommentaren?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Kunde inte radera kommentar"
+  },
+  "cardJiraTitle": {
+    "message": "Jira statusmärken"
+  },
+  "cardJiraDesc": {
+    "message": "Visar Jira-biljettstatusar på MR-listan. Hämtar biljett-ID från MR-titlar (t.ex. CCT-1111) och visar färgade statusmärken. Ställ in din Jira-URL i inställningarna."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Anpassad biljett-regex"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Konfigurera ett anpassat reguljärt uttryck för att hämta Jira-biljett-ID från MR-titlar. Användbart när ditt projekt använder icke-standardiserade biljettprefix."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Jira biljett sidofält"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Klicka på vilken Jira-badge som helst för att öppna en sidopanel med fullständiga biljettuppgifter — sammanfattning, status, typ, prioritet, tilldelad person och beskrivning. Läs, posta och radera dina egna kommentarer utan att lämna GitLab. Fixversioner kan väljas från projektets tillgängliga versioner direkt i sidopanelen."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Bilagor i sidopanelen"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Visa bilder, videor och filer från Jira-biljetter direkt i sidopanelen. Bilder och videor öppnas i ett helskärms-ljusbox."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Jira-badges på MR-sidan"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Jira-biljettstatus badges visas i MR-titeln på detaljsidan. Klicka på en badge för att öppna sidopanelen med fullständiga biljettuppgifter."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Ändra Jira-status"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Ändra biljettstatus direkt från sidopanelen. Visar endast tillgängliga övergångar från nuvarande status."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Ändra Jira-tilldelad person"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Klicka på tilldelad för att söka och tilldela på nytt. Automatisk komplettering med avatarer, knapp för att ta bort tilldelad."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira snabba åtgärder"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Enklicksknappar för status, tilldelad, etiketter, versioner och andra fält. Varje knapp kan uppdatera ett eller flera fält."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Ikoner för ärendetyp & prioritet"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Visa Jira ärendetyp- och prioriteringsikoner bredvid statusmärken på MR-listor och detaljsidor. Använder native Jira-ikoner."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebase källgrenen till målgrenen utan att slå ihop."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Version"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase grenen och höj versionen med ett klick. Slår inte ihop."
+  },
+  "cardCopyMrTitle": {
+    "message": "Kopiera MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Kopiera MR-titel och länk till urklipp med ett klick."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Försök igen misslyckade jobb"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Försök igen misslyckade jobb i MRs nuvarande pipeline. Framgångsrika jobb påverkas inte."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Förbättringar av MR-listans sida"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Dämpa utkast av MR"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Dämpa visuellt utkast av MR på merge requests-listan så att du kan fokusera på aktiva."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Markera dina MR"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Markera dina egna MR i listan med en blå kant för snabb identifiering."
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"Endast mina\"-omkopplare"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Ett klick för att filtrera MR-listan så att bara dina merge requests visas."
+  },
+  "cardMrAgeTitle": {
+    "message": "MR-ålder-märket"
+  },
+  "cardMrAgeDesc": {
+    "message": "Visar hur länge sedan MR skapades, visas som ett märke på MR-sidan."
+  },
+  "showReviewerBadge": {
+    "message": "\"Din granskning\"-märke från kommentarer"
+  },
+  "badgeYourReview": {
+    "message": "Din granskning"
+  },
+  "badgeYourReviewHint": {
+    "message": "Du är nämnd som granskare i MR-kommentarer"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "\"Din granskning\"-märke"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Söker i de äldsta kommentarerna efter \"Reviewer(s): @you\". Sökdjupet kan konfigureras (10 som standard). Separat från GitLabs inbyggda granskarfunktion."
+  },
+  "showNeedsReview": {
+    "message": "\"Behöver min granskning\"-omkopplare på list-sidan"
+  },
+  "toggleNeedsReview": {
+    "message": "Behöver min granskning"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "\"Behöver min granskning\"-brytare"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Ett klick för att filtrera MR-listan så att den bara visar merge requests där du är tilldelad som granskare."
+  },
+  "showCopyMr": {
+    "message": "Kopieringsknapp på MR-listobjekt"
+  },
+  "showThreadsBadge": {
+    "message": "Antal olösta trådar på MR-listan"
+  },
+  "showSizeBadge": {
+    "message": "MR-storleksmärken (S/M/L/XL) på MR-listan"
+  },
+  "showConflictsBadge": {
+    "message": "Visa konfliktindikator på MR-listan"
+  },
+  "showApprovalBadge": {
+    "message": "Visa antalet godkännanden och min godkännandemarkering på MR-listan"
+  },
+  "approvalBadgeMine": {
+    "message": "Du har godkänt"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Du"
+  },
+  "cardThreadsTitle": {
+    "message": "Antal olösta trådar"
+  },
+  "cardThreadsDesc": {
+    "message": "Visa antal olösta trådar. \"+\" markerar en full första sida; \"?\" betyder att antalet inte är tillgängligt."
+  },
+  "cardSizeTitle": {
+    "message": "MR-storleksmärken"
+  },
+  "cardSizeDesc": {
+    "message": "S/M/L/XL-badges med konfigurerbara gränser för rader och filer i Visningsregler och begränsningar."
+  },
+  "conflictsBadge": {
+    "message": "Konflikter"
+  },
+  "conflictsBadgeHint": {
+    "message": "Denna MR har merge-konflikter som måste lösas"
+  },
+  "cardConflictsTitle": {
+    "message": "Konfliktindikator"
+  },
+  "cardConflictsDesc": {
+    "message": "Visar en röd CONFLICTS-lapp på MR-detaljsidan när grenen har merge-konflikter."
+  },
+  "cardApprovalTitle": {
+    "message": "Min godkännandestatus"
+  },
+  "cardApprovalDesc": {
+    "message": "Visar om du har godkänt varje MR på list-sidan. Skiljer ditt godkännande från andras godkännanden."
+  },
+  "showBranches": {
+    "message": "Visa käll- och målgrenar på MR-listan"
+  },
+  "showBranchesLinks": {
+    "message": "Gör branchnamn klickbara (öppnar gren-trädet)"
+  },
+  "cardBranchesTitle": {
+    "message": "Branchnamn på MR-listan"
+  },
+  "cardBranchesDesc": {
+    "message": "Visar käll- och målgrenens namn på varje MR i listan, så att du kan se var koden kommer från och vart den slås ihop."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Kopiera MR från listan"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Lägger till en kopieringsknapp på varje MR på list-sidan. Kopierar MR-titel och länk till urklipp med ett klick."
+  },
+  "versionFromTarget": {
+    "message": "Läs version från målgrenen"
+  },
+  "versionFromTargetHint": {
+    "message": "Läs den aktuella versionen från målgrenen (t.ex. main) istället för källgrenen. Använd detta med sammanslagningscommit-strategin för att undvika föråldrade versioner."
+  },
+  "showFailedJobView": {
+    "message": "Visa snabbvy för misslyckade jobb på MR-sidan"
+  },
+  "failedJobTraceError": {
+    "message": "Kunde inte ladda spår"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Misslyckad jobb snabbvy"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Förhandsgranska misslyckade jobb och loggslut på MR-sidan. Antalet jobb och rader kan konfigureras under Visningsregler och -gränser."
+  },
+  "showCmdPalette": {
+    "message": "Kommandopalett (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Daglig aktivitetsrapport"
+  },
+  "standupJiraEnrich": {
+    "message": "Visa Jira-ärendetitlar i rapporten"
+  },
+  "cmdPlaceholder": {
+    "message": "Skriv ett kommando..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navigera"
+  },
+  "cmdFooterSelect": {
+    "message": "välj"
+  },
+  "cmdFooterClose": {
+    "message": "stäng"
+  },
+  "cmdEmpty": {
+    "message": "Inga matchande kommandon"
+  },
+  "cmdGroupNav": {
+    "message": "Navigering"
+  },
+  "cmdGroupMr": {
+    "message": "MR-åtgärder"
+  },
+  "cmdGroupExt": {
+    "message": "Tillägg"
+  },
+  "cmdGroupFiles": {
+    "message": "Filer"
+  },
+  "cmdNavMrs": {
+    "message": "Gå till Merge Requests"
+  },
+  "cmdNavIssues": {
+    "message": "Gå till Issues"
+  },
+  "cmdNavPipelines": {
+    "message": "Gå till Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Gå till Branches"
+  },
+  "cmdNavRepo": {
+    "message": "Gå till Repository"
+  },
+  "cmdNavTags": {
+    "message": "Gå till Tags"
+  },
+  "cmdNavCommits": {
+    "message": "Gå till Commits"
+  },
+  "cmdNavWiki": {
+    "message": "Gå till Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Gå till Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Gå till Inställningar"
+  },
+  "cmdCopyPath": {
+    "message": "Kopiera projektväg"
+  },
+  "cmdGroupPinned": {
+    "message": "Fäst"
+  },
+  "cmdExtSettings": {
+    "message": "Öppna inställningar för tillägg"
+  },
+  "cmdExtStandup": {
+    "message": "Generera aktivitetsrapport"
+  },
+  "standupTitle": {
+    "message": "Daglig aktivitet"
+  },
+  "standupCopy": {
+    "message": "Kopiera till urklipp"
+  },
+  "standupCopied": {
+    "message": "Kopierad!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Kommandopalett"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Tryck Cmd+K (Mac) eller Ctrl+K (Win) på vilken GitLab-sida som helst. Navigera, kör MR-åtgärder, sök filer efter namn och öppna dem i repo."
+  },
+  "cardStandupTitle": {
+    "message": "Daglig aktivitetsrapport"
+  },
+  "cardStandupDesc": {
+    "message": "Generera en daglig aktivitetsrapport från dina GitLab-data. Visar skapade, sammanslagna och granskade MR. Kopiera och klistra in i Slack eller Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-picka till grenar"
+  },
+  "showGroupPlay": {
+    "message": "Gruppens play-knapp i pipeline (kör återstående manuella jobb)"
+  },
+  "showCommitVersion": {
+    "message": "Versionsmärke på commits-sidan"
+  },
+  "showCommitVersionHint": {
+    "message": "Visar versionen från versionsfilen (se inställningar för version bump) bredvid varje commit; markerad där versionen ändrats"
+  },
+  "groupPlayTooltip": {
+    "message": "Kör återstående manuella jobb i denna grupp"
+  },
+  "groupPlayError": {
+    "message": "Misslyckades med att starta vissa jobb"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Gruppens play-knapp"
+  },
+  "cardGroupPlayDesc": {
+    "message": "På pipeline-grafen kör en play-knapp bredvid en job-grupp alla återstående manuella jobb — även efter att några jobb i gruppen redan har startat och GitLabs egen knapp försvinner."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Versionsmärke på commits"
+  },
+  "cardCommitVersionDesc": {
+    "message": "På sidan för branch-commits visar varje commit projektets version från din versionsfil vid den commiten. Dämpad som standard, markerad där versionen ändrats — se snabbt vilka commits som gick in i vilken release."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick-brancher"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Standardmålsbrancher för cherry-pick. Du kan lägga till eller ta bort brancher i modal-fönstret."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Lägg till gren"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-picka"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-picka till grenar"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-picka"
+  },
+  "cherryPickClose": {
+    "message": "Stäng"
+  },
+  "cherryPickInProgress": {
+    "message": "Cherry-pickar..."
+  },
+  "cherryPickRemove": {
+    "message": "Ta bort"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Grennamn"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-pickad till $1-grenar",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Starta en ny merge-förfrågan med dessa ändringar"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Skapa MR som standard när du cherry-pickar"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Vid konflikt — commit utan versionsfil"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Om cherry-pick misslyckas på grund av versionsfilkonflikt, spela om ändringarna som en ny commit utan versionsfilen"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Höj version vid reservlösning"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Höj version i målgrenen inom samma reserv-commit"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Smart reservlösning hanterar bara versionsfilkonflikter. Konflikten är i en annan fil"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Filen har ändrats i målgrenen — kan inte cherry-picka säkert"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Versionsfilen innehåller ändringar utöver version — kan inte hoppa över den säkert"
+  },
+  "commitsJiraField": {
+    "message": "Jira-fält för commit-badges"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Namn på Jira-fält att visa som badges på commit-sidan (t.ex. fixVersions, status, labels, components). Kräver Jira-URL."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-picka till grenar"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-picka till utvalda grenar direkt eller genom nya MRs. Med Smart fallback på, kan verifierade versionsfilkonflikter spelas om utan den filen, med möjlighet att bumpa versionen. Osäkra ändringar stoppas för kontroll."
+  },
+  "mrDetailEnhancements": {
+    "message": "Förbättringar av MR-detaljer"
+  },
+  "showSensitiveWarning": {
+    "message": "Varning för känslig fil i diff"
+  },
+  "showGitCommands": {
+    "message": "Git-kommandoknappar (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "KÄNSLIGT: $1 fil(er)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Denna MR ändrar säkerhetskänsliga filer:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Varning för känslig fil"
+  },
+  "cardSensitiveDesc": {
+    "message": "Markerar känsliga filer med hjälp av inbyggda regler, tilläggsmönster och undantag. Konfigurera dem i Visa regler och gränser."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Git-kommandoknappar"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Kopiera checkout, pull och hard-reset-kommandon. Kontrollera ditt repository och origin remote innan du kör dem; hard reset tar bort lokala ändringar."
+  },
+  "updateBannerText": {
+    "message": "Ny version finns tillgänglig! Se vad som är nytt:"
+  },
+  "updateChangelog": {
+    "message": "Ändringslogg"
+  },
+  "updateReviewAsk": {
+    "message": "Gillar du extensionen?"
+  },
+  "updateReviewLink": {
+    "message": "Lämna en recension"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "AI-assisterad granskning, från början till slut"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Granska ett MR, fixa vald feedback, förbered svar och kontrollera ändringar igen. Förhandsgranska och redigera kommentarer innan de postas till GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "AI granskningsguide"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Inga automatiska AI-uppladdningar. Kopiera själva kontexten; kommentarer skickas till GitLab först när du väljer Publicera eller Lägg till i granskning."
+  },
+  "aiReviewTitle": {
+    "message": "AI-granskning"
+  },
+  "aiReviewOpen": {
+    "message": "AI-granskning…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Kopiera kommentar för AI"
+  },
+  "aiReviewLoading": {
+    "message": "Laddar diskussioner…"
+  },
+  "aiReviewRetry": {
+    "message": "Försök igen"
+  },
+  "aiReviewRefresh": {
+    "message": "Uppdatera"
+  },
+  "aiReviewClose": {
+    "message": "Stäng"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Bekräfta att stänga granskningsdialoger med osparat arbete"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Stäng den här dialogen? Osparade ändringar och inmatad data kommer att gå förlorade."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Stäng den här dialogen och stoppa vidare sändningar? Kommentarer som redan skickats finns kvar i GitLab. Osparade ändringar kommer gå förlorade."
+  },
+  "aiReviewAll": {
+    "message": "Alla"
+  },
+  "aiReviewUnresolved": {
+    "message": "Oupplösta"
+  },
+  "aiReviewResolved": {
+    "message": "Lösta"
+  },
+  "aiReviewGeneral": {
+    "message": "Allmänna kommentarer"
+  },
+  "aiReviewSearch": {
+    "message": "Sök kommentarer eller filvägar"
+  },
+  "aiReviewSelectShown": {
+    "message": "Markera visade"
+  },
+  "aiReviewClear": {
+    "message": "Rensa markering"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Inkludera kodändringar"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "För nya och upprepade granskningar. Lämna av om AI kan läsa repositoryt. Korta utdrag bifogade feedbacken förblir inkluderade."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Ta hänsyn till befintliga diskussioner"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Lägger till redan postade kommentarer som ett filter för dubbletter: AI:n granskar hela MR självständigt och tar sedan bort fynd som upprepar dem. Den svarar inte på de diskussionerna."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Inkludera beskrivning"
+  },
+  "aiReviewPrompt": {
+    "message": "Instruktioner för AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Återställ standardprompt"
+  },
+  "aiReviewPreview": {
+    "message": "Förhandsgranska"
+  },
+  "aiReviewCopied": {
+    "message": "Kopierat!"
+  },
+  "aiReviewEmpty": {
+    "message": "Inga matchande kommentarer."
+  },
+  "aiReviewPartial": {
+    "message": "Vissa data kunde inte laddas. Exporten inkluderar en varning och endast den tillgängliga kontexten."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 valt",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Välj förhandsgranskningstexten och kopiera den manuellt."
+  },
+  "aiReviewScopeComment": {
+    "message": "Vald kommentar"
+  },
+  "aiReviewScopeThread": {
+    "message": "Vald diskussion"
+  },
+  "aiReviewPreparing": {
+    "message": "Förbereder kodkontext…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Kunde inte ladda diskussioner. Försök igen eller kopiera den tillgängliga kontexten."
+  },
+  "aiReviewShowReplies": {
+    "message": "Visa svar"
+  },
+  "aiReviewSize": {
+    "message": "Cirka $1 tecken",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Avbryt"
+  },
+  "showAiReviewCopy": {
+    "message": "Visa AI-granskningens kopia och importkontroller"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Kopiera hela MR för en ny granskning, markerad feedback för rättningar, eller importera AI-kommentarer och svar med en redigerbar förhandsvisning innan skickning."
+  },
+  "aiReviewFresh": {
+    "message": "Granska från början"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Uppmana för en ny granskning"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Upp till 1 500 tecken. Används för att granska hela MR och alla dess commits, separat från feedback-rättningar. Du kan ange vilket språk svaret ska vara på. Lämna tomt för standardprompt på engelska."
+  },
+  "aiReviewPromptHint": {
+    "message": "Upp till 1 500 tecken. Lämna tomt för att använda standardprompt på engelska. Gäller alla projekt."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Prompt sparades inte. Använd högst 1 500 tecken och ta bort ovanliga kontrolltecken."
+  },
+  "settingsSaveFailed": {
+    "message": "Inställningarna kunde inte sparas. Gör en ändring för att försöka igen."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Ändringar här påverkar denna export. Ställ in din standardprompt i tilläggsinställningarna."
+  },
+  "aiReviewReady": {
+    "message": "Förhandsvisningen är redo att kopieras."
+  },
+  "aiReviewLoadHint": {
+    "message": "Laddar diskussioner direkt från GitLab, inklusive kommentarer som inte är synliga på den här sidan."
+  },
+  "aiReviewCommentContext": {
+    "message": "Andra svar inkluderas som sammanhang. Endast utvalda kommentarer begärs för åtgärd."
+  },
+  "aiReviewOutdated": {
+    "message": "Tidigare revision"
+  },
+  "aiReviewLink": {
+    "message": "Öppen diskussion"
+  },
+  "aiReviewLoaded": {
+    "message": "Laddade $1-diskussioner"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Förbereder kodsammanhang: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Den här kommentaren är inte tillgänglig från GitLab. Den kan fortfarande sparas eller kan ha blivit borttagen. Uppdatera för att försöka igen."
+  },
+  "aiReviewImportOpen": {
+    "message": "Importera AI-granskning…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Importera AI-granskning"
+  },
+  "aiReviewImportHelp": {
+    "message": "Klistra in AI-svaret nedan för att kontrollera, redigera och välja vad som ska publiceras. Snabbkommandon för uppmaningar finns under Avancerade inställningar."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Kopiera uppmaning för ny granskning"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Förbereder uppmaningen…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI-svar (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Klistra in hela JSON-svaret som innehåller nya kommentarer eller svar på diskussioner. Du kan redigera texten och välja vad som ska skickas i förhandsgranskningen."
+  },
+  "aiReviewImportValidate": {
+    "message": "Kontrollera och förhandsgranska"
+  },
+  "aiReviewImportChecking": {
+    "message": "Kontrollerar MR-revisionen, rader och befintliga kommentarer…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Kontrollera svaret på förhandsgranskningskommentarer. Du kan redigera deras text, ta bort bockar för att exkludera punkter eller lägga till en allmän kommentar."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Välj klara kommentarer"
+  },
+  "aiReviewImportPreview": {
+    "message": "Kommentarer att skicka"
+  },
+  "aiReviewImportReady": {
+    "message": "Klart"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Behöver korrigeras"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Ytterligare filändringar kunde inte laddas: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Den ytterligare diffen överstiger 16 MiB importgränsen. Endast kommentarer på verifierade rader kan importeras."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Finns redan"
+  },
+  "aiReviewImportPublished": {
+    "message": "Publicerad"
+  },
+  "aiReviewImportDraft": {
+    "message": "Lagd till i granskning"
+  },
+  "aiReviewImportFailed": {
+    "message": "Inte skickad"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Leverans inte bekräftad"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Inte skickad"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Ny rad $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Gammal rad $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Publicera valda"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Lägg till i granskning"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Publicera skickar kommentarerna direkt. Lägg till i granskning sparar opublicerade kommentarer för din GitLab-granskning."
+  },
+  "aiReviewImportSending": {
+    "message": "Skickar valda kommentarer…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Klart. Kontrollera resultatet bredvid varje kommentar."
+  },
+  "aiReviewImportStopped": {
+    "message": "Stoppat. Kontrollera resultatet bredvid varje kommentar innan du försöker igen."
+  },
+  "aiReviewImportEdited": {
+    "message": "Svaret ändrades. Kontrollera det igen innan du skickar."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Urklipp otillgängligt. Välj texten nedan och kopiera den manuellt."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Leveransen kunde inte bekräftas. Kontrollera GitLab innan du försöker igen."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Fråga AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Klar: $1. Andra kommentarer behöver uppmärksamhet.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Sluta skicka"
+  },
+  "aiReviewImportError": {
+    "message": "Kunde inte slutföra operationen"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Kunde inte förbereda prompten"
+  },
+  "aiReviewImportWarning": {
+    "message": "Granskningsmeddelanden"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI-granskning"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "AI-svars språk"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automatisk — konversationsspråk"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Gäller för alla granskningsuppgifter och importprompter. JSON-nycklar, sökvägar och kod översätts inte. Att bara kopiera formatet lägger inte till språkinstruktioner."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Prompt för att åtgärda feedback"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Prompt för nya granskningskommentarer"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Prompt för svar på feedback"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Upp till 1500 tecken. För genväg för ny granskning i Import. Uppgiftsflikar använder sina egna prompter. MR-kontext och JSON-format läggs till automatiskt."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Upp till 1500 tecken. För svar på valda diskussioner i Kopiera eller alla obesvarade diskussioner i Import. Ställ in stil och språk; kontext och svarsformat läggs till automatiskt."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Svarsprompt för alla obesvarade diskussioner"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Kopiera svarformat"
+  },
+  "aiReviewImportFormat": {
+    "message": "Svarformat för AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Förbered svar"
+  },
+  "aiReviewImportReply": {
+    "message": "Svara på diskussion"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Ursprunglig kommentar"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Ditt svar"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Lös diskussion efter publicering"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Diskussion löst."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Svar publicerat, men diskussionen blev inte löst. Du kan lösa den i GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Svar publicerat. Lösning bekräftades inte; kontrollera diskussionen i GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Lösning är valfri och avstängd som standard. Den körs först efter att svaret har publicerats. Att lägga till ett utkast löser aldrig en diskussion."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "MR-versionen har ändrats. Svar förblir länkade till sina diskussioner; kontrollera deras text mot de pushade ändringarna. Nya fynd från en gammal revision blockeras."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Dessa svar är länkade till diskussioner, inte en kodrevision. Innan du publicerar, verifiera att de beskrivna ändringarna har pushats till denna MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Redigera text"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Lägg till kommentar"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Spara ändringar"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Avbryt"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Kommentartext"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Redigera texten och spara den sedan för att kontrollera ändringarna innan publicering."
+  },
+  "aiReviewImportEditError": {
+    "message": "Kunde inte spara ändringar"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Förhandsgranskningen kan innehålla högst 200 kommentarer."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Upprepningsgranskningsprompt"
+  },
+  "aiReviewFileFilters": {
+    "message": "Filer att granska"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Gäller för nya och upprepade granskningar samt prompts för nya fynd, inte vald feedback eller svarsprompts. Ett mönster per rad eller komma; # startar en kommentar. Använd *, **, ?. Undantag vinner, inklusive gamla omdöpningsvägar. Tomma listor inkluderar allt. Exempel: src/**, *.test.js, dist/. Upp till 1500 tecken per lista."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Inkludera filändelser (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Inkludera filvägar"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Exkludera filvägar"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Exkludera mappar"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Filfilter kunde inte sparas eller tillämpas. Använd högst 1500 tecken per lista och ta bort ovanliga kontrolltecken."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Version du granskade"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Fullständig granskning — ingen tidigare version"
+  },
+  "aiReviewRepeat": {
+    "message": "Upprepa granskning"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Ange ett commit SHA"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Ange det fullständiga granskade commit SHA (40 eller 64 hexadecimala tecken)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Välj den MR-version du granskade innan du lämnade dina kommentarer. Alla senare ändringar fram till den nuvarande versionen inkluderas automatiskt; du behöver inte välja enskilda commits. Om du inte minns versionen, välj en fullständig granskning."
+  },
+  "aiReviewChooseTask": {
+    "message": "Välj en uppgift"
+  },
+  "aiReviewTaskReview": {
+    "message": "Ny granskning"
+  },
+  "aiReviewTaskFix": {
+    "message": "Åtgärda granskningsresultat"
+  },
+  "aiReviewTaskReply": {
+    "message": "Förbered svar"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Uppföljande granskning"
+  },
+  "aiReviewCopyTask": {
+    "message": "Kopiera uppgift"
+  },
+  "aiReviewPasteResult": {
+    "message": "Klistra in AI-svar"
+  },
+  "aiReviewAdvanced": {
+    "message": "Avancerade inställningar"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Uppgiftsinstruktioner"
+  },
+  "aiReviewSelectThread": {
+    "message": "Välj denna diskussion"
+  },
+  "aiReviewSelectAll": {
+    "message": "Välj alla diskussioner"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Granska alla MR-commits tillsammans. AI:n returnerar nya fynd utan att ändra koden."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Välj feedback att fixa. För en MR förbereder AI:n också svar som förklarar vad som gjordes, vad som kvarstår och varför. Oupplösta diskussioner väljs initialt."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Förbered också svar"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Välj feedback som din kod-AI ska fixa. Oupplösta diskussioner väljs initialt."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Ge uppgiften till din kod-AI och kontrollera dess ändringar och tester. Resultatet är fixar och en normal sammanfattning, utan färdiga svar att posta."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Efter att ha pushat fixar, be AI:n verifiera koden och förklara resultatet i utvalda diskussioner."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Verifiera utvald feedback och leta efter nya fel. Välj den version du granskat tidigare, eller kolla hela nuvarande MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Uppgift: hela MR, över alla commits."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Utvalda kommentarer: $1; diskussionskontext och tillgängliga kodutdrag inkluderas."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Diskussioner för svar: $1, med hela deras konversation. AI:n behöver åtkomst till arkivet."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Diskussioner att verifiera: $1, plus en genomgång av kodändringar."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Beskrivning inkluderad."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Beskrivning utesluten."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Kodändringar inkluderade, med begränsningar för laddning."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI:n måste läsa kod från arkivet."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Befintliga diskussioner läggs till endast som dupliceringsfilter."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Befintliga diskussioner läggs inte till."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Filfilter är aktiva."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Ingen tidigare version vald: hela nuvarande MR kommer att kontrolleras."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Opublicerade utkastdiskussioner kan inte få svar och utesluts."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Välj feedback till vänster. För en ny granskning, använd fliken Ny granskning."
+  },
+  "aiReviewNextStep": {
+    "message": "Kopiera uppgiften till ditt AI-verktyg. Om det ger kommentarer eller svar, använd 'Klistra in AI-svar' för att granska och redigera dem innan du postar."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Kontrollera korrigeringarna och testerna, pusha alla commits till MR, och använd sedan 'Klistra in AI-svar' för att granska de förberedda svaren innan du postar. Nya commits kräver inte att svaren genereras på nytt."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Automatiska instruktioner (avancerat)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Alla block är aktiverade som standard och används endast för relevanta uppgifter. Redigera, inaktivera eller rensa ett block. Task-promptar har egna instruktioner också. MR-data, JSON-exempel och laddningsmeddelanden genereras separat; publiceringskontroller gäller alltid."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Lägg till i uppgiften när det är tillämpligt"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Upp till 1500 tecken. Tom text tillför inget. Återställ återställer standardtexten och aktiverar detta block."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Använd {language} för det valda svarspråket. Upp till 1500 tecken; tomtext tillför ingenting."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Använd {selection} för utvalda eller olösta diskussioner. Upp till 1500 tecken; tom text tillför ingenting."
+  },
+  "aiReviewRule_repository": {
+    "message": "Lokalt arkiv och fjärranläggning"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Arbetskopia för fixar"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Arbetsexemplar för granskning"
+  },
+  "aiReviewRule_language": {
+    "message": "Svarsspråket"
+  },
+  "aiReviewRule_scope": {
+    "message": "Filfiltertolkning"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Återkopplingskontext"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Fixar utan svar"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Uppgift endast för beskrivning"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Saknar utvald feedback"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Redo att posta svar efter fixar"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Granskningsgränser"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Källa för recension"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Inkluderade kodändringar"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Recension utan inkluderad kod"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Otillgänglig källa"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON-svar"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Hitta platser och utdata"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Uppföljningssvarsstil"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Oförändrat huvud"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Jämförelselinje positioner"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Jämförelse av lokal revision"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Ändringar i målgrev"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Granskning utan jämförelserevision"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Kontrollera igen utan diskussioner"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Utvald diskussionsomfång"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Kumulativ diffkontext"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Befintliga diskussioner i en ny granskning"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Ny granskning vid import"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Importgränser för granskning"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Format för importfynd"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Svargränser och format"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Svarsuppgiftsomfång"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Lägg till fält"
+  },
+  "jiraQuickActionField": {
+    "message": "Fält"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Åtgärd"
+  },
+  "jiraQuickActionValue": {
+    "message": "Värde"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Ta bort"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Lägg till"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Ta bort"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Ersätt alla"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Slutdatum"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Anpassat fält (avancerat)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Värden separerade med kommatecken. Lägg till/ta bort behåller andra värden; ersätt alla skriver över listan."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "Fält-ID: customfield_12345. Ange värdet som JSON i det format som förväntas av detta Jira-fält."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Exakt Jira-övergångsnamn (eller målstatus)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Tomt värde: ingen ändring."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Kontrollera fältvärdet: anpassade fält kräver ett giltigt ID och JSON; datum använder YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Använd varje fält bara en gång per knapp."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Åtgärden misslyckades."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Statusen ändrades, men fältuppdateringen misslyckades."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Kunde inte uppdatera ärendet. Öppna panelen igen för att kontrollera dess aktuella värden."
+  },
+  "mrActions": {
+    "message": "MR-åtgärder"
+  },
+  "mrActionsHint": {
+    "message": "Skapa namngivna knappar för att ändra etiketter eller rensa andra MR-fält. Dra dem i knapp-listan för att ändra deras ordning."
+  },
+  "mrActionsProfileHint": {
+    "message": "Detta projekt använder sin egen åtgärdslista efter sparande. Ta bort alla poster för att dölja dessa knappar för detta projekt."
+  },
+  "mrActionAdd": {
+    "message": "Lägg till MR-åtgärd"
+  },
+  "mrActionLabel": {
+    "message": "Knappnamn"
+  },
+  "mrActionDelete": {
+    "message": "Ta bort åtgärd"
+  },
+  "mrActionType": {
+    "message": "Åtgärd"
+  },
+  "mrActionLabels": {
+    "message": "Etiketter"
+  },
+  "mrActionLabelsHint": {
+    "message": "Exakta etikett namn, separerade med kommatecken eller nya rader. Mellanslag i namn bevaras. Lägg till/ersätt kan skapa saknade projektetiketter."
+  },
+  "mrAction_remove_labels": {
+    "message": "Ta bort angivna etiketter"
+  },
+  "mrAction_clear_labels": {
+    "message": "Rensa alla etiketter"
+  },
+  "mrAction_add_labels": {
+    "message": "Lägg till etiketter"
+  },
+  "mrAction_set_labels": {
+    "message": "Ersätt alla etiketter"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Rensa tilldelade"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Rensa granskare"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Rensa milstolpe"
+  },
+  "mrActionInvalid": {
+    "message": "Ange ett knappnamn, välj en stödd åtgärd och specificera minst en etikett för att lägga till, ta bort eller ersätta."
+  },
+  "mrActionConfirm": {
+    "message": "Tillämpa “$1” på denna MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab returnerade inte ombaseringsstatusen. Ladda om merge request och försök igen."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab returnerade en upprepad jobb-sida för pipeline #$1. Jobblistan kunde inte laddas fullständigt."
+  },
+  "displayPreferencesTitle": {
+    "message": "Visa regler och begränsningar"
+  },
+  "displayPreferencesHint": {
+    "message": "Globala inställningar; ladda om GitLab-flikar efter att du ändrat dem. Fler jobb eller kommentarer ökar datamängden som överförs. Loggförhandsgranskningar laddar ner hela spåret innan du väljer icke-tomma rader. Granskarmärken söker de äldsta kommentarerna efter “Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Misslyckade jobb att förhandsgranska"
+  },
+  "failedJobTraceLines": {
+    "message": "Icke-tomma loggrader per jobb"
+  },
+  "reviewerNotesLimit": {
+    "message": "Kommentarer att söka efter granskarmärken"
+  },
+  "mrSizeLines": {
+    "message": "MR-storleksgränser: rader (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR-storleksgränser: filer (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Ytterligare känsliga filmönster"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Uteslutningar för känsliga filer"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Använd inbyggda regler för känsliga filer"
+  },
+  "sizeThresholdsHint": {
+    "message": "Tre ökande positiva heltal separerade med kommatecken. Gränserna är inkluderande; större ändringar är XL. Filgränser gäller när radantal inte är tillgängliga."
+  },
+  "sensitivePatternsHint": {
+    "message": "Ett mönster per rad, skiftlägesokänsligt. * matchar all text (inklusive /), ? ett tecken. Mönster utan / matchar filnamn; andra mönster matchar hela repository-sökvägen. Exkluderingar vinner. Inbyggda regler täcker miljö, container/CI, autentiseringsuppgifter och privata nyckelfiler. Stäng av dem för att bara använda dina mönster."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Kontrollera de numeriska intervallen, tre ökande storlekströsklar och längden på filmönster."
+  },
+  "failedJobsPreview": {
+    "message": "Förhandsgranskning: $1 misslyckade jobb — sista $2 icke-tomma rader",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Fler misslyckade jobb — öppna hela pipelinen"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 rader, $2 filer",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 ändrade filer",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Skanning av känsliga filer ofullständig"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Kunde inte kolla alla filer: API-förfrågan misslyckades eller $1-filskanningsgränsen nåddes. Uppräknade träffar är delvis; kontrollera hela MR-diffen.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Varning: denna rapport kan vara ofullständig. Insamlingen är begränsad till $1 MRs per kategori och $2 aktivitets händelser.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 olösta tråd(ar)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Denna förhandsgranskning kan vara ofullständig: API-fel eller endast de första $2 diskussionerna kontrollerade. Kända olösta trådar: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+Язык: Турецкий (tr)
+
+GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın. Çok adımlı manuel işlemleri — rebase, sürüm güncellemesi, pipeline yönetimi ve merge — tek bir düğme ile değiştirin. Hem HTTPS üzerinden kendi sunucunuzdaki GitLab hem de gitlab.com desteklenir; kullanılabilirlik sunucu yetenekleri ve hesap izinlerine bağlıdır. API token’ına gerek yok — mevcut tarayıcı oturumunuzu kullanır.
+
+★ KENDİ ARAÇLARINIZLA AI İNCELEMESİ
+
+• Tam MR incelemesi — tüm MR commit’lerini kapsayan bir görev hazırlayın, dosya filtrelerini özelleştirebilirsiniz
+• Düzelt ve yanıtla — seçilen geri bildirimleri kodlama AI’ınıza kopyalayın ve gönderilmeye hazır yanıtlar hazırlayın
+• Takip incelemesi — seçilen bir revizyondan sonraki düzeltmeleri ve değişiklikleri tekrar kontrol edin, force push’lar dahil
+• Düzenlenebilir içe aktarım — AI yorumlarını ve yanıtlarını JSON olarak yapıştır, metinlerini düzenle ve seçilen öğeleri yayınla veya inceleme taslaklarını kaydet. İstersen yanıtları yayınladıktan sonra tartışmaları çöz
+• Özel talimatlar — istemleri ve otomatik talimat bloklarını özelleştir; yanıt dilini seç
+• Manuel paylaşım — tercih ettiğin AI aracını kullan. Eklentide AI API anahtarı yok ve otomatik kod yüklemesi yok
+
+★ BİRLEŞTİRME TALEBİ EYLEMLERİ
+
+• Otomatik birleştirme — rebase uygula ve "pipeline başarılı olunca birleştir"i tek tıkla etkinleştir
+• Yayınla — tam sürüm akışı: sürüm artır → pipeline → otomatik birleştirme, hepsi otomatik
+• Zorla birleştirme — pipeline atla ve CI gerekmediğinde hemen birleştir
+• Versiyon yükseltme — package.json, pyproject.toml veya herhangi bir dosyada versiyonu artır (patch / minor / major)
+• Rebase — versiyon yükseltmeli veya yükseltmesiz branch’i rebase et
+• Taslak / Hazır geçişi — başlığı değiştirmeden MR durumunu değiştir
+• Hızlı yorumlar — MR’ye şablon yorumları tek tıkla ekle
+• MR’yi kopyala — başlık + linki anında panoya kopyala
+
+★ CI/CD İŞLEM HATTI KONTROLLERİ
+
+• Yeni pipeline / Pipeline’ı iptal et — pipeline’ları anında oluştur veya iptal et
+• Tüm başarısız işleri tekrar dene — son pipeline’daki her başarısız işi bir kerede yeniden başlat
+• Özel iş butonları — herhangi bir CI işini tek tıkla başlat; birden fazla işi zincirle (örn. build → deploy)
+• Başarısız iş hızlı görünümü — başarısız iş isimlerini ve hata log satırlarını doğrudan MR sayfasında gör
+• Arka planda çalıştırma — özel iş zincirleri sayfa gezinmesinden sonra da devam eder
+
+★ JIRA ENTEGRASYONU (API token’ı yok)
+
+• Jira durum rozetleri — MR başlıklarından analiz edilen renk kodlu bilet durumları (Tamamlandı, Devam Ediyor, QA, Yapılacak)
+• Tam bilet yan paneli — herhangi bir rozete tıklayarak özet, durum, sorumlu, öncelik, sprint, epik, etiketler, açıklama ve ekleri görün
+• Durum ve sorumlu değiştir — biletleri GitLab’den çıkmadan geçiş yap ve yeniden ata
+• Jira hızlı işlemleri — tek tıkla birleştirilmiş işlemler (durumu değiştir + ata)
+• Sorun türü ve öncelik simgeleri — MR listesi ve detay sayfalarında yerel Jira simgeleri
+• Commit’lerde Jira alan rozetleri — Fix Version, durum veya herhangi bir alanı commit’lerin yanında göster
+• Günlük raporlarda Jira zenginleştirmesi — etkinlik özetlerine bilet başlıkları otomatik olarak eklendi
+
+★ MR LİSTE İYİLEŞTİRMELERİ
+
+• MR boyut etiketleri — değişen satır sayısına göre renk kodlu S / M / L / XL rozetleri
+• Çakışma göstergesi — dalın merge çakışması varsa kırmızı rozet
+• Çözülmemiş konular sayısı — açık tartışma konularını hızlıca gör
+• Dal isimleri — her MR’de kaynak → hedef dal gösterimi
+• Onay göstergesi — her MR’yi onaylayıp onaylamadığını gösterir
+• Taslak MR’leri soluklaştır — aktif merge request’lere odaklanmak için taslakları görsel olarak soluklaştır
+• Kendi MR’lerini vurgula — hızlı tanıma için kendi MR’lerinde mavi çerçeve
+• "Sadece benim" / "İncelemem gerekiyor" / "Yazara göre gruplandır" geçişleri
+• "Sizin incelemeniz" rozeti — yapılandırılmış incelemeci işi ve yorum referanslarını tespit eder
+• Listeden MR kopyala — her MR öğesinde kopyalama butonu
+
+★ VERİMLİLİK ARAÇLARI
+
+• Komut paleti (Cmd+K / Ctrl+K) — MR listesine, işlem hatlarına, dallara, sorunlara veya tetikleyici eylemlere gidin
+• Palette dosya araması — isimle herhangi bir proje dosyasını bulun ve açın
+• Günlük faaliyet raporu — oluşturulan, birleştirilen, yorumlanan ve onaylanan MR'lerin özeti. Slack veya Jira’ya kopyalayın
+• Birden fazla dala cherry-pick — herhangi bir commit’i aynı anda birden fazla dala uygulayın; MR’lar otomatik oluşturulur
+• Akıllı cherry-pick yedek işlemi — çakışma durumunda sürüm dosyasını hariç tutarak commit’i otomatik olarak yeniden uygular
+• Hassas dosya uyarısı — MR .env, Dockerfile, CI yapılandırmaları veya kimlik bilgilerine dokunduğunda turuncu rozet
+• Git komut düğmeleri — MR dalı için git checkout ve git fetch komutlarını kopyala
+• MR yaş rozeti — bir merge request’in ne kadar süredir açık olduğunu gör
+• Yorumlarımı vurgula — tartışmalardaki kendi yorumlarının etrafını renkli göster
+
+★ ÖZELLEŞTİRME
+
+• Proje başına profiller — her depo için farklı düğmeler, versiyon dosyaları ve CI işleri
+• Düğme sırasını sürükle bırak — aksiyon düğmelerini istediğin şekilde düzenle
+• Diflerde ayarlanabilir sekme genişliği — sekmeleri 2, 4 veya 8 boşluk olarak ayarla
+• Üst barları daralt / Sağ kenar çubuğunu gizle — çalışma alanını maksimize et
+• Ses ve masaüstü bildirimleri — aksiyonlar tamamlandığında veya başarısız olduğunda haber al
+• Koyu tema — sistem tercihini otomatik olarak takip eder
+
+★ NEDEN GITLAB MR ACTIONS?
+
+✓ Kişisel erişim token'ı yok — mevcut GitLab oturum çerezlerinizi kullanır
+✓ Aracı servis yok — GitLab ve Jira istekleri doğrudan yapılandırılmış sunucularınıza gider
+✓ HTTPS self-hosted GitLab ve gitlab.com desteği; test edilmiş API sözleşmeleri için uyumluluk kılavuzuna bakın
+✓ API token'ı olmadan Jira entegrasyonu — tarayıcı oturum çerezlerini kullanır
+✓ Proje başına tamamen yapılandırılabilir — tek beden herkese uymaz sınırlamalar yok
+✓ Hafif — başlattığınız eylemler için arka planda kontroller yapılır; telemetri veya otomatik AI yüklemeleri yok
+✓ Arayüz 27 dilde kullanılabilir.
+✓ Açık kaynak
+
+GitLab’da tıklamakla zaman kaybetmek yerine daha çok kod yazmak isteyen geliştiriciler tarafından güveniliyor.

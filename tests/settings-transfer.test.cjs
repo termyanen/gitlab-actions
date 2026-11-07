@@ -217,3 +217,13 @@ test('invalid display policies cannot enter storage through JSON imports', funct
   }
   assert.equal(env.writes.length, 0);
 });
+
+test('every shipped language survives settings import validation', function() {
+  var fs = require('node:fs'); var path = require('node:path');
+  var env = environment();
+  fs.readdirSync(path.join(__dirname, '../_locales'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => entry.name).forEach(function(language) {
+    var parsed = env.context.parseSettingsFile(file({language, ai_review_response_language: language}));
+    assert.equal(parsed.language, language);
+    assert.equal(parsed.ai_review_response_language, language);
+  });
+});

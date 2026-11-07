@@ -1,0 +1,88 @@
+Язык: Польский (pl)
+
+Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą automatyzacji jednym kliknięciem. Zastąp wieloetapowe ręczne operacje — rebase, podniesienie wersji, zarządzanie pipeline’ami i mergowanie — jednym przyciskiem. Obsługuje HTTPS w self-hosted GitLab i gitlab.com; dostępność zależy od możliwości serwera i uprawnień konta. Nie są potrzebne żadne tokeny API — korzysta z Twojej istniejącej sesji w przeglądarce.
+
+★ PRZEGLĄD AI Z TWOIMI WŁASNYMI NARZĘDZIAMI
+
+• Pełny przegląd MR — przygotuj zadanie obejmujące wszystkie commity MR, z konfigurowalnymi filtrami plików
+• Napraw i odpowiedz — skopiuj wybrane uwagi do swojego AI do kodowania i przygotuj gotowe do wysłania odpowiedzi
+• Przegląd uzupełniający — sprawdź ponownie poprawki i zmiany od wybranej wersji, także po wymuszeniu push
+• Edytowalny import — wklej komentarze i odpowiedzi AI w formacie JSON, edytuj ich treść i opublikuj wybrane elementy lub zapisz wersje robocze przeglądu. Opcjonalnie zamknij dyskusje po opublikowaniu odpowiedzi
+• Własne instrukcje — dostosuj polecenia i automatyczne bloki instrukcji; wybierz język odpowiedzi
+• Ręczne udostępnianie — używaj swojego ulubionego narzędzia AI. W rozszerzeniu nie ma kluczy API ani automatycznego przesyłania kodu
+
+★ AKCJE Z WIĄZANIEM MERGE
+
+• Auto-merge — rebase i włącz „merge when pipeline succeeds” jednym kliknięciem
+• Wysyłka — pełny przepływ wydania: podbicie wersji → pipeline → auto-merge, wszystko zautomatyzowane
+• Wymuszenie mergowania — pomiń pipeline i scalcuj od razu, gdy CI nie jest potrzebne
+• Podbicie wersji — zwiększ wersję w package.json, pyproject.toml lub dowolnym pliku (patch / minor / major)
+• Rebase — zrób rebase gałęzi z podbiciem wersji lub bez
+• Przełącznik Szkic / Gotowe — zmień status MR bez edytowania tytułu
+• Szybkie komentarze — dodawaj szablonowe komentarze do MR jednym kliknięciem
+• Kopiuj MR — kopiuj tytuł + link do schowka od razu
+
+★ KONTROLA CI/CD PIPELINE
+
+• Nowy pipeline / Anuluj pipeline — twórz lub anuluj pipeline od razu
+• Powtórz wszystkie nieudane zadania — uruchom ponownie wszystkie nieudane zadania w ostatnim pipeline naraz
+• Niestandardowe przyciski zadań — uruchamiaj dowolne zadanie CI jednym kliknięciem; łącz kilka zadań (np. build → deploy)
+• Szybki podgląd nieudanych zadań — zobacz nazwy nieudanych zadań i linie logów z błędami bezpośrednio na stronie MR
+• Wykonywanie w tle — niestandardowe łańcuchy zadań kontynuują działanie po przejściu na inną stronę
+
+★ INTEGRACJA Z JIRA (bez tokenów API)
+
+• Odznaki statusu Jira — statusy ticketów kodowane kolorami (Done, In Progress, QA, To Do) pobierane z tytułów MR
+• Pełny pasek boczny ticketów — kliknij dowolną odznakę, aby zobaczyć podsumowanie, status, przypisanego użytkownika, priorytet, sprint, epik, etykiety, opis i załączniki
+• Zmień status i przypisanego — przetwarzaj tickety i przypisuj je bez opuszczania GitLab
+• Szybkie akcje Jira — kompozytowe akcje (zmiana statusu + przypisanie) jednym kliknięciem
+• Ikony typu i priorytetu ticketu — natywne ikony Jira na listach MR i stronach szczegółów
+• Odznaki pól Jira przy commitach — pokaż Fix Version, status lub dowolne pole obok commitów
+• Wzbogacenie Jira w raportach dziennych — tytuły ticketów dodawane automatycznie do podsumowań aktywności
+
+★ ULEPSZENIA LISTY MR
+
+• Etykiety rozmiaru MR — odznaki S / M / L / XL w kolorach w zależności od liczby zmienionych linii
+• Wskaźnik konfliktów — czerwona odznaka, gdy gałąź ma konflikty merge
+• Liczba nierozwiązanych wątków — zobacz otwarte wątki dyskusji na pierwszy rzut oka
+• Nazwy gałęzi — źródło → gałąź docelowa wyświetlana przy każdym MR
+• Wskaźnik zatwierdzenia — pokazuje, czy zatwierdziłeś każdy MR
+• Przygaszone Draft MR — wizualnie przygaś wersje robocze, żeby skupić się na aktywnych merge requestach
+• Wyróżnij swoje MR — niebieska ramka wokół własnych MR do szybkiej identyfikacji
+• Przełączniki „Tylko moje” / „Potrzebuje mojej recenzji” / „Grupuj według autora”
+• Odznaka „Twoja recenzja” — wykrywa wspomnienia o zadaniach recenzenta i komentarze
+• Kopiuj MR z listy — przycisk kopiowania przy każdym elemencie MR
+
+★ NARZĘDZIA PRODUKTYWNOŚCI
+
+• Paleta poleceń (Cmd+K / Ctrl+K) — nawigacja do listy MR, pipeline’ów, branchy, issue’ów lub wywoływanie akcji
+• Wyszukiwanie plików w palecie — znajdź i otwórz dowolny plik projektu po nazwie
+• Codzienny raport aktywności — podsumowanie utworzonych, scalonych, skomentowanych i zatwierdzonych MR. Kopiuj do Slacka lub Jira
+• Cherry-pick do wielu branchy — cherry-pick dowolnego commita do kilku branchy naraz z automatycznym tworzeniem MR
+• Smart cherry-pick fallback — automatyczne powtórzenie commita z wyłączeniem pliku wersji przy konflikcie
+• Ostrzeżenie o wrażliwych plikach — pomarańczowa odznaka, gdy MR dotyka .env, Dockerfile, konfiguracji CI lub danych uwierzytelniających
+• Przyciski poleceń Git — kopiuj polecenia git checkout i git fetch dla gałęzi MR
+• Odznaka wieku MR — zobacz, jak długo merge request jest otwarty
+• Podkreśl moje komentarze — kolorowa ramka wokół twoich komentarzy w dyskusjach
+
+★ PERSONALIZACJA
+
+• Profile per-projektowe — różne przyciski, pliki wersji i zadania CI dla każdego repozytorium
+• Przeciągnij i upuść kolejność przycisków — ustaw przyciski akcji tak, jak wolisz
+• Konfigurowalna szerokość tabulatora w diffach — ustaw wyświetlanie tabulatorów na 2, 4 lub 8 spacji
+• Zwiń górne paski / Ukryj prawy pasek boczny — maksymalizuj przestrzeń roboczą
+• Powiadomienia dźwiękowe i na pulpicie — bądź powiadamiany, gdy akcje się zakończą lub nie powiodą
+• Ciemny motyw — automatycznie podąża za preferencją systemu
+
+★ DLACZEGO GITLAB MR ACTIONS?
+
+✓ Brak osobistych tokenów dostępowych — korzysta z istniejących ciasteczek sesji GitLab
+✓ Brak pośrednich usług — zapytania do GitLab i Jira trafiają bezpośrednio na Twoje skonfigurowane serwery
+✓ Wspiera HTTPS w self-hosted GitLab i gitlab.com; sprawdź przewodnik zgodności dla przetestowanych kontraktów API
+✓ Integracja z Jira bez tokenów API — korzysta z ciasteczek sesji przeglądarki
+✓ W pełni konfigurowalne dla każdego projektu — brak ograniczeń typu „jeden rozmiar dla wszystkich”
+✓ Lekki — sprawdzenia działają w tle dla akcji, które uruchamiasz; brak telemetrii ani automatycznego wysyłania AI
+✓ Interfejs dostępny w 27 językach
+✓ Open source
+
+Zaufany przez deweloperów, którzy chcą spędzać mniej czasu klikania w GitLab, a więcej na pisaniu kodu.

@@ -234,7 +234,7 @@ Filters limit code-review scope, not all text: commit messages, descriptions and
 quoted discussions can still mention excluded files. Each list allows up to 1,500
 characters, with an additional check against browser storage limits.
 
-**AI response language** in the review settings applies to every task and import prompt, independently of the interface language. Choose Automatic (conversation language), Russian, English, German, Spanish, French, Japanese or Simplified Chinese. It overrides saved prompt language instructions without translating JSON keys, paths or code. Format-only copying remains unchanged.
+**AI response language** in the review settings applies to every task and import prompt, independently of the interface language. Choose Automatic (conversation language) or any of the 27 supported interface locales. It overrides saved prompt language instructions without translating JSON keys, paths or code. Format-only copying remains unchanged.
 
 ### Import AI Review Comments
 
@@ -482,7 +482,11 @@ accepted values, profile inheritance and fixed network/storage budgets.
 
 ## Supported Languages
 
-English, Русский, 中文, 日本語, Deutsch, Français, Español
+27 interface locales:
+
+English, Русский, Deutsch, Español, Français, 日本語, 简体中文, Português (Brasil), Italiano, Polski, 한국어, Türkçe, Nederlands, Bahasa Indonesia, Tiếng Việt, Čeština, Svenska, Română, हिन्दी, Suomi, Dansk, Magyar, Ελληνικά, Slovenčina, ไทย, Български, Bahasa Melayu
+
+Choose a language in settings or use the browser default. The same choices are available for AI responses. See [localization maintenance](docs/LOCALIZATION.md) and [store listing translations](store-listing/README.md). The website and long-form guides remain English/Russian.
 
 ## Compatibility
 

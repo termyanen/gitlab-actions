@@ -1,3 +1,4 @@
+import { LANGUAGES } from "../../../shared/i18n";
 import * as workflow from "../../../entities/review";
 import { MR_DEFAULTS, VERSION_DEFAULTS } from "../../../entities/settings";
 import {
@@ -71,13 +72,10 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       '<option value="auto">' +
       escHtml(t("languageAuto")) +
       "</option>" +
-      '<option value="en">English</option>' +
-      '<option value="ru">Русский</option>' +
-      '<option value="zh_CN">中文</option>' +
-      '<option value="ja">日本語</option>' +
-      '<option value="de">Deutsch</option>' +
-      '<option value="fr">Français</option>' +
-      '<option value="es">Español</option>' +
+      LANGUAGES.map(
+        ({ code, label }) =>
+          '<option value="' + code + '">' + escHtml(label) + "</option>",
+      ).join("") +
       "</select></div>" +
       '<div class="toggle"><input type="checkbox" id="sound_enabled"><label for="sound_enabled">' +
       escHtml(t("soundNotifications")) +
@@ -202,19 +200,10 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       '<select id="ai_review_response_language"><option value="auto">' +
       escHtml(t("aiReviewResponseLanguageAuto")) +
       "</option>" +
-      [
-        ["ru", "Русский"],
-        ["en", "English"],
-        ["de", "Deutsch"],
-        ["es", "Español"],
-        ["fr", "Français"],
-        ["ja", "日本語"],
-        ["zh_CN", "简体中文"],
-      ]
-        .map(function (item) {
-          return '<option value="' + item[0] + '">' + item[1] + "</option>";
-        })
-        .join("") +
+      LANGUAGES.map(
+        ({ code, label }) =>
+          '<option value="' + code + '">' + escHtml(label) + "</option>",
+      ).join("") +
       "</select>" +
       '<div class="hint">' +
       escHtml(t("aiReviewResponseLanguageHint")) +

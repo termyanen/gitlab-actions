@@ -1,0 +1,88 @@
+Язык: Испанский (es)
+
+Simplifica tu trabajo con merge requests de GitLab mediante automatización con un clic. Sustituye operaciones manuales de varios pasos — rebase, incremento de versión, gestión de pipelines y fusión — por un solo botón. Compatible con GitLab autoalojado mediante HTTPS y gitlab.com; las funciones disponibles dependen del servidor y de los permisos de tu cuenta. No necesitas tokens API: se utiliza tu sesión actual del navegador.
+
+★ REVISIÓN CON IA EN TUS PROPIAS HERRAMIENTAS
+
+• Revisión completa del MR — prepara una tarea que abarque todos sus commits, con filtros de archivos configurables
+• Corregir y responder — copia los comentarios seleccionados en tu asistente de programación con IA y prepara respuestas listas para publicar
+• Revisión de seguimiento — vuelve a comprobar las correcciones y los cambios desde una revisión elegida, incluso después de un force push
+• Importación editable — pega comentarios y respuestas de la IA como JSON, edita los textos y publica los elementos seleccionados o guarda borradores de revisión. También puedes resolver las discusiones después de publicar las respuestas
+• Instrucciones personalizadas — adapta los prompts y los bloques de instrucciones automáticos; elige el idioma de respuesta
+• Envío manual — utiliza tu herramienta de IA preferida. Sin claves API de IA en la extensión ni cargas automáticas de código
+
+★ ACCIONES DE MERGE REQUEST
+
+• Fusión automática — haz rebase y activa la fusión cuando el pipeline termine correctamente con un clic
+• Ship — flujo completo de publicación: incremento de versión → pipeline → fusión automática
+• Forzar fusión — fusiona sin esperar al pipeline cuando no necesites CI
+• Incremento de versión — aumenta la versión en package.json, pyproject.toml o cualquier otro archivo: patch / minor / major
+• Rebase — aplica rebase a la rama con o sin incremento de versión
+• Borrador / Listo — cambia el estado del MR sin editar el título
+• Comentarios rápidos — publica plantillas de comentarios en el MR con un clic
+• Copiar MR — copia al instante el título y el enlace al portapapeles
+
+★ CONTROLES DE PIPELINES CI/CD
+
+• Nuevo pipeline / Cancelar — crea o cancela pipelines directamente
+• Reintentar todos los jobs fallidos — reinicia a la vez todos los jobs fallidos del último pipeline
+• Botones de jobs personalizados — ejecuta cualquier job de CI con un clic o encadena varios, por ejemplo compilación → despliegue
+• Vista rápida de errores — consulta los nombres de jobs fallidos y las líneas del registro de errores en la propia página del MR
+• Ejecución en segundo plano — las cadenas de jobs personalizadas continúan al cambiar de página
+
+★ INTEGRACIÓN CON JIRA SIN TOKENS API
+
+• Insignias de estado de Jira — estados por colores: Hecho, En curso, QA y Pendiente; las claves de tickets se extraen de los títulos de los MR
+• Panel lateral del ticket — pulsa una insignia para ver título, estado, responsable, prioridad, sprint, epic, etiquetas, descripción y adjuntos
+• Estado y responsable — cambia el estado y reasigna tickets sin salir de GitLab
+• Acciones rápidas de Jira — operaciones combinadas, como cambiar el estado y asignar, con un clic
+• Iconos de tipo y prioridad — iconos nativos de Jira en la lista de MR y en sus páginas de detalle
+• Campos de Jira en los commits — muestra Fix Version, estado u otro campo junto a los commits
+• Jira en los informes diarios — añade automáticamente los títulos de tickets a los resúmenes de actividad
+
+★ MEJORAS DE LA LISTA DE MR
+
+• Tamaño del MR — insignias S / M / L / XL por colores según las líneas modificadas
+• Indicador de conflictos — insignia roja cuando la rama tiene conflictos de fusión
+• Discusiones sin resolver — consulta de un vistazo el número de discusiones abiertas
+• Nombres de ramas — rama de origen → rama de destino en cada MR
+• Indicador de aprobación — muestra si has aprobado cada MR
+• Atenuar borradores — reduce su presencia visual para centrarte en los MR activos
+• Resaltar tus MR — borde azul para identificarlos rápidamente
+• Filtros «Solo los míos», «Necesitan mi revisión» y «Agrupar por autor»
+• Insignia «Tu revisión» — detecta menciones en el job de revisores configurado y en los comentarios
+• Copiar desde la lista — botón de copia en cada MR
+
+★ HERRAMIENTAS DE PRODUCTIVIDAD
+
+• Paleta de comandos (Cmd+K / Ctrl+K) — accede a MR, pipelines, ramas y tareas o ejecuta acciones
+• Búsqueda de archivos — encuentra y abre cualquier archivo del proyecto por su nombre desde la paleta
+• Informe diario — resumen de MR creados, fusionados, comentados y aprobados; cópialo para Slack o Jira
+• Cherry-pick a varias ramas — aplica un commit a varias ramas a la vez con creación automática de MR
+• Recuperación de cherry-pick — si hay conflictos, vuelve a aplicar automáticamente el commit excluyendo el archivo de versión
+• Aviso de archivos sensibles — insignia naranja si el MR afecta a .env, Dockerfile, configuraciones de CI o archivos de credenciales
+• Comandos Git — copia git checkout y git fetch para la rama del MR
+• Antigüedad del MR — consulta cuánto tiempo lleva abierto
+• Resaltar mis comentarios — borde de color en tus comentarios dentro de las discusiones
+
+★ PERSONALIZACIÓN
+
+• Perfiles por proyecto — botones, archivos de versión y jobs de CI diferentes para cada repositorio
+• Orden mediante arrastrar y soltar — coloca los botones de acción como prefieras
+• Ancho de tabulación en diffs — configura su visualización con 2, 4 u 8 espacios
+• Plegar barras superiores / Ocultar panel derecho — amplía tu espacio de trabajo
+• Sonido y notificaciones — recibe avisos cuando las acciones finalizan o fallan
+• Tema oscuro — sigue automáticamente la preferencia del sistema
+
+★ ¿POR QUÉ GITLAB MR ACTIONS?
+
+✓ Sin tokens de acceso personal — utiliza las cookies de tu sesión actual de GitLab
+✓ Sin servicios intermediarios — las solicitudes a GitLab y Jira van directamente a tus servidores configurados
+✓ Compatible con GitLab autoalojado mediante HTTPS y gitlab.com; consulta los contratos API probados en la guía de compatibilidad
+✓ Jira sin tokens API — utiliza la sesión del navegador
+✓ Configuración independiente para cada proyecto
+✓ Ligero — las comprobaciones en segundo plano corresponden a las acciones que inicias; sin telemetría ni envíos automáticos a una IA
+✓ Interfaz disponible en 27 idiomas
+✓ Código abierto
+
+Para desarrolladores que quieren dedicar menos tiempo a hacer clic en GitLab y más a escribir código.
