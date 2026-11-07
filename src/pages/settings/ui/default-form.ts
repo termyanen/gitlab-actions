@@ -15,6 +15,7 @@ import {
   populateDisplayPreferences,
 } from "./display-preferences";
 import {
+  buttonById,
   byId,
   escHtml,
   inputById,
@@ -22,6 +23,7 @@ import {
   valueControlById,
 } from "./dom";
 import type { SettingsFormContext } from "./form-context";
+import { bindJiraAccess } from "./jira-access";
 export function createDefaultSettingsForm(context: SettingsFormContext) {
   const {
     state,
@@ -346,11 +348,13 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       "<h4>" +
       escHtml(t("jiraIntegration")) +
       "</h4>" +
-      '<div class="field"><label>' +
+      '<div class="field"><label for="jira_url">' +
       escHtml(t("jiraUrl")) +
-      '</label><input type="text" id="jira_url" placeholder="https://jira.company.com"><div class="hint">' +
+      '</label><input type="text" id="jira_url" placeholder="https://jira.company.com" aria-describedby="jiraAccessStatus"><div class="hint">' +
       escHtml(t("jiraUrlHint")) +
-      "</div></div>" +
+      '</div><button type="button" class="add-btn" id="jiraGrantAccess">' +
+      escHtml(t("jiraGrantAccess")) +
+      '</button><div class="hint" id="jiraAccessStatus" role="status" aria-live="polite"></div></div>' +
       '<div class="field"><label>' +
       escHtml(t("jiraTicketRegex")) +
       '</label><input type="text" id="jira_ticket_regex" placeholder="[A-Z][A-Z0-9]+-\\d+"><div class="hint">' +
@@ -594,6 +598,12 @@ export function createDefaultSettingsForm(context: SettingsFormContext) {
       addCherryPickBranchRow("");
     });
     valueControlById("jira_url").value = state.data.jira_url || "";
+    bindJiraAccess(
+      inputById("jira_url"),
+      buttonById("jiraGrantAccess"),
+      byId("jiraAccessStatus"),
+      t,
+    );
     valueControlById("jira_ticket_regex").value =
       state.data.jira_ticket_regex || "";
     inputById("show_jira_details").checked =

@@ -1,13 +1,30 @@
 import type { JiraComment, JiraState } from "../../../entities/jira-issue";
-import { sendJiraMessage } from "../../../entities/jira-issue/content";
+import {
+  jiraResponseFailure,
+  renderJiraFailure,
+  renderJiraMutationFailure,
+  sendJiraMessage,
+  type JiraFailure,
+} from "../../../entities/jira-issue/content";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { eventElement, requireElement } from "../../../shared/ui/dom";
 import { formatJiraDate, formatJiraWikiText } from "./format";
 export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
   // Cache of current Jira user id per Jira instance, used to detect "own" comments
+  function forgetExpiredIdentity(failure: JiraFailure, jiraUrl: string) {
+    const expired =
+      failure._errorKind === "auth" ||
+      failure._httpStatus === 401 ||
+      /^401\b/.test(failure._error);
+    if (expired) delete jiraState.myselfCache[jiraUrl];
+    return expired;
+  }
 
-  function getJiraMyself(jiraUrl: string, cb: (id: string) => void) {
+  function getJiraMyself(
+    jiraUrl: string,
+    cb: (id: string, failure?: JiraFailure) => void,
+  ) {
     if (jiraState.myselfCache[jiraUrl] !== undefined) {
       cb(jiraState.myselfCache[jiraUrl]);
       return;
@@ -15,7 +32,11 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
     sendJiraMessage(
       { type: "fetch-jira-myself", jiraUrl: jiraUrl },
       scope.once(function (resp) {
-        const id = resp && resp._error === undefined ? resp.id : "";
+        if (resp._error !== undefined) {
+          cb("", resp);
+          return;
+        }
+        const id = resp.id;
         jiraState.myselfCache[jiraUrl] = id;
         cb(id);
       }),
@@ -72,6 +93,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
     jiraUrl: string,
     startAt: number,
   ) {
+    if (scope.disposed || sidebar.dataset.ticket !== ticket) return;
     const listEl = sidebar.querySelector<HTMLElement>(
       "#gl-jira-sidebar-comments-list",
     );
@@ -79,6 +101,14 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
     const lm = listEl.querySelector<HTMLButtonElement>(
       ".gl-jira-sidebar-load-more",
     );
+    listEl.querySelector(".gl-jira-comments-read-error")?.remove();
+    const showReadFailure = (failure: JiraFailure, retryFrom = startAt) => {
+      const notice = renderJiraFailure(failure, jiraUrl, () =>
+        fetchAndRenderJiraComments(sidebar, ticket, jiraUrl, retryFrom),
+      );
+      notice.classList.add("gl-jira-comments-read-error");
+      listEl.appendChild(notice);
+    };
     if (startAt === 0) {
       listEl.innerHTML =
         '<div class="gl-jira-sidebar-comments-loading"><div class="gl-jira-sidebar-spinner"></div></div>';
@@ -87,7 +117,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
       lm.classList.add("is-loading");
       lm.innerHTML = '<span class="gl-jira-sidebar-spinner-sm"></span>';
     }
-    getJiraMyself(jiraUrl, function (currentUserId) {
+    getJiraMyself(jiraUrl, function (currentUserId, identityFailure) {
       sendJiraMessage(
         {
           type: "fetch-jira-comments",
@@ -97,15 +127,9 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           maxResults: 5,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error !== undefined) {
+          if (resp._error !== undefined) {
             if (startAt === 0) {
-              listEl.innerHTML =
-                '<div class="gl-jira-sidebar-comments-empty">' +
-                escHtml(
-                  chrome.i18n.getMessage("jiraSidebarCommentError") ||
-                    "Failed to load comments",
-                ) +
-                "</div>";
+              listEl.replaceChildren();
             } else if (lm) {
               lm.disabled = false;
               lm.classList.remove("is-loading");
@@ -113,6 +137,8 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
                 chrome.i18n.getMessage("jiraSidebarLoadMoreComments") ||
                 "Show more comments";
             }
+            const expired = forgetExpiredIdentity(resp, jiraUrl);
+            showReadFailure(resp, expired ? 0 : startAt);
             return;
           }
           const headerEl = sidebar.querySelector<HTMLElement>(
@@ -158,6 +184,9 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
             });
             listEl.appendChild(btn);
           }
+          // A failed identity lookup must not be cached as anonymous forever.
+          // Preserve readable comments, but explain why ownership actions are unavailable.
+          if (identityFailure) showReadFailure(identityFailure, 0);
         }),
       );
     });
@@ -178,15 +207,18 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
       sidebar.querySelector<HTMLElement>("#gl-jira-sidebar-comment-error"),
     );
     if (!input || !submitBtn) return;
+    let posting = false;
 
     input.addEventListener("input", function () {
-      submitBtn.disabled = !input.value.trim();
+      submitBtn.disabled = posting || !input.value.trim();
       errorEl.style.display = "none";
     });
 
     const submitComment = function () {
-      const text = input.value.trim();
-      if (!text) return;
+      const draft = input.value;
+      const text = draft.trim();
+      if (!text || posting || scope.disposed) return;
+      posting = true;
       submitBtn.disabled = true;
       errorEl.style.display = "none";
       sendJiraMessage(
@@ -197,12 +229,12 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           text: text,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error !== undefined) {
-            errorEl.textContent =
-              chrome.i18n.getMessage("jiraSidebarCommentError") ||
-              "Failed to post comment";
+          posting = false;
+          if (resp._error !== undefined) {
+            forgetExpiredIdentity(resp, jiraUrl);
+            errorEl.replaceChildren(renderJiraMutationFailure(resp, jiraUrl));
             errorEl.style.display = "block";
-            submitBtn.disabled = false;
+            submitBtn.disabled = !input.value.trim();
             return;
           }
           const listEl = requireElement(
@@ -231,8 +263,8 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
               newTotal +
               ")";
           }
-          input.value = "";
-          submitBtn.disabled = true;
+          if (input.value === draft) input.value = "";
+          submitBtn.disabled = !input.value.trim();
         }),
       );
     };
@@ -263,7 +295,7 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
       const btn = eventElement(e.target)?.closest<HTMLButtonElement>(
         ".gl-jira-sidebar-comment-delete",
       );
-      if (!btn || btn.disabled) return;
+      if (!btn || btn.disabled || scope.disposed) return;
       const commentEl = btn.closest<HTMLElement>(".gl-jira-sidebar-comment");
       const commentId = commentEl?.dataset.commentId;
       if (!commentEl || !commentId) return;
@@ -287,12 +319,16 @@ export function createJiraComments(jiraState: JiraState, scope: Lifecycle) {
           commentId: commentId,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error !== undefined) {
+          if (!resp.success) {
             btn.disabled = false;
+            const failure = jiraResponseFailure(resp) || {
+              _error: "Jira did not confirm comment deletion",
+            };
+            forgetExpiredIdentity(failure, jiraUrl);
             if (errorEl) {
-              errorEl.textContent =
-                chrome.i18n.getMessage("jiraSidebarCommentDeleteError") ||
-                "Failed to delete comment";
+              errorEl.replaceChildren(
+                renderJiraMutationFailure(failure, jiraUrl),
+              );
               errorEl.style.display = "block";
             }
             return;

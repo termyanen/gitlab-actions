@@ -13,3 +13,4 @@ export {
 } from "./model/config";
 export type { Settings } from "./model/config";
 export { createSettingsValidation } from "./model/validation";
+export { readJiraBaseUrl } from "./model/jira-url";

@@ -98,6 +98,39 @@ instruction files as pointers here, rather than maintaining competing rules.
   credentials, unconditional host permissions or a page-message mutation bridge.
 - Escape untrusted HTML and validate URLs. Keep content styles scoped. New browser
   dependencies/permissions/WAR exposure must have a concrete runtime need.
+- For API changes, cover the affected failure paths: missing/revoked host access,
+  expired sessions or login-page responses, denied operations, unavailable servers,
+  malformed/partial data and stale/cancelled requests. Show actionable localized
+  feedback in the relevant UI; do not report failure as an empty successful result.
+  Distinguish authentication from authorization: a 403 does not by itself prove
+  that signing in again will help. Preserve unrelated GitLab features when Jira
+  fails, and avoid repeated alerts for the same background failure.
+- Jira compatibility is capability-based. Preserve Server/Data Center response
+  variants and identify Cloud-specific contracts before claiming support. Add
+  fixtures for the response variants touched and state which live versions, if
+  any, were tested; a shared endpoint path is not proof of universal compatibility.
+
+## Browser permissions and exposed resources
+
+- Read [docs/PERMISSIONS.md](docs/PERMISSIONS.md) before changing `permissions`,
+  `optional_permissions`, host patterns, content-script matches or web-accessible
+  resources. Do not add or broaden access for hypothetical future features.
+- Each addition or expansion must name the implemented feature and code path,
+  explain why existing access or a narrower alternative is insufficient, and use
+  the smallest API/resource/origin scope. Prefer optional access for optional
+  features; explain any required grant rather than copying existing permissions.
+- Document when access is requested, the user gesture and visible explanation,
+  denial/revocation behavior, and any install/update warning impact. Do not
+  repeatedly prompt or broaden access to work around a denied request.
+  Call `permissions.request` directly from an explicit user action, before an
+  `await` or debounce; autosave must not trigger permission prompts. Provide a
+  deliberate recovery action for revoked access even when settings are unchanged.
+- Update the inventory and PR rationale in the same change. Prepare the matching
+  Chrome Web Store permission justification and privacy/listing changes when
+  affected; only change the actual dashboard within the authorized publish scope.
+- Validate both granted and denied/revoked paths, an existing-user upgrade where
+  relevant, and the final packaged manifest. Never add a permission just to make a
+  test pass; remove unused access when its last consumer is removed.
 
 ## Validation and delivery
 

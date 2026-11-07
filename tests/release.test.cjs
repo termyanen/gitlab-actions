@@ -72,7 +72,7 @@ test('all packaged ESM dependencies resolve locally and content CSS parses', () 
   assert.ok(css.includes(':where(html.gl-actions-host) .gl-mr-actions-ext'));
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist/manifest.json')));
   assert.ok(Number(manifest.minimum_chrome_version) >= 110, 'The worker lifetime and CSS/API baseline requires Chrome 110+');
-  assert.deepEqual(manifest.permissions, ['storage', 'notifications', 'tabs', 'cookies', 'alarms']);
+  assert.deepEqual(manifest.permissions, ['storage', 'notifications', 'tabs', 'alarms']);
   assert.deepEqual(manifest.content_scripts.map(group => group.js), [['content_proxy.js']]);
   assert.ok(manifest.web_accessible_resources.some(group => group.resources.includes('modules/chunks/*.js')));
 });

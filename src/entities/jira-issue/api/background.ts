@@ -1,5 +1,11 @@
 import { JIRA_API_PREFIX } from "../../../shared/config/jira";
-import { errorStatus } from "../../../shared/lib/errors";
+import {
+  JiraRequestError,
+  jiraFailure,
+  stopsJiraBatch,
+  type JiraFailure,
+} from "../model/failure";
+import { jiraRequest } from "./request";
 import {
   arrayOf,
   decoder,
@@ -19,32 +25,7 @@ const readJiraFields = decoder(
   "GitLab/Jira response",
 );
 export function jiraApi(jiraUrl: string, path: string): Promise<unknown> {
-  const url = jiraUrl + path;
-  return chrome.cookies
-    .getAll({ url: jiraUrl })
-    .then(function (cookies) {
-      const cookieStr = cookies
-        .map(function (c) {
-          return c.name + "=" + c.value;
-        })
-        .join("; ");
-      return fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: cookieStr,
-        },
-      });
-    })
-    .then(function (r) {
-      if (!r.ok) {
-        const err = Object.assign(new Error(r.status + " " + r.statusText), {
-          httpStatus: r.status,
-        });
-        throw err;
-      }
-      return r.json();
-    });
+  return jiraRequest(jiraUrl, path);
 }
 export function mapJiraComment(c: RawJiraComment) {
   return {
@@ -129,37 +110,14 @@ export function jiraQuickActionWrite(
   ticket: string,
   suffix: string,
   method: string,
-  body: unknown,
+  body?: unknown,
 ) {
-  return chrome.cookies
-    .getAll({ url: jiraUrl })
-    .then(function (cookies) {
-      return fetch(
-        jiraUrl +
-          JIRA_API_PREFIX +
-          "/issue/" +
-          encodeURIComponent(ticket) +
-          suffix,
-        {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-            Cookie: cookies
-              .map(function (c) {
-                return c.name + "=" + c.value;
-              })
-              .join("; "),
-          },
-          body: JSON.stringify(body),
-        },
-      );
-    })
-    .then(function (response) {
-      if (!response.ok)
-        return response.text().then(function (text) {
-          throw new Error(response.status + " " + text);
-        });
-    });
+  return jiraRequest(
+    jiraUrl,
+    JIRA_API_PREFIX + "/issue/" + encodeURIComponent(ticket) + suffix,
+    method,
+    body,
+  );
 }
 export function fetchJiraStatuses(
   jiraUrl: string,
@@ -167,45 +125,58 @@ export function fetchJiraStatuses(
   showDetails?: boolean,
 ) {
   const results: Record<string, JiraStatus | number> = {};
+  let failure: JiraFailure | undefined;
   const fields = showDetails ? "status,priority,issuetype" : "status";
   let authFailed = false;
 
-  function fetchOne(i: number): Promise<typeof results> {
-    if (i >= tickets.length || authFailed) return Promise.resolve(results);
+  function fetchOne(
+    i: number,
+  ): Promise<{ statuses: typeof results; _failure?: JiraFailure }> {
+    if (i >= tickets.length || authFailed)
+      return Promise.resolve({
+        statuses: results,
+        ...(failure ? { _failure: failure } : {}),
+      });
     const ticket = tickets[i];
-    if (ticket === undefined) return Promise.resolve(results);
+    if (ticket === undefined)
+      return Promise.resolve({
+        statuses: results,
+        ...(failure ? { _failure: failure } : {}),
+      });
     return jiraApi(
       jiraUrl,
       JIRA_API_PREFIX + "/issue/" + ticket + "?fields=" + fields,
     )
       .then(readRawJiraIssue)
       .then(function (data) {
-        if (data && data.fields && data.fields.status) {
-          const r: JiraStatus = {
-            name: data.fields.status.name,
-            categoryKey: data.fields.status.statusCategory
-              ? data.fields.status.statusCategory.key
-              : "undefined",
-          };
-          if (showDetails) {
-            r.priority = data.fields.priority ? data.fields.priority.name : "";
-            r.priorityIcon = data.fields.priority
-              ? data.fields.priority.iconUrl || ""
-              : "";
-            r.type = data.fields.issuetype ? data.fields.issuetype.name : "";
-            r.typeIcon = data.fields.issuetype
-              ? data.fields.issuetype.iconUrl || ""
-              : "";
-          }
-          results[ticket] = r;
+        if (!data.fields.status)
+          throw new JiraRequestError(
+            "invalid-response",
+            "Jira did not return the requested issue status",
+          );
+        const r: JiraStatus = {
+          name: data.fields.status.name,
+          categoryKey: data.fields.status.statusCategory
+            ? data.fields.status.statusCategory.key
+            : "undefined",
+        };
+        if (showDetails) {
+          r.priority = data.fields.priority ? data.fields.priority.name : "";
+          r.priorityIcon = data.fields.priority
+            ? data.fields.priority.iconUrl || ""
+            : "";
+          r.type = data.fields.issuetype ? data.fields.issuetype.name : "";
+          r.typeIcon = data.fields.issuetype
+            ? data.fields.issuetype.iconUrl || ""
+            : "";
         }
+        results[ticket] = r;
       })
       .catch(function (err: unknown) {
-        const status = errorStatus(err) || 0;
-        if (status === 401 || status === 403) {
-          authFailed = true;
-          results._authError = status;
-        }
+        const next = jiraFailure(err);
+        if (!failure || stopsJiraBatch(next)) failure = next;
+        authFailed = stopsJiraBatch(next);
+        if (next._errorKind === "auth") results._authError = 401;
       })
       .then(function () {
         return fetchOne(i + 1);
@@ -241,7 +212,8 @@ export function getFieldMap(jiraUrl: string) {
       _fieldMapCache[jiraUrl] = map;
       return map;
     })
-    .catch(function () {
+    .catch(function (error: unknown) {
+      if (stopsJiraBatch(jiraFailure(error))) throw error;
       return { epicField: "", sprintField: "" };
     });
 }

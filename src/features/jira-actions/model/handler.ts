@@ -18,7 +18,12 @@ import {
 } from "../../../entities/jira-issue/background";
 import type { JiraFieldValue } from "../../../entities/jira-issue/content";
 import { JIRA_API_PREFIX } from "../../../shared/config/jira";
-import { errorMessage, errorStatus } from "../../../shared/lib/errors";
+import {
+  jiraFailure,
+  stopsJiraBatch,
+  JiraRequestError,
+  type JiraFailure,
+} from "../../../entities/jira-issue/background";
 import {
   arrayOf,
   decodeArray,
@@ -130,17 +135,15 @@ export function handleJiraMessage(
         sendResponse({ success: true, completed: completed });
       })
       .catch(function (error: unknown) {
-        sendResponse({ _error: errorMessage(error), completed: completed });
+        sendResponse({ ...jiraFailure(error), completed: completed });
       });
     return true;
   }
   if (msg.type === "fetch-jira-statuses") {
     fetchJiraStatuses(msg.jiraUrl, msg.tickets, msg.showDetails)
-      .then(function (statuses) {
-        sendResponse({ statuses: statuses });
-      })
+      .then(sendResponse)
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
@@ -247,7 +250,7 @@ export function handleJiraMessage(
           });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
@@ -257,6 +260,7 @@ export function handleJiraMessage(
     // For status field, also fetch statusCategory for color coding
     const apiFields = field === "status" ? "status" : field;
     const results: Record<string, JiraFieldValue | number> = {};
+    let failure: JiraFailure | undefined;
     let authFailed = false;
     const tickets = msg.tickets;
     function fetchField(i: number): Promise<typeof results> {
@@ -303,11 +307,10 @@ export function handleJiraMessage(
           }
         })
         .catch(function (err: unknown) {
-          const status = errorStatus(err) || 0;
-          if (status === 401 || status === 403) {
-            authFailed = true;
-            results._authError = status;
-          }
+          const next = jiraFailure(err);
+          if (!failure || stopsJiraBatch(next)) failure = next;
+          authFailed = stopsJiraBatch(next);
+          if (next._errorKind === "auth") results._authError = 401;
         })
         .then(function () {
           return fetchField(i + 1);
@@ -315,10 +318,13 @@ export function handleJiraMessage(
     }
     fetchField(0)
       .then(function () {
-        sendResponse({ values: results });
+        sendResponse({
+          values: results,
+          ...(failure ? { _failure: failure } : {}),
+        });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
@@ -336,8 +342,13 @@ export function handleJiraMessage(
       .then(function (users) {
         sendResponse({
           users: users.map(function (u) {
+            if (!u.name)
+              throw new JiraRequestError(
+                "invalid-response",
+                "Jira assignment requires a Server/Data Center username; accountId-only users are not supported",
+              );
             return {
-              key: u.key || u.name,
+              key: u.name,
               name: u.displayName,
               avatar: u.avatarUrls?.["24x24"] || "",
             };
@@ -345,7 +356,7 @@ export function handleJiraMessage(
         });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
@@ -367,76 +378,24 @@ export function handleJiraMessage(
         sendResponse({ versions: list });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
   if (msg.type === "set-jira-fix-versions") {
-    const fvUrl = msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket;
-    chrome.cookies
-      .getAll({ url: msg.jiraUrl })
-      .then(function (cookies) {
-        const cookieStr = cookies
-          .map(function (c) {
-            return c.name + "=" + c.value;
-          })
-          .join("; ");
-        return fetch(fvUrl, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Cookie: cookieStr },
-          body: JSON.stringify({
-            fields: {
-              fixVersions: msg.versions.map(function (v) {
-                return { name: v };
-              }),
-            },
-          }),
-        });
-      })
-      .then(function (r) {
-        if (r.status === 204 || r.ok) {
-          sendResponse({ success: true });
-        } else {
-          return r.text().then(function (text) {
-            throw new Error(r.status + " " + text);
-          });
-        }
-      })
-      .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
-      });
+    jiraQuickActionWrite(msg.jiraUrl, msg.ticket, "", "PUT", {
+      fields: { fixVersions: msg.versions.map((name) => ({ name })) },
+    })
+      .then(() => sendResponse({ success: true }))
+      .catch((error: unknown) => sendResponse(jiraFailure(error)));
     return true;
   }
   if (msg.type === "set-jira-assignee") {
-    const url = msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket;
-    chrome.cookies
-      .getAll({ url: msg.jiraUrl })
-      .then(function (cookies) {
-        const cookieStr = cookies
-          .map(function (c) {
-            return c.name + "=" + c.value;
-          })
-          .join("; ");
-        return fetch(url, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Cookie: cookieStr },
-          body: JSON.stringify({
-            fields: { assignee: msg.username ? { name: msg.username } : null },
-          }),
-        });
-      })
-      .then(function (r) {
-        if (r.status === 204 || r.ok) {
-          sendResponse({ success: true });
-        } else {
-          return r.text().then(function (text) {
-            throw new Error(r.status + " " + text);
-          });
-        }
-      })
-      .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
-      });
+    jiraQuickActionWrite(msg.jiraUrl, msg.ticket, "", "PUT", {
+      fields: { assignee: msg.username ? { name: msg.username } : null },
+    })
+      .then(() => sendResponse({ success: true }))
+      .catch((error: unknown) => sendResponse(jiraFailure(error)));
     return true;
   }
   if (msg.type === "fetch-jira-transitions") {
@@ -458,7 +417,7 @@ export function handleJiraMessage(
         sendResponse({ transitions: transitions });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
@@ -481,7 +440,7 @@ export function handleJiraMessage(
         sendResponse({ comments: comments, total: data.total || 0 });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
@@ -489,115 +448,45 @@ export function handleJiraMessage(
     jiraApi(msg.jiraUrl, JIRA_API_PREFIX + "/myself")
       .then(readJiraUser)
       .then(function (data) {
-        sendResponse({ id: data.accountId || data.key || data.name || "" });
+        const id = data.accountId || data.key || data.name;
+        if (!id)
+          throw new JiraRequestError(
+            "invalid-response",
+            "Jira did not return a user identity",
+          );
+        sendResponse({ id });
       })
       .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
+        sendResponse(jiraFailure(err));
       });
     return true;
   }
   if (msg.type === "delete-jira-comment") {
-    const deleteUrl =
-      msg.jiraUrl +
-      JIRA_API_PREFIX +
-      "/issue/" +
-      msg.ticket +
-      "/comment/" +
-      msg.commentId;
-    chrome.cookies
-      .getAll({ url: msg.jiraUrl })
-      .then(function (cookies) {
-        const cookieStr = cookies
-          .map(function (c) {
-            return c.name + "=" + c.value;
-          })
-          .join("; ");
-        return fetch(deleteUrl, {
-          method: "DELETE",
-          headers: { Cookie: cookieStr, "X-Atlassian-Token": "no-check" },
-        });
-      })
-      .then(function (r) {
-        if (r.status === 204 || r.ok) {
-          sendResponse({ success: true });
-        } else {
-          return r.text().then(function (text) {
-            throw new Error(r.status + " " + text);
-          });
-        }
-      })
-      .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
-      });
+    jiraQuickActionWrite(
+      msg.jiraUrl,
+      msg.ticket,
+      "/comment/" + encodeURIComponent(msg.commentId),
+      "DELETE",
+    )
+      .then(() => sendResponse({ success: true }))
+      .catch((error: unknown) => sendResponse(jiraFailure(error)));
     return true;
   }
   if (msg.type === "post-jira-comment") {
-    const commentUrl =
-      msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket + "/comment";
-    chrome.cookies
-      .getAll({ url: msg.jiraUrl })
-      .then(function (cookies) {
-        const cookieStr = cookies
-          .map(function (c) {
-            return c.name + "=" + c.value;
-          })
-          .join("; ");
-        return fetch(commentUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Cookie: cookieStr,
-            "X-Atlassian-Token": "no-check",
-          },
-          body: JSON.stringify({ body: msg.text }),
-        });
-      })
-      .then(function (r) {
-        if (!r.ok) {
-          return r.text().then(function (text) {
-            throw new Error(r.status + " " + text);
-          });
-        }
-        return r.json();
-      })
+    jiraQuickActionWrite(msg.jiraUrl, msg.ticket, "/comment", "POST", {
+      body: msg.text,
+    })
       .then(readRawJiraComment)
-      .then(function (c) {
-        sendResponse({ comment: mapJiraComment(c) });
-      })
-      .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
-      });
+      .then((comment) => sendResponse({ comment: mapJiraComment(comment) }))
+      .catch((error: unknown) => sendResponse(jiraFailure(error)));
     return true;
   }
   if (msg.type === "do-jira-transition") {
-    const url =
-      msg.jiraUrl + JIRA_API_PREFIX + "/issue/" + msg.ticket + "/transitions";
-    chrome.cookies
-      .getAll({ url: msg.jiraUrl })
-      .then(function (cookies) {
-        const cookieStr = cookies
-          .map(function (c) {
-            return c.name + "=" + c.value;
-          })
-          .join("; ");
-        return fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Cookie: cookieStr },
-          body: JSON.stringify({ transition: { id: msg.transitionId } }),
-        });
-      })
-      .then(function (r) {
-        if (r.status === 204 || r.ok) {
-          sendResponse({ success: true });
-        } else {
-          return r.text().then(function (text) {
-            throw new Error(r.status + " " + text);
-          });
-        }
-      })
-      .catch(function (err: unknown) {
-        sendResponse({ _error: errorMessage(err) });
-      });
+    jiraQuickActionWrite(msg.jiraUrl, msg.ticket, "/transitions", "POST", {
+      transition: { id: msg.transitionId },
+    })
+      .then(() => sendResponse({ success: true }))
+      .catch((error: unknown) => sendResponse(jiraFailure(error)));
     return true;
   }
 }

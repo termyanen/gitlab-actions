@@ -24,6 +24,22 @@ or `npm run check` above. See `docs/ARCHITECTURE.md`; write "unchanged" otherwis
 Mention changes to permissions, supported Chrome/GitLab versions, settings/storage
 formats, runtime dependencies or package contents. Write "unchanged" if applicable.
 
+## Permissions and exposed resources
+
+Write "unchanged" if API permissions, host access, content-script matches and
+web-accessible resources are unchanged. Otherwise, for each addition or expansion:
+
+- Name the implemented feature, consuming code path and exact scope.
+- Explain why existing access or a narrower alternative is insufficient, and why
+  the grant is optional or required.
+- Describe the request moment/user gesture, user-facing explanation and any
+  install/update warning impact.
+- Record granted, denied and revoked behavior/checks, plus upgrade coverage where
+  relevant. Explain removed permissions when their last consumer is removed.
+- Link the updated `docs/PERMISSIONS.md` inventory, proposed Chrome Web Store
+  justification and affected privacy/usage disclosures. State dashboard work that
+  remains unpublished. See `docs/PERMISSIONS.md` for the procedure.
+
 ## Documentation and release
 
 For each applicable surface, name the updated files; otherwise explain why it is
@@ -36,6 +52,7 @@ unaffected. See `docs/DELIVERY.md` in the repository.
 | Welcome page and seven extension locales | |
 | AI review guides / privacy policies and generated pages | |
 | Contributor/agent instructions and development commands | |
+| Permission inventory and proposed store justification | |
 | Version and generated site metadata | |
 
 Release intent: no release / pending changes / preparing version …

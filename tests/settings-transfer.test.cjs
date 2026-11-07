@@ -87,6 +87,16 @@ test('prototype keys in project maps and nested profiles cannot enter configurat
   assert.throws(function() { env.context.parseSettingsFile('{"format":"gitlab-mr-actions-settings","formatVersion":1,"settings":{"projectProfiles":{"team/project":{"__proto__":{}}}}}'); });
 });
 
+test('Jira imports require an explicit HTTPS installation without wildcard or normalized malformed hosts', function() {
+  var env = environment();
+  ['jira.example.com', 'https:jira.example.com', 'https://jira.example.com\\other', 'https://jira.example.com?','https://jira.example.com#', 'https://*.example.com', 'https://%2A.example.com', 'https://*'].forEach(function(url) {
+    assert.throws(function() { env.context.parseSettingsFile(file({jira_url:url})); }, undefined, url);
+  });
+  assert.equal(env.context.parseSettingsFile(file({jira_url:'https://jira.example.com/jira'})).jira_url, 'https://jira.example.com/jira');
+  assert.equal(env.writes.length, 0);
+  assert.equal(env.requests.length, 0);
+});
+
 test('per-item byte limits and prompt/rule character limits reject oversized imports', function() {
   var env = environment();
   [{ai_review_prompt:'a'.repeat(1501)}, {ai_review_rule_repository:{enabled:true,text:'a'.repeat(1501)}}, {projectProfiles:{'team/project':{versionFile:'界'.repeat(3000)}}}].forEach(function(settings) {

@@ -1,3 +1,7 @@
+import {
+  isJiraFailure,
+  renderJiraFailure,
+} from "../../../entities/jira-issue/content";
 import { msg } from "../../../shared/i18n";
 import { reportError } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
@@ -125,6 +129,17 @@ export function createStandupDialog(scope: Lifecycle = createLifecycle()) {
             '<pre class="gl-standup-content">' +
             escHtml(currentText) +
             "</pre>";
+          if (
+            isJiraFailure(resp._jiraFailure) &&
+            typeof resp._jiraUrl === "string"
+          ) {
+            bodyEl.insertBefore(
+              renderJiraFailure(resp._jiraFailure, resp._jiraUrl, () =>
+                loadDate(dateStr),
+              ),
+              bodyEl.firstChild,
+            );
+          }
           actionsEl.style.display = "";
         }),
       );

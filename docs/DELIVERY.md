@@ -19,6 +19,10 @@ for commits, pushes, PR creation and publication; do not request it again if giv
 3. Apply the documentation matrix below. For each applicable surface, update it
    and name the file in the PR. Otherwise give a short reason it is unaffected.
    A tooling-only change does not need a user-facing feature card or version bump.
+   For permission, host-pattern, content-script-match or web-accessible-resource
+   changes, follow [PERMISSIONS.md](PERMISSIONS.md): include the implemented use,
+   narrower alternatives, required/optional decision, request timing, denial and
+   revocation behavior, user impact and proposed store justification in the PR.
 4. Add EN/RU `## Unreleased` entries for user-visible changes that will ship later.
    Keep published releases unchanged. If a release is explicitly being prepared,
    put the changes under its selected version instead. Do not bump once per PR
@@ -44,6 +48,7 @@ for commits, pushes, PR creation and publication; do not request it again if giv
 | New discoverable extension feature | `welcome.html`, if the feature belongs in onboarding | User-facing keys in all seven `_locales/*/messages.json` files |
 | AI review/export/import workflow or format | `README.md` and both `docs/AI_REVIEW_GUIDE_EN.md` / `docs/AI_REVIEW_GUIDE_RU.md` | `docs/review-guide.html` via generator; update related site examples |
 | Data use, storage, permissions or external integration | `PRIVACY_POLICY.md`, `docs/PRIVACY_POLICY_RU.md`, relevant README claims | `docs/privacy.html` via generator; store privacy disclosures need a separate authorized dashboard update |
+| Browser permission or exposed-resource scope | `docs/PERMISSIONS.md` inventory and PR permission rationale | Proposed Chrome Web Store justifications, install/update warning impact and permission-denial/upgrade checks; update user-facing privacy/usage copy when behavior changes |
 | Toolchain, architecture, development or agent workflow | `CONTRIBUTING.md`, `AGENTS.md`, this procedure and relevant skill as applicable | `tests/README.md`, `docs/README.md` when commands/coverage change |
 | Release version | `manifest.json`, both root changelogs, `docs/index.html` metadata | Both generated page footers, site changelog copies, built extension and ZIP; see below |
 
@@ -83,6 +88,10 @@ seven; do not add marketing cards for internal changes merely to tick a checkbox
 6. Run `bash pack.sh`; inspect `gitlab-mr-actions-v<version>.zip` with manifest at
    its root. `dist/` and ZIPs are generated locally, not committed. CI builds and
    tests its `extension.zip` artifact; the store consumes that exact artifact.
+   Compare the packaged permission/resource scopes with the reviewed source and
+   inventory. Include changed permission justifications in the handoff, and record
+   which store privacy/listing updates still require publication; repository edits
+   do not update the dashboard.
 7. Create the draft notes with:
 
    ```sh
