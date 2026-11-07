@@ -88,12 +88,26 @@ OpenSSL must be available to generate
 its temporary self-signed certificate (macOS and the Ubuntu CI runner provide it).
 Certificate checks are bypassed only in this disposable browser profile. External
 HTTP(S) requests are blocked; loopback requests are not intercepted because the
-interception headers omit cookies Chrome adds later. This does not automate Chrome's native optional
-permission prompt or certify a real Jira/SSO deployment. See
+interception headers omit cookies Chrome adds later.
+
+[`jira-cross-site.spec.cjs`](browser/jira-cross-site.spec.cjs) uses distinct
+`gitlab.test` and `jira.test` HTTPS hosts mapped to loopback. Production badge and
+sidebar controls trigger worker reads and five writes, with `SameSite=None/Lax/Strict`
+cookies received by the server in both global third-party-cookie modes on
+Chromium 158.0.8127.18. The fixture verifies the live browser setting, first-party
+cookies and an ordinary cross-site page fetch: the latter sends only the `None`
+cookie when allowed and no cookies when blocked. This negative control confirms
+blocking works; the extension worker remains authenticated with only the test Jira
+host grant and no Cookies API permission. The report records the browser version,
+setting, observed cookies and writes.
+
+These fixtures do not automate Chrome's native optional-permission prompt or
+certify other browser versions, explicit site cookie bans, enterprise policies,
+partitioned sessions or a real Jira/SSO deployment. See
 [Jira compatibility and recovery](../docs/JIRA_COMPATIBILITY.md).
 
 Browser smoke checks install the actual production build in a separate Chromium
-profile, intercept HTTP(S) fixtures (except the isolated loopback session test),
+profile, intercept HTTP(S) fixtures (except the isolated loopback HTTPS tests),
 and exercise real Chrome APIs:
 
 ```sh

@@ -42,10 +42,15 @@ and migration design, not deleting a match pattern and leaving features broken.
 The [Jira transport](../src/entities/jira-issue/api/request.ts) uses browser-managed
 credentials (`credentials: include`) and checks the configured host grant. It no
 longer reads the cookie store or constructs a `Cookie` header, so the unused
-`cookies` permission was removed. A Chromium regression checks that fake HttpOnly
-session cookies reach a local HTTPS fixture with host access and without the
-Cookies API permission, including SameSite Lax/Strict cookies. It does not exercise
-a real Jira session.
+`cookies` permission was removed. The [session regression](../tests/browser/jira-session.spec.cjs)
+checks fake HttpOnly `SameSite=None/Lax/Strict` cookies at a local HTTPS server,
+without the Cookies API permission. The [cross-site regression](../tests/browser/jira-cross-site.spec.cjs)
+also verifies the production GitLab UI → worker → Jira read/write path with global
+third-party-cookie blocking both enabled and disabled on Chromium 158.0.8127.18.
+Its temporary manifest supplies only the Jira host grant; it does not automate the
+native optional-permission prompt. These fixtures do not certify real Jira/SSO,
+explicit site cookie bans, enterprise policies or partitioned sessions; see
+[compatibility limits](JIRA_COMPATIBILITY.md).
 
 The [Tabs API documentation](https://developer.chrome.com/docs/extensions/reference/api/tabs#permissions)
 distinguishes URL access from ordinary tab operations. The
