@@ -80,7 +80,11 @@ covers sidebar read/write failures, retained drafts, duplicate-submit prevention
 account changes and partial quick actions. `jira-session.spec.cjs` runs the built
 worker with fake Secure HttpOnly `SameSite=None/Lax/Strict` cookies and a test-only
 Jira host grant. A temporary HTTPS server on `127.0.0.1` checks the actual received
-cookies without the Cookies API permission; OpenSSL must be available to generate
+cookies without the Cookies API permission for identity reads and `POST`/`PUT`/`DELETE`
+writes. The fixture requires a session and verifies assignee/version updates,
+transitions, comment creation/deletion, request bodies and absence of duplicate
+writes. It does not emulate Jira's workflow permissions or CSRF/SSO policies.
+OpenSSL must be available to generate
 its temporary self-signed certificate (macOS and the Ubuntu CI runner provide it).
 Certificate checks are bypassed only in this disposable browser profile. External
 HTTP(S) requests are blocked; loopback requests are not intercepted because the
