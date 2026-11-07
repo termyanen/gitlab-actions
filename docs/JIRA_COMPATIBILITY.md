@@ -32,14 +32,21 @@ operations even between installations of the same release.
 | Transitions and quick actions | A missing/denied transition list must not disable field-only quick actions. Each operation still needs Jira's own permissions. A multi-step action can finish its transition while a later edit fails; the UI must retain that partial outcome. |
 | Network and API shape | Timeouts, HTML login responses, malformed JSON and unsupported field shapes are errors, not successful empty responses. Proxies or authentication plugins may introduce variants requiring an additional tested adapter. |
 
-Browser cookie policy, `SameSite` attributes and the installation's SSO setup can
-still prevent authenticated API requests despite a successful login. Chrome
-documents a same-site exception for extension network requests with host access,
-including `SameSite=Strict`, with a limitation when third-party cookies are blocked.
-`credentials: include` does not override browser policy or certify every SSO setup.
-See Chrome's [storage and cookie behavior](https://developer.chrome.com/docs/extensions/develop/concepts/storage-and-cookies#partitioning_and_samesite_behavior)
-and verify the actual browser/server configuration when login alone does not recover
-access.
+On **Chromium 158.0.8127.18**, global third-party-cookie blocking did not prevent
+this extension's worker from sending `SameSite=None/Lax/Strict` session cookies with
+Jira host access. The [cross-site regression](../tests/browser/jira-cross-site.spec.cjs)
+uses separate GitLab/Jira HTTPS sites on loopback and production badge/sidebar
+controls for reads and five writes. An ordinary page fetch loses its cookies when
+blocking is enabled, confirming that the test actually exercises the restriction.
+
+Chrome's [cookie overview](https://developer.chrome.com/docs/extensions/develop/concepts/storage-and-cookies#partitioning_and_samesite_behavior)
+describes host-access and same-site behavior; Chromium's tests distinguish the
+[extension exemption from global third-party blocking](https://chromium.googlesource.com/chromium/src/+/HEAD/components/content_settings/core/browser/cookie_settings_unittest.cc#1362)
+from [explicit site cookie blocks that still apply](https://chromium.googlesource.com/chromium/src/+/HEAD/components/content_settings/core/browser/cookie_settings_unittest.cc#1333).
+The local result does not certify other Chrome versions, explicit site cookie bans,
+enterprise policies, partitioned sessions or SSO deployments. Verify the actual
+browser/server configuration when login alone does not recover access; see
+[coverage and fixture limits](../tests/README.md).
 
 Atlassian documents `401` for expired session cookies. Its Jira 10.2+ two-step
 verification notes concern creating a login session; this extension instead relies
