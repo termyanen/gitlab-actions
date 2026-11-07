@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Otomasyon, Jira, CI/CD ve AI incelemesi"
+  },
+  "extDescription": {
+    "message": "GitLab MR otomasyonu: birleştirme, sürüm, Jira, CI/CD ve kendi AI aracınızla inceleme. API tokenı gerekmez."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Nasıl çalışır?"
+  },
+  "openSettingsInTab": {
+    "message": "Ayarları yeni bir sekmede aç"
+  },
+  "exportSettings": {
+    "message": "Ayarları dışa aktar"
+  },
+  "importSettings": {
+    "message": "Ayarları içe aktar"
+  },
+  "settingsTransferHint": {
+    "message": "Tüm ayarları ve proje profillerini JSON dosyası olarak paylaşın."
+  },
+  "settingsImportReplace": {
+    "message": "Bu, tüm mevcut ayarların ve proje profillerinin yerini alır."
+  },
+  "applySettingsImport": {
+    "message": "Ayarları değiştir"
+  },
+  "cancelSettingsImport": {
+    "message": "İptal"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — proje profilleri: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Geçersiz ayarlar dosyası veya desteklenmeyen biçim."
+  },
+  "settingsFileTooLarge": {
+    "message": "Ayarlar dosyası Chrome Sync depolama sınırlarını aşıyor."
+  },
+  "settingsExportFailed": {
+    "message": "Ayarlar dışa aktarılamadı. Lütfen tekrar deneyin."
+  },
+  "settingsImportFailed": {
+    "message": "Ayarlar içe aktarılamadı. Mevcut yapılandırmanız değişmedi."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Bu ayarları içe aktarmak için Jira sitesine erişime izin verin."
+  },
+  "settingsImported": {
+    "message": "Ayarlar içe aktarıldı!"
+  },
+  "buttonOrder": {
+    "message": "Düğme sırası"
+  },
+  "buttonOrderHint": {
+    "message": "Yeniden sıralamak için sürükleyin. Açıklama için fareyle üzerine gelin. Mavi renkli özel işler."
+  },
+  "general": {
+    "message": "Genel"
+  },
+  "soundNotifications": {
+    "message": "Ses bildirimleri"
+  },
+  "desktopNotifications": {
+    "message": "Masaüstü bildirimleri"
+  },
+  "showTimeTracker": {
+    "message": "MR yaş rozetini göster"
+  },
+  "skipConfirmations": {
+    "message": "MR eylem onaylarını atla"
+  },
+  "uxEnhancer": {
+    "message": "MR liste geliştirmeleri"
+  },
+  "dimDrafts": {
+    "message": "Listedeki taslak MR’ları soluk göster"
+  },
+  "highlightOwnMrs": {
+    "message": "Listedeki kendi MR’larımı vurgula"
+  },
+  "showOnlyMine": {
+    "message": "Liste sayfasında \"Yalnızca benim\" geçişi"
+  },
+  "toggleOnlyMine": {
+    "message": "Sadece benim"
+  },
+  "versionBump": {
+    "message": "Sürüm artışı"
+  },
+  "filePath": {
+    "message": "Dosya yolu"
+  },
+  "filePathHint": {
+    "message": "Sürüm numarasını içeren dosya"
+  },
+  "versionField": {
+    "message": "Sürüm alanı"
+  },
+  "versionFieldHint": {
+    "message": "JSON veya TOML anahtarı (ör. \"version\" veya \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strateji"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Commit mesajı"
+  },
+  "commitMessageHint": {
+    "message": "{version}'yi yer tutucu olarak kullanın"
+  },
+  "quickComments": {
+    "message": "Hızlı yorumlar"
+  },
+  "quickCommentsHint": {
+    "message": "MR'e anında genel bir yorum gönderen tek tıklamalı düğmeler (kod içi değil). İşlem çubuğunda düğmeler görünür."
+  },
+  "quickCommentsAdd": {
+    "message": "Yorum ekle"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Hızlı yorumlar"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "MR sayfasındaki yapılandırılabilir şablon yorum düğmeleri. Tek tıklamayla LGTM, Düzeltmeler gerekiyor veya herhangi bir özel yorumu yayınlayın."
+  },
+  "reviewers": {
+    "message": "İnceleyenler"
+  },
+  "reviewersList": {
+    "message": "İnceleyenlerin listesi"
+  },
+  "reviewersListHint": {
+    "message": "Reviewers: yorumunda bahsedilecek kullanıcı adları (@user1, @user2). Ayarlandığında yorum araması ve CI işi atlanır. GitLab inceleyen atamalarını değiştirmez."
+  },
+  "jobName": {
+    "message": "İşin adı"
+  },
+  "jobNameHint": {
+    "message": "\"Reviewer(s):\" kalıbına uyan yorum yoksa çalıştırılacak yedek iş"
+  },
+  "customJobButtons": {
+    "message": "Özel iş düğmeleri"
+  },
+  "customJobsHint": {
+    "message": "İşleri sırayla çalıştırmak için virgülle ayırın: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ İş ekle düğmesi"
+  },
+  "addProfileFor": {
+    "message": "+ $1 için profil ekleyin",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Güncel: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Kaydedildi!"
+  },
+  "unsavedChanges": {
+    "message": "Kaydedilmemiş değişiklikler..."
+  },
+  "customFile": {
+    "message": "Özel dosya..."
+  },
+  "plainText": {
+    "message": "düz metin"
+  },
+  "removeProfile": {
+    "message": "$1 için profil kaldırılsın mı?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Varsayılan"
+  },
+  "buttonsFor": {
+    "message": "$1 için düğmeler",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Bu proje için hangi düğmelerin gösterileceğini geçersiz kılın."
+  },
+  "leaveEmptyDefault": {
+    "message": "Varsayılanı kullanmak için boş bırakın"
+  },
+  "projectSpecificJobs": {
+    "message": "Projeye özel işler. Zincirlemek için virgül kullanın."
+  },
+  "languageLabel": {
+    "message": "Dil"
+  },
+  "languageAuto": {
+    "message": "Otomatik (tarayıcı)"
+  },
+  "btnVersion": {
+    "message": "Sürüm artışı"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Sürüm"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Otomatik birleştirme"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Zorla birleştirme"
+  },
+  "btnShip": {
+    "message": "Rebase + Sürüm + Otomatik birleştirme"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Sürüm + Zorla birleştirme"
+  },
+  "btnReviewers": {
+    "message": "İnceleyenler"
+  },
+  "btnPipelineRestart": {
+    "message": "Yeni işlem hattı"
+  },
+  "btnPipelineCancel": {
+    "message": "Ardışık düzeni iptal et"
+  },
+  "btnDraftToggle": {
+    "message": "Taslak / Hazır geçişi"
+  },
+  "btnRetryFailed": {
+    "message": "Başarısız işleri yeniden dene"
+  },
+  "btnCopyMr": {
+    "message": "MR kopyala"
+  },
+  "hintVersion": {
+    "message": "Yapılandırılmış dosyayı okur (örneğin package.json), seçilen stratejiye göre (yama/minor/major) sürümü artırır, şablon mesajınızla işleme koyar."
+  },
+  "hintRebase": {
+    "message": "Kaynak dalı hedef dalın üzerine yeniden yerleştirir. Otomatik birleştirmeyi birleştirmez veya etkinleştirmez."
+  },
+  "hintRebaseVersion": {
+    "message": "Gerekirse dala hedef dal üzerinde rebase uygular, ardından yapılandırılan dosyadaki sürümü artırır. Birleştirme yapmaz."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Proje rebase/ff kullanıyorsa dala hedef dal üzerinde rebase uygular. Ardından işlem hattı başarılı olduğunda birleştirmeyi etkinleştirir. MR’nin squash ve dal silme ayarlarını kullanır."
+  },
+  "hintRebaseForce": {
+    "message": "CI atlanarak rebase yapılır, çalışan işlem hatları iptal edilir ve CI beklenmeden hemen birleştirilir. MR’nin squash ve dal silme ayarlarını kullanır."
+  },
+  "hintShip": {
+    "message": "Tam akış: yeniden temellendirme → yapılandırılmış dosyadaki sürümü yükseltme → MR'nin senkronize edilmesini bekleyin → yeni işlem hattını bekleyin → otomatik birleştirmeyi etkinleştirin."
+  },
+  "hintForceShip": {
+    "message": "Hızlı akış: yeniden temellendirme (CI atla) → sürümü artır → 15 saniye bekle → ardışık düzeni iptal et → hemen birleştir. CI denetimlerini atlar."
+  },
+  "hintReviewers": {
+    "message": "Yapılandırılan inceleyenlerden yorumda bahseder, son notlardaki Reviewer(s): yorumunu yeniden kullanır veya yapılandırılan CI işini çalıştırır."
+  },
+  "hintPipelineRestart": {
+    "message": "API aracılığıyla kaynak dalı için yepyeni bir işlem hattı oluşturur. İşlem hattı sıkıştığında veya yeni bir çalıştırmaya ihtiyaç duyduğunuzda kullanışlıdır."
+  },
+  "hintPipelineCancel": {
+    "message": "Bu MR için döndürülen, çalışan, bekleyen veya oluşturulan işlem hatlarının iptali istekleri."
+  },
+  "hintDraftToggle": {
+    "message": "MR başlığına \"Draft:\" önekini ekler veya kaldırır. Diğer MR ayarlarını değiştirmez."
+  },
+  "hintRetryFailed": {
+    "message": "MR'nin mevcut işlem hattındaki başarısız işleri yeniden dener. Başarılı işler etkilenmez."
+  },
+  "hintCopyMr": {
+    "message": "MR başlığını ve bağlantısını panoya kopyalar."
+  },
+  "toastRebasing": {
+    "message": "Yeniden temellendiriliyor..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Otomatik birleştirme etkinleştiriliyor..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Adım 1/2: Yeniden temellendirme..."
+  },
+  "toastStep22Automerge": {
+    "message": "Adım 2/2: Otomatik birleştirme etkinleştiriliyor..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Adım 1/2: Yeniden temellendirme (CI atlayın)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Adım 2/2: İşlem hattının iptal edilmesi ve birleştirme..."
+  },
+  "toastCancellingMerging": {
+    "message": "Ardışık düzen iptal ediliyor ve birleştiriliyor..."
+  },
+  "toastCreatingPipeline": {
+    "message": "$1 için yeni işlem hattı oluşturuluyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "$1 ardışık düzen(ler) iptal ediliyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Hazır olarak işaretleniyor..."
+  },
+  "toastMarkingDraft": {
+    "message": "Taslak olarak işaretleniyor..."
+  },
+  "toastRetrying": {
+    "message": "$1 başarısız iş/işler yeniden deneniyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Mevcut MR hattında başarısız iş yok"
+  },
+  "toastNoRunningPipelines": {
+    "message": "İptal edilecek çalışan işlem hattı yok"
+  },
+  "toastAssigningReviewers": {
+    "message": "İnceleyenlerden bahseden yorum gönderiliyor…"
+  },
+  "toastRepostingReviewers": {
+    "message": "İnceleyenlerin yorumları yeniden yayınlanıyor..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Hiçbir inceleyen yorumu bulunamadı, $1 tetikleniyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Sürüm artırılıyor…"
+  },
+  "toastWaitingSync": {
+    "message": "MR'nin v$1 ile senkronize edilmesi bekleniyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "İşlem hattı bekleniyor..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Otomatik birleştirme denemesi $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "MR'nin senkronize edilmesi bekleniyor... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "\"$1\" bekleniyor... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "\"$1\" işi başlatılıyor…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "\"$1\" işi yeniden deneniyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "\"$1\" işi zaten başarılı oldu, atlanıyor",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "\"$1\" işi zaten $2, bekliyor...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 tamamlandı",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 başarısız oldu: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR başlık ve bağlantı kopyalandı!"
+  },
+  "toastWaiting15s": {
+    "message": "Birleşmeden önce 15 saniye bekleniyor..."
+  },
+  "confirmRebase": {
+    "message": "Dala rebase uygulansın mı?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Yeniden temellendirme → Sürüm artışı mı?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Yeniden temellendirme → Otomatik birleştirme?"
+  },
+  "confirmAutomerge": {
+    "message": "Otomatik birleştirme etkinleştirilsin mi?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → ŞİMDİ BİRLEŞTİR?"
+  },
+  "confirmForce": {
+    "message": "⚠️ ŞİMDİ BİRLEŞTİR (işlem hattını atla)?"
+  },
+  "confirmShip": {
+    "message": "Yeniden temellendirme → Sürüm yükseltme → Otomatik birleştirme?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Sürüm artışı → Otomatik birleştirme?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Yeniden temellendirme → Sürüm yükseltme → ŞİMDİ BİRLEŞTİRİLSİN mi?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Sürüm artışı → ŞİMDİ BİRLEŞTİRİLSİN mi?"
+  },
+  "confirmNewPipeline": {
+    "message": "Bu şube için yeni bir işlem hattı oluşturulsun mu?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Çalışan tüm işlem hatları iptal edilsin mi?"
+  },
+  "labelAutomerge": {
+    "message": "Otomatik birleştirme"
+  },
+  "labelForceMerge": {
+    "message": "Birleştirmeyi zorla"
+  },
+  "labelVersionAutomerge": {
+    "message": "Sürüm + Otomatik birleştirme"
+  },
+  "labelVersionForceMerge": {
+    "message": "Sürüm + Birleştirmeye zorla"
+  },
+  "labelMarkReady": {
+    "message": "Hazır olarak işaretle"
+  },
+  "labelMarkDraft": {
+    "message": "Taslak olarak işaretle"
+  },
+  "labelRetryFailed": {
+    "message": "Başarısız işleri yeniden dene"
+  },
+  "labelNewPipeline": {
+    "message": "Yeni işlem hattı"
+  },
+  "timeTrackerTitle": {
+    "message": "MR oluşturulduğundan bu yana geçen süre: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "Tek tıklamayla yapılan işlemlerle birleştirme isteği iş akışınızı hızlandırın."
+  },
+  "welcomeQuickStart": {
+    "message": "Hızlı başlangıç"
+  },
+  "welcomeStep1Title": {
+    "message": "Herhangi Bir Birleştirme İsteği sayfasını açın"
+  },
+  "welcomeStep1Desc": {
+    "message": "GitLab.com'da veya kendi barındırdığınız GitLab cihazınızda oturum açtığınızda bir HTTPS MR sayfası açın. Uzantının bu siteye erişmesine izin verin."
+  },
+  "welcomeStep2Title": {
+    "message": "Eylem düğmelerinin göründüğüne bakın"
+  },
+  "welcomeStep2Desc": {
+    "message": "MR sayfasında düğmeler görünür. İlk kurulumda bir başlangıç ​​seti etkinleştirilir."
+  },
+  "welcomeStep3Title": {
+    "message": "Uzantı açılır penceresi aracılığıyla özelleştirin"
+  },
+  "welcomeStep3Desc": {
+    "message": "Düğmeleri etkinleştirmek/devre dışı bırakmak, sürüm yükseltme dosyasını ayarlamak, özel iş düğmeleri eklemek ve daha fazlasını yapmak için uzantı simgesini tıklayın."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Varsayılan olarak etkin"
+  },
+  "welcomeMoreActions": {
+    "message": "Daha fazla işlem (ayarlarda etkinleştirin)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Nasıl çalışır?"
+  },
+  "welcomeHowDesc": {
+    "message": "Bu uzantı, sizin adınıza GitLab API'yi çağırmak için mevcut GitLab oturumunuzu (tanımlama bilgileri) kullanır. Kişisel erişim belirteçlerine gerek yoktur."
+  },
+  "welcomeHowList1": {
+    "message": "GitLab.com ve HTTPS üzerinden kendi kendine barındırılan GitLab için; özellikler sunucu API'lerine, sayfa düzenine ve izinlerinize bağlıdır."
+  },
+  "welcomeHowList2": {
+    "message": "Eylemler, oturum açmış kullanıcınızla aynı izinleri kullanır"
+  },
+  "welcomeHowList3": {
+    "message": "Özel iş zincirleri arka planda çalışır. API erişimi için aynı GitLab üzerinde oturum açmış olduğunuz bir sekmeyi açık tutun."
+  },
+  "welcomeHowList4": {
+    "message": "Proje başına profiller, farklı depolar için düğmeleri özelleştirmenize olanak tanır"
+  },
+  "welcomeTip": {
+    "message": "Açılır ayarlarda proje başına profiller oluşturabilirsiniz. Bu, farklı projeler farklı sürüm dosyalarına veya özel CI işlerine ihtiyaç duyduğunda kullanışlıdır."
+  },
+  "welcomeOpenSettings": {
+    "message": "Ayarları Aç"
+  },
+  "cardAutomergeTitle": {
+    "message": "Otomatik birleştirme"
+  },
+  "cardAutomergeDesc": {
+    "message": "Şubeyi yeniden temellendirin (gerekirse) ve ardışık düzen başarılı olduğunda birleştirmeyi etkinleştirin."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Yeni işlem hattı"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Tek tıklamayla kaynak dalı için yeni bir işlem hattı oluşturun."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Ardışık düzeni iptal et"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Çalışan veya bekleyen MR işlem hatlarının iptalini isteyin."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Taslak geçişi"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Başlığı düzenlemeden MR Taslak ve Hazır durumu arasında geçiş yapın."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Sürüm artışı"
+  },
+  "cardVersionBumpDesc": {
+    "message": "package.json, pyproject.toml veya herhangi bir özel dosyadaki sürümü artırın. Yapılandırılabilir strateji (yama/minör/majör)."
+  },
+  "cardShipTitle": {
+    "message": "Gönderim (Sürüm + Birleştirme)"
+  },
+  "cardShipDesc": {
+    "message": "Gerektiğinde yeniden temel alın, sürümü yükseltin ve otomatik birleştirme talebinde bulunun. Eylem tamamlanana kadar MR sekmesini açık tutun."
+  },
+  "cardForceMergeTitle": {
+    "message": "Birleştirmeyi zorla"
+  },
+  "cardForceMergeDesc": {
+    "message": "İşlem hattının başarısını beklemeden birleştirme isteğinde bulunun. GitLab izinleri ve birleştirme kuralları hâlâ geçerlidir."
+  },
+  "cardReviewersTitle": {
+    "message": "İnceleyenler"
+  },
+  "cardReviewersDesc": {
+    "message": "Bir yorumda yapılandırılmış kullanıcı adlarından bahsedin, inceleyen yorumunu yeniden kullanın veya bir CI işi çalıştırın. GitLab'in yerel inceleyici alanını atamaz."
+  },
+  "uiCustomization": {
+    "message": "Kullanıcı arayüzü özelleştirmesi"
+  },
+  "collapseBars": {
+    "message": "Üst çubukları daralt düğmesi"
+  },
+  "hideRightSidebar": {
+    "message": "MR sayfalarında sağ kenar çubuğunu gizle"
+  },
+  "collapseTopBars": {
+    "message": "Üst çubukları değiştir"
+  },
+  "cardCollapseTitle": {
+    "message": "Üst çubukları daralt"
+  },
+  "cardCollapseDesc": {
+    "message": "GitLab gezinme çubuklarını daraltmak/genişletmek için bir düğme ekler. Yerden tasarruf sağlar ve içeriğe odaklanmanıza yardımcı olur."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Kullanıcı arayüzü bölümlerini gizle"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Tam genişlikte içerik alanı elde etmek için MR sayfalarında sağ kenar çubuğunu gizleyin."
+  },
+  "jiraIntegration": {
+    "message": "Jira entegrasyonu"
+  },
+  "jiraUrl": {
+    "message": "Jira URL'si"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center URL’si, ör. https://jira.company.com — Jira’da oturum açın ve Jira site erişimine izin ver düğmesine tıklayın. Cloud tam olarak desteklenmez."
+  },
+  "jiraGrantAccess": {
+    "message": "Jira site erişimine izin ver"
+  },
+  "jiraAccessGranted": {
+    "message": "Siteye erişim izni verildi. Bu tarayıcıda Jira adresinde oturum açın."
+  },
+  "jiraUrlInvalid": {
+    "message": "Kimlik bilgileri/sorgu/parça olmadan bir HTTPS Jira temel URL'si girin."
+  },
+  "jiraErrorAuth": {
+    "message": "Jira oturumunuzun süresi doldu veya giriş yapmanız gerekiyor. Jira’yı açın, oturum açın ve yeniden yüklemeyi deneyin."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira bu soruna veya işleme erişimi reddetti. Jira adresinden hesabınızı ve izinlerinizi kontrol edin."
+  },
+  "jiraErrorPermission": {
+    "message": "Uzantı bu Jira sitesine erişemiyor. Uzantı ayarlarında site iznini ve Jira URL'sini kontrol edin."
+  },
+  "jiraErrorNetwork": {
+    "message": "Jira'ye ulaşılamadı. Bağlantınızı, VPN'inizi ve Jira URL'nizi kontrol edin ve ardından yüklemeyi yeniden deneyin."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira geçici olarak kullanılamıyor veya istekleri sınırlıyor. Bekleyin ve yüklemeyi yeniden deneyin."
+  },
+  "jiraErrorNotFound": {
+    "message": "Bir Jira sorunu bulunamadı veya hesabınızda görünmüyor."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira desteklenmeyen bir yanıt döndürdü. URL’yi ve Server/Data Center uyumluluğunu kontrol edin."
+  },
+  "jiraErrorUnknown": {
+    "message": "Jira isteği başarısız oldu. Sorunu ve erişiminizi kontrol etmek için Jira açın."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Değişiklik zaten uygulanmış olabilir. İşlemi tekrarlamadan önce Jira'deki sorunu kontrol edin."
+  },
+  "jiraErrorTransitions": {
+    "message": "Jira geçişleri yüklenemedi."
+  },
+  "jiraOpenSite": {
+    "message": "Jira'yi açın"
+  },
+  "jiraRetryRead": {
+    "message": "Yüklemeyi yeniden dene"
+  },
+  "jiraDismissError": {
+    "message": "Kapat"
+  },
+  "jiraTicketRegex": {
+    "message": "Bilet normal ifadesi"
+  },
+  "jiraTicketRegexHint": {
+    "message": "MR başlıklarından bilet kimliklerini çıkarmak için özel düzenli ifade. Varsayılan: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "MR listesinde sorun türü ve öncelik simgelerini göster"
+  },
+  "jiraQuickActions": {
+    "message": "Hızlı eylemler"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Her düğme için herhangi bir alan kombinasyonunu seçin. Yalnızca yapması gereken değişiklikleri bırakın. Sürümler ve bileşenler Jira projesinde zaten mevcut olmalıdır."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "İşlem ekle"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Etiket"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Durum"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Kullanıcı adı"
+  },
+  "jiraSidebarStatus": {
+    "message": "Durum"
+  },
+  "jiraSidebarType": {
+    "message": "Tip"
+  },
+  "jiraSidebarPriority": {
+    "message": "Öncelik"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Atanan kişi"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Atanmamış"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Kullanıcı ara..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Kullanıcı bulunamadı"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Atamayı kaldır"
+  },
+  "jiraSidebarReporter": {
+    "message": "Bildiren kişi"
+  },
+  "jiraSidebarLabels": {
+    "message": "Etiketler"
+  },
+  "jiraSidebarCreated": {
+    "message": "Oluşturuldu"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Güncellendi"
+  },
+  "jiraSidebarDescription": {
+    "message": "Tanım"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Bileşenler"
+  },
+  "jiraSidebarResolution": {
+    "message": "Çözüm"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Etkiler"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Düzeltme sür."
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Yok"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Sürüm bulunamadı"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Sürümleri ara..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Düzeltme sürümleri güncellenemedi"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Ekler"
+  },
+  "jiraSidebarComments": {
+    "message": "Yorumlar"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Bir yorum ekleyin..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Yorum"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Daha fazla yorum göster"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Henüz yorum yok"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Yorum gönderilemedi"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Yorumu sil"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Bu yorum silinsin mi?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Yorum silinemedi"
+  },
+  "cardJiraTitle": {
+    "message": "Jira durum rozetleri"
+  },
+  "cardJiraDesc": {
+    "message": "MR liste sayfasında Jira bilet durumlarını gösterir. MR başlıklarından bilet kimliklerini ayrıştırır (örn. CCT-1111) ve renkli durum rozetlerini görüntüler. Ayarlarda Jira URL'nizi ayarlayın."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Özel bilet normal ifadesi"
+  },
+  "cardJiraRegexDesc": {
+    "message": "MR başlıklarından Jira bilet kimliklerini ayrıştırmak için özel bir normal ifade yapılandırın. Projeniz standart olmayan bilet öneklerini kullandığında kullanışlıdır."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Jira bilet kenar çubuğu"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Tüm bilet ayrıntılarının (özet, durum, tür, öncelik, atanan kişi ve açıklama) yer aldığı bir kenar çubuğunu açmak için herhangi bir Jira rozetine tıklayın. GitLab'den ayrılmadan kendi yorumlarınızı okuyun, gönderin ve silin. Düzeltme sürümleri, projenin mevcut sürümlerinden doğrudan kenar çubuğundan seçilebilir."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Kenar çubuğundaki ekler"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Jira biletlerindeki resimleri, videoları ve dosyaları doğrudan kenar çubuğunda görüntüleyin. Resimler ve videolar tam ekran ışık kutusunda açılır."
+  },
+  "cardJiraDetailTitle": {
+    "message": "MR sayfasındaki Jira rozetleri"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Jira bilet durumu rozetleri, ayrıntı sayfasındaki MR başlığında gösterilir. Bilet ayrıntılarının tamamını içeren kenar çubuğunu açmak için bir rozete tıklayın."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Jira durumunu değiştir"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Bilet durumunu doğrudan kenar çubuğundan değiştirin. Yalnızca mevcut durumdaki mevcut geçişleri gösterir."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Jira atanan kişiyi değiştir"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Aramak ve yeniden atamak için atanana tıklayın. Avatarlarla otomatik tamamlama, atanan kişiyi kaldırmak için atamayı kaldırma düğmesi."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira hızlı eylemler"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Durum, atanan kişi, etiketler, sürümler ve diğer alanlar için tek tıklamalı düğmeler. Her düğme bir veya birkaç alanı güncelleyebilir."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Sorun türü ve öncelik simgeleri"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "MR liste ve ayrıntı sayfalarındaki durum işaretlerinin yanında Jira sorun türü ve öncelik simgelerini gösterin. Yerel Jira simgelerini kullanır."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Kaynak dalını birleştirmeden hedef dalın üzerine yeniden temellendirin."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Sürüm"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Tek tıklamayla dala rebase uygular ve sürümü artırır. Birleştirme yapmaz."
+  },
+  "cardCopyMrTitle": {
+    "message": "MR kopyala"
+  },
+  "cardCopyMrDesc": {
+    "message": "MR başlığını ve bağlantısını tek tıklamayla panoya kopyalayın."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Başarısız işleri yeniden dene"
+  },
+  "cardRetryFailedDesc": {
+    "message": "MR'nin mevcut işlem hattındaki başarısız işleri yeniden deneyin. Başarılı işler etkilenmez."
+  },
+  "welcomeMrListFeatures": {
+    "message": "MR liste sayfası geliştirmeleri"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Taslak MR’ları soluk göster"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Etkin isteklere odaklanmak için listedeki taslak MR’ları soluk gösterir."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Kendi MR’larınızı vurgulayın"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Kendi MR’larınızı kolayca bulmanız için listede mavi kenarlıkla vurgular."
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"Yalnızca benim\" geçişi"
+  },
+  "cardOnlyMineDesc": {
+    "message": "MR listesini yalnızca birleştirme isteklerinizi gösterecek şekilde filtrelemek için tek tıklamayla geçiş yapın."
+  },
+  "cardMrAgeTitle": {
+    "message": "MR yaş rozeti"
+  },
+  "cardMrAgeDesc": {
+    "message": "MR'nin ne kadar zaman önce oluşturulduğunu gösterir ve MR sayfasında bir rozet olarak görüntülenir."
+  },
+  "showReviewerBadge": {
+    "message": "Yorumlardaki \"Yorumunuz\" rozeti"
+  },
+  "badgeYourReview": {
+    "message": "İncelemeniz"
+  },
+  "badgeYourReviewHint": {
+    "message": "MR yorumlarında inceleyen olarak bahsediliyor"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "\"Yorumunuz\" rozeti"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "En eski yorumlarda “Reviewer(s): @you” ifadesini arar. Tarama derinliği ayarlanabilir (varsayılan 10). GitLab’ın yerleşik inceleyen özelliğinden bağımsızdır."
+  },
+  "showNeedsReview": {
+    "message": "Liste sayfasında \"İncelemem gerekiyor\" düğmesi"
+  },
+  "toggleNeedsReview": {
+    "message": "İncelemem gerekiyor"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "\"İncelemem gerekiyor\" düğmesi"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Yalnızca gözden geçiren olarak atandığınız birleştirme isteklerini gösterecek şekilde MR listesini filtrelemek için tek tıklamayla geçiş yapın."
+  },
+  "showCopyMr": {
+    "message": "MR liste öğelerindeki Kopyala düğmesi"
+  },
+  "showThreadsBadge": {
+    "message": "MR listesindeki çözümlenmemiş ileti dizileri sayısı"
+  },
+  "showSizeBadge": {
+    "message": "MR beden etiketleri (S/M/L/XL) MR listesinde"
+  },
+  "showConflictsBadge": {
+    "message": "MR listesinde çakışma göstergesini göster"
+  },
+  "showApprovalBadge": {
+    "message": "MR listesinde onay sayısını ve onay göstergemi göster"
+  },
+  "approvalBadgeMine": {
+    "message": "Onayladınız"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Sen"
+  },
+  "cardThreadsTitle": {
+    "message": "Çözülmemiş konu sayısı"
+  },
+  "cardThreadsDesc": {
+    "message": "Çözülmemiş iş parçacığı sayılarını göster. “+” tam bir ilk sayfayı işaret eder; \"?\" sayının kullanılamadığı anlamına gelir."
+  },
+  "cardSizeTitle": {
+    "message": "MR boyut etiketleri"
+  },
+  "cardSizeDesc": {
+    "message": "Görüntüleme kuralları ve sınırları içinde yapılandırılabilir hat ve dosya eşiklerine sahip S/M/L/XL rozetleri."
+  },
+  "conflictsBadge": {
+    "message": "Çatışmalar"
+  },
+  "conflictsBadgeHint": {
+    "message": "Bu MR çözülmesi gereken birleştirme çakışmaları içeriyor"
+  },
+  "cardConflictsTitle": {
+    "message": "Çatışma göstergesi"
+  },
+  "cardConflictsDesc": {
+    "message": "Dalda birleştirme çakışmaları olduğunda MR ayrıntı sayfasında kırmızı bir ÇATIŞMALAR rozeti gösterilir."
+  },
+  "cardApprovalTitle": {
+    "message": "Onay göstergesim"
+  },
+  "cardApprovalDesc": {
+    "message": "Liste sayfasında her MR onaylayıp onaylamadığınızı gösterir. Sizin onayınızı başkalarının onaylarından ayırır."
+  },
+  "showBranches": {
+    "message": "Kaynak ve hedef dalları MR listesinde göster"
+  },
+  "showBranchesLinks": {
+    "message": "Dal adları tıklanabilir olsun (dal ağacını açar)"
+  },
+  "cardBranchesTitle": {
+    "message": "MR listesinde dal adları"
+  },
+  "cardBranchesDesc": {
+    "message": "Listedeki her MR'da kaynak ve hedef dal adlarını görüntüler, böylece kodun nereden geldiğini ve nereye birleştiğini görebilirsiniz."
+  },
+  "cardCopyMrListTitle": {
+    "message": "MR'yi listeden kopyala"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Liste sayfasındaki her MR'ye bir kopyalama düğmesi ekler. MR başlığını ve bağlantısını tek tıklamayla panoya kopyalar."
+  },
+  "versionFromTarget": {
+    "message": "Hedef daldan sürümü oku"
+  },
+  "versionFromTargetHint": {
+    "message": "Geçerli sürümü kaynak dal yerine hedef daldan (ör. main) okuyun. Eski sürümlere dayanmamak için merge commit stratejisiyle kullanın."
+  },
+  "showFailedJobView": {
+    "message": "Başarısız iş hızlı görünümünü MR sayfasında göster"
+  },
+  "failedJobTraceError": {
+    "message": "İzleme yüklenemedi"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Başarısız iş hızlı görünümü"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "MR sayfasında başarısız işleri önizleyin ve kuyrukları günlüğe kaydedin. İş ve satır sayıları, Görüntüleme kuralları ve sınırları bölümünden yapılandırılabilir."
+  },
+  "showCmdPalette": {
+    "message": "Komut paleti (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Günlük aktivite raporu"
+  },
+  "standupJiraEnrich": {
+    "message": "Raporda Jira bilet başlıklarını göster"
+  },
+  "cmdPlaceholder": {
+    "message": "Bir komut yazın..."
+  },
+  "cmdFooterNavigate": {
+    "message": "gezin"
+  },
+  "cmdFooterSelect": {
+    "message": "seç"
+  },
+  "cmdFooterClose": {
+    "message": "kapat"
+  },
+  "cmdEmpty": {
+    "message": "Eşleşen komut yok"
+  },
+  "cmdGroupNav": {
+    "message": "Navigasyon"
+  },
+  "cmdGroupMr": {
+    "message": "MR Eylemler"
+  },
+  "cmdGroupExt": {
+    "message": "Uzantı"
+  },
+  "cmdGroupFiles": {
+    "message": "Dosyalar"
+  },
+  "cmdNavMrs": {
+    "message": "Birleştirme İsteklerine Git"
+  },
+  "cmdNavIssues": {
+    "message": "Issue Listesine Git"
+  },
+  "cmdNavPipelines": {
+    "message": "İşlem Hatlarına Git"
+  },
+  "cmdNavBranches": {
+    "message": "Dallara Git"
+  },
+  "cmdNavRepo": {
+    "message": "Depoya Git"
+  },
+  "cmdNavTags": {
+    "message": "Etiketlere Git"
+  },
+  "cmdNavCommits": {
+    "message": "Commit Listesine Git"
+  },
+  "cmdNavWiki": {
+    "message": "Wiki'ye git"
+  },
+  "cmdNavSnippets": {
+    "message": "Parçacıklara Git"
+  },
+  "cmdNavSettings": {
+    "message": "Ayarlara Git"
+  },
+  "cmdCopyPath": {
+    "message": "Proje yolunu kopyala"
+  },
+  "cmdGroupPinned": {
+    "message": "Sabitlendi"
+  },
+  "cmdExtSettings": {
+    "message": "Uzantı ayarlarını aç"
+  },
+  "cmdExtStandup": {
+    "message": "Faaliyet raporu oluştur"
+  },
+  "standupTitle": {
+    "message": "Günlük Etkinlik"
+  },
+  "standupCopy": {
+    "message": "Panoya kopyala"
+  },
+  "standupCopied": {
+    "message": "Kopyalandı!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Komut paleti"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Herhangi bir GitLab sayfasında Cmd+K (Mac) veya Ctrl+K (Win) tuşuna basın. Gezinin, MR eylemlerini çalıştırın, dosyaları ada göre arayın ve bunları depoda açın."
+  },
+  "cardStandupTitle": {
+    "message": "Günlük aktivite raporu"
+  },
+  "cardStandupDesc": {
+    "message": "GitLab verilerinizden günlük etkinlik raporu oluşturun. Oluşturulan, birleştirilen ve incelenen MR’ları gösterir. Slack veya Jira’ya kopyalayıp yapıştırın."
+  },
+  "showCherryPick": {
+    "message": "Dallara cherry-pick"
+  },
+  "showGroupPlay": {
+    "message": "İşlem hattındaki grup oynatma düğmesi (kalan manuel işleri çalıştırır)"
+  },
+  "showCommitVersion": {
+    "message": "İşlemler sayfasındaki sürüm rozeti"
+  },
+  "showCommitVersionHint": {
+    "message": "Her işlemin yanında sürüm dosyasındaki sürümü gösterir (bkz. Sürüm yükseltme ayarları); sürümün değiştiği yer vurgulandı"
+  },
+  "groupPlayTooltip": {
+    "message": "Bu gruptaki kalan manuel işleri çalıştırın"
+  },
+  "groupPlayError": {
+    "message": "Bazı işler başlatılamadı"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Grup oynatma düğmesi"
+  },
+  "cardGroupPlayDesc": {
+    "message": "İşlem hattı grafiğinde, bir iş grubunun yanındaki oynat düğmesi, gruptaki bazı işler başlatıldıktan ve GitLab'nin kendi düğmesi kaybolduktan sonra bile kalan tüm manuel işleri çalıştırır."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Commit’lerde sürüm rozeti"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Dalın commit sayfasında her commit, o commit’teki sürüm dosyasından okunan proje sürümünü gösterir. Varsayılan olarak soluktur; sürüm değişen commit’ler vurgulanır. Hangi commit’in hangi sürüme girdiğini kolayca görün."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick hedef dalları"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Cherry-pick için varsayılan hedef dallar. İletişim kutusunda dal ekleyebilir veya kaldırabilirsiniz."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Dal ekle"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Dallara cherry-pick"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Kapat"
+  },
+  "cherryPickInProgress": {
+    "message": "Cherry-pick uygulanıyor…"
+  },
+  "cherryPickRemove": {
+    "message": "Kaldır"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Dal adı"
+  },
+  "cherryPickAllSuccess": {
+    "message": "$1 dala cherry-pick uygulandı",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Bu değişikliklerle yeni bir birleştirme isteği başlatın"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Cherry-pick sırasında varsayılan olarak MR oluştur"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Çakışma durumunda — sürüm dosyası olmadan işleme koy"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Sürüm dosyasındaki çakışma nedeniyle cherry-pick başarısız olursa değişiklikleri sürüm dosyası hariç yeni bir commit olarak uygula"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Yedek işlemde sürümü artır"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Hedef daldaki sürümü aynı yedek commit içinde artır"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Akıllı geri dönüş yalnızca sürüm dosyası çakışmalarını yönetir. Çakışma başka bir dosyada"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Dosya hedef dalda değiştirildi — güvenli cherry-pick uygulanamaz"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Sürüm dosyası, sürümün ötesinde değişiklikler içeriyor — güvenli bir şekilde atlanamaz"
+  },
+  "commitsJiraField": {
+    "message": "Commit rozetleri için Jira alanı"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Commit sayfasındaki rozetlerde gösterilecek Jira alan adı (ör. fixVersions, status, labels, components). Jira URL’si gerekir."
+  },
+  "cardCherryPickTitle": {
+    "message": "Dallara cherry-pick"
+  },
+  "cardCherryPickDesc": {
+    "message": "Seçilen dallara doğrudan veya yeni MR’lar üzerinden cherry-pick uygulayın. Akıllı yedek işlem etkinse doğrulanmış sürüm dosyası çakışmalarında bu dosya atlanır; isteğe bağlı olarak sürüm artırılır. Güvenli olmayan değişiklikler inceleme için durdurulur."
+  },
+  "mrDetailEnhancements": {
+    "message": "MR ayrıntı geliştirmeleri"
+  },
+  "showSensitiveWarning": {
+    "message": "Farkta hassas dosya uyarısı"
+  },
+  "showGitCommands": {
+    "message": "Git komut düğmeleri (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "HASSAS: $1 dosya(lar)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Bu MR güvenliğe duyarlı dosyaları değiştirir:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Hassas dosya uyarısı"
+  },
+  "cardSensitiveDesc": {
+    "message": "Yerleşik kuralları, ek kalıpları ve hariç tutmaları kullanarak hassas dosyaları işaretler. Bunları Görüntüleme kuralları ve sınırları bölümünde yapılandırın."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Git komut düğmeleri"
+  },
+  "cardGitCommandsDesc": {
+    "message": "checkout, pull ve hard-reset komutlarını kopyalayın. Çalıştırmadan önce deponuzu ve origin uzak deposunu kontrol edin; hard reset yerel değişiklikleri siler."
+  },
+  "updateBannerText": {
+    "message": "Yeni sürüm mevcut! Yeniliklere bakın:"
+  },
+  "updateChangelog": {
+    "message": "Değişiklik günlüğü"
+  },
+  "updateReviewAsk": {
+    "message": "Uzantıyı beğendiniz mi?"
+  },
+  "updateReviewLink": {
+    "message": "Bir inceleme bırakın"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "AI destekli inceleme, uçtan uca"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Bir MR'i inceleyin, seçilen geri bildirimi düzeltin, yanıtları hazırlayın ve değişiklikleri yeniden kontrol edin. GitLab'ye göndermeden önce yorumları önizleyin ve düzenleyin."
+  },
+  "aiReviewGuide": {
+    "message": "AI inceleme kılavuzu"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Otomatik AI yüklemesi yok. İçeriği kendiniz kopyalayın; yorumlar yalnızca Yayınla veya İncelemeye ekle seçeneğini seçtiğinizde GitLab adresine gönderilir."
+  },
+  "aiReviewTitle": {
+    "message": "AI incelemesi"
+  },
+  "aiReviewOpen": {
+    "message": "AI incelemesi…"
+  },
+  "aiReviewCopyComment": {
+    "message": "AI için yorumu kopyala"
+  },
+  "aiReviewLoading": {
+    "message": "Tartışmalar yükleniyor…"
+  },
+  "aiReviewRetry": {
+    "message": "Tekrar dene"
+  },
+  "aiReviewRefresh": {
+    "message": "Yenile"
+  },
+  "aiReviewClose": {
+    "message": "Kapat"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Kaydedilmemiş çalışmalarla inceleme diyaloglarının kapatılmasını onaylayın"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Bu iletişim kutusu kapatılsın mı? Kaydedilmemiş düzenlemeler ve girilen veriler kaybolacaktır."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Bu iletişim kutusu kapatılıp daha fazla gönderim durdurulsun mu? Zaten gönderilmiş olan yorumlar GitLab'de kalacaktır. Kaydedilmemiş düzenlemeler kaybolacaktır."
+  },
+  "aiReviewAll": {
+    "message": "Hepsi"
+  },
+  "aiReviewUnresolved": {
+    "message": "Çözülmemiş"
+  },
+  "aiReviewResolved": {
+    "message": "Çözüldü"
+  },
+  "aiReviewGeneral": {
+    "message": "Genel yorumlar"
+  },
+  "aiReviewSearch": {
+    "message": "Yorumları veya dosya yollarını arayın"
+  },
+  "aiReviewSelectShown": {
+    "message": "Gösterilenleri seç"
+  },
+  "aiReviewClear": {
+    "message": "Seçimi temizle"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Kod değişikliklerini dahil et"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Yeni ve tekrarlanan incelemeler için. AI depoyu okuyabiliyorsa kapalı bırakın. Geri bildirime eklenen kısa kod parçaları yine dahil edilir."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Mevcut tartışmaların hesabı"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Yayımlanmış yorumları yinelenen bulguları elemek için ekler: AI önce MR’nin tamamını bağımsız olarak inceler, ardından bu yorumları tekrarlayan bulguları çıkarır. Bu tartışmalara yanıt vermez."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Açıklamayı dahil et"
+  },
+  "aiReviewPrompt": {
+    "message": "Yapay Zeka için Talimatlar"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Varsayılan istemi geri yükle"
+  },
+  "aiReviewPreview": {
+    "message": "Önizleme"
+  },
+  "aiReviewCopied": {
+    "message": "Kopyalandı!"
+  },
+  "aiReviewEmpty": {
+    "message": "Eşleşen yorum yok."
+  },
+  "aiReviewPartial": {
+    "message": "Bazı veriler yüklenemedi. Dışa aktarma bir uyarı ve yalnızca mevcut bağlamı içerir."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 seçildi",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Önizleme metnini seçin ve manuel olarak kopyalayın."
+  },
+  "aiReviewScopeComment": {
+    "message": "Seçilen yorum"
+  },
+  "aiReviewScopeThread": {
+    "message": "Seçilen tartışma"
+  },
+  "aiReviewPreparing": {
+    "message": "Kod bağlamı hazırlanıyor…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Tartışmalar yüklenemedi. Yeniden deneyin veya mevcut içeriği kopyalayın."
+  },
+  "aiReviewShowReplies": {
+    "message": "Yanıtları göster"
+  },
+  "aiReviewSize": {
+    "message": "Yaklaşık $1 karakter",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "İptal"
+  },
+  "showAiReviewCopy": {
+    "message": "AI inceleme kopyalama ve içe aktarma kontrollerini göster"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Yeni bir inceleme, düzeltmeler için seçilen geri bildirimler için MR'in tamamını kopyalayın veya göndermeden önce düzenlenebilir bir önizlemeyle AI yorumlarını ve yanıtlarını içe aktarın."
+  },
+  "aiReviewFresh": {
+    "message": "Sıfırdan inceleme"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Yeni bir inceleme isteği"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "En fazla 1.500 karakter. Geri bildirim düzeltmelerinden ayrı olarak MR’nin tamamını ve tüm commit’lerini incelemek için kullanılır. Yanıt dilini belirtebilirsiniz. Varsayılan İngilizce istem için boş bırakın."
+  },
+  "aiReviewPromptHint": {
+    "message": "1.500 karaktere kadar. Varsayılan İngilizce istemi kullanmak için boş bırakın. Tüm projeler için geçerlidir."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "İstem kaydedilmedi. En fazla 1.500 karakter kullanın ve olağandışı kontrol karakterlerini kaldırın."
+  },
+  "settingsSaveFailed": {
+    "message": "Ayarlar kaydedilemedi. Yeniden denemek için değişiklik yapın."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Buradaki değişiklikler bu dışa aktarıma uygulanır. Uzantı ayarlarında varsayılan isteminizi ayarlayın."
+  },
+  "aiReviewReady": {
+    "message": "Önizleme kopyalamaya hazır."
+  },
+  "aiReviewLoadHint": {
+    "message": "Bu sayfada görünmeyen yorumlar da dahil olmak üzere tartışmaları doğrudan GitLab'den yükler."
+  },
+  "aiReviewCommentContext": {
+    "message": "Diğer yanıtlar bağlam olarak dahil edilmiştir. İşlem için yalnızca seçilen yorumlar istenir."
+  },
+  "aiReviewOutdated": {
+    "message": "Önceki revizyon"
+  },
+  "aiReviewLink": {
+    "message": "Tartışmayı aç"
+  },
+  "aiReviewLoaded": {
+    "message": "Yüklenen $1 tartışmaları"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Kod bağlamı hazırlanıyor: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Bu yoruma GitLab adresinden ulaşılamıyor. Hala kaydediliyor olabilir veya kaldırılmış olabilir. Tekrar denemek için yenileyin."
+  },
+  "aiReviewImportOpen": {
+    "message": "AI incelemesini içe aktar…"
+  },
+  "aiReviewImportTitle": {
+    "message": "AI incelemesini içe aktar"
+  },
+  "aiReviewImportHelp": {
+    "message": "Neyin yayınlanacağını kontrol etmek, düzenlemek ve seçmek için AI yanıtını aşağıya yapıştırın. Bilgi istemi kısayolları Gelişmiş ayarlar altındadır."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Yeni inceleme için istemi kopyala"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "İstem hazırlanıyor…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI yanıtı (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Yeni yorumları veya tartışmalara verilen yanıtları içeren JSON yanıtının tamamını yapıştırın. Metni düzenleyebilir ve önizlemede ne göndereceğinizi seçebilirsiniz."
+  },
+  "aiReviewImportValidate": {
+    "message": "Kontrol et ve önizle"
+  },
+  "aiReviewImportChecking": {
+    "message": "MR revizyonu, satırları ve mevcut yorumlar kontrol ediliyor…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Yorumları önizlemek için yanıtı kontrol edin. Metinlerini düzenleyebilir, öğeleri hariç tutmak için onay kutularını temizleyebilir veya genel bir yorum ekleyebilirsiniz."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Hazır yorumları seçin"
+  },
+  "aiReviewImportPreview": {
+    "message": "Gönderilecek yorumlar"
+  },
+  "aiReviewImportReady": {
+    "message": "Hazır"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Düzeltilmesi gerekiyor"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Ek dosya değişiklikleri yüklenemedi: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Ek fark 16 MiB içe aktarma sınırını aşıyor. Yalnızca doğrulanmış satırlardaki yorumlar içe aktarılabilir."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Zaten var"
+  },
+  "aiReviewImportPublished": {
+    "message": "Yayınlandı"
+  },
+  "aiReviewImportDraft": {
+    "message": "İncelemeye eklendi"
+  },
+  "aiReviewImportFailed": {
+    "message": "Gönderilmedi"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Teslimat onaylanmadı"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Gönderilmedi"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Yeni satır $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Eski satır $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Seçilenleri yayınla"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "İncelemeye ekle"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Yayınla, yorumları hemen gönderir. İncelemeye ekle, yayımlanmamış yorumları GitLab incelemeniz için kaydeder."
+  },
+  "aiReviewImportSending": {
+    "message": "Seçilen yorumlar gönderiliyor…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Tamamlandı. Her yorumun yanında sonucu kontrol et."
+  },
+  "aiReviewImportStopped": {
+    "message": "Durduruldu. Tekrar denemeden önce her yorumun yanındaki sonucu kontrol et."
+  },
+  "aiReviewImportEdited": {
+    "message": "Yanıt değişti. Göndermeden önce tekrar kontrol et."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Pano kullanılamıyor. Aşağıdaki metni seçip manuel olarak kopyala."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Teslimat doğrulanamadı. Tekrar denemeden önce GitLab'i kontrol et."
+  },
+  "aiReviewImportPrompt": {
+    "message": "AI için komut istemi"
+  },
+  "aiReviewImportChecked": {
+    "message": "Hazır: $1. Diğer yorumlar dikkat gerektiriyor.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Gönderimi durdur"
+  },
+  "aiReviewImportError": {
+    "message": "İşlem tamamlanamadı"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Komut istemi hazırlanamadı"
+  },
+  "aiReviewImportWarning": {
+    "message": "İnceleme bildirimleri"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI incelemesi"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "AI yanıt dili"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Otomatik — konuşma dili"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Tüm inceleme görevleri ve içe aktarma istemleri için geçerlidir. JSON anahtarları, yollar ve kodlar çevrilmez. Sadece formatı kopyalamak dil talimatları eklemez."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Geri bildirimi düzeltmek için istem"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Yeni inceleme yorumları için istem"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Geri bildirime yanıtlar için istem"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "En fazla 1500 karakter. İçe aktarmada yeni inceleme kısayolu için. Görev sekmeleri kendi istemlerini kullanır. MR bağlamı ve JSON formatı otomatik eklenir."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "En fazla 1500 karakter. Kopyalamada seçilen tartışmalara veya içe aktarmadaki tüm çözülmemiş tartışmalara yanıtlar için. Stil ve dili ayarla; bağlam ve yanıt formatı otomatik eklenir."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Tüm çözülmemiş tartışmalar için yanıt istemi"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Yanıt formatını kopyala"
+  },
+  "aiReviewImportFormat": {
+    "message": "AI için yanıt formatı"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Yanıtları hazırla"
+  },
+  "aiReviewImportReply": {
+    "message": "Tartışmaya yanıt ver"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Orijinal yorum"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Senin yanıtın"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Yayınladıktan sonra tartışmayı çöz"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Tartışma çözüldü."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Yanıt yayınlandı, ama tartışma çözülmedi. GitLab’da çözebilirsin."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Yanıt yayınlandı. Çözüm onaylanmadı; GitLab’daki tartışmayı kontrol et."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Çözüm isteğe bağlıdır ve varsayılan olarak kapalıdır. Sadece yanıtı yayınladıktan sonra çalışır. Taslak eklemek hiçbir zaman tartışmayı çözmez."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "MR versiyonu değişti. Yanıtlar tartışmalarla bağlı kalır; metinlerini gönderilen düzeltmelere karşı kontrol et. Eski bir revizyondan gelen yeni bulgular engellenir."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Bu yanıtlar tartışmalarla, kod revizyonuyla değil bağlıdır. Yayınlamadan önce, tarif edilen düzeltmelerin bu MR’a gönderildiğini kontrol et."
+  },
+  "aiReviewImportEdit": {
+    "message": "Metni düzenle"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Yorum ekle"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Değişiklikleri kaydet"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "İptal"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Yorum metni"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Metni düzenleyin, sonra yayınlamadan önce değişiklikleri kontrol etmek için kaydedin."
+  },
+  "aiReviewImportEditError": {
+    "message": "Değişiklikler kaydedilemedi"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Önizleme en fazla 200 yorum içerebilir."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Tekrar gözden geçirme istemi"
+  },
+  "aiReviewFileFilters": {
+    "message": "İncelenecek dosyalar"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Yeni ve tekrar gözden geçirme ile yeni bulgu istemlerine uygulanır, seçilen geri bildirim veya yanıt istemlerine uygulanmaz. Her satır veya virgülle bir desen; # yorum başlatır. *, **, ? kullanın. Hariç tutmalar kazanç sağlar, eski yeniden adlandırma yollarını da dahil eder. Boş listeler her şeyi içerir. Örnek: src/**, *.test.js, dist/. Her listedeki maksimum karakter sayısı 1500."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Uzantıları dahil et (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Dosya yollarını dahil et"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Dosya yollarını hariç tut"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Klasörleri hariç tut"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Dosya filtreleri kaydedilemedi veya uygulanamadı. Her liste için en fazla 1500 karakter kullanın ve olağan dışı kontrol karakterlerini kaldırın."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "İncelediğiniz sürüm"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Tam inceleme — önceki sürüm yok"
+  },
+  "aiReviewRepeat": {
+    "message": "İlgili incelemeyi tekrarla"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Bir commit SHA girin"
+  },
+  "aiReviewPreviousSha": {
+    "message": "İncelenen tam commit SHA’sını girin (40 veya 64 onaltılık karakter)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Yorum bırakmadan önce incelediğiniz MR sürümünü seçin. Mevcut sürüme kadar olan tüm değişiklikler otomatik olarak dahil edilir; tek tek commit seçmenize gerek yok. Eğer sürümü hatırlamıyorsanız, tam inceleme seçin."
+  },
+  "aiReviewChooseTask": {
+    "message": "Bir görev seçin"
+  },
+  "aiReviewTaskReview": {
+    "message": "Yeni inceleme"
+  },
+  "aiReviewTaskFix": {
+    "message": "İnceleme bulgularını düzelt"
+  },
+  "aiReviewTaskReply": {
+    "message": "Yanıtları hazırla"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Takip incelemesi"
+  },
+  "aiReviewCopyTask": {
+    "message": "Görevi kopyala"
+  },
+  "aiReviewPasteResult": {
+    "message": "AI yanıtını yapıştır"
+  },
+  "aiReviewAdvanced": {
+    "message": "Gelişmiş ayarlar"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Görev talimatları"
+  },
+  "aiReviewSelectThread": {
+    "message": "Bu tartışmayı seç"
+  },
+  "aiReviewSelectAll": {
+    "message": "Tüm tartışmaları seç"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Tüm MR commitlerini birlikte gözden geçir. AI, kodu değiştirmeden yeni bulgular sunar."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Düzeltmek için geri bildirimi seç. Bir MR için, AI ayrıca yapılanları, kalanları ve nedenlerini açıklayan yanıtlar hazırlar. Çözülmemiş tartışmalar başlangıçta seçilir."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Yanıtları da hazırla"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Kodlama AI’inizin düzeltmesini istediğiniz geri bildirimi seç. Çözülmemiş tartışmalar başlangıçta seçilir."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Görevi kodlama AI’inize verin ve değişikliklerini ve testlerini kontrol edin. Sonuç, düzeltmeler ve normal bir özet olur, gönderilmeye hazır yanıtlar olmadan."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Düzeltmeleri push ettikten sonra, AI’ye kodu doğrulamasını ve seçilen tartışmalarda sonucu açıklamasını söyleyin."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Seçilen geri bildirimi doğrula ve yeni hataları ara. Önceden incelediğin sürümü seç veya mevcut MR’nin tamamını kontrol et."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Görev: bütün MR, tüm commit’ler boyunca."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Seçilen yorumlar: $1; tartışma bağlamı ve mevcut kod parçaları dahil."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Yanıtlar için tartışmalar: $1, tam konuşmalarıyla birlikte. AI’nin depo erişimi gerekiyor."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Doğrulanacak tartışmalar: $1, artı kod değişikliklerinin bir incelemesi."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Açıklama dahil."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Açıklama hariç."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Kod değişiklikleri dahil, yükleme limitlerine tabi."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI kodu depodan okumalı."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Mevcut tartışmalar sadece tekrar filtresi olarak eklenir."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Mevcut tartışmalar eklenmez."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Dosya filtreleri aktif."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Daha önce bir sürüm seçilmedi: mevcut tam MR kontrol edilecek."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Yayınlanmamış taslak tartışmalara yanıt verilemez ve bunlar hariç tutulur."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Geri bildirimleri soldan seçin. Yeni bir inceleme için Yeni inceleme sekmesini kullanın."
+  },
+  "aiReviewNextStep": {
+    "message": "Görevi AI aracınıza kopyalayın. Eğer yorumlar veya yanıtlar dönerse, bunları paylaşmadan önce Yapıştır AI yanıtı ile gözden geçirin ve düzenleyin."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Düzeltmeleri ve testleri kontrol edin, tüm commitleri MR’a push edin, ardından hazırlanmış yanıtları yayınlamadan önce Yapıştır AI yanıtı ile gözden geçirin. Yeni commitler için yanıtları yeniden üretmeye gerek yok."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Otomatik talimatlar (gelişmiş)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Tüm bloklar varsayılan olarak etkin ve sadece ilgili görevler için kullanılır. Herhangi bir bloğu düzenle, devre dışı bırak veya temizle. Görev istemlerinin de kendi talimatları vardır. MR verileri, JSON örnekleri ve yükleme bildirimleri ayrı olarak üretilir; yayın kontrolleri her zaman geçerlidir."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Uygulandığında göreve ekle"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Maksimum 1500 karakter. Boş metin herhangi bir katkı sağlamaz. Sıfırla varsayılan metni geri yükler ve bu bloğu etkinleştirir."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Seçilen yanıt dili için {language} kullan. Maksimum 1500 karakter; boş metin herhangi bir katkı sağlamaz."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Seçili veya çözülmemiş tartışmalar için {selection} kullan. Maksimum 1500 karakter; boş metin herhangi bir katkı sağlamaz."
+  },
+  "aiReviewRule_repository": {
+    "message": "Yerel depo ve uzak"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Düzeltmeler için çalışma kopyası"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "İnceleme için çalışma kopyası"
+  },
+  "aiReviewRule_language": {
+    "message": "Yanıt dili"
+  },
+  "aiReviewRule_scope": {
+    "message": "Dosya filtre yorumlaması"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Geri bildirim bağlamı"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Yanıtsız düzeltmeler"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Sadece açıklama görevi"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Seçilen geri bildirimin eksikliği"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Düzeltmelerden sonra gönderilmeye hazır yanıtlar"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "İnceleme sınırları"
+  },
+  "aiReviewRule_review_source": {
+    "message": "İnceleme kaynağı"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Dahil edilen kod değişiklikleri"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Kod dahil edilmeden inceleme"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Erişilemeyen kaynak"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON yanıtı"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Konumları bulma ve çıktı"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Takip yanıt stili"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Değişmeyen başlık"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Karşılaştırma satır pozisyonları"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Yerel revizyon karşılaştırması"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Hedef dal değişiklikleri"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Karşılaştırma revizyonu olmadan inceleme"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Tartışmalar olmadan yeniden kontrol"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Seçilen tartışma kapsamı"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Kümülatif fark bağlamı"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Yeni bir incelemede mevcut tartışmalar"
+  },
+  "aiReviewRule_import_task": {
+    "message": "İçe aktarmada yeni inceleme"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "İçe aktarma inceleme sınırları"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Bulgu formatını içe aktar"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Yanıt sınırları ve formatı"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Yanıt görev kapsamı"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Alan ekle"
+  },
+  "jiraQuickActionField": {
+    "message": "Alan"
+  },
+  "jiraQuickActionOperation": {
+    "message": "İşlem"
+  },
+  "jiraQuickActionValue": {
+    "message": "Değer"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Kaldır"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Ekle"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Kaldır"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Tümünü değiştir"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Son tarih"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Özel alan (gelişmiş)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Değerler virgülle ayrılır. Ekle/çıkar diğer değerleri korur; tümünü değiştir listeyi silip yazar."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "Alan kimliği: customfield_12345. Değeri bu Jira alanının beklediği biçimde JSON olarak girin."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Tam Jira geçiş adı (veya hedef durum)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Boş değer: değişiklik yok."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Alan değerini kontrol edin: özel alanlar geçerli bir kimlik ve JSON gerektirir; tarihler YYYY-MM-DD biçimindedir."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Her alanı bir buton başına sadece bir kez kullanın."
+  },
+  "jiraQuickActionFailed": {
+    "message": "İşlem başarısız oldu."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Durum değişti, ama alan güncellemesi başarısız oldu."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Sorun yenilenemedi. Mevcut değerlerini kontrol etmek için paneli yeniden açın."
+  },
+  "mrActions": {
+    "message": "MR işlemleri"
+  },
+  "mrActionsHint": {
+    "message": "Etiketleri değiştirmek veya diğer MR alanlarını temizlemek için adlandırılmış butonlar oluşturun. Sıralarını değiştirmek için buton listesinde sürükleyin."
+  },
+  "mrActionsProfileHint": {
+    "message": "Bu proje kaydettikten sonra kendi işlem listesini kullanıyor. Bu butonları bu proje için gizlemek istiyorsanız tüm girişleri silin."
+  },
+  "mrActionAdd": {
+    "message": "MR işlemi ekle"
+  },
+  "mrActionLabel": {
+    "message": "Buton adı"
+  },
+  "mrActionDelete": {
+    "message": "İşlemi sil"
+  },
+  "mrActionType": {
+    "message": "İşlem"
+  },
+  "mrActionLabels": {
+    "message": "Etiketler"
+  },
+  "mrActionLabelsHint": {
+    "message": "Tam etiket adları, virgülle veya yeni satırlarla ayrılmış. İçindeki boşluklar korunur. Ekle/değiştir eksik proje etiketlerini oluşturabilir."
+  },
+  "mrAction_remove_labels": {
+    "message": "Belirtilen etiketleri kaldır"
+  },
+  "mrAction_clear_labels": {
+    "message": "Tüm etiketleri temizle"
+  },
+  "mrAction_add_labels": {
+    "message": "Etiket ekle"
+  },
+  "mrAction_set_labels": {
+    "message": "Tüm etiketleri değiştir"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Atananları temizle"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "İnceleyenleri temizle"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Kilometre taşını temizle"
+  },
+  "mrActionInvalid": {
+    "message": "Bir düğme adı girin, desteklenen bir eylem seçin ve ekle, kaldır veya değiştir için en az bir etiket belirtin."
+  },
+  "mrActionConfirm": {
+    "message": "\"$1” bu MR’ye uygulansın mı?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab rebase durumunu döndürmedi. Merge request’i yeniden yükleyin ve tekrar deneyin."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab, #$1 pipeline’ı için tekrar eden bir iş sayfası döndürdü. İş listesi tamamen yüklenemedi."
+  },
+  "displayPreferencesTitle": {
+    "message": "Kuralları ve limitleri göster"
+  },
+  "displayPreferencesHint": {
+    "message": "Genel ayarlar; değiştirdikten sonra GitLab sekmelerini yenileyin. Daha fazla iş veya yorum daha fazla veri aktarır. Günlük önizlemeleri, boş olmayan satırları seçmeden önce günlüğün tamamını indirir. İnceleyen rozetleri en eski yorumlarda “Reviewer(s): @username” ifadesini arar."
+  },
+  "failedJobsLimit": {
+    "message": "Önizleme için başarısız işler"
+  },
+  "failedJobTraceLines": {
+    "message": "İş başına boş olmayan log satırları"
+  },
+  "reviewerNotesLimit": {
+    "message": "İnceleyen rozetlerini taramak için yorumlar"
+  },
+  "mrSizeLines": {
+    "message": "MR boyutu eşikleri: satırlar (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR boyut eşikleri: dosyalar (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Ek hassas dosya desenleri"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Hassas dosya hariç tutmaları"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Dahili hassas dosya kurallarını kullan"
+  },
+  "sizeThresholdsHint": {
+    "message": "Virgülle ayrılmış üç artan pozitif sayı. Sınırlar dahil; daha büyük değişiklikler XL. Satır sayısı yoksa dosya eşikleri uygulanır."
+  },
+  "sensitivePatternsHint": {
+    "message": "Satır başına bir desen, büyük/küçük harf fark etmeksizin. * herhangi bir metinle eşleşir (/) dahil, ? bir karakterle. / içermeyen desenler dosya adlarıyla eşleşir; diğer desenler tüm depo yolu ile eşleşir. Hariç tutmalar kazanır. Dahili kurallar ortam, konteyner/CI, kimlik bilgisi ve özel anahtar dosyalarını kapsar. Sadece kendi desenlerini kullanmak için kapat."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Sayısal aralıkları kontrol et, üç artan boyut eşiğini ve dosya desenlerinin uzunluğunu."
+  },
+  "failedJobsPreview": {
+    "message": "Önizleme: $1 başarısız iş — son $2 dolu satır",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Daha fazla başarısız iş — tüm pipeline'ı aç"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 satır, $2 dosya",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 dosya değişti",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Hassas dosya taraması tamamlanmadı"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Her dosya kontrol edilemedi: API isteği başarısız oldu veya $1 dosya tarama sınırına ulaşıldı. Listelenen eşleşmeler kısmi; tam MR farkını kontrol et.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Uyarı: bu rapor eksik olabilir. Toplama, kategori başına $1 MR ve $2 etkinlik olayı ile sınırlı.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 çözülmemiş tartışma",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Bu önizleme eksik olabilir: API hatası veya sadece ilk $2 tartışma kontrol edildi. Bilinen çözülmemiş tartışmalar: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

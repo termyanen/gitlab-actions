@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — automatyzacja MR, Jira, CI/CD i AI"
+  },
+  "extDescription": {
+    "message": "Automatyzuj MR w GitLab: scalanie, wersje, Jira, CI/CD i przegląd z własną AI. Bez tokenów API."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Jak to działa"
+  },
+  "openSettingsInTab": {
+    "message": "Otwórz ustawienia w nowej karcie"
+  },
+  "exportSettings": {
+    "message": "Eksportuj ustawienia"
+  },
+  "importSettings": {
+    "message": "Importuj ustawienia"
+  },
+  "settingsTransferHint": {
+    "message": "Udostępnij wszystkie ustawienia i profile projektów jako plik JSON."
+  },
+  "settingsImportReplace": {
+    "message": "To zastąpi wszystkie obecne ustawienia i profile projektów."
+  },
+  "applySettingsImport": {
+    "message": "Zastąp ustawienia"
+  },
+  "cancelSettingsImport": {
+    "message": "Anuluj"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — profile projektów: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Nieprawidłowy plik ustawień lub nieobsługiwany format."
+  },
+  "settingsFileTooLarge": {
+    "message": "Plik ustawień przekracza limity przechowywania Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Nie udało się wyeksportować ustawień. Spróbuj ponownie."
+  },
+  "settingsImportFailed": {
+    "message": "Nie udało się zaimportować ustawień. Twoja obecna konfiguracja pozostaje bez zmian."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Zezwól na dostęp do strony Jira, aby zaimportować te ustawienia."
+  },
+  "settingsImported": {
+    "message": "Ustawienia zaimportowane!"
+  },
+  "buttonOrder": {
+    "message": "Kolejność przycisków"
+  },
+  "buttonOrderHint": {
+    "message": "Przeciągnij, aby zmienić kolejność. Najedź, aby zobaczyć opis. Niebieskie to niestandardowe zadania."
+  },
+  "general": {
+    "message": "Ogólne"
+  },
+  "soundNotifications": {
+    "message": "Powiadomienia dźwiękowe"
+  },
+  "desktopNotifications": {
+    "message": "Powiadomienia na pulpicie"
+  },
+  "showTimeTracker": {
+    "message": "Pokaż znacznik wieku MR"
+  },
+  "skipConfirmations": {
+    "message": "Pomiń potwierdzenia działań MR"
+  },
+  "uxEnhancer": {
+    "message": "Ulepszenia listy MR"
+  },
+  "dimDrafts": {
+    "message": "Przyciemnij drafty MR na liście"
+  },
+  "highlightOwnMrs": {
+    "message": "Wyróżnij swoje MR na liście"
+  },
+  "showOnlyMine": {
+    "message": "Przełącznik \"Tylko moje\" na stronie listy"
+  },
+  "toggleOnlyMine": {
+    "message": "Tylko moje"
+  },
+  "versionBump": {
+    "message": "Zwiększenie wersji"
+  },
+  "filePath": {
+    "message": "Ścieżka pliku"
+  },
+  "filePathHint": {
+    "message": "Plik zawierający numer wersji"
+  },
+  "versionField": {
+    "message": "Pole wersji"
+  },
+  "versionFieldHint": {
+    "message": "Klucz JSON lub klucz TOML (np. \"version\" lub \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategia"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Komentarz do commita"
+  },
+  "commitMessageHint": {
+    "message": "Użyj {version} jako symbol zastępczy"
+  },
+  "quickComments": {
+    "message": "Szybkie komentarze"
+  },
+  "quickCommentsHint": {
+    "message": "Przyciski jednym kliknięciem, które natychmiast dodają ogólny komentarz do MR (nie w kodzie). Przyciski pojawiają się na pasku akcji."
+  },
+  "quickCommentsAdd": {
+    "message": "Dodaj komentarz"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Szybkie komentarze"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Konfigurowalne przyciski szablonowych komentarzy na stronie MR. Dodaj LGTM, Needs fixes lub dowolny niestandardowy komentarz jednym kliknięciem."
+  },
+  "reviewers": {
+    "message": "Recenzenci"
+  },
+  "reviewersList": {
+    "message": "Lista recenzentów"
+  },
+  "reviewersListHint": {
+    "message": "Nazwy użytkowników do wspomnienia w komentarzu Reviewers: (@user1, @user2). Po ustawieniu pomija wyszukiwanie komentarza i zadanie CI. Nie zmienia przypisań recenzentów w GitLab."
+  },
+  "jobName": {
+    "message": "Nazwa zadania"
+  },
+  "jobNameHint": {
+    "message": "Zadanie zapasowe, jeśli żaden komentarz nie pasuje do wzorca \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Niestandardowe przyciski zadań"
+  },
+  "customJobsHint": {
+    "message": "Użyj przecinków do łączenia: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Dodaj przycisk zadania"
+  },
+  "addProfileFor": {
+    "message": "+ Dodaj profil dla $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Obecny: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Zapisano!"
+  },
+  "unsavedChanges": {
+    "message": "Niezapisane zmiany..."
+  },
+  "customFile": {
+    "message": "Niestandardowy plik..."
+  },
+  "plainText": {
+    "message": "zwykły tekst"
+  },
+  "removeProfile": {
+    "message": "Usunąć profil dla $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Domyślny"
+  },
+  "buttonsFor": {
+    "message": "Przyciski dla $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Zastąp, które przyciski pokazywać dla tego projektu."
+  },
+  "leaveEmptyDefault": {
+    "message": "Zostaw puste, aby użyć domyślnych"
+  },
+  "projectSpecificJobs": {
+    "message": "Zadania specyficzne dla projektu. Użyj przecinków do połączenia."
+  },
+  "languageLabel": {
+    "message": "Język"
+  },
+  "languageAuto": {
+    "message": "Auto (przeglądarka)"
+  },
+  "btnVersion": {
+    "message": "Zwiększenie wersji"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Wersja"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Auto-scalenie"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Wymuszone scalanie"
+  },
+  "btnShip": {
+    "message": "Rebase + Wersja + Auto-scalenie"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Wersja + Wymuszone scalanie"
+  },
+  "btnReviewers": {
+    "message": "Recenzenci"
+  },
+  "btnPipelineRestart": {
+    "message": "Nowa linia produkcyjna"
+  },
+  "btnPipelineCancel": {
+    "message": "Anuluj linię produkcyjną"
+  },
+  "btnDraftToggle": {
+    "message": "Przełącznik Szkic / Gotowe"
+  },
+  "btnRetryFailed": {
+    "message": "Ponów nieudane zadania"
+  },
+  "btnCopyMr": {
+    "message": "Kopiuj MR"
+  },
+  "hintVersion": {
+    "message": "Odczytuje skonfigurowany plik (np. package.json), zwiększa wersję wybraną strategią (patch/minor/major), zatwierdza z twoją szablonową wiadomością."
+  },
+  "hintRebase": {
+    "message": "Przestawia gałąź źródłową na gałąź docelową. Nie łączy ani nie włącza automatycznego łączenia."
+  },
+  "hintRebaseVersion": {
+    "message": "Przestawia gałąź na gałąź docelową (jeśli potrzebne), a następnie podnosi wersję w skonfigurowanym pliku. Nie łączy."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Przestawia gałąź na gałąź docelową (jeśli projekt używa rebase/ff). Następnie włącza „merge gdy pipeline się powiedzie”. Używa ustawień squash/usuwania gałęzi z MR."
+  },
+  "hintRebaseForce": {
+    "message": "Przestawia z pominięciem CI, anuluje wszystkie działające pipeline’y, a następnie od razu łączy bez czekania na CI. Używa ustawień squash/usuwania gałęzi z MR."
+  },
+  "hintShip": {
+    "message": "Pełny flow: rebase → podniesienie wersji w skonfigurowanym pliku → czekanie na synchronizację MR → czekanie na nowy pipeline → włączenie automatycznego łączenia."
+  },
+  "hintForceShip": {
+    "message": "Szybki flow: rebase (pomiń CI) → podniesienie wersji → czekanie 15s → anulowanie pipeline’a → natychmiastowe łączenie. Pomija sprawdzenia CI."
+  },
+  "hintReviewers": {
+    "message": "Wysyła skonfigurowane wzmianki o recenzencie, ponownie używa komentarza Recenzenta(a) z ostatnich notatek lub uruchamia skonfigurowane zadanie CI."
+  },
+  "hintPipelineRestart": {
+    "message": "Tworzy zupełnie nową pipeline dla gałęzi źródłowej przez API. Przydatne, gdy pipeline utknie lub potrzebujesz świeżego uruchomienia."
+  },
+  "hintPipelineCancel": {
+    "message": "Wysyła prośbę o anulowanie uruchomionych, oczekujących lub utworzonych pipeline’ów zwróconych dla tego MR."
+  },
+  "hintDraftToggle": {
+    "message": "Dodaje lub usuwa prefiks „Draft:” z tytułu MR. Nie zmienia żadnych innych ustawień MR."
+  },
+  "hintRetryFailed": {
+    "message": "Ponownie uruchamia nieudane zadania w bieżącej pipeline MR. Udane zadania nie są zmieniane."
+  },
+  "hintCopyMr": {
+    "message": "Kopiuje tytuł MR i link do schowka."
+  },
+  "toastRebasing": {
+    "message": "Rebasowanie..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Włączanie automatycznego łączenia..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Krok 1/2: Rebasowanie..."
+  },
+  "toastStep22Automerge": {
+    "message": "Krok 2/2: Włączanie automatycznego łączenia..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Krok 1/2: Rebasowanie (pomiń CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Krok 2/2: Anulowanie pipeline i łączenie..."
+  },
+  "toastCancellingMerging": {
+    "message": "Anulowanie pipeline i łączenie..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Tworzenie nowego pipeline dla $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Anulowanie pipeline'ów $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Oznaczanie jako Gotowe..."
+  },
+  "toastMarkingDraft": {
+    "message": "Oznaczanie jako Szkic..."
+  },
+  "toastRetrying": {
+    "message": "Ponawianie $1 nieudanego zadania(ć)...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Brak nieudanych zadań w bieżącym pipeline MR"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Brak działających pipeline'ów do anulowania"
+  },
+  "toastAssigningReviewers": {
+    "message": "Wysyłanie wzmianki do recenzentów…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Ponowne publikowanie komentarza recenzenta..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Nie znaleziono komentarza recenzenta, uruchamianie $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Podwyższanie wersji..."
+  },
+  "toastWaitingSync": {
+    "message": "Oczekiwanie na synchronizację MR z v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Oczekiwanie na pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Próba automatycznego scalania $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Oczekiwanie na synchronizację MR... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Oczekiwanie na \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Wykonywanie zadania \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Powtarzanie zadania \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Zadanie \"$1\" już zakończone sukcesem, pomijanie",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Zadanie \"$1\" jest już $2, oczekiwanie...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 zakończono",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 nie powiodło się: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Tytuł MR i link skopiowane!"
+  },
+  "toastWaiting15s": {
+    "message": "Oczekiwanie 15s przed scaleniem..."
+  },
+  "confirmRebase": {
+    "message": "Zrebasować gałąź?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Podbicie wersji?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Automatyczne scalanie?"
+  },
+  "confirmAutomerge": {
+    "message": "Włączyć automatyczne scalanie?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → SCAL TERAZ?"
+  },
+  "confirmForce": {
+    "message": "⚠️ SCAL TERAZ (pomiń pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Podbicie wersji → Automatyczne scalanie?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Podbicie wersji → Automatyczne scalanie?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Podbicie wersji → SCAL TERAZ?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Podbicie wersji → SCAL TERAZ?"
+  },
+  "confirmNewPipeline": {
+    "message": "Utworzyć nowy pipeline dla tej gałęzi?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Anulować wszystkie uruchomione pipeline'y?"
+  },
+  "labelAutomerge": {
+    "message": "Automatyczne scalanie"
+  },
+  "labelForceMerge": {
+    "message": "Wymuszone scalanie"
+  },
+  "labelVersionAutomerge": {
+    "message": "Wersja + Automatyczne scalanie"
+  },
+  "labelVersionForceMerge": {
+    "message": "Wersja + Wymuszone scalanie"
+  },
+  "labelMarkReady": {
+    "message": "Oznacz jako gotowe"
+  },
+  "labelMarkDraft": {
+    "message": "Oznacz jako szkic"
+  },
+  "labelRetryFailed": {
+    "message": "Ponów nieudane"
+  },
+  "labelNewPipeline": {
+    "message": "Nowy pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Czas od utworzenia MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "Przyspiesz workflow swojego merge requesta za pomocą akcji jednym kliknięciem."
+  },
+  "welcomeQuickStart": {
+    "message": "Szybki start"
+  },
+  "welcomeStep1Title": {
+    "message": "Otwórz dowolną stronę Merge Request"
+  },
+  "welcomeStep1Desc": {
+    "message": "Otwórz stronę MR przez HTTPS będąc zalogowanym na GitLab.com lub własnym GitLabie. Pozwól rozszerzeniu na dostęp do tej strony."
+  },
+  "welcomeStep2Title": {
+    "message": "Zobacz pojawiające się przyciski akcji"
+  },
+  "welcomeStep2Desc": {
+    "message": "Przyciski pojawiają się na stronie MR. Podstawowy zestaw jest włączany przy pierwszej instalacji."
+  },
+  "welcomeStep3Title": {
+    "message": "Dostosuj przez wyskakujące okienko rozszerzenia"
+  },
+  "welcomeStep3Desc": {
+    "message": "Kliknij ikonę rozszerzenia, żeby włączać/wyłączać przyciski, ustawić plik podwyższenia wersji, dodać niestandardowe przyciski zadań i więcej."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Włączone domyślnie"
+  },
+  "welcomeMoreActions": {
+    "message": "Więcej akcji (włącz w ustawieniach)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Jak to działa"
+  },
+  "welcomeHowDesc": {
+    "message": "To rozszerzenie korzysta z twojej istniejącej sesji GitLab (ciasteczka), żeby wywoływać API GitLab w twoim imieniu. Nie są potrzebne żadne osobiste tokeny dostępu."
+  },
+  "welcomeHowList1": {
+    "message": "Dla GitLab.com i własnego GitLaba przez HTTPS; funkcje zależą od API serwera, układu strony i twoich uprawnień."
+  },
+  "welcomeHowList2": {
+    "message": "Akcje używają tych samych uprawnień co Twój zalogowany użytkownik"
+  },
+  "welcomeHowList3": {
+    "message": "Niestandardowe łańcuchy zadań działają w tle. Trzymaj otwartą zakładkę w tym samym GitLab, żeby mieć dostęp do API."
+  },
+  "welcomeHowList4": {
+    "message": "Profile dla poszczególnych projektów pozwalają dostosować przyciski dla różnych repozytoriów"
+  },
+  "welcomeTip": {
+    "message": "Możesz tworzyć profile dla poszczególnych projektów w ustawieniach w wyskakującym okienku. Przydaje się to, gdy różne projekty potrzebują różnych plików wersji lub niestandardowych zadań CI."
+  },
+  "welcomeOpenSettings": {
+    "message": "Otwórz ustawienia"
+  },
+  "cardAutomergeTitle": {
+    "message": "Auto-merge (automatyczne scalanie)"
+  },
+  "cardAutomergeDesc": {
+    "message": "Zrób rebase gałęzi (jeśli potrzeba) i włącz scalanie, gdy pipeline zakończy się sukcesem."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Nowy pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Utwórz nowy pipeline dla gałęzi źródłowej jednym kliknięciem."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Anuluj pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Poproś o anulowanie działających lub oczekujących pipeline'ów MR."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Przełącznik wersji roboczej"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Przełącz MR między statusem Wersja robocza a Gotowe bez edytowania tytułu."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Podbicie wersji"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Zwiększ wersję w pliku package.json, pyproject.toml lub dowolnym niestandardowym pliku. Konfigurowalna strategia (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Wydaj (wersja + merge)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase, gdy trzeba, zwiększ wersję i poproś o automatyczne scalenie. Trzymaj otwartą zakładkę MR, dopóki akcja się nie zakończy."
+  },
+  "cardForceMergeTitle": {
+    "message": "Wymuszone scalenie"
+  },
+  "cardForceMergeDesc": {
+    "message": "Poproś o scalenie bez czekania na sukces pipeline’a. Nadal obowiązują uprawnienia GitLaba i reguły merge’u."
+  },
+  "cardReviewersTitle": {
+    "message": "Recenzenci"
+  },
+  "cardReviewersDesc": {
+    "message": "Wspomnij skonfigurowane nazwy użytkowników w komentarzu, użyj komentarza recenzenta ponownie lub uruchom zadanie CI. Nie przypisuje natywnego pola recenzenta GitLaba."
+  },
+  "uiCustomization": {
+    "message": "Personalizacja UI"
+  },
+  "collapseBars": {
+    "message": "Przycisk zwijania górnych pasków"
+  },
+  "hideRightSidebar": {
+    "message": "Ukryj prawy pasek boczny na stronach MR"
+  },
+  "collapseTopBars": {
+    "message": "Przełącz górne paski"
+  },
+  "cardCollapseTitle": {
+    "message": "Zwiń górne paski"
+  },
+  "cardCollapseDesc": {
+    "message": "Dodaje przycisk do zwijania/rozwijania pasków nawigacyjnych GitLaba. Oszczędza miejsce i pomaga skupić się na treści."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Ukryj sekcje interfejsu"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Ukryj prawy pasek boczny na stronach MR, aby uzyskać obszar treści o pełnej szerokości."
+  },
+  "jiraIntegration": {
+    "message": "Integracja z Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL serwera/centrum danych Jira, np. https://jira.company.com — zaloguj się do Jira, a następnie kliknij Zezwól na dostęp do strony Jira. Chmura nie jest w pełni wspierana."
+  },
+  "jiraGrantAccess": {
+    "message": "Zezwól na dostęp do strony Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Dostęp do strony przyznany. Zaloguj się do Jira w tej przeglądarce."
+  },
+  "jiraUrlInvalid": {
+    "message": "Wprowadź bazowy URL Jira HTTPS, bez danych logowania/parametrów/fragmentów."
+  },
+  "jiraErrorAuth": {
+    "message": "Twoja sesja Jira wygasła lub wymagane jest logowanie. Otwórz Jira, zaloguj się, a następnie spróbuj ponownie załadować."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira odmówiła dostępu do tego zgłoszenia lub operacji. Sprawdź swoje konto i uprawnienia w Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Wtyczka nie może uzyskać dostępu do tej strony Jira. Sprawdź jej uprawnienia do strony i URL Jira w ustawieniach wtyczki."
+  },
+  "jiraErrorNetwork": {
+    "message": "Nie można połączyć się z Jira. Sprawdź swoje połączenie, VPN i adres URL Jira, a następnie spróbuj ponownie załadować."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira jest tymczasowo niedostępna lub ogranicza żądania. Poczekaj i spróbuj ponownie załadować."
+  },
+  "jiraErrorNotFound": {
+    "message": "Nie można znaleźć problemu w Jira lub nie jest on widoczny dla Twojego konta."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira zwróciła nieobsługiwaną odpowiedź. Sprawdź zgodność adresu URL i serwera/centrum danych."
+  },
+  "jiraErrorUnknown": {
+    "message": "Żądanie do Jira nie powiodło się. Otwórz Jira, aby sprawdzić problem i dostęp."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Zmiana mogła już zostać zastosowana. Sprawdź zgłoszenie w Jira przed powtórzeniem działania."
+  },
+  "jiraErrorTransitions": {
+    "message": "Nie można załadować przejść w Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Otwórz Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Spróbuj ponownie załadować"
+  },
+  "jiraDismissError": {
+    "message": "Zamknij"
+  },
+  "jiraTicketRegex": {
+    "message": "Wyrażenie regularne dla ticketów"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Własne wyrażenie regularne do odczytywania kluczy zgłoszeń z tytułów MR. Domyślnie: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Pokaż ikony typu problemu i priorytetu na liście MR"
+  },
+  "jiraQuickActions": {
+    "message": "Szybkie akcje"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Wybierz dowolną kombinację pól dla każdego przycisku. Pozostaw tylko te zmiany, które powinny zostać wprowadzone. Wersje i komponenty muszą już istnieć w projekcie Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Dodaj akcję"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Etykieta"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Status"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Nazwa użytkownika"
+  },
+  "jiraSidebarStatus": {
+    "message": "Status"
+  },
+  "jiraSidebarType": {
+    "message": "Typ"
+  },
+  "jiraSidebarPriority": {
+    "message": "Priorytet"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Osoba przypisana"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Nie przypisano"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Szukaj użytkownika..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Nie znaleziono użytkowników"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Odznacz przypisanie"
+  },
+  "jiraSidebarReporter": {
+    "message": "Zgłaszający"
+  },
+  "jiraSidebarLabels": {
+    "message": "Etykiety"
+  },
+  "jiraSidebarCreated": {
+    "message": "Utworzono"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Zaktualizowano"
+  },
+  "jiraSidebarDescription": {
+    "message": "Opis"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epik"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Komponenty"
+  },
+  "jiraSidebarResolution": {
+    "message": "Rozwiązanie"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Dotyczy"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Wersja naprawcza"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Brak"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Nie znaleziono wersji"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Szukaj wersji..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Nie udało się zaktualizować wersji naprawczych"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Załączniki"
+  },
+  "jiraSidebarComments": {
+    "message": "Komentarze"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Dodaj komentarz..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Komentarz"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Pokaż więcej komentarzy"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Brak komentarzy"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Nie udało się opublikować komentarza"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Usuń komentarz"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Usunąć ten komentarz?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Nie udało się usunąć komentarza"
+  },
+  "cardJiraTitle": {
+    "message": "Odznaki statusu Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Pokazuje statusy zgłoszeń Jira na liście MR. Pobiera ID zgłoszeń z tytułów MR (np. CCT-1111) i wyświetla kolorowe odznaki statusu. Ustaw swój URL Jira w ustawieniach."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Własny wzorzec zgłoszenia"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Skonfiguruj własny wyrażenie regularne do pobierania ID zgłoszeń Jira z tytułów MR. Przydatne, gdy Twój projekt używa niestandardowych prefiksów zgłoszeń."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Pasek boczny zgłoszenia Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Kliknij dowolną odznakę Jira, aby otworzyć pasek boczny z pełnymi szczegółami zgłoszenia — podsumowaniem, status, typ, priorytet, przypisany użytkownik i opis. Czytaj, publikuj i usuwaj własne komentarze bez wychodzenia z GitLab. Wersje naprawcze można wybierać bezpośrednio z dostępnych wersji projektu w pasku bocznym."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Załączniki w pasku bocznym"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Przeglądaj obrazy, filmy i pliki z ticketów Jira bezpośrednio w pasku bocznym. Obrazy i filmy otwierają się w pełnoekranowym lightboxie."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Odznaki Jira na stronie MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Odznaki statusu ticketów Jira są wyświetlane w tytule MR na stronie szczegółów. Kliknij odznakę, aby otworzyć pasek boczny z pełnymi szczegółami ticketu."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Zmień status Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Zmień status ticketu bezpośrednio z paska bocznego. Pokazuje tylko dostępne przejścia z bieżącego statusu."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Zmień przypisanego w Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Kliknij przypisanego, aby wyszukać i przypisać ponownie. Autouzupełnianie z awatarami, przycisk od przypisania do usunięcia osoby przypisanej."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Szybkie akcje Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Jednoprzyciskowe opcje dla statusu, przypisanego, etykiet, wersji i innych pól. Każdy przycisk może aktualizować jedno lub kilka pól."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Ikony typu i priorytetu zgłoszenia"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Pokaż ikony typu problemu i priorytetu Jira obok odznak statusu na listach i stronach szczegółów MR. Używa natywnych ikon Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Zrób rebase gałęzi źródłowej na gałęzi docelowej bez scalania."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Wersja"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Zrób rebase gałęzi i podnieś wersję jednym kliknięciem. Nie scala."
+  },
+  "cardCopyMrTitle": {
+    "message": "Skopiuj MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Skopiuj tytuł MR i link do schowka jednym kliknięciem."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Ponów nieudane zadania"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Ponów nieudane zadania w bieżącej pętli MR. Udane zadania nie są zmieniane."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Ulepszenia strony listy MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Przyciemnij robocze MR"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Wizualnie przyciemnij robocze MR na liście zgłoszeń scalania, aby skupić się na aktywnych."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Wyróżnij swoje MR"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Wyróżnij swoje MR na liście niebieską ramką dla szybkiej identyfikacji."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Przełącznik „Tylko moje”"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Jedno kliknięcie, żeby filtrować listę MR i pokazać tylko Twoje merge requesty."
+  },
+  "cardMrAgeTitle": {
+    "message": "Odznaka wieku MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Pokazuje, jak dawno MR został utworzony, wyświetlane jako odznaka na stronie MR."
+  },
+  "showReviewerBadge": {
+    "message": "Odznaka „Twoja recenzja” z komentarzy"
+  },
+  "badgeYourReview": {
+    "message": "Twoja recenzja"
+  },
+  "badgeYourReviewHint": {
+    "message": "Zostałeś wspomniany jako recenzent w komentarzach do MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Odznaka „Twoja recenzja”"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Przeszukuje najstarsze komentarze pod kątem „Reviewer(s): @you”. Głębokość przeszukiwania można ustawić (domyślnie 10). Niezależne od wbudowanej funkcji recenzenta GitLaba."
+  },
+  "showNeedsReview": {
+    "message": "Przełącznik „Potrzebuje mojej recenzji” na stronie listy"
+  },
+  "toggleNeedsReview": {
+    "message": "Potrzebuje mojej recenzji"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Przełącznik „Potrzebuje mojej recenzji”"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Jedno kliknięcie, żeby filtrować listę MR i pokazać tylko merge requesty, w których jesteś przypisany jako recenzent."
+  },
+  "showCopyMr": {
+    "message": "Przycisk kopiowania przy elementach listy MR"
+  },
+  "showThreadsBadge": {
+    "message": "Liczba nierozwiązanych wątków na liście MR"
+  },
+  "showSizeBadge": {
+    "message": "Etykiety rozmiaru MR (S/M/L/XL) na liście MR"
+  },
+  "showConflictsBadge": {
+    "message": "Pokaż wskaźnik konfliktów na liście MR"
+  },
+  "showApprovalBadge": {
+    "message": "Pokaż liczbę zatwierdzeń i mój wskaźnik zatwierdzenia na liście MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Zatwierdziłeś"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Ty"
+  },
+  "cardThreadsTitle": {
+    "message": "Liczba nierozwiązanych wątków"
+  },
+  "cardThreadsDesc": {
+    "message": "Pokaż liczbę nierozwiązanych wątków. „+” oznacza pełną pierwszą stronę; „?” oznacza, że liczba jest niedostępna."
+  },
+  "cardSizeTitle": {
+    "message": "Etykiety rozmiaru MR"
+  },
+  "cardSizeDesc": {
+    "message": "Odznaki S/M/L/XL z konfigurowalnymi progami linii i plików w regułach i limitach wyświetlania."
+  },
+  "conflictsBadge": {
+    "message": "Konflikty"
+  },
+  "conflictsBadgeHint": {
+    "message": "Ten MR ma konflikty scalania, które muszą zostać rozwiązane"
+  },
+  "cardConflictsTitle": {
+    "message": "Wskaźnik konfliktów"
+  },
+  "cardConflictsDesc": {
+    "message": "Pokazuje czerwoną odznakę KONFLIKTY na stronie szczegółów MR, gdy gałąź ma konflikty scalania."
+  },
+  "cardApprovalTitle": {
+    "message": "Mój wskaźnik zatwierdzenia"
+  },
+  "cardApprovalDesc": {
+    "message": "Pokazuje, czy zatwierdziłeś każdy MR na stronie listy. Rozróżnia twoje zatwierdzenie od zatwierdzeń innych."
+  },
+  "showBranches": {
+    "message": "Pokaż gałęzie źródłowe i docelowe na liście MR"
+  },
+  "showBranchesLinks": {
+    "message": "Spraw, żeby nazwy gałęzi były klikalne (otwórz drzewo gałęzi)"
+  },
+  "cardBranchesTitle": {
+    "message": "Nazwy gałęzi na liście MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Wyświetla nazwy gałęzi źródłowej i docelowej przy każdym MR na liście, dzięki czemu widać, skąd pochodzi kod i gdzie jest łączony."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Kopiuj MR z listy"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Dodaje przycisk kopii przy każdym MR na stronie listy. Kopiuje tytuł MR i link do schowka jednym kliknięciem."
+  },
+  "versionFromTarget": {
+    "message": "Odczytaj wersję z gałęzi docelowej"
+  },
+  "versionFromTargetHint": {
+    "message": "Pobiera aktualną wersję z gałęzi docelowej (np. main) zamiast z gałęzi źródłowej. Używaj tego w strategii merge commit, żeby uniknąć przestarzałych wersji."
+  },
+  "showFailedJobView": {
+    "message": "Pokaż szybki podgląd nieudanych zadań na stronie MR"
+  },
+  "failedJobTraceError": {
+    "message": "Nie udało się załadować śladu"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Szybki podgląd nieudanego zadania"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Podglądaj nieudane zadania i końcówki logów na stronie MR. Liczba zadań i linijek jest konfigurowalna w Zasadach wyświetlania i limitach."
+  },
+  "showCmdPalette": {
+    "message": "Palette poleceń (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Codzienny raport aktywności"
+  },
+  "standupJiraEnrich": {
+    "message": "Pokaż tytuły zgłoszeń Jira w raporcie"
+  },
+  "cmdPlaceholder": {
+    "message": "Wpisz polecenie..."
+  },
+  "cmdFooterNavigate": {
+    "message": "nawiguj"
+  },
+  "cmdFooterSelect": {
+    "message": "wybierz"
+  },
+  "cmdFooterClose": {
+    "message": "zamknij"
+  },
+  "cmdEmpty": {
+    "message": "Brak pasujących poleceń"
+  },
+  "cmdGroupNav": {
+    "message": "Nawigacja"
+  },
+  "cmdGroupMr": {
+    "message": "Akcje MR"
+  },
+  "cmdGroupExt": {
+    "message": "Rozszerzenie"
+  },
+  "cmdGroupFiles": {
+    "message": "Pliki"
+  },
+  "cmdNavMrs": {
+    "message": "Przejdź do Żądań scalania"
+  },
+  "cmdNavIssues": {
+    "message": "Przejdź do Zgłoszeń"
+  },
+  "cmdNavPipelines": {
+    "message": "Przejdź do Pipeline'ów"
+  },
+  "cmdNavBranches": {
+    "message": "Przejdź do Gałęzi"
+  },
+  "cmdNavRepo": {
+    "message": "Przejdź do Repozytorium"
+  },
+  "cmdNavTags": {
+    "message": "Przejdź do Tagów"
+  },
+  "cmdNavCommits": {
+    "message": "Przejdź do Commitów"
+  },
+  "cmdNavWiki": {
+    "message": "Przejdź do Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Przejdź do Snippetów"
+  },
+  "cmdNavSettings": {
+    "message": "Przejdź do Ustawień"
+  },
+  "cmdCopyPath": {
+    "message": "Skopiuj ścieżkę projektu"
+  },
+  "cmdGroupPinned": {
+    "message": "Przypięte"
+  },
+  "cmdExtSettings": {
+    "message": "Otwórz ustawienia rozszerzenia"
+  },
+  "cmdExtStandup": {
+    "message": "Generuj raport aktywności"
+  },
+  "standupTitle": {
+    "message": "Codzienna aktywność"
+  },
+  "standupCopy": {
+    "message": "Skopiuj do schowka"
+  },
+  "standupCopied": {
+    "message": "Skopiowano!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Paleta poleceń"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Naciśnij Cmd+K (Mac) lub Ctrl+K (Win) na dowolnej stronie GitLab. Nawiguj, wykonuj akcje MR, wyszukuj pliki po nazwie i otwieraj je w repozytorium."
+  },
+  "cardStandupTitle": {
+    "message": "Codzienny raport aktywności"
+  },
+  "cardStandupDesc": {
+    "message": "Wygeneruj codzienny raport aktywności z danych GitLab. Pokazuje utworzone, scalone i przeglądane MR. Skopiuj i wklej do Slack lub Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick do gałęzi"
+  },
+  "showGroupPlay": {
+    "message": "Przycisk grupowy w pipeline (uruchamia pozostałe ręczne zadania)"
+  },
+  "showCommitVersion": {
+    "message": "Odznaka wersji na stronie commitów"
+  },
+  "showCommitVersionHint": {
+    "message": "Pokazuje wersję z pliku wersji (zobacz ustawienia podnoszenia wersji) obok każdego commita; wyróżnione tam, gdzie zmieniła się wersja"
+  },
+  "groupPlayTooltip": {
+    "message": "Uruchom pozostałe ręczne zadania w tej grupie"
+  },
+  "groupPlayError": {
+    "message": "Nie udało się uruchomić niektórych zadań"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Przycisk grupowy"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Na grafie pipeline, przycisk play obok grupy zadań uruchamia wszystkie pozostałe ręczne zadania — nawet jeśli niektóre zadania w grupie już się rozpoczęły, a własny przycisk GitLaba zniknął."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Odznaka wersji na commitach"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Na stronie z commitami gałęzi, każdy commit pokazuje wersję projektu z twojego pliku wersji w tym commicie. Domyślnie wyciszone, podświetlone tam, gdzie wersja się zmieniła — zobacz od razu, które commity poszły do której wersji."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick gałęzi"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Domyślne docelowe gałęzie do cherry-pick. Możesz dodać lub usunąć gałęzie w oknie modalnym."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Dodaj gałąź"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick do gałęzi"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Zamknij"
+  },
+  "cherryPickInProgress": {
+    "message": "Wykonywanie cherry-picka..."
+  },
+  "cherryPickRemove": {
+    "message": "Usuń"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Nazwa gałęzi"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-pick został wykonany do $1 gałęzi",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Rozpocznij nowy merge request z tymi zmianami"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Twórz MR domyślnie przy cherry-pick"
+  },
+  "cherryPickSmartFallback": {
+    "message": "W przypadku konfliktu — commit bez pliku wersji"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Jeśli cherry-pick nie powiedzie się z powodu konfliktu w pliku wersji, powtórz zmiany jako nowy commit, pomijając plik wersji"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Podbij wersję w fallbacku"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Podbij wersję w docelowej gałęzi w tym samym commicie fallback"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Smart fallback obsługuje tylko konflikty w pliku wersji. Konflikt występuje w innym pliku"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Plik został zmodyfikowany w docelowej gałęzi — nie można bezpiecznie zrobić cherry-picka"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Plik wersji zawiera zmiany wykraczające poza wersję — nie można go bezpiecznie pominąć"
+  },
+  "commitsJiraField": {
+    "message": "Pole Jira dla odznak commitów"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Nazwa pola Jira wyświetlana jako odznaki na stronie commitów (np. fixVersions, status, labels, components). Wymaga URL do Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick do gałęzi"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick do wybranych gałęzi bezpośrednio lub przez nowe MR-y. Przy włączonym Smart fallback, zweryfikowane konflikty w plikach wersji mogą być odtwarzane bez tego pliku, opcjonalnie podbijając wersję. Niezabezpieczone zmiany zatrzymują się do sprawdzenia."
+  },
+  "mrDetailEnhancements": {
+    "message": "Ulepszenia szczegółów MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Ostrzeżenie o wrażliwym pliku w diffie"
+  },
+  "showGitCommands": {
+    "message": "Przyciski poleceń Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "WRAŻLIWE: $1 plik(i)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Ten MR modyfikuje pliki wrażliwe na bezpieczeństwo:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Ostrzeżenie o wrażliwym pliku"
+  },
+  "cardSensitiveDesc": {
+    "message": "Oznacza wrażliwe pliki przy użyciu wbudowanych reguł, dodatkowych wzorców i wyłączeń. Skonfiguruj je w Regułach i ograniczeniach wyświetlania."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Przyciski poleceń Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Kopiuj polecenia checkout, pull i hard reset. Przed uruchomieniem sprawdź repozytorium i zdalne repozytorium origin; hard reset usuwa lokalne zmiany."
+  },
+  "updateBannerText": {
+    "message": "Nowa wersja jest dostępna! Zobacz, co nowego:"
+  },
+  "updateChangelog": {
+    "message": "Dziennik zmian"
+  },
+  "updateReviewAsk": {
+    "message": "Podoba Ci się rozszerzenie?"
+  },
+  "updateReviewLink": {
+    "message": "Zostaw opinię"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Przegląd wspomagany przez AI, end to end"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Przejrzyj MR, napraw wybrane uwagi, przygotuj odpowiedzi i sprawdź zmiany. Podejrzyj i edytuj komentarze przed opublikowaniem w GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Przewodnik przeglądu AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Brak automatycznego przesyłania do AI. Skopiuj kontekst samodzielnie; komentarze są wysyłane do GitLab tylko wtedy, gdy wybierzesz Publikuj lub Dodaj do przeglądu."
+  },
+  "aiReviewTitle": {
+    "message": "Przegląd AI"
+  },
+  "aiReviewOpen": {
+    "message": "Przegląd AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Kopiuj komentarz dla AI"
+  },
+  "aiReviewLoading": {
+    "message": "Ładowanie dyskusji…"
+  },
+  "aiReviewRetry": {
+    "message": "Spróbuj ponownie"
+  },
+  "aiReviewRefresh": {
+    "message": "Odśwież"
+  },
+  "aiReviewClose": {
+    "message": "Zamknij"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Potwierdź zamknięcie okienek przeglądu z niezapisanymi zmianami"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Zamknąć to okno? Niezapisane zmiany i wprowadzone dane zostaną utracone."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Zamknąć to okno i przerwać dalsze wysyłanie? Komentarze już wysłane pozostaną w GitLab. Niezapisane zmiany zostaną utracone."
+  },
+  "aiReviewAll": {
+    "message": "Wszystkie"
+  },
+  "aiReviewUnresolved": {
+    "message": "Nierozwiązane"
+  },
+  "aiReviewResolved": {
+    "message": "Rozwiązane"
+  },
+  "aiReviewGeneral": {
+    "message": "Ogólne komentarze"
+  },
+  "aiReviewSearch": {
+    "message": "Szukaj komentarzy lub ścieżek plików"
+  },
+  "aiReviewSelectShown": {
+    "message": "Wybierz pokazane"
+  },
+  "aiReviewClear": {
+    "message": "Wyczyść zaznaczenie"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Uwzględnij zmiany w kodzie"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Do nowych i powtarzających się przeglądów. Pomijaj, jeśli AI może przeczytać repozytorium. Krótkie fragmenty dołączone do opinii pozostają włączone."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Uwzględnij istniejące dyskusje"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Dodaje już opublikowane komentarze jako filtr duplikatów: AI przegląda całe MR niezależnie, a następnie usuwa wyniki, które je powtarzają. Nie odpowiada na te dyskusje."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Uwzględnij opis"
+  },
+  "aiReviewPrompt": {
+    "message": "Instrukcje dla AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Przywróć domyślny prompt"
+  },
+  "aiReviewPreview": {
+    "message": "Podgląd"
+  },
+  "aiReviewCopied": {
+    "message": "Skopiowano!"
+  },
+  "aiReviewEmpty": {
+    "message": "Brak pasujących komentarzy."
+  },
+  "aiReviewPartial": {
+    "message": "Niektórych danych nie udało się załadować. Eksport zawiera ostrzeżenie i tylko dostępny kontekst."
+  },
+  "aiReviewSelectedCount": {
+    "message": "Wybrano $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Wybierz tekst podglądu i skopiuj go ręcznie."
+  },
+  "aiReviewScopeComment": {
+    "message": "Wybrany komentarz"
+  },
+  "aiReviewScopeThread": {
+    "message": "Wybrana dyskusja"
+  },
+  "aiReviewPreparing": {
+    "message": "Przygotowywanie kontekstu kodu…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Nie można załadować dyskusji. Spróbuj ponownie lub skopiuj dostępny kontekst."
+  },
+  "aiReviewShowReplies": {
+    "message": "Pokaż odpowiedzi"
+  },
+  "aiReviewSize": {
+    "message": "Około $1 znaków",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Anuluj"
+  },
+  "showAiReviewCopy": {
+    "message": "Pokaż kopię przeglądu AI i kontrolki importu"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Skopiuj cały MR do świeżego przeglądu, wybrane uwagi do poprawek lub zaimportuj komentarze i odpowiedzi AI z edytowalnym podglądem przed wysłaniem."
+  },
+  "aiReviewFresh": {
+    "message": "Przegląd od zera"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Wywołaj nowe zapytanie do przeglądu"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Do 1500 znaków. Służy do przeglądu całego MR i wszystkich jego commitów, oddzielnie od poprawek do feedbacku. Możesz określić język odpowiedzi. Pozostaw puste, aby użyć domyślnego angielskiego zapytania."
+  },
+  "aiReviewPromptHint": {
+    "message": "Do 1500 znaków. Pozostaw puste, aby użyć domyślnego angielskiego zapytania. Dotyczy wszystkich projektów."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Zapytanie nie zostało zapisane. Użyj maksymalnie 1500 znaków i usuń nietypowe znaki kontrolne."
+  },
+  "settingsSaveFailed": {
+    "message": "Nie udało się zapisać ustawień. Wprowadź zmianę, aby spróbować ponownie."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Zmiany tutaj dotyczą tego eksportu. Ustaw domyślny prompt w ustawieniach rozszerzenia."
+  },
+  "aiReviewReady": {
+    "message": "Podgląd jest gotowy do skopiowania."
+  },
+  "aiReviewLoadHint": {
+    "message": "Ładuje dyskusje bezpośrednio z GitLab, w tym komentarze niewidoczne na tej stronie."
+  },
+  "aiReviewCommentContext": {
+    "message": "Inne odpowiedzi są dołączone jako kontekst. Tylko wybrane komentarze są proszone o działanie."
+  },
+  "aiReviewOutdated": {
+    "message": "Wcześniejsza wersja"
+  },
+  "aiReviewLink": {
+    "message": "Otwórz dyskusję"
+  },
+  "aiReviewLoaded": {
+    "message": "Załadowano $1 dyskusji"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Przygotowywanie kontekstu kodu: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Ten komentarz nie jest dostępny z GitLab. Może nadal być zapisywany lub został usunięty. Odśwież, aby spróbować ponownie."
+  },
+  "aiReviewImportOpen": {
+    "message": "Import recenzji AI…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Import recenzji AI"
+  },
+  "aiReviewImportHelp": {
+    "message": "Wklej odpowiedź AI poniżej, aby sprawdzić, edytować i wybrać, co opublikować. Skróty promptów są w ustawieniach zaawansowanych."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Skopiuj prompt do nowej recenzji"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Przygotowywanie podpowiedzi…"
+  },
+  "aiReviewImportInput": {
+    "message": "Odpowiedź AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Wklej pełną odpowiedź JSON zawierającą nowe komentarze lub odpowiedzi do dyskusji. Możesz edytować tekst i wybrać, co wysłać w podglądzie."
+  },
+  "aiReviewImportValidate": {
+    "message": "Sprawdź i podgląd"
+  },
+  "aiReviewImportChecking": {
+    "message": "Sprawdzanie rewizji MR, linii i istniejących komentarzy…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Sprawdź odpowiedź, aby zobaczyć komentarze w podglądzie. Możesz edytować ich tekst, odznaczyć pola wyboru, aby wykluczyć elementy, lub dodać ogólny komentarz."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Wybierz gotowe komentarze"
+  },
+  "aiReviewImportPreview": {
+    "message": "Komentarze do wysłania"
+  },
+  "aiReviewImportReady": {
+    "message": "Gotowe"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Wymaga poprawy"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Nie można załadować dodatkowych zmian w pliku: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Dodatkowa różnica przekracza limit importu 16 MiB. Można importować tylko komentarze do zweryfikowanych linii."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Już istnieje"
+  },
+  "aiReviewImportPublished": {
+    "message": "Opublikowano"
+  },
+  "aiReviewImportDraft": {
+    "message": "Dodano do przeglądu"
+  },
+  "aiReviewImportFailed": {
+    "message": "Nie wysłano"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Dostawa niepotwierdzona"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Nie wysłano"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Nowa linia $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Stara linia $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Opublikuj wybrane"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Dodaj do przeglądu"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Opublikuj wysyła komentarze od razu. Dodaj do przeglądu zapisuje nieopublikowane komentarze do przeglądu w GitLab."
+  },
+  "aiReviewImportSending": {
+    "message": "Wysyłanie wybranych komentarzy…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Zakończono. Sprawdź wynik obok każdego komentarza."
+  },
+  "aiReviewImportStopped": {
+    "message": "Zatrzymano. Sprawdź wynik obok każdego komentarza przed ponowną próbą."
+  },
+  "aiReviewImportEdited": {
+    "message": "Odpowiedź się zmieniła. Sprawdź ją ponownie przed wysłaniem."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Schowek niedostępny. Wybierz poniższy tekst i skopiuj go ręcznie."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Nie udało się potwierdzić dostarczenia. Sprawdź GitLab przed ponowną próbą."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Wprowadź dane dla AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Gotowe: $1. Inne komentarze wymagają uwagi.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Zatrzymaj wysyłanie"
+  },
+  "aiReviewImportError": {
+    "message": "Nie udało się wykonać operacji"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Nie udało się przygotować polecenia"
+  },
+  "aiReviewImportWarning": {
+    "message": "Powiadomienia z przeglądu"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Przegląd AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Język odpowiedzi AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automatyczne — język konwersacji"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Dotyczy wszystkich zadań przeglądowych i importowanych podpowiedzi. Klucze JSON, ścieżki i kodu nie tłumaczymy. Samo kopiowanie formatu nie dodaje instrukcji językowych."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Podpowiedź do poprawy opinii"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Podpowiedź do nowych komentarzy przeglądowych"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Podpowiedź do odpowiedzi na opinie"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Do 1500 znaków. Do skrótu nowego przeglądu w imporcie. Karty zadań używają własnych podpowiedzi. Kontekst MR i format JSON są dodawane automatycznie."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Do 1500 znaków. Do odpowiedzi na wybrane dyskusje w Kopiuj lub wszystkie nierozwiązane dyskusje w imporcie. Ustaw styl i język; kontekst i format odpowiedzi są dodawane automatycznie."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Podpowiedź odpowiedzi na wszystkie nierozwiązane dyskusje"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Skopiuj format odpowiedzi"
+  },
+  "aiReviewImportFormat": {
+    "message": "Format odpowiedzi dla AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Przygotuj odpowiedzi"
+  },
+  "aiReviewImportReply": {
+    "message": "Odpowiedz na dyskusję"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Oryginalny komentarz"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Twoja odpowiedź"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Rozwiąż dyskusję po publikacji"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Dyskusja rozwiązana."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Odpowiedź opublikowana, ale dyskusja nie została rozwiązana. Możesz ją rozwiązać w GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Odpowiedź opublikowana. Rozwiązanie nie zostało potwierdzone; sprawdź dyskusję w GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Rozwiązanie jest opcjonalne i domyślnie wyłączone. Działa tylko po opublikowaniu odpowiedzi. Dodanie szkicu nigdy nie rozwiązuje dyskusji."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Wersja MR została zmieniona. Odpowiedzi pozostają połączone z ich dyskusjami; zweryfikuj ich tekst w stosunku do wprowadzonych poprawek. Nowe ustalenia z starej wersji są zablokowane."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Te odpowiedzi są połączone z dyskusjami, a nie z wersją kodu. Przed publikacją zweryfikuj, czy opisane poprawki zostały przesłane do tego MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Edytuj tekst"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Dodaj komentarz"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Zapisz zmiany"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Anuluj"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Tekst komentarza"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Edytuj tekst, a następnie zapisz go, aby sprawdzić zmiany przed publikacją."
+  },
+  "aiReviewImportEditError": {
+    "message": "Nie udało się zapisać zmian"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Podgląd może zawierać maksymalnie 200 komentarzy."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Komunikat o ponownej recenzji"
+  },
+  "aiReviewFileFilters": {
+    "message": "Pliki do recenzji"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Dotyczy świeżych i powtórnych recenzji oraz powiadomień o nowych ustaleniach, nie wybranych opinii ani odpowiedzi. Jeden wzorzec na linię lub po przecinku; # rozpoczyna komentarz. Używaj *, **, ?. Wykluczenia wygrywają, w tym stare ścieżki zmiany nazw. Puste listy zawierają wszystko. Przykład: src/**, *.test.js, dist/. Do 1500 znaków na listę."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Uwzględnij rozszerzenia (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Uwzględnij ścieżki plików"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Wyklucz ścieżki plików"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Wyklucz foldery"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Filtry plików nie mogły zostać zapisane lub zastosowane. Użyj maksymalnie 1500 znaków na listę i usuń nietypowe znaki sterujące."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Wersja, którą przeglądałeś"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Pełna recenzja — brak wcześniejszej wersji"
+  },
+  "aiReviewRepeat": {
+    "message": "Powtórz recenzję"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Wprowadź SHA commita"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Wprowadź pełne SHA przeglądanego commita (40 lub 64 znaki szesnastkowe)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Wybierz wersję MR, którą przeglądałeś, zanim zostawiłeś swoje komentarze. Wszystkie kolejne zmiany do aktualnej wersji są uwzględniane automatycznie; nie musisz wybierać pojedynczych commitów. Jeśli nie pamiętasz wersji, wybierz pełną recenzję."
+  },
+  "aiReviewChooseTask": {
+    "message": "Wybierz zadanie"
+  },
+  "aiReviewTaskReview": {
+    "message": "Nowa recenzja"
+  },
+  "aiReviewTaskFix": {
+    "message": "Popraw wyniki recenzji"
+  },
+  "aiReviewTaskReply": {
+    "message": "Przygotuj odpowiedzi"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Recenzja uzupełniająca"
+  },
+  "aiReviewCopyTask": {
+    "message": "Skopiuj zadanie"
+  },
+  "aiReviewPasteResult": {
+    "message": "Wklej odpowiedź AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "Zaawansowane ustawienia"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Instrukcje do zadania"
+  },
+  "aiReviewSelectThread": {
+    "message": "Wybierz tę dyskusję"
+  },
+  "aiReviewSelectAll": {
+    "message": "Wybierz wszystkie dyskusje"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Przejrzyj wszystkie commity MR razem. AI zwraca nowe wyniki bez zmiany kodu."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Wybierz opinie do poprawy. W przypadku MR AI przygotowuje też odpowiedzi wyjaśniające, co zostało zrobione, co jeszcze pozostaje i dlaczego. Na początku wybierane są nierozwiązane dyskusje."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Przygotuj też odpowiedzi"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Wybierz opinie, które Twoje AI do kodowania ma naprawić. Na początku wybierane są nierozwiązane dyskusje."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Przekaż zadanie swojemu AI do kodowania i sprawdź jego zmiany oraz testy. Efektem są poprawki i normalne podsumowanie, bez gotowych do wysłania odpowiedzi."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Po wprowadzeniu poprawek poproś AI o zweryfikowanie kodu i wyjaśnienie wyniku w wybranych dyskusjach."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Zweryfikuj wybrane opinie i poszukaj nowych błędów. Wybierz wersję, którą wcześniej przeglądałeś, lub sprawdź cały aktualny MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Zadanie: cały MR, we wszystkich commitach."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Wybrane komentarze: $1; zawarte są kontekst dyskusji i dostępne fragmenty kodu."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Dyskusje do odpowiedzi: $1, wraz z pełną rozmową. AI potrzebuje dostępu do repozytorium."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Dyskusje do weryfikacji: $1, plus przegląd zmian w kodzie."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Opis włączony."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Opis wyłączony."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Zmiany w kodzie włączone, pod warunkiem ograniczeń wczytywania."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI musi czytać kod z repozytorium."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Istniejące dyskusje są dodawane tylko jako filtr duplikatów."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Istniejące dyskusje nie są dodawane."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Filtry plików są aktywne."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Nie wybrano wcześniejszej wersji: sprawdzona zostanie pełna aktualna MR."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Nieopublikowane dyskusje robocze nie mogą otrzymywać odpowiedzi i są wykluczone."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Wybierz opinie po lewej. Aby przeprowadzić nowy przegląd, użyj karty Nowy przegląd."
+  },
+  "aiReviewNextStep": {
+    "message": "Skopiuj zadanie do swojego narzędzia AI. Jeśli zwróci ono komentarze lub odpowiedzi, użyj funkcji Wklej odpowiedź AI, aby je sprawdzić i edytować przed opublikowaniem."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Sprawdź poprawki i testy, wypchnij wszystkie commity do MR, a następnie użyj funkcji Wklej odpowiedź AI, aby przejrzeć przygotowane odpowiedzi przed publikacją. Nowe commity nie wymagają ponownego generowania odpowiedzi."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Instrukcje automatyczne (zaawansowane)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Wszystkie bloki są domyślnie włączone i używane tylko do odpowiednich zadań. Edytuj, wyłącz lub wyczyść dowolny blok. Wskazówki do zadań mają też własne instrukcje. Dane MR, przykłady JSON i powiadomienia o ładowaniu są generowane osobno; kontrole publikacji są zawsze stosowane."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Dodaj do zadania, jeśli to możliwe"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Do 1500 znaków. Pusty tekst nic nie dodaje. Reset przywraca domyślny tekst i włącza ten blok."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Użyj {language} jako języka odpowiedzi. Do 1500 znaków; puste pole nic nie doda."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Użyj {selection} dla wybranych lub nierozstrzygniętych dyskusji. Do 1500 znaków; puste pole nic nie doda."
+  },
+  "aiReviewRule_repository": {
+    "message": "Lokalny repozytorium i zdalny"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Kopia robocza do poprawek"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Kopia robocza do przeglądu"
+  },
+  "aiReviewRule_language": {
+    "message": "Język odpowiedzi"
+  },
+  "aiReviewRule_scope": {
+    "message": "Interpretacja filtra plików"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Kontekst opinii"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Poprawki bez odpowiedzi"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Zadanie tylko z opisem"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Brak wybranej opinii"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Odpowiedzi gotowe do publikacji po poprawkach"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Granice przeglądu"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Źródło do przeglądu"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Uwzględnione zmiany w kodzie"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Przegląd bez uwzględnionego kodu"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Niedostępne źródło"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Odpowiedź w formacie JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Lokalizowanie miejsc i wyników"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Styl odpowiedzi uzupełniającej"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Niezmieniona głowa"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Pozycje linii porównania"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Porównanie lokalnej wersji"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Zmiany w docelowej gałęzi"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Przegląd bez porównania wersji"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Ponowna kontrola bez dyskusji"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Zakres wybranej dyskusji"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Skumulowany kontekst różnic"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Istniejące dyskusje w nowym przeglądzie"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Nowy przegląd w imporcie"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Granice przeglądu importu"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Format wyników importu"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Granice i format odpowiedzi"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Zakres zadania odpowiedzi"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Dodaj pole"
+  },
+  "jiraQuickActionField": {
+    "message": "Pole"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Operacja"
+  },
+  "jiraQuickActionValue": {
+    "message": "Wartość"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Usuń"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Dodaj"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Usuń"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Zamień wszystko"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Termin"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Pole niestandardowe (zaawansowane)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Wartości oddzielone przecinkami. Dodaj/usuwanie zachowuje inne wartości; zamień wszystko nadpisuje listę."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID pola: customfield_12345. Wprowadź wartość jako JSON w formacie oczekiwanym przez to pole Jira."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Dokładna nazwa przejścia w Jira (lub docelowy status)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Pusta wartość: brak zmiany."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Sprawdź wartość pola: pola niestandardowe wymagają poprawnego ID i JSON; daty mają format YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Używaj każdego pola tylko raz na przycisk."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Akcja nie powiodła się."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Status został zmieniony, ale aktualizacja pola nie powiodła się."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Nie udało się odświeżyć zgłoszenia. Otwórz panel ponownie, aby sprawdzić jego aktualne wartości."
+  },
+  "mrActions": {
+    "message": "Akcje MR"
+  },
+  "mrActionsHint": {
+    "message": "Twórz nazwane przyciski do zmiany etykiet lub czyszczenia innych pól MR. Przeciągaj je na liście przycisków, aby zmienić ich kolejność."
+  },
+  "mrActionsProfileHint": {
+    "message": "Ten projekt używa własnej listy akcji po zapisaniu. Usuń wszystkie wpisy, aby ukryć te przyciski dla tego projektu."
+  },
+  "mrActionAdd": {
+    "message": "Dodaj akcję MR"
+  },
+  "mrActionLabel": {
+    "message": "Nazwa przycisku"
+  },
+  "mrActionDelete": {
+    "message": "Usuń akcję"
+  },
+  "mrActionType": {
+    "message": "Akcja"
+  },
+  "mrActionLabels": {
+    "message": "Etykiety"
+  },
+  "mrActionLabelsHint": {
+    "message": "Dokładne nazwy etykiet, oddzielone przecinkami lub nowymi liniami. Spacje wewnątrz nazw są zachowane. Dodanie/zastąpienie może utworzyć brakujące etykiety projektu."
+  },
+  "mrAction_remove_labels": {
+    "message": "Usuń określone etykiety"
+  },
+  "mrAction_clear_labels": {
+    "message": "Wyczyść wszystkie etykiety"
+  },
+  "mrAction_add_labels": {
+    "message": "Dodaj etykiety"
+  },
+  "mrAction_set_labels": {
+    "message": "Zastąp wszystkie etykiety"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Wyczyść przypisanych"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Wyczyść recenzentów"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Wyczyść kamień milowy"
+  },
+  "mrActionInvalid": {
+    "message": "Wprowadź nazwę przycisku, wybierz obsługiwaną akcję i określ przynajmniej jedną etykietę do dodania, usunięcia lub zastąpienia."
+  },
+  "mrActionConfirm": {
+    "message": "Zastosować „$1” do tego MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab nie zwrócił statusu rebase. Odśwież zgłoszenie merge i spróbuj ponownie."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab zwrócił powtarzającą się stronę z zadaniami dla pipeline #$1. Lista zadań nie mogła zostać w pełni załadowana."
+  },
+  "displayPreferencesTitle": {
+    "message": "Wyświetl zasady i limity"
+  },
+  "displayPreferencesHint": {
+    "message": "Ustawienia globalne; przeładuj zakładki GitLab po ich zmianie. Więcej zadań lub komentarzy zwiększa transfer danych. Podglądy logów pobierają cały ślad przed wybraniem niepustych linii. Odznaki recenzentów szukają w najstarszych komentarzach „Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Nieudane zadania do podglądu"
+  },
+  "failedJobTraceLines": {
+    "message": "Niepuste linie logu na zadanie"
+  },
+  "reviewerNotesLimit": {
+    "message": "Komentarze do przeszukania w poszukiwaniu odznak recenzentów"
+  },
+  "mrSizeLines": {
+    "message": "Progi rozmiaru MR: linie (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Progi rozmiaru MR: pliki (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Dodatkowe wzorce wrażliwych plików"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Wykluczenia wrażliwych plików"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Użyj wbudowanych zasad dotyczących wrażliwych plików"
+  },
+  "sizeThresholdsHint": {
+    "message": "Trzy rosnące liczby całkowite oddzielone przecinkami. Limity są włączne; większe zmiany to XL. Progi plików stosuje się, gdy liczba linii jest niedostępna."
+  },
+  "sensitivePatternsHint": {
+    "message": "Jeden wzorzec na linię, ignorowanie wielkości liter. * pasuje do dowolnego tekstu (w tym /), ? do jednego znaku. Wzorce bez / pasują do nazw plików; inne wzorce pasują do pełnej ścieżki w repozytorium. Wykluczenia mają pierwszeństwo. Wbudowane reguły obejmują środowisko, kontenery/CI, pliki poświadczeń i kluczy prywatnych. Wyłącz je, aby używać tylko swoich wzorców."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Sprawdź zakresy liczbowe, trzy rosnące progi wielkości i długość wzorców plików."
+  },
+  "failedJobsPreview": {
+    "message": "Podgląd: $1 nieudanych zadań — ostatnie $2 niepuste linie",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Więcej nieudanych zadań — otwórz pełną pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 linii, $2 plików",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 zmienionych plików",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Skanowanie plików wrażliwych nieukończone"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Nie udało się sprawdzić każdego pliku: żądanie API nie powiodło się lub osiągnięto limit skanowania $1 plików. Wymienione dopasowania są częściowe; sprawdź cały diff MR.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Ostrzeżenie: ten raport może być niekompletny. Zbiór danych ograniczony do $1 MRs na kategorię i $2 zdarzeń aktywności.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 nierozwiązany wątek(i)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Ten podgląd może być niekompletny: błąd API lub sprawdzono tylko pierwsze $2 dyskusje. Znane nierozwiązane wątki: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

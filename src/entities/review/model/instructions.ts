@@ -1,3 +1,4 @@
+import { LANGUAGES, isLanguage, type LanguageCode } from "../../../shared/i18n";
 import { readStorage } from "../../../shared/api/storage";
 import {
   DEFAULT_FILTER,
@@ -15,16 +16,6 @@ import type {
   InstructionSetting,
 } from "./types";
 export const INSTRUCTION_PREFIX = "ai_review_rule_";
-const RESPONSE_LANGUAGES = {
-  auto: "",
-  en: "English",
-  ru: "Russian",
-  de: "German",
-  es: "Spanish",
-  fr: "French",
-  ja: "Japanese",
-  zh_CN: "Simplified Chinese",
-};
 
 export function instructionDefaults(): Record<string, InstructionSetting> {
   return Object.fromEntries(
@@ -107,7 +98,7 @@ export function instruction(
 
 export function normalizeResponseLanguage(
   value: unknown,
-): keyof typeof RESPONSE_LANGUAGES {
+): LanguageCode | "auto" {
   return isResponseLanguage(value) ? value : "auto";
 }
 
@@ -120,10 +111,8 @@ export async function applyResponseLanguage(
     { ai_review_response_language: "auto" },
     options.signal,
   );
-  const language =
-    RESPONSE_LANGUAGES[
-      normalizeResponseLanguage(saved.ai_review_response_language)
-    ];
+  const selected = normalizeResponseLanguage(saved.ai_review_response_language);
+  const language = LANGUAGES.find(({ code }) => code === selected)?.english;
   if (!language) return text;
   return [instruction("language", options, { language }), text]
     .filter(Boolean)
@@ -181,8 +170,6 @@ export function scopeText(
   );
 }
 
-function isResponseLanguage(
-  value: unknown,
-): value is keyof typeof RESPONSE_LANGUAGES {
-  return typeof value === "string" && Object.hasOwn(RESPONSE_LANGUAGES, value);
+function isResponseLanguage(value: unknown): value is LanguageCode | "auto" {
+  return isLanguage(value);
 }

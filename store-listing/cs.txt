@@ -1,0 +1,88 @@
+Язык: Чешский (cs)
+
+Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním kliknutím. Nahraďte vícekrokové ruční operace — rebase, zvýšení verze, správu pipeline a sloučení — jediným tlačítkem. Podporuje vlastní instalace GitLabu přes HTTPS i gitlab.com; dostupnost funkcí závisí na možnostech serveru a oprávněních účtu. API tokeny nejsou potřeba — používá se vaše stávající relace prohlížeče.
+
+★ AI REVIEW S VAŠIMI VLASTNÍMI NÁSTROJI
+
+• Kompletní review MR — připravte úkol pro všechny commity MR s nastavitelnými filtry souborů
+• Opravy a odpovědi — zkopírujte vybrané připomínky do své programovací AI a připravte odpovědi k publikování
+• Následné review — znovu prověřte opravy a změny od vybrané revize, včetně změn po force push
+• Upravitelný import — vložte komentáře a odpovědi AI jako JSON, upravte jejich text a publikujte vybrané položky nebo uložte koncepty review. Po publikování odpovědí můžete volitelně uzavřít diskuse
+• Vlastní pokyny — přizpůsobte prompty i automatické bloky pokynů a vyberte jazyk odpovědí
+• Ruční sdílení — používejte svůj oblíbený AI nástroj. Rozšíření nevyžaduje API klíče k AI a kód nikam automaticky nenahrává
+
+★ AKCE PRO MERGE REQUESTY
+
+• Automatické sloučení — jedním kliknutím proveďte rebase a povolte sloučení po úspěšném dokončení pipeline
+• Ship — celý proces vydání: zvýšení verze → pipeline → automatické sloučení
+• Vynucené sloučení — pokud CI nepotřebujete, slučte MR bez čekání na pipeline
+• Zvýšení verze — zvyšte verzi v package.json, pyproject.toml nebo jiném souboru: patch / minor / major
+• Rebase — proveďte rebase větve se zvýšením verze nebo bez něj
+• Koncept / Připraveno — přepínejte stav MR bez úpravy názvu
+• Rychlé komentáře — publikujte šablony komentářů v MR jedním kliknutím
+• Kopírování MR — okamžitě zkopírujte název a odkaz do schránky
+
+★ OVLÁDÁNÍ CI/CD PIPELINE
+
+• Nová pipeline / Zrušení — ihned vytvořte nebo zrušte pipeline
+• Opakování všech neúspěšných úloh — najednou restartujte všechny neúspěšné úlohy v nejnovější pipeline
+• Vlastní tlačítka úloh — spusťte libovolnou CI úlohu jedním kliknutím nebo zřetězte více úloh, například sestavení → nasazení
+• Rychlý přehled chyb — zobrazte názvy neúspěšných úloh a chybové řádky logu přímo na stránce MR
+• Běh na pozadí — vlastní řetězce úloh pokračují i po přechodu na jinou stránku
+
+★ INTEGRACE JIRA BEZ API TOKENŮ
+
+• Odznaky stavu Jira — barevné stavy úkolů Hotovo, Probíhá, QA a K vyřízení; klíče úkolů se získávají z názvů MR
+• Postranní panel úkolu — kliknutím na odznak zobrazíte název, stav, řešitele, prioritu, sprint, epic, štítky, popis a přílohy
+• Změna stavu a řešitele — měňte stav úkolů a přiřazení bez opuštění GitLabu
+• Rychlé akce Jira — kombinované operace, například změna stavu a přiřazení, jedním kliknutím
+• Ikony typu a priority — původní ikony Jira v seznamu MR i na stránkách podrobností
+• Pole Jira u commitů — zobrazte Fix Version, stav nebo jiné pole vedle commitů
+• Jira v denních přehledech — názvy úkolů se automaticky přidávají do souhrnů aktivity
+
+★ VYLEPŠENÍ SEZNAMU MR
+
+• Velikost MR — barevné odznaky S / M / L / XL podle počtu změněných řádků
+• Indikátor konfliktů — červený odznak, pokud má větev konflikty při sloučení
+• Počet nevyřešených diskusí — přehled otevřených diskusí na první pohled
+• Názvy větví — zdrojová → cílová větev u každého MR
+• Indikátor schválení — ukazuje, zda jste jednotlivé MR schválili
+• Ztlumení konceptů — méně výrazné koncepty pomáhají soustředit se na aktivní MR
+• Zvýraznění vlastních MR — modrý rámeček pro rychlé rozpoznání
+• Přepínače „Pouze moje“, „Čeká na moje review“ a „Seskupit podle autora“
+• Odznak „Vaše review“ — rozpoznává zmínky v nastavené úloze reviewerů a v komentářích
+• Kopírování ze seznamu — tlačítko kopírování u každého MR
+
+★ NÁSTROJE PRO PRODUKTIVITU
+
+• Paleta příkazů (Cmd+K / Ctrl+K) — přejděte na MR, pipeline, větve či úkoly nebo spusťte akci
+• Hledání souborů v paletě — najděte a otevřete libovolný soubor projektu podle názvu
+• Denní přehled aktivity — souhrn vytvořených, sloučených, komentovaných a schválených MR; zkopírujte ho do Slacku nebo Jira
+• Cherry-pick do více větví — přeneste commit do několika větví najednou s automatickým vytvořením MR
+• Obnovení cherry-pick — při konfliktu automaticky zopakujte aplikování commitu bez souboru s verzí
+• Upozornění na citlivé soubory — oranžový odznak, pokud MR mění .env, Dockerfile, konfiguraci CI nebo soubory přihlašovacích údajů
+• Příkazy Git — zkopírujte git checkout a git fetch pro větev MR
+• Stáří MR — zjistěte, jak dlouho je merge request otevřený
+• Zvýraznění vlastních komentářů — barevný rámeček kolem vašich komentářů v diskusích
+
+★ PŘIZPŮSOBENÍ
+
+• Profily projektů — různé sady tlačítek, soubory s verzí a CI úlohy pro každý repozitář
+• Pořadí tlačítek přetažením — uspořádejte akce podle sebe
+• Šířka tabulátoru v diffu — zobrazení jako 2, 4 nebo 8 mezer
+• Sbalení horních lišt / Skrytí pravého panelu — více pracovního prostoru
+• Zvuková a desktopová oznámení — upozornění při dokončení nebo selhání akcí
+• Tmavý motiv — automaticky se řídí nastavením systému
+
+★ PROČ GITLAB MR ACTIONS?
+
+✓ Bez osobních přístupových tokenů — používá cookies vaší stávající relace GitLabu
+✓ Bez zprostředkující služby — požadavky na GitLab a Jira směřují přímo na nastavené servery
+✓ Podporuje vlastní GitLab přes HTTPS i gitlab.com; ověřené API kontrakty najdete v příručce kompatibility
+✓ Jira bez API tokenů — používá relaci prohlížeče
+✓ Samostatné nastavení pro každý projekt
+✓ Nenáročné rozšíření — kontroly na pozadí se týkají vámi spuštěných akcí; bez telemetrie a automatického nahrávání do AI
+✓ Rozhraní je dostupné ve 27 jazycích
+✓ Otevřený zdrojový kód
+
+Pro vývojáře, kteří chtějí méně času klikat v GitLabu a více času psát kód.

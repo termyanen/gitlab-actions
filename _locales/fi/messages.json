@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Automaatio, Jira, CI/CD ja tekoälykatselmointi"
+  },
+  "extDescription": {
+    "message": "Automatisoi GitLab-MR:t: yhdistäminen, versiot, Jira, CI/CD ja katselmointi omalla tekoälylläsi. Ilman API-tunnuksia."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Kuinka se toimii"
+  },
+  "openSettingsInTab": {
+    "message": "Avaa asetukset uudessa välilehdessä"
+  },
+  "exportSettings": {
+    "message": "Vie asetukset"
+  },
+  "importSettings": {
+    "message": "Tuo asetukset"
+  },
+  "settingsTransferHint": {
+    "message": "Jaa kaikki asetukset ja projektiprofiilit JSON-tiedostona."
+  },
+  "settingsImportReplace": {
+    "message": "Tämä korvaa kaikki nykyiset asetukset ja projektiprofiilit."
+  },
+  "applySettingsImport": {
+    "message": "Korvaa asetukset"
+  },
+  "cancelSettingsImport": {
+    "message": "Peruuta"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — projektiprofiilit: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Virheellinen asetustiedosto tai tuettu formaatti."
+  },
+  "settingsFileTooLarge": {
+    "message": "Asetustiedosto ylittää Chrome Synkronoinnin tallennusrajan."
+  },
+  "settingsExportFailed": {
+    "message": "Asetusten vienti epäonnistui. Yritä uudelleen."
+  },
+  "settingsImportFailed": {
+    "message": "Asetusten tuonti epäonnistui. Nykyinen kokoonpanosi pysyy muuttumattomana."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Salli pääsy Jira-sivustolle näiden asetusten tuomiseksi."
+  },
+  "settingsImported": {
+    "message": "Asetukset tuotu!"
+  },
+  "buttonOrder": {
+    "message": "Painikkeiden järjestys"
+  },
+  "buttonOrderHint": {
+    "message": "Raahaa uudelleenjärjestelyä varten. Vie hiiri päälle saadaksesi kuvauksen. Mukautetut tehtävät sinisellä."
+  },
+  "general": {
+    "message": "Yleinen"
+  },
+  "soundNotifications": {
+    "message": "Äänimuistutukset"
+  },
+  "desktopNotifications": {
+    "message": "Työpöytäilmoitukset"
+  },
+  "showTimeTracker": {
+    "message": "Näytä MR:n ikämerkki"
+  },
+  "skipConfirmations": {
+    "message": "Ohita MR:n toiminnon vahvistukset"
+  },
+  "uxEnhancer": {
+    "message": "MR-listan parannukset"
+  },
+  "dimDrafts": {
+    "message": "Haalenna luonnos-MR:t listassa"
+  },
+  "highlightOwnMrs": {
+    "message": "Korosta omat MR:si listassa"
+  },
+  "showOnlyMine": {
+    "message": "\"Vain omat\" -kytkin listasivulla"
+  },
+  "toggleOnlyMine": {
+    "message": "Vain omat"
+  },
+  "versionBump": {
+    "message": "Version päivitys"
+  },
+  "filePath": {
+    "message": "Tiedostopolku"
+  },
+  "filePathHint": {
+    "message": "Tiedosto, joka sisältää versionumeron"
+  },
+  "versionField": {
+    "message": "Versiokenttä"
+  },
+  "versionFieldHint": {
+    "message": "JSON-avain tai TOML-avain (esim. \"version\" tai \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategia"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Pieni (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Suuri (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Commit-viesti"
+  },
+  "commitMessageHint": {
+    "message": "Käytä {version} paikkamerkkinä"
+  },
+  "quickComments": {
+    "message": "Pikakommentit"
+  },
+  "quickCommentsHint": {
+    "message": "Yhden klikkauksen napit, jotka lähettävät välittömästi yleisen kommentin MR:ään (eivät koodin yhteyteen). Napit näkyvät toimintopalkissa."
+  },
+  "quickCommentsAdd": {
+    "message": "Lisää kommentti"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Pikakommentit"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Määräiltävät mallipohjakommenttinapit MR-sivulla. Lähetä LGTM, Needs fixes tai mikä tahansa mukautettu kommentti yhdellä klikkauksella."
+  },
+  "reviewers": {
+    "message": "Arvioijat"
+  },
+  "reviewersList": {
+    "message": "Arvioijalista"
+  },
+  "reviewersListHint": {
+    "message": "Käyttäjänimet, jotka mainitaan Reviewers: kommentissa (@user1, @user2). Kun asetettu, ohittaa kommentin haun ja CI-tehtävän. Ei muuta GitLab-arvioijamäärityksiä."
+  },
+  "jobName": {
+    "message": "Työn nimi"
+  },
+  "jobNameHint": {
+    "message": "Välitystyö, jos mikään kommentti ei vastaa \"Reviewer(s):\" mallia"
+  },
+  "customJobButtons": {
+    "message": "Mukautetut työnapit"
+  },
+  "customJobsHint": {
+    "message": "Käytä pilkkuja ketjuttamiseen: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Lisää työ -nappi"
+  },
+  "addProfileFor": {
+    "message": "+ Lisää profiili $1:lle",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Nykyinen: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Tallennettu!"
+  },
+  "unsavedChanges": {
+    "message": "Tallentamattomat muutokset..."
+  },
+  "customFile": {
+    "message": "Mukautettu tiedosto..."
+  },
+  "plainText": {
+    "message": "pelkkä teksti"
+  },
+  "removeProfile": {
+    "message": "Poistetaanko profiili $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Oletus"
+  },
+  "buttonsFor": {
+    "message": "Painikkeet $1:lle",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Ohita, mitkä painikkeet näytetään tässä projektissa."
+  },
+  "leaveEmptyDefault": {
+    "message": "Jätä tyhjäksi käyttääksesi oletusta"
+  },
+  "projectSpecificJobs": {
+    "message": "Projektikohtaiset tehtävät. Käytä pilkkuja yhdistämiseen."
+  },
+  "languageLabel": {
+    "message": "Kieli"
+  },
+  "languageAuto": {
+    "message": "Automaattinen (selain)"
+  },
+  "btnVersion": {
+    "message": "Version päivitys"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + versio"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + automaattinen yhdistäminen"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + pakotettu yhdistäminen"
+  },
+  "btnShip": {
+    "message": "Rebase + versio + automaattinen yhdistäminen"
+  },
+  "btnForceShip": {
+    "message": "Rebase + versio + pakotettu yhdistäminen"
+  },
+  "btnReviewers": {
+    "message": "Arvostelijat"
+  },
+  "btnPipelineRestart": {
+    "message": "Uusi pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Peruuta pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Luonnos / Valmis -vaihto"
+  },
+  "btnRetryFailed": {
+    "message": "Yritä epäonnistuneita tehtäviä uudelleen"
+  },
+  "btnCopyMr": {
+    "message": "Kopioi MR"
+  },
+  "hintVersion": {
+    "message": "Lukee konfiguroidun tiedoston (esim. package.json), kasvattaa version valitulla strategiolla (patch/minor/major), sitoo viestisi mallipohjalla."
+  },
+  "hintRebase": {
+    "message": "Suorittaa lähdehaaran Rebase-toiminnon kohdehaaran päälle. Ei yhdistä haaroja eikä ota automaattista yhdistämistä käyttöön."
+  },
+  "hintRebaseVersion": {
+    "message": "Suorittaa tarvittaessa haaran Rebase-toiminnon kohdehaaran päälle ja korottaa sitten versionumeroa määritetyssä tiedostossa. Ei yhdistä haaroja."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Suorittaa haaran Rebase-toiminnon kohdehaaran päälle, jos projekti käyttää rebase/ff-menetelmää. Ottaa sitten käyttöön yhdistämisen pipelinen onnistuttua. Käyttää MR:n squash- ja haaran poistoasetuksia."
+  },
+  "hintRebaseForce": {
+    "message": "Suorittaa Rebase-toiminnon ohittaen CI:n, peruuttaa kaikki käynnissä olevat pipelinet ja yhdistää heti odottamatta CI:tä. Käyttää MR:n squash- ja haaran poistoasetuksia."
+  },
+  "hintShip": {
+    "message": "Koko työnkulku: Rebase → korota versionumeroa määritetyssä tiedostossa → odota MR:n synkronointia → odota uutta pipelinea → ota automaattinen yhdistäminen käyttöön."
+  },
+  "hintForceShip": {
+    "message": "Nopea työnkulku: Rebase (ohita CI) → korota versionumeroa → odota 15 sekuntia → peruuta pipeline → yhdistä heti. Ohittaa CI-tarkistukset."
+  },
+  "hintReviewers": {
+    "message": "Lähetä määritetyt arvostelijan maininnat, käytä uudelleen arvostelija(n) kommentti viimeisistä muistiinpanoista, tai suorita määritetty CI-tehtävä."
+  },
+  "hintPipelineRestart": {
+    "message": "Luo täysin uuden pipelinen lähdehaaralle API:n kautta. Hyödyllistä, kun pipeline on jumissa tai tarvitset uuden suorituksen."
+  },
+  "hintPipelineCancel": {
+    "message": "Pyytää käynnissä olevien, odottavien tai luotujen pipelinejen peruutusta tälle MR:lle."
+  },
+  "hintDraftToggle": {
+    "message": "Lisää tai poistaa \"Draft:\"-etuliitteen MR:n otsikosta. Ei muuta muita MR-asetuksia."
+  },
+  "hintRetryFailed": {
+    "message": "Yrittää uudelleen epäonnistuneita töitä MR:n nykyisessä pipelinessa. Onnistuneet työt pysyvät ennallaan."
+  },
+  "hintCopyMr": {
+    "message": "Kopioi MR:n otsikon ja linkin leikepöydälle."
+  },
+  "toastRebasing": {
+    "message": "Rebase käynnissä..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Automaattisen yhdistämisen aktivointi..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Vaihe 1/2: Rebase käynnissä..."
+  },
+  "toastStep22Automerge": {
+    "message": "Vaihe 2/2: Automaattisen yhdistämisen aktivointi..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Vaihe 1/2: Rebase (ohita CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Vaihe 2/2: Putken peruuttaminen & yhdistäminen..."
+  },
+  "toastCancellingMerging": {
+    "message": "Putken peruutus ja yhdistyminen..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Luodaan uusi pipeline kohteelle $1…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Peruutetaan $1 pipelinea…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Merkitään valmiiksi..."
+  },
+  "toastMarkingDraft": {
+    "message": "Merkintä luonnoksi..."
+  },
+  "toastRetrying": {
+    "message": "Yritetään uudelleen $1 epäonnistunutta työtä…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Ei epäonnistuneita töitä nykyisessä MR-pipelinessa"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Ei peruutettavia pipelineja"
+  },
+  "toastAssigningReviewers": {
+    "message": "Julkaisun arvostelija mainitsee..."
+  },
+  "toastRepostingReviewers": {
+    "message": "Uudelleenjulkaisen arvostelijan kommentin..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Katselmoijakommenttia ei löytynyt; käynnistetään $1…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Version nousu..."
+  },
+  "toastWaitingSync": {
+    "message": "Odotetaan, että MR synkronoituu v$1:n kanssa...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Odotan pipelinea..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Automaattinen yhdistämisyritys $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Odotetaan, että MR synkronoituu... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Odotetaan \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Leikkityö \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Yrittää uudelleen työtä \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Työ \"$1\" onnistui jo, hyppien",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Työ \"$1\" on jo $2, odottaa...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 suoritettu",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 epäonnistui: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR otsikko ja linkki kopioitu!"
+  },
+  "toastWaiting15s": {
+    "message": "Odotetaan 15s ennen yhdistämistä..."
+  },
+  "confirmRebase": {
+    "message": "Suoritetaanko haaralle Rebase?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → version korotus?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → automaattinen yhdistäminen?"
+  },
+  "confirmAutomerge": {
+    "message": "Ota automaattinen yhdistäminen käyttöön?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → YHDISTÄ NYT?"
+  },
+  "confirmForce": {
+    "message": "⚠️ YHDISTÄ NYT (ohita pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → version korotus → automaattinen yhdistäminen?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Version korotus → automaattinen yhdistäminen?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → version korotus → YHDISTÄ NYT?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Version korotus → YHDISTÄ NYT?"
+  },
+  "confirmNewPipeline": {
+    "message": "Luo uusi pipeline tälle haaralle?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Peruuta kaikki käynnissä olevat pipelinet?"
+  },
+  "labelAutomerge": {
+    "message": "Automaattinen yhdistäminen"
+  },
+  "labelForceMerge": {
+    "message": "Pakotettu yhdistäminen"
+  },
+  "labelVersionAutomerge": {
+    "message": "Versio + Automaattinen yhdistäminen"
+  },
+  "labelVersionForceMerge": {
+    "message": "Versio + pakotettu yhdistäminen"
+  },
+  "labelMarkReady": {
+    "message": "Merkitse valmiiksi"
+  },
+  "labelMarkDraft": {
+    "message": "Merkitse luonnokseksi"
+  },
+  "labelRetryFailed": {
+    "message": "Yritä uudelleen epäonnistunut"
+  },
+  "labelNewPipeline": {
+    "message": "Uusi pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Aika MR:n luonnista: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR-toiminnot"
+  },
+  "welcomeSubtitle": {
+    "message": "Nopeuta merge request -työnkulkua yhdellä klikkauksella."
+  },
+  "welcomeQuickStart": {
+    "message": "Pikastartti"
+  },
+  "welcomeStep1Title": {
+    "message": "Avaa mikä tahansa Merge Request -sivu"
+  },
+  "welcomeStep1Desc": {
+    "message": "Avaa HTTPS MR -sivu kirjautuneena GitLab.comiin tai omaan itseisännöimääsi GitLabiin. Salli laajennuksen pääsy tälle sivustolle."
+  },
+  "welcomeStep2Title": {
+    "message": "Näe toimintopainikkeet ilmestyvän"
+  },
+  "welcomeStep2Desc": {
+    "message": "Painikkeet ilmestyvät MR-sivulle. Aloituspaketti on käytössä ensimmäisen asennuksen yhteydessä."
+  },
+  "welcomeStep3Title": {
+    "message": "Mukauta laajennuksen ponnahdusikkunan kautta"
+  },
+  "welcomeStep3Desc": {
+    "message": "Klikkaa laajennuksen kuvaketta ottaaksesi painikkeet käyttöön/pois käytöstä, määrittääksesi version nousutiedoston, lisätäksesi mukautettuja työpainikkeita ja muuta."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Oletuksena käytössä"
+  },
+  "welcomeMoreActions": {
+    "message": "Lisää toimintoja (ota käyttöön asetuksista)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Miten se toimii"
+  },
+  "welcomeHowDesc": {
+    "message": "Tämä laajennus käyttää olemassa olevaa GitLab-istuntoasi (evästeitä) kutsuakseen GitLab API:ta puolestasi. Henkilökohtaisia pääsytunnuksia ei tarvita."
+  },
+  "welcomeHowList1": {
+    "message": "GitLab.comissa ja itseisännöidyssä GitLabissa HTTPS:n kautta; ominaisuudet riippuvat palvelimen API:sta, sivun asettelusta ja oikeuksistasi."
+  },
+  "welcomeHowList2": {
+    "message": "Toiminnot käyttävät samoja oikeuksia kuin kirjautunut käyttäjäsi"
+  },
+  "welcomeHowList3": {
+    "message": "Mukautetut työnkulut toimivat taustalla. Pidä sama GitLab-avattu ja kirjautunut välilehti API-yhteyttä varten."
+  },
+  "welcomeHowList4": {
+    "message": "Projektikohtaiset profiilit antavat sinun mukauttaa painikkeita eri repositorioille"
+  },
+  "welcomeTip": {
+    "message": "Voit luoda projektikohtaisia profiileja ponnahdusasetuksissa. Tämä on hyödyllistä, kun eri projektit tarvitsevat eri version tiedostoja tai mukautettuja CI-töitä."
+  },
+  "welcomeOpenSettings": {
+    "message": "Avaa asetukset"
+  },
+  "cardAutomergeTitle": {
+    "message": "Automaattinen yhdistäminen"
+  },
+  "cardAutomergeDesc": {
+    "message": "Suorita tarvittaessa haaran Rebase-toiminto ja ota käyttöön yhdistäminen pipelinen onnistuttua."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Uusi pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Luo uusi pipeline lähdehaaralle yhdellä klikkauksella."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Peruuta pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Pyydä käynnissä olevien tai odottavien MR-pipelinejen peruutusta."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Luonnos-vaihtopainike"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Vaihda MR Luonnos- ja Valmis-tilan välillä ilman otsikon muokkausta."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Version nosto"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Kasvata versiota tiedostossa package.json, pyproject.toml tai missä tahansa mukautetussa tiedostossa. Asetettavissa oleva strategia (korjaus/pieni/suuri)."
+  },
+  "cardShipTitle": {
+    "message": "Ship (versio + yhdistäminen)"
+  },
+  "cardShipDesc": {
+    "message": "Suorita tarvittaessa Rebase, korota versionumeroa ja pyydä automaattista yhdistämistä. Pidä MR-välilehti avoinna, kunnes toiminto on valmis."
+  },
+  "cardForceMergeTitle": {
+    "message": "Pakotettu yhdistäminen"
+  },
+  "cardForceMergeDesc": {
+    "message": "Pyydä yhdistämistä odottamatta pipelinen onnistumista. GitLabin käyttöoikeudet ja yhdistämissäännöt ovat edelleen voimassa."
+  },
+  "cardReviewersTitle": {
+    "message": "Arvioijat"
+  },
+  "cardReviewersDesc": {
+    "message": "Mainitse määritetyt käyttäjänimet kommentissa, käytä uudelleen arvioijan kommenttia tai suorita CI-jobi. Ei aseta GitLabin omaa arvioijakenttää."
+  },
+  "uiCustomization": {
+    "message": "Käyttöliittymän mukautus"
+  },
+  "collapseBars": {
+    "message": "Piilota yläpalkin painike"
+  },
+  "hideRightSidebar": {
+    "message": "Piilota oikea sivupalkki MR-sivuilla"
+  },
+  "collapseTopBars": {
+    "message": "Vaihda yläreunan palkkeja"
+  },
+  "cardCollapseTitle": {
+    "message": "Kutista yläreunan palkit"
+  },
+  "cardCollapseDesc": {
+    "message": "Lisää nappi GitLabin navigaatiopalkkien kutistamiseen/laajentamiseen. Säästää tilaa ja auttaa keskittymään sisältöön."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Piilota käyttöliittymän osiot"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Piilota oikea sivupalkki MR-sivuilla, jotta sisältöalue on täyspitkä."
+  },
+  "jiraIntegration": {
+    "message": "Jira-integraatio"
+  },
+  "jiraUrl": {
+    "message": "Jira-URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center -URL, esim. https://jira.company.com — kirjaudu Jiraan, ja sitten klikkaa Salli Jira-sivuston käyttöoikeus. Cloudia ei tueta täysin."
+  },
+  "jiraGrantAccess": {
+    "message": "Salli Jira-sivuston käyttöoikeus"
+  },
+  "jiraAccessGranted": {
+    "message": "Sivuston käyttöoikeus myönnetty. Kirjaudu Jiraan tässä selaimessa."
+  },
+  "jiraUrlInvalid": {
+    "message": "Syötä HTTPS-muotoinen Jira-perus-URL ilman tunnuksia/kyselyjä/fragmentteja."
+  },
+  "jiraErrorAuth": {
+    "message": "Jira-istuntosi on vanhentunut tai kirjautuminen vaaditaan. Avaa Jira, kirjaudu sisään ja yritä ladata uudelleen."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira eväsi pääsyn tähän tehtävään tai toimintoon. Tarkista tilisi ja käyttöoikeutesi Jirassa."
+  },
+  "jiraErrorPermission": {
+    "message": "Laajennus ei pääse tähän Jira-sivustoon. Tarkista sen sivuston oikeudet ja Jira-URL laajennuksen asetuksista."
+  },
+  "jiraErrorNetwork": {
+    "message": "Jiraan ei saatu yhteyttä. Tarkista yhteytesi, VPN ja Jira-URL, ja yritä ladata uudelleen."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira on tilapäisesti poissa käytöstä tai rajoittaa pyyntöjä. Odota ja yritä ladata uudelleen."
+  },
+  "jiraErrorNotFound": {
+    "message": "Jira-asiaa ei voitu löytää tai se ei ole näkyvissä tilillesi."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira palautti tuetun vastauksen. Tarkista URL ja palvelimen/tietokeskuksen yhteensopivuus."
+  },
+  "jiraErrorUnknown": {
+    "message": "Jira-pyyntö epäonnistui. Avaa Jira tarkistaaksesi asian ja pääsysi."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Muutos on ehkä jo tehty. Tarkista tehtävä Jirassa ennen kuin toistat toiminnon."
+  },
+  "jiraErrorTransitions": {
+    "message": "Jira-siirtymiä ei voitu ladata."
+  },
+  "jiraOpenSite": {
+    "message": "Avaa Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Yritä ladata uudelleen"
+  },
+  "jiraDismissError": {
+    "message": "Hylkää"
+  },
+  "jiraTicketRegex": {
+    "message": "Lipukkeen regex"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Mukautettu regex MR-otsikoiden lipukkeen tunnusten jäsentämiseen. Oletus: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Näytä ongelmatyyppi- ja prioriteettiikonit MR-listassa"
+  },
+  "jiraQuickActions": {
+    "message": "Pikatoimet"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Valitse jokaiselle napille haluamasi kenttien yhdistelmät. Jätä vain ne muutokset, joita sen pitäisi tehdä. Versioiden ja komponenttien on jo oltava olemassa Jira-projektissa."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Lisää toiminto"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Tunniste"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Tila"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Käyttäjänimi"
+  },
+  "jiraSidebarStatus": {
+    "message": "Tila"
+  },
+  "jiraSidebarType": {
+    "message": "Tyyppi"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioriteetti"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Vastuuhenkilö"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Ei osoitettua"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Etsi käyttäjää..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Käyttäjiä ei löytynyt"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Poista osoitus"
+  },
+  "jiraSidebarReporter": {
+    "message": "Ilmoittaja"
+  },
+  "jiraSidebarLabels": {
+    "message": "Tunnisteet"
+  },
+  "jiraSidebarCreated": {
+    "message": "Luotu"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Päivitetty"
+  },
+  "jiraSidebarDescription": {
+    "message": "Kuvaus"
+  },
+  "jiraSidebarEpic": {
+    "message": "Eepos"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprintti"
+  },
+  "jiraSidebarComponents": {
+    "message": "Komponentit"
+  },
+  "jiraSidebarResolution": {
+    "message": "Ratkaisu"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Vaikuttaa"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Korjausversio"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Ei mitään"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Versioita ei löytynyt"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Etsi versioita..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Korjausversioiden päivitys epäonnistui"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Liitteet"
+  },
+  "jiraSidebarComments": {
+    "message": "Kommentit"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Lisää kommentti..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Kommentti"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Näytä lisää kommentteja"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Ei kommentteja vielä"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Kommentin lähetys epäonnistui"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Poista kommentti"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Poistetaanko tämä kommentti?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Kommentin poisto epäonnistui"
+  },
+  "cardJiraTitle": {
+    "message": "Jiran tilamerkit"
+  },
+  "cardJiraDesc": {
+    "message": "Näyttää Jira-lipun tilat MR-listasivulla. Purkaa lipun ID:t MR-otsikoista (esim. CCT-1111) ja näyttää värilliset tilamerkit. Aseta Jira-URL asetuksissa."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Mukautettu lipun regex"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Määritä mukautettu säännöllinen lauseke Jira-lippujen ID:iden purkamiseen MR-otsikoista. Hyödyllinen, jos projektissasi käytetään ei-standardeja lipun etuliitteitä."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Jiran lipun sivupalkki"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Klikkaa mitä tahansa Jira-merkkkiä avataksesi sivupalkin, jossa on koko tiketin tiedot — yhteenveto, tila, tyyppi, prioriteetti, vastuuhenkilö ja kuvaus. Lue, julkaise ja poista omia kommenttejasi ilman, että poistut GitLabista. Korjausversioita voi valita projektin saatavilla olevista versioista suoraan sivupalkista."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Liitteet sivupalkissa"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Katso kuvia, videoita ja tiedostoja Jira-tiketeistä suoraan sivupalkissa. Kuvat ja videot avautuvat koko näytön lightboxiin."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Jira-merkit MR-sivulla"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Jira-tikettien tilamerkit näkyvät MR-otsikossa yksityiskohtasivulla. Klikkaa merkkiä avataksesi sivupalkin, jossa on koko tiketin tiedot."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Muuta Jira-tila"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Vaihda tiketin tilaa suoraan sivupalkista. Näyttää vain nykyisestä tilasta saatavilla olevat siirtymät."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Vaihda Jira-vastuuhenkilö"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Klikkaa vastuuhenkilöä hakeaksesi ja vaihtaaksesi sen. Automaattinen täydennys kuvakkeiden kanssa, poista vastuuhenkilö napilla."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jiran pikatoiminnot"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Yhdellä klikkauksella napit statukselle, vastuuhenkilölle, tunnisteille, versioille ja muille kentille. Jokainen nappi voi päivittää yhden tai useamman kentän."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Ongelmatyypin & prioriteetin kuvakkeet"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Näytä Jiran ongelmatyyppi- ja prioriteettikuvakkeet statussäännösten vieressä MR-listalla ja yksityiskohdasivuilla. Käyttää Jiran omia kuvakkeita."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Suorita lähdehaaran Rebase-toiminto kohdehaaran päälle yhdistämättä haaroja."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + versio"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Suorita haaran Rebase-toiminto ja korota versionumeroa yhdellä napsautuksella. Ei yhdistä haaroja."
+  },
+  "cardCopyMrTitle": {
+    "message": "Kopioi MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Kopioi MR:n otsikko ja linkki leikepöydälle yhdellä klikkauksella."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Yritä epäonnistuneita töitä uudelleen"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Yritä epäonnistuneita töitä uudelleen MR:n nykyisessä pipelinessa. Onnistuneisiin töihin ei kosketa."
+  },
+  "welcomeMrListFeatures": {
+    "message": "MR-listasivun parannuksia"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Himmennä luonnosehdotukset"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Himmennä luonnos-MR:t visuaalisesti yhdistämispyynnön listalla, jotta voit keskittyä aktiivisiin."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Korosta omia MR:eitäsi"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Korosta omia MR:ejäsi listalla sinisellä reunuksella nopeaa tunnistusta varten."
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"Vain omani\" -kytkin"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Yhden klikkauksen kytkin, jolla MR-lista suodatetaan näyttämään vain omat yhdistämispyynnöt."
+  },
+  "cardMrAgeTitle": {
+    "message": "MR:n ikämerkki"
+  },
+  "cardMrAgeDesc": {
+    "message": "Näyttää, kuinka kauan sitten MR luotiin, näytetään merkkinä MR-sivulla."
+  },
+  "showReviewerBadge": {
+    "message": "\"Oma arviosi\" -merkki kommenteista"
+  },
+  "badgeYourReview": {
+    "message": "Oma arviosi"
+  },
+  "badgeYourReviewHint": {
+    "message": "Sinut mainitaan tarkastajana MR-kommenteissa"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "\"Oma arviosi\" -merkki"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Etsii vanhimmista kommenteista tekstiä \"Reviewer(s): @you\". Tarkistettavien kommenttien määrä on säädettävissä (oletuksena 10). Erillinen GitLabin sisäänrakennetusta katselmoijatoiminnosta."
+  },
+  "showNeedsReview": {
+    "message": "\"Tarvitsee arvioni\" -kytkin listalla"
+  },
+  "toggleNeedsReview": {
+    "message": "Tarvitsee minun tarkistusta"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "\"Tarvitsee minun tarkistusta\" -kytkin"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Yhden klikkauksen kytkin suodattaaksesi MR-listan näyttämään vain yhdistämispyynnöt, joissa olet tarkistajana."
+  },
+  "showCopyMr": {
+    "message": "Kopioi-painike MR-listan kohdilla"
+  },
+  "showThreadsBadge": {
+    "message": "Ratkaisemattomien ketjujen määrä MR-listassa"
+  },
+  "showSizeBadge": {
+    "message": "MR-kokoluokat (S/M/L/XL) MR-listassa"
+  },
+  "showConflictsBadge": {
+    "message": "Näytä ristiriitojen osoitin MR-listassa"
+  },
+  "showApprovalBadge": {
+    "message": "Näytä hyväksymismäärä ja oma hyväksymismerkintä MR-listassa"
+  },
+  "approvalBadgeMine": {
+    "message": "Hyväksyit"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Sinä"
+  },
+  "cardThreadsTitle": {
+    "message": "Ratkaisemattomien ketjujen määrä"
+  },
+  "cardThreadsDesc": {
+    "message": "Näytä ratkaisemattomien ketjujen määrät. \"+\" merkitsee kokonaisen ensimmäisen sivun; \"?\" tarkoittaa, että määrä ei ole saatavilla."
+  },
+  "cardSizeTitle": {
+    "message": "MR-kokoluokat"
+  },
+  "cardSizeDesc": {
+    "message": "S/M/L/XL-merkit, joissa säädettävät rivien ja tiedostojen rajat Näyttösäännöissä ja rajoissa."
+  },
+  "conflictsBadge": {
+    "message": "Konfliktit"
+  },
+  "conflictsBadgeHint": {
+    "message": "Tässä MR:ssä on yhdistämiskonflikteja, jotka täytyy ratkaista"
+  },
+  "cardConflictsTitle": {
+    "message": "Konfliktien osoitin"
+  },
+  "cardConflictsDesc": {
+    "message": "Näyttää punaisen CONFLICTS-lätkän MR-tietosivulla, kun haarassa on yhdistämiskonflikteja."
+  },
+  "cardApprovalTitle": {
+    "message": "Hyväksyntäilmaisin"
+  },
+  "cardApprovalDesc": {
+    "message": "Näyttää, oletko hyväksynyt kunkin MR:n listasivulla. Erottaa sinun hyväksyntäsi muiden hyväksynnöistä."
+  },
+  "showBranches": {
+    "message": "Näytä lähde- ja kohdehaarat MR-listassa"
+  },
+  "showBranchesLinks": {
+    "message": "Tee haarojen nimistä klikattavia (avaa haarapuu)"
+  },
+  "cardBranchesTitle": {
+    "message": "Haarojen nimet MR-listassa"
+  },
+  "cardBranchesDesc": {
+    "message": "Näyttää lähde- ja kohdehaarojen nimet jokaisessa MR:ssä listassa, jotta näet, mistä koodi tulee ja mihin se yhdistyy."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Kopioi MR listasta"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Lisää kopiointipainikkeen jokaiselle MR:lle listasivulla. Kopioi MR:n otsikon ja linkin leikepöydälle yhdellä klikkauksella."
+  },
+  "versionFromTarget": {
+    "message": "Lue versio kohdehaarasta"
+  },
+  "versionFromTargetHint": {
+    "message": "Lue nykyinen versio kohdehaarasta (esim. main) sen sijaan, että lukisit lähdehaarasta. Käytä tätä yhdistämiskomit-strategian kanssa välttääksesi vanhentuneita versioita."
+  },
+  "showFailedJobView": {
+    "message": "Näytä epäonnistuneen työn pikakatselu MR-sivulla"
+  },
+  "failedJobTraceError": {
+    "message": "Ei voitu ladata jälkeä"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Epäonnistuneen työn pikakatselu"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Esikatsele epäonnistuneita töitä ja lokin loppuja MR-sivulla. Työ- ja rivimäärät ovat säädettävissä Näyttösäännöissä ja rajoissa."
+  },
+  "showCmdPalette": {
+    "message": "Komentovalikko (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Päivittäinen toimintaraportti"
+  },
+  "standupJiraEnrich": {
+    "message": "Näytä Jira-lippujen otsikot raportissa"
+  },
+  "cmdPlaceholder": {
+    "message": "Kirjoita komento..."
+  },
+  "cmdFooterNavigate": {
+    "message": "siirry"
+  },
+  "cmdFooterSelect": {
+    "message": "valitse"
+  },
+  "cmdFooterClose": {
+    "message": "sulje"
+  },
+  "cmdEmpty": {
+    "message": "Ei yhtään vastaavaa komentoa"
+  },
+  "cmdGroupNav": {
+    "message": "Navigointi"
+  },
+  "cmdGroupMr": {
+    "message": "MR-toiminnot"
+  },
+  "cmdGroupExt": {
+    "message": "Laajennus"
+  },
+  "cmdGroupFiles": {
+    "message": "Tiedostot"
+  },
+  "cmdNavMrs": {
+    "message": "Siirry yhdistämispyyntöihin"
+  },
+  "cmdNavIssues": {
+    "message": "Siirry ongelmiin"
+  },
+  "cmdNavPipelines": {
+    "message": "Siirry pipelinein"
+  },
+  "cmdNavBranches": {
+    "message": "Siirry haaroihin"
+  },
+  "cmdNavRepo": {
+    "message": "Siirry repositorioon"
+  },
+  "cmdNavTags": {
+    "message": "Siirry tageihin"
+  },
+  "cmdNavCommits": {
+    "message": "Siirry sitoutumisiin"
+  },
+  "cmdNavWiki": {
+    "message": "Siirry Wikiin"
+  },
+  "cmdNavSnippets": {
+    "message": "Siirry Snippetteihin"
+  },
+  "cmdNavSettings": {
+    "message": "Siirry asetuksiin"
+  },
+  "cmdCopyPath": {
+    "message": "Kopioi projektin polku"
+  },
+  "cmdGroupPinned": {
+    "message": "Kiinnitetty"
+  },
+  "cmdExtSettings": {
+    "message": "Avaa laajennuksen asetukset"
+  },
+  "cmdExtStandup": {
+    "message": "Luo aktiviteettiraportti"
+  },
+  "standupTitle": {
+    "message": "Päivittäinen aktiviteetti"
+  },
+  "standupCopy": {
+    "message": "Kopioi leikepöydälle"
+  },
+  "standupCopied": {
+    "message": "Kopioitu!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Komentopaletti"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Paina Cmd+K (Mac) tai Ctrl+K (Win) missä tahansa GitLab-sivulla. Siirry, suorita MR-toimia, etsi tiedostoja nimellä ja avaa ne repossa."
+  },
+  "cardStandupTitle": {
+    "message": "Päivittäinen aktiviteettiraportti"
+  },
+  "cardStandupDesc": {
+    "message": "Luo päivittäinen aktiviteettiraportti GitLab-tiedoistasi. Näyttää luodut, yhdistetyt ja tarkistetut MR:t. Kopioi ja liitä Slackiin tai Jiraan."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick haaroihin"
+  },
+  "showGroupPlay": {
+    "message": "Ryhmän toistopainike pipelinessa (suorittaa jäljellä olevat manuaaliset työt)"
+  },
+  "showCommitVersion": {
+    "message": "Version tunnus sitoutumissivulla"
+  },
+  "showCommitVersionHint": {
+    "message": "Näyttää version version tiedostosta (katso Version bump -asetukset) kunkin commitin vieressä; korostettuna, jos versio muuttui"
+  },
+  "groupPlayTooltip": {
+    "message": "Suorita jäljellä olevat manuaaliset tehtävät tässä ryhmässä"
+  },
+  "groupPlayError": {
+    "message": "Osan tehtävistä käynnistäminen epäonnistui"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Ryhmän toistopainike"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Pipeline-grafiikassa, toistopainike työryhmän vieressä suorittaa kaikki jäljellä olevat manuaaliset tehtävät — vaikka osa ryhmän tehtävistä olisi jo alkanut ja GitLabin oma painike katoaisi."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Versiomerkkki comiteissa"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Haaran commit-sivulla jokainen commit näyttää projektiversion version tiedostostasi kyseisessä commitissa. Oletuksena mykistetty, korostettu, jos versio muuttui — näet yhdellä vilkaisulla, mitkä commitit kuuluivat mihin julkaisuversion."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick -haarat"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Oletustavoitehaarat cherry-pickille. Voit lisätä tai poistaa haaroja modaalissa."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Lisää haara"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick haaroihin"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Sulje"
+  },
+  "cherryPickInProgress": {
+    "message": "Suoritetaan cherry-pickiä…"
+  },
+  "cherryPickRemove": {
+    "message": "Poista"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Haaran nimi"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-pickattu $1-haaroihin",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Aloita uusi merge-pyyntö näillä muutoksilla"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Luo MR oletuksena cherry-pickattaessa"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Konfliktin sattuessa — commitoi ilman versiotiedostoa"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Jos cherry-pick epäonnistuu versiotiedoston konfliktin vuoksi, toista muutokset uutena commitina ilman versiotiedostoa"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Nosta versiota varalta"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Nosta versiota kohdehaarassa samassa fallback-commitissa"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Älykäs varaprosessi käsittelee vain versiotiedoston konfliktit. Konflikti on toisessa tiedostossa"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Tiedostoa on muokattu kohdehaarassa — ei voi safely cherry-pickata"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Versiotiedosto sisältää muutoksia version lisäksi — ei voi safely ohittaa sitä"
+  },
+  "commitsJiraField": {
+    "message": "Jira-kenttä commit-tunnisteille"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Jira-kentän nimi, joka näytetään tunnisteina commit-sivulla (esim. fixVersions, status, labels, components). Vaatii Jira-URL:n."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick haaraan"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick valittuihin haaroihin suoraan tai uusien MR:ien kautta. Kun Smart-fallback on käytössä, vahvistetut version-tiedostojen konfliktit voidaan toistaa ilman kyseistä tiedostoa, tarvittaessa version nostaen. Turvattomat muutokset pysähtyvät tarkastusta varten."
+  },
+  "mrDetailEnhancements": {
+    "message": "MR-tietojen parannukset"
+  },
+  "showSensitiveWarning": {
+    "message": "Herkän tiedoston varoitus diffissä"
+  },
+  "showGitCommands": {
+    "message": "Git-komentopainikkeet (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "HERKKÄ: $1 tiedosto(t)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Tämä MR muokkaa tietoturvallisesti herkkiä tiedostoja:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Herkän tiedoston varoitus"
+  },
+  "cardSensitiveDesc": {
+    "message": "Merkitsee arkaluontoiset tiedostot sisäänrakennetuilla säännöillä, lisäkuvioilla ja poissulkuilla. Määritä ne Näyttösäännöissä ja rajoissa."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Git-komentopainikkeet"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Kopioi checkout-, pull- ja hard-reset-komennot. Tarkista repositoriosi ja origin-etäreposi ennen niiden suorittamista; hard reset poistaa paikalliset muutokset."
+  },
+  "updateBannerText": {
+    "message": "Uusi versio on saatavilla! Katso, mitä uutta on:"
+  },
+  "updateChangelog": {
+    "message": "Muutosloki"
+  },
+  "updateReviewAsk": {
+    "message": "Tykkäätkö laajennuksesta?"
+  },
+  "updateReviewLink": {
+    "message": "Jätä arvostelu"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "AI-avusteinen tarkistus, alusta loppuun"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Tarkista MR, korjaa valittu palaute, valmistele vastaukset ja tarkista muutokset uudelleen. Esikatsele ja muokkaa kommentteja ennen niiden lähettämistä GitLabiin."
+  },
+  "aiReviewGuide": {
+    "message": "AI-tarkistusopas"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Ei automaattisia AI-latauksia. Kopioi konteksti itse; kommentit lähetetään GitLabiin vain, kun valitset Julkaise tai Lisää tarkistukseen."
+  },
+  "aiReviewTitle": {
+    "message": "AI-tarkistus"
+  },
+  "aiReviewOpen": {
+    "message": "AI-tarkistus…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Kopioi kommentti AI:lle"
+  },
+  "aiReviewLoading": {
+    "message": "Ladataan keskusteluja…"
+  },
+  "aiReviewRetry": {
+    "message": "Yritä uudelleen"
+  },
+  "aiReviewRefresh": {
+    "message": "Päivitä"
+  },
+  "aiReviewClose": {
+    "message": "Sulje"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Vahvista arvosteludialogien sulkeminen tallentamattomien töiden kanssa"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Suljetaanko tämä dialogi? Tallentamattomat muokkaukset ja syötetyt tiedot häviävät."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Suljetaanko tämä dialogi ja lopetetaanko lähetys? Jo lähetetyt kommentit säilyvät GitLabissa. Tallentamattomat muokkaukset häviävät."
+  },
+  "aiReviewAll": {
+    "message": "Kaikki"
+  },
+  "aiReviewUnresolved": {
+    "message": "Ratkaisemattomat"
+  },
+  "aiReviewResolved": {
+    "message": "Ratkaistut"
+  },
+  "aiReviewGeneral": {
+    "message": "Yleiset kommentit"
+  },
+  "aiReviewSearch": {
+    "message": "Etsi kommentteja tai tiedostopolkuja"
+  },
+  "aiReviewSelectShown": {
+    "message": "Valitse näkyvät"
+  },
+  "aiReviewClear": {
+    "message": "Tyhjennä valinta"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Sisällytä koodimuutokset"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Vain uudet ja toistuvat arvostelut. Jätä pois, jos AI voi lukea repositorion. Lyhyet katkelmat palautteeseen pysyvät mukana."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Ota olemassa olevat keskustelut huomioon"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Lisää jo julkaistut kommentit duplikaattisuodattimeksi: tekoäly käy koko MR:n läpi itsenäisesti ja jättää pois havainnot, jotka toistavat niitä. Se ei vastaa näihin keskusteluihin."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Sisällytä kuvaus"
+  },
+  "aiReviewPrompt": {
+    "message": "Ohjeet tekoälylle"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Palauta oletuskehote"
+  },
+  "aiReviewPreview": {
+    "message": "Esikatselu"
+  },
+  "aiReviewCopied": {
+    "message": "Kopioitu!"
+  },
+  "aiReviewEmpty": {
+    "message": "Ei vastaavia kommentteja."
+  },
+  "aiReviewPartial": {
+    "message": "Joitakin tietoja ei voitu ladata. Vienti sisältää varoituksen ja vain käytettävissä olevan kontekstin."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 valittu",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Valitse esikatseluteksti ja kopioi se manuaalisesti."
+  },
+  "aiReviewScopeComment": {
+    "message": "Valittu kommentti"
+  },
+  "aiReviewScopeThread": {
+    "message": "Valittu keskustelu"
+  },
+  "aiReviewPreparing": {
+    "message": "Valmistelee koodikontekstia…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Keskusteluja ei voitu ladata. Yritä uudelleen tai kopioi käytettävissä oleva konteksti."
+  },
+  "aiReviewShowReplies": {
+    "message": "Näytä vastaukset"
+  },
+  "aiReviewSize": {
+    "message": "Noin $1 merkkiä",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Peruuta"
+  },
+  "showAiReviewCopy": {
+    "message": "Näytä tekoälyn arvion kopiointi- ja tuontiohjaimet"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Kopioi koko MR uutta tarkastelua varten, valitut palautteet korjauksia varten, tai tuo AI-kommentit ja vastaukset muokattavalla esikatselulla ennen lähettämistä."
+  },
+  "aiReviewFresh": {
+    "message": "Tarkista alusta asti"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Kehote uutta tarkastelua varten"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Enintään 1 500 merkkiä. Käytetään koko MR:n ja sen kaikkien commitien tarkasteluun, erillään palautteiden korjauksista. Voit määrittää vastauskielen. Jätä tyhjäksi käyttääksesi oletuksena englantia."
+  },
+  "aiReviewPromptHint": {
+    "message": "Enintään 1 500 merkkiä. Jätä tyhjäksi käyttääksesi oletuksena englantia. Soveltuu kaikkiin projekteihin."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Kehotetta ei tallennettu. Käytä enintään 1 500 merkkiä ja poista epätavalliset ohjausmerkit."
+  },
+  "settingsSaveFailed": {
+    "message": "Asetuksia ei voitu tallentaa. Tee muutos yrittääksesi uudelleen."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Tässä tehdyt muutokset koskevat tätä vientiä. Määritä oletuskehotteesi laajennusasetuksissa."
+  },
+  "aiReviewReady": {
+    "message": "Esikatselu on valmis kopioitavaksi."
+  },
+  "aiReviewLoadHint": {
+    "message": "Lataa keskustelut suoraan GitLabista, mukaan lukien tähän sivuun näkymättömät kommentit."
+  },
+  "aiReviewCommentContext": {
+    "message": "Muut vastaukset sisällytetään kontekstiksi. Vain valitut kommentit pyydetään käsiteltäväksi."
+  },
+  "aiReviewOutdated": {
+    "message": "Aiempi versio"
+  },
+  "aiReviewLink": {
+    "message": "Avoin keskustelu"
+  },
+  "aiReviewLoaded": {
+    "message": "Ladataan $1-keskusteluja"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Valmistellaan koodikontekstia: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Tämä kommentti ei ole saatavilla GitLabista. Se saattaa olla vielä tallennettavana tai se on voitu poistaa. Päivitä yrittääksesi uudelleen."
+  },
+  "aiReviewImportOpen": {
+    "message": "Tuo AI-arvio…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Tuo AI-arvio"
+  },
+  "aiReviewImportHelp": {
+    "message": "Liitä AI:n vastaus alle tarkastelua, muokkausta ja julkaistavan valinnan tarkistamista varten. Kehote-pikakuvakkeet löytyvät Lisäasetuksista."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Kopioi kehote uutta arviota varten"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Valmistellaan kehotetta…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI-vastaus (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Liitä täydellinen JSON-vastaus, joka sisältää uudet kommentit tai vastaukset keskusteluihin. Voit muokata tekstiä ja valita, mitä lähetetään esikatselussa."
+  },
+  "aiReviewImportValidate": {
+    "message": "Tarkista ja esikatselu"
+  },
+  "aiReviewImportChecking": {
+    "message": "Tarkistetaan MR-muutos, rivit ja olemassa olevat kommentit…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Tarkista vastaus esikatselukommentteihin. Voit muokata niiden tekstiä, poistaa valintaruudut, jos haluat jättää kohteita pois, tai lisätä yleisen kommentin."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Valitse valmiit kommentit"
+  },
+  "aiReviewImportPreview": {
+    "message": "Lähetettävät kommentit"
+  },
+  "aiReviewImportReady": {
+    "message": "Valmis"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Tarvitsee korjausta"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Lisätiedostojen muutoksia ei voitu ladata: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Lisädiffi ylittää 16 Mt:n tuontirajan. Vain tarkistettujen rivien kommentit voidaan tuoda."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "On jo olemassa"
+  },
+  "aiReviewImportPublished": {
+    "message": "Julkaistu"
+  },
+  "aiReviewImportDraft": {
+    "message": "Lisätty tarkasteluun"
+  },
+  "aiReviewImportFailed": {
+    "message": "Ei lähetetty"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Toimitusta ei vahvistettu"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Ei lähetetty"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Uusi rivi $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Vanha rivi $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Julkaise valitut"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Lisää tarkistukseen"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Julkaiseminen lähettää kommentit välittömästi. Lisää tarkistukseen tallentaa julkaisemattomat kommentit GitLab-tarkistustasi varten."
+  },
+  "aiReviewImportSending": {
+    "message": "Lähetetään valittuja kommentteja…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Valmis. Tarkista tulos jokaisen kommentin vierestä."
+  },
+  "aiReviewImportStopped": {
+    "message": "Pysäytetty. Tarkista tulos jokaisen kommentin vierestä ennen uusintayritystä."
+  },
+  "aiReviewImportEdited": {
+    "message": "Vastaus on muuttunut. Tarkista se uudelleen ennen lähettämistä."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Leikepöytä ei käytettävissä. Valitse alla oleva teksti ja kopioi se manuaalisesti."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Toimitusta ei voitu vahvistaa. Tarkista GitLab ennen uusintayritystä."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Kehote AI:lle"
+  },
+  "aiReviewImportChecked": {
+    "message": "Valmis: $1. Muut kommentit tarvitsevat huomiota.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Lopeta lähettäminen"
+  },
+  "aiReviewImportError": {
+    "message": "Toimintoa ei voitu suorittaa loppuun"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Kehotteen valmistelu epäonnistui"
+  },
+  "aiReviewImportWarning": {
+    "message": "Tarkistushuomiot"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI-tarkistus"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "AI-vastauksen kieli"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automaattinen — keskustelun kieli"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Koskee kaikkia tarkastustehtäviä ja tuontiprompteja. JSON-avaimia, polkuja ja koodia ei käännetä. Pelkkä muodon kopioiminen ei lisää kieli-instruktioita."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Kehote palautteen korjaamiseen"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Kehote uusille tarkastuskommenteille"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Kehote vastaamaan palautteeseen"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Enintään 1500 merkkiä. Uuden tarkastuksen pikanäppäimeen tuonnissa. Tehtävävälilehdet käyttävät omia kehotteitaan. MR-konteksti ja JSON-muoto lisätään automaattisesti."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Enintään 1500 merkkiä. Vastauksia valittuihin keskusteluihin Kopioinnissa tai kaikkiin ratkaisemattomiin keskusteluihin Tuonnissa. Aseta tyyli ja kieli; konteksti ja vastausmuoto lisätään automaattisesti."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Vastauskehote kaikille ratkaisemattomille keskusteluille"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Kopioi vastausmuoto"
+  },
+  "aiReviewImportFormat": {
+    "message": "Vastausmuoto AI:lle"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Valmistele vastaukset"
+  },
+  "aiReviewImportReply": {
+    "message": "Vastaa keskusteluun"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Alkuperäinen kommentti"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Vastauksesi"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Ratkaise keskustelu julkaisemisen jälkeen"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Keskustelu ratkaistu."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Vastaus julkaistu, mutta keskustelua ei ratkaistu. Voit ratkaista sen GitLabissa."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Vastaus julkaistu. Ratkaisua ei vahvistettu; tarkista keskustelu GitLabissa."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Ratkaisu on valinnainen ja oletuksena pois päältä. Se suoritetaan vain vastauksen julkaisemisen jälkeen. Luonnoksen lisääminen ei koskaan ratkaise keskustelua."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "MR-version on muuttunut. Vastaukset pysyvät linkitettyinä keskusteluihinsa; varmista niiden teksti verrattuna työntämiisi korjauksiin. Uudet havainnot vanhasta tarkistuksesta estetään."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Nämä vastaukset on linkitetty keskusteluihin, ei koodin tarkistukseen. Ennen julkaisemista varmista, että kuvaillut korjaukset on työnnetty tähän MR:ään."
+  },
+  "aiReviewImportEdit": {
+    "message": "Muokkaa tekstiä"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Lisää kommentti"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Tallenna muutokset"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Peruuta"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Kommentin teksti"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Muokkaa tekstiä ja tallenna se sitten tarkistaaksesi muutokset ennen julkaisua."
+  },
+  "aiReviewImportEditError": {
+    "message": "Muutoksia ei voitu tallentaa"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Esikatselussa voi olla enintään 200 kommenttia."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Toistokatselukehote"
+  },
+  "aiReviewFileFilters": {
+    "message": "Tiedostot tarkastettaviksi"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Koskee uusia ja toistuvia katselmointeja sekä uusien havaintojen kehotteita, ei valittua palautetta tai vastauskehotteita. Yksi kuvio rivillä tai pilkulla erotettuna; # aloittaa kommentin. Käytä merkkejä *, **, ?. Poissulut ovat etusijalla, myös uudelleennimettyjen tiedostojen vanhoille poluille. Tyhjät luettelot sisältävät kaiken. Esimerkki: src/**, *.test.js, dist/. Enintään 1500 merkkiä luetteloa kohti."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Sisällytä tiedostopäätteet (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Sisällytä tiedostopolut"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Poissulje tiedostopolut"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Poissulje kansiot"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Tiedostosuodattimia ei voitu tallentaa tai soveltaa. Käytä enintään 1500 merkkiä per lista ja poista epätavalliset ohjausmerkit."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Versio, jonka tarkastelit"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Täysi tarkistus — ei aiempaa versiota"
+  },
+  "aiReviewRepeat": {
+    "message": "Toista tarkistus"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Syötä commitin SHA"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Syötä koko tarkistettu commitin SHA (40 tai 64 heksadesimaali merkkiä)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Valitse MR-versio, jonka tarkistit ennen kommenttien jättämistä. Kaikki sitä seuraavat muutokset nykyiseen versioon saakka sisältyvät automaattisesti; sinun ei tarvitse valita yksittäisiä committeja. Jos et muista versiota, valitse täysi tarkistus."
+  },
+  "aiReviewChooseTask": {
+    "message": "Valitse tehtävä"
+  },
+  "aiReviewTaskReview": {
+    "message": "Uusi tarkistus"
+  },
+  "aiReviewTaskFix": {
+    "message": "Korjaa tarkistuksen löydöt"
+  },
+  "aiReviewTaskReply": {
+    "message": "Valmistele vastaukset"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Seurantatarkistus"
+  },
+  "aiReviewCopyTask": {
+    "message": "Kopioi tehtävä"
+  },
+  "aiReviewPasteResult": {
+    "message": "Liitä AI:n vastaus"
+  },
+  "aiReviewAdvanced": {
+    "message": "Lisäasetukset"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Tehtävän ohjeet"
+  },
+  "aiReviewSelectThread": {
+    "message": "Valitse tämä keskustelu"
+  },
+  "aiReviewSelectAll": {
+    "message": "Valitse kaikki keskustelut"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Tarkista kaikki MR commitit yhdessä. AI palauttaa uusia havaintoja muuttamatta koodia."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Valitse korjattava palaute. MR:ää varten tekoäly valmistautuu myös vastaamaan selittäen, mitä tehtiin, mitä on jäljellä ja miksi. Ratkaisemattomat keskustelut valitaan aluksi."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Valmistele myös vastaukset"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Valitse palaute, jonka koodaus-AI:n pitäisi korjata. Ratkaisemattomat keskustelut valitaan aluksi."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Anna tehtävä koodaus-AI:lle ja tarkista sen tekemät muutokset ja testit. Tuloksena on korjauksia ja normaali yhteenveto ilman valmiita julkaistavia vastauksia."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Kun korjaukset on pusattu, pyydä AI:ta tarkistamaan koodi ja selittämään tulokset valituissa keskusteluissa."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Tarkista valittu palaute ja etsi uusia virheitä. Valitse aiemmin tarkistamasi versio tai tarkista koko nykyinen MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Tehtävä: koko MR kaikissa commiteissa."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Valitut kommentit: $1; keskustelun konteksti ja saatavilla olevat koodikatkelmat sisällytetään."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Vastauksia koskevat keskustelut: $1, koko keskustelu mukaan lukien. AI tarvitsee pääsyn arkistoon."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Tarkistettavat keskustelut: $1, plus koodimuutosten tarkistus."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Kuvaus sisällytetty."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Kuvaus pois jätetty."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Koodimuutokset mukana, latausrajoitukset huomioiden."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI:n on luettava koodi arkistosta."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Olemassa olevat keskustelut lisätään vain päällekkäisyyksien suodattamiseksi."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Olemassa olevia keskusteluja ei lisätä."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Tiedostosuotimet ovat käytössä."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Ei aikaisempaa versiota valittu: tarkistetaan koko nykyinen MR."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Julkaisemattomat luonnos-keskustelut eivät voi saada vastauksia ja ne on jätetty pois."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Valitse palaute vasemmalta. Uutta tarkistusta varten käytä Uusi tarkistus -välilehteä."
+  },
+  "aiReviewNextStep": {
+    "message": "Kopioi tehtävä AI-työkaluusi. Jos se palauttaa kommentteja tai vastauksia, käytä Liitä AI-vastaus tarkistaaksesi ja muokataksesi ne ennen julkaisua."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Tarkista korjaukset ja testit, työnnä kaikki commitit MR:ään, ja käytä sitten Liitä AI-vastaus tarkistaaksesi valmiit vastaukset ennen julkaisua. Uudet commitit eivät vaadi vastausten uudelleengenerointia."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Automaattiset ohjeet (edistynyt)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Kaikki lohkot ovat oletuksena käytössä ja niitä käytetään vain asiaankuuluvissa tehtävissä. Muokkaa, poista käytöstä tai tyhjennä mikä tahansa lohko. Tehtäväkehoteilla on myös omat ohjeensa. MR-tiedot, JSON-esimerkit ja latausilmoitukset luodaan erikseen; julkaisun tarkistukset koskevat aina."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Lisää tehtävään, jos sovellettavissa"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Enintään 1500 merkkiä. Tyhjä teksti ei lisää mitään. Nollaus palauttaa oletustekstin ja ottaa tämän lohkon käyttöön."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Käytä {language} valitulle vastauskielelle. Enintään 1500 merkkiä; tyhjä teksti ei lisää mitään."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Käytä {selection}:ää valittuihin tai ratkaisemattomiin keskusteluihin. Enintään 1500 merkkiä; tyhjä teksti ei lisää mitään."
+  },
+  "aiReviewRule_repository": {
+    "message": "Paikallinen arkisto ja etä"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Työkopio korjauksia varten"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Työkappale tarkasteltavaksi"
+  },
+  "aiReviewRule_language": {
+    "message": "Vastauksen kieli"
+  },
+  "aiReviewRule_scope": {
+    "message": "Tiedostosuodattimen tulkinta"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Palautekonteksti"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Korjaukset ilman vastauksia"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Pelkkä kuvaustehtävä"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Puuttuu valikoitu palaute"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Valmiina julkaisemaan vastaukset korjausten jälkeen"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Arvostelurajat"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Lähde arvostelua varten"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Mukana olevat koodimuutokset"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Arvostelu ilman mukana olevaa koodia"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Ei saatavilla oleva lähde"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON-vastaus"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Sijaintien ja lähtöpisteiden löytäminen"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Jatkovastaustyyli"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Pää muuttumaton"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Vertailurivin sijainnit"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Paikallisen version vertailu"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Kohdehaaran muutokset"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Tarkistus ilman vertailuversiona"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Uudelleentarkistus ilman keskusteluja"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Valittu keskustelualue"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Kertyvä diff-konteksti"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Nykyiset keskustelut uudessa tarkistuksessa"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Uusi tarkistus tuonnissa"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Tuonnin tarkistusrajat"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Tuonnin löytömuoto"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Vastauksen rajat ja muoto"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Vastauksen tehtäväalue"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Lisää kenttä"
+  },
+  "jiraQuickActionField": {
+    "message": "Kenttä"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Toiminto"
+  },
+  "jiraQuickActionValue": {
+    "message": "Arvo"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Poista"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Lisää"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Poista"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Korvaa kaikki"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Eräpäivä"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Mukautettu kenttä (edistynyt)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Arvot erotettu pilkuilla. Lisää/poista säilyttää muut arvot; korvaa kaikki ylikirjoittaa listan."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "Kentän tunnus: customfield_12345. Anna arvo JSON-muodossa, kuten tämä Jira-kenttä odottaa."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Tarkka Jira-siirtymän nimi (tai kohdetila)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Tyhjä arvo: ei muutosta."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Tarkista kentän arvo: mukautetut kentät vaativat kelvollisen tunnuksen ja JSONin; päivämäärissä käytetään YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Käytä kutakin kenttää vain kerran per painike."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Toiminto epäonnistui."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Tila muuttui, mutta kentän päivitys epäonnistui."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Kohdetta ei voitu päivittää. Avaa paneeli uudelleen tarkistaaksesi sen nykyiset arvot."
+  },
+  "mrActions": {
+    "message": "MR-toiminnot"
+  },
+  "mrActionsHint": {
+    "message": "Luo nimettyjä painikkeita muuttaaksesi tunnisteita tai tyhjentääksesi muita MR-kenttiä. Vedä niitä painikelistassa muuttaaksesi niiden järjestystä."
+  },
+  "mrActionsProfileHint": {
+    "message": "Tämä projekti käyttää omaa toimintolistaa tallennuksen jälkeen. Poista kaikki merkinnät piilottaaksesi nämä painikkeet tälle projektille."
+  },
+  "mrActionAdd": {
+    "message": "Lisää MR-toiminto"
+  },
+  "mrActionLabel": {
+    "message": "Painikkeen nimi"
+  },
+  "mrActionDelete": {
+    "message": "Poista toiminto"
+  },
+  "mrActionType": {
+    "message": "Toiminto"
+  },
+  "mrActionLabels": {
+    "message": "Tunnisteet"
+  },
+  "mrActionLabelsHint": {
+    "message": "Tarkat tunnisteiden nimet, eroteltuna pilkuilla tai uusilla riveillä. Välinimet säilyvät. Lisääminen/korvaaminen voi luoda puuttuvia projektin tunnisteita."
+  },
+  "mrAction_remove_labels": {
+    "message": "Poista määritetyt tunnisteet"
+  },
+  "mrAction_clear_labels": {
+    "message": "Tyhjennä kaikki tunnisteet"
+  },
+  "mrAction_add_labels": {
+    "message": "Lisää tunnisteita"
+  },
+  "mrAction_set_labels": {
+    "message": "Korvaa kaikki tunnisteet"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Tyhjennä vastuuhenkilöt"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Tyhjennä tarkastajat"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Tyhjennä virstanpylväs"
+  },
+  "mrActionInvalid": {
+    "message": "Kirjoita painikkeen nimi, valitse tuettu toiminto ja määritä vähintään yksi tunniste lisäystä, poistoa tai korvaamista varten."
+  },
+  "mrActionConfirm": {
+    "message": "Käytetäänkö “$1” tässä MR:ssä?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab ei palauttanut Rebase-toiminnon tilaa. Lataa yhdistämispyyntö uudelleen ja yritä uudestaan."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab palautti toistuvan tehtäväsivun pipelinelle #$1. Tehtävälistaa ei voitu ladata kokonaan."
+  },
+  "displayPreferencesTitle": {
+    "message": "Näytä säännöt ja rajoitukset"
+  },
+  "displayPreferencesHint": {
+    "message": "Yleisasetukset; lataa GitLab-välilehdet uudelleen, kun muokkaat niitä. Lisääntyneet työt tai kommentit kasvattavat datansiirtoa. Lokiesikatselut lataavat koko jäljen ennen kuin valitset ei-tyhjiä rivejä. Arvostelijan merkit etsivät vanhimmista kommenteista “Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Esikatseltavat epäonnistuneet työt"
+  },
+  "failedJobTraceLines": {
+    "message": "Ei-tyhjät lokirivit per työ"
+  },
+  "reviewerNotesLimit": {
+    "message": "Kommentit, joista etsitään arvostelijan merkkejä"
+  },
+  "mrSizeLines": {
+    "message": "MR-kokorajat: rivit (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR-kokorajat: tiedostot (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Lisätyt herkät tiedostokuvioinnit"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Herkkien tiedostojen poissulutukset"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Käytä sisäänrakennettuja herkkiä tiedostosääntöjä"
+  },
+  "sizeThresholdsHint": {
+    "message": "Kolme kasvavaa positiivista kokonaislukua, pilkuilla erotettuna. Rajat ovat mukaan lukien; suuremmat muutokset ovat XL. Tiedostorajojen soveltaminen, kun rivimäärät eivät ole saatavilla."
+  },
+  "sensitivePatternsHint": {
+    "message": "Yksi malli per rivi, kirjainkoon huomioimatta. * vastaa mitä tahansa tekstiä (myös /), ? yksi merkki. Mallit ilman / ottavat tiedostonimiin; muut mallit ottavat koko repositorion polkuun. Poissulut voittavat. Sisäänrakennetut säännöt kattavat ympäristön, kontti/CI, tunnistetiedostot ja yksityiset avaimet. Sammuta ne käyttääksesi vain omia mallejasi."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Tarkista numeeriset alueet, kolme kasvavaa kokorajaa ja tiedostomallien pituus."
+  },
+  "failedJobsPreview": {
+    "message": "Esikatselu: $1 epäonnistunut työ(t) — viimeiset $2 ei-tyhjät rivit",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Lisää epäonnistuneita töitä — avaa koko pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 riviä, $2 tiedostoa",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 tiedostoa muutettu",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Arkaluontoisten tiedostojen tarkistus kesken"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Kaikkia tiedostoja ei voitu tarkistaa: API-pyyntö epäonnistui tai $1-tiedoston tarkistusraja saavutettiin. Listatut osumat ovat osittaisia; tarkista koko MR-diffi.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Varoitus: tämä raportti saattaa olla epätäydellinen. Keräys on rajoitettu $1 MR:ään per kategoria ja $2 tapahtumaan.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 ratkaisemattomat ketjut",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Tämä esikatselu saattaa olla epätäydellinen: API-virhe tai vain ensimmäiset $2 keskustelut tarkistettu. Tunnetut ratkaisemattomat ketjut: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

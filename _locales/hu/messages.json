@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Automatizálás, Jira, CI/CD és AI"
+  },
+  "extDescription": {
+    "message": "GitLab MR-ek automatizálása: összevonás, verziók, Jira, CI/CD és AI-s kódellenőrzés. API-token nélkül."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Műveletek"
+  },
+  "howItWorks": {
+    "message": "Hogyan működik"
+  },
+  "openSettingsInTab": {
+    "message": "Beállítások megnyitása új fülön"
+  },
+  "exportSettings": {
+    "message": "Beállítások exportálása"
+  },
+  "importSettings": {
+    "message": "Beállítások importálása"
+  },
+  "settingsTransferHint": {
+    "message": "Minden beállítást és projektprofilt megoszthatsz JSON fájlként."
+  },
+  "settingsImportReplace": {
+    "message": "Ez lecseréli az összes jelenlegi beállítást és projektprofilt."
+  },
+  "applySettingsImport": {
+    "message": "Beállítások cseréje"
+  },
+  "cancelSettingsImport": {
+    "message": "Mégse"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — projektprofilok: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Érvénytelen beállításfájl vagy nem támogatott formátum."
+  },
+  "settingsFileTooLarge": {
+    "message": "A beállításfájl túllépi a Chrome Sync tárhelykorlátját."
+  },
+  "settingsExportFailed": {
+    "message": "Nem sikerült exportálni a beállításokat. Kérlek, próbáld újra."
+  },
+  "settingsImportFailed": {
+    "message": "Nem sikerült importálni a beállításokat. A jelenlegi konfigurációd változatlan."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Engedélyezd a hozzáférést a Jira oldalhoz, hogy importáld ezeket a beállításokat."
+  },
+  "settingsImported": {
+    "message": "Beállítások importálva!"
+  },
+  "buttonOrder": {
+    "message": "Gombok sorrendje"
+  },
+  "buttonOrderHint": {
+    "message": "Húzd át a sorrendezéshez. Kattints rá a leíráshoz. Egyedi feladatok kékben."
+  },
+  "general": {
+    "message": "Általános"
+  },
+  "soundNotifications": {
+    "message": "Hangértesítések"
+  },
+  "desktopNotifications": {
+    "message": "Asztali értesítések"
+  },
+  "showTimeTracker": {
+    "message": "MR életkor jelvény megjelenítése"
+  },
+  "skipConfirmations": {
+    "message": "MR akciók megerősítésének kihagyása"
+  },
+  "uxEnhancer": {
+    "message": "MR lista fejlesztések"
+  },
+  "dimDrafts": {
+    "message": "Vázlat MR-ek halványítása listában"
+  },
+  "highlightOwnMrs": {
+    "message": "Saját MR-ek kiemelése listában"
+  },
+  "showOnlyMine": {
+    "message": "„Csak az enyém” kapcsoló a lista oldalon"
+  },
+  "toggleOnlyMine": {
+    "message": "Csak az enyém"
+  },
+  "versionBump": {
+    "message": "Verziószám növelése"
+  },
+  "filePath": {
+    "message": "Fájlelérési út"
+  },
+  "filePathHint": {
+    "message": "Fájl, amely a verziószámot tartalmazza"
+  },
+  "versionField": {
+    "message": "Verzió mező"
+  },
+  "versionFieldHint": {
+    "message": "JSON kulcs vagy TOML kulcs (pl. „version” vagy „tool.poetry.version”)"
+  },
+  "strategy": {
+    "message": "Stratégia"
+  },
+  "strategyPatch": {
+    "message": "Javítóverzió (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Kisebb verzió (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Főverzió (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Commit üzenet"
+  },
+  "commitMessageHint": {
+    "message": "Használd a {version} helyőrzőt"
+  },
+  "quickComments": {
+    "message": "Gyors kommentek"
+  },
+  "quickCommentsHint": {
+    "message": "Egykattintásos gombok, amelyek azonnal általános kommentet tesznek közzé az MR-ben (nem a kódon belül). A gombok az akciósávban jelennek meg."
+  },
+  "quickCommentsAdd": {
+    "message": "Komment hozzáadása"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Gyors kommentek"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Konfigurálható sablon komment gombok az MR oldalon. Egy kattintással posztolhatsz LGTM-et, Needs fixes-t vagy bármilyen egyéni kommentet."
+  },
+  "reviewers": {
+    "message": "Véleményezők"
+  },
+  "reviewersList": {
+    "message": "Véleményezők listája"
+  },
+  "reviewersListHint": {
+    "message": "Felhasználónevek, amelyeket meg kell említeni a 'Véleményezők:' kommentben (@user1, @user2). Beállításkor kihagyja a komment ellenőrzést és a CI feladatot. Nem változtatja meg a GitLab véleményezői hozzárendeléseket."
+  },
+  "jobName": {
+    "message": "Feladat neve"
+  },
+  "jobNameHint": {
+    "message": "Tartalékként szolgáló feladat, ha egy komment sem illeszkedik a \"Reviewer(s):\" mintára"
+  },
+  "customJobButtons": {
+    "message": "Egyéni feladat gombok"
+  },
+  "customJobsHint": {
+    "message": "Használj vesszőt a láncoláshoz: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Feladat hozzáadása gomb"
+  },
+  "addProfileFor": {
+    "message": "+ Profil hozzáadása $1-nek",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Jelenlegi: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Mentve!"
+  },
+  "unsavedChanges": {
+    "message": "Nincs mentett változtatás..."
+  },
+  "customFile": {
+    "message": "Egyéni fájl..."
+  },
+  "plainText": {
+    "message": "sima szöveg"
+  },
+  "removeProfile": {
+    "message": "Eltávolítod a profilját $1-nek?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Alapértelmezett"
+  },
+  "buttonsFor": {
+    "message": "Gombok $1-hez",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Felülírhatod, mely gombok jelenjenek meg ebben a projektben."
+  },
+  "leaveEmptyDefault": {
+    "message": "Hagyd üresen az alapértelmezett használatához"
+  },
+  "projectSpecificJobs": {
+    "message": "Projektspecifikus feladatok. Használj vesszőt az összefűzéshez."
+  },
+  "languageLabel": {
+    "message": "Nyelv"
+  },
+  "languageAuto": {
+    "message": "Auto (böngésző)"
+  },
+  "btnVersion": {
+    "message": "Verziószám növelése"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Újrabázis + Verzió"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Újrabázis + Automatikus egyesítés"
+  },
+  "btnRebaseForce": {
+    "message": "Újrabázis + Kötelező egyesítés"
+  },
+  "btnShip": {
+    "message": "Rebase + Verzió + Automatikus egyesítés"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Verzió + Kényszerített egyesítés"
+  },
+  "btnReviewers": {
+    "message": "Véleményezők"
+  },
+  "btnPipelineRestart": {
+    "message": "Új pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Pipeline megszakítása"
+  },
+  "btnDraftToggle": {
+    "message": "Piszkozat / Kész váltás"
+  },
+  "btnRetryFailed": {
+    "message": "Sikertelen feladatok újraindítása"
+  },
+  "btnCopyMr": {
+    "message": "MR másolása"
+  },
+  "hintVersion": {
+    "message": "Beolvassa a konfigurált fájlt (pl. package.json), a választott stratégia szerint növeli a verziót (patch/minor/major), és a sablonüzeneteddel commitol."
+  },
+  "hintRebase": {
+    "message": "Áthelyezi a forráságat a célágra. Nem egyesít és nem engedélyezi az automatikus egyesítést."
+  },
+  "hintRebaseVersion": {
+    "message": "Az ágat áthelyezi a célágra (ha szükséges), majd növeli a verziót a beállított fájlban. Nem egyesít."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Az ágat áthelyezi a célágra (ha a projekt rebase/ff-et használ). Ezután engedélyezi a \"merge when pipeline succeeds\" opciót. Az MR-ből veszi a squash/törlés ág beállításokat."
+  },
+  "hintRebaseForce": {
+    "message": "Áthelyezés CI kihagyással, minden futó pipeline leállítása, majd azonnali egyesítés CI várakozás nélkül. Az MR-ből veszi a squash/törlés ág beállításokat."
+  },
+  "hintShip": {
+    "message": "Teljes folyamat: rebase → verzió növelése a beállított fájlban → várni, míg az MR szinkronizálódik → várni az új pipeline-ra → automatikus egyesítés engedélyezése."
+  },
+  "hintForceShip": {
+    "message": "Gyors folyamat: rebase (CI kihagyás) → verzió növelése → 15 mp várakozás → pipeline leállítása → azonnali egyesítés. Kihagyja a CI ellenőrzéseket."
+  },
+  "hintReviewers": {
+    "message": "Beállított reviewer megemlítései, újrahasználhatod egy Reviewer(ek): megjegyzését a legutóbbi jegyzetekből, vagy futtathatod a beállított CI munkát."
+  },
+  "hintPipelineRestart": {
+    "message": "Új pipeline-t hoz létre az API-n keresztül a forrás ágra. Hasznos, ha a pipeline elakadt, vagy új futtatásra van szükséged."
+  },
+  "hintPipelineCancel": {
+    "message": "Kérés a futó, függő vagy létrehozott pipeline-ok megszakítására, amik ehhez a MR-hez tartoznak."
+  },
+  "hintDraftToggle": {
+    "message": "Hozzáadja vagy eltávolítja a „Draft:” előtagot az MR címéből. Más MR beállításokat nem változtat."
+  },
+  "hintRetryFailed": {
+    "message": "Újrapróbálja a sikertelen feladatokat az MR jelenlegi pipeline-jában. A sikeres feladatokat nem érinti."
+  },
+  "hintCopyMr": {
+    "message": "A MR címét és linkjét a vágólapra másolja."
+  },
+  "toastRebasing": {
+    "message": "Rebase folyamatban..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Auto-merge engedélyezése..."
+  },
+  "toastStep12Rebasing": {
+    "message": "1/2 lépés: Rebase folyamatban..."
+  },
+  "toastStep22Automerge": {
+    "message": "2/2 lépés: Auto-merge engedélyezése..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "1/2 lépés: Rebase (CI kihagyása)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "2/2 lépés: Pipeline megszakítása és mergelés..."
+  },
+  "toastCancellingMerging": {
+    "message": "Pipeline megszakítása és mergelés..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Új pipeline létrehozása a $1-hez...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "$1 pipeline(ok) megszakítása...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Kész állapot beállítása..."
+  },
+  "toastMarkingDraft": {
+    "message": "Vázlat állapot beállítása..."
+  },
+  "toastRetrying": {
+    "message": "$1 sikertelen munkafolyamat újrapróbálása...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Nincsenek sikertelen munkafolyamatok a jelenlegi MR pipeline-ban"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Nincsenek futó pipeline-ok a megszakításhoz"
+  },
+  "toastAssigningReviewers": {
+    "message": "Reviewer említések közzététele…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Reviewer komment újbóli közzététele..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Nem található reviewer komment, $1 indítása...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Verzió frissítése..."
+  },
+  "toastWaitingSync": {
+    "message": "Várakozás, hogy az MR szinkronban legyen a v$1-el...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Pipeline-ra várakozás..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Automatikus egyesítés kísérlet $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Várakozás, hogy az MR szinkronizálódjon... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Várakozás a \"$1\"-re... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "\"$1\" munkafolyamat futtatása...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "\"$1\" munkafolyamat újrapróbálása...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "\"$1\" munkafolyamat már sikeres, kihagyás",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "\"$1\" munkafolyamat már $2, várakozás...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 kész",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 sikertelen: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR cím és link másolva!"
+  },
+  "toastWaiting15s": {
+    "message": "Várakozás 15 mp-ig a merge előtt..."
+  },
+  "confirmRebase": {
+    "message": "Rebase-eljük az ágat?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Verzió növelés?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Automatikus merge?"
+  },
+  "confirmAutomerge": {
+    "message": "Automatikus merge engedélyezése?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → MOST MERGE?"
+  },
+  "confirmForce": {
+    "message": "⚠️ ÖSSZEVONÁS MOST (pipeline kihagyása)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Verzió növelés → Automatikus merge?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Verzió növelés → Automatikus merge?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Verzió növelés → MOST MERGE?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Verzió növelés → MOST MERGE?"
+  },
+  "confirmNewPipeline": {
+    "message": "Új pipeline létrehozása ehhez az ághoz?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Megszakítja az összes futó pipeline-t?"
+  },
+  "labelAutomerge": {
+    "message": "Automatikus merge"
+  },
+  "labelForceMerge": {
+    "message": "Kényszerített merge"
+  },
+  "labelVersionAutomerge": {
+    "message": "Verzió + Automatikus merge"
+  },
+  "labelVersionForceMerge": {
+    "message": "Verzió + Kényszerített merge"
+  },
+  "labelMarkReady": {
+    "message": "Készként jelölés"
+  },
+  "labelMarkDraft": {
+    "message": "Vázlatként jelölés"
+  },
+  "labelRetryFailed": {
+    "message": "Sikertelen újrapróbálása"
+  },
+  "labelNewPipeline": {
+    "message": "Új pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Idő az MR létrehozása óta: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR műveletek"
+  },
+  "welcomeSubtitle": {
+    "message": "Gyorsítsd fel a merge kérésed folyamatát egykattintásos műveletekkel."
+  },
+  "welcomeQuickStart": {
+    "message": "Gyors kezdés"
+  },
+  "welcomeStep1Title": {
+    "message": "Nyiss meg bármelyik Merge Request oldalt"
+  },
+  "welcomeStep1Desc": {
+    "message": "Nyiss meg egy HTTPS MR oldalt, miközben be vagy jelentkezve a GitLab.com-ra vagy a saját hosztolt GitLabodra. Engedélyezd a kiterjesztés hozzáférését ehhez az oldalhoz."
+  },
+  "welcomeStep2Title": {
+    "message": "Nézd, ahogy megjelennek a művelet gombok"
+  },
+  "welcomeStep2Desc": {
+    "message": "A gombok megjelennek az MR oldalon. Egy kezdő készlet az első telepítéskor engedélyezve van."
+  },
+  "welcomeStep3Title": {
+    "message": "Testreszabás a kiterjesztés felugró menüjéből"
+  },
+  "welcomeStep3Desc": {
+    "message": "Kattints a kiterjesztés ikonra, hogy engedélyezd/tiltsd a gombokat, állítsd be a verzió növelő fájlt, adj hozzá egyedi munkagombokat, és még sok mást."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Alapértelmezés szerint engedélyezve"
+  },
+  "welcomeMoreActions": {
+    "message": "További műveletek (engedd be a beállításoknál)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Hogyan működik"
+  },
+  "welcomeHowDesc": {
+    "message": "Ez a kiterjesztés a meglévő GitLab munkamenetedet (cookie-kat) használja, hogy a GitLab API-t a nevedben hívja. Személyes hozzáférési token nem szükséges."
+  },
+  "welcomeHowList1": {
+    "message": "GitLab.com-hoz és saját hosztolt GitLabhoz HTTPS-en keresztül; a funkciók a szerver API-itól, az oldal elrendezésétől és a jogosultságaidtól függenek."
+  },
+  "welcomeHowList2": {
+    "message": "A műveletek ugyanazokat a jogosultságokat használják, mint a bejelentkezett felhasználód"
+  },
+  "welcomeHowList3": {
+    "message": "A testreszabott munka láncok a háttérben futnak. Tarts egy bejelentkezett fület ugyanazon a GitLabon az API hozzáféréshez."
+  },
+  "welcomeHowList4": {
+    "message": "A projektenkénti profilok lehetővé teszik, hogy testreszabhasd a gombokat különböző repókhoz"
+  },
+  "welcomeTip": {
+    "message": "Projektenkénti profilokat a felugró beállításokban hozhatsz létre. Ez hasznos, ha különböző projektekhez különböző verziófájlok vagy egyedi CI feladatok kellenek."
+  },
+  "welcomeOpenSettings": {
+    "message": "Beállítások megnyitása"
+  },
+  "cardAutomergeTitle": {
+    "message": "Automatikus összeolvasztás"
+  },
+  "cardAutomergeDesc": {
+    "message": "Rebase-eld az ágat (ha szükséges), és engedélyezd az összeolvasztást, ha a pipeline sikeres."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Új pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Készíts egy friss pipeline-t a forráságra egy kattintással."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Pipeline megszakítása"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Kérd a futó vagy függő MR pipeline-ok megszakítását."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Piszkozat váltó"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Kapcsolgasd az MR-t Piszkozat és Kész állapot között anélkül, hogy a címet szerkesztenéd."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Verzió emelés"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Verzió növelése a package.json, pyproject.toml vagy bármely egyedi fájlban. Konfigurálható stratégia (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Kiadás (Verzió + Egyesítés)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase, ha szükséges, verzió növelése és automatikus merge kérés. Tartsd nyitva az MR fület, amíg a művelet be nem fejeződik."
+  },
+  "cardForceMergeTitle": {
+    "message": "Kényszerített merge"
+  },
+  "cardForceMergeDesc": {
+    "message": "Merge kérés pipeline sikerére várás nélkül. GitLab jogosultságok és merge szabályok továbbra is érvényben maradnak."
+  },
+  "cardReviewersTitle": {
+    "message": "Értékelők"
+  },
+  "cardReviewersDesc": {
+    "message": "Az konfigurált felhasználónevek említése egy megjegyzésben, egy reviewer megjegyzés újrafelhasználása, vagy CI job futtatása. Nem rendeli hozzá GitLab natív reviewer mezőjét."
+  },
+  "uiCustomization": {
+    "message": "UI testreszabás"
+  },
+  "collapseBars": {
+    "message": "Felső sávok összecsukása gomb"
+  },
+  "hideRightSidebar": {
+    "message": "Jobb oldali sáv elrejtése MR oldalakon"
+  },
+  "collapseTopBars": {
+    "message": "Felső sávok váltása"
+  },
+  "cardCollapseTitle": {
+    "message": "Felső sávok összecsukása"
+  },
+  "cardCollapseDesc": {
+    "message": "Hozzáad egy gombot a GitLab navigációs sávok összecsukásához/kibontásához. Helyet takarít meg és segít a tartalomra koncentrálni."
+  },
+  "cardHideSectionsTitle": {
+    "message": "UI szakaszok elrejtése"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Jobb oldali sáv elrejtése MR-oldalakon a teljes szélességű tartalom érdekében."
+  },
+  "jiraIntegration": {
+    "message": "Jira integráció"
+  },
+  "jiraUrl": {
+    "message": "Jira URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center URL, pl. https://jira.company.com — jelentkezz be a Jirába, majd kattints az 'Engedélyezd a Jira oldal hozzáférését' gombra. A Cloud nem teljesen támogatott."
+  },
+  "jiraGrantAccess": {
+    "message": "Engedélyezd a Jira oldal hozzáférését"
+  },
+  "jiraAccessGranted": {
+    "message": "Az oldalhozzáférés engedélyezve. Jelentkezz be a Jirába ezen a böngészőn."
+  },
+  "jiraUrlInvalid": {
+    "message": "Adj meg egy HTTPS Jira alap URL-t, hitelesítő adatok/lekérdezés/részlet nélkül."
+  },
+  "jiraErrorAuth": {
+    "message": "A Jira munkameneted lejárt, vagy bejelentkezés szükséges. Nyisd meg a Jirá-t, jelentkezz be, majd próbáld újra betölteni."
+  },
+  "jiraErrorForbidden": {
+    "message": "A Jira megtagadta a hozzáférést ehhez az ügyhöz vagy művelethez. Ellenőrizd a fiókodat és a jogosultságaidat a Jirában."
+  },
+  "jiraErrorPermission": {
+    "message": "A kiterjesztés nem fér hozzá ehhez a Jira oldalhoz. Ellenőrizd az oldalengedélyt és a Jira URL-t a kiterjesztés beállításaiban."
+  },
+  "jiraErrorNetwork": {
+    "message": "Nem sikerült elérni Jira-t. Ellenőrizd a kapcsolatodat, VPN-t és Jira URL-t, majd próbáld újra betölteni."
+  },
+  "jiraErrorUnavailable": {
+    "message": "A Jira ideiglenesen elérhetetlen, vagy korlátozza a kéréseket. Várj, és próbáld újra a betöltést."
+  },
+  "jiraErrorNotFound": {
+    "message": "Egy Jira problémát nem találtak meg, vagy nem látható a fiókodban."
+  },
+  "jiraErrorResponse": {
+    "message": "A Jira nem támogatott választ adott. Ellenőrizd az URL-t és a Jira Server/Data Center kompatibilitását."
+  },
+  "jiraErrorUnknown": {
+    "message": "A Jira kérés meghiúsult. Nyisd meg a Jira-t, hogy ellenőrizze a problémát és a hozzáférésedet."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Lehet, hogy a módosítás már megtörtént. A művelet megismétlése előtt ellenőrizze a feladatot a Jirában."
+  },
+  "jiraErrorTransitions": {
+    "message": "Nem tudtam betölteni a Jira átmeneteket."
+  },
+  "jiraOpenSite": {
+    "message": "Jira megnyitása"
+  },
+  "jiraRetryRead": {
+    "message": "Újrapróbálkozás betöltése"
+  },
+  "jiraDismissError": {
+    "message": "Bezárás"
+  },
+  "jiraTicketRegex": {
+    "message": "Jegy regex"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Egyedi regex a jegyazonosítók elemzéséhez MR címekről. Alapértelmezés: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "A probléma típusa és prioritási ikonok megjelenítése az MR listán"
+  },
+  "jiraQuickActions": {
+    "message": "Gyors akciók"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Válassz bármilyen mezőkombinációt minden gombhoz. Hagyd csak azokat a változtatásokat, amiket el kell végeznie. A verzióknak és komponenseknek már létezniük kell a Jira projektben."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Művelet hozzáadása"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Címke"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Állapot"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Felhasználónév"
+  },
+  "jiraSidebarStatus": {
+    "message": "Állapot"
+  },
+  "jiraSidebarType": {
+    "message": "Típus"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioritás"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Felelős"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Nincs kijelölve"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Felhasználó keresése..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Nem található felhasználó"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Kijelölés megszüntetése"
+  },
+  "jiraSidebarReporter": {
+    "message": "Bejelentő"
+  },
+  "jiraSidebarLabels": {
+    "message": "Címkék"
+  },
+  "jiraSidebarCreated": {
+    "message": "Létrehozva"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Frissítve"
+  },
+  "jiraSidebarDescription": {
+    "message": "Leírás"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Komponensek"
+  },
+  "jiraSidebarResolution": {
+    "message": "Megoldás"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Érintett"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Javítási verzió"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Nincs"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Nem található verzió"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Verziók keresése..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Nem sikerült frissíteni a javító verziókat"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Mellékletek"
+  },
+  "jiraSidebarComments": {
+    "message": "Hozzászólások"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Hozzászólás hozzáadása..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Hozzászólás"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Több hozzászólás megjelenítése"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Még nincs hozzászólás"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Sikertelen hozzászólás közzététele"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Hozzászólás törlése"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Törli ezt a hozzászólást?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Hozzászólás törlése sikertelen"
+  },
+  "cardJiraTitle": {
+    "message": "Jira státusz jelvények"
+  },
+  "cardJiraDesc": {
+    "message": "Megjeleníti a Jira jegyek státuszát az MR lista oldalon. Kinyeri a jegyazonosítókat az MR címekből (pl. CCT-1111), és színes státusz jelvényeket mutat. Állítsd be a Jira URL-ed a beállításoknál."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Egyedi jegy regex"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Állíts be egy egyedi reguláris kifejezést a Jira jegyazonosítók MR címekből történő kinyeréséhez. Hasznos, ha a projekted nem szabványos jegy prefixeket használ."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Jira jegy oldalsáv"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Kattints bármelyik Jira jelvényre, hogy megnyisd az oldalsávot a teljes jegyadatokkal – összefoglaló, státusz, típus, prioritás, felelős és leírás. Olvashatod, közzéteheted és törölheted a saját hozzászólásaid anélkül, hogy elhagynád a GitLab-ot. A javító verziókat közvetlenül az oldalsávban választhatod ki a projekt elérhető verzióiból."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Mellékletek az oldalsávban"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Nézd meg a képeket, videókat és fájlokat a Jira jegyekből közvetlenül az oldalsávban. A képek és videók teljes képernyős lightboxban nyílnak meg."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Jira jelvények az MR oldalon"
+  },
+  "cardJiraDetailDesc": {
+    "message": "A Jira jegy státusz jelvényei az MR címében jelennek meg a részletező oldalon. Kattints a jelvényre, hogy megnyisd az oldalsávot a jegy teljes részleteivel."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Jira státusz módosítása"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Módosítsd a jegy státuszát közvetlenül az oldalsávból. Csak az aktuális státuszból elérhető átmeneteket mutatja."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Jira felelős módosítása"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Kattints a felelősre a kereséshez és átrendeléshez. Automatikus kitöltés avatárokkal, 'unassign' gomb a felelős eltávolításához."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira gyorsműveletek"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Egylöketes gombok státusz, felelős, címkék, verziók és egyéb mezők módosításához. Minden gomb frissíthet egy mezőt vagy többet."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Hibajegy típus és prioritás ikonok"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Mutassa a Jira problématípus és prioritás ikonokat az állapotjelzők mellett az MR listán és részletező oldalon. Natív Jira ikonokat használ."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebase-eld a forráságat a célághoz anélkül, hogy egyesítenél."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Verzió"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase-eld az ágat és növeld a verziót egy kattintással. Nem egyesít."
+  },
+  "cardCopyMrTitle": {
+    "message": "MR másolása"
+  },
+  "cardCopyMrDesc": {
+    "message": "Másold az MR címét és linkjét a vágólapra egy kattintással."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Sikertelen feladatok újrapróbálása"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Ismételd meg az MR jelenlegi pipeline-jának sikertelen feladatait. A sikeres feladatokra nincs hatással."
+  },
+  "welcomeMrListFeatures": {
+    "message": "MR lista oldal fejlesztések"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Terv MR-ek elhalványítása"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Vizuálisan halványítsd a Terv MR-eket a merge request lista oldalán, hogy az aktívakra tudj koncentrálni."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Emeld ki a saját MR-eidet"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Emeld ki a saját MR-eidet a listában kék kerettel a gyors azonosítás érdekében."
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"Csak az enyém\" kapcsoló"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Egy kattintásos kapcsoló, amivel a MR-listát csak a te merge requestjeidre szűkítheted."
+  },
+  "cardMrAgeTitle": {
+    "message": "MR kor jelző"
+  },
+  "cardMrAgeDesc": {
+    "message": "Megmutatja, mennyi ideje hozták létre a MR-t, jelzőként jelenik meg a MR oldalon."
+  },
+  "showReviewerBadge": {
+    "message": "„A te értékelésed” jelző a kommentekből"
+  },
+  "badgeYourReview": {
+    "message": "A te értékelésed"
+  },
+  "badgeYourReviewHint": {
+    "message": "Mint értékelő említenek meg a MR kommentjeiben"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "„A te értékelésed” jelző"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "A legrégebbi hozzászólásokban keresi a „Reviewer(s): @you” mintát. A keresés mélysége beállítható (alapértelmezés: 10). A GitLab beépített véleményező funkciójától független."
+  },
+  "showNeedsReview": {
+    "message": "„Szükségem van rá, hogy értékeljem” kapcsoló a listán"
+  },
+  "toggleNeedsReview": {
+    "message": "Véleményezésre vár tőlem"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "„Szükségem van rá, hogy értékeljem” kapcsoló"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Egy kattintásos kapcsoló, amivel a MR-listát csak azokra a merge requestekre szűrheted, ahol téged neveztek ki értékelőnek."
+  },
+  "showCopyMr": {
+    "message": "Másolás gomb a MR-lista elemein"
+  },
+  "showThreadsBadge": {
+    "message": "Megoldatlan szálak száma a MR-listán"
+  },
+  "showSizeBadge": {
+    "message": "MR méret címkék (S/M/L/XL) a MR-listán"
+  },
+  "showConflictsBadge": {
+    "message": "Konfliktusjelző megjelenítése az MR listán"
+  },
+  "showApprovalBadge": {
+    "message": "Jóváhagyások számának és a saját jóváhagyás jelzőjének megjelenítése az MR listán"
+  },
+  "approvalBadgeMine": {
+    "message": "Jóváhagytad"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Te"
+  },
+  "cardThreadsTitle": {
+    "message": "Megoldatlan szálak száma"
+  },
+  "cardThreadsDesc": {
+    "message": "Megoldatlan szálak számának megjelenítése. A „+” az első oldal teljes kitöltését jelzi; a „?” azt, hogy a szám nem elérhető."
+  },
+  "cardSizeTitle": {
+    "message": "MR méretcímkék"
+  },
+  "cardSizeDesc": {
+    "message": "S/M/L/XL jelvények konfigurálható sor- és fájlhatárokkal a Megjelenítési szabályok és korlátok alatt."
+  },
+  "conflictsBadge": {
+    "message": "Konfliktusok"
+  },
+  "conflictsBadgeHint": {
+    "message": "Ennek az MR-nek olyan összeolvadási konfliktusai vannak, amelyeket meg kell oldani"
+  },
+  "cardConflictsTitle": {
+    "message": "Konfliktusjelző"
+  },
+  "cardConflictsDesc": {
+    "message": "Piros KONFLIKTUS jelvényt jelenít meg az MR részletező oldalán, ha a branch összeolvadási konfliktusokat tartalmaz."
+  },
+  "cardApprovalTitle": {
+    "message": "Saját jóváhagyás jelző"
+  },
+  "cardApprovalDesc": {
+    "message": "Megmutatja, hogy jóváhagytad-e az egyes MR-eket a listán. Megkülönbözteti a te jóváhagyásodat másokétól."
+  },
+  "showBranches": {
+    "message": "Forrás- és célbranch-ek megjelenítése az MR listán"
+  },
+  "showBranchesLinks": {
+    "message": "Tegye a branch neveket kattinthatóvá (nyissa meg a branch fát)"
+  },
+  "cardBranchesTitle": {
+    "message": "Branch nevek az MR-listán"
+  },
+  "cardBranchesDesc": {
+    "message": "Megjeleníti az egyes MR-eknél a lista forrás- és célbranch neveit, így láthatod, honnan jön a kód és hová merge-ödik."
+  },
+  "cardCopyMrListTitle": {
+    "message": "MR másolása a listáról"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Hozzáad egy másolás gombot minden MR-hez a listán. Egy kattintással másolja az MR címét és linkjét a vágólapra."
+  },
+  "versionFromTarget": {
+    "message": "Verzió olvasása a célbranch-ből"
+  },
+  "versionFromTargetHint": {
+    "message": "Olvassa az aktuális verziót a célbranch-ből (pl. main) a forrásbranch helyett. Használd merge commit stratégiával, hogy elkerüld az elavult verziókat."
+  },
+  "showFailedJobView": {
+    "message": "Sikertelen munka gyorsnézet megjelenítése az MR oldalon"
+  },
+  "failedJobTraceError": {
+    "message": "Nem sikerült betölteni a trace-t"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Sikertelen munka gyorsnézete"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Előnézetet ad a sikertelen munkákról és a log utolsó sorairól az MR oldalon. A munka- és sor-számok konfigurálhatók a Megjelenítési szabályok és korlátok alatt."
+  },
+  "showCmdPalette": {
+    "message": "Parancspaletta (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Napi tevékenységi jelentés"
+  },
+  "standupJiraEnrich": {
+    "message": "Jira jegycímek megjelenítése a jelentésben"
+  },
+  "cmdPlaceholder": {
+    "message": "Gépelj egy parancsot..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navigálás"
+  },
+  "cmdFooterSelect": {
+    "message": "kiválasztás"
+  },
+  "cmdFooterClose": {
+    "message": "bezárás"
+  },
+  "cmdEmpty": {
+    "message": "Nincs egyező parancs"
+  },
+  "cmdGroupNav": {
+    "message": "Navigáció"
+  },
+  "cmdGroupMr": {
+    "message": "MR műveletek"
+  },
+  "cmdGroupExt": {
+    "message": "Bővítmény"
+  },
+  "cmdGroupFiles": {
+    "message": "Fájlok"
+  },
+  "cmdNavMrs": {
+    "message": "Ugrás Merge Requestekhez"
+  },
+  "cmdNavIssues": {
+    "message": "Ugrás Hibajegyekhez"
+  },
+  "cmdNavPipelines": {
+    "message": "Ugrás Pipeline-okhoz"
+  },
+  "cmdNavBranches": {
+    "message": "Ugrás Ágakhoz"
+  },
+  "cmdNavRepo": {
+    "message": "Ugrás Tárolóhoz"
+  },
+  "cmdNavTags": {
+    "message": "Ugrás Címkékhez"
+  },
+  "cmdNavCommits": {
+    "message": "Ugrás Commitokhoz"
+  },
+  "cmdNavWiki": {
+    "message": "Ugrás Wiki-hez"
+  },
+  "cmdNavSnippets": {
+    "message": "Ugrás Snippet-ekhez"
+  },
+  "cmdNavSettings": {
+    "message": "Ugrás Beállításokhoz"
+  },
+  "cmdCopyPath": {
+    "message": "Projektútvonal másolása"
+  },
+  "cmdGroupPinned": {
+    "message": "Kitűzve"
+  },
+  "cmdExtSettings": {
+    "message": "Bővítmény beállításainak megnyitása"
+  },
+  "cmdExtStandup": {
+    "message": "Tevékenységi jelentés generálása"
+  },
+  "standupTitle": {
+    "message": "Napi tevékenység"
+  },
+  "standupCopy": {
+    "message": "Másolás vágólapra"
+  },
+  "standupCopied": {
+    "message": "Másolva!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Parancs paletta"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Nyomd meg a Cmd+K (Mac) vagy Ctrl+K (Win) billentyűkombinációt bármely GitLab oldalon. Navigálj, futtass MR műveleteket, keresd a fájlokat név szerint és nyisd meg őket a tárolóban."
+  },
+  "cardStandupTitle": {
+    "message": "Napi tevékenységi jelentés"
+  },
+  "cardStandupDesc": {
+    "message": "Készíts napi tevékenységi jelentést a GitLab adataidból. Megmutatja a létrehozott, összevont és átnézett MR-eket. Másold be Slackbe vagy Jira-ba."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick ágakhoz"
+  },
+  "showGroupPlay": {
+    "message": "Csoportos lejátszás gomb a pipeline-on (futtatja a hátralévő manuális feladatokat)"
+  },
+  "showCommitVersion": {
+    "message": "Verzió jelvény a commit-oldalon"
+  },
+  "showCommitVersionHint": {
+    "message": "Megmutatja a verzió fájlból a verziót (lásd Verzió növelés beállításait) minden commit mellett; kiemelve, ahol változott a verzió"
+  },
+  "groupPlayTooltip": {
+    "message": "Fussasd le a hátralévő manuális feladatokat ebben a csoportban"
+  },
+  "groupPlayError": {
+    "message": "Nem sikerült elindítani néhány feladatot"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Csoportos lejátszás gomb"
+  },
+  "cardGroupPlayDesc": {
+    "message": "A pipeline grafikonon, egy lejátszás gomb a feladatcsoport mellett lefuttatja az összes hátralévő manuális feladatot — még akkor is, ha a csoportban néhány feladat már elindult és a GitLab saját gombja eltűnt."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Verzió jelvény a commitoknál"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Az ág commitok oldalán minden commitnál látható a projekt verziója a verziófile-odból az adott commitnál. Alapból némítva, kiemelve, ha változott a verzió — egy pillantással látod, mely commitok kerültek melyik kiadásba."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick ágak"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Alapértelmezett célágak a cherry-pickhez. Hozzáadhatsz vagy eltávolíthatsz ágakat a modalban."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Ág hozzáadása"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick ágakra"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Bezárás"
+  },
+  "cherryPickInProgress": {
+    "message": "Cherry-pick folyamatban..."
+  },
+  "cherryPickRemove": {
+    "message": "Eltávolítás"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Ágnév"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-pickelve $1 ágakra",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Indíts egy új merge requestet ezekkel a változtatásokkal"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Alapból hozz létre MR-t cherry-pickkor"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Konfliktus esetén — commit a verziófile nélkül"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Ha a cherry-pick meghiúsul a verziófile konfliktusa miatt, játssza újra a változtatásokat új commitként verziófile nélkül"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Verzió frissítése fallbacken"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Verzió frissítése a célágban ugyanabban a fallback commitban"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Az okos fallback csak a verziófájl konfliktusait kezeli. A konfliktus egy másik fájlban van"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "A fájlt módosították a célágban — nem lehet biztonságosan cherry-pickelni"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "A verziófájl tartalmaz olyan változtatásokat, amelyek nem csak a verziót érintik — nem lehet biztonságosan átugrani"
+  },
+  "commitsJiraField": {
+    "message": "Jira mező a commit jelvényekhez"
+  },
+  "commitsJiraFieldHint": {
+    "message": "A Jira mező neve, amit a commit oldalán jelvényként szeretnél mutatni (pl. fixVersions, status, labels, components). Jira URL szükséges."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick ágakra"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick kiválasztott ágakra közvetlenül vagy új MR-eken keresztül. Ha az okos fallback engedélyezve van, a ellenőrzött verziófájl konfliktusok játszhatók újra fájl nélkül, opcionálisan verzió növeléssel. Nem biztonságos változtatások ellenőrzéshez megállnak."
+  },
+  "mrDetailEnhancements": {
+    "message": "MR részletek fejlesztései"
+  },
+  "showSensitiveWarning": {
+    "message": "Érzékeny fájl figyelmeztetés a diffben"
+  },
+  "showGitCommands": {
+    "message": "Git parancsgombok (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "ÉRZÉKENY: $1 fájl",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Ez a MR biztonságérzékeny fájlokat módosít:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Érzékeny fájl figyelmeztetés"
+  },
+  "cardSensitiveDesc": {
+    "message": "Érzékeny fájlokat jelöl be beépített szabályok, kiegészítő minták és kizárások alapján. Állítsd be őket a Megjelenítési szabályok és korlátok menüpontban."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Git parancsgombok"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Másold a checkout, pull és hard-reset parancsokat. Ellenőrizd a repódat és az origin remote-ot, mielőtt futtatod őket; a hard reset eldobja a helyi módosításokat."
+  },
+  "updateBannerText": {
+    "message": "Új verzió elérhető! Nézd meg, mi újság:"
+  },
+  "updateChangelog": {
+    "message": "Változásnapló"
+  },
+  "updateReviewAsk": {
+    "message": "Tetszik a kiterjesztés?"
+  },
+  "updateReviewLink": {
+    "message": "Hagyd meg az értékelésed"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "AI által segített review, elejétől a végéig"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Tekintsd át az MR-t, javítsd a kiválasztott visszajelzéseket, készíts válaszokat és ellenőrizd újra a változtatásokat. Előnézet és szerkesztés a kommenteknél, mielőtt posztolnád a GitLabra."
+  },
+  "aiReviewGuide": {
+    "message": "AI áttekintési útmutató"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Nincs automatikus AI feltöltés. Másold be te a kontextust; a kommenteket csak akkor küldjük a GitLabra, ha a Publish vagy Add to review-t választod."
+  },
+  "aiReviewTitle": {
+    "message": "AI átnézés"
+  },
+  "aiReviewOpen": {
+    "message": "AI átnézés…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Másold a kommentet az AI-nak"
+  },
+  "aiReviewLoading": {
+    "message": "Tárgyalások betöltése…"
+  },
+  "aiReviewRetry": {
+    "message": "Újrapróbálkozás"
+  },
+  "aiReviewRefresh": {
+    "message": "Frissítés"
+  },
+  "aiReviewClose": {
+    "message": "Bezárás"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Megerősítés kérése a nem mentett munkát tartalmazó ellenőrzési párbeszédek bezárásakor"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Bezárja ezt az ablakot? A nem mentett módosítások és a bevitt adatok elvesznek."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Bezárja az ablakot és leállítja a további küldést? A már elküldött hozzászólások megmaradnak a GitLabban. A nem mentett módosítások elvesznek."
+  },
+  "aiReviewAll": {
+    "message": "Mind"
+  },
+  "aiReviewUnresolved": {
+    "message": "Megoldatlan"
+  },
+  "aiReviewResolved": {
+    "message": "Megoldott"
+  },
+  "aiReviewGeneral": {
+    "message": "Általános kommentek"
+  },
+  "aiReviewSearch": {
+    "message": "Kommentek vagy fájlutak keresése"
+  },
+  "aiReviewSelectShown": {
+    "message": "A látható kiválasztása"
+  },
+  "aiReviewClear": {
+    "message": "Kiválasztás törlése"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Kódváltoztatások belefoglalása"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Friss és ismételt áttekintésekhez. Kapcsold ki, ha az AI tudja olvasni a tárolót. Rövid kivonatok a visszajelzéshez csatolva továbbra is benne maradnak."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Vegye figyelembe a meglévő beszélgetéseket"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Már közzétett kommenteket ad hozzá duplikátumszűrőként: az AI önállóan áttekinti az egész MR-t, majd törli azokat a megállapításokat, amelyek ismétlik azokat. Nem válaszol ezekre a beszélgetésekre."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Leírás belefoglalása"
+  },
+  "aiReviewPrompt": {
+    "message": "Utasítások az AI számára"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Alapértelmezett prompt visszaállítása"
+  },
+  "aiReviewPreview": {
+    "message": "Előnézet"
+  },
+  "aiReviewCopied": {
+    "message": "Másolva!"
+  },
+  "aiReviewEmpty": {
+    "message": "Nincs találat a kommentek között."
+  },
+  "aiReviewPartial": {
+    "message": "Néhány adat nem tölthető be. A export tartalmaz egy figyelmeztetést és csak a rendelkezésre álló kontextust."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 kiválasztva",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Válaszd ki az előnézeti szöveget és másold manuálisan."
+  },
+  "aiReviewScopeComment": {
+    "message": "Kiválasztott komment"
+  },
+  "aiReviewScopeThread": {
+    "message": "Kiválasztott beszélgetés"
+  },
+  "aiReviewPreparing": {
+    "message": "Kód kontextus előkészítése…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Nem sikerült betölteni a beszélgetéseket. Próbáld újra, vagy másold ki a rendelkezésre álló kontextust."
+  },
+  "aiReviewShowReplies": {
+    "message": "Válaszok mutatása"
+  },
+  "aiReviewSize": {
+    "message": "Körülbelül $1 karakter",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Mégse"
+  },
+  "showAiReviewCopy": {
+    "message": "AI vélemény másolat és importálási vezérlők mutatása"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Másold ki az egész MR-t egy friss áttekintéshez, a kiválasztott visszajelzéseket javításra, vagy importáld az AI megjegyzéseit és válaszait szerkeszthető előnézettel küldés előtt."
+  },
+  "aiReviewFresh": {
+    "message": "Áttekintés a nulláról"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Kérj friss áttekintést"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Legfeljebb 1 500 karakter. Használható az egész MR és az összes commit áttekintésére, a visszajelzések javításától függetlenül. Megadhatod a válasz nyelvét is. Hagyd üresen az alapértelmezett angol prompt használatához."
+  },
+  "aiReviewPromptHint": {
+    "message": "Legfeljebb 1 500 karakter. Hagyd üresen az alapértelmezett angol prompt használatához. Minden projektre érvényes."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "A prompt nem lett mentve. Használj legfeljebb 1 500 karaktert, és távolítsd el a szokatlan vezérlőkaraktereket."
+  },
+  "settingsSaveFailed": {
+    "message": "A beállításokat nem sikerült menteni. Próbálj meg változtatni és újra."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Az itt végzett módosítások erre az exportálásra vonatkoznak. Állítsd be az alapértelmezett promptodat a bővítmény beállításaiban."
+  },
+  "aiReviewReady": {
+    "message": "Az előnézet készen áll a másolásra."
+  },
+  "aiReviewLoadHint": {
+    "message": "Közvetlenül a GitLabról tölti be a beszélgetéseket, beleértve az oldalról nem látható kommenteket is."
+  },
+  "aiReviewCommentContext": {
+    "message": "A többi válasz kontextusként szerepel. Csak a kiválasztott kommentekre van szükség teendőként."
+  },
+  "aiReviewOutdated": {
+    "message": "Korábbi verzió"
+  },
+  "aiReviewLink": {
+    "message": "Megnyitott beszélgetés"
+  },
+  "aiReviewLoaded": {
+    "message": "Betöltve $1 beszélgetés"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Kódkontextus előkészítése: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Ez a komment nem elérhető a GitLabról. Lehet, hogy még mentés alatt áll, vagy törölték. Frissítsd, hogy újra próbáld."
+  },
+  "aiReviewImportOpen": {
+    "message": "AI értékelés importálása…"
+  },
+  "aiReviewImportTitle": {
+    "message": "AI értékelés importálása"
+  },
+  "aiReviewImportHelp": {
+    "message": "Illeszd be az AI választ alább, hogy ellenőrizd, szerkeszd és kiválaszthasd, mit publikálsz. A prompt gyorsbillentyűk a Speciális beállítások alatt találhatók."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Prompt másolása új értékeléshez"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "A prompt előkészítése…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI válasz (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Illeszd be a teljes JSON-választ, ami új kommenteket vagy hozzászólásokat tartalmaz. Szerkesztheted a szöveget, és kiválaszthatod, mit küldj a előnézetben."
+  },
+  "aiReviewImportValidate": {
+    "message": "Ellenőrzés és előnézet"
+  },
+  "aiReviewImportChecking": {
+    "message": "MR módosítás, sorok és meglévő kommentek ellenőrzése…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Az előnézet kommentekre adott válasz ellenőrzése. Szerkesztheted a szöveget, törölheted a jelölőnégyzeteket a tételek kizárásához, vagy hozzáadhatsz egy általános kommentet."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Kész kommentek kiválasztása"
+  },
+  "aiReviewImportPreview": {
+    "message": "Küldendő kommentek"
+  },
+  "aiReviewImportReady": {
+    "message": "Kész"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Javítandó"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "A további fájl módosítások nem tölthetők be: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "A további diff meghaladja a 16 MiB-os importkorlátot. Csak a ellenőrzött sorokra vonatkozó kommentek importálhatók."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Már létezik"
+  },
+  "aiReviewImportPublished": {
+    "message": "Közzétéve"
+  },
+  "aiReviewImportDraft": {
+    "message": "Hozzáadva a felülvizsgálathoz"
+  },
+  "aiReviewImportFailed": {
+    "message": "Nincs elküldve"
+  },
+  "aiReviewImportUnknown": {
+    "message": "A küldés nincs megerősítve"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Nincs elküldve"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Új sor $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Régi sor $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Kiválasztott közzététele"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Hozzáadás a felülvizsgálathoz"
+  },
+  "aiReviewImportSendHint": {
+    "message": "A közzététel azonnal elküldi a kommenteket. A felülvizsgálathoz hozzáadás elmenti a nem közzétett kommenteket a GitLab felülvizsgálathoz."
+  },
+  "aiReviewImportSending": {
+    "message": "Kiválasztott kommentek küldése…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Befejezve. Ellenőrizd az eredményt a kommentek mellett."
+  },
+  "aiReviewImportStopped": {
+    "message": "Megállítva. Ellenőrizd az eredményt a kommentek mellett, mielőtt újra próbálnád."
+  },
+  "aiReviewImportEdited": {
+    "message": "Válasz megváltozott. Ellenőrizd újra küldés előtt."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Vágólap nem elérhető. Válaszd ki az alábbi szöveget és másold kézzel."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "A küldést nem sikerült megerősíteni. Újrapróbálkozás előtt ellenőrizze a GitLabot."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Üzenet AI-nak"
+  },
+  "aiReviewImportChecked": {
+    "message": "Készen: $1. Más kommentek figyelmet igényelnek.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Küldés leállítása"
+  },
+  "aiReviewImportError": {
+    "message": "Nem sikerült a művelet"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Nem sikerült előkészíteni az üzenetet"
+  },
+  "aiReviewImportWarning": {
+    "message": "Felülvizsgálati értesítések"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI felülvizsgálat"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "AI válasz nyelve"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automatikus — beszélgetési nyelv"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Minden ellenőrzési feladatra és importálási parancsra vonatkozik. A JSON kulcsokat, útvonalakat és kódot nem fordítjuk. Csak a formátum másolása nem ad hozzá nyelvi utasításokat."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Útmutató a visszajelzés javításához"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Útmutató új ellenőrzési megjegyzésekhez"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Útmutató a visszajelzésekhez való válaszadáshoz"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Legfeljebb 1500 karakter. Az Import új-ellenőrzés gyorsbillentyűhöz. A feladatfülekhez a saját útmutatójukat használják. Az MR kontextust és a JSON formátumot automatikusan hozzáadjuk."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Legfeljebb 1500 karakter. A másolásban kiválasztott vitákhoz vagy az importálásban minden megoldatlan vitához. Állítsd be a stílust és a nyelvet; a kontextust és a válasz formátumát automatikusan hozzáadjuk."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Válasz útmutató minden megoldatlan vitához"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Válaszformátum másolása"
+  },
+  "aiReviewImportFormat": {
+    "message": "Válaszformátum AI számára"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Készülj fel válaszadásra"
+  },
+  "aiReviewImportReply": {
+    "message": "Válasz a vitára"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Eredeti hozzászólás"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Válaszod"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Beszélgetés lezárása közzététel után"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "A beszélgetést lezárták."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "A válasz közzétéve, de a beszélgetés nem lett lezárva. GitLabban tudod lezárni."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "A válasz közzétéve. A lezárás nem lett megerősítve; ellenőrizd a beszélgetést GitLabban."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "A lezárás opcionális és alapértelmezetten ki van kapcsolva. Csak a válasz közzététele után történik meg. Egy vázlat hozzáadása soha nem zárja le a beszélgetést."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Az MR verziója megváltozott. A válaszok a beszélgetésekhez maradnak kapcsolva; ellenőrizd a szövegüket a feltolt javításokkal. Régi verzióból származó új észrevételeket blokkolnak."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Ezek a válaszok a beszélgetésekhez kapcsolódnak, nem egy kódverzióhoz. Mielőtt közzétennéd, ellenőrizd, hogy a leírt javítások fel lettek-e tolva erre az MR-re."
+  },
+  "aiReviewImportEdit": {
+    "message": "Szöveg szerkesztése"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Hozzászólás hozzáadása"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Változtatások mentése"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Mégse"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Hozzászólás szövege"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Szerkeszd a szöveget, majd mentsd el, hogy ellenőrizhesd a változtatásokat a közzététel előtt."
+  },
+  "aiReviewImportEditError": {
+    "message": "Nem sikerült menteni a változtatásokat"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Az előnézetben legfeljebb 200 hozzászólás lehet."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Ismételt felülvizsgálati felhívás"
+  },
+  "aiReviewFileFilters": {
+    "message": "Felülvizsgálandó fájlok"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Új és ismételt ellenőrzésekre, illetve új megállapításokhoz tartozó utasításokra vonatkozik; a kiválasztott visszajelzésekre és válaszutasításokra nem. Soronként vagy vesszővel elválasztva adj meg egy mintát; a # megjegyzést kezd. Használható: *, **, ?. A kizárások elsőbbséget élveznek, az átnevezett fájlok régi útvonalainál is. Az üres listák mindent tartalmaznak. Példa: src/**, *.test.js, dist/. Listánként legfeljebb 1500 karakter."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Tartalmazza a kiterjesztéseket (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Tartalmazza a fájlútvonalakat"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Zárd ki a fájlútvonalakat"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Zárd ki a mappákat"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "A fájlszűrőket nem lehetett menteni vagy alkalmazni. Használj legfeljebb 1500 karaktert listánként, és távolíts el minden rendellenes vezérlőkaraktert."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Az általad felülvizsgált verzió"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Teljes átnézés — nincs előző verzió"
+  },
+  "aiReviewRepeat": {
+    "message": "Ismételt átnézés"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Adjon meg egy commit SHA-t"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Adja meg a teljes átnézett commit SHA-t (40 vagy 64 hexadecimális karakter)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Válassza ki azt az MR verziót, amit átnézett, mielőtt megjegyzéseket hagyna. Az összes további változás a jelenlegi verzióig automatikusan hozzáadódik; nem kell külön commitokat választania. Ha nem emlékszik a verzióra, válassza a teljes átnézést."
+  },
+  "aiReviewChooseTask": {
+    "message": "Válasszon egy feladatot"
+  },
+  "aiReviewTaskReview": {
+    "message": "Új átnézés"
+  },
+  "aiReviewTaskFix": {
+    "message": "Átnézési megállapítások javítása"
+  },
+  "aiReviewTaskReply": {
+    "message": "Válaszok előkészítése"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Utólagos átnézés"
+  },
+  "aiReviewCopyTask": {
+    "message": "Feladat másolása"
+  },
+  "aiReviewPasteResult": {
+    "message": "AI válasz beillesztése"
+  },
+  "aiReviewAdvanced": {
+    "message": "Haladó beállítások"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Feladat utasításai"
+  },
+  "aiReviewSelectThread": {
+    "message": "Ezt a beszélgetést válassza ki"
+  },
+  "aiReviewSelectAll": {
+    "message": "Az összes beszélgetés kiválasztása"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Az összes MR commit együttes átnézése. Az AI új megállapításokat ad vissza anélkül, hogy a kódot megváltoztatná."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Válaszd ki a javítandó visszajelzést. Egy MR esetében az AI válaszokat is készít arról, hogy mi lett elvégezve, mi maradt és miért. Kezdetben a megoldatlan viták vannak kiválasztva."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Készíts válaszokat is"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Válaszd ki a visszajelzést, amit a kódoló AI-d javíthat. Kezdetben a megoldatlan viták vannak kiválasztva."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Add a feladatot a kódoló AI-dnak, és nézd meg a változtatásait és tesztjeit. Az eredmény javítások és egy normál összefoglaló, kész válaszüzenet nélkül."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "A javítások feltöltése után kérd meg az AI-t, hogy ellenőrizze a kódot és magyarázza el az eredményt a kiválasztott vitákban."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Ellenőrizd a kiválasztott visszajelzést és nézd meg az új hibákat. Válaszd ki a korábban átnézett verziót, vagy nézd meg az aktuális MR teljes tartalmát."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Feladat: az egész MR, az összes commiton át."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Kiválasztott kommentek: $1; a vita kontextusa és a rendelkezésre álló kódrészletek is benne vannak."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Válaszokhoz tartozó beszélgetések: $1, a teljes beszélgetésükkel együtt. Az AI-nek hozzáférnie kell a tárhelyhez."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Ellenőrzendő beszélgetések: $1, plusz a kódváltoztatások áttekintése."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Leírás mellékelve."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Leírás nélkül."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Kódváltoztatások mellékelve, a betöltési korlátok figyelembevételével."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "Az AI-nak a kódot a tárhelyről kell olvasnia."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "A meglévő beszélgetések csak duplikációszűrőként kerülnek hozzáadásra."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "A meglévő beszélgetések nem kerülnek hozzáadásra."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "A fájszűrők aktívak."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Nincs korábbi verzió kiválasztva: a teljes aktuális MR ellenőrzésre kerül."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "A nem közzétett vázlatbeszélgetések nem kaphatnak választ, és ki vannak zárva."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Válaszd ki a visszajelzést bal oldalon. Új ellenőrzéshez használd az Új ellenőrzés fület."
+  },
+  "aiReviewNextStep": {
+    "message": "Másold be a feladatot az AI eszközödbe. Ha visszakapod a kommenteket vagy válaszokat, használd a Paste AI választ, hogy átnézd és szerkeszd őket, mielőtt közzétennéd."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Ellenőrizd a javításokat és a teszteket, push-olj minden commitot az MR-be, majd használd a Paste AI választ, hogy átnézd a kész válaszokat mielőtt közzétennéd. Az új commitokhoz nem kell újragenerálni a válaszokat."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Automatikus utasítások (haladó)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Minden blokk alapértelmezés szerint engedélyezett, és csak a releváns feladatokhoz használatos. Szerkeszd, tiltsd le vagy ürítsd ki bármelyik blokkot. A feladatpromptoknak is vannak saját utasításaik. Az MR adatok, JSON példák és betöltési értesítések külön generálódnak; a közzététel ellenőrzése mindig érvényes."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Adj hozzá a feladathoz, ha szükséges"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Maximum 1500 karakter. Az üres szöveg semmit sem ad hozzá. A Reset visszaállítja az alapértelmezett szöveget és engedélyezi ezt a blokkot."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "A kiválasztott válasznyelvhez használd a {language} kifejezést. Legfeljebb 1500 karakter; az üres szöveg semmit sem ad."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "A kiválasztott vagy megoldatlan beszélgetésekhez használd a {selection} helyőrzőt. Legfeljebb 1500 karakter; az üres szöveg nem ad hozzá semmit."
+  },
+  "aiReviewRule_repository": {
+    "message": "Helyi tároló és távoli hely"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Dolgozó másolat javításokhoz"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Munkapéldány felülvizsgálatra"
+  },
+  "aiReviewRule_language": {
+    "message": "Válasznyelv"
+  },
+  "aiReviewRule_scope": {
+    "message": "Fájlszűrő értelmezés"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Visszacsatolás kontextus"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Válasz nélküli javítások"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Csak leírásos feladat"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Hiányzik kiválasztott visszajelzés"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Kész válaszok javítások után"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Áttekintés határai"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Forrás az értékeléshez"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Mellékelt kódváltozások"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Értékelés kód nélkül"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Nem elérhető forrás"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON válasz"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Helyszínek és kimenet keresése"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Utókövetési válasz stílus"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Változatlan fej"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Összehasonlító sorpozíciók"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Helyi verzió összehasonlítása"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Célág változások"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Felülvizsgálat összehasonlító verzió nélkül"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Újraellenőrzés vita nélkül"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Kiválasztott beszélgetési tartomány"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Halmozott különbség kontextus"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Meglévő beszélgetések új felülvizsgálatban"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Új felülvizsgálat importálásban"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Import felülvizsgálat határai"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Import találat formátuma"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Válasz határai és formátuma"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Válasz feladat terjedelme"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Mező hozzáadása"
+  },
+  "jiraQuickActionField": {
+    "message": "Mező"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Művelet"
+  },
+  "jiraQuickActionValue": {
+    "message": "Érték"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Eltávolítás"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Hozzáadás"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Eltávolítás"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Mindet cserél"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Határidő"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Egyéni mező (haladó)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Értékek vesszővel elválasztva. A hozzáadás/eltávolítás megtartja a többi értéket; mind cserél felülírja a listát."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "Mezőazonosító: customfield_12345. Add meg az értéket JSON formátumban, ahogy ezt a Jira mező várja."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Pontos Jira átmenet neve (vagy célállapot)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Üres érték: nincs változás."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Ellenőrizd a mező értékét: az egyéni mezők érvényes azonosítót és JSON-t igényelnek; a dátumok formátuma YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Minden mezőt csak egyszer használj gombonként."
+  },
+  "jiraQuickActionFailed": {
+    "message": "A művelet sikertelen volt."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Az állapot megváltozott, de a mező frissítése sikertelen volt."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Nem sikerült frissíteni a Jira-feladatot. Nyisd meg újra a panelt az aktuális értékek ellenőrzéséhez."
+  },
+  "mrActions": {
+    "message": "MR műveletek"
+  },
+  "mrActionsHint": {
+    "message": "Hozz létre névvel ellátott gombokat címkék módosításához vagy más MR mezők törléséhez. Húzd őket a gomb listában a sorrendjük megváltoztatásához."
+  },
+  "mrActionsProfileHint": {
+    "message": "Ez a projekt a saját műveletlistáját használja mentés után. Töröld az összes bejegyzést, hogy elrejtsd ezeket a gombokat ennél a projektnél."
+  },
+  "mrActionAdd": {
+    "message": "MR művelet hozzáadása"
+  },
+  "mrActionLabel": {
+    "message": "Gomb neve"
+  },
+  "mrActionDelete": {
+    "message": "Művelet törlése"
+  },
+  "mrActionType": {
+    "message": "Művelet"
+  },
+  "mrActionLabels": {
+    "message": "Címkék"
+  },
+  "mrActionLabelsHint": {
+    "message": "Pontos címkenevek, vesszővel vagy új sorokkal elválasztva. A nevekben lévő szóközök megmaradnak. Az hozzáadás/csere létrehozhat hiányzó projektcímkéket."
+  },
+  "mrAction_remove_labels": {
+    "message": "A megadott címkék eltávolítása"
+  },
+  "mrAction_clear_labels": {
+    "message": "Minden címke törlése"
+  },
+  "mrAction_add_labels": {
+    "message": "Címkék hozzáadása"
+  },
+  "mrAction_set_labels": {
+    "message": "Minden címke cseréje"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Hozzárendelt személyek törlése"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Véleményezők törlése"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Mérföldkő törlése"
+  },
+  "mrActionInvalid": {
+    "message": "Írj be egy gombnevet, válassz egy támogatott műveletet, és adj meg legalább egy címkét hozzáadás, eltávolítás vagy csere esetén."
+  },
+  "mrActionConfirm": {
+    "message": "Alkalmazzuk a „$1”-et erre a MR-re?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "A GitLab nem adta vissza a rebase állapotot. Töltsd újra a merge request-et, és próbáld újra."
+  },
+  "errorJobsPageRepeated": {
+    "message": "A GitLab ismétlődő munkák oldalt adott vissza a #$1 pipeline-hoz. A feladatlista nem tölthető be teljesen."
+  },
+  "displayPreferencesTitle": {
+    "message": "Szabályok és korlátok megjelenítése"
+  },
+  "displayPreferencesHint": {
+    "message": "Globális beállítások; módosítás után töltsd újra a GitLab lapjait. Több feladat vagy hozzászólás nagyobb adatforgalmat jelent. A naplóelőnézet letölti a teljes naplót, majd kiválasztja a nem üres sorokat. A véleményező jelvények a legrégebbi hozzászólásokban keresik a „Reviewer(s): @username” mintát."
+  },
+  "failedJobsLimit": {
+    "message": "Sikertelen munkák előnézete"
+  },
+  "failedJobTraceLines": {
+    "message": "Nem üres naplósorok munkánként"
+  },
+  "reviewerNotesLimit": {
+    "message": "Kommentek a reviewer jelvények kereséséhez"
+  },
+  "mrSizeLines": {
+    "message": "MR méretküszöbök: sorok (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR méretküszöbök: fájlok (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "További érzékeny fájl minták"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Érzékeny fájl kivételek"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Beépített érzékeny fájl szabályok használata"
+  },
+  "sizeThresholdsHint": {
+    "message": "Három növekvő pozitív egész szám vesszővel elválasztva. A határok tartalmazva vannak; a nagyobb változások XL-ek. A fájl küszöbök akkor érvényesek, ha a sorok száma nem elérhető."
+  },
+  "sensitivePatternsHint": {
+    "message": "Egy minta soronként, kis- és nagybetű érzéketlen. A * bármilyen szöveget helyettesít (beleértve a /-t is), a ? egy karaktert. A / nélküli minták fájlnevekre illeszkednek; más minták az egész repozitórium útvonalára vonatkoznak. A kizárások mindenek felett állnak. A beépített szabályok lefedik a környezet, konténer/CI, hitelesítő adatok és privát kulcs fájlokat. Kapcsold ki őket, ha csak a saját mintáidat akarod használni."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Ellenőrizd a numerikus tartományokat, a három növekvő méretküszöböt és a fájlminták hosszát."
+  },
+  "failedJobsPreview": {
+    "message": "Előnézet: $1 sikertelen munka — az utolsó $2 nem üres sor",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Több sikertelen munka — nyisd meg a teljes pipeline-t"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 sor, $2 fájl",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 fájl módosult",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Érzékeny fájl vizsgálat hiányos"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Nem sikerült minden fájlt ellenőrizni: az API-kérés sikertelen volt, vagy elértük a $1 fájl vizsgálati limitet. A felsorolt találatok részlegesek; ellenőrizd a teljes MR diffet.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Figyelmeztetés: ez a jelentés lehet, hogy hiányos. A gyűjtés kategóriánként $1 MR-re és $2 aktivitási eseményre van korlátozva.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 megoldatlan szál(ak)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Ez az előnézet lehet, hogy hiányos: API hiba vagy csak az első $2 beszélgetés lett ellenőrizve. Ismert megoldatlan szálak: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

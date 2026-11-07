@@ -1,0 +1,88 @@
+Язык: Финский (fi)
+
+Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaatiolla. Korvaa monivaiheiset käsitoimet — rebase, version korotus, pipelinejen hallinta ja yhdistäminen — yhdellä painikkeella. Tukee itse ylläpidettyä GitLabia HTTPS-yhteydellä sekä gitlab.comia; toimintojen saatavuus riippuu palvelimen ominaisuuksista ja tilin oikeuksista. API-tunnuksia ei tarvita, sillä laajennus käyttää nykyistä selainistuntoasi.
+
+★ TEKOÄLYKATSELMOINTI OMILLA TYÖKALUILLA
+
+• Koko MR:n katselmointi — valmistele kaikki MR:n commitit kattava tehtävä säädettävillä tiedostosuodattimilla
+• Korjaukset ja vastaukset — kopioi valittu palaute koodausavustajallesi ja valmistele julkaisuvalmiit vastaukset
+• Jatkokatselmointi — tarkista korjaukset ja muutokset valitusta revisiosta alkaen, myös force pushin jälkeen
+• Muokattava tuonti — liitä tekoälyn kommentit ja vastaukset JSON-muodossa, muokkaa tekstiä ja julkaise valitut kohdat tai tallenna katselmointiluonnokset. Voit myös merkitä keskustelut ratkaistuiksi vastausten julkaisemisen jälkeen
+• Omat ohjeet — mukauta kehotteita ja automaattisia ohjeosia sekä valitse vastauskieli
+• Manuaalinen jakaminen — käytä haluamaasi tekoälytyökalua. Laajennukseen ei tarvita tekoälyn API-avaimia, eikä koodia lähetetä automaattisesti
+
+★ YHDISTÄMISPYYNTÖJEN TOIMINNOT
+
+• Automaattinen yhdistäminen — suorita rebase ja ota yhdistäminen käyttöön pipelinen onnistuttua yhdellä napsautuksella
+• Ship — koko julkaisuketju: version korotus → pipeline → automaattinen yhdistäminen
+• Pakotettu yhdistäminen — yhdistä odottamatta pipelinea, kun CI:tä ei tarvita
+• Version korotus — korota versionumeroa package.json-, pyproject.toml- tai muussa tiedostossa: patch / minor / major
+• Rebase — suorita haaran rebase version korotuksen kanssa tai ilman
+• Luonnos / Valmis — muuta MR:n tilaa muokkaamatta otsikkoa
+• Pikakommentit — julkaise mallikommentteja MR:ään yhdellä napsautuksella
+• Kopioi MR — kopioi otsikko ja linkki heti leikepöydälle
+
+★ CI/CD-PIPELINEJEN HALLINTA
+
+• Uusi pipeline / Peruuta — luo tai peruuta pipelineja suoraan
+• Yritä kaikkia epäonnistuneita töitä uudelleen — käynnistä uusimman pipelinen kaikki epäonnistuneet työt kerralla
+• Omat työpainikkeet — käynnistä mikä tahansa CI-työ yhdellä napsautuksella tai ketjuta useita töitä, esimerkiksi koonti → käyttöönotto
+• Virheiden pikakatselu — näe epäonnistuneiden töiden nimet ja virhelokin rivit suoraan MR-sivulla
+• Taustasuoritus — omat työketjut jatkuvat sivulta toiselle siirtymisen jälkeen
+
+★ JIRA-INTEGRAATIO ILMAN API-TUNNUKSIA
+
+• Jiran tilamerkit — värikoodatut tehtävätilat, kuten Valmis, Työn alla, QA ja Tehtävä; tehtäväavaimet poimitaan MR-otsikoista
+• Tehtävän sivupaneeli — napsauta merkkiä nähdäksesi otsikon, tilan, vastuuhenkilön, prioriteetin, sprintin, epicin, tunnisteet, kuvauksen ja liitteet
+• Tila ja vastuuhenkilö — muuta tehtävien tilaa ja vastuuhenkilöä poistumatta GitLabista
+• Jiran pikatoiminnot — yhdistetyt toiminnot, kuten tilan ja vastuuhenkilön vaihto, yhdellä napsautuksella
+• Tyypin ja prioriteetin kuvakkeet — Jiran omat kuvakkeet MR-luettelossa ja tietosivuilla
+• Jira-kentät committien vieressä — näytä Fix Version, tila tai muu kenttä committien yhteydessä
+• Jira päiväraporteissa — tehtävien otsikot lisätään automaattisesti toimintayhteenvetoihin
+
+★ MR-LUETTELON PARANNUKSET
+
+• MR:n koko — värilliset S / M / L / XL -merkit muutettujen rivien määrän mukaan
+• Ristiriitailmaisin — punainen merkki, kun haarassa on yhdistämisristiriitoja
+• Ratkaisemattomat keskustelut — näe avoimien keskustelujen määrä yhdellä silmäyksellä
+• Haarojen nimet — lähdehaara → kohdehaara jokaisessa MR:ssä
+• Hyväksyntäilmaisin — näyttää, oletko hyväksynyt kunkin MR:n
+• Luonnosten himmennys — keskity aktiivisiin MR:iin himmentämällä luonnoksia
+• Omien MR:ien korostus — sininen kehys helpottaa löytämistä
+• Valinnat ”Vain omat”, ”Odottaa katselmointiani” ja ”Ryhmittele tekijän mukaan”
+• ”Sinun katselmointisi” -merkki — tunnistaa maininnat määritetyssä katselmoijatyössä ja kommenteissa
+• Kopiointi luettelosta — kopiointipainike jokaisen MR:n kohdalla
+
+★ TUOTTAVUUSTYÖKALUT
+
+• Komentopaletti (Cmd+K / Ctrl+K) — siirry MR:iin, pipelineihin, haaroihin ja tehtäviin tai käynnistä toimintoja
+• Tiedostohaku — etsi ja avaa projektin tiedostoja nimellä paletista
+• Päivittäinen toimintaraportti — yhteenveto luoduista, yhdistetyistä, kommentoiduista ja hyväksytyistä MR:istä; kopioi Slackiin tai Jiraan
+• Cherry-pick useaan haaraan — siirrä commit useaan haaraan kerralla ja luo MR:t automaattisesti
+• Cherry-pickin palautuspolku — ristiriidan sattuessa commit sovelletaan automaattisesti uudelleen ilman versiotiedostoa
+• Arkaluonteisten tiedostojen varoitus — oranssi merkki, jos MR muuttaa .env-, Dockerfile-, CI-asetus- tai tunnistetietotiedostoja
+• Git-komennot — kopioi MR-haaran git checkout- ja git fetch -komennot
+• MR:n ikä — näe, kuinka kauan yhdistämispyyntö on ollut avoinna
+• Omien kommenttien korostus — värillinen kehys omien keskustelukommenttiesi ympärillä
+
+★ MUKAUTTAMINEN
+
+• Projektiprofiilit — eri painikkeet, versiotiedostot ja CI-työt kullekin tietovarastolle
+• Painikkeiden järjestys vetämällä — järjestä toiminnot haluamallasi tavalla
+• Sarkainleveys diffeissä — valitse 2, 4 tai 8 välilyönnin levyinen esitys
+• Yläpalkkien pienentäminen / Oikean sivupaneelin piilottaminen — lisää työtilaa
+• Ääni- ja työpöytäilmoitukset — saa ilmoitus toiminnon onnistumisesta tai epäonnistumisesta
+• Tumma teema — seuraa automaattisesti järjestelmän asetusta
+
+★ MIKSI GITLAB MR ACTIONS?
+
+✓ Ei henkilökohtaisia käyttöoikeustunnuksia — käyttää nykyisen GitLab-istuntosi evästeitä
+✓ Ei välityspalvelua — GitLab- ja Jira-pyynnöt menevät suoraan määrittämillesi palvelimille
+✓ Tukee itse ylläpidettyä GitLabia HTTPS-yhteydellä ja gitlab.comia; testatut API-sopimukset on kuvattu yhteensopivuusoppaassa
+✓ Jira ilman API-tunnuksia — käyttää selainistuntoa
+✓ Erilliset asetukset kullekin projektille
+✓ Kevyt — taustatarkistukset koskevat käynnistämiäsi toimintoja; ei telemetriaa eikä automaattista lähettämistä tekoälylle
+✓ Käyttöliittymä on saatavilla 27 kielellä
+✓ Avoin lähdekoodi
+
+Kehittäjille, jotka haluavat käyttää vähemmän aikaa GitLabissa napsautteluun ja enemmän aikaa koodin kirjoittamiseen.

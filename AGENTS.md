@@ -60,7 +60,7 @@ instruction files as pointers here, rather than maintaining competing rules.
   `data-testid` plus existing legacy fallbacks. Extension-owned markup can use
   local selectors. Name timing, retry, size and concurrency policies close to their
   owner; do not extract every literal or move feature-specific code into Shared.
-- New user-facing strings belong in all seven `_locales/*/messages.json` files.
+- New user-facing strings belong in all supported `_locales/*/messages.json` files.
   User-visible features also need appropriate README/welcome/site documentation.
 - Validate external messages, imported JSON and API data before narrowing types.
   Use `unknown`, guards and discriminated unions at boundaries. Avoid `any`,

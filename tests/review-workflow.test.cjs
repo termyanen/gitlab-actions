@@ -362,3 +362,13 @@ test('automatic instruction defaults, templates and storage validation preserve 
   settings.ai_review_rule_language = { enabled: 'false', text: 'Invalid' };
   await assert.rejects(e.workflow.instructionOptions({}), /Invalid automatic/);
 });
+
+test('new response languages reach AI instructions without translating supplied content', async function() {
+  for (const [locale, name] of [['pt_BR', 'Brazilian Portuguese'], ['it', 'Italian'], ['pl', 'Polish']]) {
+    const e = env({ settings: { ai_review_response_language: locale } });
+    const content = '{"file":"src/example.ts","line":42}';
+    const output = await e.workflow.applyResponseLanguage(content);
+    assert.ok(output.startsWith('Response language selected by the user: ' + name));
+    assert.ok(output.endsWith(content));
+  }
+});

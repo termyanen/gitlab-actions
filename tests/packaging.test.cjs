@@ -16,7 +16,7 @@ var root = require('./helpers/extension.cjs').root;
       var manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
       var required = ['manifest.json', 'background.js', 'content_proxy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
       Object.keys(manifest.icons).forEach(function(size) { required.push(manifest.icons[size]); });
-      ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
+      fs.readdirSync(path.join(root, '_locales'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => entry.name).forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
       required.concat(['pack.sh', 'package.json', 'tsconfig.json']).forEach(function(file) {
         // Migrated runtime scripts are built from src; only legacy entrypoints
         // and static assets still exist at the repository root.

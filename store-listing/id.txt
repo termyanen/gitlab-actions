@@ -1,0 +1,88 @@
+Язык: Индонезийский (id)
+
+Permudah alur kerja merge request GitLab Anda dengan otomatisasi satu klik. Gantikan operasi manual multi-langkah — rebase, peningkatan versi, manajemen pipeline, dan penggabungan — dengan satu tombol. Mendukung GitLab yang di-host secara mandiri melalui HTTPS dan gitlab.com; ketersediaannya tergantung pada kemampuan server dan izin akun. Tidak memerlukan token API — menggunakan sesi browser Anda saat ini.
+
+★ TINJAUAN AI DENGAN ALAT ANDA SENDIRI
+
+• Tinjauan MR penuh — siapkan tugas yang mencakup semua komit MR, dengan filter file yang dapat dikonfigurasi
+• Perbaiki dan balas — salin umpan balik yang dipilih ke AI pengkodean Anda dan siapkan balasan siap diterbitkan
+• Tinjauan tindak lanjut — periksa kembali perbaikan dan perubahan sejak revisi yang dipilih, termasuk setelah push paksa
+• Impor yang dapat diedit — tempel komentar dan balasan AI sebagai JSON, sunting teksnya, dan terbitkan item yang dipilih atau simpan draf tinjauan. Opsional menyelesaikan diskusi setelah menerbitkan balasan
+• Instruksi kustom — sesuaikan prompt dan blok instruksi otomatis; pilih bahasa respons
+• Berbagi manual — gunakan alat AI pilihan Anda. Tidak ada kunci API AI di ekstensi dan tidak ada unggahan kode otomatis
+
+★ TINDAKAN PERMINTAAN PENGGABUNGAN
+
+• Gabung otomatis — rebase dan aktifkan "gabung ketika pipeline berhasil" dengan satu klik
+• Rilis — alur rilis penuh: peningkatan versi → pipeline → penggabungan otomatis, semua otomatis
+• Paksa gabung — lewati pipeline dan gabungkan segera ketika CI tidak diperlukan
+• Peningkatan versi — naikkan versi di package.json, pyproject.toml, atau file apa pun (patch / minor / major)
+• Rebase — rebase cabang dengan atau tanpa peningkatan versi
+• Toggle Draft / Siap — ubah status MR tanpa mengedit judul
+• Komentar cepat — posting komentar template ke MR dengan satu klik
+• Salin MR — salin judul + tautan ke clipboard secara instan
+
+★ KONTROL PIPELINE CI/CD
+
+• Pipeline baru / Batalkan pipeline — buat atau batalkan pipeline secara instan
+• Ulangi semua pekerjaan yang gagal — restart setiap pekerjaan yang gagal di pipeline terbaru sekaligus
+• Tombol pekerjaan kustom — memicu pekerjaan CI apa pun dengan satu klik; menghubungkan beberapa pekerjaan (misalnya build → deploy)
+• Tampilan cepat pekerjaan yang gagal — melihat nama pekerjaan yang gagal dan baris log kesalahan langsung di halaman MR
+• Eksekusi latar belakang — rantai pekerjaan kustom terus berjalan setelah navigasi halaman
+
+★ INTEGRASI JIRA (tanpa token API)
+
+• Lencana status Jira — status tiket yang berwarna (Selesai, Dalam Proses, QA, To Do) diuraikan dari judul MR
+• Sidebar tiket penuh — klik lencana apa pun untuk melihat ringkasan, status, penanggung jawab, prioritas, sprint, epic, label, deskripsi, dan lampiran
+• Ubah status & penanggung jawab — memindahkan status tiket dan menugaskan ulang tanpa meninggalkan GitLab
+• Aksi cepat Jira — aksi gabungan (ubah status + tetapkan) dengan satu klik
+• Ikon tipe & prioritas isu — ikon Jira asli pada daftar MR dan halaman detail
+• Lencana field Jira pada commit — tampilkan Fix Version, status, atau field apapun di samping commit
+• Pengayaan Jira dalam laporan harian — judul tiket ditambahkan secara otomatis ke ringkasan aktivitas
+
+★ PENINGKATAN DAFTAR MR
+
+• Label ukuran MR — lencana S / M / L / XL dengan kode warna berdasarkan jumlah baris yang diubah
+• Indikator konflik — lencana merah saat branch memiliki konflik merge
+• Jumlah thread yang belum terselesaikan — lihat thread diskusi terbuka secara sekilas
+• Nama branch — source → target branch ditampilkan pada setiap MR
+• Indikator persetujuan — menunjukkan apakah Anda menyetujui setiap MR
+• Memudarkan Draft MR — secara visual memudarkan draft untuk fokus pada merge request aktif
+• Sorot MR Anda — batas biru pada MR Anda sendiri untuk identifikasi cepat
+• Toggles "Hanya milikku" / "Memerlukan tinjauan saya" / "Kelompokkan berdasarkan penulis"
+• Lencana "Tinjauan Anda" — mendeteksi penyebutan reviewer-job dan penyebutan komentar yang dikonfigurasi
+• Salin MR dari daftar — tombol salin pada setiap item MR
+
+★ ALAT PRODUKTIVITAS
+
+• Palet perintah (Cmd+K / Ctrl+K) — navigasi ke daftar MR, pipeline, cabang, isu, atau pemicu aksi
+• Pencarian file di palet — temukan dan buka file proyek apa pun berdasarkan nama
+• Laporan aktivitas harian — ringkasan MR yang dibuat, digabungkan, dikomentari, disetujui. Salin ke Slack atau Jira
+• Cherry-pick ke beberapa cabang — cherry-pick commit apa pun ke beberapa cabang sekaligus dengan pembuatan MR otomatis
+• Penanganan alternatif cherry-pick cerdas — memutar ulang commit secara otomatis tanpa file versi saat terjadi konflik
+• Peringatan file sensitif — lencana oranye ketika MR menyentuh .env, Dockerfile, konfigurasi CI, atau kredensial
+• Tombol perintah Git — salin perintah git checkout dan git fetch untuk cabang MR
+• Lencana usia MR — lihat berapa lama merge request terbuka
+• Sorot komentar saya — border berwarna pada komentar Anda sendiri di diskusi
+
+★ KUSTOMISASI
+
+• Profil per proyek — tombol, file versi, dan pekerjaan CI yang berbeda untuk setiap repositori
+• Seret & lepas urutan tombol — atur tombol aksi sesuai keinginan Anda
+• Lebar tab yang dapat dikonfigurasi di diff — atur tampilan tab ke 2, 4, atau 8 spasi
+• Lipat bilah atas / Sembunyikan sidebar kanan — maksimalkan area kerja Anda
+• Notifikasi suara & desktop — dapatkan pemberitahuan saat tindakan selesai atau gagal
+• Tema gelap — mengikuti preferensi sistem secara otomatis
+
+★ MENGAPA GITLAB MR ACTIONS?
+
+✓ Tidak perlu token akses pribadi — menggunakan cookie sesi GitLab yang sudah ada
+✓ Tidak ada layanan perantara — permintaan GitLab dan Jira langsung ke server yang dikonfigurasi
+✓ Mendukung GitLab self-hosted HTTPS dan gitlab.com; lihat panduan kompatibilitas untuk kontrak API yang telah diuji
+✓ Integrasi Jira tanpa token API — menggunakan cookie sesi browser
+✓ Sepenuhnya dapat dikonfigurasi per proyek — tidak ada batasan satu ukuran untuk semua
+✓ Ringan — pemeriksaan latar belakang berjalan untuk tindakan yang Anda mulai; tanpa telemetri atau unggahan AI otomatis
+✓ Tersedia dalam 27 bahasa antarmuka.
+✓ Sumber terbuka
+
+Dipercaya oleh pengembang yang ingin menghabiskan lebih sedikit waktu mengklik melalui GitLab dan lebih banyak waktu menulis kode.

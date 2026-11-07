@@ -1,0 +1,88 @@
+Язык: Нидерландский (nl)
+
+Stroomlijn je GitLab merge request workflow met één-klik automatisering. Vervang multi-stap handmatige bewerkingen — rebase, versie-update, pipelinebeheer en mergen — door één enkele knop. Ondersteunt HTTPS zelf-gehoste GitLab en gitlab.com; beschikbaarheid hangt af van servermogelijkheden en accountrechten. Geen API-tokens vereist — gebruikt je bestaande browsersessie.
+
+★ AI-REVIEW MET JE EIGEN TOOLS
+
+• Volledige MR-review — bereid een taak voor die alle MR-commits dekt, met configureerbare bestandsfilters
+• Repareren en antwoorden — kopieer geselecteerde feedback naar je codeer-AI en bereid kant-en-klare reacties voor om te plaatsen
+• Opvolging beoordeling — hercontroleer fixes en wijzigingen sinds een geselecteerde revisie, inclusief na force pushes
+• Bewerkbare import — plak AI-opmerkingen en antwoorden als JSON, bewerk hun tekst, en publiceer geselecteerde items of sla beoordelingsconcepten op. Optioneel discussies oplossen na het publiceren van antwoorden
+• Aangepaste instructies — pas prompts en automatische instructieblokken aan; kies de taal van het antwoord
+• Handmatig delen — gebruik je favoriete AI-tool. Geen AI-API-sleutels in de extensie en geen automatische codeuploads
+
+★ MERGE REQUEST ACTIES
+
+• Automatisch samenvoegen — rebase en schakel 'samenvoegen wanneer de pipeline slaagt' in met één klik
+• Verzenden — volledige releaseflow: versie verhogen → pipeline → automatisch samenvoegen, volledig geautomatiseerd
+• Force merge — overslaan van de pipeline en onmiddellijk mergen wanneer CI niet nodig is
+• Versie verhoging — verhoog versie in package.json, pyproject.toml, of een bestand (patch / minor / major)
+• Rebase — rebase tak met of zonder versie verhoging
+• Concept / Klaar schakelen — wijzig MR-status zonder de titel te bewerken
+• Snelle opmerkingen — plaats sjabloonreacties op MR met één klik
+• MR kopiëren — kopieer titel + link naar klembord onmiddellijk
+
+★ CI/CD PIPELINE CONTROLES
+
+• Nieuwe pipeline / Pipeline annuleren — maak of annuleer pipelines onmiddellijk
+• Alle mislukte taken opnieuw proberen — start alle mislukte taken in de laatste pipeline tegelijk opnieuw
+• Aangepaste taakknoppen — activeer elke CI-taak met één klik; koppel meerdere taken aan elkaar (bijv. build → deploy)
+• Snel overzicht van mislukte taken — zie namen van mislukte taken en foutlogregels direct op de MR-pagina
+• Achtergronduitvoering — aangepaste taakketens gaan door na pagina-navigatie
+
+★ JIRA-INTEGRATIE (geen API-tokens)
+
+• Jira-statusbadges — kleurgecodeerde ticketstatussen (Klaar, Bezig, QA, Te Doen) gelezen uit MR-titels
+• Volledige ticketzijbalk — klik op een badge om samenvatting, status, verantwoordelijke, prioriteit, sprint, epic, labels, beschrijving en bijlagen te zien
+• Status en verantwoordelijke wijzigen — tickets overzetten en toewijzen zonder GitLab te verlaten
+• Jira-snelle acties — samengestelde acties (status wijzigen + toewijzen) met één klik
+• Issue-type- & prioriteitsiconen — native Jira-iconen op MR-lijst- en detailpagina’s
+• Jira-veldbadges bij commits — toon Fix Version, status of elk veld naast commits
+• Jira-verrijking in dagelijkse rapporten — tickettitels automatisch toegevoegd aan activiteitenoverzichten
+
+★ VERBETERINGEN VAN MR-LIJSTEN
+
+• MR-grootte-labels — kleurgecodeerde S / M / L / XL-badges op basis van aantal gewijzigde regels
+• Conflictaanduiding — rode badge wanneer de branch mergeconflicten heeft
+• Aantal niet-opgeloste threads — zie open discussiedraden in één oogopslag
+• Branch-namen — source → target branch weergegeven bij elke MR
+• Goedkeuringsindicator — toont of je elke MR hebt goedgekeurd
+• Vervaag concept-MRs — concepten visueel vervagen om te focussen op actieve merge requests
+• Markeer je eigen MRs — blauwe rand rond je eigen MRs voor snelle herkenning
+• "Alleen de mijne" / "Heeft mijn review nodig" / "Groepeer per auteur" schakelaars
+• "Je review" badge — detecteert geconfigureerde reviewer-opdrachtvermeldingen en commentaarvermeldingen
+• MR kopiëren vanuit lijst — kopieerknop bij elk MR-item
+
+★ PRODUCTIVITEITSHULPMIDDELEN
+
+• Commandomenu (Cmd+K / Ctrl+K) — navigeer naar MR-lijst, pipelines, branches, issues, of start acties
+• Bestandszoekfunctie in menu — zoek en open elk projectbestand op naam
+• Dagelijks activiteitenrapport — overzicht van gemaakte, samengevoegde, gecommentarieerde, goedgekeurde MRs. Kopieer naar Slack of Jira
+• Cherry-pick naar meerdere branches — cherry-pick elke commit naar meerdere branches tegelijk met automatische MR-aanmaak
+• Slimme cherry-pick fallback — voert commit automatisch opnieuw uit exclusief versiebestand bij conflict
+• Waarschuwing voor gevoelige bestanden — oranje badge wanneer MR .env, Dockerfile, CI-configs of inloggegevens aanraakt
+• Git-commando knoppen — kopieer git checkout en git fetch commando's voor de MR-branch
+• MR leeftijdsbadge — zie hoe lang een merge request al openstaat
+• Markeer mijn opmerkingen — gekleurde rand om je eigen opmerkingen in discussies
+
+★ AANPASSING
+
+• Profielen per project — verschillende knoppen, versiebestanden en CI-taken voor elk repository
+• Sleep & plaats knopvolgorde — rangschik actiekoppen zoals je wilt
+• Configureerbare tabbreedte in diffs — stel tabweergave in op 2, 4 of 8 spaties
+• Vouw bovenste balken samen / Verberg rechterzijbalk — maximaliseer je werkruimte
+• Geluid & desktopmeldingen — ontvang meldingen wanneer acties voltooid zijn of falen
+• Donker thema — volgt automatisch systeemvoorkeur
+
+★ WAAROM GITLAB MR-ACTIES?
+
+✓ Geen persoonlijke toegangstokens — gebruikt je bestaande GitLab-sessiecookies
+✓ Geen tussenliggende dienst — GitLab- en Jira-verzoeken gaan rechtstreeks naar je geconfigureerde servers
+✓ Ondersteunt HTTPS self-hosted GitLab en gitlab.com; zie de compatibiliteitsgids voor geteste API-contracten
+✓ Jira-integratie zonder API-tokens — gebruikt browser-sessiecookies
+✓ Volledig configureerbaar per project — geen beperkingen voor iedereen
+✓ Lichtgewicht — achtergrondcontroles worden uitgevoerd voor acties die je start; geen telemetrie of automatische AI-upload
+✓ Interface beschikbaar in 27 talen
+✓ Open source
+
+Vertrouwd door ontwikkelaars die minder tijd willen besteden aan doorklikken in GitLab en meer tijd aan het schrijven van code.

@@ -1,3 +1,4 @@
+import { isLanguage } from "../../../shared/i18n";
 import * as workflow from "../../../entities/review";
 import { validDisplayPreferences } from "../../../entities/settings";
 import { isRecord, isUnknownArray } from "../../../shared/lib/validation";
@@ -162,12 +163,8 @@ export function createSettingsValidation(t: (key: string) => string) {
       typeof settings.language !== "string" ||
       typeof settings.ai_review_response_language !== "string" ||
       typeof settings.versionStrategy !== "string" ||
-      ["auto", "en", "ru", "zh_CN", "ja", "de", "fr", "es"].indexOf(
-        settings.language,
-      ) === -1 ||
-      ["auto", "en", "ru", "zh_CN", "ja", "de", "fr", "es"].indexOf(
-        settings.ai_review_response_language,
-      ) === -1 ||
+      !isLanguage(settings.language) ||
+      !isLanguage(settings.ai_review_response_language) ||
       ["patch", "minor", "major"].indexOf(settings.versionStrategy) === -1
     )
       throw new Error(t("settingsFileInvalid"));

@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Automatizare, Jira, CI/CD și revizuire AI"
+  },
+  "extDescription": {
+    "message": "Automatizează MR în GitLab: îmbinare, versiuni, Jira, CI/CD și revizuire cu AI. Fără tokenuri API."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Cum funcționează"
+  },
+  "openSettingsInTab": {
+    "message": "Deschide setările într-un tab nou"
+  },
+  "exportSettings": {
+    "message": "Exportă setările"
+  },
+  "importSettings": {
+    "message": "Importă setările"
+  },
+  "settingsTransferHint": {
+    "message": "Partajează toate setările și profilurile proiectelor ca fișier JSON."
+  },
+  "settingsImportReplace": {
+    "message": "Aceasta va înlocui toate setările și profilurile proiectelor existente."
+  },
+  "applySettingsImport": {
+    "message": "Înlocuiește setările"
+  },
+  "cancelSettingsImport": {
+    "message": "Anulează"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — profiluri proiect: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Fișier de setări invalid sau format neacceptat."
+  },
+  "settingsFileTooLarge": {
+    "message": "Fișierul de setări depășește limitele de stocare Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Nu s-au putut exporta setările. Te rugăm să încerci din nou."
+  },
+  "settingsImportFailed": {
+    "message": "Nu s-au putut importa setările. Configurația ta curentă rămâne neschimbată."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Permite accesul la site-ul Jira pentru a importa aceste setări."
+  },
+  "settingsImported": {
+    "message": "Setările au fost importate!"
+  },
+  "buttonOrder": {
+    "message": "Ordinea butoanelor"
+  },
+  "buttonOrderHint": {
+    "message": "Trage pentru a reordona. Trec pentru descriere. Joburi personalizate în albastru."
+  },
+  "general": {
+    "message": "General"
+  },
+  "soundNotifications": {
+    "message": "Notificări sonore"
+  },
+  "desktopNotifications": {
+    "message": "Notificări pe desktop"
+  },
+  "showTimeTracker": {
+    "message": "Arată badge-ul de vechime MR"
+  },
+  "skipConfirmations": {
+    "message": "Sară peste confirmările acțiunilor MR"
+  },
+  "uxEnhancer": {
+    "message": "Îmbunătățiri lista MR"
+  },
+  "dimDrafts": {
+    "message": "Întunecă MR-urile în curs de draft în listă"
+  },
+  "highlightOwnMrs": {
+    "message": "Evidențiază MR-urile tale în listă"
+  },
+  "showOnlyMine": {
+    "message": "Comutatorul „Doar ale mele” pe pagina de listă"
+  },
+  "toggleOnlyMine": {
+    "message": "Doar ale mele"
+  },
+  "versionBump": {
+    "message": "Creștere versiune"
+  },
+  "filePath": {
+    "message": "Cale fișier"
+  },
+  "filePathHint": {
+    "message": "Fișier care conține numărul versiunii"
+  },
+  "versionField": {
+    "message": "Câmp versiune"
+  },
+  "versionFieldHint": {
+    "message": "Cheia JSON sau cheia TOML (ex. \"version\" sau \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategie"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Mesaj commit"
+  },
+  "commitMessageHint": {
+    "message": "Folosește {version} ca placeholder"
+  },
+  "quickComments": {
+    "message": "Comentarii rapide"
+  },
+  "quickCommentsHint": {
+    "message": "Butoane cu un singur clic care postează instantaneu un comentariu general la MR (nu inline la cod). Butoanele apar în bara de acțiuni."
+  },
+  "quickCommentsAdd": {
+    "message": "Adaugă comentariu"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Comentarii rapide"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Butoane de comentariu cu șablon configurabil pe pagina MR. Postează LGTM, Needs fixes sau orice comentariu personalizat cu un singur clic."
+  },
+  "reviewers": {
+    "message": "Recenzori"
+  },
+  "reviewersList": {
+    "message": "Lista recenzorilor"
+  },
+  "reviewersListHint": {
+    "message": "Numele utilizatorilor de menționat într-un comentariu Reviewers: (@user1, @user2). Când este setat, se sare peste căutarea comentariului și jobul CI. Nu schimbă atribuirea recenzorilor în GitLab."
+  },
+  "jobName": {
+    "message": "Numele jobului"
+  },
+  "jobNameHint": {
+    "message": "Job de rezervă dacă niciun comentariu nu se potrivește cu modelul \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Butoane de job personalizate"
+  },
+  "customJobsHint": {
+    "message": "Folosește virgule pentru a lega: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Adaugă buton job"
+  },
+  "addProfileFor": {
+    "message": "+ Adaugă profil pentru $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Curent: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Salvat!"
+  },
+  "unsavedChanges": {
+    "message": "Modificări nesalvate..."
+  },
+  "customFile": {
+    "message": "Fisier personalizat..."
+  },
+  "plainText": {
+    "message": "text simplu"
+  },
+  "removeProfile": {
+    "message": "Ștergi profilul pentru $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Implicit"
+  },
+  "buttonsFor": {
+    "message": "Butoane pentru $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Suprascrie ce butoane să fie afișate pentru acest proiect."
+  },
+  "leaveEmptyDefault": {
+    "message": "Lasă gol pentru a folosi implicit"
+  },
+  "projectSpecificJobs": {
+    "message": "Job-uri specifice proiectului. Folosește virgule pentru a le lega."
+  },
+  "languageLabel": {
+    "message": "Limbă"
+  },
+  "languageAuto": {
+    "message": "Automat (browser)"
+  },
+  "btnVersion": {
+    "message": "Creștere versiune"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Versiune"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Mergere automată"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Forțare merge"
+  },
+  "btnShip": {
+    "message": "Rebase + Versiune + Mergere automată"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Versiune + Forțare merge"
+  },
+  "btnReviewers": {
+    "message": "Recenzori"
+  },
+  "btnPipelineRestart": {
+    "message": "Pipeline nou"
+  },
+  "btnPipelineCancel": {
+    "message": "Anulează pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Comutare Schiță / Gata"
+  },
+  "btnRetryFailed": {
+    "message": "Reîncearcă job-urile eșuate"
+  },
+  "btnCopyMr": {
+    "message": "Copiază MR"
+  },
+  "hintVersion": {
+    "message": "Citește fișierul configurat (ex. package.json), crește versiunea conform strategiei alese (patch/minor/major), și face commit cu mesajul tău șablon."
+  },
+  "hintRebase": {
+    "message": "Rebasează branch-ul sursă pe branch-ul țintă. Nu face merge și nu activează auto-merge."
+  },
+  "hintRebaseVersion": {
+    "message": "Rebasează branch-ul pe țintă (dacă e nevoie), apoi crește versiunea în fișierul configurat. Nu face merge."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Rebasează branch-ul pe țintă (dacă proiectul folosește rebase/ff). Apoi activează „merge when pipeline succeeds”. Folosește setările squash/delete branch din MR."
+  },
+  "hintRebaseForce": {
+    "message": "Rebasează cu skip CI, anulează toate pipeline-urile în curs, apoi face merge imediat fără să aștepte CI. Folosește setările squash/delete branch din MR."
+  },
+  "hintShip": {
+    "message": "Flow complet: rebase → crește versiunea în fișierul configurat → așteaptă să se sincronizeze MR → așteaptă pipeline-ul nou → activează auto-merge."
+  },
+  "hintForceShip": {
+    "message": "Flow rapid: rebase (skip CI) → crește versiunea → așteaptă 15s → anulează pipeline-ul → face merge imediat. Sare peste verificările CI."
+  },
+  "hintReviewers": {
+    "message": "Postează mențiuni ale recenzorului configurat, refolosește un comentariu de la recenzor(i) din note recente sau rulează jobul CI configurat."
+  },
+  "hintPipelineRestart": {
+    "message": "Creează un pipeline complet nou pentru ramura sursă prin API. Util dacă pipeline-ul este blocat sau ai nevoie de o execuție proaspătă."
+  },
+  "hintPipelineCancel": {
+    "message": "Solicită anularea pipeline-urilor care rulează, sunt în așteptare sau create returnate pentru acest MR."
+  },
+  "hintDraftToggle": {
+    "message": "Adaugă sau elimină prefixul „Draft:” din titlul MR-ului. Nu schimbă alte setări ale MR-ului."
+  },
+  "hintRetryFailed": {
+    "message": "Reîncearcă job-urile eșuate din pipeline-ul curent al MR-ului. Job-urile reușite nu sunt afectate."
+  },
+  "hintCopyMr": {
+    "message": "Copiază titlul MR-ului și linkul în clipboard."
+  },
+  "toastRebasing": {
+    "message": "Se face rebasare..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Activarea auto-merge-ului..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Pasul 1/2: Rebasare..."
+  },
+  "toastStep22Automerge": {
+    "message": "Pasul 2/2: Activarea auto-merge-ului..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Pasul 1/2: Rebasare (sari CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Pasul 2/2: Anulează pipeline-ul & face merge..."
+  },
+  "toastCancellingMerging": {
+    "message": "Anulare pipeline-ului și fuziune..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Se creează un pipeline nou pentru $1…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Se anulează $1 pipeline-uri…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Marcăm ca pregătit..."
+  },
+  "toastMarkingDraft": {
+    "message": "Marcarea ca recrutare..."
+  },
+  "toastRetrying": {
+    "message": "Se reîncearcă $1 joburi eșuate…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Niciun loc de muncă eșuat în actuala pipeline MR"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Fără pipeline-uri de anulat"
+  },
+  "toastAssigningReviewers": {
+    "message": "Postarea recenzorilor menționează..."
+  },
+  "toastRepostingReviewers": {
+    "message": "Repostarea comentariilor recenzorilor..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Nu s-a găsit niciun comentariu al revizorilor; se pornește $1…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Versiunea bump..."
+  },
+  "toastWaitingSync": {
+    "message": "Aștept ca MR să se sincronizeze cu v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Așteptăm pipeline-ul..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Tentativă de auto-fuziune $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Aștept ca MR să se sincronizeze... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Aștept \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Joacă jobul \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Reîncercând lucrarea \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Jobul \"$1\" a reușit deja, sărind",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Jobul \"$1\" e deja $2, așteaptă...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 finalizat",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 a eșuat: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Titlul și linkul MR copiate!"
+  },
+  "toastWaiting15s": {
+    "message": "Aștept 15s înainte de merge..."
+  },
+  "confirmRebase": {
+    "message": "Rebase la branch?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Creștere versiune?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → îmbinare automată?"
+  },
+  "confirmAutomerge": {
+    "message": "Activează auto-merge?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → MERGE ACUM?"
+  },
+  "confirmForce": {
+    "message": "⚠️ MERGE ACUM (sări peste pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Creștere versiune → Auto-merge?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Creștere versiune → Auto-merge?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Creștere versiune → MERGE ACUM?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Creștere versiune → MERGE ACUM?"
+  },
+  "confirmNewPipeline": {
+    "message": "Creează un pipeline nou pentru acest branch?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Anulează toate pipeline-urile care rulează?"
+  },
+  "labelAutomerge": {
+    "message": "Auto-merge"
+  },
+  "labelForceMerge": {
+    "message": "Forțează merge"
+  },
+  "labelVersionAutomerge": {
+    "message": "Versiune + Auto-merge"
+  },
+  "labelVersionForceMerge": {
+    "message": "Versiune + Forțează merge"
+  },
+  "labelMarkReady": {
+    "message": "Marchează ca Ready"
+  },
+  "labelMarkDraft": {
+    "message": "Marchează ca Draft"
+  },
+  "labelRetryFailed": {
+    "message": "Reîncearcă eșuate"
+  },
+  "labelNewPipeline": {
+    "message": "Pipeline nou"
+  },
+  "timeTrackerTitle": {
+    "message": "Timp de la crearea MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Acțiuni MR GitLab"
+  },
+  "welcomeSubtitle": {
+    "message": "Accelerează fluxul de lucru pentru cererile de fuziune cu acțiuni cu un singur click."
+  },
+  "welcomeQuickStart": {
+    "message": "Pornire rapidă"
+  },
+  "welcomeStep1Title": {
+    "message": "Deschide orice pagină de cerere de fuziune"
+  },
+  "welcomeStep1Desc": {
+    "message": "Deschide o pagină MR HTTPS în timp ce ești conectat la GitLab.com sau la GitLab-ul tău auto-găzduit. Permite extensiei accesul la acel site."
+  },
+  "welcomeStep2Title": {
+    "message": "Vezi cum apar butoanele de acțiune"
+  },
+  "welcomeStep2Desc": {
+    "message": "Butoanele apar pe pagina MR. Un set de bază este activat la prima instalare."
+  },
+  "welcomeStep3Title": {
+    "message": "Personalizează prin fereastra extensiei"
+  },
+  "welcomeStep3Desc": {
+    "message": "Apasă pe pictograma extensiei pentru a activa/dezactiva butoane, a seta fișierul de versiune, a adăuga butoane de job personalizate și altele."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Activat implicit"
+  },
+  "welcomeMoreActions": {
+    "message": "Mai multe acțiuni (activează din setări)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Cum funcționează"
+  },
+  "welcomeHowDesc": {
+    "message": "Această extensie folosește sesiunea ta existentă GitLab (cookies) pentru a apela API-ul GitLab în numele tău. Nu sunt necesare token-uri personale de acces."
+  },
+  "welcomeHowList1": {
+    "message": "Pentru GitLab.com și GitLab self-hosted prin HTTPS; funcțiile depind de API-urile serverului, de pagina și de permisiunile tale."
+  },
+  "welcomeHowList2": {
+    "message": "Acțiunile folosesc aceleași permisiuni ca și utilizatorul tău conectat"
+  },
+  "welcomeHowList3": {
+    "message": "Lanțurile de joburi personalizate rulează în fundal. Ține un tab conectat la același GitLab deschis pentru acces API."
+  },
+  "welcomeHowList4": {
+    "message": "Profilurile pe proiect permit personalizarea butoanelor pentru diferite depozite"
+  },
+  "welcomeTip": {
+    "message": "Poți crea profiluri pe proiect în setările din popup. Acest lucru e util când proiecte diferite au nevoie de fișiere de versiune diferite sau joburi CI personalizate."
+  },
+  "welcomeOpenSettings": {
+    "message": "Deschide Setări"
+  },
+  "cardAutomergeTitle": {
+    "message": "Auto-mergere"
+  },
+  "cardAutomergeDesc": {
+    "message": "Rebasează branch-ul (dacă e nevoie) și activează merge când pipeline-ul reușește."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Pipelină nouă"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Creează o pipelină nouă pentru branch-ul sursă cu un singur click."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Anulează pipeline-ul"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Solicită anularea pipeline-urilor MR care rulează sau sunt în așteptare."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Comutare draft"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Comută MR între starea Draft și Ready fără a edita titlul."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Creștere versiune"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Crește versiunea în package.json, pyproject.toml sau orice fișier personalizat. Strategie configurabilă (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Trimite (Versiune + Merge)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase dacă e nevoie, crește versiunea și solicită auto-merge. Păstrează tab-ul MR deschis până se finalizează acțiunea."
+  },
+  "cardForceMergeTitle": {
+    "message": "Forțează merge"
+  },
+  "cardForceMergeDesc": {
+    "message": "Solicită merge fără a aștepta succesul pipeline-ului. Permisiunile și regulile de merge GitLab se aplică în continuare."
+  },
+  "cardReviewersTitle": {
+    "message": "Recenzori"
+  },
+  "cardReviewersDesc": {
+    "message": "Menționează numele de utilizator configurate într-un comentariu, reutilizează un comentariu de recenzor sau rulează un job CI. Nu atribuie câmpul nativ de recenzor din GitLab."
+  },
+  "uiCustomization": {
+    "message": "Personalizare UI"
+  },
+  "collapseBars": {
+    "message": "Buton pentru a restrânge bara de sus"
+  },
+  "hideRightSidebar": {
+    "message": "Ascunde bara laterală dreaptă pe paginile MR"
+  },
+  "collapseTopBars": {
+    "message": "Comută barele de sus"
+  },
+  "cardCollapseTitle": {
+    "message": "Restrânge barele de sus"
+  },
+  "cardCollapseDesc": {
+    "message": "Adaugă un buton pentru a restrânge/extinde barele de navigare GitLab. Economisește spațiu și te ajută să te concentrezi pe conținut."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Ascunde secțiuni UI"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Ascunde bara laterală dreaptă pe paginile MR pentru a avea o zonă de conținut pe toată lățimea."
+  },
+  "jiraIntegration": {
+    "message": "Integrare Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL Jira Server/Data Center, de ex. https://jira.company.com — conectează-te la Jira, apoi fă click pe Permite accesul site-ului Jira. Cloud nu este complet suportat."
+  },
+  "jiraGrantAccess": {
+    "message": "Permite accesul site-ului Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Accesul la site a fost acordat. Conectează-te la Jira în acest browser."
+  },
+  "jiraUrlInvalid": {
+    "message": "Introdu un URL de bază HTTPS Jira, fără credențiale/interogări/fragmente."
+  },
+  "jiraErrorAuth": {
+    "message": "Sesiunea ta Jira a expirat sau este nevoie să te conectezi. Deschide Jira, conectează-te, apoi încearcă din nou să încarci."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira a refuzat accesul la acest tichet sau la această operație. Verifică-ți contul și permisiunile în Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Extensia nu poate accesa acest site Jira. Verifică permisiunile site-ului și URL-ul Jira în setările extensiei."
+  },
+  "jiraErrorNetwork": {
+    "message": "Nu s-a putut contacta Jira. Verifică conexiunea, VPN-ul și URL-ul Jira, apoi încearcă din nou."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira este temporar indisponibil sau limitează cererile. Așteaptă și încearcă din nou."
+  },
+  "jiraErrorNotFound": {
+    "message": "Nu s-a putut găsi problema Jira sau nu este vizibilă pentru contul tău."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira a returnat un răspuns neacceptat. Verifică URL-ul și compatibilitatea cu Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "Cererea către Jira a eșuat. Deschide Jira pentru a verifica problema și accesul tău."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Modificarea poate fi deja aplicată. Verifică tichetul în Jira înainte de a repeta acțiunea."
+  },
+  "jiraErrorTransitions": {
+    "message": "Nu s-au putut încărca tranzițiile Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Deschide Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Reîncearcă încărcarea"
+  },
+  "jiraDismissError": {
+    "message": "Respinge"
+  },
+  "jiraTicketRegex": {
+    "message": "Regex tichet"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Regex personalizat pentru analizarea ID-urilor de tichete din titlurile MR. Implicit: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Arată iconițele de tip și prioritate pe lista MR"
+  },
+  "jiraQuickActions": {
+    "message": "Acțiuni rapide"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Alege orice combinație de câmpuri pentru fiecare buton. Lasă doar schimbările pe care ar trebui să le facă. Versiunile și componentele trebuie să existe deja în proiectul Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Adaugă acțiune"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Etichetă"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Stare"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Nume utilizator"
+  },
+  "jiraSidebarStatus": {
+    "message": "Stare"
+  },
+  "jiraSidebarType": {
+    "message": "Tip"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioritate"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Persoană desemnată"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Nedesemnat"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Caută utilizator..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Nu s-au găsit utilizatori"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Dedesemnează"
+  },
+  "jiraSidebarReporter": {
+    "message": "Reporter"
+  },
+  "jiraSidebarLabels": {
+    "message": "Etichete"
+  },
+  "jiraSidebarCreated": {
+    "message": "Creat"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Actualizat"
+  },
+  "jiraSidebarDescription": {
+    "message": "Descriere"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Componente"
+  },
+  "jiraSidebarResolution": {
+    "message": "Rezolvare"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Afectează"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Versiune de remediere"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Niciuna"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Nu s-au găsit versiuni"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Caută versiuni..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Actualizarea versiunilor corective a eșuat"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Atașamente"
+  },
+  "jiraSidebarComments": {
+    "message": "Comentarii"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Adaugă un comentariu..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Comentariu"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Afișează mai multe comentarii"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Nu există încă comentarii"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Postarea comentariului a eșuat"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Șterge comentariul"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Ștergi acest comentariu?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Ștergerea comentariului a eșuat"
+  },
+  "cardJiraTitle": {
+    "message": "Insigne de stare Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Afișează stările tichetelor Jira pe pagina listei MR. Parsează ID-urile tichetelor din titlurile MR (ex. CCT-1111) și afișează insigne colorate de stare. Setează URL-ul tău Jira în setări."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Regex personalizat pentru tichete"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Configurează o expresie regulată personalizată pentru parsarea ID-urilor tichetelor Jira din titlurile MR. Util dacă proiectul tău folosește prefixe de tichete non-standard."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Bara laterală a tichetelor Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Dă click pe orice insignă Jira pentru a deschide o bară laterală cu detalii complete despre tichet — rezumat, stare, tip, prioritate, persoană atribuită și descriere. Citește, postează și șterge propriile comentarii fără să părăsești GitLab. Versiunile de remediere pot fi alese din versiunile disponibile ale proiectului direct în bara laterală."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Atașamente în bara laterală"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Vizualizează imagini, videoclipuri și fișiere din tichetele Jira direct în bara laterală. Imaginile și videoclipurile se deschid într-un lightbox pe ecran complet."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Insigne Jira pe pagina MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Insignele de stare ale tichetelor Jira sunt afișate în titlul MR pe pagina de detalii. Dă click pe o insignă pentru a deschide bara laterală cu detalii complete despre tichet."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Schimbă starea Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Schimbă starea tichetului direct din bara laterală. Afișează doar tranzițiile disponibile din starea curentă."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Schimbă persoana atribuită unui tichet Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Dă click pe persoana desemnată pentru a căuta și a reasigna. Autocompletare cu avataruri, buton de eliminare pentru a șterge persoana desemnată."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Acțiuni rapide Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Butoane cu un singur click pentru status, persoană desemnată, etichete, versiuni și alte câmpuri. Fiecare buton poate actualiza un câmp sau mai multe."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Iconițe tip și prioritate issue"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Afișează tipul și prioritatea issue-ului Jira lângă badge-urile de status în lista și în paginile detaliate ale MR. Folosește iconițele native Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebasează ramura sursă peste ramura țintă fără a face merge."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Versiune"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebasează ramura și actualizează versiunea dintr-un singur click. Nu face merge."
+  },
+  "cardCopyMrTitle": {
+    "message": "Copiază MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Copiază titlul și link-ul MR în clipboard cu un singur click."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Reia joburile eșuate"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Reia joburile eșuate din pipeline-ul curent al MR. Joburile reușite nu sunt afectate."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Îmbunătățiri ale paginii cu lista MR-urilor"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Estomparea MR-urilor Draft"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Estompează vizual MR-urile Draft pe pagina listei de merge requests astfel încât să te poți concentra pe cele active."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Evidențiază MR-urile tale"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Evidențiază MR-urile tale în listă cu o margine albastră pentru identificare rapidă."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Comutator „Only mine”"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Comutare cu un singur click pentru a filtra lista de MR-uri și a arăta doar merge request-urile tale."
+  },
+  "cardMrAgeTitle": {
+    "message": "Insignă pentru vechimea MR-ului"
+  },
+  "cardMrAgeDesc": {
+    "message": "Arată cât de mult timp a trecut de când a fost creat MR-ul, afișată ca o insignă pe pagina MR-ului."
+  },
+  "showReviewerBadge": {
+    "message": "Insignă „Your review” din comentarii"
+  },
+  "badgeYourReview": {
+    "message": "Recenzia ta"
+  },
+  "badgeYourReviewHint": {
+    "message": "Ești menționat ca recenzor în comentariile MR-ului"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Insignă „Your review”"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Caută în cele mai vechi comentarii „Reviewer(s): @you”. Adâncimea căutării este configurabilă (10 implicit). Separat de funcția de recenzor încorporată din GitLab."
+  },
+  "showNeedsReview": {
+    "message": "Comutator „Needs my review” pe pagina listei"
+  },
+  "toggleNeedsReview": {
+    "message": "Necesită revizuirea mea"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Comutator „Necesită revizuirea mea”"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Comutare cu un clic pentru a filtra lista MR și a afișa doar cererile de îmbinare unde ești desemnat ca recenzor."
+  },
+  "showCopyMr": {
+    "message": "Buton de copiere pe elementele din lista MR"
+  },
+  "showThreadsBadge": {
+    "message": "Numărul de discuții nerezolvate în lista MR"
+  },
+  "showSizeBadge": {
+    "message": "Etichete de mărime MR (S/M/L/XL) pe lista MR"
+  },
+  "showConflictsBadge": {
+    "message": "Afișează indicatorul de conflicte pe lista MR"
+  },
+  "showApprovalBadge": {
+    "message": "Afișează numărul de aprobări și indicatorul de aprobare al meu pe lista MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Ai aprobat"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Tu"
+  },
+  "cardThreadsTitle": {
+    "message": "Numărul de discuții nerezolvate"
+  },
+  "cardThreadsDesc": {
+    "message": "Afișează numărul de discuții nerezolvate. „+” indică o primă pagină completă; „?” înseamnă că numărul nu este disponibil."
+  },
+  "cardSizeTitle": {
+    "message": "Etichete de mărime MR"
+  },
+  "cardSizeDesc": {
+    "message": "Insigne S/M/L/XL cu praguri configurabile de linii și fișiere în Regulile și limitele de afișare."
+  },
+  "conflictsBadge": {
+    "message": "Conflicte"
+  },
+  "conflictsBadgeHint": {
+    "message": "Această MR are conflicte de îmbinare care trebuie rezolvate"
+  },
+  "cardConflictsTitle": {
+    "message": "Indicator de conflicte"
+  },
+  "cardConflictsDesc": {
+    "message": "Afișează un badge roșu CONFLICTS pe pagina de detalii MR când ramura are conflicte de îmbinare."
+  },
+  "cardApprovalTitle": {
+    "message": "Indicatorul meu de aprobare"
+  },
+  "cardApprovalDesc": {
+    "message": "Arată dacă ai aprobat fiecare MR pe pagina de listă. Distinge aprobarea ta de aprobările altora."
+  },
+  "showBranches": {
+    "message": "Afișează ramurile sursă și țintă pe lista MR"
+  },
+  "showBranchesLinks": {
+    "message": "Fă numele ramurilor clicabile (deschide arborele ramurilor)"
+  },
+  "cardBranchesTitle": {
+    "message": "Numele ramurilor pe lista MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Afișează numele ramurilor sursă și țintă pe fiecare MR din listă, astfel încât să vezi de unde vine codul și în ce se îmbină."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Copiază MR din listă"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Adaugă un buton de copiere la fiecare MR pe pagina de listă. Copiază titlul MR și linkul în clipboard cu un singur clic."
+  },
+  "versionFromTarget": {
+    "message": "Citește versiunea din ramura țintă"
+  },
+  "versionFromTargetHint": {
+    "message": "Citește versiunea curentă din ramura țintă (de exemplu, main) în loc de ramura sursă. Folosește asta cu strategia de commit de tip merge pentru a evita versiunile depășite."
+  },
+  "showFailedJobView": {
+    "message": "Arată vizualizarea rapidă a joburilor eșuate pe pagina MR"
+  },
+  "failedJobTraceError": {
+    "message": "Nu s-a putut încărca traseul"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Vizualizare rapidă job eșuat"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Previzualizează joburile eșuate și ultimele linii din log pe pagina MR. Numărul de joburi și linii poate fi configurat în Regulile și limitele de afișare."
+  },
+  "showCmdPalette": {
+    "message": "Paleta de comenzi (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Raport zilnic de activitate"
+  },
+  "standupJiraEnrich": {
+    "message": "Arată titlurile ticketelor Jira în raport"
+  },
+  "cmdPlaceholder": {
+    "message": "Tastează o comandă..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navighează"
+  },
+  "cmdFooterSelect": {
+    "message": "selectează"
+  },
+  "cmdFooterClose": {
+    "message": "închide"
+  },
+  "cmdEmpty": {
+    "message": "Nu există comenzi corespunzătoare"
+  },
+  "cmdGroupNav": {
+    "message": "Navigare"
+  },
+  "cmdGroupMr": {
+    "message": "Acțiuni MR"
+  },
+  "cmdGroupExt": {
+    "message": "Extensie"
+  },
+  "cmdGroupFiles": {
+    "message": "Fișiere"
+  },
+  "cmdNavMrs": {
+    "message": "Mergi la Merge Requests"
+  },
+  "cmdNavIssues": {
+    "message": "Mergi la Issues"
+  },
+  "cmdNavPipelines": {
+    "message": "Mergi la Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Mergi la Branches"
+  },
+  "cmdNavRepo": {
+    "message": "Mergi la Repository"
+  },
+  "cmdNavTags": {
+    "message": "Mergi la Tags"
+  },
+  "cmdNavCommits": {
+    "message": "Du-te la Commit-uri"
+  },
+  "cmdNavWiki": {
+    "message": "Du-te la Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Du-te la Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Du-te la Setări"
+  },
+  "cmdCopyPath": {
+    "message": "Copiază calea proiectului"
+  },
+  "cmdGroupPinned": {
+    "message": "Fixat"
+  },
+  "cmdExtSettings": {
+    "message": "Deschide setările extensiei"
+  },
+  "cmdExtStandup": {
+    "message": "Generează raport de activitate"
+  },
+  "standupTitle": {
+    "message": "Activitate zilnică"
+  },
+  "standupCopy": {
+    "message": "Copiază în clipboard"
+  },
+  "standupCopied": {
+    "message": "Copiat!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Paletă de comenzi"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Apasă Cmd+K (Mac) sau Ctrl+K (Win) pe orice pagină GitLab. Navighează, rulează acțiuni MR, caută fișiere după nume și deschide-le în repo."
+  },
+  "cardStandupTitle": {
+    "message": "Raport de activitate zilnică"
+  },
+  "cardStandupDesc": {
+    "message": "Generează un raport de activitate zilnică din datele tale GitLab. Arată MR-uri create, unite și revizuite. Copiază și lipește în Slack sau Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick către ramuri"
+  },
+  "showGroupPlay": {
+    "message": "Buton de redare grup în pipeline (rulează joburile manuale rămase)"
+  },
+  "showCommitVersion": {
+    "message": "Badge de versiune pe pagina commit-urilor"
+  },
+  "showCommitVersionHint": {
+    "message": "Afișează versiunea din fișierul de versiune (vezi setările de actualizare a versiunii) lângă fiecare commit; evidențiat unde versiunea s-a schimbat"
+  },
+  "groupPlayTooltip": {
+    "message": "Rulează joburile manuale rămase din acest grup"
+  },
+  "groupPlayError": {
+    "message": "Nu s-au putut porni unele joburi"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Butonul de redare al grupului"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Pe graficul pipeline-ului, un buton de redare lângă un grup de joburi rulează toate joburile manuale rămase — chiar dacă unele joburi din grup au început deja și butonul GitLab dispare."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Insigna de versiune pe commituri"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Pe pagina cu commiturile branch-ului, fiecare commit arată versiunea proiectului din fișierul tău de versiune în acel commit. Dezactivată implicit, evidențiată acolo unde versiunea s-a schimbat — vezi dintr-o privire ce commituri au intrat în fiecare release."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick pentru branch-uri"
+  },
+  "cherryPickBranchesHint": {
+    "message": "Branch-urile țintă implicite pentru cherry-pick. Poți adăuga sau elimina branch-uri în modal."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Adaugă ramură"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick pe ramuri"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Închidere"
+  },
+  "cherryPickInProgress": {
+    "message": "Se execută cherry-pick…"
+  },
+  "cherryPickRemove": {
+    "message": "Elimină"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Nume ramură"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-picked pe ramurile $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Pornește o nouă cerere de fuziune cu aceste modificări"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Crează MR implicit când faci cherry-pick"
+  },
+  "cherryPickSmartFallback": {
+    "message": "La conflict — confirmă fără fișierul de versiune"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Dacă cherry-pick eșuează din cauza unui conflict la fișierul de versiune, reia modificările ca un commit nou fără fișierul de versiune"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Crește versiunea la fallback"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Crește versiunea în ramura țintă în același commit de fallback"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Smart fallback gestionează doar conflictele la fișierul de versiune. Conflictul e într-un alt fișier"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Fișierul a fost modificat în ramura țintă — nu se poate cherry-pick sigur"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Fișierul de versiune conține modificări în afară de versiune — nu se poate sări peste el în siguranță"
+  },
+  "commitsJiraField": {
+    "message": "Câmp Jira pentru insigne de commit"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Numele câmpului Jira care să apară ca insigne pe pagina de commit-uri (de exemplu, fixVersions, status, labels, components). Necesită URL-ul Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick pe branch-uri"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick direct pe branch-urile selectate sau prin MRs noi. Cu Smart fallback activat, conflictele verificate ale fișierelor de versiune pot fi reluate fără acel fișier, opțional cu bump la versiune. Modificările nesigure se opresc pentru inspecție."
+  },
+  "mrDetailEnhancements": {
+    "message": "Îmbunătățiri detalii MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Avertizare fișier sensibil în diff"
+  },
+  "showGitCommands": {
+    "message": "Butoane comandă Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "SENSIBIL: fișier(e) $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Acest MR modifică fișiere sensibile la securitate:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Avertizare fișier sensibil"
+  },
+  "cardSensitiveDesc": {
+    "message": "Marchează fișierele sensibile folosind reguli încorporate, modele suplimentare și excluderi. Configurează-le în Reguli de afișare și limite."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Butoane de comandă Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Copiază comenzile checkout, pull și hard-reset. Verifică depozitul și remote-ul origin înainte de a le executa; hard reset elimină modificările locale."
+  },
+  "updateBannerText": {
+    "message": "Este disponibilă o versiune nouă! Vezi ce e nou:"
+  },
+  "updateChangelog": {
+    "message": "Jurnal de modificări"
+  },
+  "updateReviewAsk": {
+    "message": "Îți place extensia?"
+  },
+  "updateReviewLink": {
+    "message": "Lasă o recenzie"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Recenzie asistată de AI, de la început până la sfârșit"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Revizuiește un MR, corectează feedback-ul selectat, pregătește răspunsuri și verifică din nou modificările. Vizualizează și editează comentariile înainte de a le posta pe GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Ghid de recenzie AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Fără încărcări automate AI. Copiază tu contextul; comentariile sunt trimise pe GitLab doar când alegi Publică sau Adaugă la recenzie."
+  },
+  "aiReviewTitle": {
+    "message": "Recenzie AI"
+  },
+  "aiReviewOpen": {
+    "message": "Recenzie AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Copiază comentariul pentru AI"
+  },
+  "aiReviewLoading": {
+    "message": "Se încarcă discuțiile…"
+  },
+  "aiReviewRetry": {
+    "message": "Reîncearcă"
+  },
+  "aiReviewRefresh": {
+    "message": "Reîmprospătează"
+  },
+  "aiReviewClose": {
+    "message": "Închide"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Confirmă închiderea dialogurilor de revizuire cu lucrări nesalvate"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Închizi acest dialog? Modificările nesalvate și datele introduse se vor pierde."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Închizi acest dialog și oprești trimiterea ulterioară? Comentariile deja trimise vor rămâne în GitLab. Modificările nesalvate se vor pierde."
+  },
+  "aiReviewAll": {
+    "message": "Toate"
+  },
+  "aiReviewUnresolved": {
+    "message": "Nerezolvate"
+  },
+  "aiReviewResolved": {
+    "message": "Rezolvate"
+  },
+  "aiReviewGeneral": {
+    "message": "Comentarii generale"
+  },
+  "aiReviewSearch": {
+    "message": "Caută comentarii sau căi de fișiere"
+  },
+  "aiReviewSelectShown": {
+    "message": "Selectează afișatele"
+  },
+  "aiReviewClear": {
+    "message": "Șterge selecția"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Include modificările de cod"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Pentru revizuiri noi și repetate. Dezactivează dacă AI poate citi repository-ul. Exerciții scurte atașate la feedback rămân incluse."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Ține cont de discuțiile existente"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Adaugă comentariile deja postate ca filtru pentru duplicate: AI-ul revizuiește întreaga MR independent, apoi elimină constatările care se repetă. Nu răspunde la acele discuții."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Include descriere"
+  },
+  "aiReviewPrompt": {
+    "message": "Instrucțiuni pentru AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Restabilește promptul implicit"
+  },
+  "aiReviewPreview": {
+    "message": "Previzualizare"
+  },
+  "aiReviewCopied": {
+    "message": "Copiat!"
+  },
+  "aiReviewEmpty": {
+    "message": "Nicio potrivire pentru comentarii."
+  },
+  "aiReviewPartial": {
+    "message": "Unele date nu au putut fi încărcate. Exportul include un avertisment și doar contextul disponibil."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 selectat",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Selectează textul pentru previzualizare și copiază-l manual."
+  },
+  "aiReviewScopeComment": {
+    "message": "Comentariu selectat"
+  },
+  "aiReviewScopeThread": {
+    "message": "Discuție selectată"
+  },
+  "aiReviewPreparing": {
+    "message": "Se pregătește contextul codului…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Nu s-au putut încărca discuțiile. Reîncearcă sau copiază contextul disponibil."
+  },
+  "aiReviewShowReplies": {
+    "message": "Afișează răspunsurile"
+  },
+  "aiReviewSize": {
+    "message": "Aproximativ $1 caractere",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Anulează"
+  },
+  "showAiReviewCopy": {
+    "message": "Afișează copia revizuirii AI și controalele de import"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Copiază întreg MR-ul pentru o revizuire nouă, feedback selectat pentru corecturi sau importă comentariile și răspunsurile AI cu o previzualizare editabilă înainte de trimitere."
+  },
+  "aiReviewFresh": {
+    "message": "Revizuire de la zero"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Solicită o revizuire nouă"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Până la 1.500 de caractere. Folosit pentru a revizui întreg MR-ul și toate commit-urile sale, separat de corecturile feedback-ului. Poți specifica limba răspunsului. Lasă gol pentru promptul implicit în engleză."
+  },
+  "aiReviewPromptHint": {
+    "message": "Până la 1.500 de caractere. Lasă gol pentru a folosi promptul implicit în engleză. Se aplică tuturor proiectelor."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Promptul nu a fost salvat. Folosește maximum 1.500 de caractere și elimină caracterele de control ciudate."
+  },
+  "settingsSaveFailed": {
+    "message": "Setările nu au putut fi salvate. Fă o modificare pentru a încerca din nou."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Modificările de aici se aplică acestui export. Setează promptul tău implicit în setările extensiei."
+  },
+  "aiReviewReady": {
+    "message": "Previzualizarea este gata de copiat."
+  },
+  "aiReviewLoadHint": {
+    "message": "Încarcă discuții direct de pe GitLab, inclusiv comentarii care nu sunt vizibile pe această pagină."
+  },
+  "aiReviewCommentContext": {
+    "message": "Alte răspunsuri sunt incluse ca context. Doar comentariile selectate sunt solicitate pentru acțiune."
+  },
+  "aiReviewOutdated": {
+    "message": "Revizuire anterioară"
+  },
+  "aiReviewLink": {
+    "message": "Deschidere discuție"
+  },
+  "aiReviewLoaded": {
+    "message": "Discuții $1 încărcate"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Pregătirea contextului codului: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Acest comentariu nu este disponibil de pe GitLab. Poate fi încă în curs de salvare sau poate a fost șters. Reîncarcă pentru a încerca din nou."
+  },
+  "aiReviewImportOpen": {
+    "message": "Importă recenzia AI…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Importă recenzia AI"
+  },
+  "aiReviewImportHelp": {
+    "message": "Lipește răspunsul AI mai jos pentru a verifica, edita și alege ce să publici. Comenzile rapide pentru prompturi sunt în Setări avansate."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Copiază promptul pentru o recenzie nouă"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Pregătirea promptului…"
+  },
+  "aiReviewImportInput": {
+    "message": "Răspuns AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Lipește răspunsul JSON complet conținând comentariile noi sau răspunsurile la discuții. Poți edita textul și alege ce să trimiți în previzualizare."
+  },
+  "aiReviewImportValidate": {
+    "message": "Verifică și previzualizează"
+  },
+  "aiReviewImportChecking": {
+    "message": "Verificarea reviziei MR, a liniilor și a comentariilor existente…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Verifică răspunsul la comentariile din previzualizare. Poți edita textul lor, să elimini bifele pentru a exclude elemente sau să adaugi un comentariu general."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Selectează comentariile gata"
+  },
+  "aiReviewImportPreview": {
+    "message": "Comentarii de trimis"
+  },
+  "aiReviewImportReady": {
+    "message": "Gata"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Necesită corecturi"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Modificările fișierului suplimentar nu au putut fi încărcate: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Diferența suplimentară depășește limita de import de 16 MiB. Numai comentariile pe liniile verificate pot fi importate."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Deja există"
+  },
+  "aiReviewImportPublished": {
+    "message": "Publicat"
+  },
+  "aiReviewImportDraft": {
+    "message": "Adăugat la revizuire"
+  },
+  "aiReviewImportFailed": {
+    "message": "Neexpediat"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Livrare neconfirmată"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Neexpediat"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Linie nouă $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Linie veche $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Publică selectatul"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Adaugă la recenzie"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Publicarea trimite comentariile imediat. Adăugarea la recenzie salvează comentariile nepublicate pentru recenzia ta GitLab."
+  },
+  "aiReviewImportSending": {
+    "message": "Trimit comentariile selectate..."
+  },
+  "aiReviewImportFinished": {
+    "message": "Gata. Verifică rezultatul lângă fiecare comentariu."
+  },
+  "aiReviewImportStopped": {
+    "message": "Oprit. Verifică rezultatul lângă fiecare comentariu înainte de a încerca din nou."
+  },
+  "aiReviewImportEdited": {
+    "message": "Răspunsul s-a schimbat. Verifică-l din nou înainte de a-l trimite."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Clipboard indisponibil. Selectează textul de mai jos și copiază-l manual."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Livrarea nu a putut fi confirmată. Verifică GitLab înainte de a încerca din nou."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Solicitare pentru AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Gata: $1. Alte comentarii necesită atenție.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Oprește trimiterea"
+  },
+  "aiReviewImportError": {
+    "message": "Nu s-a putut finaliza operațiunea"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Nu s-a putut pregăti solicitarea"
+  },
+  "aiReviewImportWarning": {
+    "message": "Notificări de recenzie"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Recenzie AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Limba răspunsului AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automat — limba conversației"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Se aplică tuturor sarcinilor de revizuire și prompturilor de import. Cheile JSON, căile și codul nu se traduc. Copierea doar a formatului nu adaugă instrucțiuni de limbă."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Prompt pentru corectarea feedback-ului"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Prompt pentru comentarii noi de revizuire"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Prompt pentru răspunsuri la feedback"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Până la 1500 de caractere. Pentru scurtătura de revizuire nouă în Import. Filele de sarcină folosesc propriile prompturi. Contextul MR și formatul JSON sunt adăugate automat."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Până la 1500 de caractere. Pentru răspunsuri la discuțiile selectate în Copy sau la toate discuțiile nerezolvate în Import. Setează stilul și limba; contextul și formatul răspunsului sunt adăugate automat."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Prompt de răspuns pentru toate discuțiile nerezolvate"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Copiază formatul răspunsului"
+  },
+  "aiReviewImportFormat": {
+    "message": "Formatul răspunsului pentru AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Pregătește răspunsuri"
+  },
+  "aiReviewImportReply": {
+    "message": "Răspunde la discuție"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Comentariu original"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Răspunsul tău"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Rezolvă discuția după publicare"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Discuția a fost rezolvată."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Răspunsul a fost publicat, dar discuția nu a fost rezolvată. Poți să o rezolvi în GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Răspunsul a fost publicat. Rezoluția nu a fost confirmată; verifică discuția în GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Rezoluția este opțională și este dezactivată implicit. Se aplică doar după publicarea răspunsului. Adăugarea unui draft nu rezolvă niciodată o discuție."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Versiunea MR s-a schimbat. Răspunsurile rămân legate de discuțiile lor; verifică textul lor față de corecțiile făcute. Descoperirile noi dintr-o revizie veche sunt blocate."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Aceste răspunsuri sunt legate de discuții, nu de o revizie de cod. Înainte de publicare, verifică dacă corecțiile descrise au fost integrate în acest MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Modifică textul"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Adaugă comentariu"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Salvează modificările"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Anulează"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Text comentariu"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Editează textul, apoi salvează-l pentru a verifica modificările înainte de publicare."
+  },
+  "aiReviewImportEditError": {
+    "message": "Nu s-au putut salva modificările"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Previzualizarea poate conține maximum 200 de comentarii."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Prompt de revizuire repetată"
+  },
+  "aiReviewFileFilters": {
+    "message": "Fișiere de revizuit"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Se aplică la revizuirile noi și repetate și la prompturile pentru descoperiri noi, nu la feedback-ul selectat sau la prompturile de răspuns. Un model per linie sau separate prin virgulă; # începe un comentariu. Folosește *, **, ?. Excluderile câștigă, inclusiv căile vechi redenumite. Listele goale includ tot. Exemplu: src/**, *.test.js, dist/. Până la 1500 de caractere per listă."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Include extensiile (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Include căile fișierelor"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Exclude căile fișierelor"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Exclude folderele"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Filtrele de fișiere nu au putut fi salvate sau aplicate. Folosește maximum 1500 de caractere per listă și elimină caracterele de control neobișnuite."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Versiunea pe care ai revizuit-o"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Recenzie completă — fără versiune anterioară"
+  },
+  "aiReviewRepeat": {
+    "message": "Repetă recenzia"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Introduce un SHA de commit"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Introdu SHA-ul complet al commit-ului revizuit (40 sau 64 de caractere hexazecimale)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Selectează versiunea MR pe care ai revizuit-o înainte de a lăsa comentariile. Toate modificările ulterioare până la versiunea curentă sunt incluse automat; nu trebuie să selectezi commit-uri individuale. Dacă nu îți amintești versiunea, alege o recenzie completă."
+  },
+  "aiReviewChooseTask": {
+    "message": "Alege o sarcină"
+  },
+  "aiReviewTaskReview": {
+    "message": "Recenzie nouă"
+  },
+  "aiReviewTaskFix": {
+    "message": "Corectează constatările din recenzie"
+  },
+  "aiReviewTaskReply": {
+    "message": "Pregătește răspunsuri"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Recenzie de urmărire"
+  },
+  "aiReviewCopyTask": {
+    "message": "Copiază sarcina"
+  },
+  "aiReviewPasteResult": {
+    "message": "Lișează răspunsul AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "Setări avansate"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Instrucțiuni pentru sarcină"
+  },
+  "aiReviewSelectThread": {
+    "message": "Selectează această discuție"
+  },
+  "aiReviewSelectAll": {
+    "message": "Selectează toate discuțiile"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Revizuiește toate commit-urile MR împreună. AI-ul returnează constatări noi fără a schimba codul."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Selectează feedback-ul de corectat. Pentru un MR, AI-ul pregătește și răspunsuri care explică ce s-a făcut, ce rămâne și de ce. Discuțiile nerezolvate sunt selectate inițial."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Pregătește și răspunsuri"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Selectează feedback-ul pe care AI-ul tău de codare să-l corecteze. Discuțiile nerezolvate sunt selectate inițial."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Dă task-ul AI-ului tău de codare și verifică schimbările și testele sale. Rezultatul sunt corecturi și un rezumat normal, fără răspunsuri gata de postat."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "După ce ai pus corecturile, cere AI-ului să verifice codul și să explice rezultatul în discuțiile selectate."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Verifică feedback-ul selectat și caută defecte noi. Alege versiunea pe care ai revizuit-o anterior sau verifică întregul MR curent."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Task: tot MR-ul, pe toate commit-urile."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Comentarii selectate: $1; contextul discuției și fragmentele de cod disponibile sunt incluse."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Discuții pentru răspunsuri: $1, cu întreaga lor conversație. AI-ul are nevoie de acces la depozit."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Discuții de verificat: $1, plus o revizuire a modificărilor de cod."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Descriere inclusă."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Descriere exclusă."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Modificările de cod sunt incluse, în funcție de limitele de încărcare."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI-ul trebuie să citească codul din depozit."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Discuțiile existente sunt adăugate doar ca filtru de duplicate."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Discuțiile existente nu sunt adăugate."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Filtrele de fișiere sunt active."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Nicio versiune anterioară selectată: se va verifica întreaga MR curentă."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Discuțiile în stadiu de schiță nesubmise nu pot primi răspunsuri și sunt excluse."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Selectează feedback-ul din stânga. Pentru o nouă revizuire, folosește fila Revizuire nouă."
+  },
+  "aiReviewNextStep": {
+    "message": "Copiază sarcina în instrumentul tău AI. Dacă acesta returnează comentarii sau răspunsuri, folosește Paste AI response pentru a le revizui și edita înainte de a le posta."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Verifică corecturile și testele, împinge toate commit-urile în MR, apoi folosește Paste AI response pentru a revizui răspunsurile pregătite înainte de a le posta. Commit-urile noi nu necesită regenerarea răspunsurilor."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Instrucțiuni automate (avansat)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Toate blocurile sunt activate implicit și folosite doar pentru sarcini relevante. Editează, dezactivează sau golește orice bloc. Indicațiile pentru sarcini au propriile instrucțiuni. Datele MR, exemple JSON și notificările de încărcare sunt generate separat; verificările pentru publicare se aplică întotdeauna."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Adaugă la sarcină când este cazul"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Până la 1500 de caractere. Textul gol nu adaugă nimic. Resetarea restaurează textul implicit și activează acest bloc."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Folosește {language} pentru limba răspunsului selectat. Până la 1500 de caractere; textul gol nu adaugă nimic."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Folosește {selection} pentru discuțiile selectate sau nerezolvate. Până la 1500 de caractere; textul gol nu adaugă nimic."
+  },
+  "aiReviewRule_repository": {
+    "message": "Repositoriu local și la distanță"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Copie de lucru pentru corecturi"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Copie de lucru pentru revizuire"
+  },
+  "aiReviewRule_language": {
+    "message": "Limba răspunsului"
+  },
+  "aiReviewRule_scope": {
+    "message": "Interpretare filtru fișiere"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Contextul feedback-ului"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Corecturi fără răspunsuri"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Sarcină doar cu descriere"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Feedback selectat lipsă"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Răspunsuri gata de postat după corecturi"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Limitele revizuirii"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Sursă pentru revizuire"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Modificări de cod incluse"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Revizuire fără cod inclus"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Sursă indisponibilă"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Răspuns JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Găsirea locațiilor și output-ul"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Stilul răspunsului de urmărire"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Cap neschimbat"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Pozițiile liniilor de comparație"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Comparația reviziei locale"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Modificările ramurii țintă"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Revizuire fără o revizie de comparație"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Verificare fără discuții"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Domeniul de discuție selectat"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Contextul diferenței cumulative"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Discuții existente într-o revizuire nouă"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Revizuire nouă în Import"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Limitele revizuirii la import"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Formatul raportului de importare"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Limitele și formatul răspunsului"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Domeniul sarcinii răspunsului"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Adaugă câmp"
+  },
+  "jiraQuickActionField": {
+    "message": "Câmp"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Operațiune"
+  },
+  "jiraQuickActionValue": {
+    "message": "Valoare"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Elimină"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Adaugă"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Elimină"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Înlocuiește tot"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Data scadentă"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Câmp personalizat (avansat)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Valorile separate prin virgule. Adăugarea/ștergerea păstrează celelalte valori; înlocuirea tuturor suprascrie lista."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID câmp: customfield_12345. Introdu valoarea ca JSON în formatul așteptat de acest câmp Jira."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Numele exact al tranziției Jira (sau starea țintă)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Valoare goală: fără modificări."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Verifică valoarea câmpului: câmpurile personalizate necesită un ID și JSON valid; datele folosesc YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Folosește fiecare câmp o singură dată pe buton."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Acțiunea a eșuat."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Starea s-a schimbat, dar actualizarea câmpului a eșuat."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Nu s-a putut reîmprospăta problema. Redeschide panoul pentru a verifica valorile curente."
+  },
+  "mrActions": {
+    "message": "Acțiuni MR"
+  },
+  "mrActionsHint": {
+    "message": "Creează butoane denumite pentru a schimba etichete sau a șterge alte câmpuri MR. Trage-le în lista de butoane pentru a le schimba ordinea."
+  },
+  "mrActionsProfileHint": {
+    "message": "Acest proiect folosește propria listă de acțiuni după salvare. Elimină toate intrările pentru a ascunde aceste butoane pentru acest proiect."
+  },
+  "mrActionAdd": {
+    "message": "Adaugă acțiune MR"
+  },
+  "mrActionLabel": {
+    "message": "Nume buton"
+  },
+  "mrActionDelete": {
+    "message": "Șterge acțiunea"
+  },
+  "mrActionType": {
+    "message": "Acțiune"
+  },
+  "mrActionLabels": {
+    "message": "Etichete"
+  },
+  "mrActionLabelsHint": {
+    "message": "Numele exacte ale etichetelor, separate prin virgule sau linii noi. Spațiile din interiorul numelor sunt păstrate. Adăugarea/înlocuirea poate crea etichete lipsă în proiect."
+  },
+  "mrAction_remove_labels": {
+    "message": "Elimină etichetele specificate"
+  },
+  "mrAction_clear_labels": {
+    "message": "Șterge toate etichetele"
+  },
+  "mrAction_add_labels": {
+    "message": "Adaugă etichete"
+  },
+  "mrAction_set_labels": {
+    "message": "Înlocuiește toate etichetele"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Șterge persoanele atribuibili"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Șterge recenzorii"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Șterge etapa"
+  },
+  "mrActionInvalid": {
+    "message": "Introdu un nume de buton, alege o acțiune suportată și specifică cel puțin o etichetă pentru a adăuga, elimina sau înlocui."
+  },
+  "mrActionConfirm": {
+    "message": "Aplici “$1” la acest MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab nu a returnat starea rebase-ului. Reîncarcă cererea de merge și încearcă din nou."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab a returnat o pagină cu joburi repetate pentru pipeline-ul #$1. Lista joburilor nu a putut fi încărcată complet."
+  },
+  "displayPreferencesTitle": {
+    "message": "Afișează regulile și limitele"
+  },
+  "displayPreferencesHint": {
+    "message": "Setări globale; reîncarcă tab-urile GitLab după ce le schimbi. Mai multe joburi sau comentarii cresc transferul de date. Previzualizările logurilor descarcă întreaga urmă înainte de a selecta linii nenule. Insignele de recenzor caută cele mai vechi comentarii pentru „Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Joburi eșuate pentru previzualizare"
+  },
+  "failedJobTraceLines": {
+    "message": "Linii de log nenule per job"
+  },
+  "reviewerNotesLimit": {
+    "message": "Comentarii de scanat pentru insignele de recenzor"
+  },
+  "mrSizeLines": {
+    "message": "Praguri de dimensiune MR: linii (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Praguri de dimensiune MR: fișiere (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Tipare suplimentare pentru fișiere sensibile"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Excluderi pentru fișiere sensibile"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Folosește regulile încorporate pentru fișiere sensibile"
+  },
+  "sizeThresholdsHint": {
+    "message": "Trei numere întregi pozitive în creștere, separate prin virgule. Limitele sunt incluzive; schimbările mai mari sunt XL. Pragurile pentru fișiere se aplică când numărul de linii nu este disponibil."
+  },
+  "sensitivePatternsHint": {
+    "message": "Un tipar per linie, fără diferențiere între majuscule și minuscule. * corespunde oricărui text (inclusiv /), ? corespunde unui singur caracter. Tiparele fără / corespund numelor de fișiere; celelalte tipare corespund întregului traseu din repository. Excluderile câștigă. Regulile încorporate acoperă fișierele de mediu, container/CI, credentiale și chei private. Dezactivează-le pentru a folosi doar tiparele tale."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Verifică intervalele numerice, trei praguri de dimensiune în creștere și lungimea tiparelor de fișiere."
+  },
+  "failedJobsPreview": {
+    "message": "Previzualizare: $1 job(es) eșuat(e) — ultimele $2 linii nenule",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Mai multe joburi eșuate — deschide pipeline-ul complet"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 linii, $2 fișiere",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 fișiere modificate",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Scanarea fișierelor sensibile este incompletă"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Nu s-a putut verifica fiecare fișier: cererea API a eșuat sau s-a atins limita de scanare pentru $1 fișiere. Potriviri listate sunt parțiale; verifică diferența completă a MR-ului.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Atenție: acest raport poate fi incomplet. Colectarea este limitată la $1 MR-uri pe categorie și $2 evenimente de activitate.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 fir(e) de discuție nerezolvat(e)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Această previzualizare poate fi incompletă: eroare API sau au fost verificate doar primele $2 discuții. Firele de discuție nerezolvate cunoscute: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

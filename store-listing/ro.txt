@@ -1,0 +1,88 @@
+Язык: Румынский (ro)
+
+Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singur clic. Înlocuiește operațiile manuale în mai mulți pași — rebase, creșterea versiunii, gestionarea pipeline-urilor și îmbinarea — cu un singur buton. Sunt acceptate GitLab găzduit pe propriul server prin HTTPS și gitlab.com; funcțiile disponibile depind de server și de permisiunile contului. Nu sunt necesare tokenuri API — se folosește sesiunea existentă din browser.
+
+★ REVIZUIRE CU AI ÎN PROPRIILE INSTRUMENTE
+
+• Revizuire completă a MR — pregătește o sarcină pentru toate commiturile MR, cu filtre de fișiere configurabile
+• Corectare și răspuns — copiază observațiile selectate în asistentul tău AI de programare și pregătește răspunsuri pentru publicare
+• Revizuire ulterioară — verifică din nou corecțiile și modificările de la o revizie aleasă, inclusiv după force push
+• Import editabil — lipește comentariile și răspunsurile AI ca JSON, modifică textele și publică elementele selectate sau salvează schițe de revizuire. Opțional, poți închide discuțiile după publicarea răspunsurilor
+• Instrucțiuni proprii — personalizează prompturile și blocurile automate de instrucțiuni; alege limba răspunsurilor
+• Partajare manuală — folosește instrumentul AI preferat. Extensia nu cere chei API pentru AI și nu încarcă automat codul
+
+★ ACȚIUNI PENTRU CERERI DE ÎMBINARE
+
+• Îmbinare automată — execută rebase și activează îmbinarea după reușita pipeline-ului cu un clic
+• Ship — întregul flux de lansare: creșterea versiunii → pipeline → îmbinare automată
+• Îmbinare forțată — îmbină fără să aștepți pipeline-ul atunci când CI nu este necesar
+• Creșterea versiunii — incrementează versiunea în package.json, pyproject.toml sau alt fișier: patch / minor / major
+• Rebase — execută rebase pe ramură, cu sau fără creșterea versiunii
+• Schiță / Gata — schimbă starea MR fără să editezi titlul
+• Comentarii rapide — publică șabloane de comentarii în MR cu un clic
+• Copiere MR — copiază imediat titlul și linkul în clipboard
+
+★ CONTROLUL PIPELINE-URILOR CI/CD
+
+• Pipeline nou / Anulare — creează sau anulează pipeline-uri direct
+• Reîncercarea tuturor joburilor eșuate — repornește simultan toate joburile eșuate din cel mai recent pipeline
+• Butoane de joburi personalizate — pornește orice job CI cu un clic sau înlănțuie mai multe joburi, de exemplu compilare → implementare
+• Vizualizare rapidă a erorilor — vezi numele joburilor eșuate și liniile de jurnal cu erori direct pe pagina MR
+• Execuție în fundal — lanțurile de joburi personalizate continuă după schimbarea paginii
+
+★ INTEGRARE JIRA FĂRĂ TOKENURI API
+
+• Insigne de stare Jira — stări colorate precum Finalizat, În lucru, QA și De făcut; cheile tichetelor sunt extrase din titlurile MR
+• Panoul lateral al tichetului — apasă o insignă pentru titlu, stare, responsabil, prioritate, sprint, epic, etichete, descriere și atașamente
+• Stare și responsabil — schimbă starea și realocă tichete fără să părăsești GitLab
+• Acțiuni rapide Jira — operații combinate, precum schimbarea stării și alocarea, cu un clic
+• Pictograme pentru tip și prioritate — pictogramele native Jira în lista MR și în paginile de detalii
+• Câmpuri Jira lângă commituri — afișează Fix Version, starea sau alt câmp lângă commituri
+• Jira în rapoartele zilnice — titlurile tichetelor sunt adăugate automat în rezumatele de activitate
+
+★ ÎMBUNĂTĂȚIRI ALE LISTEI MR
+
+• Dimensiunea MR — insigne colorate S / M / L / XL în funcție de numărul liniilor modificate
+• Indicator de conflicte — insignă roșie când ramura are conflicte de îmbinare
+• Discuții nerezolvate — vezi dintr-o privire numărul discuțiilor deschise
+• Numele ramurilor — ramura sursă → ramura țintă pentru fiecare MR
+• Indicator de aprobare — arată dacă ai aprobat fiecare MR
+• Estomparea schițelor — face schițele mai puțin proeminente pentru a te concentra pe MR-urile active
+• Evidențierea propriilor MR — chenar albastru pentru identificare rapidă
+• Comutatoare „Doar ale mele”, „Necesită revizuirea mea” și „Grupează după autor”
+• Insigna „Revizuirea ta” — detectează mențiuni în jobul configurat pentru revizori și în comentarii
+• Copiere din listă — buton de copiere la fiecare MR
+
+★ INSTRUMENTE DE PRODUCTIVITATE
+
+• Paleta de comenzi (Cmd+K / Ctrl+K) — navighează la MR, pipeline-uri, ramuri și tichete sau pornește acțiuni
+• Căutare de fișiere — găsește și deschide fișierele proiectului după nume din paletă
+• Raport zilnic — rezumatul MR-urilor create, îmbinate, comentate și aprobate; copiază-l în Slack sau Jira
+• Cherry-pick în mai multe ramuri — aplică un commit în mai multe ramuri simultan, cu creare automată de MR
+• Recuperare cherry-pick — la conflict, reaplică automat commitul fără fișierul de versiune
+• Avertizare pentru fișiere sensibile — insignă portocalie când MR modifică .env, Dockerfile, configurații CI sau fișiere cu date de autentificare
+• Comenzi Git — copiază git checkout și git fetch pentru ramura MR
+• Vechimea MR — vezi de cât timp este deschisă cererea de îmbinare
+• Evidențierea comentariilor proprii — chenar colorat în jurul comentariilor tale din discuții
+
+★ PERSONALIZARE
+
+• Profiluri de proiect — butoane, fișiere de versiune și joburi CI diferite pentru fiecare depozit
+• Ordinea butoanelor prin glisare — aranjează acțiunile după preferințe
+• Lățimea tabulatorului în diff — afișare echivalentă cu 2, 4 sau 8 spații
+• Restrângerea barelor de sus / Ascunderea panoului drept — mai mult spațiu de lucru
+• Sunet și notificări desktop — află când acțiunile reușesc sau eșuează
+• Temă întunecată — urmează automat preferința sistemului
+
+★ DE CE GITLAB MR ACTIONS?
+
+✓ Fără tokenuri personale de acces — folosește cookie-urile sesiunii GitLab existente
+✓ Fără serviciu intermediar — cererile GitLab și Jira merg direct către serverele configurate
+✓ Acceptă GitLab pe propriul server prin HTTPS și gitlab.com; contractele API testate sunt prezentate în ghidul de compatibilitate
+✓ Jira fără tokenuri API — folosește sesiunea browserului
+✓ Configurare separată pentru fiecare proiect
+✓ Extensie ușoară — verificările de fundal vizează acțiunile pornite de tine; fără telemetrie sau încărcări automate către AI
+✓ Interfață disponibilă în 27 de limbi
+✓ Cod sursă deschis
+
+Pentru dezvoltatorii care vor să petreacă mai puțin timp apăsând butoane în GitLab și mai mult timp scriind cod.

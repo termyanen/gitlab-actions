@@ -34,7 +34,7 @@ when changing visible content. The release check validates metadata, not visual
 layout or the accuracy of prose.
 
 Landing-page copy has three surfaces: the static English markup and `LANG.en` /
-`LANG.ru` in `index.html`. Keep all three aligned. Welcome-page copy uses all seven
+`LANG.ru` in `index.html`. Keep all three aligned. Welcome-page copy uses all supported
 `_locales/*/messages.json` dictionaries plus the English fallback in `../welcome.html`.
 Check descriptions against runtime behavior and installation defaults; do not infer
 background execution, unlimited data, or universal server support from a feature name.

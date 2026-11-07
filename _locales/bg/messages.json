@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Автоматизация, Jira, CI/CD и AI"
+  },
+  "extDescription": {
+    "message": "Автоматизирайте MR в GitLab: сливане, версии, Jira, CI/CD и преглед с AI. Без API токени."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Как работи"
+  },
+  "openSettingsInTab": {
+    "message": "Отвори настройките в нов таб"
+  },
+  "exportSettings": {
+    "message": "Експортирай настройки"
+  },
+  "importSettings": {
+    "message": "Импортирай настройки"
+  },
+  "settingsTransferHint": {
+    "message": "Сподели всички настройки и профили проекта като JSON файл."
+  },
+  "settingsImportReplace": {
+    "message": "Това ще замени всички текущи настройки и профили на проекти."
+  },
+  "applySettingsImport": {
+    "message": "Замени настройки"
+  },
+  "cancelSettingsImport": {
+    "message": "Отказ"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — профили на проекта: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Невалиден файл с настройки или неподдържан формат."
+  },
+  "settingsFileTooLarge": {
+    "message": "Файлът с настройки надвишава лимита за съхранение на Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Не може да се експортират настройките. Моля, опитайте отново."
+  },
+  "settingsImportFailed": {
+    "message": "Не може да се импортират настройките. Текущата ви конфигурация остава непроменена."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Позволи достъп до сайта на Jira за импортиране на тези настройки."
+  },
+  "settingsImported": {
+    "message": "Настройките са импортирани!"
+  },
+  "buttonOrder": {
+    "message": "Ред на бутоните"
+  },
+  "buttonOrderHint": {
+    "message": "Плъзнете, за да пренаредите. Задръжте, за да видите описание. Персонализирани задачи в синьо."
+  },
+  "general": {
+    "message": "Общи"
+  },
+  "soundNotifications": {
+    "message": "Звукови уведомления"
+  },
+  "desktopNotifications": {
+    "message": "Настолни уведомления"
+  },
+  "showTimeTracker": {
+    "message": "Покажи възрастта на MR значката"
+  },
+  "skipConfirmations": {
+    "message": "Прескочи потвърждения за действие в MR"
+  },
+  "uxEnhancer": {
+    "message": "Подобрения в списъка с MR"
+  },
+  "dimDrafts": {
+    "message": "Засенчвай черновите MR в списъка"
+  },
+  "highlightOwnMrs": {
+    "message": "Подчертавай твоите MR в списъка"
+  },
+  "showOnlyMine": {
+    "message": "Превключвател \"Само моите\" на страницата със списъка"
+  },
+  "toggleOnlyMine": {
+    "message": "Само моите"
+  },
+  "versionBump": {
+    "message": "Повишаване на версията"
+  },
+  "filePath": {
+    "message": "Път към файла"
+  },
+  "filePathHint": {
+    "message": "Файлът съдържащ номер на версия"
+  },
+  "versionField": {
+    "message": "Поле за версия"
+  },
+  "versionFieldHint": {
+    "message": "JSON ключ или TOML ключ (напр. \"version\" или \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Стратегия"
+  },
+  "strategyPatch": {
+    "message": "Коригираща версия (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Второстепенна версия (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Основна версия (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Съобщение за комит"
+  },
+  "commitMessageHint": {
+    "message": "Използвай {version} като заместител"
+  },
+  "quickComments": {
+    "message": "Бързи коментари"
+  },
+  "quickCommentsHint": {
+    "message": "Бутони с едно кликване, които веднага публикуват общ коментар към MR (не във самия код). Бутоните се появяват в лентата с действия."
+  },
+  "quickCommentsAdd": {
+    "message": "Добави коментар"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Бързи коментари"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Конфигурируеми бутони с шаблонни коментари на страницата на MR. Публикувай LGTM, Нуждае се от поправки или произволен персонализиран коментар с едно кликване."
+  },
+  "reviewers": {
+    "message": "Ревюъри"
+  },
+  "reviewersList": {
+    "message": "Списък с ревюъри"
+  },
+  "reviewersListHint": {
+    "message": "Потребителски имена за споменаване в коментар за Ревюъри: (@user1, @user2). Когато е зададено, пропуска проверка за коментари и CI задачата. Не променя назначенията на ревюъри в GitLab."
+  },
+  "jobName": {
+    "message": "Име на задача"
+  },
+  "jobNameHint": {
+    "message": "Резервна задача, ако няма коментар, който съвпада с шаблона \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Персонализирани бутони за задачи"
+  },
+  "customJobsHint": {
+    "message": "Използвайте запетаи за свързване: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Добави бутон за задача"
+  },
+  "addProfileFor": {
+    "message": "+ Добави профил за $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Текущо: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Запазено!"
+  },
+  "unsavedChanges": {
+    "message": "Незапазени промени..."
+  },
+  "customFile": {
+    "message": "Персонализиран файл..."
+  },
+  "plainText": {
+    "message": "обикновен текст"
+  },
+  "removeProfile": {
+    "message": "Премахване на профил за $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "По подразбиране"
+  },
+  "buttonsFor": {
+    "message": "Бутоните за $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Презаписване кои бутони да се показват за този проект."
+  },
+  "leaveEmptyDefault": {
+    "message": "Оставете празно, за да използвате подразбиращото се"
+  },
+  "projectSpecificJobs": {
+    "message": "Проектно-специфични задачи. Използвайте запетаи за свързване."
+  },
+  "languageLabel": {
+    "message": "Език"
+  },
+  "languageAuto": {
+    "message": "Автоматично (от браузъра)"
+  },
+  "btnVersion": {
+    "message": "Повишаване на версията"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Версия"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Авто-интеграция"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Принудително сливане"
+  },
+  "btnShip": {
+    "message": "Rebase + Версия + Автоматично сливане"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Версия + Принудително сливане"
+  },
+  "btnReviewers": {
+    "message": "Прегледачи"
+  },
+  "btnPipelineRestart": {
+    "message": "Нов pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Отмяна на pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Превключване между Чернова / Готово"
+  },
+  "btnRetryFailed": {
+    "message": "Повторение на неуспешните задачи"
+  },
+  "btnCopyMr": {
+    "message": "Копиране на MR"
+  },
+  "hintVersion": {
+    "message": "Чете конфигурирания файл (например package.json), увеличава версията според избраната стратегия (patch/minor/major), и commit-ва с вашето шаблонно съобщение."
+  },
+  "hintRebase": {
+    "message": "Пренасочва източниковия клон върху целевия клон. Не слива и не активира автоматично сливане."
+  },
+  "hintRebaseVersion": {
+    "message": "Пренасочва клона към целта (ако е необходимо), след което увеличава версията във конфигурирания файл. Не слива."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Изпълнява rebase на клона върху целевия клон (ако проектът използва rebase/ff). След това включва сливане при успешно завършване на pipeline. Използва настройките за squash и изтриване на клона от MR."
+  },
+  "hintRebaseForce": {
+    "message": "Изпълнява rebase с пропускане на CI, отменя всички активни pipeline и слива незабавно, без да чака CI. Използва настройките за squash и изтриване на клона от MR."
+  },
+  "hintShip": {
+    "message": "Пълен процес: rebase → увеличаване на версията във конфигурирания файл → изчакване MR за синхронизация → изчакване на нов пайплайн → активиране на автоматично сливане."
+  },
+  "hintForceShip": {
+    "message": "Бърз процес: rebase (skip CI) → увеличаване на версията → изчакване 15 сек. → отменяне на пайплайна → веднага сливане. Пропуска CI проверки."
+  },
+  "hintReviewers": {
+    "message": "Публикува конфигурираните споменавания на прегледач, използва отново коментар на Прегледач(и) от последните бележки или стартира конфигурираното CI задание."
+  },
+  "hintPipelineRestart": {
+    "message": "Създава напълно нов pipeline за изходния клон чрез API. Полезно, когато pipeline е блокиран или имате нужда от ново изпълнение."
+  },
+  "hintPipelineCancel": {
+    "message": "Заявява анулиране на стартирани, чакащи или създадени pipelines за този MR."
+  },
+  "hintDraftToggle": {
+    "message": "Добавя или премахва префикса \"Draft:\" от заглавието на MR. Не променя други настройки на MR."
+  },
+  "hintRetryFailed": {
+    "message": "Опитва отново неуспешните задачи в текущия pipeline на MR. Успешните задачи не се засягат."
+  },
+  "hintCopyMr": {
+    "message": "Копира заглавието и линка на MR в клипборда."
+  },
+  "toastRebasing": {
+    "message": "Rebase-ване..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Включване на автоматично сливане..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Стъпка 1/2: Rebase-ване..."
+  },
+  "toastStep22Automerge": {
+    "message": "Стъпка 2/2: Включване на автоматично сливане..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Стъпка 1/2: Rebase-ване (пропускане на CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Стъпка 2/2: Анулиране на pipeline и сливане..."
+  },
+  "toastCancellingMerging": {
+    "message": "Анулиране на pipeline и сливане..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Създаване на нов pipeline за $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Отказване на $1 pipeline(и)...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Маркиране като Готово..."
+  },
+  "toastMarkingDraft": {
+    "message": "Маркиране като Чернова..."
+  },
+  "toastRetrying": {
+    "message": "Повторен опит на $1 неуспешни задачи...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Няма неуспешни задачи в текущия MR pipeline"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Няма стартирани pipelines за отказване"
+  },
+  "toastAssigningReviewers": {
+    "message": "Публикуване на споменаванията на рецензентите…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Повторно публикуване на коментара на рецензентите..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Не е намерен коментар на рецензент, задействане на $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Увеличаване на версията..."
+  },
+  "toastWaitingSync": {
+    "message": "Изчакване MR да се синхронизира с v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Изчакване на pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Опит за автоматично сливане $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Изчакване MR да се синхронизира... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Изчакване на \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Стартиране на задача \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Повторен опит на задача \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Задачата \"$1\" вече е успешна, прескачане",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Задачата \"$1\" вече е $2, изчакване...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 завършено",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 се провали: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Заглавието на MR и линкът са копирани!"
+  },
+  "toastWaiting15s": {
+    "message": "Изчакване 15 сек преди сливане..."
+  },
+  "confirmRebase": {
+    "message": "Да се направи ребейс на клона?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Ребейс → Повишаване на версията?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Ребейс → Автоматично сливане?"
+  },
+  "confirmAutomerge": {
+    "message": "Активирай автоматично сливане?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Ребейс → СЛИЙ СЕГА?"
+  },
+  "confirmForce": {
+    "message": "⚠️ СЛИВАНЕ СЕГА (пропускане на pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Ребейс → Повишаване на версията → Автоматично сливане?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Повишаване на версията → Автоматично сливане?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Ребейс → Повишаване на версията → СЛИЙ СЕГА?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Повишаване на версията → СЛИЙ СЕГА?"
+  },
+  "confirmNewPipeline": {
+    "message": "Създаване на нов pipeline за този клон?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Да се отменят ли всички работещи pipeline-и?"
+  },
+  "labelAutomerge": {
+    "message": "Автоматично сливане"
+  },
+  "labelForceMerge": {
+    "message": "Принудително сливане"
+  },
+  "labelVersionAutomerge": {
+    "message": "Версия + Автоматично сливане"
+  },
+  "labelVersionForceMerge": {
+    "message": "Версия + Принудително сливане"
+  },
+  "labelMarkReady": {
+    "message": "Отбележи като готово"
+  },
+  "labelMarkDraft": {
+    "message": "Отбележи като чернова"
+  },
+  "labelRetryFailed": {
+    "message": "Опитай отново неуспешните"
+  },
+  "labelNewPipeline": {
+    "message": "Нов pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Време от създаването на MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Действия за GitLab MR"
+  },
+  "welcomeSubtitle": {
+    "message": "Ускорете workflow-а на вашето сливане с действия с един клик."
+  },
+  "welcomeQuickStart": {
+    "message": "Бърз старт"
+  },
+  "welcomeStep1Title": {
+    "message": "Отвори всяка страница на Merge Request"
+  },
+  "welcomeStep1Desc": {
+    "message": "Отвори HTTPS страница на MR, докато си влязъл в GitLab.com или своя собствен GitLab. Разреши на разширението достъп до този сайт."
+  },
+  "welcomeStep2Title": {
+    "message": "Виж как се появяват бутоните за действия"
+  },
+  "welcomeStep2Desc": {
+    "message": "Бутоните се появяват на страницата на MR. Начален набор е активиран при първата инсталация."
+  },
+  "welcomeStep3Title": {
+    "message": "Персонализирай чрез изскачащото меню на разширението"
+  },
+  "welcomeStep3Desc": {
+    "message": "Кликни върху иконата на разширението, за да активираш/деактивираш бутоните, да зададеш файл за version bump, да добавиш персонализирани job бутони и още."
+  },
+  "welcomeEnabledDefault": {
+    "message": "Активирани по подразбиране"
+  },
+  "welcomeMoreActions": {
+    "message": "Още действия (активирай в настройките)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Как работи"
+  },
+  "welcomeHowDesc": {
+    "message": "Това разширение използва съществуващата ти сесия в GitLab (бисквитки), за да извиква GitLab API от твоето име. Лични access токени не са нужни."
+  },
+  "welcomeHowList1": {
+    "message": "За GitLab.com и собствен GitLab през HTTPS; функциите зависят от API на сървъра, оформлението на страницата и твоите разрешения."
+  },
+  "welcomeHowList2": {
+    "message": "Действията използват същите разрешения като влезлия потребител"
+  },
+  "welcomeHowList3": {
+    "message": "Персонализираните поредици от задачи работят във фонов режим. Дръжте отворен таб с влизане в същия GitLab за достъп до API."
+  },
+  "welcomeHowList4": {
+    "message": "Профилите за всеки проект позволяват да персонализирате бутоните за различни репозитории"
+  },
+  "welcomeTip": {
+    "message": "Можете да създавате профили за всеки проект в настройките на изскачащия прозорец. Това е полезно, когато различни проекти имат нужда от различни файлове за версии или персонализирани CI задачи."
+  },
+  "welcomeOpenSettings": {
+    "message": "Отвори настройки"
+  },
+  "cardAutomergeTitle": {
+    "message": "Автоматично сливане"
+  },
+  "cardAutomergeDesc": {
+    "message": "Ребазирай клона (ако е нужно) и включи сливането, когато pipeline приключи успешно."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Нов pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Създай нов pipeline за изходния клон с едно кликване."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Отказване на pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Искай отказ на текущо изпълняващи се или чакащи MR pipelines."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Превключване на чернова"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Превключвай MR между статус Draft и Ready без да редактираш заглавието."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Увеличаване на версия"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Увеличи версията в package.json, pyproject.toml или друг файл по избор. Конфигурируема стратегия (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Издаване (Версия + Сливане)"
+  },
+  "cardShipDesc": {
+    "message": "Ребейзвай когато е необходимо, увеличи версията и поиска автоматично сливане. Дръж таба на MR отворен, докато действието не приключи."
+  },
+  "cardForceMergeTitle": {
+    "message": "Форсирай сливане"
+  },
+  "cardForceMergeDesc": {
+    "message": "Искай сливане без да чакаш pipeline да свърши успешно. Правата и правилата за сливане на GitLab все още важат."
+  },
+  "cardReviewersTitle": {
+    "message": "Ревюъри"
+  },
+  "cardReviewersDesc": {
+    "message": "Спомени конфигурираните потребителски имена в коментар, използвай коментар на ревюър или стартирай CI job. Не присвоява полето за ревюър в GitLab."
+  },
+  "uiCustomization": {
+    "message": "Персонализиране на UI"
+  },
+  "collapseBars": {
+    "message": "Бутон за свиване на горните ленти"
+  },
+  "hideRightSidebar": {
+    "message": "Скрий дясната странична лента на MR страниците"
+  },
+  "collapseTopBars": {
+    "message": "Превключи горните ленти"
+  },
+  "cardCollapseTitle": {
+    "message": "Свий горните ленти"
+  },
+  "cardCollapseDesc": {
+    "message": "Добавя бутон за свиване/разширяване на навигационните ленти на GitLab. Пестиш място и се фокусираш по-лесно върху съдържанието."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Скриване на UI секции"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Скриване на дясната странична лента на MR страници, за да се получи съдържание на пълна ширина."
+  },
+  "jiraIntegration": {
+    "message": "Интеграция с Jira"
+  },
+  "jiraUrl": {
+    "message": "Jira URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira URL на сървъра/дата центъра, например https://jira.company.com — влезте в Jira и след това кликнете Разреши достъп до сайта на Jira. Облакът не е напълно поддържан."
+  },
+  "jiraGrantAccess": {
+    "message": "Разреши достъп до сайта на Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Достъп до сайта е предоставен. Влезте в Jira в този браузър."
+  },
+  "jiraUrlInvalid": {
+    "message": "Въведете HTTPS базов URL на Jira, без потребителски данни/заявки/фрагменти."
+  },
+  "jiraErrorAuth": {
+    "message": "Вашата сесия в Jira е изтекла или е необходимо влизане. Отворете Jira, влезте и след това опитайте да презаредите."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira отказа достъп до този проблем или операция. Проверете акаунта и разрешенията си в Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Разширението не може да получи достъп до този сайт на Jira. Проверете разрешенията за сайт и Jira URL в настройките на разширението."
+  },
+  "jiraErrorNetwork": {
+    "message": "Не успях да се свържа с Jira. Провери връзката, VPN-а и URL-то на Jira, след това опитай да заредиш отново."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira временно не е налична или ограничава заявките. Изчакайте и опитайте да заредите отново."
+  },
+  "jiraErrorNotFound": {
+    "message": "Проблем с Jira не можа да бъде открит или не е видим за вашия акаунт."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira върна неподдържан отговор. Проверете URL адреса и съвместимостта с Jira Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "Заявката на Jira не успя. Отворете Jira, за да проверите проблема и достъпа си."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Промяната може вече да е приложена. Проверете задачата в Jira, преди да повторите действието."
+  },
+  "jiraErrorTransitions": {
+    "message": "Не можах да заредя преходите на Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Отвори Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Опитай отново зареждане"
+  },
+  "jiraDismissError": {
+    "message": "Затвори"
+  },
+  "jiraTicketRegex": {
+    "message": "Регекс на билет"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Персонализиран regex за парсиране на идентификатори на билети от MR заглавия. По подразбиране: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Покажи типа и приоритетните икони в MR списъка"
+  },
+  "jiraQuickActions": {
+    "message": "Бързи действия"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Изберете всякаква комбинация от полета за всеки бутон. Оставете само промените, които трябва да се направят. Версиите и компонентите вече трябва да съществуват в проекта Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Добави действие"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Етикет"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Статус"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Потребителско име"
+  },
+  "jiraSidebarStatus": {
+    "message": "Статус"
+  },
+  "jiraSidebarType": {
+    "message": "Тип"
+  },
+  "jiraSidebarPriority": {
+    "message": "Приоритет"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Назначен на"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Незназначен"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Потърси потребител..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Не са намерени потребители"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Премахни назначението"
+  },
+  "jiraSidebarReporter": {
+    "message": "Докладчик"
+  },
+  "jiraSidebarLabels": {
+    "message": "Етикети"
+  },
+  "jiraSidebarCreated": {
+    "message": "Създадено"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Обновено"
+  },
+  "jiraSidebarDescription": {
+    "message": "Описание"
+  },
+  "jiraSidebarEpic": {
+    "message": "Епик"
+  },
+  "jiraSidebarSprint": {
+    "message": "Спринт"
+  },
+  "jiraSidebarComponents": {
+    "message": "Компоненти"
+  },
+  "jiraSidebarResolution": {
+    "message": "Решение"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Засяга"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Версия за поправка"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Няма"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Не са намерени версии"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Потърси версии..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Неуспешно обновяване на версиите за поправка"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Прикачени файлове"
+  },
+  "jiraSidebarComments": {
+    "message": "Коментари"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Добави коментар..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Коментар"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Покажи още коментари"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Все още няма коментари"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Неуспешно публикуване на коментар"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Изтриване на коментар"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Да се изтрие ли този коментар?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Неуспешно изтриване на коментар"
+  },
+  "cardJiraTitle": {
+    "message": "Значки за статус на Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Показва статусите на Jira билетите на страницата с MR списъка. Разпознава ID-тата на билетите от заглавията на MR (например CCT-1111) и показва цветни значки за статус. Задайте URL на Jira в настройките."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Персонализиран регекс за билет"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Настройте персонализирано регулярено изразяване за разпознаване на ID-та на Jira билетите от заглавията на MR. Полезно, когато вашият проект използва нестандартни префикси за билетите."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Странична лента на Jira билет"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Кликнете върху всяка Jira значка, за да отворите странична лента с пълни детайли за билета — резюме, статус, тип, приоритет, назначен на и описание. Четете, публикувайте и изтривайте собствените си коментари без да напускате GitLab. Версиите за поправка могат да се изберат директно от наличните версии на проекта в страничната лента."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Прикачени файлове в страничната лента"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Виж изображения, видеа и файлове от Jira тикети директно в страничната лента. Изображенията и видеата се отварят в пълноекранен лайтбокс."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Jira бейджове на страницата с MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Бейджовете със статус на Jira тикетите се показват в заглавието на MR на страницата с детайли. Кликни върху бейдж, за да отвориш страничната лента с пълните детайли на тикета."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Смяна на статуса в Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Смени статуса на тикета директно от страничната лента. Показва само наличните преходи от текущия статус."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Промяна на изпълнителя в Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Кликни върху изпълнителя, за да търсиш и преопределиш. Автоматично допълване с аватари, бутон за премахване на изпълнителя."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Бързи действия в Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Бутони с едно кликване за статус, изпълнител, етикети, версии и други полета. Всеки бутон може да обнови едно или няколко полета."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Икони за тип и приоритет на задачата"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Покажи иконите за тип и приоритет на Jira задачата до значките за статус в списъка с MR и на детайлните страници. Използва се оригиналните икони на Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebase на изходния клон върху целевия клон без сливане."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Версия"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase на клона и увеличаване на версията с едно кликване. Не слива."
+  },
+  "cardCopyMrTitle": {
+    "message": "Копирай MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Копирай заглавието на MR и връзката му в клипборда с едно кликване."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Рестартирай провалени задачи"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Рестартирай провалени задачи в текущия pipeline на MR. Успешните задачи не се повлияват."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Подобрения на страницата със списък MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Затъмни Черновите MR"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Визуално затъмни черновите MR в списъка с merge requests, за да се фокусираш върху активните."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Подчертай твоите MR"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Подчертай собствените си MR в списъка с синя рамка за бързо разпознаване."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Превключвател „Само моите“"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Едно кликване, за да филтрираш списъка с MR и да показваш само твоите merge заявки."
+  },
+  "cardMrAgeTitle": {
+    "message": "Значка за възраст на MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Показва от колко време е създаден MR, изобразено като значка на страницата на MR."
+  },
+  "showReviewerBadge": {
+    "message": "Значка „Твоя преглед“ от коментарите"
+  },
+  "badgeYourReview": {
+    "message": "Твоят преглед"
+  },
+  "badgeYourReviewHint": {
+    "message": "Споменат си като преглеждащ в коментари на MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Значка „Твоя преглед“"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Търси шаблона „Reviewer(s): @you“ в най-старите коментари. Дълбочината на търсене се настройва (по подразбиране 10). Работи отделно от вградената функция за рецензенти на GitLab."
+  },
+  "showNeedsReview": {
+    "message": "Превключвател „Нуждае се от моя преглед“ на страницата със списъка"
+  },
+  "toggleNeedsReview": {
+    "message": "Нуждае се от моя преглед"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Превключвател „Нуждае се от моя преглед“"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Едно кликване, за да филтрираш списъка с MR и да показваш само merge заявки, в които си зададен като преглеждащ."
+  },
+  "showCopyMr": {
+    "message": "Бутон за копиране на елементи в списъка с MR"
+  },
+  "showThreadsBadge": {
+    "message": "Брой нерешени нишки в списъка с MR"
+  },
+  "showSizeBadge": {
+    "message": "Етикети за размер на MR (S/M/L/XL) в списъка с MR"
+  },
+  "showConflictsBadge": {
+    "message": "Покажи индикатор за конфликти в списъка с MR"
+  },
+  "showApprovalBadge": {
+    "message": "Покажи броя на одобренията и индикатора за моето одобрение в списъка с MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Ти одобри"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Ти"
+  },
+  "cardThreadsTitle": {
+    "message": "Брой неразрешени нишки"
+  },
+  "cardThreadsDesc": {
+    "message": "Покажи броя на неразрешените нишки. „+“ означава пълна първа страница; „?“ означава, че броят не е наличен."
+  },
+  "cardSizeTitle": {
+    "message": "Етикети за размер на MR"
+  },
+  "cardSizeDesc": {
+    "message": "Значки S/M/L/XL с конфигурируеми прагове за редове и файлове в Правила и ограничения на визуализацията."
+  },
+  "conflictsBadge": {
+    "message": "Конфликти"
+  },
+  "conflictsBadgeHint": {
+    "message": "Този MR има конфликти при сливане, които трябва да се разрешат"
+  },
+  "cardConflictsTitle": {
+    "message": "Индикатор за конфликти"
+  },
+  "cardConflictsDesc": {
+    "message": "Показва червен CONFLICTS значок на страницата с детайли на MR, когато клонът има конфликти при сливане."
+  },
+  "cardApprovalTitle": {
+    "message": "Индикатор за моето одобрение"
+  },
+  "cardApprovalDesc": {
+    "message": "Показва дали сте одобрили всеки MR в списъка. Разграничава вашето одобрение от одобренията на други."
+  },
+  "showBranches": {
+    "message": "Покажи изходния и целевия клон в списъка с MR"
+  },
+  "showBranchesLinks": {
+    "message": "Направи имената на клоновете кликваеми (отвори дървото на клоновете)"
+  },
+  "cardBranchesTitle": {
+    "message": "Имена на клоновете в списъка с MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Показва имената на изходния и целевия клон за всеки MR в списъка, за да видиш откъде идва кодът и къде се обединява."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Копирай MR от списъка"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Добавя бутон за копиране за всеки MR в страницата на списъка. Копира заглавието на MR и линка в клипборда с едно кликване."
+  },
+  "versionFromTarget": {
+    "message": "Чети версията от целевия клон"
+  },
+  "versionFromTargetHint": {
+    "message": "Чети текущата версия от целевия клон (напр. main) вместо изходния клон. Използвай това с merge commit стратегия, за да избегнеш остарели версии."
+  },
+  "showFailedJobView": {
+    "message": "Покажи бърз преглед на неуспешни задачи на страницата на MR"
+  },
+  "failedJobTraceError": {
+    "message": "Не можа да се зареди журналът на задачата"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Бърз преглед на неуспешни задачи"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Виж предварителен преглед на неуспешни задачи и последните редове от логове на страницата на MR. Броят на задачите и редовете може да се конфигурира в правилата и лимитите за показване."
+  },
+  "showCmdPalette": {
+    "message": "Палитра с команди (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Дневен отчет за активността"
+  },
+  "standupJiraEnrich": {
+    "message": "Показвай заглавията на Jira тикетите в отчета"
+  },
+  "cmdPlaceholder": {
+    "message": "Въведи команда..."
+  },
+  "cmdFooterNavigate": {
+    "message": "навигиране"
+  },
+  "cmdFooterSelect": {
+    "message": "избери"
+  },
+  "cmdFooterClose": {
+    "message": "затвори"
+  },
+  "cmdEmpty": {
+    "message": "Няма съвпадащи команди"
+  },
+  "cmdGroupNav": {
+    "message": "Навигация"
+  },
+  "cmdGroupMr": {
+    "message": "Действия с MR"
+  },
+  "cmdGroupExt": {
+    "message": "Разширение"
+  },
+  "cmdGroupFiles": {
+    "message": "Файлове"
+  },
+  "cmdNavMrs": {
+    "message": "Отиди към Merge Requests"
+  },
+  "cmdNavIssues": {
+    "message": "Отиди към Issues"
+  },
+  "cmdNavPipelines": {
+    "message": "Отиди към Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Отиди към Branches"
+  },
+  "cmdNavRepo": {
+    "message": "Отиди към Repository"
+  },
+  "cmdNavTags": {
+    "message": "Отиди към Tags"
+  },
+  "cmdNavCommits": {
+    "message": "Отиди към Commits"
+  },
+  "cmdNavWiki": {
+    "message": "Отиди към Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Отиди към Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Отиди към Settings"
+  },
+  "cmdCopyPath": {
+    "message": "Копирай пътя на проекта"
+  },
+  "cmdGroupPinned": {
+    "message": "Закачено"
+  },
+  "cmdExtSettings": {
+    "message": "Отвори настройките на разширението"
+  },
+  "cmdExtStandup": {
+    "message": "Генерирай отчет за активността"
+  },
+  "standupTitle": {
+    "message": "Дневна активност"
+  },
+  "standupCopy": {
+    "message": "Копирай в клипборда"
+  },
+  "standupCopied": {
+    "message": "Копирано!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Палитра с команди"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Натисни Cmd+K (Mac) или Ctrl+K (Win) на всяка страница в GitLab. Навигирай, изпълнявай действия с MR, търси файлове по име и ги отваряй в хранилището."
+  },
+  "cardStandupTitle": {
+    "message": "Дневен отчет за активността"
+  },
+  "cardStandupDesc": {
+    "message": "Генерирайте дневен отчет за активността от вашите данни в GitLab. Показва създадени, обединени и прегледани MR-и. Копирайте и поставете в Slack или Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick към клонове"
+  },
+  "showGroupPlay": {
+    "message": "Бутон за групово изпълнение в pipeline (стартира оставащите ръчни задачи)"
+  },
+  "showCommitVersion": {
+    "message": "Бейдж за версия на страницата с комити"
+  },
+  "showCommitVersionHint": {
+    "message": "Показва версията от version файла (вижте настройките за Version bump) до всеки комит; маркира се, когато версията се промени"
+  },
+  "groupPlayTooltip": {
+    "message": "Стартирайте оставащите ръчни задачи в тази група"
+  },
+  "groupPlayError": {
+    "message": "Неуспешно стартиране на някои задачи"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Бутон за групово изпълнение"
+  },
+  "cardGroupPlayDesc": {
+    "message": "На графиката на pipeline, бутон за изпълнение до група задачи стартира всички оставащи ръчни задачи — дори след като някои задачи в групата вече са започнали и собственото копче на GitLab изчезне."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Бейдж за версия на комитите"
+  },
+  "cardCommitVersionDesc": {
+    "message": "На страницата с комитове на клоновете, всеки комит показва версията на проекта от твоя файл с версии в този комит. По подразбиране е приглушено, но е подчертано, когато версията се е променила — виж бързо кои комити влизат в кое издание."
+  },
+  "cherryPickBranches": {
+    "message": "Избиране на клонове (cherry-pick)"
+  },
+  "cherryPickBranchesHint": {
+    "message": "По подразбиране целеви клонове за cherry-pick. Можеш да добавяш или премахваш клонове в модалния прозорец."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Добави клон"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick към клонове"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Затвори"
+  },
+  "cherryPickInProgress": {
+    "message": "Извършва се cherry-pick..."
+  },
+  "cherryPickRemove": {
+    "message": "Премахни"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Име на клона"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Извършен cherry-pick към $1 клона",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Стартирай ново merge request с тези промени"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Създай MR по подразбиране при cherry-pick"
+  },
+  "cherryPickSmartFallback": {
+    "message": "При конфликт — комит без файл с версия"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Ако cherry-pick се провали поради конфликт с файл с версия, приложи промените като нов комит, изключвайки файла с версия"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Увеличаване на версията при резервен вариант"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Увеличаване на версията в целевия клон в същия резервен комит"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Умният резервен вариант обработва само конфликти във файловете с версия. Конфликтът е в друг файл"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Файлът е променен в целевия клон — не може безопасно да се cherry-pick-не"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Файлът с версията съдържа промени извън числото на версията — не може безопасно да се пропусне"
+  },
+  "commitsJiraField": {
+    "message": "Поле в Jira за значки на комитите"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Име на полето в Jira, което да се показва като значка на страницата с комити (например fixVersions, status, labels, components). Изисква URL на Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick към клонове"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick към избрани клонове директно или чрез нови MR-и. С включен умния резервен вариант, проверени конфликти във файлове с версия могат да се възпроизведат без този файл, като по желание се увеличи версията. Небезопасните промени спират за проверка."
+  },
+  "mrDetailEnhancements": {
+    "message": "Подобрения в детайлите на MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Предупреждение за чувствителни файлове в дифа"
+  },
+  "showGitCommands": {
+    "message": "Бутоните за Git команди (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "ЧУВСТВИТЕЛНО: $1 файл(ове)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Този MR модифицира файлове с чувствителна информация:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Предупреждение за чувствителни файлове"
+  },
+  "cardSensitiveDesc": {
+    "message": "Отбелязва чувствителни файлове, използвайки вградени правила, допълнителни шаблони и изключения. Конфигурирайте ги в Правила и лимити на показване."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Бутоните за Git команди"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Копирайте командите checkout, pull и hard-reset. Проверете вашето хранилище и отдалеченото origin преди да ги изпълните; hard reset изтрива локалните промени."
+  },
+  "updateBannerText": {
+    "message": "Налична е нова версия! Вижте какво е новото:"
+  },
+  "updateChangelog": {
+    "message": "Промени по версията"
+  },
+  "updateReviewAsk": {
+    "message": "Харесва ли ви разширението?"
+  },
+  "updateReviewLink": {
+    "message": "Оставете отзив"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Преглед с помощта на AI, от край до край"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Прегледай MR, оправи избраните коментари, подготви отговори и провери промените отново. Прегледай и редактирай коментарите преди публикуване в GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Ръководство за AI преглед"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Без автоматично качване с AI. Копирай контекста сам; коментарите се изпращат към GitLab само когато избереш Публикуване или Добавяне за преглед."
+  },
+  "aiReviewTitle": {
+    "message": "AI преглед"
+  },
+  "aiReviewOpen": {
+    "message": "AI преглед…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Копирай коментара за AI"
+  },
+  "aiReviewLoading": {
+    "message": "Зареждане на дискусии…"
+  },
+  "aiReviewRetry": {
+    "message": "Опитай отново"
+  },
+  "aiReviewRefresh": {
+    "message": "Обнови"
+  },
+  "aiReviewClose": {
+    "message": "Затвори"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Потвърждение при затваряне на диалози за преглед с незаписани промени"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Да се затвори ли този прозорец? Незапазените промени и въведените данни ще бъдат загубени."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Да се затвори ли прозорецът и да се спре следващото изпращане? Вече изпратените коментари ще останат в GitLab. Незапазените промени ще бъдат загубени."
+  },
+  "aiReviewAll": {
+    "message": "Всички"
+  },
+  "aiReviewUnresolved": {
+    "message": "Неразрешени"
+  },
+  "aiReviewResolved": {
+    "message": "Разрешени"
+  },
+  "aiReviewGeneral": {
+    "message": "Общи коментари"
+  },
+  "aiReviewSearch": {
+    "message": "Търси коментари или пътища към файлове"
+  },
+  "aiReviewSelectShown": {
+    "message": "Избери показаното"
+  },
+  "aiReviewClear": {
+    "message": "Изчисти избора"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Включи промените в кода"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "За нови и повторни прегледи. Остави изключено, ако AI може да чете хранилището. Кратки откъси, прикрепени към обратната връзка, остават включени."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Вземи предвид съществуващите дискусии"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Добавя вече публикувани коментари като филтър за дубликати: AI преглежда целия MR самостоятелно, след което премахва открития, които се повтарят. Не отговаря на тези дискусии."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Включи описание"
+  },
+  "aiReviewPrompt": {
+    "message": "Инструкции за AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Възстанови стандартния промпт"
+  },
+  "aiReviewPreview": {
+    "message": "Преглед"
+  },
+  "aiReviewCopied": {
+    "message": "Копирано!"
+  },
+  "aiReviewEmpty": {
+    "message": "Няма съвпадащи коментари."
+  },
+  "aiReviewPartial": {
+    "message": "Някои данни не могат да бъдат заредени. Експортът включва предупреждение и само наличния контекст."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 избрано",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Избери текста за преглед и го копирай ръчно."
+  },
+  "aiReviewScopeComment": {
+    "message": "Избран коментар"
+  },
+  "aiReviewScopeThread": {
+    "message": "Избрана дискусия"
+  },
+  "aiReviewPreparing": {
+    "message": "Подготовка на контекста на кода…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Не можа да се заредят дискусиите. Опитайте отново или копирайте наличния контекст."
+  },
+  "aiReviewShowReplies": {
+    "message": "Покажи отговорите"
+  },
+  "aiReviewSize": {
+    "message": "Приблизително $1 знака",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Откажи"
+  },
+  "showAiReviewCopy": {
+    "message": "Покажи AI преглед и контроли за импортиране"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Копирай целия MR за нов преглед, избрания фийдбек за поправки или импортирай AI коментари и отговори с редактиран преглед преди изпращане."
+  },
+  "aiReviewFresh": {
+    "message": "Преглед от нулата"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Подканване за нов преглед"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "До 1,500 знака. Използва се за преглед на целия MR и всички негови комити, отделно от поправките на фийдбек. Можете да зададете езика на отговора. Оставете празно за подразбиращия се английски."
+  },
+  "aiReviewPromptHint": {
+    "message": "До 1,500 знака. Оставете празно, за да използвате подразбиращия се английски. Отнася се за всички проекти."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Подканата не е запазена. Използвайте максимум 1,500 знака и премахнете необичайните контролни символи."
+  },
+  "settingsSaveFailed": {
+    "message": "Настройките не могат да бъдат запазени. Направете промяна, за да опитате отново."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Промените тук се прилагат за този експорт. Задайте своята стандартна подсказка в настройките на разширението."
+  },
+  "aiReviewReady": {
+    "message": "Прегледът е готов за копиране."
+  },
+  "aiReviewLoadHint": {
+    "message": "Зарежда дискусии директно от GitLab, включително коментари, които не се виждат на тази страница."
+  },
+  "aiReviewCommentContext": {
+    "message": "Другите отговори са включени като контекст. Само избраните коментари се изискват за действие."
+  },
+  "aiReviewOutdated": {
+    "message": "По-ранна версия"
+  },
+  "aiReviewLink": {
+    "message": "Отвори дискусия"
+  },
+  "aiReviewLoaded": {
+    "message": "Заредени $1 дискусии"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Подготовка на контекста на кода: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Този коментар не е наличен от GitLab. Може все още да се запазва или да е бил изтрит. Обновете, за да опитате отново."
+  },
+  "aiReviewImportOpen": {
+    "message": "Импортиране на AI преглед…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Импортиране на AI преглед"
+  },
+  "aiReviewImportHelp": {
+    "message": "Поставете AI отговора по-долу, за да проверите, редактирате и изберете какво да публикувате. Преки пътища за подсказки са под Разширени настройки."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Копирай подсказката за нов преглед"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Подготовка на заявката…"
+  },
+  "aiReviewImportInput": {
+    "message": "Отговор на AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Поставете пълния JSON отговор, съдържащ нови коментари или отговори в дискусии. Можете да редактирате текста и да изберете какво да изпратите в предварителния преглед."
+  },
+  "aiReviewImportValidate": {
+    "message": "Проверка и предварителен преглед"
+  },
+  "aiReviewImportChecking": {
+    "message": "Проверка на MR ревизията, редовете и съществуващите коментари…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Проверете отговора за предварителните коментари. Можете да редактирате текста им, да изчистите отметките, за да изключите елементи, или да добавите общ коментар."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Избор на готови коментари"
+  },
+  "aiReviewImportPreview": {
+    "message": "Коментари за изпращане"
+  },
+  "aiReviewImportReady": {
+    "message": "Готово"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Нуждае се от корекция"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Допълнителните промени във файловете не могат да бъдат заредени: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Допълнителната разлика надвишава лимита за импортиране от 16 MiB. Могат да се импортират само коментари по проверени редове."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Вече съществува"
+  },
+  "aiReviewImportPublished": {
+    "message": "Публикувано"
+  },
+  "aiReviewImportDraft": {
+    "message": "Добавено за преглед"
+  },
+  "aiReviewImportFailed": {
+    "message": "Не е изпратено"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Изпращането не е потвърдено"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Не е изпратено"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Нов ред $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Стар ред $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Публикувай избраното"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Добави към прегледа"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Публикуването изпраща коментарите веднага. Добавянето към прегледа запазва непубликуваните коментари за вашия GitLab преглед."
+  },
+  "aiReviewImportSending": {
+    "message": "Изпращане на избраните коментари…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Готово. Проверете резултата до всеки коментар."
+  },
+  "aiReviewImportStopped": {
+    "message": "Спряно. Проверете резултата до всеки коментар преди да опитате отново."
+  },
+  "aiReviewImportEdited": {
+    "message": "Отговорът се промени. Проверете го отново преди да изпратите."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Клипбордът не е достъпен. Изберете текста по-долу и го копирайте ръчно."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Изпращането не можа да бъде потвърдено. Проверете GitLab, преди да опитате отново."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Подканване за AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Готово: $1. Други коментари изискват внимание.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Спри изпращането"
+  },
+  "aiReviewImportError": {
+    "message": "Не можа да се завърши операцията"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Не можах да подготвя подканата"
+  },
+  "aiReviewImportWarning": {
+    "message": "Известия за преглед"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI преглед"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Език на AI отговора"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Автоматично — език на разговора"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Приложимо за всички задачи за преглед и импортирани подканвания. JSON ключове, пътища и код не се превеждат. Самото копиране на формата не добавя езикови инструкции."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Подканване за отстраняване на обратна връзка"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Подканване за нови коментари за преглед"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Подканване за отговори на обратна връзка"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "До 1500 знака. За нов преглед в Import. Task tabs използват собствени подканвания. Контекстът MR и JSON форматът се добавят автоматично."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "До 1500 знака. За отговори на избрани дискусии в Copy или всички неразрешени дискусии в Import. Настрой стил и език; контекстът и форматът за отговор се добавят автоматично."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Подканване за отговор на всички неразрешени дискусии"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Копирай формат за отговор"
+  },
+  "aiReviewImportFormat": {
+    "message": "Формат за отговор на AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Подготви отговори"
+  },
+  "aiReviewImportReply": {
+    "message": "Отговори на дискусия"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Оригинален коментар"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Вашият отговор"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Разреши обсъждането след публикуване"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Обсъждането е разрешено."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Отговорът е публикуван, но обсъждането не е разрешено. Можете да го разрешите в GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Отговорът е публикуван. Решението не е потвърдено; проверете обсъждането в GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Решението е по избор и по подразбиране е изключено. То се изпълнява само след публикуване на отговора. Добавянето на чернова никога не разрешава обсъждането."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Версията на MR е променена. Отговорите остават свързани с обсъжданията; проверете текста им спрямо изпратените корекции. Нови констатации от стара ревизия са блокирани."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Тези отговори са свързани с обсъждания, а не с ревизия на кода. Преди публикуване, проверете дали описаните корекции са изтласкани в този MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Редактирай текста"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Добави коментар"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Запази промените"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Отказ"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Коментар"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Редактирай текста, след което го запази, за да провериш промените преди публикуване."
+  },
+  "aiReviewImportEditError": {
+    "message": "Не можа да се запазят промените"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Прегледът може да съдържа най-много 200 коментара."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Подканване за повторен преглед"
+  },
+  "aiReviewFileFilters": {
+    "message": "Файлове за преглед"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Прилага се за нови и повторни прегледи и инструкции за нови находки, но не за избрана обратна връзка или инструкции за отговор. По един шаблон на ред или разделени със запетая; # започва коментар. Използвайте *, **, ?. Изключванията имат предимство, включително за старите пътища на преименувани файлове. Празните списъци включват всичко. Пример: src/**, *.test.js, dist/. До 1500 символа на списък."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Включи разширения (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Включи файлови пътища"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Изключи файлови пътища"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Изключи папки"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Филтрите за файлове не можаха да се запазят или приложат. Използвай до 1500 символа на списък и премахни необичайните контролни знаци."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Версия, която рецензираш"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Пълно ревю — няма предишна версия"
+  },
+  "aiReviewRepeat": {
+    "message": "Повтори ревю"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Въведи SHA на комита"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Въведи пълния SHA на ревюирания комит (40 или 64 шестнадесетични знака)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Избери версията на MR, която си ревюирал преди да оставиш коментари. Всички следващи промени до текущата версия се включват автоматично; не е нужно да избираш отделни комити. Ако не помниш версията, избери пълно ревю."
+  },
+  "aiReviewChooseTask": {
+    "message": "Избери задача"
+  },
+  "aiReviewTaskReview": {
+    "message": "Ново ревю"
+  },
+  "aiReviewTaskFix": {
+    "message": "Поправи забележките от ревюто"
+  },
+  "aiReviewTaskReply": {
+    "message": "Подготви отговори"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Последващо ревю"
+  },
+  "aiReviewCopyTask": {
+    "message": "Копирай задача"
+  },
+  "aiReviewPasteResult": {
+    "message": "Постави AI отговор"
+  },
+  "aiReviewAdvanced": {
+    "message": "Разширени настройки"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Инструкции за задачата"
+  },
+  "aiReviewSelectThread": {
+    "message": "Избери тази дискусия"
+  },
+  "aiReviewSelectAll": {
+    "message": "Избери всички дискусии"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Прегледай всички комити на MR заедно. AI връща нови забележки без да променя кода."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Избери обратна връзка за поправяне. За един MR, AI-то също подготвя отговори, обясняващи какво е било направено, какво остава и защо. Първоначално се избират нерешените дискусии."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Подготви отговори също"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Избери обратна връзка за твоя кодиращ AI да поправи. Първоначално се избират нерешените дискусии."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Дай задачата на твоя кодиращ AI и провери промените и тестовете му. Резултатът е поправки и нормално резюме, без готови за публикуване отговори."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "След като пуснеш поправките, помоли AI-то да провери кода и да обясни резултата в избраните дискусии."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Провери избраната обратна връзка и търси нови дефекти. Избери версията, която преди това си прегледал, или провери целия текущ MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Задача: целият MR, във всички комити."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Избрани коментари: $1; включен е контекст на дискусията и налични кодови извадки."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Дискусии за отговори: $1, с целия им разговор. AI трябва да има достъп до хранилището."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Дискусии за проверка: $1, плюс преглед на промените в кода."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Описание включено."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Описание изключено."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Промените в кода са включени, съобразно ограниченията за зареждане."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI трябва да чете кода от хранилището."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Съществуващите дискусии се добавят само като филтър за дубликати."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Съществуващите дискусии не се добавят."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Филтрите за файлове са активни."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Няма избрана по-ранна версия: ще се провери целият текущ MR."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Черновите на дискусии, които не са публикувани, не могат да получават отговори и са изключени."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Избери обратна връзка отляво. За нов преглед използвай таба „Нов преглед“."
+  },
+  "aiReviewNextStep": {
+    "message": "Копирайте задачата в AI инструмента си. Ако върне коментари или отговори, използвайте Paste AI response, за да ги прегледате и редактирате преди да ги публикувате."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Проверете поправките и тестовете, пуснете всички комити към MR, след което използвайте Paste AI response, за да прегледате подготвените отговори преди публикуване. Новите комити не изискват повторно генериране на отговори."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Автоматични инструкции (разширени)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Всички блокове са активирани по подразбиране и се използват само за релевантни задачи. Редактирайте, деактивирайте или изчиствате всеки блок. Задачните инструкции също имат свои указания. Данните за MR, JSON примери и съобщения за зареждане се генерират отделно; проверките за публикуване винаги се прилагат."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Добавяйте към задачата, когато е приложимо"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "До 1500 символа. Празният текст нищо не добавя. Нулирането възстановява по подразбиране текста и активира този блок."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Използвайте {language} за избрания език на отговора. До 1500 символа; празният текст нищо не добавя."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Използвайте {selection} за избрани или неразрешени дискусии. До 1500 символа; празният текст нищо не добавя."
+  },
+  "aiReviewRule_repository": {
+    "message": "Локално хранилище и отдалечено"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Работна копие за поправки"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Работна копие за преглед"
+  },
+  "aiReviewRule_language": {
+    "message": "Език на отговора"
+  },
+  "aiReviewRule_scope": {
+    "message": "Интерпретация на филтъра за файлове"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Контекст на обратната връзка"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Поправки без отговори"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Задача само с описание"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Липсваща избрана обратна връзка"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Готови за публикуване отговори след поправки"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Граници на прегледа"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Източник за преглед"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Включени промени в кода"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Преглед без включен код"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Недостъпен източник"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON отговор"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Намиране на местоположения и изход"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Стил на последващ отговор"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Непроменена глава"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Позиции на сравнителните редове"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Сравнение на локални ревизии"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Промени в целевия клон"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Преглед без сравнителна ревизия"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Проверка отново без дискусии"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Избран обхват на дискусията"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Кумулативен контекст на разликите"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Съществуващи дискусии в нов преглед"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Нов преглед при импортиране"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Граници на импортиране на преглед"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Формат на намерения при импортиране"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Граници и формат на отговор"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Обхват на задача при отговор"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Добавяне на поле"
+  },
+  "jiraQuickActionField": {
+    "message": "Поле"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Операция"
+  },
+  "jiraQuickActionValue": {
+    "message": "Стойност"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Премахване"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Добавяне"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Премахване"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Замени всички"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Краен срок"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Персонализирано поле (разширено)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Стойности, разделени със запетаи. Добавянето/премахването запазва другите стойности; замяната на всички презаписва списъка."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID на поле: customfield_12345. Въведете стойността като JSON в формата, очакван от това поле на Jira."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Точно име на прехода в Jira (или целеви статус)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Празна стойност: няма промяна."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Проверете стойността на полето: потребителските полета изискват валиден ID и JSON; форматът за дати е YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Използвай всяко поле само веднъж на бутон."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Действието се провали."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Статусът се промени, но обновяването на полето се провали."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Не можа да се обнови задачата. Презареди панела, за да провериш текущите му стойности."
+  },
+  "mrActions": {
+    "message": "MR действия"
+  },
+  "mrActionsHint": {
+    "message": "Създай наименувани бутони за промяна на етикети или изчистване на други MR полета. Премествай ги в списъка с бутони, за да промениш реда им."
+  },
+  "mrActionsProfileHint": {
+    "message": "Този проект използва собствен списък с действия след запазване. Премахни всички записи, за да скриеш тези бутони за този проект."
+  },
+  "mrActionAdd": {
+    "message": "Добави MR действие"
+  },
+  "mrActionLabel": {
+    "message": "Име на бутон"
+  },
+  "mrActionDelete": {
+    "message": "Изтрий действие"
+  },
+  "mrActionType": {
+    "message": "Действие"
+  },
+  "mrActionLabels": {
+    "message": "Етикети"
+  },
+  "mrActionLabelsHint": {
+    "message": "Точни имена на етикети, разделени със запетаи или нови редове. Интервалите в имената се запазват. Добавянето/замяната може да създаде липсващи етикети за проекта."
+  },
+  "mrAction_remove_labels": {
+    "message": "Премахни посочените етикети"
+  },
+  "mrAction_clear_labels": {
+    "message": "Изчисти всички етикети"
+  },
+  "mrAction_add_labels": {
+    "message": "Добави етикети"
+  },
+  "mrAction_set_labels": {
+    "message": "Замени всички етикети"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Изчисти назначените"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Изчисти преглеждащите"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Изчисти етапа"
+  },
+  "mrActionInvalid": {
+    "message": "Въведи име на бутон, избери поддържано действие и посочи поне един етикет за добавяне, премахване или замяна."
+  },
+  "mrActionConfirm": {
+    "message": "Приложи „$1“ към този MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab не върна статус на rebase. Презареди заявката за сливане и опитай отново."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab върна страница с повторени задания за пайплайн #$1. Списъкът със задачи не можа да се зареди напълно."
+  },
+  "displayPreferencesTitle": {
+    "message": "Показване на правила и лимити"
+  },
+  "displayPreferencesHint": {
+    "message": "Глобални настройки; презаредете разделите на GitLab след промяна. Повече задачи или коментари увеличават прехвърляните данни. Прегледите на журнали изтеглят целия журнал, преди да изберат непразните редове. Значките за рецензенти търсят шаблона „Reviewer(s): @username“ в най-старите коментари."
+  },
+  "failedJobsLimit": {
+    "message": "Неуспешни задачи за преглед"
+  },
+  "failedJobTraceLines": {
+    "message": "Редове с лог, които не са празни, на задача"
+  },
+  "reviewerNotesLimit": {
+    "message": "Коментари за сканиране за значки на рецензентите"
+  },
+  "mrSizeLines": {
+    "message": "Праг за размера на MR: редове (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Праг за размера на MR: файлове (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Допълнителни шаблони на чувствителни файлове"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Изключения на чувствителни файлове"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Използвай вградените правила за чувствителни файлове"
+  },
+  "sizeThresholdsHint": {
+    "message": "Три растящи положителни числа, разделени със запетаи. Границите са включително; по-големите промени са XL. Прагът на файловете се прилага, когато броят на редовете е недостъпен."
+  },
+  "sensitivePatternsHint": {
+    "message": "Един шаблон на ред, без значение на главни/малки букви. * съвпада с всякакъв текст (включително /), ? - с един символ. Шаблоните без / съвпадат с имена на файлове; другите шаблони съвпадат с пълния път в хранилището. Изключенията имат приоритет. Вградените правила покриват файлове за среда, контейнер/CI, идентификационни данни и частни ключове. Изключете ги, за да използвате само вашите шаблони."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Проверете числовите диапазони, трите нарастващи прагови стойности и дължината на шаблоните на файлове."
+  },
+  "failedJobsPreview": {
+    "message": "Преглед: $1 неуспешни задачи — последните $2 непразни реда",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Още неуспешни задачи — отвори целия pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 реда, $2 файла",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "Променени $1 файла",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Сканирането за чувствителни файлове е непълно"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Не можаха да бъдат проверени всички файлове: заявката към API се провали или е достигнат лимитът за сканиране на $1 файла. Изброените съвпадения са частични; проверете пълната разлика в MR.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Предупреждение: този отчет може да е непълен. Събирането е ограничено до $1 MRs на категория и $2 събития на активност.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 неразрешен(и) нишки",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Този преглед може да е непълен: грешка в API или проверени са само първите $2 дискусии. Известни неразрешени нишки: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}
