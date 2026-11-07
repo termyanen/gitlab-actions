@@ -1,7 +1,10 @@
 import type { JiraState, JiraStatus } from "../../../entities/jira-issue";
 import {
   getJiraCategoryClass,
+  createJiraFailureNotice,
+  jiraResponseFailure,
   sendJiraMessage,
+  stopsJiraBatch,
 } from "../../../entities/jira-issue/content";
 import { SEL } from "../../../shared/config/gitlab";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
@@ -17,6 +20,35 @@ export function createListJiraBadges(
   const DETAIL_HEADER_RETRY_MS = 1000;
 
   const JIRA_CACHE_TTL = 2 * 60 * 1000;
+  const failureNotice = createJiraFailureNotice(scope, () => {
+    jiraState.authFailed = false;
+    delete jiraState.failure;
+    jiraState.myselfCache = {};
+    jiraState.cache = {};
+    if (isMrListPage())
+      fetchAndRenderJiraStatuses(jiraState.url, jiraState.showDetails);
+    else {
+      document
+        .querySelectorAll(".gl-jira-badge, .gl-jira-list-icon")
+        .forEach((node) => node.remove());
+      injectMrDetailJiraBadges(jiraState.url);
+    }
+  });
+  function readyForJira(jiraUrl: string) {
+    if (jiraState.url !== jiraUrl) {
+      jiraState.url = jiraUrl;
+      jiraState.authFailed = false;
+      delete jiraState.failure;
+      jiraState.cache = {};
+      jiraState.myselfCache = {};
+      failureNotice.clear();
+    }
+    if (jiraState.failure && stopsJiraBatch(jiraState.failure)) {
+      failureNotice.show(jiraState.failure, jiraUrl);
+      return false;
+    }
+    return !jiraState.authFailed;
+  }
 
   // =========================================================================
   // Jira ticket status badges on MR list
@@ -151,7 +183,7 @@ export function createListJiraBadges(
 
   function fetchAndRenderJiraStatuses(jiraUrl: string, showDetails: boolean) {
     jiraState.showDetails = !!showDetails;
-    if (jiraState.authFailed) return;
+    if (!readyForJira(jiraUrl)) return;
     if (jiraState.fetching) {
       jiraState.refreshPending = true;
       return;
@@ -219,20 +251,18 @@ export function createListJiraBadges(
         jiraState.fetching = false;
         try {
           removeJiraLoaders();
-          if (chrome.runtime.lastError || !resp || resp._error !== undefined)
-            return;
-          const statuses = resp.statuses || {};
-
-          // Stop all Jira requests if auth failed (401/403)
-          if (resp._authError) {
-            jiraState.authFailed = true;
-            console.warn(
-              "[GitLab Actions] Jira auth failed (" +
-                resp._authError +
-                "), stopping Jira requests. Reload page after re-login.",
-            );
-            return;
+          const failure = jiraResponseFailure(resp);
+          if (failure) {
+            jiraState.failure = failure;
+            jiraState.authFailed = failure._errorKind === "auth";
+            failureNotice.show(failure, jiraUrl);
+          } else {
+            delete jiraState.failure;
+            jiraState.authFailed = false;
+            failureNotice.clear();
           }
+          if (resp._error !== undefined) return;
+          const statuses = resp.statuses;
 
           // Update cache
           const fetchedNow = Date.now();
@@ -264,7 +294,7 @@ export function createListJiraBadges(
 
   function injectMrDetailJiraBadges(jiraUrl: string) {
     if (scope.disposed) return;
-    if (jiraState.authFailed) return;
+    if (!readyForJira(jiraUrl)) return;
     const titleEl = document.querySelector<HTMLElement>(
       '.title-container .title, .detail-page-header .title, [data-testid="title-content"]',
     );
@@ -291,17 +321,18 @@ export function createListJiraBadges(
         showDetails: jiraState.showDetails,
       },
       scope.guard(function (resp) {
-        if (!resp || resp._error !== undefined || !resp.statuses) return;
-        const statuses = resp.statuses;
-        if (resp._authError) {
-          jiraState.authFailed = true;
-          console.warn(
-            "[GitLab Actions] Jira auth failed (" +
-              resp._authError +
-              "), stopping Jira requests. Reload page after re-login.",
-          );
-          return;
+        const failure = jiraResponseFailure(resp);
+        if (failure) {
+          jiraState.failure = failure;
+          jiraState.authFailed = failure._errorKind === "auth";
+          failureNotice.show(failure, jiraUrl);
+        } else {
+          delete jiraState.failure;
+          jiraState.authFailed = false;
+          failureNotice.clear();
         }
+        if (resp._error !== undefined) return;
+        const statuses = resp.statuses;
         tickets.forEach(function (ticket) {
           const status = statuses[ticket];
           if (!status) return;

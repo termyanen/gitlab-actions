@@ -1,3 +1,4 @@
+import type { JiraFailure } from "./failure";
 export interface JiraStatus {
   name: string;
   categoryKey: string;
@@ -13,6 +14,7 @@ export interface JiraState {
   refreshPending: boolean;
   url: string;
   authFailed: boolean;
+  failure?: JiraFailure;
   skipConfirmations: boolean;
   ticketRegex: RegExp;
   myselfCache: Record<string, string>;

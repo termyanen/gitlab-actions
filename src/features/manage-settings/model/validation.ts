@@ -11,6 +11,7 @@ import {
   MR_ACTION_TYPES,
   SETTINGS_FILE_MAX_BYTES,
 } from "./config";
+import { readJiraBaseUrl } from "./jira-url";
 export function createSettingsValidation(t: (key: string) => string) {
   function validateMrActions(actions: unknown) {
     if (!isUnknownArray(actions)) throw new Error(t("mrActionInvalid"));
@@ -170,17 +171,12 @@ export function createSettingsValidation(t: (key: string) => string) {
       ["patch", "minor", "major"].indexOf(settings.versionStrategy) === -1
     )
       throw new Error(t("settingsFileInvalid"));
-    if (typeof settings.jira_url === "string" && settings.jira_url) {
-      const jira = new URL(settings.jira_url);
-      if (
-        jira.protocol !== "https:" ||
-        jira.username ||
-        jira.password ||
-        jira.search ||
-        jira.hash
-      )
-        throw new Error(t("settingsFileInvalid"));
-    }
+    if (
+      typeof settings.jira_url === "string" &&
+      settings.jira_url &&
+      !readJiraBaseUrl(settings.jira_url)
+    )
+      throw new Error(t("settingsFileInvalid"));
     if (
       typeof settings.jira_ticket_regex === "string" &&
       settings.jira_ticket_regex

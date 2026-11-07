@@ -1,6 +1,9 @@
 import {
   jiraApi,
+  jiraFailure,
   readRawJiraIssue,
+  stopsJiraBatch,
+  type JiraFailure,
 } from "../../../entities/jira-issue/background";
 import { api } from "../../../shared/api/background-proxy";
 import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
@@ -80,6 +83,13 @@ const readProjectPath = decoder(
 const REPORT_TIMEOUT_MS = 180000;
 const REPORT_EVENT_MAX_PAGES = 5;
 const REPORT_MR_LIMIT = 50;
+const JIRA_ENRICH_CONCURRENCY = 5;
+interface StandupResponse {
+  text?: string;
+  _error?: string;
+  _jiraFailure?: JiraFailure;
+  _jiraUrl?: string;
+}
 interface ActivityMr {
   id: number;
   iid: number;
@@ -107,7 +117,7 @@ export interface StandupMessage {
 export function generateStandup(
   msg: StandupMessage,
   sender: chrome.runtime.MessageSender,
-  sendResponse: (response: { text?: string; _error?: string }) => void,
+  sendResponse: (response: StandupResponse) => void,
 ) {
   const standupUrl = msg.gitlabUrl;
   const fakeTask = {
@@ -123,7 +133,7 @@ export function generateStandup(
         "Timed out generating the report (180s). Check that GitLab is reachable and reload the tab.",
     });
   }, REPORT_TIMEOUT_MS);
-  function standupRespond(payload: { text?: string; _error?: string }) {
+  function standupRespond(payload: StandupResponse) {
     if (standupDone) return;
     standupDone = true;
     clearTimeout(standupWatchdog);
@@ -532,11 +542,9 @@ export function generateStandup(
               jira_ticket_regex: string;
               standup_jira_enrich: boolean;
             }) {
+              let jiraUrl = "";
               try {
-                const jiraUrl = (jiraSettings.jira_url || "").replace(
-                  /\/+$/,
-                  "",
-                );
+                jiraUrl = (jiraSettings.jira_url || "").replace(/\/+$/, "");
                 if (!jiraUrl || jiraSettings.standup_jira_enrich === false) {
                   standupRespond({ text: lines.join("\n") });
                   return;
@@ -567,16 +575,19 @@ export function generateStandup(
                 // Fetch Jira summaries (up to 5 concurrent)
                 const ticketSummaries: Record<string, string> = {};
                 const fetchQueue = tickets.slice();
+                let enrichmentFailure: JiraFailure | undefined;
+                let stopEnrichment = false;
                 function fetchNextBatch(): Promise<void> {
-                  if (!fetchQueue.length) return Promise.resolve();
-                  const batch = fetchQueue.splice(0, 5);
+                  if (!fetchQueue.length || stopEnrichment)
+                    return Promise.resolve();
+                  const batch = fetchQueue.splice(0, JIRA_ENRICH_CONCURRENCY);
                   return Promise.all(
                     batch.map(function (ticket) {
                       return jiraApi(
                         jiraUrl,
                         JIRA_API_PREFIX +
                           "/issue/" +
-                          ticket +
+                          encodeURIComponent(ticket) +
                           "?fields=summary",
                       )
                         .then(readRawJiraIssue)
@@ -585,7 +596,12 @@ export function generateStandup(
                             ticketSummaries[ticket] = data.fields.summary;
                           }
                         })
-                        .catch(function () {});
+                        .catch(function (error: unknown) {
+                          const failure = jiraFailure(error);
+                          if (!enrichmentFailure || stopsJiraBatch(failure))
+                            enrichmentFailure = failure;
+                          if (stopsJiraBatch(failure)) stopEnrichment = true;
+                        });
                     }),
                   ).then(function () {
                     return fetchNextBatch();
@@ -629,14 +645,28 @@ export function generateStandup(
                         /* keep un-annotated lines */
                       }
                     }
-                    standupRespond({ text: lines.join("\n") });
+                    standupRespond({
+                      text: lines.join("\n"),
+                      ...(enrichmentFailure
+                        ? { _jiraFailure: enrichmentFailure, _jiraUrl: jiraUrl }
+                        : {}),
+                    });
                   })
-                  .catch(function () {
-                    standupRespond({ text: lines.join("\n") });
+                  .catch(function (error: unknown) {
+                    standupRespond({
+                      text: lines.join("\n"),
+                      _jiraFailure: jiraFailure(error),
+                      _jiraUrl: jiraUrl,
+                    });
                   });
-              } catch {
+              } catch (error) {
                 // Jira enrichment is optional — fall back to the plain report
-                standupRespond({ text: lines.join("\n") });
+                standupRespond({
+                  text: lines.join("\n"),
+                  ...(jiraUrl
+                    ? { _jiraFailure: jiraFailure(error), _jiraUrl: jiraUrl }
+                    : {}),
+                });
               }
             },
           );

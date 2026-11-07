@@ -102,6 +102,7 @@ test('Jira messages validate payloads and preserve partial mutation outcomes and
   assert.deepEqual(send('execute-jira-quick-action'), { _error: 'Failed' });
   runtime.lastError = { message: 'Message port closed' };
   assert.equal(send('fetch-jira-myself')._error, 'Message port closed');
+  assert.equal(send('set-jira-assignee')._errorKind, 'network');
 });
 
 test('durable jobs reject malformed checkpoints before restoring executable tasks', async () => {

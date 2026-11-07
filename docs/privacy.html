@@ -41,7 +41,7 @@
 <li><strong>CI task recovery:</strong> <code>chrome.storage.local</code> stores active job-chain checkpoints and up to 50 completed tasks: GitLab origin, project/MR/pipeline/job identifiers, MR title, job names, progress, timestamps and error messages. They remain until replaced or extension data is removed and are not synchronized through Chrome Sync. They contain no job logs, repository files or credentials.</li>
 <li><strong>Duplicate-send protection:</strong> review import stores a local digest identifier, delivery status, timestamp and, after confirmation, comment ID. These records prevent accidental reposting after interruptions and remain until extension data is removed. They contain no comment body, code, prompt or review transcript and are not a review history. They are not stored in Chrome Sync.</li>
 <li><strong>Review content:</strong> fetched discussions/code and pasted import text remain in page memory while the feature is in use. The extension does not save a persistent review transcript or snapshots. Closing the page clears that page's memory. Clipboard text remains under browser/operating-system control until replaced or cleared; clipboard synchronization tools are outside the extension's control.</li>
-<li><strong>Credentials:</strong> the extension does not persist session cookies or CSRF tokens; browser cookies remain in the browser's cookie store.</li>
+<li><strong>Credentials:</strong> the extension does not persist session cookies or CSRF tokens. The browser attaches the existing Jira session to permitted requests; the extension does not read the cookie store through the Cookies API.</li>
 </ul>
 <h2 id="en-section-5">4. Recipients</h2>
 <ul>
@@ -75,11 +75,7 @@
 </tr>
 <tr>
   <td><code>tabs</code></td>
-  <td>Communicate with GitLab tabs and locate tabs needed for user-triggered work</td>
-</tr>
-<tr>
-  <td><code>cookies</code></td>
-  <td>Read session cookies for the configured Jira integration; GitLab requests use the signed-in tab</td>
+  <td>Read the active tab URL to identify the current project and locate matching GitLab tabs for user-triggered work</td>
 </tr>
 <tr>
   <td>Optional HTTPS host access</td>
@@ -91,7 +87,8 @@
 </tr>
 </tbody>
 </table></div>
-<p>AI review adds no new extension permissions. The browser controls site access; you can restrict it through the extension's site-access settings.</p>
+<p>AI review adds no new extension permissions. The browser controls site access; you can restrict it through the extension's site-access settings.
+Jira requests use the existing browser session with permission for the configured host; the extension does not request the <code>cookies</code> API permission.</p>
 <h2 id="en-section-7">6. Your choices and deletion</h2>
 <p>You can disable AI review controls or other features, edit/reset saved prompts and filters, and remove Jira configuration or its host permission. Removing the extension deletes its local and synchronized extension storage on that browser; Chrome controls synchronization across devices. Session UI state can be cleared by closing the relevant tab or clearing site session storage.</p>
 <p>Clearing extension data does not delete comments or drafts already saved in GitLab, data pasted into another application, or clipboard contents. Manage those in the relevant application. Clearing duplicate-send records also removes the extension's local protection against retrying submissions with an uncertain result.</p>
@@ -129,7 +126,7 @@
 <li><strong>Восстановление CI-задач:</strong> <code>chrome.storage.local</code> хранит состояния активных цепочек и до 50 завершённых задач: адрес GitLab, идентификаторы проекта/MR/pipeline/job, заголовок MR, имена job, прогресс, время и сообщения об ошибках. Они сохраняются до замены или удаления данных расширения и не синхронизируются через Chrome Sync. Логи job, файлы репозитория и учётные данные в эти записи не входят.</li>
 <li><strong>Защита от повторной отправки:</strong> импорт сохраняет локально хеш-идентификатор операции, статус доставки, время и после подтверждения — ID комментария. Записи остаются до удаления данных расширения и помогают не повторять отправку после сбоев. Они не содержат текста комментария, кода, промпта или переписки ревью, не являются историей ревью и не синхронизируются через Chrome Sync.</li>
 <li><strong>Содержимое ревью:</strong> обсуждения, код и вставленный ответ находятся в памяти страницы во время использования. Расширение не сохраняет постоянную историю ревью или снимки кода. Закрытие страницы очищает её память. Скопированный текст остаётся под управлением браузера и операционной системы до замены или очистки; сторонняя синхронизация буфера не контролируется расширением.</li>
-<li><strong>Учётные данные:</strong> расширение не сохраняет сессионные cookie или CSRF-токены; cookie остаются в хранилище браузера.</li>
+<li><strong>Учётные данные:</strong> расширение не сохраняет сессионные cookie или CSRF-токены. Браузер добавляет текущую сессию Jira к разрешённым запросам; расширение не читает хранилище cookie через Cookies API.</li>
 </ul>
 <h2 id="ru-section-5">Получатели</h2>
 <ul>
@@ -163,11 +160,7 @@
 </tr>
 <tr>
   <td><code>tabs</code></td>
-  <td>Связь с вкладками GitLab и поиск вкладок для действий пользователя</td>
-</tr>
-<tr>
-  <td><code>cookies</code></td>
-  <td>Чтение cookie настроенного сервера Jira; запросы GitLab используют вкладку с активной сессией</td>
+  <td>Чтение URL активной вкладки для определения проекта и поиск подходящих вкладок GitLab для действий пользователя</td>
 </tr>
 <tr>
   <td>Опциональный доступ к HTTPS-домену</td>
@@ -179,7 +172,8 @@
 </tr>
 </tbody>
 </table></div>
-<p>Ревью с ИИ не добавляет новых разрешений. Доступом к сайтам управляет браузер; его можно ограничить в настройках доступа расширения.</p>
+<p>Ревью с ИИ не добавляет новых разрешений. Доступом к сайтам управляет браузер; его можно ограничить в настройках доступа расширения.
+Запросы Jira используют текущую сессию браузера и разрешение на доступ к настроенному серверу; расширение не запрашивает разрешение <code>cookies</code> API.</p>
 <h2 id="ru-section-7">Ваш выбор и удаление</h2>
 <p>Можно отключить инструменты ревью и другие функции, изменить или сбросить промпты и фильтры, удалить настройки Jira или отозвать доступ к её домену. Удаление расширения удаляет его локальное и синхронизируемое хранилище в этом браузере; синхронизацией между устройствами управляет Chrome. Сессионное состояние можно очистить закрытием вкладки или очисткой сессионного хранилища сайта.</p>
 <p>Удаление данных расширения не удаляет комментарии и черновики в GitLab, текст в других приложениях или буфер обмена. Управляйте ими в соответствующем приложении. Удаление записей защиты от повторной отправки также убирает локальную защиту от повторов операций с неопределённым результатом.</p>
