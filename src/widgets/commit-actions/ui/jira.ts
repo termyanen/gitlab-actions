@@ -2,13 +2,19 @@ import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
   getJiraCategoryClass,
+  createJiraFailureNotice,
+  jiraResponseFailure,
   sendJiraMessage,
+  stopsJiraBatch,
+  type JiraFailure,
 } from "../../../entities/jira-issue/content";
 import { SEL } from "../../../shared/config/gitlab";
 import { qAll, qUp } from "../../../shared/lib/dom";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { createLifecycle } from "../../../shared/lib/lifecycle";
 const BADGE_MOUNT_DEBOUNCE_MS = 500;
+const JIRA_CACHE_TTL_MS = 5 * 60 * 1000;
+const JIRA_TICKET_BATCH_SIZE = 5;
 interface CommitTicketEntry {
   row: HTMLElement;
   lastMsgEl: HTMLElement;
@@ -47,6 +53,11 @@ export function startCommitJira(
             return;
           setJiraTicketRegex(s.jira_ticket_regex);
           const jiraUrl = s.jira_url;
+          if (jiraState.url !== jiraUrl) {
+            jiraState.url = jiraUrl;
+            jiraState.authFailed = false;
+            delete jiraState.failure;
+          }
           const jiraFields = s.commits_jira_field
             .split(",")
             .map(function (f) {
@@ -64,8 +75,19 @@ export function startCommitJira(
           > = {};
           let _commitJiraFetching = false;
           const _commitJiraInvalidated = new Set<string>();
+          const failedTickets = new Set<string>();
+          const failureNotice = createJiraFailureNotice(scope, () => {
+            jiraState.authFailed = false;
+            delete jiraState.failure;
+            jiraState.myselfCache = {};
+            failedTickets.clear();
+            for (const ticket of Object.keys(_commitJiraCache))
+              delete _commitJiraCache[ticket];
+            injectCommitJiraBadges();
+          });
           jiraState.invalidateCommitTicket = function (ticket) {
             delete _commitJiraCache[ticket];
+            failedTickets.delete(ticket);
             if (_commitJiraFetching) _commitJiraInvalidated.add(ticket);
             else injectCommitJiraBadges();
           };
@@ -131,9 +153,13 @@ export function startCommitJira(
             // Render from cache first
             const uncached: string[] = [];
             allTickets.forEach(function (t) {
+              if (failedTickets.has(t)) return;
               if (
                 _commitJiraCache[t] &&
-                Date.now() - _commitJiraCache[t].ts < 5 * 60 * 1000
+                Date.now() - _commitJiraCache[t].ts < JIRA_CACHE_TTL_MS &&
+                jiraFields.every(
+                  (field) => _commitJiraCache[t]?.fields[field] !== undefined,
+                )
               )
                 return;
               uncached.push(t);
@@ -144,6 +170,10 @@ export function startCommitJira(
               renderCommitJiraBadges(entry);
             });
 
+            if (jiraState.failure && stopsJiraBatch(jiraState.failure)) {
+              failureNotice.show(jiraState.failure, jiraUrl);
+              return;
+            }
             if (!uncached.length || jiraState.authFailed) return;
 
             // Show skeleton loaders for rows pending Jira data
@@ -157,9 +187,15 @@ export function startCommitJira(
             // Fetch uncached — one request per field, batches of 5 tickets
             _commitJiraFetching = true;
             let fieldIdx = 0;
+            let batchFailure: JiraFailure | undefined;
             function fetchNextField() {
               if (fieldIdx >= jiraFields.length) {
                 _commitJiraFetching = false;
+                if (!batchFailure && !failedTickets.size) {
+                  delete jiraState.failure;
+                  jiraState.authFailed = false;
+                  failureNotice.clear();
+                }
                 if (_commitJiraInvalidated.size) {
                   _commitJiraInvalidated.forEach(function (ticket) {
                     delete _commitJiraCache[ticket];
@@ -178,7 +214,7 @@ export function startCommitJira(
                 _commitJiraFetching = false;
                 return;
               }
-              const batch = uncached.slice(0, 5);
+              const batch = uncached.slice(0, JIRA_TICKET_BATCH_SIZE);
               sendJiraMessage(
                 {
                   type: "fetch-jira-field-values",
@@ -187,21 +223,15 @@ export function startCommitJira(
                   field: field,
                 },
                 scope.guard(function (resp) {
+                  const failure = jiraResponseFailure(resp);
+                  if (failure) {
+                    batchFailure = failure;
+                    jiraState.failure = failure;
+                    jiraState.authFailed = failure._errorKind === "auth";
+                    failureNotice.show(failure, jiraUrl);
+                  }
                   if (resp && resp._error === undefined) {
                     const data = resp.values || {};
-                    if (resp._authError) {
-                      jiraState.authFailed = true;
-                      _commitJiraFetching = false;
-                      ticketMap.forEach(function (entry) {
-                        removeCommitJiraLoader(entry);
-                      });
-                      console.warn(
-                        "[GitLab Actions] Jira auth failed (" +
-                          resp._authError +
-                          "), stopping Jira requests. Reload page after re-login.",
-                      );
-                      return;
-                    }
                     const now = Date.now();
                     for (const [t, value] of Object.entries(data)) {
                       if (!_commitJiraCache[t])
@@ -212,12 +242,23 @@ export function startCommitJira(
                       _commitJiraCache[t].ts = now;
                     }
                     batch.forEach(function (t) {
+                      if (failure && !data[t]) {
+                        if (!stopsJiraBatch(failure)) failedTickets.add(t);
+                        return;
+                      }
                       if (!_commitJiraCache[t])
                         _commitJiraCache[t] = { ts: now, fields: {} };
                       if (!_commitJiraCache[t].fields[field])
                         _commitJiraCache[t].fields[field] = [];
                     });
                   }
+                  if (failure && stopsJiraBatch(failure)) {
+                    _commitJiraFetching = false;
+                    ticketMap.forEach(renderCommitJiraBadges);
+                    return;
+                  }
+                  if (resp._error !== undefined)
+                    batch.forEach((ticket) => failedTickets.add(ticket));
                   fieldIdx++;
                   fetchNextField();
                 }),

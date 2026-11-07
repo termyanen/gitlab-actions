@@ -16,7 +16,7 @@ current defaults for keys absent from an older export.
 | Reviewer action | Fixed usernames or fallback CI job name (`get-reviewers` by default) |
 | MR list | Own/review filters, draft dimming, own-MR highlight, copy, reviewer, thread, size, conflict, approval, branch and Jira badges; branch links |
 | Page tools | Collapsed bars, right sidebar, command palette, standup/Jira enrichment, Git commands, sensitive-file warning |
-| Jira | HTTPS origin, ticket regular expression, displayed commit fields, named quick actions and field updates; access to the selected origin is requested separately |
+| Jira | HTTPS base URL (including an installation context path), ticket regular expression, displayed commit fields, named quick actions and field updates; **Allow Jira site access** grants or restores access to the selected origin separately from saving the URL |
 | Cherry-pick | Target branches, create MR, smart fallback, version bump, commit version and group-play controls |
 | AI review | Visibility, five task prompts, response language, editable instruction blocks, file filters, close confirmation; dialog controls also remember the existing-discussion choice |
 | Display rules and limits | MR size thresholds, failed-job count/log lines, reviewer-comment scan depth, sensitive patterns/exclusions/built-in rules |

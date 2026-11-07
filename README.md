@@ -399,7 +399,13 @@ cache lifetimes and collection limits.
 
 ### Jira Integration
 
-Deep integration with Jira via session cookies (no API tokens needed):
+Integration targets Jira Server / Data Center REST API v2 using your signed-in
+browser session. Set the HTTPS Jira base URL (including a context path such as
+`/jira`, if used), sign in to Jira in the same browser, and click **Allow Jira site
+access** beside the URL in extension settings. Saving the URL alone does not ask
+for permission. Use the same button to restore revoked site access without
+changing the URL; no API token is requested. Settings import requests access when
+you explicitly apply the imported configuration.
 
 - **Status badges** on MR list and detail pages with color coding
 - **Full ticket sidebar** — click any badge to view: summary, status, type, priority, assignee, reporter, labels, epic, sprint, components, versions, description, attachments
@@ -408,6 +414,12 @@ Deep integration with Jira via session cookies (no API tokens needed):
 - **Quick actions** — configure each button to change one field or several: status, assignee, labels, Fix Version, affected versions, components, priority and due date. Add, remove or replace list values; advanced custom fields accept a Jira field ID and JSON value. Buttons without a status change work independently of workflow transitions. Existing status + assignee actions remain compatible.
 - **Attachments** — view images/videos in lightbox, download files
 - **Clickable Epic Link** — opens epic in Jira
+
+When configured Jira is unavailable, the extension distinguishes sign-in/session
+problems, denied operations, missing site permission and connection/server errors.
+Open Jira to sign in or check access, then retry loading data. Failed or uncertain
+writes are not automatically replayed. See [Jira compatibility and recovery](docs/JIRA_COMPATIBILITY.md)
+for supported contracts, Server/Data Center differences and checks for your instance.
 
 ### Version Bump
 
@@ -464,7 +476,7 @@ accepted values, profile inheritance and fixed network/storage budgets.
 ## How It Works
 
 - **No tokens needed** — uses your existing GitLab session cookies for API calls
-- **Jira auth** — reads Jira session cookies via `chrome.cookies` API (grant permission once in settings)
+- **Jira auth** — uses your signed-in browser session after you grant access to the configured site; no `cookies` API permission is required
 - **Privacy** — no telemetry or automatic AI uploads; API requests go to your GitLab/Jira. Optional Chrome Sync stores preferences; AI sharing happens only when you paste the copied context. See the [privacy policy](PRIVACY_POLICY.md).
 - **Manifest V3** — modern Chrome extension architecture with service worker
 
@@ -479,8 +491,9 @@ English, Русский, 中文, 日本語, Deutsch, Français, Español
   Features depend on the server's API, page layout and your permissions; see
   [audited compatibility and live-test gaps](tests/README.md).
 - Optional Jira integration uses a signed-in browser session and access to the
-  configured HTTPS origin. It targets Server / Data Center APIs; Jira Cloud and
-  instance-specific authentication or custom fields require separate verification.
+  configured HTTPS origin. It targets Server / Data Center APIs; server version,
+  SSO, account permissions and custom fields still affect individual features.
+  Jira Cloud is not fully supported. See [Jira compatibility](docs/JIRA_COMPATIBILITY.md).
 
 ## Development architecture
 

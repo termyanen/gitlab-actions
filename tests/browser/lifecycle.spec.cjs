@@ -74,6 +74,22 @@ test('standup clipboard denial is handled and a later copy can succeed', async (
   await page.evaluate(() => scope.dispose());
 });
 
+test('standup preserves GitLab activity and offers a read retry when configured Jira enrichment fails', async ({page}) => {
+  await mount(page, 'src/widgets/standup/index.ts', () => {
+    window.scope = Lifecycle.createLifecycle();
+    window.dialog = Widget.createStandupDialog(scope);
+    dialog.open();
+    reply('generate-standup', {text:'Completed GitLab work', _jiraUrl:'https://jira.test/jira', _jiraFailure:{_error:'401', _errorKind:'auth', _httpStatus:401}});
+  });
+  await expect(page.locator('.gl-standup-content')).toHaveText('Completed GitLab work');
+  await expect(page.getByRole('alert')).toContainText('jiraErrorAuth');
+  await page.getByRole('button', {name:'jiraRetryRead'}).click();
+  await page.evaluate(() => reply('generate-standup', {text:'Completed GitLab work with Jira details'}));
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.locator('.gl-standup-content')).toHaveText('Completed GitLab work with Jira details');
+  await page.evaluate(() => scope.dispose());
+});
+
 async function mountJira(page) {
   await mount(page, 'src/widgets/jira-panel/index.ts', () => {
     window.scope = Lifecycle.createLifecycle();

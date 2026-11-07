@@ -150,6 +150,11 @@ PR. Include screenshots for UI changes and note compatibility/permission/storage
 changes. Add focused failure regressions for behavioral fixes. Never upload traces
 containing real customer data or credentials.
 
+Changes to browser permissions or exposed resources follow
+[the permissions policy](docs/PERMISSIONS.md): justify the implemented use, minimum
+scope, optional/required choice, request timing, denial/revocation behavior and
+store disclosure impact.
+
 Prefer small public APIs and explicit contracts over a universal helper. A new
 runtime dependency needs measured bundle/startup impact; development dependencies
 need a clear tooling purpose and a compatible Node/TypeScript peer range.

@@ -6,7 +6,12 @@ import type {
 } from "../../../entities/jira-issue";
 import {
   getJiraCategoryClass,
+  jiraFailureMessage,
+  jiraResponseFailure,
+  renderJiraFailure,
+  renderJiraMutationFailure,
   sendJiraMessage,
+  type JiraFailure,
 } from "../../../entities/jira-issue/content";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
@@ -24,6 +29,30 @@ export function createJiraTransitions(
   ) => void,
   { initAssigneeEditor, initFixVersionsEditor }: JiraFieldEditors,
 ) {
+  function showMutationFailure(
+    sidebar: HTMLElement,
+    jiraUrl: string,
+    failure: JiraFailure,
+    summary: string,
+    mutationFailed: boolean,
+    refreshFailure?: JiraFailure,
+  ) {
+    sidebar.querySelector(".gl-jira-quick-action-error")?.remove();
+    const notice = mutationFailed
+      ? renderJiraMutationFailure(failure, jiraUrl)
+      : renderJiraFailure(failure, jiraUrl);
+    notice.classList.add("gl-jira-sidebar-error", "gl-jira-quick-action-error");
+    const heading = document.createElement("p");
+    heading.textContent = summary;
+    notice.prepend(heading);
+    if (refreshFailure) {
+      const detail = document.createElement("p");
+      detail.textContent = jiraFailureMessage(refreshFailure);
+      notice.appendChild(detail);
+    }
+    sidebar.querySelector("#gl-jira-sidebar-transitions")?.after(notice);
+  }
+
   function loadJiraTransitions(
     sidebar: HTMLElement,
     ticket: string,
@@ -33,7 +62,8 @@ export function createJiraTransitions(
     const container = sidebar.querySelector<
       HTMLElement & { _jiraTransitionRequest?: object }
     >("#gl-jira-sidebar-transitions");
-    if (!container || sidebar.dataset.ticket !== ticket) return;
+    if (scope.disposed || !container || sidebar.dataset.ticket !== ticket)
+      return;
     container.dataset.busy = "";
     const request = {};
     container._jiraTransitionRequest = request;
@@ -114,13 +144,28 @@ export function createJiraTransitions(
           container._jiraTransitionRequest !== request
         )
           return;
-        if (resp && resp._error === undefined) render(resp.transitions || []);
+        if (resp._error === undefined) render(resp.transitions);
+        else {
+          const notice = renderJiraFailure(resp, jiraUrl, () =>
+            loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions),
+          );
+          notice.classList.add("gl-jira-transition-load-error");
+          const heading = document.createElement("p");
+          heading.textContent = msg("jiraErrorTransitions");
+          notice.prepend(heading);
+          container.appendChild(notice);
+        }
       }),
     );
 
     // Replace the handler when refreshing; repeated refreshes must not replay edits.
     container.onclick = function (e) {
-      if (sidebar.dataset.ticket !== ticket || container.dataset.busy) return;
+      if (
+        scope.disposed ||
+        sidebar.dataset.ticket !== ticket ||
+        container.dataset.busy
+      )
+        return;
       const quickBtn = eventElement(e.target)?.closest<HTMLButtonElement>(
         ".gl-jira-sidebar-quick-action",
       );
@@ -134,6 +179,7 @@ export function createJiraTransitions(
       if (!btn || btn.disabled || !btn.dataset.id) return;
       if (!jiraState.skipConfirmations && !confirm(btn.dataset.name + "?"))
         return;
+      sidebar.querySelector(".gl-jira-quick-action-error")?.remove();
       disableAllTransitionBtns(container);
       btn.style.opacity = "1";
       btn.textContent = "...";
@@ -201,11 +247,23 @@ export function createJiraTransitions(
         transitionId: transitionId,
       },
       function (result) {
-        if (result && result.success) {
+        if (result.success) {
           updateStatusAfterTransition(sidebar, ticket, statusName, categoryKey);
         }
-        if (!scope.disposed && sidebar.dataset.ticket === ticket)
+        if (!scope.disposed && sidebar.dataset.ticket === ticket) {
           loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
+          if (!result.success) {
+            showMutationFailure(
+              sidebar,
+              jiraUrl,
+              jiraResponseFailure(result) || {
+                _error: "Jira did not confirm the transition",
+              },
+              msg("jiraQuickActionFailed"),
+              true,
+            );
+          }
+        }
       },
     );
   }
@@ -229,7 +287,7 @@ export function createJiraTransitions(
     disableAllTransitionBtns(container);
     btn.style.opacity = "1";
     btn.textContent = "...";
-    const previousError = sidebar.querySelector<HTMLButtonElement>(
+    const previousError = sidebar.querySelector<HTMLElement>(
       ".gl-jira-quick-action-error",
     );
     if (previousError) previousError.remove();
@@ -265,23 +323,28 @@ export function createJiraTransitions(
           );
         }
         if (scope.disposed || !isCurrent()) return;
-        let error =
-          result && result.success
-            ? ""
-            : msg(
-                result && result.completed && result.completed.transition
-                  ? "jiraQuickActionPartial"
-                  : "jiraQuickActionFailed",
-              ) +
-              " " +
-              ((result && result._error) || "");
+        const failure = result.success
+          ? undefined
+          : jiraResponseFailure(result) || {
+              _error: "Jira did not confirm the action",
+            };
+        let summary = failure
+          ? msg(
+              result.completed?.transition
+                ? "jiraQuickActionPartial"
+                : "jiraQuickActionFailed",
+            )
+          : "";
+        if (failure)
+          showMutationFailure(sidebar, jiraUrl, failure, summary, true);
         // Reload actual values after success AND partial failure; a transition may
         // have succeeded even when the following field edit was rejected by Jira.
         sendJiraMessage(
           { type: "fetch-jira-issue", jiraUrl: jiraUrl, ticket: ticket },
           scope.once(function (data) {
             if (!isCurrent()) return;
-            if (data && data._error === undefined) {
+            const refreshFailure = jiraResponseFailure(data);
+            if (data._error === undefined) {
               const draft = sidebar.querySelector<HTMLTextAreaElement>(
                 "#gl-jira-sidebar-comment-input",
               );
@@ -303,21 +366,20 @@ export function createJiraTransitions(
                 data.fixVersions || [],
               );
             } else {
-              error += (error ? " " : "") + msg("jiraQuickActionRefreshFailed");
+              summary +=
+                (summary ? " " : "") + msg("jiraQuickActionRefreshFailed");
             }
             loadJiraTransitions(sidebar, ticket, jiraUrl, quickActions);
-            if (error) {
-              const notice = document.createElement("div");
-              notice.className =
-                "gl-jira-sidebar-error gl-jira-quick-action-error";
-              notice.setAttribute("role", "alert");
-              notice.textContent = error;
-              requireElement(
-                sidebar.querySelector<
-                  HTMLElement & { _jiraTransitionRequest?: object }
-                >("#gl-jira-sidebar-transitions"),
-              ).after(notice);
-            }
+            const displayedFailure = failure || refreshFailure;
+            if (displayedFailure)
+              showMutationFailure(
+                sidebar,
+                jiraUrl,
+                displayedFailure,
+                summary,
+                failure !== undefined,
+                failure ? refreshFailure : undefined,
+              );
           }),
         );
       },

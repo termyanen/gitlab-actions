@@ -1,5 +1,10 @@
 import type { JiraQuickAction, JiraState } from "../../../entities/jira-issue";
-import { sendJiraMessage } from "../../../entities/jira-issue/content";
+import {
+  sendJiraMessage,
+  jiraResponseFailure,
+  renderJiraFailure,
+  stopsJiraBatch,
+} from "../../../entities/jira-issue/content";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import {
@@ -133,47 +138,66 @@ export function createJiraPanel(
       }
     });
 
-    // Fetch full issue data
-    sendJiraMessage(
-      {
-        type: "fetch-jira-issue",
-        jiraUrl: jiraUrl,
-        ticket: ticket,
-      },
-      session.once(function (resp) {
-        if (sidebar.dataset.ticket !== ticket) return;
-        if (!resp || resp._error !== undefined) {
-          const errMsg = resp ? resp._error : "No response";
-          if (resp && resp._error && /^(401|403)\s/.test(resp._error)) {
-            jiraState.authFailed = true;
-          }
-          requireElement(
-            sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-body"),
-          ).innerHTML =
-            '<div class="gl-jira-sidebar-error">' + escHtml(errMsg) + "</div>";
-          return;
-        }
-        renderJiraSidebarContent(sidebar, resp, jiraUrl);
-        chrome.storage.sync.get(
-          { jiraQuickActions: [] },
-          session.once(function (s: { jiraQuickActions: JiraQuickAction[] }) {
-            loadJiraTransitions(
-              sidebar,
-              resp.key,
-              jiraUrl,
-              s.jiraQuickActions || [],
+    function loadIssue() {
+      const body = requireElement(
+        sidebar.querySelector<HTMLElement>(".gl-jira-sidebar-body"),
+      );
+      body.innerHTML =
+        '<div class="gl-jira-sidebar-loading"><div class="gl-jira-sidebar-spinner"></div></div>';
+      // Explicit retries only repeat this read, never an earlier mutation.
+      sendJiraMessage(
+        {
+          type: "fetch-jira-issue",
+          jiraUrl: jiraUrl,
+          ticket: ticket,
+        },
+        session.once(function (resp) {
+          if (sidebar.dataset.ticket !== ticket) return;
+          if (!resp || resp._error !== undefined) {
+            const failure = jiraResponseFailure(resp) || {
+              _error: "No response",
+            };
+            jiraState.failure = failure;
+            jiraState.authFailed = failure._errorKind === "auth";
+            body.replaceChildren(
+              renderJiraFailure(failure, jiraUrl, loadIssue),
             );
-          }),
-        );
-        initAssigneeEditor(sidebar, resp.key, jiraUrl);
-        initFixVersionsEditor(
-          sidebar,
-          resp.key,
-          jiraUrl,
-          resp.fixVersions || [],
-        );
-      }),
-    );
+            return;
+          }
+          if (
+            jiraState.authFailed ||
+            (jiraState.failure && stopsJiraBatch(jiraState.failure))
+          ) {
+            delete jiraState.myselfCache[jiraUrl];
+            jiraState.authFailed = false;
+            delete jiraState.failure;
+            document
+              .querySelectorAll(".gl-jira-connection-notice")
+              .forEach((notice) => notice.remove());
+          }
+          renderJiraSidebarContent(sidebar, resp, jiraUrl);
+          chrome.storage.sync.get(
+            { jiraQuickActions: [] },
+            session.once(function (s: { jiraQuickActions: JiraQuickAction[] }) {
+              loadJiraTransitions(
+                sidebar,
+                resp.key,
+                jiraUrl,
+                s.jiraQuickActions || [],
+              );
+            }),
+          );
+          initAssigneeEditor(sidebar, resp.key, jiraUrl);
+          initFixVersionsEditor(
+            sidebar,
+            resp.key,
+            jiraUrl,
+            resp.fixVersions || [],
+          );
+        }),
+      );
+    }
+    loadIssue();
   }
 
   function animateRemoval(el: Element, className: string) {

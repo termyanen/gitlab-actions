@@ -5,6 +5,7 @@ import {
   AI_REVIEW_PROMPTS,
   AI_REVIEW_PROMPT_MAX_LENGTH,
   AI_REVIEW_RULES,
+  readJiraBaseUrl,
 } from "../../../features/manage-settings";
 import { readDisplayPreferencesForm } from "./display-preferences";
 import { inputById, valueControlById } from "./dom";
@@ -140,21 +141,14 @@ export function createSettingsPersistence(context: SettingsFormContext) {
       (valueControlById("commits_jira_field").value || "").trim() ||
       "fixVersions, status";
     settings.cherry_pick_branches = getCherryPickBranchesFromUI();
-    const newJiraUrl = (valueControlById("jira_url").value || "")
-      .trim()
-      .replace(/\/+$/, "");
-    if (newJiraUrl && newJiraUrl !== state.data.jira_url) {
-      // Request host permission for Jira domain
-      chrome.permissions.request(
-        { origins: [newJiraUrl + "/"] },
-        function (granted) {
-          if (!granted) {
-            valueControlById("jira_url").value = state.data.jira_url || "";
-          }
-        },
-      );
+    const jiraInput = valueControlById("jira_url").value.trim();
+    const jira = jiraInput ? readJiraBaseUrl(jiraInput) : undefined;
+    if (jiraInput && !jira) {
+      showSaveFailed(t("jiraUrlInvalid"));
+      return false;
     }
-    settings.jira_url = newJiraUrl;
+    // Saving configuration never requests access; the explicit Jira button does.
+    settings.jira_url = jira?.url || "";
     settings.jira_ticket_regex = (
       valueControlById("jira_ticket_regex").value || ""
     ).trim();

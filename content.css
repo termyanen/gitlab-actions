@@ -789,6 +789,35 @@
   text-align: center;
 }
 
+/* Integration errors reuse GitLab alert/buttons. Scoped layout/theme fallbacks
+   keep the notice readable on older GitLab pages without these component styles. */
+:where(html.gl-actions-host) .gl-jira-error-notice {
+  box-sizing: border-box;
+  padding: 12px;
+  color: var(--gl-text-color-default, #333);
+  background: var(--gl-background-color-default, #fff);
+  border: 1px solid var(--gl-border-color-default, #dcdcde);
+  border-radius: 4px;
+  font-size: 13px;
+}
+:where(html.gl-actions-host) .gl-jira-error-notice a.gl-button {
+  color: var(--gl-text-color-default, #333);
+}
+:where(html.gl-actions-host) .gl-jira-error-notice p { margin: 0 0 8px; }
+:where(html.gl-actions-host) .gl-jira-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+:where(html.gl-actions-host) .gl-jira-connection-notice {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  max-width: min(400px, calc(100vw - 32px));
+  z-index: 99999;
+}
+
 :where(html.gl-actions-host) .gl-jira-sidebar-title {
   font-size: 16px;
   font-weight: 600;

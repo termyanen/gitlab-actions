@@ -1,4 +1,9 @@
-import { sendJiraMessage } from "../../../entities/jira-issue/content";
+import {
+  jiraResponseFailure,
+  renderJiraFailure,
+  renderJiraMutationFailure,
+  sendJiraMessage,
+} from "../../../entities/jira-issue/content";
 import { escHtml } from "../../../shared/lib/html";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import { eventElement, requireElement } from "../../../shared/ui/dom";
@@ -24,10 +29,17 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     const resultsEl = requireElement(
       searchBox.querySelector<HTMLElement>(".gl-jira-sidebar-assignee-results"),
     );
+    const unassign = requireElement(
+      searchBox.querySelector<HTMLButtonElement>(".gl-jira-sidebar-unassign"),
+    );
     let searchTimer: ReturnType<typeof setTimeout> | undefined;
     let searchRequest = 0;
+    let updating = false;
 
     assigneeEl.addEventListener("click", function () {
+      if (updating) return;
+      ++searchRequest;
+      scope.cancelTimeout(searchTimer);
       const isOpen = searchBox.style.display !== "none";
       searchBox.style.display = isOpen ? "none" : "block";
       if (!isOpen) {
@@ -37,32 +49,105 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       }
     });
 
-    // Unassign button
-    requireElement(
-      searchBox.querySelector<HTMLElement>(".gl-jira-sidebar-unassign"),
-    ).addEventListener("click", function (e) {
-      e.stopPropagation();
+    function setAssignee(username: string | null, displayName: string) {
+      if (updating || scope.disposed) return;
+      updating = true;
+      ++searchRequest;
+      scope.cancelTimeout(searchTimer);
+      input.disabled = true;
+      unassign.disabled = true;
+      resultsEl.innerHTML =
+        '<div class="gl-jira-sidebar-assignee-loading">...</div>';
       sendJiraMessage(
         {
           type: "set-jira-assignee",
           jiraUrl: jiraUrl,
           ticket: ticket,
-          username: null,
+          username,
         },
         scope.once(function (result) {
-          if (result && result.success) {
+          updating = false;
+          input.disabled = false;
+          unassign.disabled = false;
+          if (result.success) {
             assigneeEl.innerHTML =
-              '<span style="opacity:0.5">' +
-              escHtml(
-                chrome.i18n.getMessage("jiraSidebarUnassigned") || "Unassigned",
-              ) +
-              "</span>" +
+              (username === null
+                ? '<span style="opacity:0.5">' +
+                  escHtml(
+                    chrome.i18n.getMessage("jiraSidebarUnassigned") ||
+                      "Unassigned",
+                  ) +
+                  "</span>"
+                : escHtml(displayName)) +
               ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
             searchBox.style.display = "none";
+          } else {
+            resultsEl.replaceChildren(
+              renderJiraMutationFailure(
+                jiraResponseFailure(result) || {
+                  _error: "Jira did not confirm the assignee update",
+                },
+                jiraUrl,
+              ),
+            );
           }
         }),
       );
+    }
+
+    unassign.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setAssignee(null, "");
     });
+
+    function searchUsers(query: string, request: number) {
+      if (scope.disposed || updating || request !== searchRequest) return;
+      resultsEl.innerHTML =
+        '<div class="gl-jira-sidebar-assignee-loading">...</div>';
+      sendJiraMessage(
+        { type: "search-jira-assignable", jiraUrl, ticket, query },
+        scope.once(function (resp) {
+          if (request !== searchRequest || updating) return;
+          if (resp._error !== undefined) {
+            resultsEl.replaceChildren(
+              renderJiraFailure(resp, jiraUrl, () =>
+                searchUsers(query, request),
+              ),
+            );
+            return;
+          }
+          if (!resp.users.length) {
+            resultsEl.innerHTML =
+              '<div class="gl-jira-sidebar-assignee-empty">' +
+              escHtml(
+                chrome.i18n.getMessage("jiraSidebarNoUsers") ||
+                  "No users found",
+              ) +
+              "</div>";
+            return;
+          }
+          resultsEl.innerHTML = resp.users
+            .map(function (u) {
+              return (
+                '<div class="gl-jira-sidebar-assignee-item" data-key="' +
+                escHtml(u.key) +
+                '" data-name="' +
+                escHtml(u.name) +
+                '">' +
+                (u.avatar
+                  ? '<img src="' +
+                    escHtml(u.avatar) +
+                    '" class="gl-jira-sidebar-assignee-avatar">'
+                  : "") +
+                "<span>" +
+                escHtml(u.name) +
+                "</span></div>"
+              );
+            })
+            .join("");
+        }),
+      );
+    }
 
     input.addEventListener("input", function () {
       const request = ++searchRequest;
@@ -72,55 +157,10 @@ export function createJiraFieldEditors(scope: Lifecycle) {
         resultsEl.innerHTML = "";
         return;
       }
-      searchTimer = scope.timeout(function () {
-        resultsEl.innerHTML =
-          '<div class="gl-jira-sidebar-assignee-loading">...</div>';
-        sendJiraMessage(
-          {
-            type: "search-jira-assignable",
-            jiraUrl: jiraUrl,
-            ticket: ticket,
-            query: query,
-          },
-          scope.once(function (resp) {
-            if (request !== searchRequest) return;
-            if (!resp || resp._error !== undefined || !resp.users) {
-              resultsEl.innerHTML = "";
-              return;
-            }
-            if (!resp.users.length) {
-              resultsEl.innerHTML =
-                '<div class="gl-jira-sidebar-assignee-empty">' +
-                escHtml(
-                  chrome.i18n.getMessage("jiraSidebarNoUsers") ||
-                    "No users found",
-                ) +
-                "</div>";
-              return;
-            }
-            resultsEl.innerHTML = resp.users
-              .map(function (u) {
-                return (
-                  '<div class="gl-jira-sidebar-assignee-item" data-key="' +
-                  escHtml(u.key) +
-                  '" data-name="' +
-                  escHtml(u.name) +
-                  '">' +
-                  (u.avatar
-                    ? '<img src="' +
-                      escHtml(u.avatar) +
-                      '" class="gl-jira-sidebar-assignee-avatar">'
-                    : "") +
-                  "<span>" +
-                  escHtml(u.name) +
-                  "</span>" +
-                  "</div>"
-                );
-              })
-              .join("");
-          }),
-        );
-      }, ASSIGNEE_SEARCH_DEBOUNCE_MS);
+      searchTimer = scope.timeout(
+        () => searchUsers(query, request),
+        ASSIGNEE_SEARCH_DEBOUNCE_MS,
+      );
     });
 
     // Prevent click inside search from closing it
@@ -132,32 +172,12 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       const item = eventElement(e.target)?.closest<HTMLElement>(
         ".gl-jira-sidebar-assignee-item",
       );
-      if (!item) return;
+      if (!item || updating) return;
 
       const username = item.dataset.key;
       const displayName = item.dataset.name;
-
-      input.disabled = true;
-      resultsEl.innerHTML =
-        '<div class="gl-jira-sidebar-assignee-loading">...</div>';
-
-      sendJiraMessage(
-        {
-          type: "set-jira-assignee",
-          jiraUrl: jiraUrl,
-          ticket: ticket,
-          username: username,
-        },
-        scope.once(function (result) {
-          if (result && result.success) {
-            assigneeEl.innerHTML =
-              escHtml(displayName) +
-              ' <span class="gl-jira-sidebar-edit-icon">&#9998;</span>';
-            searchBox.style.display = "none";
-          }
-          input.disabled = false;
-        }),
-      );
+      if (!username) return;
+      setAssignee(username, displayName || username);
     });
   }
 
@@ -187,6 +207,8 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       ),
     );
     let selected = currentVersions.slice();
+    let loading = false;
+    let updating = false;
 
     function filterList() {
       const query = filterInput.value.trim().toLowerCase();
@@ -219,6 +241,8 @@ export function createJiraFieldEditors(scope: Lifecycle) {
     }
 
     function loadVersions() {
+      if (scope.disposed || loading || updating) return;
+      loading = true;
       listEl.innerHTML =
         '<div class="gl-jira-sidebar-assignee-loading">...</div>';
       sendJiraMessage(
@@ -228,8 +252,11 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           ticket: ticket,
         },
         scope.once(function (resp) {
-          if (!resp || resp._error !== undefined || !resp.versions) {
-            listEl.innerHTML = "";
+          loading = false;
+          if (resp._error !== undefined) {
+            listEl.replaceChildren(
+              renderJiraFailure(resp, jiraUrl, loadVersions),
+            );
             return;
           }
           if (!resp.versions.length) {
@@ -289,9 +316,13 @@ export function createJiraFieldEditors(scope: Lifecycle) {
       const cb = eventElement(e.target)?.closest<HTMLInputElement>(
         'input[type="checkbox"]',
       );
-      if (!cb) return;
+      if (!cb || scope.disposed) return;
       const name = cb.dataset.name;
       if (name === undefined) return;
+      if (updating) {
+        cb.checked = selected.includes(name);
+        return;
+      }
       const newSelected = selected.slice();
       if (cb.checked) {
         if (newSelected.indexOf(name) === -1) newSelected.push(name);
@@ -299,7 +330,13 @@ export function createJiraFieldEditors(scope: Lifecycle) {
         const idx = newSelected.indexOf(name);
         if (idx !== -1) newSelected.splice(idx, 1);
       }
-      cb.disabled = true;
+      updating = true;
+      const checkboxes = listEl.querySelectorAll<HTMLInputElement>(
+        'input[type="checkbox"]',
+      );
+      checkboxes.forEach((checkbox) => {
+        checkbox.disabled = true;
+      });
       errorEl.style.display = "none";
       sendJiraMessage(
         {
@@ -309,12 +346,20 @@ export function createJiraFieldEditors(scope: Lifecycle) {
           versions: newSelected,
         },
         scope.once(function (resp) {
-          cb.disabled = false;
-          if (!resp || resp._error !== undefined) {
-            cb.checked = !cb.checked;
-            errorEl.textContent =
-              chrome.i18n.getMessage("jiraSidebarFixVersionsError") ||
-              "Failed to update fix versions";
+          updating = false;
+          checkboxes.forEach((checkbox) => {
+            checkbox.disabled = false;
+          });
+          if (!resp.success) {
+            cb.checked = selected.includes(name);
+            errorEl.replaceChildren(
+              renderJiraMutationFailure(
+                jiraResponseFailure(resp) || {
+                  _error: "Jira did not confirm the version update",
+                },
+                jiraUrl,
+              ),
+            );
             errorEl.style.display = "block";
             return;
           }

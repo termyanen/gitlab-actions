@@ -74,8 +74,23 @@ for leaks. These focused fixtures bundle production widget modules with a fake
 Chrome transport; `extension.spec.cjs` and the profiler use the installed
 production extension and real Chrome extension APIs.
 
+`jira-status.spec.cjs` covers expired sessions, read retries, partial forbidden
+responses, offline notices and commit badge recovery. `jira-errors.spec.cjs`
+covers sidebar read/write failures, retained drafts, duplicate-submit prevention,
+account changes and partial quick actions. `jira-session.spec.cjs` runs the built
+worker with fake Secure HttpOnly `SameSite=None/Lax/Strict` cookies and a test-only
+Jira host grant. A temporary HTTPS server on `127.0.0.1` checks the actual received
+cookies without the Cookies API permission; OpenSSL must be available to generate
+its temporary self-signed certificate (macOS and the Ubuntu CI runner provide it).
+Certificate checks are bypassed only in this disposable browser profile. External
+HTTP(S) requests are blocked; loopback requests are not intercepted because the
+interception headers omit cookies Chrome adds later. This does not automate Chrome's native optional
+permission prompt or certify a real Jira/SSO deployment. See
+[Jira compatibility and recovery](../docs/JIRA_COMPATIBILITY.md).
+
 Browser smoke checks install the actual production build in a separate Chromium
-profile, intercept all HTTP(S) requests, and exercise real Chrome APIs:
+profile, intercept HTTP(S) fixtures (except the isolated loopback session test),
+and exercise real Chrome APIs:
 
 ```sh
 PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/ms-playwright npx playwright install chromium
@@ -367,9 +382,9 @@ still need tests; their absence does not establish a bug.
 | Next | Popup/settings | Drag-and-drop button reordering and actual host-permission approval/denial dialogs. Autosave/reload, draft preservation across profile/language switches and display-rule validation already have Chromium coverage. |
 | Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
 | Partial | Group play | Chromium covers unrelated graph columns, a disappearing pipeline mapping and a successful retry without an unintended write. Still verify parent/child pipelines with matching stage names, pagination and partial API failures on real deployments. |
-| Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog, Jira enrichment failures and malformed/empty-matching ticket regexes. |
+| Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog and malformed/empty-matching ticket regexes. Configured Jira enrichment failures preserve the GitLab report and offer a read retry in fixtures. |
 | Next | Jira sidebar and quick actions | Full issue/custom-field mapping, comment pagination, attachments/media, real cookie sessions and instance-specific edit permissions. API-handler tests cover multi-step quick actions with partial failures; a local Chrome fixture covers field-only availability, refreshes and duplicate clicks. |
-| Next | Badges and caches | Cache persistence/expiry/eviction, failed fetches, incremental multi-ticket rendering and commit version comparisons across pages. |
+| Next | Badges and caches | Cache persistence/expiry/eviction, incremental multi-ticket rendering and commit version comparisons across pages. Jira auth/offline/403 failures, explicit read retries and recovery of partially cached commit fields have fixture coverage. |
 
 The next layer needs representative GitLab DOM fixtures and a dedicated test
 instance; VM checks cannot establish real Chrome scheduling, cookie/permission

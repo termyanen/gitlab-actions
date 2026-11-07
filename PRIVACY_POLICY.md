@@ -32,7 +32,7 @@ Optional discussion resolution is sent to the same GitLab only when you explicit
 - **CI task recovery:** `chrome.storage.local` stores active job-chain checkpoints and up to 50 completed tasks: GitLab origin, project/MR/pipeline/job identifiers, MR title, job names, progress, timestamps and error messages. They remain until replaced or extension data is removed and are not synchronized through Chrome Sync. They contain no job logs, repository files or credentials.
 - **Duplicate-send protection:** review import stores a local digest identifier, delivery status, timestamp and, after confirmation, comment ID. These records prevent accidental reposting after interruptions and remain until extension data is removed. They contain no comment body, code, prompt or review transcript and are not a review history. They are not stored in Chrome Sync.
 - **Review content:** fetched discussions/code and pasted import text remain in page memory while the feature is in use. The extension does not save a persistent review transcript or snapshots. Closing the page clears that page's memory. Clipboard text remains under browser/operating-system control until replaced or cleared; clipboard synchronization tools are outside the extension's control.
-- **Credentials:** the extension does not persist session cookies or CSRF tokens; browser cookies remain in the browser's cookie store.
+- **Credentials:** the extension does not persist session cookies or CSRF tokens. The browser attaches the existing Jira session to permitted requests; the extension does not read the cookie store through the Cookies API.
 
 ## 4. Recipients
 
@@ -52,12 +52,12 @@ The extension runs bundled JavaScript and does not download executable code or e
 | `storage` | Preferences, local caches, CI task checkpoints and duplicate-send protection |
 | `alarms` | Wake the service worker to restore unfinished CI tasks |
 | `notifications` | Completion notifications for background jobs |
-| `tabs` | Communicate with GitLab tabs and locate tabs needed for user-triggered work |
-| `cookies` | Read session cookies for the configured Jira integration; GitLab requests use the signed-in tab |
+| `tabs` | Read the active tab URL to identify the current project and locate matching GitLab tabs for user-triggered work |
 | Optional HTTPS host access | Requested for the configured Jira domain |
 | Content scripts on HTTPS pages | Recognize self-hosted GitLab installations on different domains and provide GitLab features there |
 
 AI review adds no new extension permissions. The browser controls site access; you can restrict it through the extension's site-access settings.
+Jira requests use the existing browser session with permission for the configured host; the extension does not request the `cookies` API permission.
 
 ## 6. Your choices and deletion
 
