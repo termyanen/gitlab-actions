@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — ระบบอัตโนมัติ Jira, CI/CD และ AI"
+  },
+  "extDescription": {
+    "message": "จัดการ MR บน GitLab อัตโนมัติ: รวมโค้ด อัปเดตเวอร์ชัน Jira, CI/CD และรีวิวด้วย AI โดยไม่ต้องใช้โทเคน API"
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "วิธีการทำงาน"
+  },
+  "openSettingsInTab": {
+    "message": "เปิดการตั้งค่าในแท็บใหม่"
+  },
+  "exportSettings": {
+    "message": "ส่งออกการตั้งค่า"
+  },
+  "importSettings": {
+    "message": "นำเข้าการตั้งค่า"
+  },
+  "settingsTransferHint": {
+    "message": "แชร์การตั้งค่าทั้งหมดและโปรไฟล์โครงการเป็นไฟล์ JSON"
+  },
+  "settingsImportReplace": {
+    "message": "การดำเนินการนี้จะแทนที่การตั้งค่าและโปรไฟล์โปรเจกต์ปัจจุบันทั้งหมด"
+  },
+  "applySettingsImport": {
+    "message": "แทนที่การตั้งค่า"
+  },
+  "cancelSettingsImport": {
+    "message": "ยกเลิก"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — โปรไฟล์โครงการ: $2"
+  },
+  "settingsFileInvalid": {
+    "message": "ไฟล์การตั้งค่าไม่ถูกต้องหรือรูปแบบไม่รองรับ"
+  },
+  "settingsFileTooLarge": {
+    "message": "ไฟล์การตั้งค่าเกินขีดจำกัดการเก็บข้อมูลของ Chrome Sync"
+  },
+  "settingsExportFailed": {
+    "message": "ไม่สามารถส่งออกการตั้งค่าได้ ลองอีกครั้ง"
+  },
+  "settingsImportFailed": {
+    "message": "ไม่สามารถนำเข้าการตั้งค่าได้ การตั้งค่าปัจจุบันของคุณยังไม่เปลี่ยนแปลง"
+  },
+  "settingsImportPermissionDenied": {
+    "message": "อนุญาตให้เข้าถึงไซต์ Jira เพื่อ import การตั้งค่าเหล่านี้"
+  },
+  "settingsImported": {
+    "message": "นำเข้าการตั้งค่าเรียบร้อยแล้ว!"
+  },
+  "buttonOrder": {
+    "message": "ลำดับปุ่ม"
+  },
+  "buttonOrderHint": {
+    "message": "ลากเพื่อจัดลำดับใหม่ วางเมาส์เพื่อดูคำอธิบาย งานที่กำหนดเองเป็นสีฟ้า"
+  },
+  "general": {
+    "message": "ทั่วไป"
+  },
+  "soundNotifications": {
+    "message": "การแจ้งเตือนเสียง"
+  },
+  "desktopNotifications": {
+    "message": "การแจ้งเตือนบนเดสก์ท็อป"
+  },
+  "showTimeTracker": {
+    "message": "แสดงป้ายอายุ MR"
+  },
+  "skipConfirmations": {
+    "message": "ข้ามการยืนยันการทำ action ของ MR"
+  },
+  "uxEnhancer": {
+    "message": "การปรับปรุงรายการ MR"
+  },
+  "dimDrafts": {
+    "message": "ทำให้ Draft MR มืดลงในรายการ"
+  },
+  "highlightOwnMrs": {
+    "message": "เน้น MR ของคุณในรายการ"
+  },
+  "showOnlyMine": {
+    "message": "สลับ \"ของฉันเท่านั้น\" ในหน้ารายการ"
+  },
+  "toggleOnlyMine": {
+    "message": "ของฉันเท่านั้น"
+  },
+  "versionBump": {
+    "message": "เพิ่มหมายเลขเวอร์ชัน"
+  },
+  "filePath": {
+    "message": "เส้นทางไฟล์"
+  },
+  "filePathHint": {
+    "message": "ไฟล์ที่มีหมายเลขเวอร์ชัน"
+  },
+  "versionField": {
+    "message": "ฟิลด์เวอร์ชัน"
+  },
+  "versionFieldHint": {
+    "message": "คีย์ JSON หรือ TOML (เช่น \"version\" หรือ \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "กลยุทธ์"
+  },
+  "strategyPatch": {
+    "message": "เวอร์ชันแก้ไข (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "เวอร์ชันรอง (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "เวอร์ชันหลัก (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "ข้อความ commit"
+  },
+  "commitMessageHint": {
+    "message": "ใช้ {version} เป็นตัวแทน"
+  },
+  "quickComments": {
+    "message": "ความคิดเห็นด่วน"
+  },
+  "quickCommentsHint": {
+    "message": "ปุ่มคลิกเดียวที่โพสต์คอมเมนต์ทั่วไปลงใน MR ทันที (ไม่ใช่ในโค้ด) ปุ่มจะแสดงในแถบคำสั่ง"
+  },
+  "quickCommentsAdd": {
+    "message": "เพิ่มคอมเมนต์"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "คอมเมนต์ด่วน"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "ปุ่มคอมเมนต์เทมเพลตที่ปรับแต่งได้บนหน้า MR โพสต์ LGTM, Needs fixes, หรือคอมเมนต์แบบกำหนดเองได้เพียงคลิกเดียว"
+  },
+  "reviewers": {
+    "message": "ผู้ตรวจสอบ"
+  },
+  "reviewersList": {
+    "message": "รายชื่อผู้ตรวจสอบ"
+  },
+  "reviewersListHint": {
+    "message": "ชื่อผู้ใช้ที่จะกล่าวถึงในคอมเมนต์ Reviewer: (@user1, @user2) เมื่อกำหนดแล้ว จะข้ามการค้นหาคอมเมนต์และงาน CI ไม่เปลี่ยนการมอบหมายผู้ตรวจสอบใน GitLab"
+  },
+  "jobName": {
+    "message": "ชื่องาน"
+  },
+  "jobNameHint": {
+    "message": "งานสำรองถ้าไม่มีคอมเมนต์ที่ตรงกับรูปแบบ \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "ปุ่มงานกำหนดเอง"
+  },
+  "customJobsHint": {
+    "message": "ใช้เครื่องหมายจุลภาคเพื่อเชื่อม: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ เพิ่มปุ่มงาน"
+  },
+  "addProfileFor": {
+    "message": "+ เพิ่มโปรไฟล์สำหรับ $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "ปัจจุบัน: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "บันทึกแล้ว!"
+  },
+  "unsavedChanges": {
+    "message": "มีการเปลี่ยนแปลงที่ยังไม่บันทึก..."
+  },
+  "customFile": {
+    "message": "ไฟล์กำหนดเอง..."
+  },
+  "plainText": {
+    "message": "ข้อความธรรมดา"
+  },
+  "removeProfile": {
+    "message": "ลบโปรไฟล์สำหรับ $1 ใช่ไหม?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "ตั้งค่าเริ่มต้น"
+  },
+  "buttonsFor": {
+    "message": "ปุ่มสำหรับ $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "เลือกว่าจะให้ปุ่มอะไรแสดงสำหรับโปรเจกต์นี้"
+  },
+  "leaveEmptyDefault": {
+    "message": "เว้นว่างไว้เพื่อใช้ค่าเริ่มต้น"
+  },
+  "projectSpecificJobs": {
+    "message": "งานเฉพาะโปรเจกต์ ใช้เครื่องหมายจุลภาคคั่น"
+  },
+  "languageLabel": {
+    "message": "ภาษา"
+  },
+  "languageAuto": {
+    "message": "อัตโนมัติ (เบราว์เซอร์)"
+  },
+  "btnVersion": {
+    "message": "เพิ่มหมายเลขเวอร์ชัน"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "รีเบส + เวอร์ชัน"
+  },
+  "btnRebaseAutomerge": {
+    "message": "รีเบส + รวมอัตโนมัติ"
+  },
+  "btnRebaseForce": {
+    "message": "รีเบส + บังคับรวม"
+  },
+  "btnShip": {
+    "message": "รีเบส + เวอร์ชัน + รวมอัตโนมัติ"
+  },
+  "btnForceShip": {
+    "message": "รีเบส + เวอร์ชัน + บังคับรวม"
+  },
+  "btnReviewers": {
+    "message": "ผู้ตรวจสอบ"
+  },
+  "btnPipelineRestart": {
+    "message": "สร้างไปป์ไลน์ใหม่"
+  },
+  "btnPipelineCancel": {
+    "message": "ยกเลิกไปป์ไลน์"
+  },
+  "btnDraftToggle": {
+    "message": "สลับร่าง / พร้อมใช้งาน"
+  },
+  "btnRetryFailed": {
+    "message": "ลองรันงานที่ล้มเหลวอีกครั้ง"
+  },
+  "btnCopyMr": {
+    "message": "คัดลอก MR"
+  },
+  "hintVersion": {
+    "message": "อ่านไฟล์ที่ตั้งค่าไว้ (เช่น package.json) เพิ่มเวอร์ชันตามกลยุทธ์ที่เลือก (patch/minor/major) และคอมมิตด้วยข้อความเทมเพลตของคุณ"
+  },
+  "hintRebase": {
+    "message": "รีเบสสาขาต้นทางไปยังสาขาเป้าหมาย ไม่รวมกับสาขาอื่นและไม่เปิดใช้งานการรวมอัตโนมัติ"
+  },
+  "hintRebaseVersion": {
+    "message": "รีเบสสาขาไปยังเป้าหมาย (ถ้าจำเป็น) แล้วปรับเวอร์ชันในไฟล์ที่ตั้งค่าไว้ ไม่รวมกับสาขาอื่น"
+  },
+  "hintRebaseAutomerge": {
+    "message": "รีเบสสาขาไปยังเป้าหมาย (ถ้าโปรเจกต์ใช้ rebase/ff) แล้วเปิดใช้งาน \"รวมเมื่อ pipeline สำเร็จ\" ใช้การตั้งค่า squash/ลบสาขาจาก MR"
+  },
+  "hintRebaseForce": {
+    "message": "รีเบสโดยข้าม CI ยกเลิก pipeline ที่กำลังรันทั้งหมด แล้วรวมทันทีโดยไม่รอ CI ใช้การตั้งค่า squash/ลบสาขาจาก MR"
+  },
+  "hintShip": {
+    "message": "กระบวนการเต็ม: รีเบส → ปรับเวอร์ชันในไฟล์ที่ตั้งค่าไว้ → รอให้ MR ซิงค์ → รอ pipeline ใหม่ → เปิดใช้งานการรวมอัตโนมัติ"
+  },
+  "hintForceShip": {
+    "message": "กระบวนการเร็ว: รีเบส (ข้าม CI) → ปรับเวอร์ชัน → รอ 15 วิ → ยกเลิก pipeline → รวมทันที ข้ามการตรวจสอบ CI"
+  },
+  "hintReviewers": {
+    "message": "โพสต์การกล่าวถึงผู้ตรวจสอบที่ตั้งค่าไว้, ใช้ความคิดเห็นจากผู้ตรวจสอบ(หลายคน) จากบันทึกล่าสุดอีกครั้ง หรือรันงาน CI ที่ตั้งค่าไว้"
+  },
+  "hintPipelineRestart": {
+    "message": "สร้าง pipeline ใหม่เอี่ยมสำหรับสาขาโค้ดต้นทางผ่าน API ใช้ได้ดีเมื่อ pipeline ค้างหรือคุณต้องการรันใหม่"
+  },
+  "hintPipelineCancel": {
+    "message": "ขอยกเลิก pipeline ที่กำลังรัน รอดำเนินการ หรือสร้างไว้สำหรับ MR นี้"
+  },
+  "hintDraftToggle": {
+    "message": "เพิ่มหรือลบคำนำหน้า \"Draft:\" จากชื่อ MR ไม่เปลี่ยนการตั้งค่าอื่นของ MR"
+  },
+  "hintRetryFailed": {
+    "message": "ลองรันงานที่ล้มเหลวใน pipeline ปัจจุบันของ MR งานที่สำเร็จแล้วไม่ถูกกระทบ"
+  },
+  "hintCopyMr": {
+    "message": "คัดลอกชื่อ MR และลิงก์ไปยังคลิปบอร์ด"
+  },
+  "toastRebasing": {
+    "message": "กำลังทำการ rebase..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "กำลังเปิดใช้งาน auto-merge..."
+  },
+  "toastStep12Rebasing": {
+    "message": "ขั้นตอน 1/2: กำลังทำการ rebase..."
+  },
+  "toastStep22Automerge": {
+    "message": "ขั้นตอน 2/2: กำลังเปิดใช้งาน auto-merge..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "ขั้นตอน 1/2: กำลังทำการ rebase (ข้าม CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "ขั้นตอน 2/2: ยกเลิก pipeline & merge..."
+  },
+  "toastCancellingMerging": {
+    "message": "กำลังยกเลิก pipeline & merge..."
+  },
+  "toastCreatingPipeline": {
+    "message": "กำลังสร้างไปป์ไลน์ใหม่สำหรับ $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "กำลังยกเลิกไปป์ไลน์ $1 รายการ...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "ทําเครื่องหมายว่าพร้อม..."
+  },
+  "toastMarkingDraft": {
+    "message": "ทําเครื่องหมายเป็นร่าง..."
+  },
+  "toastRetrying": {
+    "message": "ลองงานล้มเหลว $1 ซ้ํา...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "ไม่มีงานที่ล้มเหลวในไปป์ไลน์ปัจจุบันของ MR"
+  },
+  "toastNoRunningPipelines": {
+    "message": "ไม่มีไปป์ไลน์ที่กำลังทำงานให้ยกเลิก"
+  },
+  "toastAssigningReviewers": {
+    "message": "ผู้รีวิวโพสต์กล่าวถึง..."
+  },
+  "toastRepostingReviewers": {
+    "message": "กําลังโพสต์ความคิดเห็นของผู้รีวิวซ้ํา..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "ไม่พบความคิดเห็นจากผู้รีวิว ส่งผลให้เกิด $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "กำลังเพิ่มเวอร์ชัน..."
+  },
+  "toastWaitingSync": {
+    "message": "รอให้ MR ซิงค์กับ v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "กำลังรอไปป์ไลน์..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "พยายามรวมอัตโนมัติ $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "รอให้ MR ซิงค์...($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "รอ \"$1\"...($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "เล่นงาน \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "ลองงาน \"$1\" ใหม่...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "งาน \"$1\" สําเร็จแล้ว ข้ามไป",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "งาน \"$1\" ก็เป็น $2 แล้ว รออยู่...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 เสร็จสมบูรณ์",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 ล้มเหลว: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "ชื่อเรื่องและลิงก์ MR ถูกคัดลอกแล้ว!"
+  },
+  "toastWaiting15s": {
+    "message": "รอ 15 วินาทีก่อนรวม..."
+  },
+  "confirmRebase": {
+    "message": "จะทำการรีเบสสาขาหรือไม่?"
+  },
+  "confirmRebaseVersion": {
+    "message": "รีเบส → เพิ่มเวอร์ชัน?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "รีเบส → รวมอัตโนมัติ?"
+  },
+  "confirmAutomerge": {
+    "message": "เปิดใช้งานรวมอัตโนมัติ?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ รีเบส → รวมตอนนี้เลย?"
+  },
+  "confirmForce": {
+    "message": "⚠️ รวมโค้ดทันที (ข้ามไปป์ไลน์) หรือไม่?"
+  },
+  "confirmShip": {
+    "message": "รีเบส → เพิ่มเวอร์ชัน → รวมอัตโนมัติ?"
+  },
+  "confirmShipNoRebase": {
+    "message": "เพิ่มเวอร์ชัน → รวมอัตโนมัติ?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ รีเบส → เพิ่มเวอร์ชัน → รวมตอนนี้เลย?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ เพิ่มเวอร์ชัน → รวมตอนนี้เลย?"
+  },
+  "confirmNewPipeline": {
+    "message": "สร้าง pipeline ใหม่สำหรับสาขานี้ไหม?"
+  },
+  "confirmCancelPipeline": {
+    "message": "ยกเลิกไปป์ไลน์ที่กำลังทำงานทั้งหมดหรือไม่?"
+  },
+  "labelAutomerge": {
+    "message": "รวมอัตโนมัติ"
+  },
+  "labelForceMerge": {
+    "message": "บังคับรวม"
+  },
+  "labelVersionAutomerge": {
+    "message": "เวอร์ชัน + รวมอัตโนมัติ"
+  },
+  "labelVersionForceMerge": {
+    "message": "เวอร์ชัน + บังคับรวม"
+  },
+  "labelMarkReady": {
+    "message": "ทำเครื่องหมายว่า พร้อม"
+  },
+  "labelMarkDraft": {
+    "message": "ทำเครื่องหมายว่า ร่าง"
+  },
+  "labelRetryFailed": {
+    "message": "ลองใหม่สำหรับที่ล้มเหลว"
+  },
+  "labelNewPipeline": {
+    "message": "Pipeline ใหม่"
+  },
+  "timeTrackerTitle": {
+    "message": "เวลาที่ผ่านมาตั้งแต่สร้าง MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "การกระทำ MR ของ GitLab"
+  },
+  "welcomeSubtitle": {
+    "message": "เร่ง workflow ของคำขอรวมของคุณด้วยการคลิกแค่ครั้งเดียว"
+  },
+  "welcomeQuickStart": {
+    "message": "เริ่มอย่างรวดเร็ว"
+  },
+  "welcomeStep1Title": {
+    "message": "เปิดหน้า Merge Request ใดก็ได้"
+  },
+  "welcomeStep1Desc": {
+    "message": "เปิดหน้า HTTPS MR ขณะล็อกอินใน GitLab.com หรือ GitLab ที่โฮสต์เอง อนุญาตให้ส่วนขยายเข้าถึงเว็บไซต์นั้น"
+  },
+  "welcomeStep2Title": {
+    "message": "จะเห็นปุ่มแอ็กชันปรากฏขึ้น"
+  },
+  "welcomeStep2Desc": {
+    "message": "ปุ่มจะปรากฏบนหน้า MR ชุดเริ่มต้นจะเปิดใช้งานตอนติดตั้งครั้งแรก"
+  },
+  "welcomeStep3Title": {
+    "message": "ปรับแต่งผ่านป๊อปอัปของส่วนขยาย"
+  },
+  "welcomeStep3Desc": {
+    "message": "คลิกไอคอนส่วนขยายเพื่อเปิด/ปิดปุ่ม ตั้งค่าไฟล์เพิ่มเวอร์ชัน เพิ่มปุ่มงานแบบกำหนดเอง และอื่น ๆ"
+  },
+  "welcomeEnabledDefault": {
+    "message": "เปิดใช้งานโดยค่าเริ่มต้น"
+  },
+  "welcomeMoreActions": {
+    "message": "การดำเนินการเพิ่มเติม (เปิดใช้งานในตั้งค่า)"
+  },
+  "welcomeHowItWorks": {
+    "message": "วิธีการทำงาน"
+  },
+  "welcomeHowDesc": {
+    "message": "ส่วนขยายนี้ใช้เซสชัน GitLab ที่มีอยู่ของคุณ (คุกกี้) เพื่อเรียกใช้ GitLab API แทนคุณ ไม่ต้องใช้ personal access token"
+  },
+  "welcomeHowList1": {
+    "message": "สำหรับ GitLab.com และ GitLab ที่โฮสต์เองผ่าน HTTPS; ฟีเจอร์ขึ้นอยู่กับ API ของเซิร์ฟเวอร์ เลย์เอาต์ของหน้า และสิทธิ์ของคุณ"
+  },
+  "welcomeHowList2": {
+    "message": "การกระทำใช้สิทธิ์เหมือนผู้ใช้ที่คุณล็อกอินอยู่"
+  },
+  "welcomeHowList3": {
+    "message": "ช่วงงานที่กำหนดเองทำงานอยู่เบื้องหลัง เก็บแท็บที่ล็อกอินอยู่ใน GitLab เดียวกันเพื่อเข้าถึง API"
+  },
+  "welcomeHowList4": {
+    "message": "โปรไฟล์ต่อโปรเจกต์ช่วยให้คุณปรับปุ่มสำหรับรีโปแต่ละอันได้"
+  },
+  "welcomeTip": {
+    "message": "คุณสามารถสร้างโปรไฟล์ต่อโปรเจกต์ได้ในการตั้งค่าแบบป๊อปอัพ ซึ่งมีประโยชน์เมื่อโปรเจกต์ต่างกันต้องใช้ไฟล์เวอร์ชันหรืองาน CI แบบกำหนดเองต่างกัน"
+  },
+  "welcomeOpenSettings": {
+    "message": "เปิดการตั้งค่า"
+  },
+  "cardAutomergeTitle": {
+    "message": "การรวมอัตโนมัติ"
+  },
+  "cardAutomergeDesc": {
+    "message": "รีเบสสาขา (ถ้าจำเป็น) และเปิดใช้งานการรวมเมื่อ pipeline สำเร็จ"
+  },
+  "cardNewPipelineTitle": {
+    "message": "Pipeline ใหม่"
+  },
+  "cardNewPipelineDesc": {
+    "message": "สร้าง pipeline ใหม่สำหรับสาขาแหล่งที่มาด้วยคลิกเดียว"
+  },
+  "cardCancelPipelineTitle": {
+    "message": "ยกเลิก pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "ขอให้ยกเลิก pipeline MR ที่กำลังรันหรือรอดำเนินการ"
+  },
+  "cardDraftToggleTitle": {
+    "message": "ตัวสลับร่าง"
+  },
+  "cardDraftToggleDesc": {
+    "message": "สลับ MR ระหว่างสถานะร่างและพร้อมโดยไม่ต้องแก้ไขชื่อ"
+  },
+  "cardVersionBumpTitle": {
+    "message": "เพิ่มเวอร์ชัน"
+  },
+  "cardVersionBumpDesc": {
+    "message": "เพิ่มเวอร์ชันในไฟล์ package.json, pyproject.toml หรือไฟล์กำหนดเองอื่น ๆ สามารถตั้งค่ายุทธวิธีได้ (patch/minor/major)"
+  },
+  "cardShipTitle": {
+    "message": "ออกรุ่น (เพิ่มเวอร์ชัน + รวมโค้ด)"
+  },
+  "cardShipDesc": {
+    "message": "ทำการ rebase เมื่อจำเป็น เพิ่มเวอร์ชันและขอให้ทำ auto-merge เปิดแท็บ MR ไว้จนกว่าการดำเนินการจะเสร็จ"
+  },
+  "cardForceMergeTitle": {
+    "message": "บังคับ merge"
+  },
+  "cardForceMergeDesc": {
+    "message": "ขอ merge โดยไม่ต้องรอให้ pipeline สำเร็จ สิทธิ์ GitLab และกฎการ merge ยังคงใช้"
+  },
+  "cardReviewersTitle": {
+    "message": "ผู้ตรวจสอบ"
+  },
+  "cardReviewersDesc": {
+    "message": "พิมพ์ชื่อผู้ใช้ที่ตั้งค่าไว้ในคอมเมนต์ ใช้คอมเมนต์ผู้ตรวจสอบเดิม หรือรันงาน CI ไม่ได้กำหนด field ผู้ตรวจสอบของ GitLab โดยตรง"
+  },
+  "uiCustomization": {
+    "message": "การปรับแต่ง UI"
+  },
+  "collapseBars": {
+    "message": "ปุ่มย่อแถบท็อป"
+  },
+  "hideRightSidebar": {
+    "message": "ซ่อนแถบด้านขวาบนหน้า MR"
+  },
+  "collapseTopBars": {
+    "message": "สลับแถบท็อป"
+  },
+  "cardCollapseTitle": {
+    "message": "ย่อแถบท็อป"
+  },
+  "cardCollapseDesc": {
+    "message": "เพิ่มปุ่มสำหรับย่อ/ขยายแถบนำทางของ GitLab ประหยัดพื้นที่และช่วยให้คุณโฟกัสกับเนื้อหา"
+  },
+  "cardHideSectionsTitle": {
+    "message": "ซ่อนส่วนของ UI"
+  },
+  "cardHideSectionsDesc": {
+    "message": "ซ่อนแถบด้านขวาบนหน้าการขอผสาน (MR) เพื่อให้พื้นที่เนื้อหากว้างเต็ม"
+  },
+  "jiraIntegration": {
+    "message": "การเชื่อมต่อกับ Jira"
+  },
+  "jiraUrl": {
+    "message": "URL ของ Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL ของ Jira Server/Data Center เช่น https://jira.company.com — เข้าสู่ระบบ Jira แล้วคลิก Allow Jira site access. Cloud ยังไม่รองรับเต็มที่"
+  },
+  "jiraGrantAccess": {
+    "message": "อนุญาตการเข้าถึงไซต์ Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "ได้รับสิทธิ์เข้าถึงไซต์แล้ว ลงชื่อเข้าใช้ Jira ในเบราว์เซอร์นี้"
+  },
+  "jiraUrlInvalid": {
+    "message": "ใส่ URL พื้นฐานของ Jira แบบ HTTPS โดยไม่รวมข้อมูลเข้าสู่ระบบ/query/fragment"
+  },
+  "jiraErrorAuth": {
+    "message": "เซสชัน Jira ของคุณหมดอายุหรือจำเป็นต้องเข้าสู่ระบบ เปิด Jira ลงชื่อเข้าใช้ แล้วลองโหลดอีกครั้ง"
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira ปฏิเสธการเข้าถึงปัญหาหรือการดำเนินงานนี้ ตรวจสอบบัญชีและสิทธิ์ของคุณใน Jira"
+  },
+  "jiraErrorPermission": {
+    "message": "ส่วนขยายไม่สามารถเข้าถึงไซต์ Jira นี้ได้ ตรวจสอบสิทธิ์ของไซต์และ URL ของ Jira ในการตั้งค่าส่วนขยาย"
+  },
+  "jiraErrorNetwork": {
+    "message": "ไม่สามารถติดต่อ Jira ได้ตรวจสอบการเชื่อมต่อ, VPN และ URL ของ Jira จากนั้นลองโหลดใหม่อีกครั้ง"
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira ไม่สามารถใช้งานได้ชั่วคราวหรือจํากัดคําขอรอและลองโหลดใหม่"
+  },
+  "jiraErrorNotFound": {
+    "message": "ไม่พบปัญหา Jira หรือไม่แสดงในบัญชีของคุณ"
+  },
+  "jiraErrorResponse": {
+    "message": "Jira ส่งคืนคำตอบที่ไม่รองรับ ตรวจสอบ URL และความเข้ากันได้กับ Jira Server/Data Center"
+  },
+  "jiraErrorUnknown": {
+    "message": "คําขอ Jira ล้มเหลวเปิด Jira เพื่อตรวจสอบปัญหาและการเข้าถึงของคุณ"
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "การเปลี่ยนแปลงอาจมีผลแล้ว โปรดตรวจสอบงานใน Jira ก่อนทำซ้ำ"
+  },
+  "jiraErrorTransitions": {
+    "message": "ไม่สามารถโหลดการเปลี่ยนผ่าน Jira ได้"
+  },
+  "jiraOpenSite": {
+    "message": "เปิด Jira"
+  },
+  "jiraRetryRead": {
+    "message": "ลองโหลดใหม่"
+  },
+  "jiraDismissError": {
+    "message": "ปิด"
+  },
+  "jiraTicketRegex": {
+    "message": "บัตรโดยสาร"
+  },
+  "jiraTicketRegexHint": {
+    "message": "regex แบบกําหนดเองสําหรับการแยกวิเคราะห์ ticket ID จากชื่อ MR ค่าเริ่มต้น: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "แสดงประเภทปัญหาและไอคอนลําดับความสําคัญในรายการ MR"
+  },
+  "jiraQuickActions": {
+    "message": "การดําเนินการด่วน"
+  },
+  "jiraQuickActionsHint": {
+    "message": "เลือกการรวมของฟิลด์ใดก็ได้สำหรับแต่ละปุ่ม ปล่อยเฉพาะการเปลี่ยนแปลงที่ควรทำ เวอร์ชันและคอมโพเนนต์ต้องมีอยู่แล้วในโปรเจกต์ Jira"
+  },
+  "jiraQuickActionsAdd": {
+    "message": "เพิ่มการกระทำ"
+  },
+  "jiraQuickActionLabel": {
+    "message": "ป้ายกำกับ"
+  },
+  "jiraQuickActionStatus": {
+    "message": "สถานะ"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "ชื่อผู้ใช้"
+  },
+  "jiraSidebarStatus": {
+    "message": "สถานะ"
+  },
+  "jiraSidebarType": {
+    "message": "ประเภท"
+  },
+  "jiraSidebarPriority": {
+    "message": "ลำดับความสำคัญ"
+  },
+  "jiraSidebarAssignee": {
+    "message": "ผู้รับมอบหมาย"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "ไม่มอบหมาย"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "ค้นหาผู้ใช้..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "ไม่พบผู้ใช้"
+  },
+  "jiraSidebarUnassign": {
+    "message": "ยกเลิกการมอบหมาย"
+  },
+  "jiraSidebarReporter": {
+    "message": "ผู้รายงาน"
+  },
+  "jiraSidebarLabels": {
+    "message": "ป้ายกำกับ"
+  },
+  "jiraSidebarCreated": {
+    "message": "สร้างเมื่อ"
+  },
+  "jiraSidebarUpdated": {
+    "message": "อัปเดตเมื่อ"
+  },
+  "jiraSidebarDescription": {
+    "message": "คำอธิบาย"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "คอมโพเนนต์"
+  },
+  "jiraSidebarResolution": {
+    "message": "การแก้ไข"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "มีผลกระทบ"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "เวอร์ชันแก้ไข"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "ไม่มี"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "ไม่พบเวอร์ชัน"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "ค้นหาเวอร์ชัน..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "อัปเดตเวอร์ชันแก้ไขล้มเหลว"
+  },
+  "jiraSidebarAttachments": {
+    "message": "ไฟล์แนบ"
+  },
+  "jiraSidebarComments": {
+    "message": "ความคิดเห็น"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "เพิ่มความคิดเห็น..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "ความคิดเห็น"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "แสดงความคิดเห็นเพิ่มเติม"
+  },
+  "jiraSidebarNoComments": {
+    "message": "ยังไม่มีความคิดเห็น"
+  },
+  "jiraSidebarCommentError": {
+    "message": "ไม่สามารถโพสต์คอมเมนต์ได้"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "ลบคอมเมนต์"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "ลบความคิดเห็นนี้หรือไม่?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "ลบคอมเมนต์ไม่สำเร็จ"
+  },
+  "cardJiraTitle": {
+    "message": "สัญลักษณ์สถานะของ Jira"
+  },
+  "cardJiraDesc": {
+    "message": "แสดงสถานะของตั๋ว Jira บนหน้า MR list ดึง ID ตั๋วจากชื่อ MR (เช่น CCT-1111) และแสดงสัญลักษณ์สถานะแบบมีสี ตั้งค่า URL ของ Jira ของคุณใน settings"
+  },
+  "cardJiraRegexTitle": {
+    "message": "การจับคู่ตั๋วแบบกำหนดเอง"
+  },
+  "cardJiraRegexDesc": {
+    "message": "กำหนด regular expression แบบกำหนดเองเพื่อดึง ID ตั๋ว Jira จากชื่อ MR ใช้ได้เมื่อโปรเจกต์ของคุณมี prefix ตั๋วที่ไม่มาตรฐาน"
+  },
+  "cardJiraSidebarTitle": {
+    "message": "แถบด้านข้างของตั๋ว Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "คลิกที่ badge ของ Jira ใดก็ได้เพื่อเปิดแถบด้านข้างพร้อมรายละเอียดตั๋วเต็ม — สรุป สถานะ ประเภท ความสำคัญ ผู้รับผิดชอบ และคำอธิบาย อ่าน โพสต์ และลบคอมเมนต์ของคุณเองโดยไม่ต้องออกจาก GitLab เวอร์ชันที่ต้องแก้ไขสามารถเลือกได้จากเวอร์ชันที่มีในโปรเจกต์โดยตรงจากแถบด้านข้าง"
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "ไฟล์แนบในแถบด้านข้าง"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "ดูรูปภาพ วิดีโอ และไฟล์จากตั๋ว Jira ได้โดยตรงในแถบด้านข้าง รูปภาพและวิดีโอจะเปิดในหน้าต่างแบบเต็มจอ"
+  },
+  "cardJiraDetailTitle": {
+    "message": "ป้าย Jira บนหน้าหน้า MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "ป้ายสถานะตั๋ว Jira จะแสดงในชื่อ MR บนหน้ารายละเอียด คลิกที่ป้ายเพื่อเปิดแถบด้านข้างพร้อมรายละเอียดตั๋วเต็ม"
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "เปลี่ยนสถานะ Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "เปลี่ยนสถานะตั๋วได้ตรงจากแถบด้านข้าง จะแสดงเฉพาะการเปลี่ยนสถานะที่สามารถทำได้จากสถานะปัจจุบัน"
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "เปลี่ยนผู้รับผิดชอบ Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "คลิกที่ผู้รับผิดชอบเพื่อค้นหาและมอบหมายใหม่ มีการเติมข้อความอัตโนมัติพร้อมรูปโปรไฟล์ และปุ่มลบผู้รับผิดชอบ"
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "การทำงานด่วน Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "ปุ่มคลิกครั้งเดียวสำหรับสถานะ ผู้รับผิดชอบ ป้าย เวอร์ชัน และฟิลด์อื่นๆ แต่ละปุ่มสามารถอัปเดตฟิลด์เดียวหรือหลายฟิลด์"
+  },
+  "cardJiraDetailsTitle": {
+    "message": "ไอคอนประเภทปัญหาและลำดับความสำคัญ"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "แสดงไอคอนไทป์ของปัญหา Jira และความสำคัญข้างๆ แบนเนอร์สถานะในหน้า MR รายการและรายละเอียด ใช้ไอคอน Jira ดั้งเดิม"
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "รีเบสสาขาต้นทางไปยังสาขาเป้าหมายโดยไม่รวมเข้าด้วยกัน"
+  },
+  "cardRebaseVersionTitle": {
+    "message": "รีเบส + เพิ่มเวอร์ชัน"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "รีเบสสาขาและเพิ่มเวอร์ชันในคลิกเดียว ไม่รวมเข้าด้วยกัน"
+  },
+  "cardCopyMrTitle": {
+    "message": "คัดลอก MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "คัดลอกชื่อ MR และลิงก์ไปยังคลิปบอร์ดในคลิกเดียว"
+  },
+  "cardRetryFailedTitle": {
+    "message": "ลองรันงานที่ล้มเหลวอีกครั้ง"
+  },
+  "cardRetryFailedDesc": {
+    "message": "ลองรันงานที่ล้มเหลวในไปป์ไลน์ปัจจุบันของ MR อีกครั้ง งานที่สำเร็จแล้วจะไม่ได้รับผลกระทบ"
+  },
+  "welcomeMrListFeatures": {
+    "message": "ปรับปรุงหน้า MR list"
+  },
+  "cardDimDraftsTitle": {
+    "message": "ทำให้ Draft MRs จางลง"
+  },
+  "cardDimDraftsDesc": {
+    "message": "ทำให้ Draft MRs จางลงในหน้ารายการ merge requests เพื่อให้คุณโฟกัสกับ MR ที่ใช้งานอยู่"
+  },
+  "cardHighlightOwnTitle": {
+    "message": "ไฮไลต์ MR ของคุณ"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "ไฮไลต์ MR ของตัวเองในรายการด้วยกรอบสีฟ้าเพื่อให้ระบุได้เร็ว"
+  },
+  "cardOnlyMineTitle": {
+    "message": "สลับ \"เฉพาะของฉัน\""
+  },
+  "cardOnlyMineDesc": {
+    "message": "ปุ่มสลับคลิกเดียวเพื่อกรองรายชื่อ MR ให้แสดงเฉพาะ merge request ของคุณเอง"
+  },
+  "cardMrAgeTitle": {
+    "message": "ป้ายอายุ MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "แสดงว่า MR ถูกสร้างมานานเท่าไหร่ จะแสดงเป็นป้ายบนหน้า MR"
+  },
+  "showReviewerBadge": {
+    "message": "ป้าย \"การรีวิวของคุณ\" จากคอมเมนต์"
+  },
+  "badgeYourReview": {
+    "message": "การรีวิวของคุณ"
+  },
+  "badgeYourReviewHint": {
+    "message": "คุณถูกกล่าวถึงในฐานะผู้รีวิวในคอมเมนต์ MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "ป้าย \"การรีวิวของคุณ\""
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "ค้นหาคอมเมนต์เก่าที่สุดสำหรับ “Reviewer(s): @you” ความลึกในการสแกนปรับได้ (ค่าเริ่มต้น 10) แยกต่างหากจากฟีเจอร์ผู้รีวิวของ GitLab"
+  },
+  "showNeedsReview": {
+    "message": "ปุ่มสลับ \"ต้องการให้ฉันรีวิว\" บนหน้ารายการ"
+  },
+  "toggleNeedsReview": {
+    "message": "ต้องการให้ฉันรีวิว"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "ปุ่มสลับ \"ต้องการให้ฉันรีวิว\""
+  },
+  "cardNeedsReviewDesc": {
+    "message": "ปุ่มสลับคลิกเดียวเพื่อกรองรายชื่อ MR ให้แสดงเฉพาะ merge request ที่คุณถูกกำหนดให้เป็นผู้รีวิว"
+  },
+  "showCopyMr": {
+    "message": "ปุ่มคัดลอกบนรายการ MR"
+  },
+  "showThreadsBadge": {
+    "message": "จำนวนกระทู้ที่ยังไม่ได้แก้ไขบนรายการ MR"
+  },
+  "showSizeBadge": {
+    "message": "ป้ายขนาด MR (S/M/L/XL) บนรายการ MR"
+  },
+  "showConflictsBadge": {
+    "message": "แสดงตัวชี้บอกความขัดแย้งในรายชื่อ MR"
+  },
+  "showApprovalBadge": {
+    "message": "แสดงจำนวนการอนุมัติและตัวชี้บอกการอนุมัติของฉันในรายชื่อ MR"
+  },
+  "approvalBadgeMine": {
+    "message": "คุณอนุมัติแล้ว"
+  },
+  "approvalBadgeMineShort": {
+    "message": "คุณ"
+  },
+  "cardThreadsTitle": {
+    "message": "จำนวนกระทู้ที่ยังไม่ได้แก้ไข"
+  },
+  "cardThreadsDesc": {
+    "message": "แสดงจำนวนกระทู้ที่ยังไม่ได้แก้ไข “+” หมายถึงหน้าก่อนเต็มหน้า; “?” หมายถึงไม่สามารถระบุจำนวนได้"
+  },
+  "cardSizeTitle": {
+    "message": "ป้ายขนาด MR"
+  },
+  "cardSizeDesc": {
+    "message": "ป้าย S/M/L/XL พร้อมเกณฑ์บรรทัดและไฟล์ที่ตั้งค่าได้ในกฎและข้อจำกัดการแสดงผล"
+  },
+  "conflictsBadge": {
+    "message": "ความขัดแย้ง"
+  },
+  "conflictsBadgeHint": {
+    "message": "MR นี้มีความขัดแย้งในการผสานที่ต้องแก้ไข"
+  },
+  "cardConflictsTitle": {
+    "message": "ตัวชี้บอกความขัดแย้ง"
+  },
+  "cardConflictsDesc": {
+    "message": "แสดงป้ายสีแดง CONFLICTS บนหน้ารายละเอียด MR เมื่อสาขามีความขัดแย้งในการผสาน"
+  },
+  "cardApprovalTitle": {
+    "message": "ตัวชี้บอกการอนุมัติของฉัน"
+  },
+  "cardApprovalDesc": {
+    "message": "แสดงว่าคุณได้อนุมัติแต่ละ MR ในหน้ารายชื่อหรือไม่ แยกการอนุมัติของคุณออกจากการอนุมัติของคนอื่น"
+  },
+  "showBranches": {
+    "message": "แสดงสาขาต้นทางและปลายทางในรายชื่อ MR"
+  },
+  "showBranchesLinks": {
+    "message": "ทำให้ชื่อสาขาสามารถคลิกได้ (เปิดต้นไม้สาขา)"
+  },
+  "cardBranchesTitle": {
+    "message": "ชื่อสาขาในรายการ MR"
+  },
+  "cardBranchesDesc": {
+    "message": "แสดงชื่อสาขาต้นทางและสาขาปลายทางในแต่ละ MR ในรายการ ทำให้เห็นว่ารหัสมาจากไหนและรวมเข้าไปที่ไหน"
+  },
+  "cardCopyMrListTitle": {
+    "message": "คัดลอก MR จากรายการ"
+  },
+  "cardCopyMrListDesc": {
+    "message": "เพิ่มปุ่มคัดลอกให้กับแต่ละ MR ในหน้ารายการ คัดลอกชื่อ MR และลิงก์ไปยังคลิปบอร์ดเพียงคลิกเดียว"
+  },
+  "versionFromTarget": {
+    "message": "อ่านเวอร์ชันจากสาขาปลายทาง"
+  },
+  "versionFromTargetHint": {
+    "message": "อ่านเวอร์ชันปัจจุบันจากสาขาปลายทาง (เช่น main) แทนที่จะอ่านจากสาขาต้นทาง ใช้กับกลยุทธ์ merge commit เพื่อลดปัญหาเวอร์ชันเก่า"
+  },
+  "showFailedJobView": {
+    "message": "แสดงมุมมองงานล้มเหลวบนหน้า MR"
+  },
+  "failedJobTraceError": {
+    "message": "ไม่สามารถโหลด trace"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "มุมมองงานล้มเหลว"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "ดูตัวอย่างงานล้มเหลวและ log tail บนหน้า MR จำนวนงานและบรรทัดปรับได้ในกฎและจำกัดการแสดงผล"
+  },
+  "showCmdPalette": {
+    "message": "แผงคำสั่ง (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "รายงานกิจกรรมประจำวัน"
+  },
+  "standupJiraEnrich": {
+    "message": "แสดงหัวข้อบัตร Jira ในรายงาน"
+  },
+  "cmdPlaceholder": {
+    "message": "พิมพ์คำสั่ง..."
+  },
+  "cmdFooterNavigate": {
+    "message": "นำทาง"
+  },
+  "cmdFooterSelect": {
+    "message": "เลือก"
+  },
+  "cmdFooterClose": {
+    "message": "ปิด"
+  },
+  "cmdEmpty": {
+    "message": "ไม่มีคำสั่งที่ตรงกัน"
+  },
+  "cmdGroupNav": {
+    "message": "การนำทาง"
+  },
+  "cmdGroupMr": {
+    "message": "การดำเนินการ MR"
+  },
+  "cmdGroupExt": {
+    "message": "ส่วนขยาย"
+  },
+  "cmdGroupFiles": {
+    "message": "ไฟล์"
+  },
+  "cmdNavMrs": {
+    "message": "ไปที่คำขอ Merge"
+  },
+  "cmdNavIssues": {
+    "message": "ไปที่ปัญหา"
+  },
+  "cmdNavPipelines": {
+    "message": "ไปที่ Pipeline"
+  },
+  "cmdNavBranches": {
+    "message": "ไปที่สาขา"
+  },
+  "cmdNavRepo": {
+    "message": "ไปที่ Repository"
+  },
+  "cmdNavTags": {
+    "message": "ไปที่แท็ก"
+  },
+  "cmdNavCommits": {
+    "message": "ไปที่ Commit"
+  },
+  "cmdNavWiki": {
+    "message": "ไปที่ Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "ไปที่ Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "ไปที่การตั้งค่า"
+  },
+  "cmdCopyPath": {
+    "message": "คัดลอกเส้นทางโปรเจกต์"
+  },
+  "cmdGroupPinned": {
+    "message": "ปักหมุด"
+  },
+  "cmdExtSettings": {
+    "message": "เปิดการตั้งค่าส่วนขยาย"
+  },
+  "cmdExtStandup": {
+    "message": "สร้างรายงานกิจกรรม"
+  },
+  "standupTitle": {
+    "message": "กิจกรรมประจำวัน"
+  },
+  "standupCopy": {
+    "message": "คัดลอกไปที่คลิปบอร์ด"
+  },
+  "standupCopied": {
+    "message": "คัดลอกแล้ว!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "แผงคำสั่ง"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "กด Cmd+K (Mac) หรือ Ctrl+K (Win) บนหน้าของ GitLab ใดก็ได้ นำทาง, รันการดำเนินการ MR, ค้นหาไฟล์ตามชื่อและเปิดใน repo"
+  },
+  "cardStandupTitle": {
+    "message": "รายงานกิจกรรมรายวัน"
+  },
+  "cardStandupDesc": {
+    "message": "สร้างรายงานกิจกรรมรายวันจากข้อมูล GitLab ของคุณ แสดง MR ที่สร้าง, รวม, และตรวจสอบแล้ว สามารถคัดลอกไปวางใน Slack หรือ Jira ได้"
+  },
+  "showCherryPick": {
+    "message": "เลือก cherry-pick ไปยังสาขา"
+  },
+  "showGroupPlay": {
+    "message": "ปุ่มเล่นกลุ่มใน pipeline (รันงานที่ต้องทำด้วยมือที่เหลืออยู่)"
+  },
+  "showCommitVersion": {
+    "message": "ป้ายเวอร์ชั่นบนหน้าคอมมิต"
+  },
+  "showCommitVersionHint": {
+    "message": "แสดงเวอร์ชั่นจากไฟล์เวอร์ชั่น (ดูการตั้งค่า Version bump) อยู่ข้างคอมมิตแต่ละอัน; ไฮไลต์เมื่อเวอร์ชั่นเปลี่ยน"
+  },
+  "groupPlayTooltip": {
+    "message": "รันงานที่ต้องทำด้วยมือที่เหลืออยู่ในกลุ่มนี้"
+  },
+  "groupPlayError": {
+    "message": "เริ่มงานบางงานไม่สำเร็จ"
+  },
+  "cardGroupPlayTitle": {
+    "message": "ปุ่มเล่นกลุ่ม"
+  },
+  "cardGroupPlayDesc": {
+    "message": "บนกราฟ pipeline ปุ่มเล่นข้างกลุ่มงานจะรันงานที่ต้องทำด้วยมือที่เหลืออยู่ทั้งหมด — แม้ว่างานบางงานในกลุ่มจะเริ่มไปแล้วและปุ่มของ GitLab จะหายไป"
+  },
+  "cardCommitVersionTitle": {
+    "message": "ป้ายเวอร์ชั่นบนคอมมิต"
+  },
+  "cardCommitVersionDesc": {
+    "message": "บนหน้าคอมมิตของสาขา แต่ละคอมมิตจะแสดงเวอร์ชันโปรเจกต์จากไฟล์เวอร์ชันของคุณในคอมมิตนั้น ปิดเสียงตามค่าเริ่มต้น ไฮไลต์เมื่อเวอร์ชันเปลี่ยน — ดูได้เลยว่าคอมมิตไหนไปอยู่ในรีลีสไหน"
+  },
+  "cherryPickBranches": {
+    "message": "สาขา Cherry-pick"
+  },
+  "cherryPickBranchesHint": {
+    "message": "สาขาเป้าหมายเริ่มต้นสำหรับ Cherry-pick คุณสามารถเพิ่มหรือลบสาขาในหน้าต่างโมดอลได้"
+  },
+  "cherryPickBranchAdd": {
+    "message": "เพิ่มสาขา"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick ไปยังสาขา"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "ปิด"
+  },
+  "cherryPickInProgress": {
+    "message": "กำลังทำ Cherry-pick..."
+  },
+  "cherryPickRemove": {
+    "message": "ลบ"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "ชื่อสาขา"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-picked ไปยัง $1 สาขา",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "สร้าง merge request ใหม่พร้อมกับการเปลี่ยนแปลงเหล่านี้"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "สร้าง MR โดยค่าเริ่มต้นเมื่อทำ Cherry-pick"
+  },
+  "cherryPickSmartFallback": {
+    "message": "หากเกิดความขัดแย้ง — คอมมิตโดยไม่รวมไฟล์เวอร์ชัน"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "หาก Cherry-pick ล้มเหลวเนื่องจากความขัดแย้งของไฟล์เวอร์ชัน ให้เล่นซ้ำการเปลี่ยนแปลงเป็นคอมมิตใหม่โดยไม่รวมไฟล์เวอร์ชัน"
+  },
+  "cherryPickBumpVersion": {
+    "message": "เพิ่มเวอร์ชันใน fallback"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "เพิ่มเวอร์ชันในสาขาเป้าหมายภายใน commit fallback เดียวกัน"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Smart fallback จัดการเฉพาะความขัดแย้งของไฟล์เวอร์ชันเท่านั้น ความขัดแย้งอยู่ในไฟล์อื่น"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "ไฟล์ถูกแก้ไขในสาขาเป้าหมาย — ไม่สามารถ cherry-pick ได้อย่างปลอดภัย"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "ไฟล์เวอร์ชันมีการเปลี่ยนแปลงเกินเวอร์ชัน — ไม่สามารถข้ามได้อย่างปลอดภัย"
+  },
+  "commitsJiraField": {
+    "message": "ฟิลด์ Jira สำหรับป้าย commit"
+  },
+  "commitsJiraFieldHint": {
+    "message": "ชื่อฟิลด์ Jira ที่จะแสดงเป็นป้ายบนหน้าคอมมิต (เช่น fixVersions, status, labels, components) ต้องการ URL ของ Jira"
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick ไปยังสาขา"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick ไปยังสาขาที่เลือกโดยตรงหรือผ่าน MR ใหม่ เมื่อเปิด Smart fallback ความขัดแย้งของไฟล์เวอร์ชันที่ตรวจสอบแล้วสามารถ replay ได้โดยไม่ใช้ไฟล์นั้น โดยสามารถเพิ่มเวอร์ชันได้ถ้าต้องการ การเปลี่ยนแปลงที่ไม่ปลอดภัยจะถูกหยุดเพื่อตรวจสอบ"
+  },
+  "mrDetailEnhancements": {
+    "message": "ปรับปรุงรายละเอียด MR"
+  },
+  "showSensitiveWarning": {
+    "message": "การแจ้งเตือนไฟล์สำคัญใน diff"
+  },
+  "showGitCommands": {
+    "message": "ปุ่มคำสั่ง Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "สำคัญ: $1 ไฟล์",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "MR นี้แก้ไขไฟล์ที่เกี่ยวกับความปลอดภัย:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "การแจ้งเตือนไฟล์สำคัญ"
+  },
+  "cardSensitiveDesc": {
+    "message": "ทำเครื่องหมายไฟล์สำคัญโดยใช้กฎที่มีอยู่แล้ว, แบบแผนเพิ่มเติม และข้อยกเว้น สามารถตั้งค่าได้ที่ กฎการแสดงผลและข้อจำกัด"
+  },
+  "cardGitCommandsTitle": {
+    "message": "ปุ่มคำสั่ง Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "คัดลอกคำสั่ง checkout, pull และ hard-reset ตรวจสอบ repository และ remote origin ของคุณก่อนใช้งาน; การ hard reset จะลบการเปลี่ยนแปลงในเครื่อง"
+  },
+  "updateBannerText": {
+    "message": "มีเวอร์ชันใหม่แล้ว! ดูว่ามีอะไรใหม่:"
+  },
+  "updateChangelog": {
+    "message": "บันทึกการเปลี่ยนแปลง"
+  },
+  "updateReviewAsk": {
+    "message": "ชอบส่วนขยายนี้ไหม?"
+  },
+  "updateReviewLink": {
+    "message": "ให้รีวิว"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "รีวิวที่ช่วยโดย AI ครบทุกขั้นตอน"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "รีวิว MR แก้ไขคำติชมที่เลือก เตรียมคำตอบและตรวจสอบการเปลี่ยนแปลงอีกครั้ง ดูตัวอย่างและแก้ไขคอมเมนต์ก่อนโพสต์ไปยัง GitLab"
+  },
+  "aiReviewGuide": {
+    "message": "คู่มือการรีวิว AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "ห้ามอัปโหลด AI อัตโนมัติ คัดลอกบริบทเอง; คอมเมนต์จะส่งไปยัง GitLab ก็ต่อเมื่อคุณเลือกเผยแพร่หรือเพิ่มในการรีวิว"
+  },
+  "aiReviewTitle": {
+    "message": "รีวิว AI"
+  },
+  "aiReviewOpen": {
+    "message": "รีวิว AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "คัดลอกคอมเมนต์สำหรับ AI"
+  },
+  "aiReviewLoading": {
+    "message": "กำลังโหลดการสนทนา…"
+  },
+  "aiReviewRetry": {
+    "message": "ลองใหม่"
+  },
+  "aiReviewRefresh": {
+    "message": "รีเฟรช"
+  },
+  "aiReviewClose": {
+    "message": "ปิด"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "ยืนยันการปิดหน้าต่างรีวิวที่มีงานที่ยังไม่ได้บันทึก"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "ปิดหน้าต่างนี้หรือไม่? การแก้ไขที่ยังไม่บันทึกและข้อมูลที่ป้อนจะสูญหาย"
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "ปิดหน้าต่างนี้และหยุดส่งรายการถัดไปหรือไม่? ความคิดเห็นที่ส่งแล้วจะยังอยู่ใน GitLab การแก้ไขที่ยังไม่บันทึกจะสูญหาย"
+  },
+  "aiReviewAll": {
+    "message": "ทั้งหมด"
+  },
+  "aiReviewUnresolved": {
+    "message": "ยังไม่แก้ไข"
+  },
+  "aiReviewResolved": {
+    "message": "แก้ไขแล้ว"
+  },
+  "aiReviewGeneral": {
+    "message": "คอมเมนต์ทั่วไป"
+  },
+  "aiReviewSearch": {
+    "message": "ค้นหาคอมเมนต์หรือเส้นทางไฟล์"
+  },
+  "aiReviewSelectShown": {
+    "message": "เลือกที่แสดง"
+  },
+  "aiReviewClear": {
+    "message": "ล้างการเลือก"
+  },
+  "aiReviewIncludeCode": {
+    "message": "รวมการเปลี่ยนแปลงโค้ด"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "สำหรับการรีวิวใหม่และรีวิวซ้ำ ปิดไว้ถ้า AI สามารถอ่านรีโพซิทอรีได้ ชิ้นส่วนสั้นๆ ที่แนบมากับข้อเสนอแนะยังคงรวมอยู่"
+  },
+  "aiReviewIncludeExisting": {
+    "message": "คำนึงถึงการสนทนาที่มีอยู่แล้ว"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "เพิ่มคอมเมนต์ที่โพสต์ไปแล้วเป็นตัวกรองซ้ำ: AI จะรีวิว MR ทั้งหมดอย่างอิสระ แล้วคัดออกสิ่งที่ซ้ำกับคอมเมนต์เดิม มันจะไม่ตอบสนทนาเหล่านั้น"
+  },
+  "aiReviewIncludeDescription": {
+    "message": "รวมคำอธิบาย"
+  },
+  "aiReviewPrompt": {
+    "message": "คำแนะนำสำหรับ AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "คืนค่าคำสั่งเริ่มต้น"
+  },
+  "aiReviewPreview": {
+    "message": "ตัวอย่างการแสดงผล"
+  },
+  "aiReviewCopied": {
+    "message": "คัดลอกแล้ว!"
+  },
+  "aiReviewEmpty": {
+    "message": "ไม่มีคอมเมนต์ที่ตรงกัน"
+  },
+  "aiReviewPartial": {
+    "message": "ข้อมูลบางส่วนโหลดไม่ได้ การส่งออกรวมคำเตือนและมีเฉพาะบริบทที่มีอยู่เท่านั้น"
+  },
+  "aiReviewSelectedCount": {
+    "message": "เลือก $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "เลือกข้อความตัวอย่างและคัดลอกด้วยตัวเอง"
+  },
+  "aiReviewScopeComment": {
+    "message": "คอมเมนต์ที่เลือก"
+  },
+  "aiReviewScopeThread": {
+    "message": "การสนทนาที่เลือก"
+  },
+  "aiReviewPreparing": {
+    "message": "กำลังเตรียมบริบทโค้ด…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "ไม่สามารถโหลดการสนทนาได้ ลองอีกครั้งหรือคัดลอกบริบทที่มีอยู่"
+  },
+  "aiReviewShowReplies": {
+    "message": "แสดงคำตอบ"
+  },
+  "aiReviewSize": {
+    "message": "ประมาณ $1 อักขระ",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "ยกเลิก"
+  },
+  "showAiReviewCopy": {
+    "message": "แสดงสำเนาการตรวจสอบ AI และการควบคุมการนำเข้า"
+  },
+  "aiReviewSettingsHint": {
+    "message": "คัดลอก MR ทั้งหมดเพื่อตรวจสอบใหม่ เลือกความคิดเห็นสำหรับแก้ไข หรือนำเข้าคำแนะนำและคำตอบของ AI พร้อมตัวอย่างแก้ไขก่อนส่ง"
+  },
+  "aiReviewFresh": {
+    "message": "ตรวจสอบตั้งแต่เริ่มต้น"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "เริ่มคำสั่งเพื่อตรวจสอบใหม่"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "สูงสุด 1,500 ตัวอักษร ใช้เพื่อตรวจสอบ MR ทั้งหมดและคอมมิตทั้งหมด แยกจากการแก้ไขความคิดเห็น คุณสามารถระบุภาษาที่ตอบกลับได้ ว่างไว้เพื่อใช้คำสั่งเริ่มต้นเป็นภาษาอังกฤษ"
+  },
+  "aiReviewPromptHint": {
+    "message": "สูงสุด 1,500 ตัวอักษร ว่างไว้เพื่อใช้คำสั่งเริ่มต้นเป็นภาษาอังกฤษ ใช้กับทุกโครงการ"
+  },
+  "aiReviewPromptTooLong": {
+    "message": "ยังไม่ได้บันทึกคำสั่ง ใช้สูงสุด 1,500 ตัวอักษรและลบตัวอักษรควบคุมที่ผิดปกติออก"
+  },
+  "settingsSaveFailed": {
+    "message": "ไม่สามารถบันทึกการตั้งค่าได้ ลองเปลี่ยนแปลงแล้วลองอีกครั้ง"
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "การเปลี่ยนแปลงที่นี่จะใช้กับการส่งออกนี้ ตั้งค่าคำสั่งเริ่มต้นของคุณในส่วนขยาย"
+  },
+  "aiReviewReady": {
+    "message": "พร้อมตัวอย่างให้คัดลอกแล้ว"
+  },
+  "aiReviewLoadHint": {
+    "message": "โหลดการสนทนาโดยตรงจาก GitLab รวมถึงความคิดเห็นที่ไม่เห็นบนหน้านี้"
+  },
+  "aiReviewCommentContext": {
+    "message": "การตอบกลับอื่น ๆ ถูกใส่เป็นบริบท มีเพียงความคิดเห็นที่เลือกเท่านั้นที่ขอให้ดำเนินการ"
+  },
+  "aiReviewOutdated": {
+    "message": "เวอร์ชันก่อนหน้า"
+  },
+  "aiReviewLink": {
+    "message": "เปิดการสนทนา"
+  },
+  "aiReviewLoaded": {
+    "message": "โหลดการสนทนา $1 รายการแล้ว"
+  },
+  "aiReviewCodeProgress": {
+    "message": "กำลังเตรียมบริบทของโค้ด: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "ความคิดเห็นนี้ไม่พร้อมใช้งานจาก GitLab อาจจะยังบันทึกไม่เสร็จหรือถูกลบแล้ว ลองรีเฟรชอีกครั้ง"
+  },
+  "aiReviewImportOpen": {
+    "message": "นำเข้าการตรวจสอบ AI…"
+  },
+  "aiReviewImportTitle": {
+    "message": "นำเข้าการตรวจสอบ AI"
+  },
+  "aiReviewImportHelp": {
+    "message": "วางคำตอบ AI ด้านล่างเพื่อตรวจสอบ แก้ไข และเลือกสิ่งที่จะเผยแพร่ ทางลัดของคำสั่งอยู่ในการตั้งค่าขั้นสูง"
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "คัดลอกคำสั่งสำหรับการตรวจสอบใหม่"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "กำลังจัดเตรียมพรอมต์…"
+  },
+  "aiReviewImportInput": {
+    "message": "การตอบของ AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "วางการตอบ JSON แบบสมบูรณ์ที่มีความคิดเห็นใหม่หรือการตอบกลับในกระทู้ คุณสามารถแก้ไขข้อความและเลือกสิ่งที่จะแสดงในตัวอย่าง"
+  },
+  "aiReviewImportValidate": {
+    "message": "ตรวจสอบและดูตัวอย่าง"
+  },
+  "aiReviewImportChecking": {
+    "message": "กำลังตรวจสอบการแก้ไข MR, บรรทัด, และความคิดเห็นที่มีอยู่…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "ตรวจสอบการตอบกลับความคิดเห็นในตัวอย่าง คุณสามารถแก้ไขข้อความ ล้างเครื่องหมายถูกเพื่อละเว้นบางรายการ หรือเพิ่มความคิดเห็นทั่วไป"
+  },
+  "aiReviewImportSelectReady": {
+    "message": "เลือกความคิดเห็นที่พร้อมส่ง"
+  },
+  "aiReviewImportPreview": {
+    "message": "ความคิดเห็นที่จะส่ง"
+  },
+  "aiReviewImportReady": {
+    "message": "พร้อมแล้ว"
+  },
+  "aiReviewImportInvalid": {
+    "message": "ต้องแก้ไข"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "ไม่สามารถโหลดการเปลี่ยนแปลงไฟล์เพิ่มเติมได้: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "ความแตกต่างเพิ่มเติมเกินขีดจำกัดการนำเข้า 16 MiB สามารถนำเข้าความคิดเห็นได้เฉพาะบรรทัดที่ตรวจสอบแล้วเท่านั้น"
+  },
+  "aiReviewImportDuplicate": {
+    "message": "มีอยู่แล้ว"
+  },
+  "aiReviewImportPublished": {
+    "message": "เผยแพร่แล้ว"
+  },
+  "aiReviewImportDraft": {
+    "message": "ถูกเพิ่มไปในการตรวจสอบ"
+  },
+  "aiReviewImportFailed": {
+    "message": "ยังไม่ได้ส่ง"
+  },
+  "aiReviewImportUnknown": {
+    "message": "ยังไม่ได้ยืนยันการส่ง"
+  },
+  "aiReviewImportSkipped": {
+    "message": "ยังไม่ได้ส่ง"
+  },
+  "aiReviewImportNewLine": {
+    "message": "บรรทัดใหม่ $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "บรรทัดเก่า $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "เผยแพร่ที่เลือก"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "เพิ่มไปยังรีวิว"
+  },
+  "aiReviewImportSendHint": {
+    "message": "การเผยแพร่จะส่งความคิดเห็นทันที การเพิ่มไปยังรีวิวจะบันทึกความคิดเห็นที่ยังไม่เผยแพร่ไว้สำหรับการรีวิวใน GitLab ของคุณ"
+  },
+  "aiReviewImportSending": {
+    "message": "กำลังส่งความคิดเห็นที่เลือก…"
+  },
+  "aiReviewImportFinished": {
+    "message": "เสร็จสิ้น ตรวจผลลัพธ์ข้างแต่ละความคิดเห็น"
+  },
+  "aiReviewImportStopped": {
+    "message": "หยุดแล้ว ตรวจผลลัพธ์ข้างแต่ละความคิดเห็นก่อนลองใหม่"
+  },
+  "aiReviewImportEdited": {
+    "message": "การตอบกลับเปลี่ยนแปลง ตรวจสอบอีกครั้งก่อนส่ง"
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "ไม่มีคลิปบอร์ด เลือกข้อความด้านล่างแล้วคัดลอกด้วยตนเอง"
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "ไม่สามารถยืนยันการส่งได้ โปรดตรวจสอบใน GitLab ก่อนลองอีกครั้ง"
+  },
+  "aiReviewImportPrompt": {
+    "message": "พร้อมให้ AI ช่วย"
+  },
+  "aiReviewImportChecked": {
+    "message": "พร้อม: $1 ความคิดเห็นอื่นๆ ต้องการความสนใจ",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "หยุดส่ง"
+  },
+  "aiReviewImportError": {
+    "message": "ไม่สามารถทำงานนี้ให้เสร็จได้"
+  },
+  "aiReviewImportPromptError": {
+    "message": "ไม่สามารถเตรียมคำสั่งได้"
+  },
+  "aiReviewImportWarning": {
+    "message": "แจ้งเตือนการรีวิว"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "การรีวิวด้วย AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "ภาษาในการตอบของ AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "อัตโนมัติ — ภาษาสนทนา"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "ใช้ได้กับงานรีวิวทั้งหมดและพรอมต์นำเข้า คีย์ JSON, เส้นทาง และโค้ดจะไม่ถูกแปล การคัดลอกฟอร์แมตเฉยๆ ไม่ได้เพิ่มคำสั่งภาษา"
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "พรอมต์สำหรับแก้ไขคำติชม"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "พรอมต์สำหรับความคิดเห็นรีวิวใหม่"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "พรอมต์สำหรับตอบคำติชม"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "สูงสุด 1500 ตัวอักษร สำหรับทางลัดรีวิวใหม่ในนำเข้า แท็บงานใช้พรอมต์ของตัวเอง บริบท MR และฟอร์แมต JSON ถูกเพิ่มให้อัตโนมัติ"
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "สูงสุด 1500 ตัวอักษร สำหรับการตอบกลับการสนทนาที่เลือกในคัดลอก หรือทุกการสนทนาที่ยังไม่แก้ไขในนำเข้า ตั้งสไตล์และภาษา; บริบทและฟอร์แมตรูปแบบการตอบถูกเพิ่มให้อัตโนมัติ"
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "พรอมต์ตอบกลับสำหรับทุกการสนทนาที่ยังไม่แก้ไข"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "คัดลอกรูปแบบการตอบกลับ"
+  },
+  "aiReviewImportFormat": {
+    "message": "รูปแบบการตอบกลับสำหรับ AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "เตรียมการตอบกลับ"
+  },
+  "aiReviewImportReply": {
+    "message": "ตอบกลับการสนทนา"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "ความเห็นต้นฉบับ"
+  },
+  "aiReviewImportReplyText": {
+    "message": "การตอบของคุณ"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "ปิดการอภิปรายหลังจากเผยแพร่"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "การอภิปรายถูกปิดแล้ว"
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "การตอบถูกเผยแพร่แล้ว แต่การอภิปรายยังไม่ถูกปิด คุณสามารถปิดได้ใน GitLab"
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "การตอบถูกเผยแพร่แล้ว ยังไม่ได้ยืนยันการปิด ตรวจสอบการอภิปรายใน GitLab"
+  },
+  "aiReviewImportReplyHint": {
+    "message": "การปิดเป็นตัวเลือกและค่าเริ่มต้นเป็นปิด ระบบจะทำงานหลังจากเผยแพร่คำตอบเท่านั้น การเพิ่มร่างไม่ปิดการอภิปราย"
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "เวอร์ชัน MR มีการเปลี่ยนแปลง คำตอบจะยังคงเชื่อมโยงกับการอภิปราย ตรวจสอบข้อความกับการแก้ไขที่ดันไปแล้ว การค้นพบใหม่จากเวอร์ชันเก่าจะถูกบล็อก"
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "คำตอบเหล่านี้เชื่อมโยงกับการอภิปราย ไม่ใช่การแก้ไขโค้ด ก่อนเผยแพร่ ตรวจสอบว่าการแก้ไขที่อธิบายไว้ได้ถูกดันไปยัง MR นี้แล้ว"
+  },
+  "aiReviewImportEdit": {
+    "message": "แก้ไขข้อความ"
+  },
+  "aiReviewImportAddComment": {
+    "message": "เพิ่มความเห็น"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "บันทึกการเปลี่ยนแปลง"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "ยกเลิก"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "ข้อความคอมเมนต์"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "แก้ไขข้อความ แล้วบันทึกเพื่อตรวจสอบการเปลี่ยนแปลงก่อนเผยแพร่"
+  },
+  "aiReviewImportEditError": {
+    "message": "ไม่สามารถบันทึกการเปลี่ยนแปลงได้"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "การแสดงตัวอย่างสามารถมีคอมเมนต์ได้สูงสุด 200 ข้อความ"
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "แจ้งเตือนการตรวจสอบซ้ำ"
+  },
+  "aiReviewFileFilters": {
+    "message": "ไฟล์สำหรับตรวจสอบ"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "ใช้กับการตรวจสอบใหม่ การตรวจสอบซ้ำ และคำสั่งสำหรับข้อค้นพบใหม่ แต่ไม่ใช้กับความคิดเห็นที่เลือกหรือคำสั่งตอบกลับ ใส่หนึ่งรูปแบบต่อบรรทัดหรือคั่นด้วยจุลภาค; # เริ่มหมายเหตุ ใช้ *, **, ? กฎยกเว้นมีลำดับความสำคัญเหนือกว่า รวมถึงเส้นทางเดิมของไฟล์ที่เปลี่ยนชื่อ รายการว่างหมายถึงรวมทุกไฟล์ ตัวอย่าง: src/**, *.test.js, dist/. แต่ละรายการยาวได้สูงสุด 1500 อักขระ"
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "รวมสกุลไฟล์ (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "รวมเส้นทางไฟล์"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "ยกเว้นเส้นทางไฟล์"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "ยกเว้นโฟลเดอร์"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "ไม่สามารถบันทึกหรือนำตัวกรองไฟล์ไปใช้ได้ ใช้ได้สูงสุด 1500 ตัวอักษรต่อรายการและลบตัวอักขระควบคุมแปลก ๆ ออก"
+  },
+  "aiReviewPreviousRevision": {
+    "message": "เวอร์ชันที่คุณตรวจสอบ"
+  },
+  "aiReviewPreviousNone": {
+    "message": "รีวิวเต็ม — ไม่มีเวอร์ชันก่อนหน้า"
+  },
+  "aiReviewRepeat": {
+    "message": "รีวิวซ้ำ"
+  },
+  "aiReviewPreviousManual": {
+    "message": "ใส่รหัสคอมมิต SHA"
+  },
+  "aiReviewPreviousSha": {
+    "message": "ใส่รหัสคอมมิตที่รีวิวเต็ม (ตัวอักษร 40 หรือ 64 หลักฐานฐานสิบหก)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "เลือกเวอร์ชัน MR ที่คุณรีวิวก่อนเขียนคอมเมนต์ การเปลี่ยนแปลงทั้งหมดจนถึงเวอร์ชันปัจจุบันจะรวมโดยอัตโนมัติ; คุณไม่ต้องเลือกคอมมิตแยก ถ้าคุณจำเวอร์ชันไม่ได้ ให้เลือกรีวิวเต็ม"
+  },
+  "aiReviewChooseTask": {
+    "message": "เลือกงาน"
+  },
+  "aiReviewTaskReview": {
+    "message": "รีวิวใหม่"
+  },
+  "aiReviewTaskFix": {
+    "message": "แก้ไขสิ่งที่พบจากรีวิว"
+  },
+  "aiReviewTaskReply": {
+    "message": "เตรียมตอบกลับ"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "รีวิวติดตาม"
+  },
+  "aiReviewCopyTask": {
+    "message": "คัดลอกงาน"
+  },
+  "aiReviewPasteResult": {
+    "message": "วางคำตอบจาก AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "การตั้งค่าขั้นสูง"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "คำแนะนำสำหรับงาน"
+  },
+  "aiReviewSelectThread": {
+    "message": "เลือกการสนทนานี้"
+  },
+  "aiReviewSelectAll": {
+    "message": "เลือกทุกการสนทนา"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "รีวิวคอมมิต MR ทั้งหมดพร้อมกัน AI จะส่งผลการค้นหาใหม่โดยไม่เปลี่ยนโค้ด"
+  },
+  "aiReviewTaskFixHint": {
+    "message": "เลือกข้อเสนอแนะที่ต้องแก้ไข สำหรับ MR, AI ก็จะเตรียมคำตอบด้วยว่าได้ทำอะไรไปบ้าง อะไรยังไม่ได้ทำ และเพราะอะไร การสนทนาที่ยังไม่แก้ไขจะถูกเลือกก่อน"
+  },
+  "aiReviewIncludeReplies": {
+    "message": "เตรียมคำตอบด้วย"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "เลือกข้อเสนอแนะให้ AI เขียนโค้ดของคุณแก้ไข การสนทนาที่ยังไม่แก้ไขจะถูกเลือกก่อน"
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "ส่งงานให้ AI ของคุณแล้วตรวจสอบการเปลี่ยนแปลงและการทดสอบ ผลลัพธ์คือการแก้ไขและสรุปปกติ โดยไม่มีคำตอบที่พร้อมโพสต์"
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "หลังจาก push การแก้ไขแล้ว ให้ถาม AI เพื่อตรวจสอบโค้ดและอธิบายผลลัพธ์ในการสนทนาที่เลือก"
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "ตรวจสอบข้อเสนอแนะที่เลือกและหาข้อบกพร่องใหม่ เลือกเวอร์ชันที่คุณเคยรีวิวก่อน หรือเช็ค MR ปัจจุบันทั้งหมด"
+  },
+  "aiReviewSummaryFresh": {
+    "message": "งาน: ทั้งหมดของ MR ครอบคลุมทุก commit"
+  },
+  "aiReviewSummaryFix": {
+    "message": "ความคิดเห็นที่เลือก: $1; รวมบริบทการสนทนาและตัวอย่างโค้ดที่มีอยู่"
+  },
+  "aiReviewSummaryReplies": {
+    "message": "การสนทนาเพื่อตอบกลับ: $1 พร้อมบทสนทนาทั้งหมด AI ต้องเข้าถึงรีโพซิทอรี"
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "การสนทนาเพื่อตรวจสอบ: $1 พร้อมกับการรีวิวการเปลี่ยนแปลงโค้ด"
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "มีคำอธิบายรวมอยู่"
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "ไม่มีคำอธิบาย"
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "มีการเปลี่ยนแปลงโค้ดรวมอยู่ ขึ้นอยู่กับขีดจำกัดการโหลด"
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI ต้องอ่านโค้ดจากรีโพซิทอรี"
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "การสนทนาที่มีอยู่จะถูกเพิ่มเพียงเพื่อกรองข้อมูลซ้ำ"
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "การสนทนาที่มีอยู่จะไม่ถูกเพิ่ม"
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "ตัวกรองไฟล์กำลังทำงาน"
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "ไม่มีการเลือกเวอร์ชันก่อนหน้า: จะตรวจสอบ MR ปัจจุบันทั้งหมด"
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "การสนทนาร่างที่ยังไม่เผยแพร่ไม่สามารถตอบกลับและจะถูกละเว้น"
+  },
+  "aiReviewChooseFeedback": {
+    "message": "เลือกข้อเสนอแนะทางด้านซ้าย หากต้องการรีวิวใหม่ ใช้แท็บรีวิวใหม่"
+  },
+  "aiReviewNextStep": {
+    "message": "คัดลอกงานไปยังเครื่องมือ AI ของคุณ ถ้ามันตอบกลับหรือมีคอมเมนต์ ใช้ Paste AI response เพื่อตรวจสอบและแก้ไขก่อนโพสต์"
+  },
+  "aiReviewNextFixStep": {
+    "message": "ตรวจสอบการแก้ไขและทดสอบทั้งหมด จากนั้นส่งทุกคอมมิตไปที่ MR แล้วใช้ Paste AI response เพื่อตรวจสอบการตอบกลับที่เตรียมไว้ก่อนโพสต์ คอมมิตใหม่ไม่จำเป็นต้องสร้างการตอบกลับใหม่"
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "คำสั่งอัตโนมัติ (ขั้นสูง)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "บล็อกทั้งหมดเปิดใช้งานโดยค่าเริ่มต้นและใช้เฉพาะงานที่เกี่ยวข้อง แก้ไข ปิดใช้งาน หรือเคลียร์บล็อกได้ prompt งานมีคำสั่งของตัวเองด้วย ข้อมูล MR ตัวอย่าง JSON และข้อความแจ้งโหลดจะถูกสร้างแยกต่างหาก; การตรวจสอบการเผยแพร่ใช้เสมอ"
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "เพิ่มในงานเมื่อต้องการ"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "สูงสุด 1500 ตัวอักษร ข้อความว่างไม่เพิ่มอะไร การรีเซ็ตจะคืนค่าข้อความเริ่มต้นและเปิดใช้งานบล็อกนี้"
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "ใช้ {language} สำหรับภาษาตอบกลับที่เลือก ความยาวสูงสุด 1500 ตัวอักษร; ข้อความว่างจะไม่เพิ่มอะไร"
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "ใช้ {selection} สำหรับการสนทนาที่เลือกหรือยังไม่แก้ไข ความยาวสูงสุด 1500 ตัวอักษร; ข้อความว่างจะไม่เพิ่มอะไร"
+  },
+  "aiReviewRule_repository": {
+    "message": "ที่เก็บข้อมูลท้องถิ่นและระยะไกล"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "สำเนางานสำหรับแก้ไข"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "สำเนางานสำหรับตรวจสอบ"
+  },
+  "aiReviewRule_language": {
+    "message": "ภาษาตอบกลับ"
+  },
+  "aiReviewRule_scope": {
+    "message": "การตีความตัวกรองไฟล์"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "บริบทข้อเสนอแนะ"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "การแก้ไขโดยไม่มีการตอบกลับ"
+  },
+  "aiReviewRule_description_task": {
+    "message": "งานที่มีแค่คำอธิบาย"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "ข้อเสนอแนะที่เลือกหายไป"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "พร้อมโพสต์คำตอบหลังการแก้ไข"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "ขอบเขตรับตรวจสอบ"
+  },
+  "aiReviewRule_review_source": {
+    "message": "แหล่งข้อมูลสำหรับตรวจสอบ"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "การเปลี่ยนแปลงโค้ดที่รวมอยู่"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "ตรวจสอบโดยไม่รวมโค้ด"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "แหล่งที่ไม่สามารถใช้งานได้"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "การตอบกลับ JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "การหาตำแหน่งและผลลัพธ์"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "รูปแบบการตอบกลับติดตาม"
+  },
+  "aiReviewRule_same_head": {
+    "message": "ไม่เปลี่ยนหัวข้อ"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "ตำแหน่งบรรทัดในการเปรียบเทียบ"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "การเปรียบเทียบการแก้ไขในเครื่อง"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "การเปลี่ยนแปลงสาขาเป้าหมาย"
+  },
+  "aiReviewRule_full_review": {
+    "message": "ตรวจทานโดยไม่เปรียบเทียบการแก้ไข"
+  },
+  "aiReviewRule_code_only": {
+    "message": "ตรวจสอบซ้ำโดยไม่มีการสนทนา"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "ขอบเขตการสนทนาที่เลือก"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "บริบทการเปลี่ยนแปลงสะสม"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "การสนทนาที่มีอยู่ในการตรวจทานใหม่"
+  },
+  "aiReviewRule_import_task": {
+    "message": "การตรวจทานใหม่ในการนำเข้า"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "ขอบเขตการตรวจทานในการนำเข้า"
+  },
+  "aiReviewRule_import_format": {
+    "message": "รูปแบบผลลัพธ์ในการนำเข้า"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "ขอบเขตและรูปแบบการตอบกลับ"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "ขอบเขตงานตอบกลับ"
+  },
+  "jiraQuickActionAddField": {
+    "message": "เพิ่มฟิลด์"
+  },
+  "jiraQuickActionField": {
+    "message": "ฟิลด์"
+  },
+  "jiraQuickActionOperation": {
+    "message": "การดำเนินการ"
+  },
+  "jiraQuickActionValue": {
+    "message": "ค่า"
+  },
+  "jiraQuickActionRemove": {
+    "message": "ลบ"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "เพิ่ม"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "ลบ"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "แทนที่ทั้งหมด"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "วันครบกำหนด"
+  },
+  "jiraQuickActionCustom": {
+    "message": "ฟิลด์ที่กำหนดเอง (ขั้นสูง)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "ค่าที่แยกด้วยเครื่องหมายจุลภาค เพิ่ม/ลบเก็บค่าที่เหลือไว้; แทนที่ทั้งหมดจะเขียนทับรายการ"
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "รหัสฟิลด์: customfield_12345 ใส่ค่าเป็น JSON ในรูปแบบที่ฟิลด์ Jira นี้คาดหวัง"
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "ชื่อการเปลี่ยนสถานะ Jira ที่แน่นอน (หรือตำแหน่งเป้าหมาย)"
+  },
+  "jiraQuickActionValueHint": {
+    "message": "ค่าว่าง: ไม่มีการเปลี่ยนแปลง"
+  },
+  "jiraQuickActionInvalid": {
+    "message": "ตรวจสอบค่าของฟิลด์: ฟิลด์แบบกำหนดเองต้องใช้ ID และ JSON ที่ถูกต้อง; วันที่ใช้รูปแบบ YYYY-MM-DD"
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "ใช้แต่ละฟิลด์เพียงครั้งเดียวต่อปุ่ม"
+  },
+  "jiraQuickActionFailed": {
+    "message": "การทำงานล้มเหลว"
+  },
+  "jiraQuickActionPartial": {
+    "message": "สถานะเปลี่ยนแล้ว แต่การอัปเดตฟิลด์ล้มเหลว"
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "ไม่สามารถรีเฟรชปัญหาได้ เปิดแผงใหม่เพื่อดูค่าปัจจุบัน"
+  },
+  "mrActions": {
+    "message": "การกระทำ MR"
+  },
+  "mrActionsHint": {
+    "message": "สร้างปุ่มชื่อเพื่อเปลี่ยนป้ายกำกับหรือเคลียร์ฟิลด์ MR อื่นๆ ลากพวกมันในรายการปุ่มเพื่อเปลี่ยนลำดับ"
+  },
+  "mrActionsProfileHint": {
+    "message": "โปรเจกต์นี้ใช้รายการการกระทำของตัวเองหลังบันทึก ลบรายการทั้งหมดเพื่อซ่อนปุ่มเหล่านี้สำหรับโปรเจกต์นี้"
+  },
+  "mrActionAdd": {
+    "message": "เพิ่มการกระทำ MR"
+  },
+  "mrActionLabel": {
+    "message": "ชื่อปุ่ม"
+  },
+  "mrActionDelete": {
+    "message": "ลบการกระทำ"
+  },
+  "mrActionType": {
+    "message": "การกระทำ"
+  },
+  "mrActionLabels": {
+    "message": "ป้ายกำกับ"
+  },
+  "mrActionLabelsHint": {
+    "message": "ชื่อป้ายกำกับที่แน่นอน คั่นด้วยเครื่องหมายจุลภาคหรือบรรทัดใหม่ ช่องว่างภายในชื่อยังคงอยู่ การเพิ่ม/แทนอาจสร้างป้ายกำกับโครงการที่หายไปได้"
+  },
+  "mrAction_remove_labels": {
+    "message": "ลบป้ายกำกับที่ระบุ"
+  },
+  "mrAction_clear_labels": {
+    "message": "ล้างป้ายกำกับทั้งหมด"
+  },
+  "mrAction_add_labels": {
+    "message": "เพิ่มป้ายกำกับ"
+  },
+  "mrAction_set_labels": {
+    "message": "แทนที่ป้ายกำกับทั้งหมด"
+  },
+  "mrAction_clear_assignees": {
+    "message": "ล้างผู้รับมอบหมาย"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "ล้างผู้ตรวจสอบ"
+  },
+  "mrAction_clear_milestone": {
+    "message": "ล้างเป้าหมาย"
+  },
+  "mrActionInvalid": {
+    "message": "ใส่ชื่อปุ่ม เลือกการกระทำที่รองรับ และระบุป้ายกำกับอย่างน้อยหนึ่งรายการสำหรับเพิ่ม ลบ หรือแทนที่"
+  },
+  "mrActionConfirm": {
+    "message": "ใช้ “$1” กับ MR นี้ไหม?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab ไม่ส่งสถานะ rebase กลับมา โหลดคำขอรวมใหม่แล้วลองอีกครั้ง"
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab ส่งหน้างานซ้ำสำหรับ pipeline #$1 รายการงานไม่สามารถโหลดทั้งหมดได้"
+  },
+  "displayPreferencesTitle": {
+    "message": "แสดงกฎและขีดจำกัด"
+  },
+  "displayPreferencesHint": {
+    "message": "การตั้งค่าส่วนกลาง; โหลดแท็บ GitLab ใหม่หลังเปลี่ยนการตั้งค่า จำนวนงานหรือความคิดเห็นที่มากขึ้นทำให้รับส่งข้อมูลมากขึ้น การแสดงตัวอย่างบันทึกจะดาวน์โหลดบันทึกทั้งหมดก่อนเลือกบรรทัดที่ไม่ว่าง ป้ายผู้ตรวจสอบจะค้นหารูปแบบ “Reviewer(s): @username” ในความคิดเห็นที่เก่าที่สุด"
+  },
+  "failedJobsLimit": {
+    "message": "งานที่ล้มเหลวสำหรับตัวอย่าง"
+  },
+  "failedJobTraceLines": {
+    "message": "จำนวนบรรทัดบันทึกที่ไม่ว่างต่องาน"
+  },
+  "reviewerNotesLimit": {
+    "message": "คอมเมนต์ที่จะสแกนหาป้ายผู้ตรวจสอบ"
+  },
+  "mrSizeLines": {
+    "message": "ขีดจำกัดขนาด MR: จำนวนไลน์ (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "ขีดจำกัดขนาด MR: จำนวนไฟล์ (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "รูปแบบไฟล์ละเอียดอ่อนเพิ่มเติม"
+  },
+  "sensitiveFileExclusions": {
+    "message": "การตัดไฟล์ละเอียดอ่อนออก"
+  },
+  "sensitiveFileDefaults": {
+    "message": "ใช้กฎไฟล์ละเอียดอ่อนที่มีอยู่แล้ว"
+  },
+  "sizeThresholdsHint": {
+    "message": "ตัวเลขจำนวนเต็มบวกสามตัวที่เพิ่มขึ้น แยกด้วยเครื่องหมายจุลภาค ขีดจำกัดรวมอยู่ด้วย; การเปลี่ยนแปลงใหญ่คือ XL ขีดจำกัดไฟล์ใช้งานเมื่อจำนวนไลน์ไม่พร้อม"
+  },
+  "sensitivePatternsHint": {
+    "message": "แต่ละบรรทัดเป็นรูปแบบหนึ่ง รูปแบบไม่แยกตัวพิมพ์ใหญ่และพิมพ์เล็ก * หมายถึงข้อความใดก็ได้ (รวมถึง /) ? หมายถึงตัวอักษรหนึ่งตัว รูปแบบที่ไม่มี / จะตรงกับชื่อไฟล์; รูปแบบอื่นจะตรงกับพาธของรีโพสิทอรีทั้งหมด การยกเว้นมีผลมากกว่า กฎที่มีอยู่ครอบคลุมไฟล์สภาพแวดล้อม, container/CI, ไฟล์ข้อมูลรับรอง และไฟล์คีย์ส่วนตัว ปิดพวกมันถ้าอยากใช้แค่รูปแบบของคุณเอง"
+  },
+  "displayPreferencesInvalid": {
+    "message": "ตรวจสอบช่วงตัวเลข, เกณฑ์ขนาดสามระดับที่เพิ่มขึ้น และความยาวของรูปแบบไฟล์"
+  },
+  "failedJobsPreview": {
+    "message": "ตัวอย่าง: งานล้มเหลว $1 งาน — $2 บรรทัดล่าสุดที่ไม่ว่าง",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "งานล้มเหลวมากขึ้น — เปิด pipeline ทั้งหมด"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 บรรทัด, $2 ไฟล์",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 ไฟล์ถูกแก้ไข",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "การสแกนไฟล์ที่มีความลับยังไม่สมบูรณ์"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "ไม่สามารถตรวจสอบไฟล์ทุกไฟล์ได้: การร้องขอ API ล้มเหลวหรือถึงขีดจำกัดการสแกน $1 ไฟล์แล้ว รายการที่ตรงกันในนี้เป็นเพียงบางส่วน; ตรวจสอบ diff ของ MR ทั้งหมด",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "คำเตือน: รายงานนี้อาจไม่ครบถ้วน การเก็บข้อมูลจำกัดที่ $1 MRs ต่อหมวดหมู่ และ $2 กิจกรรม",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 กระทู้ที่ยังไม่แก้ไข",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "การดูตัวอย่างนี้อาจไม่ครบถ้วน: เกิดข้อผิดพลาดของ API หรือมีการตรวจสอบเพียง $2 การสนทนาแรก กระทู้ที่ยังไม่แก้ไขที่รู้จัก: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}

@@ -571,3 +571,32 @@ test('pipeline group play skips unrelated columns and recovers when its pipeline
     await page.close();
   }
 });
+
+test('all interface languages load, persist and keep AI language independent', async ({}, testInfo) => {
+  test.setTimeout(90_000);
+  const page = await context.newPage();
+  try {
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    const locales = (await fs.readdir(path.resolve(__dirname, '../../_locales'), {withFileTypes: true})).filter(entry => entry.isDirectory()).map(entry => entry.name);
+    await expect(page.locator('#language option')).toHaveCount(locales.length + 1);
+    await expect(page.locator('#ai_review_response_language option')).toHaveCount(locales.length + 1);
+    for (const locale of locales) {
+      const messages = JSON.parse(await fs.readFile(path.resolve(__dirname, '../../_locales', locale, 'messages.json'), 'utf8'));
+      await page.locator('#language').selectOption(locale);
+      await expect(page.locator('#language option[value="auto"]')).toHaveText(messages.languageAuto.message);
+      await expect.poll(async () => worker.evaluate(async () => (await chrome.storage.sync.get('language')).language)).toBe(locale);
+      await page.reload();
+      await expect(page.locator('#language')).toHaveValue(locale);
+      if (['it', 'pt_BR', 'pl', 'nl', 'ko', 'hi', 'th', 'el', 'fi'].includes(locale)) await page.screenshot({path: testInfo.outputPath('settings-' + locale + '.png')});
+      await expect(page.locator('#language option[value="auto"]')).toHaveText(messages.languageAuto.message);
+    }
+    await page.locator('#ai_review_response_language').selectOption('pt_BR');
+    await expect.poll(async () => worker.evaluate(async () => (await chrome.storage.sync.get('ai_review_response_language')).ai_review_response_language)).toBe('pt_BR');
+    await page.locator('#language').selectOption('pl');
+    await expect(page.locator('#ai_review_response_language')).toHaveValue('pt_BR');
+
+  } finally {
+    await worker.evaluate(async () => chrome.storage.sync.set({language: 'en', ai_review_response_language: 'auto'}));
+    await page.close();
+  }
+});

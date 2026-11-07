@@ -1,0 +1,88 @@
+Язык: Шведский (sv)
+
+Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. Ersätt manuella flerstegsoperationer — rebase, versionshöjning, pipelinehantering och sammanslagning — med en enda knapp. Stöder egenhostad GitLab via HTTPS och gitlab.com; tillgängliga funktioner beror på serverns möjligheter och kontots behörigheter. Inga API-token behövs — din befintliga webbläsarsession används.
+
+★ AI-GRANSKNING MED DINA EGNA VERKTYG
+
+• Fullständig MR-granskning — förbered en uppgift som omfattar alla commits i MR med konfigurerbara filfilter
+• Rätta och svara — kopiera valda synpunkter till din kodnings-AI och förbered svar som är redo att publiceras
+• Uppföljande granskning — kontrollera rättningar och ändringar sedan en vald revision, även efter force push
+• Redigerbar import — klistra in AI-kommentarer och svar som JSON, redigera texten och publicera valda poster eller spara granskningsutkast. Diskussioner kan även markeras som lösta efter att svaren publicerats
+• Egna instruktioner — anpassa promptar och automatiska instruktionsblock; välj svarsspråk
+• Manuell delning — använd valfritt AI-verktyg. Inga AI-API-nycklar i tillägget och ingen automatisk uppladdning av kod
+
+★ ÅTGÄRDER FÖR MERGE REQUESTS
+
+• Automatisk sammanslagning — gör rebase och aktivera sammanslagning efter lyckad pipeline med ett klick
+• Ship — hela releaseflödet: versionshöjning → pipeline → automatisk sammanslagning
+• Tvingad sammanslagning — slå samman utan att vänta på pipeline när CI inte behövs
+• Versionshöjning — höj versionen i package.json, pyproject.toml eller en annan fil: patch / minor / major
+• Rebase — gör rebase av grenen med eller utan versionshöjning
+• Utkast / Klar — ändra MR-status utan att redigera titeln
+• Snabbkommentarer — publicera kommentarmallar i MR med ett klick
+• Kopiera MR — kopiera titel och länk direkt till urklipp
+
+★ STYRNING AV CI/CD-PIPELINES
+
+• Ny pipeline / Avbryt — skapa eller avbryt pipelines direkt
+• Kör om alla misslyckade jobb — starta om samtliga misslyckade jobb i den senaste pipelinen samtidigt
+• Egna jobbknappar — kör valfritt CI-jobb med ett klick eller kedja flera jobb, exempelvis bygge → driftsättning
+• Snabbvy för fel — se namn på misslyckade jobb och felloggrader direkt på MR-sidan
+• Bakgrundskörning — egna jobbkedjor fortsätter när du byter sida
+
+★ JIRA-INTEGRATION UTAN API-TOKEN
+
+• Jira-statusmärken — färgkodade ärendestatusar som Klart, Pågår, QA och Att göra; ärendenycklar hämtas från MR-titlar
+• Sidopanel för ärenden — klicka på ett märke för att se titel, status, ansvarig, prioritet, sprint, epic, etiketter, beskrivning och bilagor
+• Ändra status och ansvarig — byt status och tilldela ärenden utan att lämna GitLab
+• Snabbåtgärder i Jira — kombinerade åtgärder, exempelvis statusbyte och tilldelning, med ett klick
+• Ikoner för typ och prioritet — Jiras egna ikoner i MR-listan och på detaljsidor
+• Jira-fält vid commits — visa Fix Version, status eller andra fält bredvid commits
+• Jira i dagsrapporter — ärendetitlar läggs automatiskt till i aktivitetssammanfattningar
+
+★ FÖRBÄTTRAD MR-LISTA
+
+• MR-storlek — färgkodade S / M / L / XL-märken utifrån antalet ändrade rader
+• Konfliktindikator — rött märke när grenen har sammanslagningskonflikter
+• Olösta diskussioner — se antalet öppna diskussioner direkt
+• Grennamn — källgren → målgren visas på varje MR
+• Godkännandeindikator — visar om du har godkänt respektive MR
+• Tona ned utkast — gör utkast mindre framträdande så att du kan fokusera på aktiva MR
+• Markera dina MR — blå ram gör dem lätta att hitta
+• Växlar för ”Bara mina”, ”Behöver min granskning” och ”Gruppera efter författare”
+• Märket ”Din granskning” — upptäcker omnämnanden i det konfigurerade granskarjobbet och i kommentarer
+• Kopiera från listan — kopieringsknapp vid varje MR
+
+★ PRODUKTIVITETSVERKTYG
+
+• Kommandopalett (Cmd+K / Ctrl+K) — gå till MR, pipelines, grenar och ärenden eller starta åtgärder
+• Filsökning i paletten — hitta och öppna projektfiler efter namn
+• Daglig aktivitetsrapport — sammanfattning av skapade, sammanslagna, kommenterade och godkända MR; kopiera till Slack eller Jira
+• Cherry-pick till flera grenar — överför en commit till flera grenar samtidigt med automatisk MR-skapning
+• Reservväg för cherry-pick — vid konflikt appliceras committen automatiskt igen utan versionsfilen
+• Varning för känsliga filer — orange märke när MR berör .env, Dockerfile, CI-konfiguration eller autentiseringsuppgifter
+• Git-kommandon — kopiera git checkout och git fetch för MR-grenen
+• MR-ålder — se hur länge en merge request har varit öppen
+• Markera mina kommentarer — färgad ram runt dina kommentarer i diskussioner
+
+★ ANPASSNING
+
+• Projektprofiler — olika knappar, versionsfiler och CI-jobb för varje repository
+• Dra och släpp för knappordning — ordna åtgärdsknapparna som du vill
+• Tabbredd i diffar — välj visning som 2, 4 eller 8 mellanslag
+• Fäll ihop övre fält / Dölj höger sidopanel — få större arbetsyta
+• Ljud och skrivbordsaviseringar — få besked när åtgärder lyckas eller misslyckas
+• Mörkt tema — följer automatiskt systemets inställning
+
+★ VARFÖR GITLAB MR ACTIONS?
+
+✓ Inga personliga åtkomsttoken — använder cookies från din befintliga GitLab-session
+✓ Ingen mellanliggande tjänst — GitLab- och Jira-anrop går direkt till dina konfigurerade servrar
+✓ Stöder egenhostad GitLab via HTTPS och gitlab.com; se kompatibilitetsguiden för testade API-kontrakt
+✓ Jira utan API-token — använder webbläsarsessionen
+✓ Separat konfiguration för varje projekt
+✓ Lättviktigt — bakgrundskontroller körs för åtgärder du startar; ingen telemetri eller automatisk uppladdning till AI
+✓ Gränssnittet finns på 27 språk
+✓ Öppen källkod
+
+För utvecklare som vill lägga mindre tid på att klicka i GitLab och mer tid på att skriva kod.

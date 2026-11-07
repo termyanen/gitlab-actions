@@ -1,0 +1,2242 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — ऑटोमेशन, Jira, CI/CD और AI समीक्षा"
+  },
+  "extDescription": {
+    "message": "GitLab MR ऑटोमेशन: ऑटो-मर्ज, संस्करण बढ़ाना, Jira, CI/CD और अपने AI से समीक्षा। API टोकन आवश्यक नहीं।"
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "यह कैसे काम करता है"
+  },
+  "openSettingsInTab": {
+    "message": "नई टैब में सेटिंग्स खोलें"
+  },
+  "exportSettings": {
+    "message": "सेटिंग्स निर्यात करें"
+  },
+  "importSettings": {
+    "message": "सेटिंग्स आयात करें"
+  },
+  "settingsTransferHint": {
+    "message": "सभी सेटिंग्स और प्रोजेक्ट प्रोफाइल को JSON फ़ाइल के रूप में साझा करें।"
+  },
+  "settingsImportReplace": {
+    "message": "यह सभी वर्तमान सेटिंग्स और प्रोजेक्ट प्रोफाइल को बदल देता है।"
+  },
+  "applySettingsImport": {
+    "message": "सेटिंग्स बदलें"
+  },
+  "cancelSettingsImport": {
+    "message": "रद्द करें"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — प्रोजेक्ट प्रोफाइल: $2।"
+  },
+  "settingsFileInvalid": {
+    "message": "अमान्य सेटिंग्स फ़ाइल या असमर्थित फ़ॉर्मेट।"
+  },
+  "settingsFileTooLarge": {
+    "message": "सेटिंग्स फ़ाइल Chrome Sync स्टोरेज सीमा से अधिक है।"
+  },
+  "settingsExportFailed": {
+    "message": "सेटिंग्स निर्यात नहीं की जा सकीं। कृपया पुनः प्रयास करें।"
+  },
+  "settingsImportFailed": {
+    "message": "सेटिंग्स आयात नहीं की जा सकीं। आपकी वर्तमान कॉन्फ़िगरेशन अपरिवर्तित है।"
+  },
+  "settingsImportPermissionDenied": {
+    "message": "इन सेटिंग्स को आयात करने के लिए Jira साइट तक पहुँच की अनुमति दें।"
+  },
+  "settingsImported": {
+    "message": "सेटिंग्स आयात की गई!"
+  },
+  "buttonOrder": {
+    "message": "बटन क्रम"
+  },
+  "buttonOrderHint": {
+    "message": "क्रम बदलने के लिए खींचें। विवरण देखने के लिए माउस ऊपर रखें। कस्टम जॉब के बटन नीले रंग में हैं।"
+  },
+  "general": {
+    "message": "सामान्य"
+  },
+  "soundNotifications": {
+    "message": "ध्वनि सूचनाएँ"
+  },
+  "desktopNotifications": {
+    "message": "डेस्कटॉप सूचनाएँ"
+  },
+  "showTimeTracker": {
+    "message": "MR आयु बैज दिखाएँ"
+  },
+  "skipConfirmations": {
+    "message": "MR क्रिया पुष्टि छोड़ें"
+  },
+  "uxEnhancer": {
+    "message": "MR सूची संवर्द्धन"
+  },
+  "dimDrafts": {
+    "message": "सूची में ड्राफ्ट MRs को फीका करें"
+  },
+  "highlightOwnMrs": {
+    "message": "सूची में अपने MRs को हाइलाइट करें"
+  },
+  "showOnlyMine": {
+    "message": "सूची पृष्ठ पर \"केवल मेरे\" टॉगल"
+  },
+  "toggleOnlyMine": {
+    "message": "केवल मेरे"
+  },
+  "versionBump": {
+    "message": "संस्करण बंप"
+  },
+  "filePath": {
+    "message": "फ़ाइल पथ"
+  },
+  "filePathHint": {
+    "message": "फ़ाइल जिसमें संस्करण संख्या है"
+  },
+  "versionField": {
+    "message": "संस्करण फ़ील्ड"
+  },
+  "versionFieldHint": {
+    "message": "JSON कुंजी या TOML कुंजी (जैसे \"version\" या \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "रणनीति"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "कमिट संदेश"
+  },
+  "commitMessageHint": {
+    "message": "प्लेसहोल्डर के रूप में {version} का प्रयोग करें"
+  },
+  "quickComments": {
+    "message": "त्वरित टिप्पणियाँ"
+  },
+  "quickCommentsHint": {
+    "message": "एक-क्लिक बटन जो तुरंत MR पर सामान्य टिप्पणी पोस्ट करते हैं (कोड के अंदर नहीं)। बटन कार्रवाई बार में दिखाई देते हैं।"
+  },
+  "quickCommentsAdd": {
+    "message": "टिप्पणी जोड़ें"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "त्वरित टिप्पणियाँ"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "MR पृष्ठ पर कॉन्फ़िगर करने योग्य टेम्पलेट टिप्पणी बटन। एक क्लिक में LGTM, Needs fixes, या कोई भी कस्टम टिप्पणी पोस्ट करें।"
+  },
+  "reviewers": {
+    "message": "समीक्षक"
+  },
+  "reviewersList": {
+    "message": "समीक्षकों की सूची"
+  },
+  "reviewersListHint": {
+    "message": "Reviewers: टिप्पणी में उल्लेख करने के लिए उपयोगकर्ता नाम (@user1, @user2)। सेट होने पर, टिप्पणी खोज और CI जॉब को छोड़ देता है। GitLab समीक्षक असाइनमेंट नहीं बदलता।"
+  },
+  "jobName": {
+    "message": "जॉब का नाम"
+  },
+  "jobNameHint": {
+    "message": "यदि कोई टिप्पणी \"Reviewer(s):\" पैटर्न से मेल न खाए, तो चलाया जाने वाला वैकल्पिक जॉब"
+  },
+  "customJobButtons": {
+    "message": "कस्टम जॉब बटन"
+  },
+  "customJobsHint": {
+    "message": "चेन करने के लिए कॉमाओं का उपयोग करें: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ जॉब का बटन जोड़ें"
+  },
+  "addProfileFor": {
+    "message": "+ $1 के लिए प्रोफ़ाइल जोड़ें",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "वर्तमान: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "सहेजा गया!"
+  },
+  "unsavedChanges": {
+    "message": "असुरक्षित परिवर्तन..."
+  },
+  "customFile": {
+    "message": "कस्टम फ़ाइल..."
+  },
+  "plainText": {
+    "message": "सामान्य पाठ"
+  },
+  "removeProfile": {
+    "message": "$1 के लिए प्रोफ़ाइल हटाएँ?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "डिफ़ॉल्ट"
+  },
+  "buttonsFor": {
+    "message": "$1 के लिए बटन",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "इस परियोजना के लिए कौन से बटन दिखाए जाएँ इसे ओवरराइड करें।"
+  },
+  "leaveEmptyDefault": {
+    "message": "डिफ़ॉल्ट का उपयोग करने के लिए खाली छोड़ दें"
+  },
+  "projectSpecificJobs": {
+    "message": "प्रोजेक्ट के लिए विशेष जॉब। इन्हें क्रम से चलाने के लिए कॉमा से अलग करें।"
+  },
+  "languageLabel": {
+    "message": "भाषा"
+  },
+  "languageAuto": {
+    "message": "ऑटो (ब्राउज़र)"
+  },
+  "btnVersion": {
+    "message": "संस्करण बढ़ाएँ"
+  },
+  "btnRebase": {
+    "message": "रीबेस"
+  },
+  "btnRebaseVersion": {
+    "message": "रीबेस + संस्करण"
+  },
+  "btnRebaseAutomerge": {
+    "message": "रीबेस + ऑटो-मर्ज"
+  },
+  "btnRebaseForce": {
+    "message": "रीबेस + फोर्स मर्ज"
+  },
+  "btnShip": {
+    "message": "रीबेस + संस्करण + ऑटो-मर्ज"
+  },
+  "btnForceShip": {
+    "message": "रीबेस + संस्करण + फोर्स मर्ज"
+  },
+  "btnReviewers": {
+    "message": "समीक्षक"
+  },
+  "btnPipelineRestart": {
+    "message": "नई पाइपलाइन"
+  },
+  "btnPipelineCancel": {
+    "message": "पाइपलाइन रद्द करें"
+  },
+  "btnDraftToggle": {
+    "message": "मसौदा / तैयार टॉगल"
+  },
+  "btnRetryFailed": {
+    "message": "असफल जॉब फिर से चलाएँ"
+  },
+  "btnCopyMr": {
+    "message": "MR कॉपी करें"
+  },
+  "hintVersion": {
+    "message": "कॉन्फ़िगर की गई फ़ाइल (जैसे package.json) पढ़ता है, चुनी गई रणनीति (पैच/माइनर/मेजर) द्वारा संस्करण बढ़ाता है, आपकी टेम्पलेट संदेश के साथ कमिट करता है।"
+  },
+  "hintRebase": {
+    "message": "स्रोत ब्रांच को लक्ष्य ब्रांच पर रीबेस करता है। मर्ज नहीं करता और ऑटो-मर्ज सक्षम नहीं करता।"
+  },
+  "hintRebaseVersion": {
+    "message": "ब्रांच को लक्ष्य पर रीबेस करता है (यदि आवश्यक हो), फिर कॉन्फ़िगर की गई फ़ाइल में संस्करण बढ़ाता है। मर्ज नहीं करता।"
+  },
+  "hintRebaseAutomerge": {
+    "message": "ब्रांच को लक्ष्य पर रीबेस करता है (यदि प्रोजेक्ट रीबेस/फास्ट-फॉरवर्ड का उपयोग करता है)। फिर 'पाइपलाइन सफल होने पर मर्ज करें' सक्षम करता है। MR से स्क्वैश/ब्रांच हटाने की सेटिंग्स का उपयोग करता है।"
+  },
+  "hintRebaseForce": {
+    "message": "स्किप CI के साथ रीबेस करता है, सभी चल रही पाइपलाइनों को रद्द करता है, फिर तुरंत मर्ज करता है बिना CI का इंतजार किए। MR से स्क्वैश/ब्रांच हटाने की सेटिंग्स का उपयोग करता है।"
+  },
+  "hintShip": {
+    "message": "पूर्ण फ्लो: रीबेस → कॉन्फ़िगर की गई फ़ाइल में संस्करण बढ़ाएं → MR के सिंक होने का इंतजार करें → नई पाइपलाइन का इंतजार करें → ऑटो-मर्ज सक्षम करें।"
+  },
+  "hintForceShip": {
+    "message": "फास्ट फ्लो: रीबेस (स्किप CI) → संस्करण बढ़ाएं → 15 सेकंड प्रतीक्षा करें → पाइपलाइन रद्द करें → तुरंत मर्ज करें। CI चेक छोड़ता है।"
+  },
+  "hintReviewers": {
+    "message": "कॉन्फ़िगर किए गए समीक्षकों का उल्लेख करें, हाल की टिप्पणियों में Reviewer(s): टिप्पणी का पुनः उपयोग करें, या कॉन्फ़िगर किया गया CI जॉब चलाएँ।"
+  },
+  "hintPipelineRestart": {
+    "message": "API के माध्यम से स्रोत ब्रांच के लिए एक नया पाइपलाइन बनाता है। उपयोगी है जब पाइपलाइन अटकी हुई हो या आपको एक ताज़ा रन चाहिए।"
+  },
+  "hintPipelineCancel": {
+    "message": "इस MR के लिए लौटाए गए चल रहे, लंबित या बनाए गए पाइपलाइनों को रद्द करने का अनुरोध करता है।"
+  },
+  "hintDraftToggle": {
+    "message": "MR शीर्षक से \"Draft:\" उपसर्ग जोड़ता या हटाता है। कोई अन्य MR सेटिंग्स नहीं बदलता।"
+  },
+  "hintRetryFailed": {
+    "message": "MR की वर्तमान पाइपलाइन में असफल जॉब फिर से चलाता है। सफल जॉब पर कोई असर नहीं पड़ता।"
+  },
+  "hintCopyMr": {
+    "message": "MR शीर्षक और लिंक को क्लिपबोर्ड पर कॉपी करता है।"
+  },
+  "toastRebasing": {
+    "message": "रीबेसिंग..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "ऑटो-मर्ज सक्षम कर रहा है..."
+  },
+  "toastStep12Rebasing": {
+    "message": "चरण 1/2: रीबेसिंग..."
+  },
+  "toastStep22Automerge": {
+    "message": "चरण 2/2: ऑटो-मर्ज सक्षम कर रहा है..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "चरण 1/2: रीबेसिंग (CI छोड़ें)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "चरण 2/2: पाइपलाइन रद्द करना और मर्ज करना..."
+  },
+  "toastCancellingMerging": {
+    "message": "पाइपलाइन रद्द करना और विलय करना..."
+  },
+  "toastCreatingPipeline": {
+    "message": "$1 के लिए नई पाइपलाइन बनाना...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "$1 पाइपलाइन रद्द करना...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "तैयार के रूप में चिह्नित करना..."
+  },
+  "toastMarkingDraft": {
+    "message": "ड्राफ्ट के रूप में अंकन ..."
+  },
+  "toastRetrying": {
+    "message": "$1 असफल जॉब फिर से चलाए जा रहे हैं…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "वर्तमान एमआर पाइपलाइन में कोई असफल जॉब नहीं"
+  },
+  "toastNoRunningPipelines": {
+    "message": "रद्द करने के लिए कोई पाइपलाइन नहीं चल रही है"
+  },
+  "toastAssigningReviewers": {
+    "message": "समीक्षक पोस्ट करने का उल्लेख ..."
+  },
+  "toastRepostingReviewers": {
+    "message": "समीक्षकों की टिप्पणी को फिर से पोस्ट करना ..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "समीक्षकों की टिप्पणी नहीं मिली, $1 चलाया जा रहा है…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "संस्करण बढ़ाया जा रहा है…"
+  },
+  "toastWaitingSync": {
+    "message": "MR के v$1 से सिंक होने की प्रतीक्षा है…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "पाइपलाइन की प्रतीक्षा कर रहा है..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "ऑटो-मर्ज का प्रयास $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "एमआर के सिंक होने की प्रतीक्षा कर रहा है... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "\"$1\" की प्रतीक्षा कर रहा है... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "“$1” जॉब शुरू किया जा रहा है…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "“$1” जॉब फिर से चलाया जा रहा है…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "जॉब \"$1\" पहले ही सफल हो चुकी है, छोड़ रही है",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "जॉब \"$1\" पहले से ही $2 है, प्रतीक्षा कर रहा है...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 पूरा हुआ",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 विफल: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR का शीर्षक और लिंक कॉपी किया गया!"
+  },
+  "toastWaiting15s": {
+    "message": "मर्ज से पहले 15 सेकंड प्रतीक्षा करें..."
+  },
+  "confirmRebase": {
+    "message": "शाखा को रीबेस करें?"
+  },
+  "confirmRebaseVersion": {
+    "message": "रीबेस → संस्करण बढ़ाएँ?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "रीबेस → स्वचालित मर्ज?"
+  },
+  "confirmAutomerge": {
+    "message": "स्वचालित मर्ज सक्षम करें?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ रीबेस → अभी मर्ज करें?"
+  },
+  "confirmForce": {
+    "message": "⚠️ अभी मर्ज करें (पाइपलाइन छोड़ें)?"
+  },
+  "confirmShip": {
+    "message": "रीबेस → संस्करण बढ़ाएँ → स्वचालित मर्ज?"
+  },
+  "confirmShipNoRebase": {
+    "message": "संस्करण बढ़ाएँ → स्वचालित मर्ज?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ रीबेस → संस्करण बढ़ाएँ → अभी मर्ज करें?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ संस्करण बढ़ाएँ → अभी मर्ज करें?"
+  },
+  "confirmNewPipeline": {
+    "message": "इस शाखा के लिए नई पाइपलाइन बनाएं?"
+  },
+  "confirmCancelPipeline": {
+    "message": "सभी चल रही पाइपलाइन रद्द करें?"
+  },
+  "labelAutomerge": {
+    "message": "स्वचालित मर्ज"
+  },
+  "labelForceMerge": {
+    "message": "जबरदस्ती मर्ज करें"
+  },
+  "labelVersionAutomerge": {
+    "message": "संस्करण + स्वचालित मर्ज"
+  },
+  "labelVersionForceMerge": {
+    "message": "संस्करण + जबरदस्ती मर्ज"
+  },
+  "labelMarkReady": {
+    "message": "तैयार के रूप में चिह्नित करें"
+  },
+  "labelMarkDraft": {
+    "message": "ड्राफ्ट के रूप में चिह्नित करें"
+  },
+  "labelRetryFailed": {
+    "message": "असफल जॉब फिर से चलाएँ"
+  },
+  "labelNewPipeline": {
+    "message": "नई पाइपलाइन"
+  },
+  "timeTrackerTitle": {
+    "message": "MR बनाये जाने के बाद समय: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "एक-क्लिक क्रियाओं के साथ अपने मर्ज रिक्वेस्ट वर्कफ़्लो को तेज़ करें।"
+  },
+  "welcomeQuickStart": {
+    "message": "त्वरित शुरुआत"
+  },
+  "welcomeStep1Title": {
+    "message": "किसी भी मर्ज रिक्वेस्ट पेज को खोलें"
+  },
+  "welcomeStep1Desc": {
+    "message": "GitLab.com या आपके स्वयं-होस्टेड GitLab में साइन इन करते समय किसी HTTPS MR पेज को खोलें। एक्सटेंशन को उस साइट तक पहुंच की अनुमति दें।"
+  },
+  "welcomeStep2Title": {
+    "message": "कार्रवाई बटन दिखाई दें"
+  },
+  "welcomeStep2Desc": {
+    "message": "बटन MR पेज पर दिखाई देते हैं। पहली स्थापना पर एक प्रारंभिक सेट सक्षम होता है।"
+  },
+  "welcomeStep3Title": {
+    "message": "एक्सटेंशन पॉपअप के माध्यम से अनुकूलित करें"
+  },
+  "welcomeStep3Desc": {
+    "message": "बटन सक्षम/अक्षम करने, संस्करण बंप फ़ाइल सेट करने, कस्टम जॉब बटन जोड़ने और अधिक के लिए एक्सटेंशन आइकन पर क्लिक करें।"
+  },
+  "welcomeEnabledDefault": {
+    "message": "डिफ़ॉल्ट रूप से सक्षम"
+  },
+  "welcomeMoreActions": {
+    "message": "अधिक कार्य (सेटिंग में सक्षम करें)"
+  },
+  "welcomeHowItWorks": {
+    "message": "यह कैसे काम करता है"
+  },
+  "welcomeHowDesc": {
+    "message": "यह एक्सटेंशन आपकी मौजूदा GitLab सत्र (कुकीज़) का उपयोग करके आपके लिए GitLab API को कॉल करता है। किसी व्यक्तिगत एक्सेस टोकन की आवश्यकता नहीं।"
+  },
+  "welcomeHowList1": {
+    "message": "GitLab.com और सेल्फ-होस्टेड GitLab पर HTTPS के माध्यम से; सुविधाएँ सर्वर API, पेज लेआउट और आपकी अनुमति पर निर्भर करती हैं।"
+  },
+  "welcomeHowList2": {
+    "message": "क्रियाएँ आपके लॉग इन उपयोगकर्ता की वही अनुमतियाँ उपयोग करती हैं।"
+  },
+  "welcomeHowList3": {
+    "message": "कस्टम जॉब चेन पृष्ठभूमि में चलते हैं। API एक्सेस के लिए उसी GitLab में एक साइन-इन किए हुए टैब को खुला रखें।"
+  },
+  "welcomeHowList4": {
+    "message": "प्रति-प्रोजेक्ट प्रोफाइल आपको विभिन्न रिपॉज़िटरी के लिए बटन कस्टमाइज़ करने देती हैं।"
+  },
+  "welcomeTip": {
+    "message": "आप पॉपअप सेटिंग्स में प्रति-प्रोजेक्ट प्रोफाइल बना सकते हैं। यह तब उपयोगी होता है जब विभिन्न प्रोजेक्ट्स को अलग संस्करण फाइल या कस्टम CI जॉब्स की आवश्यकता होती है।"
+  },
+  "welcomeOpenSettings": {
+    "message": "सेटिंग्स खोलें"
+  },
+  "cardAutomergeTitle": {
+    "message": "ऑटो-मर्ज"
+  },
+  "cardAutomergeDesc": {
+    "message": "शाखा को रीबेस करें (यदि आवश्यक हो) और पाइपलाइन सफल होने पर मर्ज सक्षम करें।"
+  },
+  "cardNewPipelineTitle": {
+    "message": "नई पाइपलाइन"
+  },
+  "cardNewPipelineDesc": {
+    "message": "स्रोत शाखा के लिए एक क्लिक में नई पाइपलाइन बनाएं।"
+  },
+  "cardCancelPipelineTitle": {
+    "message": "पाइपलाइन रद्द करें"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "चल रहे या लंबित MR पाइपलाइन को रद्द करने का अनुरोध करें।"
+  },
+  "cardDraftToggleTitle": {
+    "message": "ड्राफ्ट टॉगल"
+  },
+  "cardDraftToggleDesc": {
+    "message": "शीर्षक को संपादित किए बिना MR को ड्राफ्ट और रेडी स्थिति के बीच स्विच करें।"
+  },
+  "cardVersionBumpTitle": {
+    "message": "संस्करण बढ़ाना"
+  },
+  "cardVersionBumpDesc": {
+    "message": "package.json, pyproject.toml, या किसी भी कस्टम फ़ाइल में संस्करण बढ़ाएँ। कॉन्फ़िगर करने योग्य रणनीति (पैच/माइनर/मेजर)।"
+  },
+  "cardShipTitle": {
+    "message": "शिप (संस्करण + मर्ज)"
+  },
+  "cardShipDesc": {
+    "message": "आवश्यकता होने पर रीबेस करें, संस्करण बढ़ाएँ और ऑटो-मर्ज का अनुरोध करें। कार्रवाई पूरी होने तक MR टैब खुला रखें।"
+  },
+  "cardForceMergeTitle": {
+    "message": "फोर्स मर्ज"
+  },
+  "cardForceMergeDesc": {
+    "message": "पाइपलाइन की सफलता की प्रतीक्षा किए बिना मर्ज का अनुरोध करें। GitLab अनुमतियाँ और मर्ज नियम अभी भी लागू हैं।"
+  },
+  "cardReviewersTitle": {
+    "message": "समीक्षक"
+  },
+  "cardReviewersDesc": {
+    "message": "कॉन्फ़िगर किए गए उपयोगकर्ता नामों का उल्लेख एक टिप्पणी में करें, पुनः उपयोग करें एक समीक्षक टिप्पणी, या CI जॉब चलाएँ। GitLab के मूल समीक्षक फ़ील्ड को असाइन नहीं करता।"
+  },
+  "uiCustomization": {
+    "message": "UI कस्टमाइजेशन"
+  },
+  "collapseBars": {
+    "message": "शीर्ष बार को संक्षिप्त करने का बटन"
+  },
+  "hideRightSidebar": {
+    "message": "MR पेजों पर दाईं साइडबार छिपाएँ"
+  },
+  "collapseTopBars": {
+    "message": "शीर्ष बार बदलें"
+  },
+  "cardCollapseTitle": {
+    "message": "शीर्ष बार को संकुचित करें"
+  },
+  "cardCollapseDesc": {
+    "message": "GitLab नेविगेशन बार को संकुचित/विस्तारित करने के लिए एक बटन जोड़ता है। जगह बचाता है और सामग्री पर ध्यान केंद्रित करने में मदद करता है।"
+  },
+  "cardHideSectionsTitle": {
+    "message": "UI सेक्शन छिपाएँ"
+  },
+  "cardHideSectionsDesc": {
+    "message": "MR पेजों पर दाईं साइडबार छिपाएँ ताकि पूरी चौड़ाई का सामग्री क्षेत्र मिल सके।"
+  },
+  "jiraIntegration": {
+    "message": "Jira एकीकरण"
+  },
+  "jiraUrl": {
+    "message": "Jira URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center URL, जैसे https://jira.company.com — Jira में साइन इन करें, फिर Jira साइट एक्सेस की अनुमति दें पर क्लिक करें। Cloud पूरी तरह समर्थित नहीं है।"
+  },
+  "jiraGrantAccess": {
+    "message": "Jira साइट एक्सेस की अनुमति दें"
+  },
+  "jiraAccessGranted": {
+    "message": "साइट एक्सेस दिए गए। इस ब्राउज़र में Jira में साइन इन करें।"
+  },
+  "jiraUrlInvalid": {
+    "message": "एक HTTPS Jira मूल URL दर्ज करें, बिना क्रेडेंशियल/क्वेरी/फ्रैगमेंट के।"
+  },
+  "jiraErrorAuth": {
+    "message": "आपका Jira सत्र समाप्त हो गया है या साइन-इन की आवश्यकता है। Jira खोलें, साइन इन करें, फिर लोडिंग दोबारा कोशिश करें।"
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira ने इस इश्यू या ऑपरेशन तक पहुँच रोक दी है। अपने Jira खाते और अनुमतियों की जाँच करें।"
+  },
+  "jiraErrorPermission": {
+    "message": "एक्सटेंशन इस Jira साइट तक पहुँच नहीं सकता। एक्सटेंशन सेटिंग्स में इसकी साइट अनुमति और Jira URL की जाँच करें।"
+  },
+  "jiraErrorNetwork": {
+    "message": "Jira तक पहुँचना संभव नहीं था। अपना कनेक्शन, VPN और Jira URL जाँचें, फिर लोड करने का प्रयास करें।"
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira अस्थायी रूप से अनुपलब्ध है या अनुरोधों को सीमित कर रहा है। प्रतीक्षा करें और फिर से लोड करें।"
+  },
+  "jiraErrorNotFound": {
+    "message": "Jira इश्यू नहीं मिला या यह आपके खाते के लिए दिखाई नहीं दे रहा है।"
+  },
+  "jiraErrorResponse": {
+    "message": "Jira ने एक असमर्थित प्रतिक्रिया लौटाई। URL और सर्वर/डेटा सेंटर संगतता की जाँच करें।"
+  },
+  "jiraErrorUnknown": {
+    "message": "Jira अनुरोध विफल हो गया। इश्यू और अपनी पहुँच की जाँच करने के लिए Jira खोलें।"
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "बदलाव पहले ही लागू किया जा चुका हो सकता है। क्रिया को दोहराने से पहले Jira में इश्यू जाँचें।"
+  },
+  "jiraErrorTransitions": {
+    "message": "Jira ट्रांज़िशन्स लोड नहीं हो सके।"
+  },
+  "jiraOpenSite": {
+    "message": "Jira खोलें"
+  },
+  "jiraRetryRead": {
+    "message": "पुनः लोड करने का प्रयास करें"
+  },
+  "jiraDismissError": {
+    "message": "बंद करें"
+  },
+  "jiraTicketRegex": {
+    "message": "टिकट रेगेक्स"
+  },
+  "jiraTicketRegexHint": {
+    "message": "MR शीर्षकों से टिकट ID निकालने के लिए कस्टम रेगुलर एक्सप्रेशन। डिफ़ॉल्ट: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "MR सूची में इश्यू प्रकार और प्राथमिकता आइकन दिखाएँ"
+  },
+  "jiraQuickActions": {
+    "message": "त्वरित क्रियाएँ"
+  },
+  "jiraQuickActionsHint": {
+    "message": "हर बटन के लिए फ़ील्ड का कोई भी संयोजन चुनें। केवल वे बदलाव रखें जो बटन को करने चाहिए। संस्करण और घटक Jira प्रोजेक्ट में पहले से मौजूद होने चाहिए।"
+  },
+  "jiraQuickActionsAdd": {
+    "message": "क्रिया जोड़ें"
+  },
+  "jiraQuickActionLabel": {
+    "message": "लेबल"
+  },
+  "jiraQuickActionStatus": {
+    "message": "स्थिति"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "उपयोगकर्ता नाम"
+  },
+  "jiraSidebarStatus": {
+    "message": "स्थिति"
+  },
+  "jiraSidebarType": {
+    "message": "प्रकार"
+  },
+  "jiraSidebarPriority": {
+    "message": "प्राथमिकता"
+  },
+  "jiraSidebarAssignee": {
+    "message": "नियुक्तकर्ता"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "असाइन नहीं किया गया"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "उपयोगकर्ता खोजें..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "कोई उपयोगकर्ता नहीं मिला"
+  },
+  "jiraSidebarUnassign": {
+    "message": "अविनियुक्त करें"
+  },
+  "jiraSidebarReporter": {
+    "message": "रिपोर्टर"
+  },
+  "jiraSidebarLabels": {
+    "message": "लेबल्स"
+  },
+  "jiraSidebarCreated": {
+    "message": "बनाया गया"
+  },
+  "jiraSidebarUpdated": {
+    "message": "अपडेट किया गया"
+  },
+  "jiraSidebarDescription": {
+    "message": "विवरण"
+  },
+  "jiraSidebarEpic": {
+    "message": "महाकाव्य"
+  },
+  "jiraSidebarSprint": {
+    "message": "स्प्रिंट"
+  },
+  "jiraSidebarComponents": {
+    "message": "घटक"
+  },
+  "jiraSidebarResolution": {
+    "message": "समाधान"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "प्रभावित करता है"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "फिक्स संस्करण"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "कोई नहीं"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "कोई संस्करण नहीं मिला"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "संस्करण खोजें..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "फिक्स संस्करण अपडेट करने में विफल रहा"
+  },
+  "jiraSidebarAttachments": {
+    "message": "संलग्नक"
+  },
+  "jiraSidebarComments": {
+    "message": "टिप्पणियाँ"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "एक टिप्पणी जोड़ें..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "टिप्पणी"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "और टिप्पणियाँ दिखाएँ"
+  },
+  "jiraSidebarNoComments": {
+    "message": "अभी तक कोई टिप्पणी नहीं"
+  },
+  "jiraSidebarCommentError": {
+    "message": "टिप्पणी पोस्ट करने में विफल"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "टिप्पणी हटाएँ"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "क्या इस टिप्पणी को हटाना है?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "टिप्पणी हटाने में विफल रहा"
+  },
+  "cardJiraTitle": {
+    "message": "जिरा स्थिति बैज"
+  },
+  "cardJiraDesc": {
+    "message": "MR सूची पृष्ठ पर जिरा टिकट स्थिति दिखाता है। MR शीर्षक (जैसे CCT-1111) से टिकट आईडी पार्स करता है और रंगीन स्थिति बैज दिखाता है। सेटिंग्स में अपनी जिरा URL सेट करें।"
+  },
+  "cardJiraRegexTitle": {
+    "message": "कस्टम टिकट रेगेक्स"
+  },
+  "cardJiraRegexDesc": {
+    "message": "MR शीर्षक से जिरा टिकट आईडी पार्स करने के लिए कस्टम नियमित अभिव्यक्ति कॉन्फ़िगर करें। उपयोगी जब आपका प्रोजेक्ट गैर-मानक टिकट उपसर्ग का उपयोग करता है।"
+  },
+  "cardJiraSidebarTitle": {
+    "message": "जिरा टिकट साइडबार"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "किसी भी Jira बैज पर क्लिक करें ताकि एक साइडबार खुल सके जिसमें पूरी टिकट जानकारी हो — सारांश, स्थिति, प्रकार, प्राथमिकता, असाइनी, और विवरण। GitLab छोड़ने बिना अपने अपने कमेंट पढ़ें, पोस्ट करें और हटाएँ। प्रोजेक्ट के उपलब्ध संस्करणों में से फिक्स वर्ज़न सीधे साइडबार में चुने जा सकते हैं।"
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "साइडबार में अटैचमेंट"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Jira टिकट्स से सीधे साइडबार में इमेज, वीडियो और फाइल्स देखें। इमेज और वीडियो पूरे स्क्रीन वाले लाइटबॉक्स में खुलते हैं।"
+  },
+  "cardJiraDetailTitle": {
+    "message": "MR पेज पर Jira बैज"
+  },
+  "cardJiraDetailDesc": {
+    "message": "MR शीर्षक पर Jira टिकट स्थिति बैज दिखाए जाते हैं। बैज पर क्लिक करें ताकि साइडबार पूरी टिकट जानकारी के साथ खुले।"
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Jira स्थिति बदलें"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "साइडबार से सीधे टिकट स्थिति बदलें। केवल वर्तमान स्थिति से उपलब्ध ट्रांज़िशन दिखाता है।"
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Jira असाइनी बदलें"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "असाइन को खोजने और पुन: असाइन करने के लिए क्लिक करें। अवतार के साथ ऑटो-कंप्लीट, असाइन हटाने के लिए अनअसाइन बटन।"
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira त्वरित क्रियाएँ"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "स्थिति, असाइन, लेबल, संस्करण और अन्य फ़ील्ड के लिए वन-क्लिक बटन। प्रत्येक बटन एक या कई फ़ील्ड अपडेट कर सकता है।"
+  },
+  "cardJiraDetailsTitle": {
+    "message": "इश्यू टाइप और प्राथमिकता आइकन"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "MR सूची और विवरण पृष्ठों पर स्थिति बैज के पास Jira इश्यू टाइप और प्राथमिकता आइकन दिखाएँ। मूल Jira आइकन का उपयोग करता है।"
+  },
+  "cardRebaseTitle": {
+    "message": "रिबेस"
+  },
+  "cardRebaseDesc": {
+    "message": "स्रोत ब्रांच को लक्ष्य ब्रांच पर मर्ज किए बिना रिबेस करें।"
+  },
+  "cardRebaseVersionTitle": {
+    "message": "रिबेस + संस्करण"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "ब्रांच को रिबेस करें और एक क्लिक में संस्करण बढ़ाएँ। मर्ज नहीं करता।"
+  },
+  "cardCopyMrTitle": {
+    "message": "MR कॉपी करें"
+  },
+  "cardCopyMrDesc": {
+    "message": "MR शीर्षक और लिंक को एक क्लिक में क्लिपबोर्ड में कॉपी करें।"
+  },
+  "cardRetryFailedTitle": {
+    "message": "असफल जॉब फिर से चलाएँ"
+  },
+  "cardRetryFailedDesc": {
+    "message": "MR की वर्तमान पाइपलाइन में असफल जॉब फिर से चलाएँ। सफल जॉब पर कोई असर नहीं पड़ता।"
+  },
+  "welcomeMrListFeatures": {
+    "message": "MR सूची पृष्ठ संवर्द्धन"
+  },
+  "cardDimDraftsTitle": {
+    "message": "ड्राफ्ट MRs को फीका करें"
+  },
+  "cardDimDraftsDesc": {
+    "message": "मर्ज रिक्वेस्ट सूची पृष्ठ पर ड्राफ्ट MRs को विज़ुअली फीका करें ताकि आप सक्रिय MRs पर ध्यान केंद्रित कर सकें।"
+  },
+  "cardHighlightOwnTitle": {
+    "message": "अपने MRs हाइलाइट करें"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "अपनी सूची में अपने MRs को नीले बॉर्डर के साथ हाइलाइट करें ताकि जल्दी पहचान हो सके।"
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"केवल मेरे\" टॉगल"
+  },
+  "cardOnlyMineDesc": {
+    "message": "MR सूची को केवल आपकी मर्ज रिक्वेस्ट दिखाने के लिए एक-क्लिक टॉगल।"
+  },
+  "cardMrAgeTitle": {
+    "message": "MR उम्र बैज"
+  },
+  "cardMrAgeDesc": {
+    "message": "यह दिखाता है कि MR कब बनाया गया था, MR पृष्ठ पर बैज के रूप में प्रदर्शित।"
+  },
+  "showReviewerBadge": {
+    "message": "टिप्पणियों से \"आपकी समीक्षा\" बैज"
+  },
+  "badgeYourReview": {
+    "message": "आपकी समीक्षा"
+  },
+  "badgeYourReviewHint": {
+    "message": "आपको MR टिप्पणियों में समीक्षक के रूप में उल्लेखित किया गया है"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "\"आपकी समीक्षा\" बैज"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "सबसे पुराने कमेंट्स में “Reviewer(s): @you” खोजता है। स्कैन की गहराई कॉन्फ़िगर करने योग्य है (डिफ़ॉल्ट रूप से 10)। GitLab की बिल्ट-इन रिव्यूअर फ़ीचर से अलग।"
+  },
+  "showNeedsReview": {
+    "message": "लिस्ट पेज पर \"Needs my review\" टॉगल"
+  },
+  "toggleNeedsReview": {
+    "message": "मेरी समीक्षा आवश्यक है"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "\"Needs my review\" टॉगल"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "MR लिस्ट को फ़िल्टर करने के लिए एक-क्लिक टॉगल, जिससे केवल वे मर्ज रिक्वेस्ट दिखाई दें जहाँ आप रिव्यूअर के रूप में असाइन किए गए हैं।"
+  },
+  "showCopyMr": {
+    "message": "MR लिस्ट आइटम्स पर कॉपी बटन"
+  },
+  "showThreadsBadge": {
+    "message": "MR लिस्ट पर अनसुल्व्ड थ्रेड्स की संख्या"
+  },
+  "showSizeBadge": {
+    "message": "MR लिस्ट पर MR साइज़ लेबल्स (S/M/L/XL)"
+  },
+  "showConflictsBadge": {
+    "message": "MR लिस्ट पर कॉन्फ़्लिक्ट इंडिकेटर दिखाएँ"
+  },
+  "showApprovalBadge": {
+    "message": "MR लिस्ट पर अप्रूवल काउंट और मेरा अप्रूवल इंडिकेटर दिखाएँ"
+  },
+  "approvalBadgeMine": {
+    "message": "आपने अप्रूव किया"
+  },
+  "approvalBadgeMineShort": {
+    "message": "आप"
+  },
+  "cardThreadsTitle": {
+    "message": "अनसुल्व्ड थ्रेड्स की संख्या"
+  },
+  "cardThreadsDesc": {
+    "message": "अनसुल्व्ड थ्रेड्स की संख्या दिखाएँ। \"+\" पूरे पहले पेज को दर्शाता है; \"?\" का मतलब है कि संख्या उपलब्ध नहीं है।"
+  },
+  "cardSizeTitle": {
+    "message": "MR साइज़ लेबल्स"
+  },
+  "cardSizeDesc": {
+    "message": "डिस्प्ले नियमों और सीमाओं में कॉन्फ़िगर करने योग्य लाइन और फ़ाइल थ्रेशोल्ड के साथ S/M/L/XL बैज।"
+  },
+  "conflictsBadge": {
+    "message": "संघर्ष"
+  },
+  "conflictsBadgeHint": {
+    "message": "इस MR में मर्ज संघर्ष हैं जिन्हें हल करना आवश्यक है"
+  },
+  "cardConflictsTitle": {
+    "message": "संघर्ष संकेतक"
+  },
+  "cardConflictsDesc": {
+    "message": "जब ब्रांच में मर्ज संघर्ष हों तो MR डिटेल पेज पर लाल CONFLICTS बैज दिखाता है।"
+  },
+  "cardApprovalTitle": {
+    "message": "मेरी अनुमोदन संकेतक"
+  },
+  "cardApprovalDesc": {
+    "message": "यह दिखाता है कि आपने सूची पृष्ठ पर प्रत्येक MR को अनुमोदित किया है या नहीं। आपकी अनुमोदन को दूसरों द्वारा किये गए अनुमोदनों से अलग करता है।"
+  },
+  "showBranches": {
+    "message": "MR सूची पर स्रोत और लक्ष्य ब्रांच दिखाएँ"
+  },
+  "showBranchesLinks": {
+    "message": "ब्रांच नामों को क्लिक करने योग्य बनाएँ (ब्रांच ट्री खोलें)"
+  },
+  "cardBranchesTitle": {
+    "message": "MR सूची पर ब्रांच नाम"
+  },
+  "cardBranchesDesc": {
+    "message": "सूची में प्रत्येक MR पर स्रोत और लक्ष्य ब्रांच के नाम दिखाता है, ताकि आप देख सकें कि कोड कहाँ से आ रहा है और कहाँ मर्ज हो रहा है।"
+  },
+  "cardCopyMrListTitle": {
+    "message": "सूची से MR कॉपी करें"
+  },
+  "cardCopyMrListDesc": {
+    "message": "सूची पृष्ठ पर प्रत्येक MR में एक कॉपी बटन जोड़ता है। एक क्लिक में MR शीर्षक और लिंक को क्लिपबोर्ड में कॉपी करता है।"
+  },
+  "versionFromTarget": {
+    "message": "लक्षित शाखा से संस्करण पढ़ें"
+  },
+  "versionFromTargetHint": {
+    "message": "स्रोत शाखा के बजाय लक्षित शाखा (जैसे मुख्य) से वर्तमान संस्करण पढ़ें। पुराने संस्करणों से बचने के लिए इसे मर्ज कमिट रणनीति के साथ उपयोग करें।"
+  },
+  "showFailedJobView": {
+    "message": "MR पृष्ठ पर असफल जॉब त्वरित दृश्य दिखाएँ"
+  },
+  "failedJobTraceError": {
+    "message": "ट्रेस लोड नहीं कर सका"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "असफल जॉब त्वरित दृश्य"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "MR पृष्ठ पर असफल जॉब और लॉग की अंतिम पंक्तियाँ देखें। जॉब और पंक्तियों की संख्या प्रदर्शन नियमों और सीमाओं की सेटिंग में बदली जा सकती है।"
+  },
+  "showCmdPalette": {
+    "message": "कमांड पैलेट (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "दैनिक गतिविधि रिपोर्ट"
+  },
+  "standupJiraEnrich": {
+    "message": "रिपोर्ट में Jira टिकट शीर्षक दिखाएँ"
+  },
+  "cmdPlaceholder": {
+    "message": "एक कमांड टाइप करें..."
+  },
+  "cmdFooterNavigate": {
+    "message": "नेविगेट करें"
+  },
+  "cmdFooterSelect": {
+    "message": "चयन करें"
+  },
+  "cmdFooterClose": {
+    "message": "बंद करें"
+  },
+  "cmdEmpty": {
+    "message": "कोई मेल खाने वाले कमांड नहीं"
+  },
+  "cmdGroupNav": {
+    "message": "नेविगेशन"
+  },
+  "cmdGroupMr": {
+    "message": "MR क्रियाएँ"
+  },
+  "cmdGroupExt": {
+    "message": "विस्तार"
+  },
+  "cmdGroupFiles": {
+    "message": "फ़ाइलें"
+  },
+  "cmdNavMrs": {
+    "message": "मर्ज अनुरोध पर जाएँ"
+  },
+  "cmdNavIssues": {
+    "message": "मुद्दों पर जाएँ"
+  },
+  "cmdNavPipelines": {
+    "message": "पाइपलाइनों पर जाएँ"
+  },
+  "cmdNavBranches": {
+    "message": "शाखाओं पर जाएँ"
+  },
+  "cmdNavRepo": {
+    "message": "रिपॉजिटरी पर जाएँ"
+  },
+  "cmdNavTags": {
+    "message": "टैग पर जाएँ"
+  },
+  "cmdNavCommits": {
+    "message": "कमिट्स पर जाएँ"
+  },
+  "cmdNavWiki": {
+    "message": "विकी पर जाएँ"
+  },
+  "cmdNavSnippets": {
+    "message": "स्निपेट्स पर जाएँ"
+  },
+  "cmdNavSettings": {
+    "message": "सेटिंग्स पर जाएँ"
+  },
+  "cmdCopyPath": {
+    "message": "प्रोजेक्ट पथ कॉपी करें"
+  },
+  "cmdGroupPinned": {
+    "message": "पिन किया गया"
+  },
+  "cmdExtSettings": {
+    "message": "एक्सटेंशन सेटिंग्स खोलें"
+  },
+  "cmdExtStandup": {
+    "message": "गतिविधि रिपोर्ट जनरेट करें"
+  },
+  "standupTitle": {
+    "message": "दैनिक गतिविधि"
+  },
+  "standupCopy": {
+    "message": "क्लिपबोर्ड पर कॉपी करें"
+  },
+  "standupCopied": {
+    "message": "कॉपी किया गया!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "कमांड पैलेट"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "किसी भी गिटलैब पेज पर Cmd+K (Mac) या Ctrl+K (Win) दबाएँ। नेविगेट करें, MR क्रियाएँ चलाएँ, नाम द्वारा फ़ाइलें खोजें और उन्हें रिपॉ पर खोलें।"
+  },
+  "cardStandupTitle": {
+    "message": "दैनिक गतिविधि रिपोर्ट"
+  },
+  "cardStandupDesc": {
+    "message": "अपने गिटलैब डेटा से दैनिक गतिविधि रिपोर्ट जनरेट करें। बनाए गए, मर्ज किए गए और समीक्षा किए गए MRs दिखाएँ। स्लैक या जिरा में कॉपी और पेस्ट करें।"
+  },
+  "showCherryPick": {
+    "message": "शाखाओं में चेरी-पिक करें"
+  },
+  "showGroupPlay": {
+    "message": "पाइपलाइन में समूह प्ले बटन (बाकी मैनुअल जॉब्स चलाता है)"
+  },
+  "showCommitVersion": {
+    "message": "कमिट्स पेज पर संस्करण बैज"
+  },
+  "showCommitVersionHint": {
+    "message": "प्रत्येक कमिट के पास संस्करण फ़ाइल से संस्करण दिखाता है (संस्करण बढ़ाने की सेटिंग्स देखें); जहाँ संस्करण बदल गया हो, वहाँ हाइलाइट किया गया"
+  },
+  "groupPlayTooltip": {
+    "message": "इस समूह में बाकी मैनुअल जॉब्स चलाएँ"
+  },
+  "groupPlayError": {
+    "message": "कुछ जॉब्स शुरू करने में विफल"
+  },
+  "cardGroupPlayTitle": {
+    "message": "समूह प्ले बटन"
+  },
+  "cardGroupPlayDesc": {
+    "message": "पाइपलाइन ग्राफ पर, जॉब समूह के पास प्ले बटन सभी बाकी मैनुअल जॉब्स चलाता है — यहाँ तक कि जब समूह में कुछ जॉब्स पहले ही शुरू हो गए हों और GitLab का अपना बटन गायब हो गया हो।"
+  },
+  "cardCommitVersionTitle": {
+    "message": "कमिट्स पर संस्करण बैज"
+  },
+  "cardCommitVersionDesc": {
+    "message": "ब्रांच कमिट्स पेज पर, प्रत्येक कमिट उस कमिट पर आपकी संस्करण फ़ाइल से प्रोजेक्ट संस्करण दिखाता है। डिफ़ॉल्ट रूप से म्यूट किया गया, जहाँ संस्करण बदल गया हो वहाँ हाइलाइट किया गया — एक नज़र में देखें कि कौन से कमिट्स कौन से रिलीज़ में गए।"
+  },
+  "cherryPickBranches": {
+    "message": "ब्रांचेस को चेरी-पिक करें"
+  },
+  "cherryPickBranchesHint": {
+    "message": "चेरी-पिक के लिए डिफ़ॉल्ट लक्षित ब्रांच। आप मोडल में ब्रांच जोड़ या हटा सकते हैं।"
+  },
+  "cherryPickBranchAdd": {
+    "message": "ब्रांच जोड़ें"
+  },
+  "cherryPickTitle": {
+    "message": "चेरी-पिक करें"
+  },
+  "cherryPickToBranches": {
+    "message": "ब्रांचेस में चेरी-पिक करें"
+  },
+  "cherryPickStart": {
+    "message": "चेरी-पिक करें"
+  },
+  "cherryPickClose": {
+    "message": "बंद करें"
+  },
+  "cherryPickInProgress": {
+    "message": "चेरी-पिक किया जा रहा है..."
+  },
+  "cherryPickRemove": {
+    "message": "हटाएँ"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "ब्रांच का नाम"
+  },
+  "cherryPickAllSuccess": {
+    "message": "$1 ब्रांचेस में चेरी-पिक किया गया",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "इन बदलावों के साथ नया मर्ज रिक्वेस्ट शुरू करें"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "चेरी-पिक करते समय डिफ़ॉल्ट रूप से MR बनाएं"
+  },
+  "cherryPickSmartFallback": {
+    "message": "संघर्ष होने पर — वर्शन फ़ाइल के बिना कमिट करें"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "यदि वर्शन फ़ाइल संघर्ष के कारण चेरी-पिक असफल हो जाता है, तो वर्शन फ़ाइल को छोड़कर नए कमिट के रूप में बदलाव फिर से लागू करें"
+  },
+  "cherryPickBumpVersion": {
+    "message": "वैकल्पिक प्रक्रिया में संस्करण बढ़ाएँ"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "उसी वैकल्पिक कमिट में लक्षित ब्रांच का संस्करण बढ़ाएँ"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "स्मार्ट वैकल्पिक प्रक्रिया केवल संस्करण फ़ाइल के टकराव संभालती है। टकराव किसी अन्य फ़ाइल में है"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "फ़ाइल लक्षित शाखा में संशोधित की गई थी — सुरक्षित रूप से चेरी-पिक नहीं किया जा सकता"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "संस्करण फ़ाइल में संस्करण से परे बदलाव हैं — इसे सुरक्षित रूप से छोड़ना संभव नहीं है"
+  },
+  "commitsJiraField": {
+    "message": "कमिट बैज के लिए जिरा फ़ील्ड"
+  },
+  "commitsJiraFieldHint": {
+    "message": "कमिट्स पेज पर बैज के रूप में दिखाने के लिए जिरा फ़ील्ड का नाम (जैसे fixVersions, status, labels, components)। इसके लिए जिरा URL आवश्यक है।"
+  },
+  "cardCherryPickTitle": {
+    "message": "शाखाओं में चेरी-पिक करें"
+  },
+  "cardCherryPickDesc": {
+    "message": "चयनित शाखाओं में सीधे या नए MRs के माध्यम से चेरी-पिक करें। स्मार्ट फ़ॉलबैक सक्षम होने पर, सत्यापित संस्करण-फ़ाइल संघर्षों को उस फ़ाइल के बिना फिर से चलाया जा सकता है, वैकल्पिक रूप से संस्करण को बढ़ाते हुए। असुरक्षित परिवर्तन निरीक्षण के लिए रुक जाते हैं।"
+  },
+  "mrDetailEnhancements": {
+    "message": "MR विवरण सुधार"
+  },
+  "showSensitiveWarning": {
+    "message": "डिफ़ में संवेदनशील फ़ाइल चेतावनी"
+  },
+  "showGitCommands": {
+    "message": "Git कमांड बटन (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "संवेदनशील: $1 फ़ाइल(ओं)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "यह MR सुरक्षा-संवेदनशील फ़ाइलों में संशोधन करता है:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "संवेदनशील फ़ाइल चेतावनी"
+  },
+  "cardSensitiveDesc": {
+    "message": "अंतर्निहित नियमों, अतिरिक्त पैटर्न और अपवादों का उपयोग करके संवेदनशील फ़ाइलों को चिह्नित करता है। इन्हें डिस्प्ले नियम और सीमाओं में कॉन्फ़िगर करें।"
+  },
+  "cardGitCommandsTitle": {
+    "message": "गिट कमांड बटन"
+  },
+  "cardGitCommandsDesc": {
+    "message": "checkout, pull और hard-reset कमांड कॉपी करें। चलाने से पहले अपनी रिपॉजिटरी और origin रिमोट जाँचें; hard reset स्थानीय बदलाव हटा देता है।"
+  },
+  "updateBannerText": {
+    "message": "नया संस्करण उपलब्ध है! देखें क्या नया है:"
+  },
+  "updateChangelog": {
+    "message": "चेंजलॉग"
+  },
+  "updateReviewAsk": {
+    "message": "एक्सटेंशन पसंद आया?"
+  },
+  "updateReviewLink": {
+    "message": "समीक्षा छोड़ें"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "एआई-सहायता प्राप्त समग्र समीक्षा"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "एक MR की समीक्षा करें, चुने गए फीडबैक को ठीक करें, उत्तर तैयार करें और परिवर्तनों को पुन: जांचें। पोस्ट करने से पहले टिप्पणियों का पूर्वावलोकन और संपादन करें।"
+  },
+  "aiReviewGuide": {
+    "message": "एआई समीक्षा गाइड"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "कोई स्वचालित AI अपलोड नहीं। संदर्भ खुद कॉपी करें; टिप्पणियां केवल तभी GitLab में भेजी जाती हैं जब आप 'प्रकाशित करें' या 'समीक्षा में जोड़ें' चुनते हैं।"
+  },
+  "aiReviewTitle": {
+    "message": "AI समीक्षा"
+  },
+  "aiReviewOpen": {
+    "message": "AI समीक्षा…"
+  },
+  "aiReviewCopyComment": {
+    "message": "AI के लिए टिप्पणी कॉपी करें"
+  },
+  "aiReviewLoading": {
+    "message": "चर्चाएँ लोड हो रही हैं…"
+  },
+  "aiReviewRetry": {
+    "message": "पुन: प्रयास करें"
+  },
+  "aiReviewRefresh": {
+    "message": "ताज़ा करें"
+  },
+  "aiReviewClose": {
+    "message": "बंद करें"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "अनसहे हुए कार्य के साथ समीक्षा संवाद बंद करने की पुष्टि करें"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "क्या यह संवाद बंद करना है? बिना सहेजे बदलाव और दर्ज किया गया डेटा खो जाएगा।"
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "क्या यह संवाद बंद करके आगे भेजना रोकना है? पहले से भेजी गई टिप्पणियाँ GitLab में रहेंगी। बिना सहेजे बदलाव खो जाएँगे।"
+  },
+  "aiReviewAll": {
+    "message": "सभी"
+  },
+  "aiReviewUnresolved": {
+    "message": "अनसुलझा"
+  },
+  "aiReviewResolved": {
+    "message": "हल हो गया"
+  },
+  "aiReviewGeneral": {
+    "message": "सामान्य टिप्पणियाँ"
+  },
+  "aiReviewSearch": {
+    "message": "टिप्पणियाँ या फ़ाइल पथ खोजें"
+  },
+  "aiReviewSelectShown": {
+    "message": "दिखाए गए का चयन करें"
+  },
+  "aiReviewClear": {
+    "message": "चयन साफ करें"
+  },
+  "aiReviewIncludeCode": {
+    "message": "कोड परिवर्तन शामिल करें"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "ताज़ा और दोहराए गए समीक्षाओं के लिए। अगर AI रिपॉज़िटरी पढ़ सकता है तो छोड़ दें। फीडबैक के लिए संलग्न छोटे अंश शामिल रहते हैं।"
+  },
+  "aiReviewIncludeExisting": {
+    "message": "मौजूदा चर्चा को ध्यान में रखें"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "पहले से पोस्ट किए गए टिप्पणियों को डुप्लिकेट फ़िल्टर के रूप में जोड़ता है: AI पूरे MR की स्वतंत्र रूप से समीक्षा करता है, फिर उन निष्कर्षों को हटा देता है जो उनकी पुनरावृत्ति करते हैं। यह उन चर्चाओं का उत्तर नहीं देता।"
+  },
+  "aiReviewIncludeDescription": {
+    "message": "विवरण शामिल करें"
+  },
+  "aiReviewPrompt": {
+    "message": "AI के लिए निर्देश"
+  },
+  "aiReviewResetPrompt": {
+    "message": "डिफ़ॉल्ट प्रॉम्प्ट पुनर्स्थापित करें"
+  },
+  "aiReviewPreview": {
+    "message": "पूर्वावलोकन"
+  },
+  "aiReviewCopied": {
+    "message": "कॉपी किया गया!"
+  },
+  "aiReviewEmpty": {
+    "message": "कोई मेल खाने वाली टिप्पणियाँ नहीं।"
+  },
+  "aiReviewPartial": {
+    "message": "कुछ डेटा लोड नहीं किया जा सका। निर्यात में चेतावनी शामिल है और केवल उपलब्ध संदर्भ है।"
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 चुना गया",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "पूर्वावलोकन टेक्स्ट का चयन करें और इसे मैन्युअली कॉपी करें।"
+  },
+  "aiReviewScopeComment": {
+    "message": "चयनित टिप्पणी"
+  },
+  "aiReviewScopeThread": {
+    "message": "चयनित चर्चा"
+  },
+  "aiReviewPreparing": {
+    "message": "कोड संदर्भ तैयार कर रहे हैं…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "चर्चाओं को लोड नहीं किया जा सका। पुनः प्रयास करें, या उपलब्ध संदर्भ को कॉपी करें।"
+  },
+  "aiReviewShowReplies": {
+    "message": "उत्तर दिखाएँ"
+  },
+  "aiReviewSize": {
+    "message": "लगभग $1 वर्ण",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "रद्द करें"
+  },
+  "showAiReviewCopy": {
+    "message": "AI समीक्षा कॉपी और आयात नियंत्रण दिखाएँ"
+  },
+  "aiReviewSettingsHint": {
+    "message": "पूरी MR को ताज़ा समीक्षा के लिए कॉपी करें, सुधारों के लिए चयनित फीडबैक, या भेजने से पहले संपादन योग्य पूर्वावलोकन के साथ AI टिप्पणियों और उत्तरों को आयात करें।"
+  },
+  "aiReviewFresh": {
+    "message": "शुरुआत से समीक्षा करें"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "ताज़ा समीक्षा के लिए प्रॉम्प्ट"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "1,500 वर्ण तक। पूरी MR और उसके सभी कमिट्स की समीक्षा करने के लिए इस्तेमाल किया गया, फीडबैक सुधारों से अलग। आप प्रतिक्रिया भाषा निर्दिष्ट कर सकते हैं। डिफ़ॉल्ट अंग्रेज़ी प्रॉम्प्ट के लिए खाली छोड़ दें।"
+  },
+  "aiReviewPromptHint": {
+    "message": "1,500 वर्ण तक। डिफ़ॉल्ट अंग्रेज़ी प्रॉम्प्ट का उपयोग करने के लिए खाली छोड़ दें। सभी प्रोजेक्ट्स पर लागू।"
+  },
+  "aiReviewPromptTooLong": {
+    "message": "प्रॉम्प्ट सहेजा नहीं गया। अधिकतम 1,500 वर्ण का उपयोग करें और असामान्य नियंत्रण वर्णों को हटाएँ।"
+  },
+  "settingsSaveFailed": {
+    "message": "सेटिंग्स सहेजी नहीं जा सकीं। पुनः प्रयास करने के लिए कोई बदलाव करें।"
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "यहाँ किए गए बदलाव इस निर्यात पर लागू होते हैं। एक्सटेंशन सेटिंग्स में अपना डिफ़ॉल्ट प्रॉम्प्ट सेट करें।"
+  },
+  "aiReviewReady": {
+    "message": "पूर्वावलोकन कॉपी करने के लिए तैयार है।"
+  },
+  "aiReviewLoadHint": {
+    "message": "GitLab से सीधे चर्चाएँ लोड करता है, जिसमें इस पृष्ठ पर दिखाई न देने वाले टिप्पणियाँ भी शामिल हैं।"
+  },
+  "aiReviewCommentContext": {
+    "message": "अन्य उत्तर संदर्भ के रूप में शामिल हैं। केवल चयनित टिप्पणियों पर कार्रवाई के लिए अनुरोध किया गया है।"
+  },
+  "aiReviewOutdated": {
+    "message": "पिछली संशोधन"
+  },
+  "aiReviewLink": {
+    "message": "चर्चा खोलें"
+  },
+  "aiReviewLoaded": {
+    "message": "$1 चर्चाएँ लोड की गईं"
+  },
+  "aiReviewCodeProgress": {
+    "message": "कोड संदर्भ तैयार किया जा रहा है: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "यह टिप्पणी GitLab से उपलब्ध नहीं है। यह अभी सहेज रही हो सकती है या हटा दी गई हो सकती है। पुनः प्रयास के लिए रीफ्रेश करें।"
+  },
+  "aiReviewImportOpen": {
+    "message": "AI समीक्षा आयात करें…"
+  },
+  "aiReviewImportTitle": {
+    "message": "AI समीक्षा आयात करें"
+  },
+  "aiReviewImportHelp": {
+    "message": "जांचने, संपादित करने और प्रकाशित करने के लिए नीचे AI प्रतिक्रिया चिपकाएँ। प्रॉम्प्ट शॉर्टकट उन्नत सेटिंग्स के अंतर्गत हैं।"
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "नई समीक्षा के लिए प्रॉम्प्ट कॉपी करें"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "प्रॉम्प्ट तैयार किया जा रहा है…"
+  },
+  "aiReviewImportInput": {
+    "message": "एआई प्रतिक्रिया (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "नए टिप्पणियां या चर्चाओं के उत्तर वाले पूरी JSON प्रतिक्रिया पेस्ट करें। आप टेक्स्ट को संपादित कर सकते हैं और पूर्वावलोकन में क्या भेजना है यह चुन सकते हैं।"
+  },
+  "aiReviewImportValidate": {
+    "message": "जांच और पूर्वावलोकन करें"
+  },
+  "aiReviewImportChecking": {
+    "message": "MR संशोधन, पंक्तियों और मौजूदा टिप्पणियों की जांच कर रहे हैं…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "पूर्वावलोकन टिप्पणियों के उत्तर की जांच करें। आप उनका टेक्स्ट संपादित कर सकते हैं, आइटम को शामिल न करने के लिए चेकबॉक्स साफ कर सकते हैं, या सामान्य टिप्पणी जोड़ सकते हैं।"
+  },
+  "aiReviewImportSelectReady": {
+    "message": "तैयार टिप्पणियां चुनें"
+  },
+  "aiReviewImportPreview": {
+    "message": "भेजने के लिए टिप्पणियां"
+  },
+  "aiReviewImportReady": {
+    "message": "तैयार"
+  },
+  "aiReviewImportInvalid": {
+    "message": "सुधार की आवश्यकता है"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "अतिरिक्त फ़ाइल परिवर्तनों को लोड नहीं किया जा सका: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "अतिरिक्त डिफ़ 16 MiB आयात सीमा से अधिक है। केवल सत्यापित पंक्तियों पर टिप्पणियां आयात की जा सकती हैं।"
+  },
+  "aiReviewImportDuplicate": {
+    "message": "पहले से मौजूद है"
+  },
+  "aiReviewImportPublished": {
+    "message": "प्रकाशित"
+  },
+  "aiReviewImportDraft": {
+    "message": "समीक्षा में जोड़ा गया"
+  },
+  "aiReviewImportFailed": {
+    "message": "भेजा नहीं गया"
+  },
+  "aiReviewImportUnknown": {
+    "message": "डिलीवरी की पुष्टि नहीं हुई"
+  },
+  "aiReviewImportSkipped": {
+    "message": "भेजा नहीं गया"
+  },
+  "aiReviewImportNewLine": {
+    "message": "नई लाइन $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "पुरानी लाइन $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "चयनित प्रकाशित करें"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "समीक्षा में जोड़ें"
+  },
+  "aiReviewImportSendHint": {
+    "message": "प्रकाशित करने पर टिप्पणियां तुरंत भेजी जाती हैं। समीक्षा में जोड़ने पर अप्रकाशित टिप्पणियां आपके GitLab समीक्षा के लिए सुरक्षित रहती हैं।"
+  },
+  "aiReviewImportSending": {
+    "message": "चयनित टिप्पणियां भेजी जा रही हैं…"
+  },
+  "aiReviewImportFinished": {
+    "message": "पूरा। प्रत्येक टिप्पणी के बगल में परिणाम जांचें।"
+  },
+  "aiReviewImportStopped": {
+    "message": "रोका गया। पुनः प्रयास करने से पहले प्रत्येक टिप्पणी के बगल में परिणाम जांचें।"
+  },
+  "aiReviewImportEdited": {
+    "message": "प्रतिक्रिया बदल गई। भेजने से पहले इसे फिर से जांचें।"
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "क्लिपबोर्ड उपलब्ध नहीं है। नीचे दिए गए पाठ को चुनें और मैन्युअली कॉपी करें।"
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "डिलीवरी की पुष्टि नहीं हो सकी। पुनः प्रयास करने से पहले GitLab जांचें।"
+  },
+  "aiReviewImportPrompt": {
+    "message": "AI के लिए प्रॉम्प्ट"
+  },
+  "aiReviewImportChecked": {
+    "message": "तैयार: $1. अन्य टिप्पणियों को ध्यान देने की आवश्यकता है।",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "भेजना बंद करें"
+  },
+  "aiReviewImportError": {
+    "message": "ऑपरेशन पूरा नहीं हो सका"
+  },
+  "aiReviewImportPromptError": {
+    "message": "प्रॉम्प्ट तैयार नहीं कर सका"
+  },
+  "aiReviewImportWarning": {
+    "message": "समीक्षा सूचनाएँ"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "एआई समीक्षा"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "एआई प्रतिक्रिया भाषा"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "स्वचालित — वार्तालाप भाषा"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "सभी समीक्षा कार्यों और आयात प्रांप्ट पर लागू होता है। JSON कुंजियाँ, पथ और कोड का अनुवाद नहीं किया जाता। केवल स्वरूप की नकल करने से भाषा निर्देश नहीं जुड़ते।"
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "प्रतिक्रिया सुधारने के लिए प्रांप्ट"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "नई समीक्षा टिप्पणियों के लिए प्रांप्ट"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "प्रतिक्रिया का उत्तर देने के लिए प्रांप्ट"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "अधिकतम 1500 वर्ण। आयात में नए-समीक्षा शॉर्टकट के लिए। कार्य टैब अपने स्वयं के प्रांप्ट का उपयोग करते हैं। MR संदर्भ और JSON फ़ॉर्मेट स्वचालित रूप से जोड़ा जाता है।"
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "अधिकतम 1500 वर्ण। चयनित चर्चाओं में Copy या सभी अप्रतिस्थापित चर्चाओं में Import के उत्तर के लिए। शैली और भाषा निर्धारित करें; संदर्भ और उत्तर फ़ॉर्मेट स्वचालित रूप से जोड़ा जाते हैं।"
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "सभी अप्रतिस्थापित चर्चाओं के लिए उत्तर प्रांप्ट"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "प्रतिक्रिया प्रारूप की नकल करें"
+  },
+  "aiReviewImportFormat": {
+    "message": "एआई के लिए प्रतिक्रिया प्रारूप"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "उत्तर तैयार करें"
+  },
+  "aiReviewImportReply": {
+    "message": "चर्चा का उत्तर दें"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "मूल टिप्पणी"
+  },
+  "aiReviewImportReplyText": {
+    "message": "आपकी प्रतिक्रिया"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "प्रकाशित करने के बाद चर्चा को हल करें"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "चर्चा हल हो गई।"
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "उत्तर प्रकाशित किया गया, लेकिन चर्चा हल नहीं हुई। आप इसे GitLab में हल कर सकते हैं।"
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "उत्तर प्रकाशित किया गया। समाधान की पुष्टि नहीं हुई; GitLab में चर्चा की जाँच करें।"
+  },
+  "aiReviewImportReplyHint": {
+    "message": "चर्चा को हल करना वैकल्पिक है और डिफ़ॉल्ट रूप से बंद है। यह उत्तर प्रकाशित होने के बाद ही किया जाता है। ड्राफ़्ट जोड़ने से चर्चा कभी हल नहीं होती।"
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "MR संस्करण बदल गया है। उत्तर अपनी चर्चाओं से जुड़े रहते हैं; उनमें किए गए फ़िक्स के अनुसार उनके पाठ को सत्यापित करें। पुराने संस्करण से नए खोज निषेध हैं।"
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "ये उत्तर चर्चाओं से जुड़े हैं, कोड संशोधन से नहीं। प्रकाशन से पहले, यह सत्यापित करें कि वर्णित सुधार इस MR में पुश किए गए हैं।"
+  },
+  "aiReviewImportEdit": {
+    "message": "पाठ संपादित करें"
+  },
+  "aiReviewImportAddComment": {
+    "message": "टिप्पणी जोड़ें"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "बदलाव सहेजें"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "रद्द करें"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "टिप्पणी पाठ"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "पाठ संपादित करें, फिर प्रकाशन से पहले बदलावों की जांच करने के लिए इसे सहेजें।"
+  },
+  "aiReviewImportEditError": {
+    "message": "बदलाव सहेजा नहीं जा सका"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "पूर्वावलोकन में अधिकतम 200 टिप्पणियाँ हो सकती हैं।"
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "पुनरावृति-समीक्षा संकेत"
+  },
+  "aiReviewFileFilters": {
+    "message": "समीक्षा के लिए फ़ाइलें"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "नई और दोबारा की जाने वाली समीक्षाओं तथा नए निष्कर्षों के प्रॉम्प्ट पर लागू होता है; चुने गए फ़ीडबैक या उत्तर प्रॉम्प्ट पर नहीं। हर पंक्ति में एक पैटर्न लिखें या कॉमा से अलग करें; # से टिप्पणी शुरू होती है। *, **, ? का उपयोग करें। बाहर रखने वाले नियमों को प्राथमिकता मिलती है, नाम बदलने से पहले के पथों पर भी। खाली सूचियों में सब शामिल होता है। उदाहरण: src/**, *.test.js, dist/. हर सूची में अधिकतम 1500 वर्ण।"
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "एक्सटेंशन्स शामिल करें (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "फ़ाइल पथ शामिल करें"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "फ़ाइल पथ छोड़ें"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "फ़ोल्डर छोड़ें"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "फ़ाइल फ़िल्टर को सहेजा या लागू नहीं किया जा सका। प्रति सूची अधिकतम 1500 वर्ण का उपयोग करें और असामान्य नियंत्रण वर्ण हटा दें।"
+  },
+  "aiReviewPreviousRevision": {
+    "message": "संस्करण जिसकी आपने समीक्षा की"
+  },
+  "aiReviewPreviousNone": {
+    "message": "पूर्ण समीक्षा — कोई पिछला संस्करण नहीं"
+  },
+  "aiReviewRepeat": {
+    "message": "समीक्षा दोहराएँ"
+  },
+  "aiReviewPreviousManual": {
+    "message": "एक कमिट SHA दर्ज करें"
+  },
+  "aiReviewPreviousSha": {
+    "message": "पूर्ण समीक्षा किए गए कमिट SHA दर्ज करें (40 या 64 हेक्साडेसिमल वर्ण)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "टिप्पणियाँ छोड़ने से पहले उस MR संस्करण का चयन करें जिसकी आपने समीक्षा की थी। वर्तमान संस्करण तक सभी परिवर्तनों को स्वचालित रूप से शामिल किया जाएगा; आपको व्यक्तिगत कमिट्स का चयन करने की आवश्यकता नहीं है। यदि आप संस्करण याद नहीं कर सकते, तो पूर्ण समीक्षा चुनें।"
+  },
+  "aiReviewChooseTask": {
+    "message": "एक कार्य चुनें"
+  },
+  "aiReviewTaskReview": {
+    "message": "नई समीक्षा"
+  },
+  "aiReviewTaskFix": {
+    "message": "समीक्षा निष्कर्ष सुधारें"
+  },
+  "aiReviewTaskReply": {
+    "message": "उत्तर तैयार करें"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "फॉलो-अप समीक्षा"
+  },
+  "aiReviewCopyTask": {
+    "message": "कॉपी कार्य"
+  },
+  "aiReviewPasteResult": {
+    "message": "एआई प्रतिक्रिया पेस्ट करें"
+  },
+  "aiReviewAdvanced": {
+    "message": "उन्नत सेटिंग्स"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "कार्य निर्देश"
+  },
+  "aiReviewSelectThread": {
+    "message": "इस चर्चा को चुनें"
+  },
+  "aiReviewSelectAll": {
+    "message": "सभी चर्चाओं को चुनें"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "सभी MR कमिट्स की समीक्षा एक साथ करें। एआई कोड बदले बिना नई खोजें लौटाता है।"
+  },
+  "aiReviewTaskFixHint": {
+    "message": "सुधारने के लिए फीडबैक चुनें। किसी MR के लिए, एआई यह भी उत्तर तैयार करता है कि क्या किया गया, क्या शेष है और क्यों। अनसुलझी चर्चाएँ प्रारंभ में चुनी जाती हैं।"
+  },
+  "aiReviewIncludeReplies": {
+    "message": "उत्तर भी तैयार करें"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "अपने कोडिंग एआई के लिए सुधारने के लिए फीडबैक चुनें। अनसुलझी चर्चाएँ प्रारंभ में चुनी जाती हैं।"
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "अपना कार्य अपने कोडिंग एआई को दें और उसके परिवर्तनों और परीक्षणों की जाँच करें। परिणाम सुधार और सामान्य सारांश है, बिना तैयार पोस्ट करने योग्य उत्तर के।"
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "फिक्सेस को पुश करने के बाद, एआई से कोड की जांच करने और चयनित चर्चाओं में परिणाम समझाने के लिए कहें।"
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "चयनित फीडबैक की जांच करें और नए दोषों की तलाश करें। वह संस्करण चुनें जिसे आपने पहले समीक्षा किया था, या वर्तमान MR पूरी तरह से जांचें।"
+  },
+  "aiReviewSummaryFresh": {
+    "message": "कार्य: पूरे MR, सभी कमिट्स में।"
+  },
+  "aiReviewSummaryFix": {
+    "message": "चयनित टिप्पणियाँ: $1; चर्चा संदर्भ और उपलब्ध कोड अंश शामिल हैं।"
+  },
+  "aiReviewSummaryReplies": {
+    "message": "उत्तर देने के लिए चर्चाएँ: $1, उनकी पूरी बातचीत के साथ। एआई को रिपोजिटरी एक्सेस की आवश्यकता है।"
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "जांच करने के लिए चर्चाएँ: $1, इसके साथ कोड परिवर्तनों की समीक्षा।"
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "विवरण शामिल।"
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "विवरण बहिष्कृत।"
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "कोड परिवर्तनों को शामिल किया गया, लोडिंग सीमाओं के अधीन।"
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "एआई को रिपोजिटरी से कोड पढ़ना होगा।"
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "मौजूदा चर्चाएँ केवल डुप्लिकेट फ़िल्टर के रूप में जोड़ी जाती हैं।"
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "मौजूदा चर्चाएँ नहीं जोड़ी जाती हैं।"
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "फ़ाइल फ़िल्टर सक्रिय हैं।"
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "कोई पिछला संस्करण चुना नहीं गया: वर्तमान पूर्ण MR की जाँच की जाएगी।"
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "अप्रकाशित ड्राफ्ट चर्चाओं को उत्तर नहीं मिल सकते और इन्हें बाहर रखा गया है।"
+  },
+  "aiReviewChooseFeedback": {
+    "message": "बाएँ पर फ़ीडबैक चुनें। नई समीक्षा के लिए, नई समीक्षा टैब का उपयोग करें।"
+  },
+  "aiReviewNextStep": {
+    "message": "कार्य को अपने AI टूल में कॉपी करें। अगर उससे टिप्पणियाँ या उत्तर मिलें, तो पोस्ट करने से पहले “AI उत्तर पेस्ट करें” में उनकी समीक्षा और संपादन करें।"
+  },
+  "aiReviewNextFixStep": {
+    "message": "सुधार और परीक्षण जाँचें, सभी कमिट MR में पुश करें, फिर “AI उत्तर पेस्ट करें” में तैयार उत्तरों की समीक्षा करके पोस्ट करें। नए कमिट के लिए उत्तर दोबारा बनाना आवश्यक नहीं है।"
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "स्वचालित निर्देश (उन्नत)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "सभी ब्लॉक्स डिफ़ॉल्ट रूप से सक्षम हैं और केवल संबंधित कार्यों के लिए उपयोग किए जाते हैं। किसी भी ब्लॉक को संपादित, अक्षम या साफ़ करें। कार्य संकेतों के अपने निर्देश भी होते हैं। एमआर डेटा, JSON उदाहरण और लोडिंग नोटिस अलग से उत्पन्न किए जाते हैं; प्रकाशन जांच हमेशा लागू होते हैं।"
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "लागू होने पर कार्य में जोड़ें"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "अधिकतम 1500 वर्ण। खाली पाठ कुछ भी नहीं जोड़ता। रीसेट डिफ़ॉल्ट पाठ को पुनर्स्थापित करता है और इस ब्लॉक को सक्षम करता है।"
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "चयनित उत्तर भाषा के लिए {language} का उपयोग करें। अधिकतम 1500 वर्ण; खाली पाठ कुछ भी नहीं जोड़ता।"
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "चयनित या अनसुलझी चर्चाओं के लिए {selection} का उपयोग करें। अधिकतम 1500 वर्ण; खाली पाठ कुछ भी नहीं जोड़ता।"
+  },
+  "aiReviewRule_repository": {
+    "message": "स्थानीय भंडार और रिमोट"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "सुधारों के लिए कार्य कॉपी"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "समीक्षा के लिए कार्य कॉपी"
+  },
+  "aiReviewRule_language": {
+    "message": "उत्तर भाषा"
+  },
+  "aiReviewRule_scope": {
+    "message": "फ़ाइल फ़िल्टर व्याख्या"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "फ़ीडबैक संदर्भ"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "बिना उत्तर के सुधार"
+  },
+  "aiReviewRule_description_task": {
+    "message": "केवल विवरण कार्य"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "चुने हुए फ़ीडबैक की कमी"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "सुधारों के बाद पोस्ट करने के लिए तैयार उत्तर"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "समीक्षा की सीमाएँ"
+  },
+  "aiReviewRule_review_source": {
+    "message": "समीक्षा का स्रोत"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "शामिल किए गए कोड परिवर्तनों"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "शामिल कोड के बिना समीक्षा"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "अनुपलब्ध स्रोत"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON प्रतिक्रिया"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "स्थान खोज और आउटपुट"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "फॉलो-अप उत्तर शैली"
+  },
+  "aiReviewRule_same_head": {
+    "message": "अपरिवर्तित शीर्षक"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "तुलना लाइन की स्थिति"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "स्थानीय संशोधन तुलना"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "लक्ष्य शाखा में परिवर्तन"
+  },
+  "aiReviewRule_full_review": {
+    "message": "तुलना संशोधन के बिना समीक्षा"
+  },
+  "aiReviewRule_code_only": {
+    "message": "चर्चाओं के बिना पुन: जाँच"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "चुने हुए चर्चा का दायरा"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "संचयी डिफ़ संदर्भ"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "नई समीक्षा में मौजूदा चर्चाएँ"
+  },
+  "aiReviewRule_import_task": {
+    "message": "आयात में नई समीक्षा"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "समीक्षा आयात की सीमाएँ"
+  },
+  "aiReviewRule_import_format": {
+    "message": "आयात खोज प्रारूप"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "उत्तर सीमाएँ और प्रारूप"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "उत्तर कार्य क्षेत्र"
+  },
+  "jiraQuickActionAddField": {
+    "message": "फ़ील्ड जोड़ें"
+  },
+  "jiraQuickActionField": {
+    "message": "फ़ील्ड"
+  },
+  "jiraQuickActionOperation": {
+    "message": "संचालन"
+  },
+  "jiraQuickActionValue": {
+    "message": "मान"
+  },
+  "jiraQuickActionRemove": {
+    "message": "निकालें"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "जोड़ें"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "हटा दें"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "सभी बदलें"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "नियत तारीख"
+  },
+  "jiraQuickActionCustom": {
+    "message": "कस्टम फ़ील्ड (उन्नत)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "मान को अल्पविराम से अलग करें। जोड़ें/हटाएँ अन्य मान रखते हैं; सभी बदलें सूची को अधिलेखित करता है।"
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "फ़ील्ड ID: customfield_12345। इस मान को JSON स्वरूप में दर्ज करें जैसा कि इस Jira फ़ील्ड द्वारा अपेक्षित है।"
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "सटीक Jira स्थानांतरण नाम (या लक्ष्य स्थिति)।"
+  },
+  "jiraQuickActionValueHint": {
+    "message": "खाली मान: कोई परिवर्तन नहीं।"
+  },
+  "jiraQuickActionInvalid": {
+    "message": "फ़ील्ड मान की जांच करें: कस्टम फ़ील्ड में वैध ID और JSON की आवश्यकता है; तिथियाँ YYYY-MM-DD प्रारूप में हों।"
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "प्रत्येक फ़ील्ड का प्रत्येक बटन पर केवल एक बार उपयोग करें।"
+  },
+  "jiraQuickActionFailed": {
+    "message": "क्रिया विफल हो गई।"
+  },
+  "jiraQuickActionPartial": {
+    "message": "स्थिति बदल गई, लेकिन फ़ील्ड अपडेट असफल रहा।"
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "मुद्दे को ताज़ा नहीं कर सका। इसके वर्तमान मानों की जाँच के लिए पैनल को पुनः खोलें।"
+  },
+  "mrActions": {
+    "message": "एमआर क्रियाएँ"
+  },
+  "mrActionsHint": {
+    "message": "नामित बटन बनाएं ताकि लेबल बदल सकें या अन्य एमआर फ़ील्ड साफ़ कर सकें। क्रम बदलने के लिए बटन सूची में उन्हें खींचें।"
+  },
+  "mrActionsProfileHint": {
+    "message": "इस परियोजना में सहेजने के बाद अपनी ही क्रिया सूची का उपयोग होता है। इस परियोजना के लिए इन बटनों को छुपाने के लिए सभी प्रविष्टियाँ हटा दें।"
+  },
+  "mrActionAdd": {
+    "message": "एमआर क्रिया जोड़ें"
+  },
+  "mrActionLabel": {
+    "message": "बटन का नाम"
+  },
+  "mrActionDelete": {
+    "message": "क्रिया हटाएँ"
+  },
+  "mrActionType": {
+    "message": "क्रिया"
+  },
+  "mrActionLabels": {
+    "message": "लेबल"
+  },
+  "mrActionLabelsHint": {
+    "message": "सटीक लेबल नाम, अल्पविराम या नई पंक्तियों से अलग किए गए। नामों के अंदर की खाली जगह बनी रहती है। जोड़ना/बदलना गायब परियोजना लेबल बना सकता है।"
+  },
+  "mrAction_remove_labels": {
+    "message": "निर्दिष्ट लेबल हटाएँ"
+  },
+  "mrAction_clear_labels": {
+    "message": "सभी लेबल साफ़ करें"
+  },
+  "mrAction_add_labels": {
+    "message": "लेबल जोड़ें"
+  },
+  "mrAction_set_labels": {
+    "message": "सभी लेबल बदलें"
+  },
+  "mrAction_clear_assignees": {
+    "message": "असाइनियों को साफ़ करें"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "समीक्षकों को साफ़ करें"
+  },
+  "mrAction_clear_milestone": {
+    "message": "मील का पत्थर साफ़ करें"
+  },
+  "mrActionInvalid": {
+    "message": "एक बटन नाम दर्ज करें, एक समर्थित कार्रवाई चुनें और जोड़ने, हटाने या बदलने के लिए कम से कम एक लेबल निर्दिष्ट करें।"
+  },
+  "mrActionConfirm": {
+    "message": "क्या इस MR पर \"$1\" लागू करें?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab ने रीबेस स्थिति लौटाई नहीं। मर्ज अनुरोध को रीलोड करें और पुनः प्रयास करें।"
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab ने पाइपलाइन #$1 के लिए जॉब सूची का वही पृष्ठ दोबारा लौटाया। जॉब की पूरी सूची लोड नहीं हो सकी।"
+  },
+  "displayPreferencesTitle": {
+    "message": "नियम और सीमाएँ दिखाएँ"
+  },
+  "displayPreferencesHint": {
+    "message": "वैश्विक सेटिंग्स; इन्हें बदलने के बाद GitLab टैब्स को रीलोड करें। अधिक जॉब्स या टिप्पणियाँ डेटा ट्रांसफर बढ़ाती हैं। लॉग पूर्वावलोकन गैर-खाली पंक्तियों का चयन करने से पहले पूरा ट्रेस डाउनलोड करता है। रिव्युअर बैज \"Reviewer(s): @username\" के लिए सबसे पुराने टिप्पणियों की खोज करते हैं।"
+  },
+  "failedJobsLimit": {
+    "message": "पूर्वावलोकन करने के लिए असफल जॉब्स"
+  },
+  "failedJobTraceLines": {
+    "message": "प्रत्येक जॉब की गैर-खाली लॉग पंक्तियाँ"
+  },
+  "reviewerNotesLimit": {
+    "message": "रिव्युअर बैज के लिए स्कैन करने के लिए टिप्पणियाँ"
+  },
+  "mrSizeLines": {
+    "message": "MR आकार सीमा: पंक्तियाँ (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "एमआर आकार थ्रेशोल्ड: फाइलें (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "अतिरिक्त संवेदनशील फ़ाइल पैटर्न"
+  },
+  "sensitiveFileExclusions": {
+    "message": "संवेदनशील फ़ाइल अपवर्जन"
+  },
+  "sensitiveFileDefaults": {
+    "message": "अंतर्निर्मित संवेदनशील फ़ाइल नियमों का उपयोग करें"
+  },
+  "sizeThresholdsHint": {
+    "message": "कॉमा से अलग किए गए तीन बढ़ते हुए पूर्णांक। सीमाएँ समावेशी हैं; बड़े परिवर्तन XL हैं। जब लाइन गणना उपलब्ध नहीं हो तो फ़ाइल थ्रेशोल्ड लागू होते हैं।"
+  },
+  "sensitivePatternsHint": {
+    "message": "प्रति लाइन एक पैटर्न, केस-असंवेदनशील। * किसी भी पाठ (सहित /) से मेल खाता है, ? एक वर्ण। पैटर्न जो / नहीं हैं वे फाइल नामों से मेल खाते हैं; अन्य पैटर्न पूरी रिपॉजिटरी पथ से मेल खाते हैं। अपवर्जन जीतते हैं। अंतर्निर्मित नियम पर्यावरण, कंटेनर/CI, क्रेडेंशियल और निजी-कुंजी फाइलों को कवर करते हैं। केवल अपने पैटर्न का उपयोग करने के लिए इन्हें बंद करें।"
+  },
+  "displayPreferencesInvalid": {
+    "message": "संख्यात्मक श्रेणियों, तीन बढ़ते आकार थ्रेशोल्ड और फ़ाइल पैटर्न की लंबाई की जाँच करें।"
+  },
+  "failedJobsPreview": {
+    "message": "पूर्वावलोकन: $1 असफल जॉब — अंतिम $2 गैर-खाली पंक्तियाँ",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "अन्य असफल जॉब — पूरी पाइपलाइन खोलें"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 पंक्तियाँ, $2 फ़ाइलें",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 फ़ाइलें बदली गई",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "संवेदनशील फ़ाइल स्कैन अधूरा"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "प्रत्येक फ़ाइल की जांच नहीं की जा सकी: API अनुरोध असफल हुआ या $1-फ़ाइल स्कैन सीमा पहुँच गई। सूचीबद्ध मेल आंशिक हैं; पूर्ण MR अंतर की जाँच करें।",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "चेतावनी: यह रिपोर्ट अधूरी हो सकती है। संग्रह प्रति श्रेणी $1 MRs और $2 गतिविधि घटनाओं तक सीमित है।",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 अनसुलझा थ्रेड(स)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "यह पूर्वावलोकन अधूरा हो सकता है: API त्रुटि या केवल पहले $2 चर्चाओं की जाँच की गई। ज्ञात अनसुलझे थ्रेड: $1।",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  }
+}
