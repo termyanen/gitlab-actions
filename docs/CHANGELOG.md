@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Commit version badge themes** — fix light backgrounds on dark GitLab commit pages. Normal and changed-version badges follow theme markers on either the document root or a parent container, use semantic host colors when available, and update when the theme changes without reloading.
+
 - **27 interface locales** — added 20 languages to the original seven. Interface selection, AI response-language choices and settings import share one catalogue. Every locale includes all interface messages and a separate store listing; localization checks cover the full catalogue.
 
 - **Jira session recovery** — show actionable sign-in, permission, network and response errors with read-only retries, while keeping available GitLab/Jira data. A denied issue no longer disables the whole Jira session. Preserve unsent comment text and partial quick-action outcomes; uncertain writes are never replayed automatically. Fix Server/Data Center assignment when the username differs from the user key, and use the browser session without the unnecessary `cookies` permission. A dedicated settings button grants or restores Jira site access; autosave does not request permissions.

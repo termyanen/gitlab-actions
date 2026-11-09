@@ -645,6 +645,11 @@
 
 /* Version badge on commits page */
 :where(html.gl-actions-host) .gl-commit-version-badge {
+  --commit-version-fg: var(--gl-text-color-secondary, #737278);
+  --commit-version-border: var(--gl-border-color-default, #dcdcde);
+  --commit-version-changed-fg: var(--gl-text-color-link, #1068bf);
+  --commit-version-changed-bg: var(--gl-background-color-info-subtle, #e9f3fc);
+  --commit-version-changed-border: var(--gl-border-color-info, #9dc7f1);
   display: inline-block;
   box-sizing: border-box;
   font-size: 10px;
@@ -657,22 +662,27 @@
   height: 18px;
   line-height: 16px;
   white-space: nowrap;
-  color: var(--gl-text-color-secondary, #737278);
-  border: 1px solid var(--gl-border-color-default, #dcdcde);
+  color: var(--commit-version-fg);
+  border: 1px solid var(--commit-version-border);
   background: transparent;
+}
+
+/* GitLab can mark the document root or an ancestor container as dark. Keep
+   fallback colors local; semantic host tokens take precedence when available. */
+:where(html.gl-actions-host):is(.gl-dark, [data-theme="dark"]) .gl-commit-version-badge,
+:where(html.gl-actions-host) :is(.gl-dark, [data-theme="dark"]) .gl-commit-version-badge {
+  --commit-version-fg: var(--gl-text-color-secondary, #b5b4be);
+  --commit-version-border: var(--gl-border-color-default, #4a4856);
+  --commit-version-changed-fg: var(--gl-text-color-link, #9dc7f1);
+  --commit-version-changed-bg: var(--gl-background-color-info-subtle, #24364a);
+  --commit-version-changed-border: var(--gl-border-color-info, #42688e);
 }
 
 :where(html.gl-actions-host) .gl-commit-version-badge.gl-commit-version-changed {
   font-weight: 600;
-  color: var(--gl-color-blue-700, #1068bf);
-  background: var(--gl-color-blue-50, #e9f3fc);
-  border-color: var(--gl-color-blue-200, #9dc7f1);
-}
-
-:where(html.gl-actions-host) .gl-dark .gl-commit-version-badge.gl-commit-version-changed {
-  color: var(--gl-color-blue-300, #9dc7f1);
-  background: rgba(66, 143, 220, 0.16);
-  border-color: rgba(66, 143, 220, 0.4);
+  color: var(--commit-version-changed-fg);
+  background: var(--commit-version-changed-bg);
+  border-color: var(--commit-version-changed-border);
 }
 
 :where(html.gl-actions-host) .gl-commit-version-loader {
