@@ -1,3 +1,5 @@
+import { rememberPreviewScroll } from "./scroll";
+import { createCommentPreviews } from "../../../shared/ui/review-comment";
 import type { ImportItem } from "../../../features/review-import";
 import { element } from "../../../shared/ui/dom";
 import type { ImportDialogState } from "./types";
@@ -12,6 +14,7 @@ const outcomeKeys: Record<string, string> = {
   skipped: "aiReviewImportSkipped",
 };
 export function createImportRenderer(actions: {
+  expandedByDefault: (state: ImportDialogState) => boolean;
   startEditor: (state: ImportDialogState, item?: ImportItem) => void;
   updateActions: (state: ImportDialogState) => void;
   saveEditor: (state: ImportDialogState) => void;
@@ -136,17 +139,29 @@ export function createImportRenderer(actions: {
           original.path + (original.line ? ":" + original.line : ""),
         ),
       );
-    box.appendChild(
-      element(
-        "pre",
-        "gl-review-note-text",
-        typeof original.body === "string" ? original.body : "",
-      ),
-    );
+    if (state.commentPreviews)
+      box.appendChild(
+        state.commentPreviews.render(
+          typeof original.body === "string" ? original.body : "",
+          "original:" + item.id,
+        ),
+      );
     return box;
   }
 
   function render(state: ImportDialogState) {
+    const restoreScroll = rememberPreviewScroll(
+      state.list,
+      state.overlay.querySelector<HTMLElement>(".gl-review-import-columns"),
+    );
+    state.commentPreviews?.dispose();
+    state.commentChoices ||= new Map();
+    const previews = (state.commentPreviews = createCommentPreviews(
+      state.t,
+      state.commentChoices,
+      actions.expandedByDefault(state),
+      state.expandComments,
+    ));
     state.editorInput = null;
     state.saveEdit = null;
     state.list.replaceChildren();
@@ -182,13 +197,15 @@ export function createImportRenderer(actions: {
         updateActions(state);
       });
       label.appendChild(check);
-      label.appendChild(
-        element(
-          "span",
-          "gl-review-badge",
-          state.t(outcomeKeys[result.status] || "aiReviewImportInvalid"),
-        ),
+      const badge = element(
+        "span",
+        "gl-review-badge",
+        state.t(outcomeKeys[result.status] || "aiReviewImportInvalid"),
       );
+      badge.title = badge.textContent || "";
+      if (result.resolveStatus === "resolved")
+        badge.title += " · " + state.t("aiReviewImportResolveSuccess");
+      label.appendChild(badge);
       if (item.type === "reply") {
         label.appendChild(
           element("span", "gl-review-muted", state.t("aiReviewImportReply")),
@@ -216,7 +233,9 @@ export function createImportRenderer(actions: {
           element("span", "gl-review-muted", state.t("aiReviewGeneral")),
         );
       heading.appendChild(label);
-      if (editable(state, item)) heading.appendChild(editButton(state, item));
+      const controls = element("span", "gl-review-import-controls");
+      heading.appendChild(controls);
+      if (editable(state, item)) controls.appendChild(editButton(state, item));
       const href =
         (result.url || item.existingUrl) &&
         safeLink(state, result.url || item.existingUrl);
@@ -226,7 +245,7 @@ export function createImportRenderer(actions: {
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         link.setAttribute("aria-label", state.t("aiReviewLink"));
-        heading.appendChild(link);
+        controls.appendChild(link);
       }
       card.appendChild(heading);
       const body = element("div", "gl-review-note");
@@ -247,10 +266,10 @@ export function createImportRenderer(actions: {
         body.appendChild(renderEditor(state));
       else
         body.appendChild(
-          element(
-            "pre",
-            "gl-review-note-text gl-review-import-text",
+          previews.render(
             typeof item.body === "string" ? item.body : "",
+            "reply:" + item.id,
+            "gl-review-import-text",
           ),
         );
       if (canResolve(item)) {
@@ -279,7 +298,11 @@ export function createImportRenderer(actions: {
         );
         body.appendChild(resolveLabel);
       }
-      if (result.message)
+      if (
+        result.message &&
+        result.status !== "published" &&
+        result.status !== "draft"
+      )
         body.appendChild(
           element(
             "p",
@@ -287,20 +310,15 @@ export function createImportRenderer(actions: {
             result.message,
           ),
         );
-      if (result.resolveStatus) {
+      if (result.resolveStatus && result.resolveStatus !== "resolved") {
         const resolveKey =
-          result.resolveStatus === "resolved"
-            ? "aiReviewImportResolveSuccess"
-            : result.resolveStatus === "unknown"
-              ? "aiReviewImportResolveUnknown"
-              : "aiReviewImportResolveFailed";
+          result.resolveStatus === "unknown"
+            ? "aiReviewImportResolveUnknown"
+            : "aiReviewImportResolveFailed";
         body.appendChild(
           element(
             "p",
-            "gl-review-import-message " +
-              (result.resolveStatus === "resolved"
-                ? "gl-review-muted"
-                : "gl-review-error"),
+            "gl-review-import-message gl-review-error",
             state.t(resolveKey),
           ),
         );
@@ -343,7 +361,9 @@ export function createImportRenderer(actions: {
       newCard.appendChild(newBody);
       state.list.appendChild(newCard);
     }
+    previews.refresh();
     updateActions(state);
+    restoreScroll();
   }
 
   function renderEditor(state: ImportDialogState) {

@@ -179,6 +179,12 @@ export function createImportWindow(
     actions.appendChild(viewSelect);
     actions.appendChild(viewClear);
     actions.appendChild(viewAdd);
+    const viewExpandComments = element(
+      "button",
+      "gl-review-button gl-review-comments-toggle-all",
+    );
+    viewExpandComments.type = "button";
+    actions.appendChild(viewExpandComments);
     previewPane.appendChild(actions);
     const viewCount = element("div", "gl-review-count");
     previewPane.appendChild(viewCount);
@@ -264,6 +270,7 @@ export function createImportWindow(
       add: viewAdd,
       count: viewCount,
       list: viewList,
+      expandComments: viewExpandComments,
       replyHint: viewReplyHint,
       stop: viewStop,
       drafts: viewDrafts,

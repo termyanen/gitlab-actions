@@ -29,6 +29,7 @@ interface ReviewWindowDependencies {
   getImportDialog: () => ImportDialog | undefined;
   close: (force?: boolean | Event) => boolean;
   settings: ReviewSettings;
+  resolveSettings: (project: string) => void;
   data: Pick<
     ReturnType<typeof createReviewExporter>,
     "DEFAULT_PROMPT" | "DEFAULT_FRESH_REVIEW_PROMPT" | "getNotes" | "getStatus"
@@ -67,6 +68,7 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
     getImportDialog,
     close,
     settings,
+    resolveSettings,
     data,
     getImporter,
     getWorkflow,
@@ -91,6 +93,8 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
     if (!context) return;
     if (getImportDialog()?.close() === false) return;
     if (close() === false) return;
+    resolveSettings(context.projectPath);
+    if (settings.show_ai_review_copy === false) return;
 
     const taskTabs: HTMLButtonElement[] = [];
     const reviewIntent = intent || {};
@@ -266,6 +270,12 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
     tools.appendChild(viewSelectButton);
     tools.appendChild(viewClearButton);
     tools.appendChild(viewRefreshButton);
+    const viewExpandComments = element(
+      "button",
+      "gl-review-button gl-review-comments-toggle-all",
+    );
+    viewExpandComments.type = "button";
+    tools.appendChild(viewExpandComments);
     left.appendChild(tools);
     const viewCount = element("div", "gl-review-count");
     left.appendChild(viewCount);
@@ -618,6 +628,7 @@ export function createReviewWindow(dependencies: ReviewWindowDependencies) {
       refreshButton: viewRefreshButton,
       count: viewCount,
       list: viewList,
+      expandComments: viewExpandComments,
       contextHint: viewContextHint,
       output: right,
       taskHint: viewTaskHint,

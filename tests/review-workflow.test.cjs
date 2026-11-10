@@ -372,3 +372,14 @@ test('new response languages reach AI instructions without translating supplied 
     assert.ok(output.endsWith(content));
   }
 });
+
+test('fresh, fix and repeat operations use the supplied project for rules, language and filters',async()=>{
+  const e=env({settings:{ai_review_response_language:'de',projectProfiles:{'team/repo':{overrides:{ai_review_response_language:'ru',ai_review_rule_repository:{enabled:true,text:'PROJECT_REPOSITORY_RULE'},ai_review_file_filter:{includeExtensions:'',includeFiles:'',ignoreFiles:'*.json',ignoreDirs:''}}},'team/other':{overrides:{ai_review_response_language:'fr'}}}}});
+  const snapshot={context:e.context,entity:{iid:42,title:'MR',sha:HEAD},complete:true,warnings:[],discussions:[]};
+  const outputs=[await e.api.prepareFreshReview(e.context),await e.api.prepareExport(snapshot,{includeDescription:false}),await e.api.prepareRepeatReview(e.context,{discussionIds:[]})];
+  for(const output of outputs){assert.match(output.text,/^Response language selected by the user: Russian/);assert.match(output.text,/PROJECT_REPOSITORY_RULE/);}
+  const scoped=await e.workflow.settings(undefined,'team/repo');
+  assert.equal(scoped.filter.ignoreFiles,'*.json');
+  const inherited=await e.workflow.applyResponseLanguage('Original',{settingsProjectPath:'team/missing'});
+  assert.match(inherited,/German/);
+});

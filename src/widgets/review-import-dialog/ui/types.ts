@@ -1,3 +1,4 @@
+import type { createCommentPreviews } from "../../../shared/ui/review-comment";
 import type {
   ImportPlan,
   ImportResultItem,
@@ -6,6 +7,9 @@ import type { ReviewContext } from "../../../entities/review";
 import type { Translate } from "../../../shared/i18n";
 
 export interface ImportDialogState {
+  commentPreviews?: ReturnType<typeof createCommentPreviews>;
+  commentChoices?: Map<string, boolean>;
+  expandComments: HTMLButtonElement;
   context: ReviewContext;
   t: Translate;
   previousFocus: HTMLElement | null;

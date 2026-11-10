@@ -1,3 +1,4 @@
+import { createCommentPreviews } from "../../../shared/ui/review-comment";
 import type { Discussion, Note } from "../../../entities/discussion";
 import type { DiffRefs } from "../../../entities/merge-request";
 import type {
@@ -12,6 +13,7 @@ export function createReviewThreads(
   t: Translate,
   invalidate: (state: ReviewDialogState) => void,
   updateActions: (state: ReviewDialogState) => void,
+  expandedByDefault: () => boolean,
 ) {
   function positionText(note: Note) {
     const p = note.position || note.original_position;
@@ -78,6 +80,14 @@ export function createReviewThreads(
   }
 
   function renderThreads(state: ReviewDialogState) {
+    state.commentPreviews?.dispose();
+    state.commentChoices ||= new Map();
+    const previews = (state.commentPreviews = createCommentPreviews(
+      t,
+      state.commentChoices,
+      expandedByDefault(),
+      state.expandComments,
+    ));
     state.list.replaceChildren();
     const threads = visibleThreads(state);
     if (!threads.length)
@@ -172,7 +182,7 @@ export function createReviewThreads(
             );
         }
         row.appendChild(noteLabel);
-        row.appendChild(element("pre", "gl-review-note-text", note.body || ""));
+        row.appendChild(previews.render(note.body || "", String(note.id)));
         if (index === 0) card.appendChild(row);
         else {
           let replies = card.querySelector("details");
@@ -194,6 +204,7 @@ export function createReviewThreads(
       });
       state.list.appendChild(card);
     });
+    previews.refresh();
     updateActions(state);
   }
 

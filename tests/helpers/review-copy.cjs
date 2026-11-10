@@ -38,6 +38,7 @@ function dom() {
       set: function(_, key, value) { el.setAttribute('data-' + key.replace(/[A-Z]/g, function(ch) { return '-' + ch.toLowerCase(); }), String(value)); return true; }
     });
     el.classList = {
+      contains: function(cls) { return el.className.split(/\s+/).includes(cls); },
       add: function(cls) { if (!el.className.split(/\s+/).includes(cls)) el.className += ' ' + cls; },
       remove: function(cls) { el.className = el.className.split(/\s+/).filter(function(item) { return item !== cls; }).join(' '); },
       toggle: function(cls, yes) { if (yes) this.add(cls); else this.remove(cls); }
@@ -105,6 +106,7 @@ function dom() {
       var event = Object.assign({ target: el, preventDefault: function() {}, stopPropagation: function() { stopped = true; }, stopImmediatePropagation: function() { stopped = true; } }, props);
       for (var node = el; node; node = node.parentElement) {
         (node.events[type] || []).forEach(function(fn) { fn(event); });
+        if (typeof node["on" + type] === "function") node["on" + type](event);
         if (stopped) break;
       }
     };
@@ -135,11 +137,11 @@ async function create(options) {
   options = options || {};
   var tree = dom();
   var document = tree.document;
-  var env = { document: document, loads: [], exports: [], freshExports: [], clipboard: [], clipboardRequests: [], manualCopies: [], timers: new Map(), intervals: [], windowEvents: {}, settingsEvents: [], settings: Object.assign({}, options.settings), settingsWrites: [] };
+  var env = { document: document, loads: [], exports: [], freshExports: [], clipboard: [], clipboardRequests: [], manualCopies: [], timers: new Map(), intervals: [], windowEvents: {}, settingsEvents: [], settings: Object.assign({}, options.settings), settingsWrites: [], settingsReads: [] };
   var runtime = { getURL: function(path) { return path; } };
   var storage = {
     sync: {
-      get: function(defaults, cb) { cb(Object.assign({}, defaults, env.settings)); },
+      get: function(defaults, cb) { var values=Object.assign({}, defaults, env.settings); if (options.deferredSettingsReads) env.settingsReads.push(() => cb(values)); else cb(values); },
       set: function(values, cb) {
         env.settingsWrites.push(harness.plain(values));
         if (options.storageFailure) {

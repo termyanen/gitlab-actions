@@ -2223,23 +2223,6 @@
   border-top: 1px solid var(--gl-border-color-default, #dcdcde);
 }
 
-/* Sensitive file warning (#13) */
-:where(html.gl-actions-host) .gl-mr-ext-sensitive-warning {
-  height: 30px;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  background: #c27400;
-  border: 1px solid #a86300;
-  cursor: default;
-  white-space: nowrap;
-  letter-spacing: 0.3px;
-}
-
 /* Git command buttons (#12) */
 :where(html.gl-actions-host) .gl-mr-ext-git-commands {
   display: flex;
@@ -2349,6 +2332,7 @@
   color: var(--gl-review-fg);
   font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
+:where(html.gl-actions-host):is(.gl-dark, [data-theme="dark"]) :is(.gl-review-launcher, .gl-review-inline, .gl-review-overlay),
 :where(html.gl-actions-host) .gl-dark .gl-review-launcher,
 :where(html.gl-actions-host) .gl-dark .gl-review-inline,
 :where(html.gl-actions-host) .gl-dark .gl-review-overlay,
@@ -2447,7 +2431,7 @@
 :where(html.gl-actions-host) .gl-review-note-label { display: flex; gap: 7px; flex-wrap: wrap; align-items: flex-start; margin: 0 0 6px; cursor: pointer; }
 :where(html.gl-actions-host) .gl-review-note-label strong { font-size: 12px; font-weight: 600; }
 :where(html.gl-actions-host) .gl-review-note-label time { font-size: 10px; line-height: 20px; }
-:where(html.gl-actions-host) .gl-review-note-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: inherit; margin: 0; padding: 0; border: 0; background: none; max-height: 220px; overflow: auto; }
+:where(html.gl-actions-host) .gl-review-note-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: inherit; margin: 0; padding: 0; border: 0; background: none; max-height: none; overflow: visible; }
 :where(html.gl-actions-host) .gl-review-replies { border-top: 1px solid var(--gl-review-border); }
 :where(html.gl-actions-host) .gl-review-replies summary { padding: 7px 10px; cursor: pointer; color: var(--gl-review-muted); font-size: 12px; }
 :where(html.gl-actions-host) .gl-review-replies .gl-review-note { border-top: 1px solid var(--gl-review-border); }
@@ -2480,10 +2464,10 @@
 :where(html.gl-actions-host) .gl-review-import-launcher.gl-review-floating { left: 60px; }
 :where(html.gl-actions-host) .gl-review-import-input-pane { border-right: 1px solid var(--gl-review-border); }
 :where(html.gl-actions-host) .gl-review-import-preview-pane { border-right: 0; }
-/* Keep a clear wheel target beside long comments and editors. */
-:where(html.gl-actions-host) .gl-review-import-preview-pane .gl-review-list { padding-inline-end: 28px; scrollbar-gutter: stable; }
-/* At the end of a nested comment/editor, continue scrolling the preview. */
-:where(html.gl-actions-host) .gl-review-import-overlay :is(.gl-review-note-text, textarea) { overscroll-behavior-y: auto; }
+/* Keep only the scrollbar gutter: comments no longer trap the wheel. */
+:where(html.gl-actions-host) .gl-review-import-preview-pane .gl-review-list { padding-inline-end: 4px; scrollbar-gutter: stable; }
+/* Editors keep text scrolling; at their edges, continue through the column. */
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-note-text, textarea) { overscroll-behavior-y: auto; }
 :where(html.gl-actions-host) .gl-review-import-help { margin: 0 0 4px; }
 :where(html.gl-actions-host) .gl-review-import-preview-title { margin: 0; color: inherit; font: inherit; font-weight: 600; }
 :where(html.gl-actions-host) .gl-review-import-code { margin: 0 0 10px; padding: 7px 9px; border: 1px solid var(--gl-review-border); border-radius: 4px; color: inherit; background: var(--gl-review-soft); font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -2515,7 +2499,7 @@
   :where(html.gl-actions-host) .gl-review-import-preview-pane { border-bottom: 0; max-height: none; }
   :where(html.gl-actions-host) .gl-review-import-preview-pane .gl-review-list { min-height: 200px; }
   /* The columns become the main scroller on narrow screens. */
-  :where(html.gl-actions-host) .gl-review-import-columns { padding-inline-end: 20px; }
+  :where(html.gl-actions-host) .gl-review-import-columns { padding-inline-end: 0; }
   :where(html.gl-actions-host) .gl-review-import-overlay :is(.gl-review-list, .gl-review-output) { overscroll-behavior-y: auto; }
 }
 
@@ -2560,3 +2544,24 @@
   :where(html.gl-actions-host) .gl-review-columns:not(.gl-review-import-columns) > .gl-review-output { order: -1; min-height: 0; flex-shrink: 0; }
   :where(html.gl-actions-host) .gl-review-columns:not(.gl-review-import-columns) > .gl-review-picker { flex-shrink: 0; border-top: 1px solid var(--gl-review-border); }
 }
+
+/* Reserve header geometry so successful publication only changes the border/status. */
+:where(html.gl-actions-host) .gl-review-import-item .gl-review-badge { width: 12em; flex: 0 0 12em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:where(html.gl-actions-host) .gl-review-import-controls { display: flex; align-items: center; justify-content: flex-end; gap: 4px; min-width: 24px; height: 24px; flex-shrink: 0; }
+:where(html.gl-actions-host) .gl-review-import-controls > .gl-review-link { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
+/* The final tally wraps within its own region instead of moving the preview. */
+:where(html.gl-actions-host) .gl-review-import-dialog > .gl-review-status { height: 64px; min-height: 64px; flex-shrink: 0; overflow: auto; }
+
+/* Full-height read-only comments scroll with their column. Reserve an easy-to-grab
+   rail for each column and text editor without intercepting wheel events. */
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-list, .gl-review-output, textarea) { scrollbar-gutter: stable; }
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, textarea) { scrollbar-width: auto; scrollbar-color: auto; }
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, textarea)::-webkit-scrollbar { width: 14px; height: 14px; }
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, textarea)::-webkit-scrollbar-track { background: var(--gl-review-soft); }
+:where(html.gl-actions-host) .gl-review-overlay :is(.gl-review-columns, .gl-review-list, .gl-review-output, textarea)::-webkit-scrollbar-thumb { min-height: 32px; min-width: 32px; background: var(--gl-review-muted); border: 3px solid var(--gl-review-soft); border-radius: 8px; }
+:where(html.gl-actions-host) .gl-review-list { padding-inline-end: 4px; }
+
+/* Clip previews without creating nested scroll containers. */
+:where(html.gl-actions-host) .gl-review-comment[data-expanded="false"] .gl-review-note-text { line-height: 1.5; max-height: 7.5em; overflow: clip; }
+:where(html.gl-actions-host) .gl-review-comment-toggle { margin-top: 8px; font-size: 12px; padding: 4px 8px; }
+:where(html.gl-actions-host) .gl-review-comment-toggle[hidden] { display: none; }
