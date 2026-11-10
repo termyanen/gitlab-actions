@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Τα κουμπιά εμφανίζονται στη σελίδα MR. Ένα αρχικό σετ ενεργοποιείται στην πρώτη εγκατάσταση."
   },
-  "welcomeStep3Title": {
-    "message": "Προσάρμοσε μέσω του popup της επέκτασης"
-  },
-  "welcomeStep3Desc": {
-    "message": "Κλίκαρε το εικονίδιο της επέκτασης για να ενεργοποιήσεις/απενεργοποιήσεις κουμπιά, να ορίσεις αρχείο version bump, να προσθέσεις προσαρμοσμένα κουμπιά εργασίας και άλλα."
-  },
+  "welcomeStep3Title": { "message": "Προσαρμογή από τις ρυθμίσεις" },
+  "welcomeStep3Desc": { "message": "Χρησιμοποιήστε το αναδυόμενο παράθυρο για γρήγορη ενεργοποίηση ή απενεργοποίηση επιλογών. Ανοίξτε «Όλες οι ρυθμίσεις» για να διαμορφώσετε ενέργειες, εκδόσεις, Jira, CI/CD και έλεγχο με AI." },
   "welcomeEnabledDefault": {
     "message": "Ενεργοποιημένο από προεπιλογή"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Τα προφίλ ανά έργο σας επιτρέπουν να προσαρμόζετε κουμπιά για διαφορετικά αποθετήρια"
   },
-  "welcomeTip": {
-    "message": "Μπορείτε να δημιουργήσετε προφίλ ανά έργο στις ρυθμίσεις του popup. Αυτό είναι χρήσιμο όταν διαφορετικά έργα χρειάζονται διαφορετικά αρχεία έκδοσης ή προσαρμοσμένες εργασίες CI."
-  },
+  "welcomeTip": { "message": "Δημιουργήστε προφίλ έργων στην ενότητα «Όλες οι ρυθμίσεις», όταν τα έργα χρειάζονται διαφορετικά αρχεία εκδόσεων, κουμπιά ενεργειών ή εργασίες CI." },
   "welcomeOpenSettings": {
     "message": "Άνοιγμα Ρυθμίσεων"
   },
@@ -689,8 +683,13 @@
     "message": "Επιτρέψτε πρόσβαση στον ιστότοπο Jira"
   },
   "jiraAccessGranted": {
-    "message": "Η πρόσβαση στον ιστότοπο δόθηκε. Συνδεθείτε στο Jira σε αυτόν τον περιηγητή."
+    "message": "Η επέκταση έχει άδεια πρόσβασης στο $1."
   },
+  "jiraConnectionUnchecked": { "message": "Η σύνδεση δεν έχει ελεγχθεί ακόμη." },
+  "jiraConnectionCheck": { "message": "Έλεγχος σύνδεσης" },
+  "jiraConnectionChecking": { "message": "Έλεγχος σύνδεσης με $1…" },
+  "jiraConnectionConnected": { "message": "Τελευταίος έλεγχος του $1: η είσοδος επιβεβαιώθηκε· το API είναι διαθέσιμο." },
+  "jiraConnectionSignIn": { "message": "Είσοδος στο Jira" },
   "jiraUrlInvalid": {
     "message": "Εισάγετε ένα βασικό URL Jira με HTTPS, χωρίς διαπιστευτήρια/ερωτήματα/τμήματα."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Κλάδοι για cherry-pick"
   },
+  "cherryPickProjectBranchesHint": { "message": "Ορίστε κλάδους για αυτό το έργο. Αφήστε τη λίστα κενή για να χρησιμοποιηθούν οι καθολικοί κλάδοι." },
+  "cherryPickNoBranches": { "message": "Δεν έχουν οριστεί κλάδοι." },
   "cherryPickBranchesHint": {
     "message": "Προεπιλεγμένα target branches για cherry-pick. Μπορείς να προσθέσεις ή να αφαιρέσεις branches στο modal."
   },
@@ -1492,7 +1493,7 @@
     "message": "Η ερώτηση δεν αποθηκεύτηκε. Χρησιμοποιήστε το πολύ 1.500 χαρακτήρες και αφαιρέστε ασυνήθιστους χαρακτήρες ελέγχου."
   },
   "settingsSaveFailed": {
-    "message": "Οι ρυθμίσεις δεν αποθηκεύτηκαν. Κάνε μια αλλαγή για να ξαναδοκιμάσεις."
+    "message": "Δεν ήταν δυνατή η αποθήκευση των ρυθμίσεων. Δοκιμάστε ξανά."
   },
   "aiReviewPromptSessionHint": {
     "message": "Οι αλλαγές εδώ εφαρμόζονται σε αυτήν την εξαγωγή. Όρισε το προεπιλεγμένο prompt σου στις ρυθμίσεις της επέκτασης."
@@ -2073,7 +2074,7 @@
     "message": "Δημιουργήστε ονομασμένα κουμπιά για να αλλάξετε ετικέτες ή να καθαρίσετε άλλα πεδία MR. Σύρετέ τα στη λίστα κουμπιών για να αλλάξετε τη σειρά τους."
   },
   "mrActionsProfileHint": {
-    "message": "Αυτό το έργο χρησιμοποιεί τη δική του λίστα ενεργειών μετά την αποθήκευση. Αφαιρέστε όλες τις καταχωρήσεις για να αποκρύψετε αυτά τα κουμπιά για αυτό το έργο."
+    "message": "Η επεξεργασία αυτής της λίστας δημιουργεί ενέργειες για το συγκεκριμένο έργο. Καταργήστε όλες τις καταχωρίσεις για να αποκρύψετε αυτά τα κουμπιά στο έργο."
   },
   "mrActionAdd": {
     "message": "Προσθήκη ενέργειας MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Ρυθμίσεις" },
+  "settingsActions": { "message": "MR και commit" },
+  "settingsActionsHint": { "message": "Αιτήματα συγχώνευσης, commit, εκδόσεις και cherry-pick." },
+  "settingsCi": { "message": "CI/CD και εργασίες" },
+  "settingsAppearance": { "message": "Περιβάλλον GitLab" },
+  "settingsData": { "message": "Δεδομένα και βοήθεια" },
+  "settingsSearch": { "message": "Αναζήτηση ρυθμίσεων" },
+  "settingsScope": { "message": "Πεδίο εφαρμογής ρυθμίσεων" },
+  "settingsProjectValue": { "message": "Τιμή έργου" },
+  "settingsUseGlobal": { "message": "Χρήση καθολικής τιμής" },
+  "settingsProjectInheritanceHint": { "message": "Αλλάξτε μια τιμή για να την ορίσετε για αυτό το έργο. Χρησιμοποιήστε την καθολική τιμή για επαναφορά της κληρονόμησης." },
+  "settingsSharedPreferencesHint": { "message": "Η γλώσσα διεπαφής, ο ήχος, οι ειδοποιήσεις επιφάνειας εργασίας και οι αναφορές όλων των έργων έχουν καθολικές ρυθμίσεις. Αλλάξτε τις στην ενότητα Όλα τα έργα." },
+  "settingsGlobal": { "message": "Όλα τα έργα" },
+  "settingsGlobalHint": { "message": "Αυτές οι ρυθμίσεις ισχύουν για όλα τα έργα." },
+  "settingsProjectHint": { "message": "Αυτό το προφίλ αντικαθιστά τις κοινές ρυθμίσεις για αυτό το έργο." },
+  "settingsGlobalOnly": { "message": "Αυτή η ενότητα χρησιμοποιεί κοινές ρυθμίσεις για όλα τα έργα." },
+  "settingsQuick": { "message": "Γρήγορες ρυθμίσεις" },
+  "settingsNoResults": { "message": "Δεν βρέθηκαν αντίστοιχες ρυθμίσεις." },
+  "settingsRemoveProfile": { "message": "Κατάργηση προφίλ" },
+  "settingsNoProject": { "message": "Ανοίξτε ένα έργο GitLab για να χρησιμοποιήσετε προφίλ έργων." },
+  "settingsAll": { "message": "Όλες οι ρυθμίσεις" },
+  "settingsMoveUp": { "message": "Μετακίνηση προς τα πάνω" },
+  "settingsMoveDown": { "message": "Μετακίνηση προς τα κάτω" },
+  "settingsConnection": { "message": "Σύνδεση" },
+  "settingsJiraDisplay": { "message": "Jira στο GitLab" },
+  "settingsAdvanced": { "message": "Σύνθετες ρυθμίσεις" },
+  "settingsAutosaveHint": { "message": "Οι αλλαγές αποθηκεύονται αυτόματα." },
+  "settingsSaving": { "message": "Αποθήκευση…" },
+  "settingsLoadFailed": { "message": "Δεν ήταν δυνατή η φόρτωση των ρυθμίσεων. Δοκιμάστε ξανά πριν τις επεξεργαστείτε." },
+  "aiReviewShowFull": { "message": "Εμφάνιση ολόκληρου" },
+  "aiReviewShowLess": { "message": "Σύμπτυξη" },
+  "aiReviewExpandCommentsSetting": { "message": "Εμφάνιση ολόκληρων των σχολίων ελέγχου από προεπιλογή" },
+  "aiReviewExpandAll": { "message": "Ανάπτυξη όλων" },
+  "aiReviewCollapseAll": { "message": "Σύμπτυξη όλων" }
 }

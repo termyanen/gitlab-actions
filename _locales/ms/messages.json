@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Butang muncul di halaman MR. Satu set permulaan diaktifkan semasa pemasangan pertama."
   },
-  "welcomeStep3Title": {
-    "message": "Sesuaikan melalui popup sambungan"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klik ikon sambungan untuk mengaktifkan/matikan butang, tetapkan fail versi, tambah butang kerja tersuai, dan banyak lagi."
-  },
+  "welcomeStep3Title": { "message": "Sesuaikan melalui tetapan" },
+  "welcomeStep3Desc": { "message": "Gunakan tetingkap timbul untuk menghidupkan atau mematikan pilihan dengan pantas. Buka “Semua tetapan” untuk mengkonfigurasi tindakan, versi, Jira, CI/CD dan semakan AI." },
   "welcomeEnabledDefault": {
     "message": "Diaktifkan secara lalai"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profil bagi setiap projek membolehkan anda menyesuaikan butang untuk repositori yang berbeza"
   },
-  "welcomeTip": {
-    "message": "Anda boleh membuat profil bagi setiap projek dalam tetapan popup. Ini berguna apabila projek yang berbeza memerlukan fail versi atau pekerjaan CI tersuai yang berbeza."
-  },
+  "welcomeTip": { "message": "Cipta profil projek dalam “Semua tetapan” apabila projek memerlukan fail versi, butang tindakan atau tugas CI yang berbeza." },
   "welcomeOpenSettings": {
     "message": "Buka Tetapan"
   },
@@ -689,8 +683,13 @@
     "message": "Benarkan akses tapak Jira"
   },
   "jiraAccessGranted": {
-    "message": "Akses tapak telah diberikan. Log masuk ke Jira dalam pelayar ini."
+    "message": "Sambungan dibenarkan mengakses $1."
   },
+  "jiraConnectionUnchecked": { "message": "Sambungan belum diperiksa." },
+  "jiraConnectionCheck": { "message": "Semak sambungan" },
+  "jiraConnectionChecking": { "message": "Menyemak sambungan ke $1…" },
+  "jiraConnectionConnected": { "message": "Semakan terakhir $1: telah log masuk; API tersedia." },
+  "jiraConnectionSignIn": { "message": "Log masuk ke Jira" },
   "jiraUrlInvalid": {
     "message": "Masukkan URL asas Jira HTTPS, tanpa kelayakan/pertanyaan/fragmen."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cawangan cherry-pick"
   },
+  "cherryPickProjectBranchesHint": { "message": "Tetapkan cabang untuk projek ini. Biarkan senarai kosong untuk menggunakan cabang global." },
+  "cherryPickNoBranches": { "message": "Tiada cabang dikonfigurasikan." },
   "cherryPickBranchesHint": {
     "message": "Cawangan sasaran lalai untuk cherry-pick. Anda boleh menambah atau membuang cawangan dalam modal."
   },
@@ -1492,7 +1493,7 @@
     "message": "Arahan tidak disimpan. Gunakan maksimum 1,500 aksara dan buang aksara kawalan yang luar biasa."
   },
   "settingsSaveFailed": {
-    "message": "Tetapan tidak dapat disimpan. Lakukan perubahan untuk mencuba semula."
+    "message": "Tetapan tidak dapat disimpan. Cuba lagi."
   },
   "aiReviewPromptSessionHint": {
     "message": "Perubahan di sini terpakai untuk eksport ini. Tetapkan arahan lalai anda dalam tetapan sambungan."
@@ -2073,7 +2074,7 @@
     "message": "Cipta butang bernama untuk menukar label atau mengosongkan medan MR lain. Seret mereka dalam senarai butang untuk menukar susun atur."
   },
   "mrActionsProfileHint": {
-    "message": "Projek ini menggunakan senarai tindakan sendiri selepas menyimpan. Hapus semua entri untuk menyembunyikan butang ini bagi projek ini."
+    "message": "Mengedit senarai ini mewujudkan tindakan khusus projek. Alih keluar semua entri untuk menyembunyikan butang ini bagi projek ini."
   },
   "mrActionAdd": {
     "message": "Tambah tindakan MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Tetapan" },
+  "settingsActions": { "message": "MR dan komit" },
+  "settingsActionsHint": { "message": "Permintaan gabungan, komit, versi dan cherry-pick." },
+  "settingsCi": { "message": "CI/CD dan tugas" },
+  "settingsAppearance": { "message": "Antara muka GitLab" },
+  "settingsData": { "message": "Data dan bantuan" },
+  "settingsSearch": { "message": "Cari tetapan" },
+  "settingsScope": { "message": "Skop tetapan" },
+  "settingsProjectValue": { "message": "Nilai projek" },
+  "settingsUseGlobal": { "message": "Gunakan nilai global" },
+  "settingsProjectInheritanceHint": { "message": "Edit nilai untuk menetapkannya bagi projek ini. Gunakan nilai global untuk memulihkan pewarisan." },
+  "settingsSharedPreferencesHint": { "message": "Bahasa antara muka, bunyi, pemberitahuan desktop dan tetapan laporan merentas projek adalah global. Edit dalam Semua projek." },
+  "settingsGlobal": { "message": "Semua projek" },
+  "settingsGlobalHint": { "message": "Tetapan ini digunakan untuk semua projek." },
+  "settingsProjectHint": { "message": "Profil ini menggantikan tetapan umum untuk projek ini." },
+  "settingsGlobalOnly": { "message": "Bahagian ini menggunakan tetapan yang dikongsi oleh semua projek." },
+  "settingsQuick": { "message": "Tetapan pantas" },
+  "settingsNoResults": { "message": "Tiada tetapan yang sepadan." },
+  "settingsRemoveProfile": { "message": "Alih keluar profil" },
+  "settingsNoProject": { "message": "Buka projek GitLab untuk menggunakan profil projek." },
+  "settingsAll": { "message": "Semua tetapan" },
+  "settingsMoveUp": { "message": "Alih ke atas" },
+  "settingsMoveDown": { "message": "Alih ke bawah" },
+  "settingsConnection": { "message": "Sambungan" },
+  "settingsJiraDisplay": { "message": "Jira dalam GitLab" },
+  "settingsAdvanced": { "message": "Tetapan lanjutan" },
+  "settingsAutosaveHint": { "message": "Perubahan disimpan secara automatik." },
+  "settingsSaving": { "message": "Menyimpan…" },
+  "settingsLoadFailed": { "message": "Tetapan tidak dapat dimuatkan. Cuba lagi sebelum mengedit." },
+  "aiReviewShowFull": { "message": "Tunjukkan sepenuhnya" },
+  "aiReviewShowLess": { "message": "Tunjukkan kurang" },
+  "aiReviewExpandCommentsSetting": { "message": "Tunjukkan komen semakan sepenuhnya secara lalai" },
+  "aiReviewExpandAll": { "message": "Kembangkan semua" },
+  "aiReviewCollapseAll": { "message": "Runtuhkan semua" }
 }

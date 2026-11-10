@@ -17,7 +17,7 @@ import {
   readRawJiraIssue,
 } from "../../../entities/jira-issue/background";
 import type { JiraFieldValue } from "../../../entities/jira-issue/content";
-import { JIRA_API_PREFIX } from "../../../shared/config/jira";
+import { JIRA_API_PREFIX, JIRA_MYSELF_PATH } from "../../../shared/config/jira";
 import {
   jiraFailure,
   stopsJiraBatch,
@@ -445,7 +445,7 @@ export function handleJiraMessage(
     return true;
   }
   if (msg.type === "fetch-jira-myself") {
-    jiraApi(msg.jiraUrl, JIRA_API_PREFIX + "/myself")
+    jiraApi(msg.jiraUrl, JIRA_MYSELF_PATH)
       .then(readJiraUser)
       .then(function (data) {
         const id = data.accountId || data.key || data.name;

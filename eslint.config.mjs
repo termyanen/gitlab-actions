@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
 
 export default defineConfig(
   {
@@ -9,7 +10,7 @@ export default defineConfig(
     linterOptions: { reportUnusedDisableDirectives: "error" },
   },
   {
-    files: ["src/**/*.ts"],
+    files: ["src/**/*.{ts,tsx}"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
       parserOptions: {
@@ -17,6 +18,7 @@ export default defineConfig(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: { "react-hooks": reactHooks },
     rules: {
       // API boundaries deliberately replace external errors with safe messages.
       "preserve-caught-error": "off",
@@ -56,6 +58,8 @@ export default defineConfig(
       "@typescript-eslint/no-duplicate-type-constituents": "error",
       "@typescript-eslint/no-redundant-type-constituents": "error",
       "@typescript-eslint/switch-exhaustiveness-check": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "error",
     },
   },
   {

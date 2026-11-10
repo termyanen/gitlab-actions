@@ -87,6 +87,8 @@ test('Rebase + Auto-merge does not bump a version', async function() {
 });
 
 [
+  { should_remove_source_branch: null, force_remove_source_branch: false, expected: false },
+  { should_remove_source_branch: null, force_remove_source_branch: true, expected: true },
   { should_remove_source_branch: false, force_remove_source_branch: false, expected: false },
   { should_remove_source_branch: true, force_remove_source_branch: false, expected: true },
   { should_remove_source_branch: false, force_remove_source_branch: true, expected: true }

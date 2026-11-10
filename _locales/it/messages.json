@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "I pulsanti vengono visualizzati nella pagina MR. Un set iniziale è abilitato alla prima installazione."
   },
-  "welcomeStep3Title": {
-    "message": "Personalizza tramite popup dell'estensione"
-  },
-  "welcomeStep3Desc": {
-    "message": "Fare clic sull'icona dell'estensione per abilitare/disabilitare i pulsanti, impostare il file bump della versione, aggiungere pulsanti di lavoro personalizzati e altro."
-  },
+  "welcomeStep3Title": { "message": "Personalizza nelle impostazioni" },
+  "welcomeStep3Desc": { "message": "Usa il popup per attivare o disattivare rapidamente le opzioni. Apri «Tutte le impostazioni» per configurare azioni, versioni, Jira, CI/CD e revisioni con IA." },
   "welcomeEnabledDefault": {
     "message": "Abilitato per impostazione predefinita"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "I profili per progetto consentono di personalizzare i pulsanti per diversi repository"
   },
-  "welcomeTip": {
-    "message": "È possibile creare profili per progetto nelle impostazioni popup. Ciò è utile quando progetti diversi necessitano di file di versione diversi o lavori CI personalizzati."
-  },
+  "welcomeTip": { "message": "Crea profili di progetto in «Tutte le impostazioni» quando i progetti richiedono file di versione, pulsanti di azione o job CI diversi." },
   "welcomeOpenSettings": {
     "message": "Apri Impostazioni"
   },
@@ -689,8 +683,13 @@
     "message": "Consenti l'accesso al sito Jira"
   },
   "jiraAccessGranted": {
-    "message": "Accesso al sito concesso. Accedi a Jira in questo browser."
+    "message": "L’estensione è autorizzata ad accedere a $1."
   },
+  "jiraConnectionUnchecked": { "message": "La connessione non è ancora stata verificata." },
+  "jiraConnectionCheck": { "message": "Verifica connessione" },
+  "jiraConnectionChecking": { "message": "Verifica della connessione a $1…" },
+  "jiraConnectionConnected": { "message": "Ultima verifica di $1: accesso effettuato; API disponibile." },
+  "jiraConnectionSignIn": { "message": "Accedi a Jira" },
   "jiraUrlInvalid": {
     "message": "Immettere un URL di base HTTPS Jira, senza credenziali/query/frammento."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Rami di ciliegia"
   },
+  "cherryPickProjectBranchesHint": { "message": "Imposta i branch per questo progetto. Lascia vuoto l’elenco per usare i branch globali." },
+  "cherryPickNoBranches": { "message": "Nessun branch configurato." },
   "cherryPickBranchesHint": {
     "message": "Rami di destinazione predefiniti per il cherry-pick. Puoi aggiungere o rimuovere rami nel modale."
   },
@@ -1492,7 +1493,7 @@
     "message": "Richiesta non salvata. Utilizza al massimo 1.500 caratteri e rimuovi i caratteri di controllo insoliti."
   },
   "settingsSaveFailed": {
-    "message": "Impossibile salvare le impostazioni. Apporta una modifica per riprovare."
+    "message": "Impossibile salvare le impostazioni. Riprova."
   },
   "aiReviewPromptSessionHint": {
     "message": "Le modifiche qui si applicano a questa esportazione. Imposta la richiesta predefinita nelle impostazioni dell'estensione."
@@ -2073,7 +2074,7 @@
     "message": "Crea pulsanti con nome per modificare le etichette o cancellare altri campi MR. Trascinateli nell'elenco dei pulsanti per modificarne l'ordine."
   },
   "mrActionsProfileHint": {
-    "message": "Questo progetto utilizza il proprio elenco di azioni dopo il salvataggio. Rimuovi tutte le voci per nascondere questi pulsanti per questo progetto."
+    "message": "La modifica di questo elenco crea azioni specifiche del progetto. Rimuovi tutte le voci per nascondere questi pulsanti nel progetto."
   },
   "mrActionAdd": {
     "message": "Aggiungi l'azione MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Impostazioni" },
+  "settingsActions": { "message": "MR e commit" },
+  "settingsActionsHint": { "message": "Merge request, commit, versioni e cherry-pick." },
+  "settingsCi": { "message": "CI/CD e job" },
+  "settingsAppearance": { "message": "Interfaccia GitLab" },
+  "settingsData": { "message": "Dati e assistenza" },
+  "settingsSearch": { "message": "Cerca impostazioni" },
+  "settingsScope": { "message": "Ambito delle impostazioni" },
+  "settingsProjectValue": { "message": "Valore del progetto" },
+  "settingsUseGlobal": { "message": "Usa valore globale" },
+  "settingsProjectInheritanceHint": { "message": "Modifica un valore per impostarlo per questo progetto. Usa il valore globale per ripristinare l’ereditarietà." },
+  "settingsSharedPreferencesHint": { "message": "La lingua dell’interfaccia, i suoni, le notifiche e le impostazioni dei report tra progetti sono globali. Modificali in Tutti i progetti." },
+  "settingsGlobal": { "message": "Tutti i progetti" },
+  "settingsGlobalHint": { "message": "Queste impostazioni si applicano a tutti i progetti." },
+  "settingsProjectHint": { "message": "Questo profilo sostituisce le impostazioni comuni per questo progetto." },
+  "settingsGlobalOnly": { "message": "Questa sezione utilizza impostazioni condivise per tutti i progetti." },
+  "settingsQuick": { "message": "Impostazioni rapide" },
+  "settingsNoResults": { "message": "Nessuna impostazione corrispondente." },
+  "settingsRemoveProfile": { "message": "Rimuovi profilo" },
+  "settingsNoProject": { "message": "Apri un progetto GitLab per utilizzare i profili di progetto." },
+  "settingsAll": { "message": "Tutte le impostazioni" },
+  "settingsMoveUp": { "message": "Sposta su" },
+  "settingsMoveDown": { "message": "Sposta giù" },
+  "settingsConnection": { "message": "Connessione" },
+  "settingsJiraDisplay": { "message": "Jira in GitLab" },
+  "settingsAdvanced": { "message": "Impostazioni avanzate" },
+  "settingsAutosaveHint": { "message": "Le modifiche vengono salvate automaticamente." },
+  "settingsSaving": { "message": "Salvataggio…" },
+  "settingsLoadFailed": { "message": "Impossibile caricare le impostazioni. Riprova prima di modificarle." },
+  "aiReviewShowFull": { "message": "Mostra tutto" },
+  "aiReviewShowLess": { "message": "Mostra meno" },
+  "aiReviewExpandCommentsSetting": { "message": "Mostra i commenti di revisione per intero per impostazione predefinita" },
+  "aiReviewExpandAll": { "message": "Espandi tutto" },
+  "aiReviewCollapseAll": { "message": "Comprimi tutto" }
 }

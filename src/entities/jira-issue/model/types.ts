@@ -9,7 +9,7 @@ export interface JiraStatus {
 }
 export interface JiraState {
   invalidateCommitTicket: ((ticket: string) => void) | null;
-  cache: Record<string, JiraStatus & { ts: number }>;
+  cache: Record<string, JiraStatus & { ts: number; details?: boolean }>;
   fetching: boolean;
   refreshPending: boolean;
   url: string;
