@@ -6,80 +6,17 @@ import {
   type JiraFailure,
 } from "../../../entities/jira-issue/background";
 import { api } from "../../../shared/api/background-proxy";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { JIRA_API_PREFIX } from "../../../shared/config/jira";
 import { msg as localize } from "../../../shared/i18n";
 import { errorMessage } from "../../../shared/lib/errors";
 import {
-  arrayOf,
-  decoder,
-  isNumber,
-  isString,
-  objectOf,
-  optional,
-} from "../../../shared/lib/validation";
-const readCurrentUser = decoder(
-  objectOf<{ id: number; username: string }>({
-    id: isNumber,
-    username: isString,
-  }),
-  "GitLab/Jira response",
-);
-const readActivityEvent = decoder(
-  arrayOf(
-    objectOf<ActivityEvent>({
-      project_id: isNumber,
-      created_at: optional(isString),
-      action_name: isString,
-      note: optional(
-        objectOf({
-          id: isNumber,
-          noteable_type: isString,
-          noteable_iid: isNumber,
-        }),
-      ),
-      target_type: optional(isString),
-      target_iid: isNumber,
-      target_title: optional(isString),
-      push_data: optional(
-        objectOf<{ ref: string; ref_type: string; commit_count?: number }>({
-          ref: isString,
-          ref_type: isString,
-          commit_count: optional(isNumber),
-        }),
-      ),
-    }),
-  ),
-  "GitLab/Jira response",
-);
-const readActivityMr = decoder(
-  arrayOf(
-    objectOf<ActivityMr>({
-      id: isNumber,
-      iid: isNumber,
-      title: isString,
-      created_at: optional(isString),
-      merged_at: optional(isString),
-      references: optional(
-        objectOf<{ full?: string }>({
-          full: optional(isString),
-        }),
-      ),
-      pipeline: optional(
-        objectOf({
-          status: isString,
-        }),
-      ),
-    }),
-  ),
-  "GitLab/Jira response",
-);
-const readProjectPath = decoder(
-  objectOf<{ path_with_namespace: string }>({
-    path_with_namespace: isString,
-  }),
-  "GitLab/Jira response",
-);
+  readCurrentUser,
+  readActivityEvent,
+  readActivityMr,
+  readProjectPath,
+  type ActivityEvent,
+} from "./responses";
 const REPORT_TIMEOUT_MS = 180000;
 const REPORT_EVENT_MAX_PAGES = 5;
 const REPORT_MR_LIMIT = 50;
@@ -89,25 +26,6 @@ interface StandupResponse {
   _error?: string;
   _jiraFailure?: JiraFailure;
   _jiraUrl?: string;
-}
-interface ActivityMr {
-  id: number;
-  iid: number;
-  title: string;
-  created_at?: string;
-  merged_at?: string;
-  references?: { full?: string };
-  pipeline?: { status: string };
-}
-interface ActivityEvent {
-  project_id: number;
-  created_at?: string;
-  action_name: string;
-  note?: { id: number; noteable_type: string; noteable_iid: number };
-  target_type?: string;
-  target_iid: number;
-  target_title?: string;
-  push_data?: { ref: string; ref_type: string; commit_count?: number };
 }
 export interface StandupMessage {
   type: "generate-standup";
@@ -167,14 +85,23 @@ export function generateStandup(
         ? new Date(msg.date + "T12:00:00")
         : new Date();
       const todayStr = msg.date || localDateStr(targetDate);
-      // Next day
-      const nextDay = new Date(todayStr + "T12:00:00");
-      nextDay.setDate(nextDay.getDate() + 1);
-      const nextDayStr = localDateStr(nextDay);
-      // Day before (events API "after" is exclusive)
-      const dayBefore = new Date(todayStr + "T12:00:00");
-      dayBefore.setDate(dayBefore.getDate() - 1);
-      const dayBeforeStr = localDateStr(dayBefore);
+      const dayStart = new Date(todayStr + "T00:00:00");
+      const dayEnd = new Date(dayStart);
+      dayEnd.setDate(dayEnd.getDate() + 1);
+      const from = dayStart.toISOString();
+      const until = dayEnd.toISOString();
+      const inDay = (value: string | null | undefined) => {
+        const time = value ? Date.parse(value) : NaN;
+        return time >= dayStart.getTime() && time < dayEnd.getTime();
+      };
+      // Events accept dates only. Include both UTC boundary days, then filter
+      // timestamps to the exact local interval (including daylight-saving days).
+      const eventBefore = new Date(dayEnd);
+      eventBefore.setUTCDate(eventBefore.getUTCDate() + 1);
+      const nextDayStr = eventBefore.toISOString().slice(0, 10);
+      const eventAfter = new Date(dayStart);
+      eventAfter.setUTCDate(eventAfter.getUTCDate() - 1);
+      const dayBeforeStr = eventAfter.toISOString().slice(0, 10);
       let truncatedEvents = false;
 
       // Helper: fetch all event pages for the day (up to 5 pages)
@@ -218,23 +145,22 @@ export function generateStandup(
           "/merge_requests?scope=all&state=all&author_id=" +
             userId +
             "&created_after=" +
-            todayStr +
-            "T00:00:00Z&created_before=" +
-            nextDayStr +
-            "T00:00:00Z&per_page=" +
+            from +
+            "&created_before=" +
+            until +
+            "&per_page=" +
             REPORT_MR_LIMIT,
         ).then(readActivityMr),
-        // MRs merged on target date
+        // Do not cap updated_at at the target day: later comments/edits must
+        // not hide an earlier merge. Filter merged_at below; keep the size warning.
         api(
           fakeTask,
           "GET",
           "/merge_requests?scope=all&state=merged&author_id=" +
             userId +
             "&updated_after=" +
-            todayStr +
-            "T00:00:00Z&updated_before=" +
-            nextDayStr +
-            "T00:00:00Z&per_page=" +
+            from +
+            "&order_by=updated_at&sort=asc&per_page=" +
             REPORT_MR_LIMIT,
         ).then(readActivityMr),
         // All events for target date (paginated)
@@ -246,10 +172,10 @@ export function generateStandup(
           "/merge_requests?scope=all&state=opened&author_id=" +
             userId +
             "&updated_after=" +
-            todayStr +
-            "T00:00:00Z&updated_before=" +
-            nextDayStr +
-            "T00:00:00Z&per_page=" +
+            from +
+            "&updated_before=" +
+            until +
+            "&per_page=" +
             REPORT_MR_LIMIT,
         ).then(readActivityMr),
       ]).then(function (results) {
@@ -260,17 +186,17 @@ export function generateStandup(
 
         // Filter created on target date (double-check)
         createdMrs = createdMrs.filter(function (mr) {
-          return mr.created_at && mr.created_at.indexOf(todayStr) === 0;
+          return inDay(mr.created_at);
         });
 
         // Filter merged on target date (double-check merged_at)
         mergedMrs = mergedMrs.filter(function (mr) {
-          return mr.merged_at && mr.merged_at.indexOf(todayStr) === 0;
+          return inDay(mr.merged_at);
         });
 
         // Filter events to target date only
         events = events.filter(function (ev) {
-          return ev.created_at && ev.created_at.indexOf(todayStr) === 0;
+          return inDay(ev.created_at);
         });
 
         // Collect created MR IDs to avoid duplicates
@@ -293,7 +219,8 @@ export function generateStandup(
           if (
             ev.action_name === "commented on" &&
             ev.note &&
-            ev.note.noteable_type === "MergeRequest"
+            ev.note.noteable_type === "MergeRequest" &&
+            typeof ev.note.noteable_iid === "number"
           ) {
             if (seenNoteIds[ev.note.id]) return;
             seenNoteIds[ev.note.id] = true;
@@ -317,7 +244,8 @@ export function generateStandup(
         events.forEach(function (ev) {
           if (
             ev.action_name === "approved" &&
-            ev.target_type === "MergeRequest"
+            ev.target_type === "MergeRequest" &&
+            typeof ev.target_iid === "number"
           ) {
             const key = ev.project_id + "!" + ev.target_iid;
             approvedMap[key] = {
@@ -365,10 +293,11 @@ export function generateStandup(
           > = {};
           events.forEach(function (ev) {
             if (
+              ev.action_name === "pushed" ||
               ev.action_name === "pushed to" ||
               ev.action_name === "pushed new"
             ) {
-              const ref = ev.push_data ? ev.push_data.ref : "";
+              const ref = ev.push_data?.ref ?? "";
               const refType = ev.push_data ? ev.push_data.ref_type : "branch";
               if (refType === "tag") return;
               const pName = projName(ev);
@@ -377,7 +306,7 @@ export function generateStandup(
                 pushMap[key] = { ref: ref, project: pName, commits: 0 };
               }
               const commitCount = ev.push_data
-                ? ev.push_data.commit_count || 1
+                ? (ev.push_data.commit_count ?? 1)
                 : 1;
               pushMap[key].commits += commitCount;
             }
@@ -386,7 +315,7 @@ export function generateStandup(
           // Tags
           const tags: { tag: string; project: string }[] = [];
           events.forEach(function (ev) {
-            if (ev.push_data && ev.push_data.ref_type === "tag") {
+            if (ev.push_data?.ref && ev.push_data.ref_type === "tag") {
               tags.push({ tag: ev.push_data.ref, project: projName(ev) });
             }
           });
