@@ -1,5 +1,6 @@
+import { appendToolbarStatus } from "./layout";
 import type { MrSettings } from "../../../entities/settings";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { reportError } from "../../../shared/lib/errors";
 import {
   arrayOf,
@@ -96,9 +97,7 @@ export function createSensitiveWarning(
             : t("sensitiveWarningHint")) +
           "\n" +
           [...sensitiveFiles].join("\n");
-        container.insertBefore(badge, container.firstChild);
-        if (container instanceof HTMLElement)
-          container.style.removeProperty("display");
+        appendToolbarStatus(container, badge);
       })
       .catch(reportError)
       .finally(() => {

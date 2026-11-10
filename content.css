@@ -1,48 +1,149 @@
+/* MR toolbar: native GitLab controls in separate metadata/action/comment rows.
+   Local fallbacks cover older hosts without semantic button/theme tokens. */
 :where(html.gl-actions-host) .gl-mr-actions-ext {
+  --mr-actions-bg: var(--gl-background-color-default, #fff);
+  --mr-actions-fg: var(--gl-text-color-default, #303030);
+  --mr-actions-muted: var(--gl-text-color-secondary, #626168);
+  --mr-actions-border: var(--gl-border-color-default, #dcdcde);
+  --mr-actions-soft: var(--gl-background-color-subtle, #f5f5f7);
+  --mr-actions-danger: var(--gl-text-color-danger, #ae1800);
+  --mr-actions-danger-bg: var(--gl-background-color-danger-subtle, #fff0ed);
+  --mr-actions-warning: var(--gl-text-color-warning, #8f4700);
+  --mr-actions-warning-bg: var(--gl-background-color-warning-subtle, #fff4df);
   display: flex;
-  margin-left: 0;
-  padding: 20px;
-  margin-top: 0;
-  border-top: 1px solid;
-  border-top-color: var(--gl-border-color-section, var(--gl-border-color-default, #dcdcde));
-  gap: 6px;
-  align-items: center;
-  align-self: start;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 16px;
+  border-top: 1px solid var(--mr-actions-border);
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
+  color: var(--mr-actions-fg);
 }
 
-:where(html.gl-actions-host) .gl-mr-actions-ext button {
-  height: 30px;
+:where(html.gl-actions-host):is(.gl-dark, [data-theme="dark"]) .gl-mr-actions-ext,
+:where(html.gl-actions-host) :is(.gl-dark, [data-theme="dark"]) .gl-mr-actions-ext {
+  --mr-actions-bg: var(--gl-background-color-default, #1f1e27);
+  --mr-actions-fg: var(--gl-text-color-default, #ececef);
+  --mr-actions-muted: var(--gl-text-color-secondary, #b5b4be);
+  --mr-actions-border: var(--gl-border-color-default, #4a4856);
+  --mr-actions-soft: var(--gl-background-color-subtle, #292833);
+  --mr-actions-danger: var(--gl-text-color-danger, #ffb4a8);
+  --mr-actions-danger-bg: var(--gl-background-color-danger-subtle, #482823);
+  --mr-actions-warning: var(--gl-text-color-warning, #e9be74);
+  --mr-actions-warning-bg: var(--gl-background-color-warning-subtle, #3d3020);
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-ext [hidden] { display: none; }
+
+:where(html.gl-actions-host) .gl-mr-actions-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  min-width: 0;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-title {
+  font-size: .875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-group + .gl-mr-actions-group {
+  padding-top: 12px;
+  border-top: 1px solid var(--mr-actions-border);
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-group[hidden] + .gl-mr-actions-group {
+  padding-top: 0;
+  border-top: 0;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-group-label {
+  color: var(--mr-actions-muted);
+  font-size: .8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-buttons,
+:where(html.gl-actions-host) .gl-mr-actions-comments,
+:where(html.gl-actions-host) .gl-mr-actions-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-buttons,
+:where(html.gl-actions-host) .gl-mr-actions-comments { align-items: stretch; }
+
+:where(html.gl-actions-host) .gl-mr-actions-ext .gl-mr-actions-button {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #fff;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  min-width: 0;
+  height: auto;
+  max-width: 100%;
+  /* Match GitLab's medium target: 16px text + 8px on each side vertically.
+     Our 1px fallback border accounts for one pixel of that inset. */
+  padding: 7px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--gl-button-default-primary-border-color-default, var(--mr-actions-border));
+  border-radius: 4px;
+  background: var(--gl-button-default-primary-background-color-default, var(--mr-actions-bg));
+  color: var(--gl-button-default-primary-foreground-color-default, var(--mr-actions-fg));
+  font-family: inherit;
   font-size: .875rem;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  box-shadow: none;
   cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-  line-height: 1rem;
-  color: var(--gl-button-confirm-primary-foreground-color-default);
-  background-color: var(--gl-button-confirm-primary-background-color-default);
-  border-color: var(--gl-button-confirm-primary-border-color-default);
+  transition: background-color .15s, border-color .15s, color .15s;
 }
 
-:where(html.gl-actions-host) .gl-mr-actions-ext button:hover {
-  color: var(--gl-button-confirm-primary-foreground-color-hover);
-  background-color: var(--gl-button-confirm-primary-background-color-hover);
-  border-color: var(--gl-button-confirm-primary-border-color-hover);
+:where(html.gl-actions-host) .gl-mr-actions-ext .gl-mr-actions-button:hover:not(:disabled) {
+  background: var(--gl-button-default-primary-background-color-hover, var(--mr-actions-soft));
+  color: var(--gl-button-default-primary-foreground-color-hover, var(--mr-actions-fg));
+  border-color: var(--gl-button-default-primary-border-color-hover, var(--mr-actions-muted));
 }
 
-:where(html.gl-actions-host) .gl-mr-actions-ext button:disabled {
-  opacity: 0.5;
+:where(html.gl-actions-host) .gl-mr-actions-ext .btn-force-ship {
+  color: var(--mr-actions-danger);
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-ext .btn-force-ship:hover:not(:disabled) {
+  color: var(--mr-actions-danger);
+  background: var(--mr-actions-danger-bg);
+  border-color: var(--mr-actions-danger);
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-ext .gl-mr-actions-button:focus-visible {
+  outline: 2px solid var(--gl-focus-ring-outer-color, #1f75cb);
+  outline-offset: 2px;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-ext .gl-mr-actions-button:disabled {
+  opacity: .5;
   cursor: not-allowed;
 }
-
 
 :where(html.gl-actions-host) .gl-mr-actions-ext button .spinner {
   display: inline-block;
@@ -336,65 +437,42 @@
   transform: scale(1.05);
 }
 
-/* Time tracker badge */
+/* Passive metadata uses text and a small outline icon, never button chrome. */
 :where(html.gl-actions-host) .gl-mr-actions-time {
-  height: 30px;
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+  gap: 6px;
+  min-width: 0;
+  color: var(--mr-actions-muted);
+  font-size: .8125rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+:where(html.gl-actions-host) .gl-mr-actions-time svg { flex-shrink: 0; }
+
+:where(html.gl-actions-host) .gl-mr-actions-conflict-badge,
+:where(html.gl-actions-host) .gl-mr-ext-sensitive-warning {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: .8125rem;
   font-weight: 500;
-  color: var(--gl-text-color-secondary, #666);
-  background: var(--gl-background-color-subtle, #f0f0f0);
-  border: 1px solid var(--gl-border-color-default, #dcdcde);
-  cursor: default;
-  white-space: nowrap;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
-:where(html.gl-actions-host) .gl-mr-actions-time::before {
-  content: "\1F552 ";
-  margin-right: 4px;
-}
-
-:where(html.gl-actions-host) .gl-dark .gl-mr-actions-time {
-  border: none;
-}
-
-/* Quick comment buttons */
-:where(html.gl-actions-host) .gl-mr-actions-ext .btn-quick-comment {
-  color: var(--gl-text-color-default, #333) !important;
-  background: var(--gl-background-color-subtle, #f0f0f0) !important;
-  border-color: var(--gl-border-color-default, #dcdcde) !important;
-  font-size: 12px !important;
-}
-
-:where(html.gl-actions-host) .gl-mr-actions-ext .btn-quick-comment:hover {
-  background: var(--gl-background-color-default, #e8e8e8) !important;
-  border-color: var(--gl-text-color-secondary, #999) !important;
-}
-
-:where(html.gl-actions-host) .gl-dark .gl-mr-actions-ext .btn-quick-comment {
-  border: none !important;
-}
-
-/* Conflicts indicator badge */
 :where(html.gl-actions-host) .gl-mr-actions-conflict-badge {
-  height: 30px;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  background: #dd2b0e;
-  border: 1px solid #c22;
-  cursor: default;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  animation: ext-pulse 2s ease-in-out infinite;
+  color: var(--mr-actions-danger);
+  background: var(--mr-actions-danger-bg);
+}
+
+:where(html.gl-actions-host) .gl-mr-ext-sensitive-warning {
+  color: var(--mr-actions-warning);
+  background: var(--mr-actions-warning-bg);
 }
 
 /* MR list enhancements */
