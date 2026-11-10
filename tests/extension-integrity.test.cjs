@@ -7,30 +7,32 @@ var path = require('node:path');
 var vm = require('node:vm');
 var root = require('./helpers/extension.cjs').root;
 
-test('all shipped JavaScript parses', function() {
-  ['background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js', 'popup.js', 'welcome.js'].forEach(function(file) {
-    assert.doesNotThrow(function() { new vm.Script(fs.readFileSync(path.join(root, file), 'utf8'), { filename: file }); });
+test('isolated regression adapters for current runtime modules parse', function() {
+  // React pages are ESM graphs verified by build/release and real-browser tests;
+  // they no longer have a legacy global/imperative DOM VM adapter.
+  ['background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js'].forEach(function(file) {
+    assert.doesNotThrow(function() { new vm.Script(require('./helpers/runtime.cjs').readRuntime(file), { filename: file }); });
   });
 });
 
-test('all seven locales have the same message keys', function() {
-  var locales = ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'];
+test('all supported locales have the same message keys', function() {
+  var locales = fs.readdirSync(path.join(root, '_locales'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => entry.name);
   var keys;
   locales.forEach(function(locale) {
     var messages = JSON.parse(fs.readFileSync(path.join(root, '_locales', locale, 'messages.json')));
     var currentKeys = Object.keys(messages).sort();
     if (!keys) keys = currentKeys;
     assert.deepEqual(currentKeys, keys, 'Locale keys differ: ' + locale);
-    currentKeys.forEach(function(key) { assert.equal(typeof messages[key].message, 'string', locale + '.' + key); });
+    currentKeys.forEach(function(key) { assert.equal(typeof messages[key].message, 'string', locale + '.' + key); assert.ok(messages[key].message.trim(), locale + '.' + key); assert.doesNotMatch(messages[key].message, /__KEEP|\[\d{3}\]/, locale + '.' + key); });
   });
 });
 
 test('manifest references existing scripts, styles, popup and icons', function() {
-  var manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
+  var manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist/manifest.json')));
   var files = [manifest.background.service_worker, manifest.action.default_popup];
   manifest.content_scripts.forEach(function(entry) { files = files.concat(entry.js || [], entry.css || []); });
   Object.keys(manifest.icons).forEach(function(size) { files.push(manifest.icons[size]); });
-  files.forEach(function(file) { assert.ok(fs.existsSync(path.join(root, file)), 'Missing extension resource: ' + file); });
+  files.forEach(function(file) { assert.ok(fs.existsSync(path.join(root, 'dist', file)), 'Missing extension resource: ' + file); });
 });
 
 test('website software version matches the extension manifest', function() {
@@ -57,18 +59,59 @@ test('both changelogs document the manifest release and share the same version h
   assert.deepEqual(histories[0], histories[1]);
 });
 
-test('locale substitutions and store descriptions remain valid in all seven languages', function() {
+test('locale substitutions and store descriptions remain valid in all supported languages', function() {
   var english = JSON.parse(fs.readFileSync(path.join(root, '_locales/en/messages.json')));
-  ['en', 'ru', 'de', 'fr', 'es', 'ja', 'zh_CN'].forEach(function(locale) {
+  fs.readdirSync(path.join(root, '_locales'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => entry.name).forEach(function(locale) {
     var text = fs.readFileSync(path.join(root, '_locales', locale, 'messages.json'), 'utf8');
     var messages = JSON.parse(text);
     var declared = Array.from(text.matchAll(/^  "([^"]+)":/gm), function(match) { return match[1]; });
     assert.equal(new Set(declared).size, declared.length, 'Duplicate locale keys: ' + locale);
     assert.ok(messages.extDescription.message.length <= 132, 'Store description too long: ' + locale);
+    assert.ok(messages.extName.message.length <= 75, 'Store name too long: ' + locale);
+    // These are actual API/configuration examples, not words to translate.
+    var literalExamples = {
+      hintDraftToggle: ['Draft:'],
+      jobNameHint: ['Reviewer(s):'],
+      cardReviewerBadgeDesc: ['Reviewer(s): @you'],
+      displayPreferencesHint: ['Reviewer(s): @username'],
+      versionFieldHint: ['version', 'tool.poetry.version'],
+      commitsJiraFieldHint: ['fixVersions', 'status', 'labels', 'components'],
+      aiReviewFileFiltersHint: ['src/**', '*.test.js', 'dist/'],
+      jiraTicketRegexHint: ['[A-Z][A-Z0-9]+-\\d+'],
+      jiraQuickActionInvalid: ['YYYY-MM-DD'],
+      cardGitCommandsDesc: ['origin'],
+    };
+    Object.entries(literalExamples).forEach(function([key, tokens]) {
+      tokens.forEach(token => assert.ok(messages[key].message.includes(token), 'Translated technical example: ' + locale + '.' + key + ' ' + token));
+    });
     Object.keys(messages).forEach(function(key) {
-      var placeholders = function(value) { return (value.match(/\$(?:\d+|[A-Za-z_]+\$)/g) || []).sort(); };
+      var placeholders = function(value) { return (value.match(/\$(?:\d+|[A-Za-z_]+\$)|\{[A-Za-z_]+\}/g) || []).sort(); };
       assert.deepEqual(placeholders(messages[key].message), placeholders(english[key].message), 'Missing substitution: ' + locale + '.' + key);
+      if (locale !== 'en' && english[key].message.length >= 80) assert.notEqual(messages[key].message, english[key].message, 'Untranslated sentence: ' + locale + '.' + key);
       assert.deepEqual(Object.keys(messages[key].placeholders || {}).sort(), Object.keys(english[key].placeholders || {}).sort(), 'Placeholder definitions differ: ' + locale + '.' + key);
     });
   });
+});
+
+// Keep selectable/importable locales, packaged files and store artifacts in sync.
+test('language catalogue matches complete locales and store descriptions', function() {
+  var bundle = require('./helpers/runtime.cjs').bundleForTest('src/shared/i18n/index.ts');
+  var context = vm.createContext({}); vm.runInContext(bundle, context);
+  var languages = context.TestModule.LANGUAGES;
+  assert.deepEqual(Array.from(languages, x => x.code).sort(), fs.readdirSync(path.join(root, '_locales'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => entry.name).sort());
+  languages.forEach(function(language) {
+    assert.equal(context.TestModule.isLanguage(language.code), true);
+    var listing = fs.readFileSync(path.join(root, 'store-listing', language.code + '.txt'), 'utf8');
+    assert.match(listing, /^Язык: /);
+    var sourceListing = fs.readFileSync(path.join(root, 'store-listing/en.txt'), 'utf8');
+    ['★', '•', '✓'].forEach(function(marker) {
+      var count = text => text.split('\n').filter(line => line.startsWith(marker)).length;
+      assert.equal(count(listing), count(sourceListing), 'Store sections/items missing: ' + language.code + ' ' + marker);
+    });
+    assert.doesNotMatch(listing, /__KEEP/);
+    assert.ok(listing.split('\n\n').slice(1).join('\n\n').length <= 16000, 'Store listing too long: ' + language.code);
+  });
+  assert.equal(context.TestModule.isLanguage('auto'), true);
+  assert.equal(context.TestModule.isLanguage('../en'), false);
+  assert.equal(context.TestModule.isLanguage('pt-BR'), false);
 });

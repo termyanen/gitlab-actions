@@ -1,0 +1,88 @@
+Язык: Словацкий (sk)
+
+Zjednodušte svoj GitLab merge request workflow jediným klikom. Nahraďte viacstupňové manuálne operácie — rebase, zvýšenie verzie, správa pipeline a merge — jedným tlačidlom. Podporuje HTTPS self-hosted GitLab aj gitlab.com; dostupnosť závisí od možností servera a oprávnení účtu. Nie sú potrebné API tokeny — používa vašu existujúcu reláciu v prehliadači.
+
+★ AI REVÍZIA S VAŠIMI NÁSTROJMI
+
+• Kompletná recenzia MR — pripravte úlohu pre všetky commity MR, s nastaviteľnými filtrami súborov
+• Opraviť a odpovedať — skopíruj vybrané pripomienky do svojho AI na kódovanie a priprav odpovede pripravené na zverejnenie
+• Následná kontrola — znovu skontroluj opravy a zmeny od vybranej revízie, vrátane zmien po nútenom pushi
+• Editovateľný import — vlož komentáre a odpovede AI ako JSON, uprav ich text a zverejni vybrané položky alebo ulož koncepty recenzií. Voliteľne vyrieš diskusie po zverejnení odpovedí
+• Vlastné inštrukcie — prispôsob výzvy a automatické bloky inštrukcií; vyber jazyk odpovedí
+• Manuálne zdieľanie — použij svoj obľúbený AI nástroj. Žiadne API kľúče AI v rozšírení a žiadne automatické nahrávanie kódu
+
+★ AKCIE S POŽIADAVKOU NA ZLÚČENIE
+
+• Automatické zlúčenie — rebase a povolenie "zlúčiť, keď pipeline uspeje" jedným klikom
+• Vydanie — kompletný proces vydania: zvýšenie verzie → pipeline → automatické zlúčenie, všetko automatizované
+• Vynútené zlúčenie — preskočiť pipeline a zlúčiť okamžite, keď CI nie je potrebné
+• Zvýšenie verzie — zvýšiť verziu v package.json, pyproject.toml alebo v akomkoľvek súbore (patch / minor / major)
+• Rebase — urobiť rebase vetvy s alebo bez zvýšenia verzie
+• Prepínač Koncept / Pripravené — zmeniť stav MR bez úpravy názvu
+• Rýchle komentáre — pridať šablónové komentáre do MR jedným klikom
+• Kopírovať MR — okamžite skopírovať názov + odkaz do schránky
+
+★ OVLÁDANIE CI/CD PIPELINE
+
+• Nová pipeline / Zrušiť pipeline — vytvoriť alebo zrušiť pipeline okamžite
+• Opakovať všetky zlyhané joby — reštartovať všetky zlyhané joby v poslednej pipeline naraz
+• Vlastné tlačidlá jobov — spustiť ľubovoľný CI job jedným klikom; prepojiť viaceré joby (napr. build → deploy)
+• Rýchly prehľad neúspešných úloh — priamo na stránke MR uvidíte názvy neúspešných úloh a riadky chybového logu
+• Spustenie na pozadí — vlastné reťazce úloh pokračujú po navigácii na inú stránku
+
+★ INTEGRÁCIA S JIRA (bez API tokenov)
+
+• Badge stavu Jira — farebne označené stavy tiketov (Hotové, V procese, QA, Na vykonanie) čítané z názvov MR
+• Úplný bočný panel úlohy — kliknite na akýkoľvek badge a uvidíte súhrn, stav, priradeného, prioritu, sprint, epickú úlohu, štítky, popis a prílohy
+• Zmena stavu & priradeného — posúvajte tikety a priraďujte ich bez opustenia GitLabu
+• Rýchle akcie Jira — zložené akcie (zmena stavu + priradenie) jedným kliknutím
+• Ikony typu úlohy & priority — natívne ikony Jira na zozname MR a detailných stránkach
+• Odznaky polí Jira pri commitoch — zobraz Fix Version, stav alebo ľubovoľné pole vedľa commitov
+• Obohatenie Jira v denníkových reportoch — názvy ticketov automaticky pridané do súhrnov aktivít
+
+★ VYLEPŠENIA ZOZNAMU MR
+
+• Označenia veľkosti MR — farebne kódované odznaky S / M / L / XL podľa počtu zmenených riadkov
+• Indikátor konfliktov — červený odznak, keď má vetva merge konflikty
+• Počet nevyriešených vlákien — vidíte otvorené diskusné vlákna na prvý pohľad
+• Názvy vetiev — zdroj → cieľová vetva zobrazená pri každom MR
+• Indikátor schválenia — ukazuje, či ste schválili každý MR
+• Zatmavenie návrhových MR — vizuálne zatmavuje drafty, aby ste sa sústredili na aktívne merge requesty
+• Zvýraznenie vašich MR — modrý rámček na vašich MR pre rýchlu identifikáciu
+• Prepínače "Len moje" / "Potrebuje moju kontrolu" / "Zoskupiť podľa autora"
+• Odznak „Tvoja recenzia“ — detekuje zmienky o nakonfigurovaných recenzentoch a komentároch
+• Kopírovať MR zo zoznamu — tlačidlo kopírovania pri každej položke MR
+
+★ NÁSTROJE PRE PRODUKTIVITU
+
+• Príkazová paleta (Cmd+K / Ctrl+K) — prechádzaj zoznamom MR, pipeline, vetvami, issue alebo spúšťaj akcie
+• Vyhľadávanie súborov v palete — nájdi a otváraj ľubovoľný súbor projektu podľa názvu
+• Denná správa o aktivitách — súhrn vytvorených, zlúčených, komentovaných a schválených MR. Kopírovanie do Slack alebo Jira
+• Cherry-pick do viacerých vetiev — cherry-pick akýchkoľvek commitov do niekoľkých vetiev naraz s automatickým vytváraním MR
+• Inteligentný náhradný postup cherry-pick — automaticky prehráva commit s výnimkou verziového súboru pri konflikte
+• Upozornenie na citlivý súbor — oranžový odznak, keď MR zasahuje do .env, Dockerfile, CI konfigurácií alebo prihlasovacích údajov
+• Tlačidlá príkazov Git — skopírujte príkazy git checkout a git fetch pre MR vetvu
+• Odznak veku MR — zistite, ako dlho je merge request otvorený
+• Zvýrazni moje komentáre — farebný rámik okolo vašich vlastných komentárov v diskusiách
+
+★ PRISPÔSOBENIE
+
+• Profily pre každý projekt — rôzne tlačidlá, súbory verzií a CI úlohy pre každý repozitár
+• Ťahanie a usporiadanie tlačidiel — usporiadajte tlačidlá podľa svojho gusta
+• Konfigurovateľná šírka tabulátora v rozdieloch — nastavte zobrazenie tabu na 2, 4 alebo 8 medzier
+• Zbaliť horné panely / Skryť pravý postranný panel — maximalizujte pracovnú plochu
+• Zvuky a oznámenia na ploche — dostávajte upozornenia, keď akcie dokončia alebo zlyhajú
+• Tmavý motív — automaticky sleduje systémové nastavenia
+
+★ PREČO GITLAB MR ACTIONS?
+
+✓ Žiadne osobné prístupové tokeny — používa tvoje existujúce cookies relácie GitLab
+✓ Žiadna sprostredkovateľská služba — požiadavky GitLab a Jira idú priamo na tvoje nakonfigurované servery
+✓ Podporuje HTTPS self-hosted GitLab a gitlab.com; pozri kompatibilitný sprievodca pre testované API kontrakty
+✓ Integrácia Jira bez API tokenov — používa cookies relácie v prehliadači
+✓ Plne nastaviteľné pre každý projekt — žiadne obmedzenia typu jeden formát pre všetkých
+✓ Ľahké — pozadie kontroly beží iba pre akcie, ktoré spustíš ty; žiadna telemetria ani automatické nahrávanie AI
+✓ Rozhranie je dostupné v 27 jazykoch
+✓ Otvorený zdrojový kód
+
+Dôverujú mu vývojári, ktorí chcú tráviť menej času klikaním v GitLab a viac času písaním kódu.

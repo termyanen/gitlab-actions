@@ -73,3 +73,45 @@ test('a Chrome update does not reset settings or show an extension update notice
   assert.deepEqual(f.tabs, []);
   assert.deepEqual(f.badges, []);
 });
+
+test('installation observes callback API failures and still opens the welcome page', function() {
+  var f = fixture({});
+  var errors = [];
+  var observed = false;
+  f.env.context.console = { error: function(prefix, error) { errors.push(prefix + ' ' + error.message); } };
+  f.env.chrome.storage.sync.set = function(_values, callback) {
+    Object.defineProperty(f.env.chrome.runtime, 'lastError', {
+      configurable: true,
+      get: function() { observed = true; return {message: 'Storage quota exceeded'}; }
+    });
+    callback();
+    delete f.env.chrome.runtime.lastError;
+  };
+  f.env.listeners.installed({reason: 'install'});
+  assert.equal(observed, true, 'Chrome callback errors must be read while the callback is running');
+  assert.deepEqual(errors, ['[GitLab Actions] Storage quota exceeded']);
+  assert.deepEqual(f.tabs, [{url: 'welcome.html'}]);
+});
+
+[null, 'Cannot create tab'].forEach(function(errorMessage) {
+  test('settings message responds after tab creation: ' + (errorMessage || 'success'), async function() {
+    var env = harness.background();
+    var complete;
+    var responses = [];
+    var errors = [];
+    env.context.console = {error: function(_prefix, error) { errors.push(error.message); }};
+    env.chrome.tabs.create = function(options, callback) {
+      assert.equal(options.url, 'chrome-extension://test-extension/popup.html');
+      complete = callback;
+    };
+    var keepAlive = env.listeners.message({type: 'open-options'}, {}, function(response) { responses.push(harness.plain(response)); });
+    assert.equal(keepAlive, true, 'the message port must stay open until Chrome responds');
+    assert.deepEqual(responses, []);
+    if (errorMessage) env.chrome.runtime.lastError = {message: errorMessage};
+    complete();
+    delete env.chrome.runtime.lastError;
+    assert.deepEqual(responses, [errorMessage ? {_error: errorMessage} : {ok: true}]);
+    assert.deepEqual(errors, errorMessage ? [errorMessage] : []);
+    await env.context.ready;
+  });
+});

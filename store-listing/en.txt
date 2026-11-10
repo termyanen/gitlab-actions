@@ -1,0 +1,88 @@
+Язык: Английский (en)
+
+Streamline your GitLab merge request workflow with one-click automation. Replace multi-step manual operations — rebase, version bump, pipeline management, and merging — with a single button. Supports HTTPS self-hosted GitLab and gitlab.com; availability depends on server capabilities and account permissions. No API tokens required — uses your existing browser session.
+
+★ AI REVIEW WITH YOUR OWN TOOLS
+
+• Full MR review — prepare a task covering all MR commits, with configurable file filters
+• Fix and reply — copy selected feedback to your coding AI and prepare ready-to-post replies
+• Follow-up review — recheck fixes and changes since a selected revision, including after force pushes
+• Editable import — paste AI comments and replies as JSON, edit their text, and publish selected items or save review drafts. Optionally resolve discussions after publishing replies
+• Custom instructions — customize prompts and automatic instruction blocks; choose the response language
+• Manual sharing — use your preferred AI tool. No AI API keys in the extension and no automatic code uploads
+
+★ MERGE REQUEST ACTIONS
+
+• Auto-merge — rebase and enable "merge when pipeline succeeds" in one click
+• Ship — full release flow: version bump → pipeline → auto-merge, all automated
+• Force merge — skip pipeline and merge immediately when CI isn't needed
+• Version bump — increment version in package.json, pyproject.toml, or any file (patch / minor / major)
+• Rebase — rebase branch with or without version bump
+• Draft / Ready toggle — switch MR status without editing the title
+• Quick comments — post template comments to MR with one click
+• Copy MR — copy title + link to clipboard instantly
+
+★ CI/CD PIPELINE CONTROLS
+
+• New pipeline / Cancel pipeline — create or cancel pipelines instantly
+• Retry all failed jobs — restart every failed job in the latest pipeline at once
+• Custom job buttons — trigger any CI job with one click; chain multiple jobs (e.g. build → deploy)
+• Failed job quick view — see failed job names and error log lines directly on the MR page
+• Background execution — custom job chains continue after page navigation
+
+★ JIRA INTEGRATION (no API tokens)
+
+• Jira status badges — color-coded ticket statuses (Done, In Progress, QA, To Do) parsed from MR titles
+• Full ticket sidebar — click any badge to see summary, status, assignee, priority, sprint, epic, labels, description, and attachments
+• Change status & assignee — transition tickets and reassign without leaving GitLab
+• Jira quick actions — composite actions (change status + assign) with one click
+• Issue type & priority icons — native Jira icons on MR list and detail pages
+• Jira field badges on commits — show Fix Version, status, or any field next to commits
+• Jira enrichment in daily reports — ticket titles added automatically to activity summaries
+
+★ MR LIST ENHANCEMENTS
+
+• MR size labels — color-coded S / M / L / XL badges by changed lines count
+• Conflicts indicator — red badge when branch has merge conflicts
+• Unresolved threads count — see open discussion threads at a glance
+• Branch names — source → target branch displayed on each MR
+• Approval indicator — shows whether you approved each MR
+• Dim Draft MRs — visually dim drafts to focus on active merge requests
+• Highlight your MRs — blue border on your own MRs for quick identification
+• "Only mine" / "Needs my review" / "Group by author" toggles
+• "Your review" badge — detects configured reviewer-job mentions and comment mentions
+• Copy MR from list — copy button on each MR item
+
+★ PRODUCTIVITY TOOLS
+
+• Command palette (Cmd+K / Ctrl+K) — navigate to MR list, pipelines, branches, issues, or trigger actions
+• File search in palette — find and open any project file by name
+• Daily activity report — summary of MRs created, merged, commented, approved. Copy to Slack or Jira
+• Cherry-pick to multiple branches — cherry-pick any commit to several branches at once with auto-MR creation
+• Smart cherry-pick fallback — auto-replays commit excluding version file on conflict
+• Sensitive file warning — orange badge when MR touches .env, Dockerfile, CI configs, or credentials
+• Git command buttons — copy git checkout and git fetch commands for the MR branch
+• MR age badge — see how long a merge request has been open
+• Highlight my comments — colored border on your own comments in discussions
+
+★ CUSTOMIZATION
+
+• Per-project profiles — different buttons, version files, and CI jobs for each repository
+• Drag & drop button order — arrange action buttons the way you prefer
+• Configurable tab width in diffs — set tab display to 2, 4, or 8 spaces
+• Collapse top bars / Hide right sidebar — maximize your working area
+• Sound & desktop notifications — get notified when actions complete or fail
+• Dark theme — follows system preference automatically
+
+★ WHY GITLAB MR ACTIONS?
+
+✓ No personal access tokens — uses your existing GitLab session cookies
+✓ No intermediary service — GitLab and Jira requests go directly to your configured servers
+✓ Supports HTTPS self-hosted GitLab and gitlab.com; see the compatibility guide for tested API contracts
+✓ Jira integration without API tokens — uses browser session cookies
+✓ Fully configurable per project — no one-size-fits-all limitations
+✓ Lightweight — background checks run for actions you start; no telemetry or automatic AI uploads
+✓ Available in 27 interface languages
+✓ Open source
+
+Trusted by developers who want to spend less time clicking through GitLab and more time writing code.

@@ -1,0 +1,2278 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Automação, Jira, CI/CD e revisão com IA"
+  },
+  "extDescription": {
+    "message": "Automatize MRs do GitLab: merge, versões, Jira, CI/CD e revisão com sua IA. Sem tokens de API."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Como funciona"
+  },
+  "openSettingsInTab": {
+    "message": "Abra as configurações em uma nova guia"
+  },
+  "exportSettings": {
+    "message": "Exportar configurações"
+  },
+  "importSettings": {
+    "message": "Importar configurações"
+  },
+  "settingsTransferHint": {
+    "message": "Compartilhe todas as configurações e perfis de projeto como um arquivo JSON."
+  },
+  "settingsImportReplace": {
+    "message": "Isso substitui todas as configurações e perfis de projeto atuais."
+  },
+  "applySettingsImport": {
+    "message": "Substituir configurações"
+  },
+  "cancelSettingsImport": {
+    "message": "Cancelar"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — perfis de projeto: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Arquivo de configurações inválido ou formato não suportado."
+  },
+  "settingsFileTooLarge": {
+    "message": "O arquivo de configurações excede os limites de armazenamento Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Não foi possível exportar as configurações. Por favor, tente novamente."
+  },
+  "settingsImportFailed": {
+    "message": "Não foi possível importar as configurações. Sua configuração atual permanece inalterada."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Permita o acesso ao site Jira para importar essas configurações."
+  },
+  "settingsImported": {
+    "message": "Configurações importadas!"
+  },
+  "buttonOrder": {
+    "message": "Ordem dos botões"
+  },
+  "buttonOrderHint": {
+    "message": "Arraste para reordenar. Passe o mouse para ver a descrição. Trabalhos personalizados em azul."
+  },
+  "general": {
+    "message": "Em geral"
+  },
+  "soundNotifications": {
+    "message": "Notificações sonoras"
+  },
+  "desktopNotifications": {
+    "message": "Notificações na área de trabalho"
+  },
+  "showTimeTracker": {
+    "message": "Mostrar selo de idade MR"
+  },
+  "skipConfirmations": {
+    "message": "Ignorar confirmações de ação MR"
+  },
+  "uxEnhancer": {
+    "message": "MR melhorias na lista"
+  },
+  "dimDrafts": {
+    "message": "Dim Rascunho MRs na lista"
+  },
+  "highlightOwnMrs": {
+    "message": "Destaque seu MRs na lista"
+  },
+  "showOnlyMine": {
+    "message": "Ativação \"Somente meu\" na página da lista"
+  },
+  "toggleOnlyMine": {
+    "message": "Só meu"
+  },
+  "versionBump": {
+    "message": "Aumento da versão"
+  },
+  "filePath": {
+    "message": "Caminho do arquivo"
+  },
+  "filePathHint": {
+    "message": "Arquivo contendo número de versão"
+  },
+  "versionField": {
+    "message": "Campo de versão"
+  },
+  "versionFieldHint": {
+    "message": "Chave JSON ou chave TOML (por exemplo, \"versão\" ou \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Estratégia"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Mensagem de confirmação"
+  },
+  "commitMessageHint": {
+    "message": "Use {version} como espaço reservado"
+  },
+  "quickComments": {
+    "message": "Comentários rápidos"
+  },
+  "quickCommentsHint": {
+    "message": "Botões de um clique que postam instantaneamente um comentário geral para MR (não inline para código). Os botões aparecem na barra de ação."
+  },
+  "quickCommentsAdd": {
+    "message": "Adicionar comentário"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Comentários rápidos"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Botões de comentário de modelo configuráveis ​​na página MR. Publique LGTM, precisa de correções ou qualquer comentário personalizado com um clique."
+  },
+  "reviewers": {
+    "message": "Revisores"
+  },
+  "reviewersList": {
+    "message": "Lista de revisores"
+  },
+  "reviewersListHint": {
+    "message": "Nomes de usuário a serem mencionados em um comentário dos Revisores (@user1, @user2). Quando definido, ignora a pesquisa de comentários e o trabalho CI. Não altera as atribuições do revisor GitLab."
+  },
+  "jobName": {
+    "message": "Nome do trabalho"
+  },
+  "jobNameHint": {
+    "message": "Trabalho substituto se nenhum comentário corresponder ao padrão \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Botões de trabalho personalizados"
+  },
+  "customJobsHint": {
+    "message": "Use vírgulas para encadear: construir, implantar"
+  },
+  "addJobButton": {
+    "message": "+ Botão Adicionar trabalho"
+  },
+  "addProfileFor": {
+    "message": "+ Adicionar perfil para $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Atual: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Salvo!"
+  },
+  "unsavedChanges": {
+    "message": "Alterações não salvas..."
+  },
+  "customFile": {
+    "message": "Arquivo personalizado..."
+  },
+  "plainText": {
+    "message": "texto simples"
+  },
+  "removeProfile": {
+    "message": "Remover perfil de $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Padrão"
+  },
+  "buttonsFor": {
+    "message": "Botões para $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Substitua quais botões serão exibidos para este projeto."
+  },
+  "leaveEmptyDefault": {
+    "message": "Deixe em branco para usar o padrão"
+  },
+  "projectSpecificJobs": {
+    "message": "Trabalhos específicos do projeto. Use vírgulas para encadear."
+  },
+  "languageLabel": {
+    "message": "Idioma"
+  },
+  "languageAuto": {
+    "message": "Automático (navegador)"
+  },
+  "btnVersion": {
+    "message": "Aumento da versão"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Versão"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + mesclagem automática"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Forçar mesclagem"
+  },
+  "btnShip": {
+    "message": "Rebase + Versão + Mesclagem automática"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Versão + Forçar mesclagem"
+  },
+  "btnReviewers": {
+    "message": "Revisores"
+  },
+  "btnPipelineRestart": {
+    "message": "Novo pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Cancelar pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Alternar rascunho/pronto"
+  },
+  "btnRetryFailed": {
+    "message": "Tentar novamente trabalhos com falha"
+  },
+  "btnCopyMr": {
+    "message": "Copiar MR"
+  },
+  "hintVersion": {
+    "message": "Lê o arquivo configurado (por exemplo, package.json), incrementa a versão pela estratégia escolhida (patch/minor/major), confirma com sua mensagem de modelo."
+  },
+  "hintRebase": {
+    "message": "Rebaseia a ramificação de origem na ramificação de destino. Não mescla nem habilita a mesclagem automática."
+  },
+  "hintRebaseVersion": {
+    "message": "Rebaseia a ramificação no destino (se necessário) e, em seguida, coloca a versão no arquivo configurado. Não mescla."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Rebases ramificam no destino (se o projeto usar rebase/ff). Em seguida, habilita \"mesclar quando o pipeline for bem-sucedido\". Usa configurações de squash/delete branch de MR."
+  },
+  "hintRebaseForce": {
+    "message": "Rebases com skip CI, cancela todos os pipelines em execução e então mescla imediatamente sem esperar por CI. Usa configurações de squash/delete branch de MR."
+  },
+  "hintShip": {
+    "message": "Fluxo completo: rebase → versão bump no arquivo configurado → aguardar a sincronização de MR → aguardar o novo pipeline → ativar a mesclagem automática."
+  },
+  "hintForceShip": {
+    "message": "Fluxo rápido: rebase (pular CI) → versão bump → esperar 15s → cancelar pipeline → mesclar imediatamente. Ignora as verificações CI."
+  },
+  "hintReviewers": {
+    "message": "Publique menções de revisores configuradas, reutilize um(s) Revisor(es): comentário de notas recentes ou execute o trabalho CI configurado."
+  },
+  "hintPipelineRestart": {
+    "message": "Cria um pipeline totalmente novo para a ramificação de origem via API. Útil quando o pipeline está travado ou você precisa de uma nova execução."
+  },
+  "hintPipelineCancel": {
+    "message": "Solicita cancelamento de pipelines em execução, pendentes ou criados retornados para este MR."
+  },
+  "hintDraftToggle": {
+    "message": "Adiciona ou remove o prefixo \"Draft:\" do título MR. Não altera nenhuma outra configuração de MR."
+  },
+  "hintRetryFailed": {
+    "message": "Tenta novamente trabalhos com falha no pipeline atual de MR. Trabalhos bem-sucedidos não são afetados."
+  },
+  "hintCopyMr": {
+    "message": "Copia o título MR e o link para a área de transferência."
+  },
+  "toastRebasing": {
+    "message": "Rebaseando..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Habilitando mesclagem automática..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Etapa 1/2: Rebaseando..."
+  },
+  "toastStep22Automerge": {
+    "message": "Etapa 2/2: Habilitando a mesclagem automática..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Etapa 1/2: Rebase (pular CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Etapa 2/2: Cancelando pipeline e mesclando..."
+  },
+  "toastCancellingMerging": {
+    "message": "Cancelando pipeline e fusão..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Criando novo pipeline para $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Cancelando pipeline(s) $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Marcando como Pronto..."
+  },
+  "toastMarkingDraft": {
+    "message": "Marcando como Rascunho..."
+  },
+  "toastRetrying": {
+    "message": "Tentando novamente $1 trabalho(s) com falha...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Nenhum trabalho com falha no pipeline MR atual"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Nenhum pipeline em execução para cancelar"
+  },
+  "toastAssigningReviewers": {
+    "message": "Postando menções do revisor…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Repostagem do comentário dos revisores..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Nenhum comentário dos revisores encontrado, acionando $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Aumento da versão..."
+  },
+  "toastWaitingSync": {
+    "message": "Aguardando MR sincronizar com v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Aguardando pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Tentativa de mesclagem automática $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Aguardando a sincronização de MR... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Aguardando \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Jogando trabalho \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Tentando novamente o trabalho \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Job \"$1\" já foi bem-sucedido, ignorando",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Job \"$1\" já está $2, aguardando...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 concluído",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 falhou: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR título e link copiados!"
+  },
+  "toastWaiting15s": {
+    "message": "Esperando 15s antes da fusão..."
+  },
+  "confirmRebase": {
+    "message": "Rebasear o branch?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Aumento de versão?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Mesclar automaticamente?"
+  },
+  "confirmAutomerge": {
+    "message": "Habilitar mesclagem automática?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → MESCLAR AGORA?"
+  },
+  "confirmForce": {
+    "message": "⚠️ MERGE AGORA (pular pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Aumento de versão → Mesclagem automática?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Aumento de versão → Mesclagem automática?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Aumento de versão → MERGE AGORA?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Versão aumentada → MESCLAR AGORA?"
+  },
+  "confirmNewPipeline": {
+    "message": "Criar um novo pipeline para esta ramificação?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Cancelar todos os pipelines em execução?"
+  },
+  "labelAutomerge": {
+    "message": "Mesclagem automática"
+  },
+  "labelForceMerge": {
+    "message": "Forçar fusão"
+  },
+  "labelVersionAutomerge": {
+    "message": "Versão + mesclagem automática"
+  },
+  "labelVersionForceMerge": {
+    "message": "Versão + Forçar mesclagem"
+  },
+  "labelMarkReady": {
+    "message": "Marcar como pronto"
+  },
+  "labelMarkDraft": {
+    "message": "Marcar como rascunho"
+  },
+  "labelRetryFailed": {
+    "message": "Nova tentativa falhou"
+  },
+  "labelNewPipeline": {
+    "message": "Novo pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Tempo desde a criação de MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "Acelere o fluxo de trabalho de sua solicitação de mesclagem com ações de um clique."
+  },
+  "welcomeQuickStart": {
+    "message": "Início rápido"
+  },
+  "welcomeStep1Title": {
+    "message": "Abra qualquer página de solicitação de mesclagem"
+  },
+  "welcomeStep1Desc": {
+    "message": "Abra uma página HTTPS MR enquanto estiver conectado em GitLab.com ou em seu GitLab auto-hospedado. Permita que a extensão acesse esse site."
+  },
+  "welcomeStep2Title": {
+    "message": "Veja os botões de ação aparecerem"
+  },
+  "welcomeStep2Desc": {
+    "message": "Os botões aparecem na página MR. Um conjunto inicial é habilitado na primeira instalação."
+  },
+  "welcomeStep3Title": { "message": "Personalize nas configurações" },
+  "welcomeStep3Desc": { "message": "Use o popup para ativar ou desativar opções rapidamente. Abra “Todas as configurações” para configurar ações, versões, Jira, CI/CD e revisão com IA." },
+  "welcomeEnabledDefault": {
+    "message": "Habilitado por padrão"
+  },
+  "welcomeMoreActions": {
+    "message": "Mais ações (ativar nas configurações)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Como funciona"
+  },
+  "welcomeHowDesc": {
+    "message": "Esta extensão usa sua sessão GitLab existente (cookies) para chamar GitLab API em seu nome. Não são necessários tokens de acesso pessoal."
+  },
+  "welcomeHowList1": {
+    "message": "Para GitLab.com e GitLab auto-hospedado por HTTPS; os recursos dependem das APIs do servidor, do layout da página e de suas permissões."
+  },
+  "welcomeHowList2": {
+    "message": "As ações usam as mesmas permissões do seu usuário logado"
+  },
+  "welcomeHowList3": {
+    "message": "Cadeias de tarefas personalizadas são executadas em segundo plano. Mantenha uma guia conectada no mesmo GitLab aberta para acesso API."
+  },
+  "welcomeHowList4": {
+    "message": "Perfis por projeto permitem personalizar botões para diferentes repositórios"
+  },
+  "welcomeTip": { "message": "Crie perfis de projeto em “Todas as configurações” quando os projetos precisarem de arquivos de versão, botões de ação ou tarefas de CI diferentes." },
+  "welcomeOpenSettings": {
+    "message": "Abrir Configurações"
+  },
+  "cardAutomergeTitle": {
+    "message": "Mesclagem automática"
+  },
+  "cardAutomergeDesc": {
+    "message": "Realize o rebase da ramificação (se necessário) e ative a mesclagem quando o pipeline for bem-sucedido."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Novo pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Crie um novo pipeline para a ramificação de origem com um clique."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Cancelar pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Solicitar cancelamento de pipelines MR em execução ou pendentes."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Alternar rascunho"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Alternar MR entre o status Rascunho e Pronto sem editar o título."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Aumento da versão"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Incrementar a versão em package.json, pyproject.toml ou qualquer arquivo customizado. Estratégia configurável (patch/menor/maior)."
+  },
+  "cardShipTitle": {
+    "message": "Navio (Versão + Mesclagem)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase quando necessário, altere a versão e solicite a mesclagem automática. Mantenha a guia MR aberta até que a ação seja concluída."
+  },
+  "cardForceMergeTitle": {
+    "message": "Forçar fusão"
+  },
+  "cardForceMergeDesc": {
+    "message": "Solicitar merge sem esperar pelo sucesso do pipeline. As permissões GitLab e as regras de mesclagem ainda se aplicam."
+  },
+  "cardReviewersTitle": {
+    "message": "Revisores"
+  },
+  "cardReviewersDesc": {
+    "message": "Mencione nomes de usuário configurados em um comentário, reutilize um comentário de revisor ou execute um trabalho CI. Não atribui o campo revisor nativo de GitLab."
+  },
+  "uiCustomization": {
+    "message": "Personalização da IU"
+  },
+  "collapseBars": {
+    "message": "Botão Recolher barras superiores"
+  },
+  "hideRightSidebar": {
+    "message": "Ocultar a barra lateral direita nas páginas MR"
+  },
+  "collapseTopBars": {
+    "message": "Alternar barras superiores"
+  },
+  "cardCollapseTitle": {
+    "message": "Recolher barras superiores"
+  },
+  "cardCollapseDesc": {
+    "message": "Adiciona um botão para recolher/expandir as barras de navegação GitLab. Economiza espaço e ajuda você a se concentrar no conteúdo."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Ocultar seções da IU"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Oculte a barra lateral direita nas páginas MR para obter a área de conteúdo de largura total."
+  },
+  "jiraIntegration": {
+    "message": "Integração Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "Jira URL do servidor/data center, por ex. https://jira.company.com – faça login em Jira e clique em Permitir acesso ao site Jira. A nuvem não é totalmente suportada."
+  },
+  "jiraGrantAccess": {
+    "message": "Permitir acesso ao site Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "A extensão tem permissão para acessar $1."
+  },
+  "jiraConnectionUnchecked": { "message": "A conexão ainda não foi verificada." },
+  "jiraConnectionCheck": { "message": "Verificar conexão" },
+  "jiraConnectionChecking": { "message": "Verificando a conexão com $1…" },
+  "jiraConnectionConnected": { "message": "Última verificação de $1: sessão iniciada; API disponível." },
+  "jiraConnectionSignIn": { "message": "Entrar no Jira" },
+  "jiraUrlInvalid": {
+    "message": "Insira uma URL base HTTPS Jira, sem credenciais/consulta/fragmento."
+  },
+  "jiraErrorAuth": {
+    "message": "Sua sessão Jira expirou ou é necessário fazer login. Abra Jira, faça login e tente carregar novamente."
+  },
+  "jiraErrorForbidden": {
+    "message": "O Jira negou acesso a esta tarefa ou operação. Verifique sua conta e suas permissões no Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "A extensão não pode acessar este site Jira. Verifique a permissão do site e o URL Jira nas configurações da extensão."
+  },
+  "jiraErrorNetwork": {
+    "message": "Não foi possível acessar Jira. Verifique sua conexão, VPN e URL Jira e tente carregar novamente."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira está temporariamente indisponível ou limitando solicitações. Aguarde e tente carregar novamente."
+  },
+  "jiraErrorNotFound": {
+    "message": "A tarefa do Jira não foi encontrada ou não está visível para sua conta."
+  },
+  "jiraErrorResponse": {
+    "message": "O Jira retornou uma resposta não suportada. Verifique a URL e a compatibilidade com Jira Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "A solicitação ao Jira falhou. Abra o Jira para verificar a tarefa e seu acesso."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "A alteração pode já ter sido aplicada. Verifique a tarefa no Jira antes de repetir a ação."
+  },
+  "jiraErrorTransitions": {
+    "message": "Não foi possível carregar as transições Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Abrir Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Tentar carregar novamente"
+  },
+  "jiraDismissError": {
+    "message": "Dispensar"
+  },
+  "jiraTicketRegex": {
+    "message": "Regex do ticket"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Regex personalizada para análise de IDs de tickets de títulos MR. Padrão: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Mostrar tipo de problema e ícones de prioridade na lista MR"
+  },
+  "jiraQuickActions": {
+    "message": "Ações rápidas"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Escolha qualquer combinação de campos para cada botão. Deixe apenas as alterações que ele deve fazer. Versões e componentes já devem existir no projeto Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Adicionar ação"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Etiqueta"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Estado"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Nome de usuário"
+  },
+  "jiraSidebarStatus": {
+    "message": "Estado"
+  },
+  "jiraSidebarType": {
+    "message": "Tipo"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioridade"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Cessionário"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Não atribuído"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Pesquisar usuário..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Nenhum usuário encontrado"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Cancelar atribuição"
+  },
+  "jiraSidebarReporter": {
+    "message": "Repórter"
+  },
+  "jiraSidebarLabels": {
+    "message": "Etiquetas"
+  },
+  "jiraSidebarCreated": {
+    "message": "Criado"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Atualizado"
+  },
+  "jiraSidebarDescription": {
+    "message": "Descrição"
+  },
+  "jiraSidebarEpic": {
+    "message": "Épico"
+  },
+  "jiraSidebarSprint": {
+    "message": "Corrida"
+  },
+  "jiraSidebarComponents": {
+    "message": "Componentes"
+  },
+  "jiraSidebarResolution": {
+    "message": "Resolução"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Afetos"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Correção ver."
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Nenhum"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Nenhuma versão encontrada"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Pesquisar versões..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Falha ao atualizar versões de correção"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Anexos"
+  },
+  "jiraSidebarComments": {
+    "message": "Comentários"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Adicione um comentário..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Comentário"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Mostrar mais comentários"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Ainda não há comentários"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Falha ao postar comentário"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Excluir comentário"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Excluir este comentário?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Falha ao excluir comentário"
+  },
+  "cardJiraTitle": {
+    "message": "Crachás de status Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Mostra os status do ticket Jira na página da lista MR. Analisa IDs de tickets de títulos MR (por exemplo, CCT-1111) e exibe emblemas de status coloridos. Defina seu URL Jira nas configurações."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Regex de ticket personalizado"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Configure uma expressão regular personalizada para analisar IDs de ticket Jira de títulos MR. Útil quando seu projeto usa prefixos de ticket não padrão."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Barra lateral do ticket Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Clique em qualquer emblema Jira para abrir uma barra lateral com detalhes completos do ticket – resumo, status, tipo, prioridade, responsável e descrição. Leia, poste e exclua seus próprios comentários sem sair de GitLab. As versões de correção podem ser escolhidas nas versões disponíveis do projeto diretamente na barra lateral."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Anexos na barra lateral"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Visualize imagens, vídeos e arquivos dos tickets Jira diretamente na barra lateral. Imagens e vídeos são abertos em uma lightbox em tela cheia."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Emblemas Jira na página MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Os emblemas de status do ticket Jira são mostrados no título MR na página de detalhes. Clique em um selo para abrir a barra lateral com detalhes completos do ticket."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Alterar status Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Altere o status do ticket diretamente na barra lateral. Mostra apenas as transições disponíveis do status atual."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Alterar Jira cessionário"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Clique no destinatário para pesquisar e reatribuir. Preenchimento automático com avatares, botão cancelar atribuição para remover o responsável."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira ações rápidas"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Botões de um clique para status, responsável, rótulos, versões e outros campos. Cada botão pode atualizar um campo ou vários."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Tipo de problema e ícones de prioridade"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Mostrar tipo de problema Jira e ícones de prioridade ao lado dos emblemas de status na lista MR e nas páginas de detalhes. Usa ícones nativos Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Realize o rebase da ramificação de origem na ramificação de destino sem mesclar."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Versão"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase a versão branch e bump em um clique. Não mescla."
+  },
+  "cardCopyMrTitle": {
+    "message": "Cópia MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Copie o título MR e link para a área de transferência com um clique."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Tentar novamente trabalhos com falha"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Tente novamente os trabalhos com falha no pipeline atual de MR. Trabalhos bem-sucedidos não são afetados."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Melhorias na página da lista MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Rascunho Dim MRs"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Escureça visualmente o Rascunho MRs na página da lista de solicitações de mesclagem para que você possa se concentrar nas ativas."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Destaque seu MRs"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Destaque seu próprio MRs na lista com uma borda azul para identificação rápida."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Alternar \"Somente meu\""
+  },
+  "cardOnlyMineDesc": {
+    "message": "Alternar com um clique para filtrar a lista MR para mostrar apenas suas solicitações de mesclagem."
+  },
+  "cardMrAgeTitle": {
+    "message": "Crachá de idade MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Mostra há quanto tempo o MR foi criado, exibido como um emblema na página MR."
+  },
+  "showReviewerBadge": {
+    "message": "Selo \"Sua avaliação\" dos comentários"
+  },
+  "badgeYourReview": {
+    "message": "Sua avaliação"
+  },
+  "badgeYourReviewHint": {
+    "message": "Você é mencionado como revisor nos comentários MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Selo \"Sua avaliação\""
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Pesquisa os comentários mais antigos por “Reviewer(s): @you”. A profundidade da varredura é configurável (10 por padrão). Separado do recurso de revisor integrado de GitLab."
+  },
+  "showNeedsReview": {
+    "message": "Ativação \"Precisa da minha revisão\" na página da lista"
+  },
+  "toggleNeedsReview": {
+    "message": "Precisa da minha análise"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Alternar \"Precisa da minha revisão\""
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Alternar com um clique para filtrar a lista MR para mostrar apenas solicitações de mesclagem onde você está designado como revisor."
+  },
+  "showCopyMr": {
+    "message": "Botão Copiar nos itens da lista MR"
+  },
+  "showThreadsBadge": {
+    "message": "Threads não resolvidos contam na lista MR"
+  },
+  "showSizeBadge": {
+    "message": "Etiquetas de tamanho MR (S/M/L/XL) na lista MR"
+  },
+  "showConflictsBadge": {
+    "message": "Mostrar indicador de conflitos na lista MR"
+  },
+  "showApprovalBadge": {
+    "message": "Mostrar contagem de aprovação e meu indicador de aprovação na lista MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Você aprovou"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Você"
+  },
+  "cardThreadsTitle": {
+    "message": "Contagem de threads não resolvidos"
+  },
+  "cardThreadsDesc": {
+    "message": "Mostrar contagens de threads não resolvidos. “+” marca uma primeira página completa; “?” significa que a contagem não está disponível."
+  },
+  "cardSizeTitle": {
+    "message": "Etiquetas de tamanho MR"
+  },
+  "cardSizeDesc": {
+    "message": "Crachás S/M/L/XL com limites de linha e arquivo configuráveis em Exibir regras e limites."
+  },
+  "conflictsBadge": {
+    "message": "Conflitos"
+  },
+  "conflictsBadgeHint": {
+    "message": "Este MR possui conflitos de merge que devem ser resolvidos"
+  },
+  "cardConflictsTitle": {
+    "message": "Indicador de conflitos"
+  },
+  "cardConflictsDesc": {
+    "message": "Mostra um emblema vermelho CONFLICTS na página de detalhes MR quando a filial tem conflitos de mesclagem."
+  },
+  "cardApprovalTitle": {
+    "message": "Meu indicador de aprovação"
+  },
+  "cardApprovalDesc": {
+    "message": "Mostra se você aprovou cada MR na página da lista. Distingue sua aprovação das aprovações de outros."
+  },
+  "showBranches": {
+    "message": "Mostrar ramificações de origem e destino na lista MR"
+  },
+  "showBranchesLinks": {
+    "message": "Tornar os nomes dos ramos clicáveis (abrir árvore de ramos)"
+  },
+  "cardBranchesTitle": {
+    "message": "Nomes de filiais na lista MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Exibe os nomes das ramificações de origem e destino em cada MR na lista, para que você possa ver de onde o código vem e onde ele se funde."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Copiar MR da lista"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Adiciona um botão de cópia para cada MR na página da lista. Copia o título MR e o link para a área de transferência com um clique."
+  },
+  "versionFromTarget": {
+    "message": "Leia a versão da ramificação de destino"
+  },
+  "versionFromTargetHint": {
+    "message": "Leia a versão atual da ramificação de destino (por exemplo, principal) em vez da ramificação de origem. Use isso com estratégia de commit de mesclagem para evitar versões obsoletas."
+  },
+  "showFailedJobView": {
+    "message": "Mostrar visualização rápida do trabalho com falha na página MR"
+  },
+  "failedJobTraceError": {
+    "message": "Não foi possível carregar o rastreamento"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Falha na visualização rápida do trabalho"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Visualize jobs com falha e registre os resultados na página MR. As contagens de trabalhos e linhas são configuráveis ​​em Exibir regras e limites."
+  },
+  "showCmdPalette": {
+    "message": "Paleta de comandos (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Relatório de atividades diárias"
+  },
+  "standupJiraEnrich": {
+    "message": "Mostrar títulos de tickets Jira no relatório"
+  },
+  "cmdPlaceholder": {
+    "message": "Digite um comando..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navegar"
+  },
+  "cmdFooterSelect": {
+    "message": "selecione"
+  },
+  "cmdFooterClose": {
+    "message": "fechar"
+  },
+  "cmdEmpty": {
+    "message": "Nenhum comando correspondente"
+  },
+  "cmdGroupNav": {
+    "message": "Navegação"
+  },
+  "cmdGroupMr": {
+    "message": "MR Ações"
+  },
+  "cmdGroupExt": {
+    "message": "Extensão"
+  },
+  "cmdGroupFiles": {
+    "message": "Arquivos"
+  },
+  "cmdNavMrs": {
+    "message": "Vá para solicitações de mesclagem"
+  },
+  "cmdNavIssues": {
+    "message": "Vá para Problemas"
+  },
+  "cmdNavPipelines": {
+    "message": "Vá para Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Ir para Filiais"
+  },
+  "cmdNavRepo": {
+    "message": "Vá para o Repositório"
+  },
+  "cmdNavTags": {
+    "message": "Vá para Tags"
+  },
+  "cmdNavCommits": {
+    "message": "Vá para Comprometimentos"
+  },
+  "cmdNavWiki": {
+    "message": "Vá para Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Vá para trechos"
+  },
+  "cmdNavSettings": {
+    "message": "Vá para Configurações"
+  },
+  "cmdCopyPath": {
+    "message": "Copiar caminho do projeto"
+  },
+  "cmdGroupPinned": {
+    "message": "Fixado"
+  },
+  "cmdExtSettings": {
+    "message": "Abrir configurações de extensão"
+  },
+  "cmdExtStandup": {
+    "message": "Gerar relatório de atividades"
+  },
+  "standupTitle": {
+    "message": "Atividade Diária"
+  },
+  "standupCopy": {
+    "message": "Copiar para a área de transferência"
+  },
+  "standupCopied": {
+    "message": "Copiado!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Paleta de comandos"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Pressione Cmd+K (Mac) ou Ctrl+K (Win) em qualquer página GitLab. Navegue, execute ações MR, pesquise arquivos por nome e abra-os no repositório."
+  },
+  "cardStandupTitle": {
+    "message": "Relatório de atividades diárias"
+  },
+  "cardStandupDesc": {
+    "message": "Gere um relatório de atividades diárias a partir de seus dados GitLab. Programas criados, mesclados e revisados ​​MRs. Copie e cole em Slack ou Jira."
+  },
+  "showCherryPick": {
+    "message": "Selecionar galhos"
+  },
+  "showGroupPlay": {
+    "message": "Botão de reprodução de grupo no pipeline (executa os trabalhos manuais restantes)"
+  },
+  "showCommitVersion": {
+    "message": "Selo de versão na página de commits"
+  },
+  "showCommitVersionHint": {
+    "message": "Mostra a versão do arquivo de versão (veja Configurações de aumento de versão) ao lado de cada commit; destacado onde a versão mudou"
+  },
+  "groupPlayTooltip": {
+    "message": "Execute os trabalhos manuais restantes neste grupo"
+  },
+  "groupPlayError": {
+    "message": "Falha ao iniciar alguns trabalhos"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Botão de reprodução em grupo"
+  },
+  "cardGroupPlayDesc": {
+    "message": "No gráfico do pipeline, um botão play próximo a um grupo de trabalho executa todos os trabalhos manuais restantes — mesmo depois de alguns trabalhos do grupo já terem sido iniciados e o próprio botão do GitLab desaparecer."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Selo de versão em commits"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Na página de commits do branch, cada commit mostra a versão do projeto do seu arquivo de versão naquele commit. Silenciado por padrão, destacado onde a versão foi alterada — veja rapidamente quais commits entraram em qual versão."
+  },
+  "cherryPickBranches": {
+    "message": "Galhos escolhidos a cereja"
+  },
+  "cherryPickProjectBranchesHint": { "message": "Defina as branches deste projeto. Deixe a lista vazia para usar as branches globais." },
+  "cherryPickNoBranches": { "message": "Nenhuma branch configurada." },
+  "cherryPickBranchesHint": {
+    "message": "Ramos alvo padrão para seleção seletiva. Você pode adicionar ou remover ramificações no modal."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Adicionar filial"
+  },
+  "cherryPickTitle": {
+    "message": "Escolha de cereja"
+  },
+  "cherryPickToBranches": {
+    "message": "Selecionar galhos"
+  },
+  "cherryPickStart": {
+    "message": "Escolha de cereja"
+  },
+  "cherryPickClose": {
+    "message": "Fechar"
+  },
+  "cherryPickInProgress": {
+    "message": "Colheita de cerejas..."
+  },
+  "cherryPickRemove": {
+    "message": "Remover"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Nome da filial"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Ramos escolhidos a dedo para $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Iniciar uma nova solicitação de mesclagem com essas alterações"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Crie MR por padrão ao escolher"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Em conflito — commit sem arquivo de versão"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Se a escolha seletiva falhar devido a um conflito de arquivo de versão, reproduza as alterações como um novo commit, excluindo o arquivo de versão"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Versão Bump no substituto"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Versão de bump na ramificação de destino dentro do mesmo commit de fallback"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "O substituto inteligente apenas trata conflitos de arquivo de versão. O conflito está em outro arquivo"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "O arquivo foi modificado na ramificação de destino - não é possível selecionar com segurança"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "O arquivo de versão contém alterações além da versão — não é possível ignorá-lo com segurança"
+  },
+  "commitsJiraField": {
+    "message": "Campo Jira para emblemas de commit"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Nome do campo Jira para mostrar como emblemas na página de commits (por exemplo, fixVersions, status, labels, components). Requer URL Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Selecionar galhos"
+  },
+  "cardCherryPickDesc": {
+    "message": "Selecione as filiais selecionadas diretamente ou por meio do novo MRs. Com o substituto inteligente ativado, os conflitos de arquivo de versão verificados podem ser reproduzidos sem esse arquivo, opcionalmente alterando a versão. Mudanças inseguras param para inspeção."
+  },
+  "mrDetailEnhancements": {
+    "message": "MR melhorias de detalhes"
+  },
+  "showSensitiveWarning": {
+    "message": "Aviso de arquivo confidencial no diff"
+  },
+  "showGitCommands": {
+    "message": "Botões de comando do Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "SENSÍVEL: arquivo(s) $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Este MR modifica arquivos sensíveis à segurança:"
+  },
+  "gitCmdCheckout": {
+    "message": "finalização da compra"
+  },
+  "gitCmdPull": {
+    "message": "puxar"
+  },
+  "gitCmdReset": {
+    "message": "redefinir"
+  },
+  "cardSensitiveTitle": {
+    "message": "Aviso de arquivo confidencial"
+  },
+  "cardSensitiveDesc": {
+    "message": "Sinaliza arquivos confidenciais usando regras integradas, padrões adicionais e exclusões. Configure-os em Exibir regras e limites."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Botões de comando do Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Copiar comandos de checkout, pull e hard-reset. Verifique seu repositório e remote origin antes de executá-los; a reinicialização completa descarta as alterações locais."
+  },
+  "updateBannerText": {
+    "message": "Nova versão está disponível! Veja o que há de novo:"
+  },
+  "updateChangelog": {
+    "message": "Registro de alterações"
+  },
+  "updateReviewAsk": {
+    "message": "Gostou da extensão?"
+  },
+  "updateReviewLink": {
+    "message": "Deixe um comentário"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Revisão assistida por IA, de ponta a ponta"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Revise um MR, corrija o feedback selecionado, prepare respostas e verifique novamente as alterações. Visualize e edite comentários antes de postar em GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Guia de revisão de IA"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Não há uploads automáticos de IA. Copie você mesmo o contexto; os comentários são enviados para GitLab somente quando você escolhe Publicar ou Adicionar para revisão."
+  },
+  "aiReviewTitle": {
+    "message": "Revisão de IA"
+  },
+  "aiReviewOpen": {
+    "message": "Revisão de IA…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Copiar comentário para IA"
+  },
+  "aiReviewLoading": {
+    "message": "Carregando discussões…"
+  },
+  "aiReviewRetry": {
+    "message": "Tentar novamente"
+  },
+  "aiReviewRefresh": {
+    "message": "Atualizar"
+  },
+  "aiReviewClose": {
+    "message": "Fechar"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Confirmar fechamento de diálogos de revisão com trabalho não salvo"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Fechar esta caixa de diálogo? As edições não salvas e os dados inseridos serão perdidos."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Fechar esta caixa de diálogo e interromper o envio? Os comentários já enviados permanecerão em GitLab. As edições não salvas serão perdidas."
+  },
+  "aiReviewAll": {
+    "message": "Todos"
+  },
+  "aiReviewUnresolved": {
+    "message": "Não resolvido"
+  },
+  "aiReviewResolved": {
+    "message": "Resolvido"
+  },
+  "aiReviewGeneral": {
+    "message": "Comentários gerais"
+  },
+  "aiReviewSearch": {
+    "message": "Pesquisar comentários ou caminhos de arquivo"
+  },
+  "aiReviewSelectShown": {
+    "message": "Selecione mostrado"
+  },
+  "aiReviewClear": {
+    "message": "Limpar seleção"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Incluir alterações de código"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Para revisões recentes e repetidas. Deixe desmarcado se a IA puder ler o repositório. Pequenos trechos anexados ao feedback permanecem incluídos."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Conta para discussões existentes"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Adiciona comentários já postados como um filtro duplicado: a IA analisa todo o MR de forma independente e, em seguida, descarta as descobertas que os repetem. Não responde a essas discussões."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Incluir descrição"
+  },
+  "aiReviewPrompt": {
+    "message": "Instruções para IA"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Prompt de restauração padrão"
+  },
+  "aiReviewPreview": {
+    "message": "Visualização"
+  },
+  "aiReviewCopied": {
+    "message": "Copiado!"
+  },
+  "aiReviewEmpty": {
+    "message": "Sem comentários correspondentes."
+  },
+  "aiReviewPartial": {
+    "message": "Alguns dados não puderam ser carregados. A exportação inclui um aviso e apenas o contexto disponível."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 selecionado",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Selecione o texto de visualização e copie-o manualmente."
+  },
+  "aiReviewScopeComment": {
+    "message": "Comentário selecionado"
+  },
+  "aiReviewScopeThread": {
+    "message": "Discussão selecionada"
+  },
+  "aiReviewPreparing": {
+    "message": "Preparando o contexto do código…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Não foi possível carregar as discussões. Tente novamente ou copie o contexto disponível."
+  },
+  "aiReviewShowReplies": {
+    "message": "Mostrar respostas"
+  },
+  "aiReviewSize": {
+    "message": "Aproximadamente $1 caracteres",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Cancelar"
+  },
+  "showAiReviewCopy": {
+    "message": "Mostrar controles de cópia e importação de revisão de IA"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Copie MR inteiro para uma nova revisão, feedback selecionado para correções ou importe comentários e respostas de IA com uma visualização editável antes de enviar."
+  },
+  "aiReviewFresh": {
+    "message": "Revisão do zero"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Solicitar uma nova revisão"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Até 1.500 caracteres. Usado para revisar todo o MR e todos os seus commits, separadamente das correções de feedback. Você pode especificar o idioma de resposta. Deixe em branco para o prompt padrão em inglês."
+  },
+  "aiReviewPromptHint": {
+    "message": "Até 1.500 caracteres. Deixe em branco para usar o prompt padrão em inglês. Aplica-se a todos os projetos."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Prompt não salvo. Use no máximo 1.500 caracteres e remova caracteres de controle incomuns."
+  },
+  "settingsSaveFailed": {
+    "message": "Não foi possível salvar as configurações. Tente novamente."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "As alterações aqui se aplicam a esta exportação. Defina seu prompt padrão nas configurações de extensão."
+  },
+  "aiReviewReady": {
+    "message": "A visualização está pronta para cópia."
+  },
+  "aiReviewLoadHint": {
+    "message": "Carrega discussões diretamente de GitLab, incluindo comentários não visíveis nesta página."
+  },
+  "aiReviewCommentContext": {
+    "message": "Outras respostas estão incluídas como contexto. Somente comentários selecionados são solicitados para ação."
+  },
+  "aiReviewOutdated": {
+    "message": "Revisão anterior"
+  },
+  "aiReviewLink": {
+    "message": "Discussão aberta"
+  },
+  "aiReviewLoaded": {
+    "message": "Discussões $1 carregadas"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Preparando contexto de código: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Este comentário não está disponível em GitLab. Ele ainda pode estar sendo salvo ou pode ter sido removido. Atualize para tentar novamente."
+  },
+  "aiReviewImportOpen": {
+    "message": "Importar revisão de IA…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Importar revisão de IA"
+  },
+  "aiReviewImportHelp": {
+    "message": "Cole a resposta da IA abaixo para verificar, editar e escolher o que publicar. Os atalhos de prompt estão em Configurações avançadas."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Copiar solicitação para nova revisão"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Preparando o prompt…"
+  },
+  "aiReviewImportInput": {
+    "message": "Resposta de IA (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Cole a resposta JSON completa contendo novos comentários ou respostas às discussões. Você pode editar o texto e escolher o que enviar na visualização."
+  },
+  "aiReviewImportValidate": {
+    "message": "Verificação e visualização"
+  },
+  "aiReviewImportChecking": {
+    "message": "Verificando a revisão MR, linhas e comentários existentes…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Verifique a resposta aos comentários de visualização. Você pode editar o texto, desmarcar caixas de seleção para excluir itens ou adicionar um comentário geral."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Selecione comentários prontos"
+  },
+  "aiReviewImportPreview": {
+    "message": "Comentários para enviar"
+  },
+  "aiReviewImportReady": {
+    "message": "Pronto"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Precisa de correção"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Não foi possível carregar alterações adicionais no arquivo: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "A diferença adicional excede o limite de importação de 16 MiB. Somente comentários em linhas verificadas podem ser importados."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Já existe"
+  },
+  "aiReviewImportPublished": {
+    "message": "Publicado"
+  },
+  "aiReviewImportDraft": {
+    "message": "Adicionado à revisão"
+  },
+  "aiReviewImportFailed": {
+    "message": "Não enviado"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Entrega não confirmada"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Não enviado"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Nova linha $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Linha antiga $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Publicação selecionada"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Adicionar à revisão"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Publicar envia comentários imediatamente. Adicionar à revisão salva comentários não publicados para sua revisão GitLab."
+  },
+  "aiReviewImportSending": {
+    "message": "Enviando comentários selecionados…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Concluído. Confira o resultado ao lado de cada comentário."
+  },
+  "aiReviewImportStopped": {
+    "message": "Parado. Verifique o resultado ao lado de cada comentário antes de tentar novamente."
+  },
+  "aiReviewImportEdited": {
+    "message": "Resposta alterada. Verifique novamente antes de enviar."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Área de transferência indisponível. Selecione o texto abaixo e copie-o manualmente."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "A entrega não pôde ser confirmada. Verifique GitLab antes de tentar novamente."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Solicitação de IA"
+  },
+  "aiReviewImportChecked": {
+    "message": "Pronto: $1. Outros comentários precisam de atenção.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Pare de enviar"
+  },
+  "aiReviewImportError": {
+    "message": "Não foi possível concluir a operação"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Não foi possível preparar o prompt"
+  },
+  "aiReviewImportWarning": {
+    "message": "Avisos de revisão"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Revisão de IA"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Idioma da resposta da IA"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automático — idioma de conversação"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Aplica-se a todas as tarefas de revisão e prompts de importação. Chaves, caminhos e códigos JSON não são traduzidos. Copiar o formato por si só não adiciona instruções de idioma."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Solicitação de correção de feedback"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Solicitar novos comentários de revisão"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Solicitar respostas ao feedback"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Até 1500 caracteres. Para o atalho de nova revisão em Importar. As guias de tarefas usam seus próprios prompts. O contexto MR e o formato JSON são adicionados automaticamente."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Até 1500 caracteres. Para respostas a discussões selecionadas em Cópia ou todas as discussões não resolvidas em Importar. Definir estilo e idioma; o contexto e o formato da resposta são adicionados automaticamente."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Prompt de resposta para todas as discussões não resolvidas"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Copiar formato de resposta"
+  },
+  "aiReviewImportFormat": {
+    "message": "Formato de resposta para IA"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Preparar respostas"
+  },
+  "aiReviewImportReply": {
+    "message": "Resposta à discussão"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Comentário original"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Sua resposta"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Resolver a discussão após a publicação"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Discussão resolvida."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Resposta publicada, mas a discussão não foi resolvida. Você pode resolver isso em GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Resposta publicada. A resolução não foi confirmada; verifique a discussão em GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "A resolução é opcional e desativada por padrão. Ele é executado somente após a publicação da resposta. Adicionar um rascunho nunca resolve uma discussão."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "A versão MR foi alterada. As respostas permanecem vinculadas às suas discussões; verifique seu texto em relação às correções enviadas. Novas descobertas de uma revisão antiga são bloqueadas."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Estas respostas estão vinculadas a discussões e não a uma revisão de código. Antes de publicar, verifique se as correções descritas foram enviadas para este MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Editar texto"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Adicionar comentário"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Salvar alterações"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Cancelar"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Texto do comentário"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Edite o texto e salve-o para verificar as alterações antes de publicar."
+  },
+  "aiReviewImportEditError": {
+    "message": "Não foi possível salvar as alterações"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "A prévia pode conter no máximo 200 comentários."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Solicitação de revisão repetida"
+  },
+  "aiReviewFileFilters": {
+    "message": "Arquivos para revisão"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Aplica-se a avaliações recentes e repetidas e a solicitações de novas descobertas, e não a comentários ou solicitações de resposta selecionados. Um padrão por linha ou vírgula; # inicia um comentário. Usar *, **, ?. As exclusões vencem, incluindo caminhos de renomeação antigos. As listas vazias incluem tudo. Exemplo: src/**, *.test.js, dist/. Até 1.500 caracteres por lista."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Incluir extensões (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Incluir caminhos de arquivo"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Excluir caminhos de arquivo"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Excluir pastas"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Os filtros de arquivo não puderam ser salvos ou aplicados. Use no máximo 1.500 caracteres por lista e remova caracteres de controle incomuns."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Versão que você revisou"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Revisão completa — sem versão anterior"
+  },
+  "aiReviewRepeat": {
+    "message": "Repetir revisão"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Insira um SHA de confirmação"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Insira o SHA do commit revisado completo (40 ou 64 caracteres hexadecimais)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Selecione a versão MR que você revisou antes de deixar seus comentários. Todas as alterações subsequentes até a versão atual são incluídas automaticamente; você não precisa selecionar commits individuais. Caso não se lembre da versão, escolha uma revisão completa."
+  },
+  "aiReviewChooseTask": {
+    "message": "Escolha uma tarefa"
+  },
+  "aiReviewTaskReview": {
+    "message": "Nova revisão"
+  },
+  "aiReviewTaskFix": {
+    "message": "Corrigir resultados da revisão"
+  },
+  "aiReviewTaskReply": {
+    "message": "Preparar respostas"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Revisão de acompanhamento"
+  },
+  "aiReviewCopyTask": {
+    "message": "Copiar tarefa"
+  },
+  "aiReviewPasteResult": {
+    "message": "Colar resposta de IA"
+  },
+  "aiReviewAdvanced": {
+    "message": "Configurações avançadas"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Instruções de tarefa"
+  },
+  "aiReviewSelectThread": {
+    "message": "Selecione esta discussão"
+  },
+  "aiReviewSelectAll": {
+    "message": "Selecionar todas as discussões"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Revise todos os commits MR juntos. A IA retorna novas descobertas sem alterar o código."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Selecione feedback para corrigir. Para um MR, a IA também prepara respostas explicando o que foi feito, o que resta e por quê. As discussões não resolvidas são selecionadas inicialmente."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Prepare respostas também"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Selecione feedback para sua IA de codificação corrigir. As discussões não resolvidas são selecionadas inicialmente."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Entregue a tarefa à sua IA de codificação e verifique suas alterações e testes. O resultado são correções e um resumo normal, sem respostas prontas para postar."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Após enviar as correções, peça à IA para verificar o código e explicar o resultado em discussões selecionadas."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Verificar o feedback selecionado e procurar novos defeitos. Escolha a versão que você revisou anteriormente ou verifique o MR completo e atual."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Tarefa: todo o MR, em todos os commits."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Comentários selecionados: $1; contexto de discussão e trechos de código disponíveis estão incluídos."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Discussões para respostas: $1, com sua conversa completa. A IA precisa de acesso ao repositório."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Discussões a serem verificadas: $1, além de uma revisão das alterações de código."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Descrição incluída."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Descrição excluída."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Alterações de código incluídas, sujeitas a limites de carga."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "A IA deve ler o código do repositório."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "As discussões existentes são adicionadas apenas como um filtro duplicado."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "As discussões existentes não são adicionadas."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Os filtros de arquivos estão ativos."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Nenhuma versão anterior selecionada: o MR atual completo será verificado."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Minutas de discussões não publicadas não poderão receber respostas e serão excluídas."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Selecione feedback à esquerda. Para uma nova revisão, use a guia Nova revisão."
+  },
+  "aiReviewNextStep": {
+    "message": "Copie a tarefa em sua ferramenta de IA. Se retornar comentários ou respostas, use Colar resposta do AI para revisá-los e editá-los antes de postar."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Verifique as correções e testes, envie todos os commits para o MR e, em seguida, use a resposta Paste AI para revisar as respostas preparadas antes de postar. Novos commits não requerem respostas regenerativas."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Instruções automáticas (avançadas)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Todos os blocos são habilitados por padrão e usados apenas para tarefas relevantes. Edite, desative ou limpe qualquer bloco. Os prompts de tarefas também têm suas próprias instruções. Dados MR, exemplos JSON e avisos de carregamento são gerados separadamente; verificações de publicação sempre se aplicam."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Adicionar à tarefa quando aplicável"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Até 1500 caracteres. O texto vazio não acrescenta nada. Redefinir restaura o texto padrão e habilita este bloco."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Utilize {language} para o idioma de resposta selecionado. Até 1.500 caracteres; o texto vazio não acrescenta nada."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Utilize {selection} para discussões selecionadas ou não resolvidas. Até 1.500 caracteres; o texto vazio não acrescenta nada."
+  },
+  "aiReviewRule_repository": {
+    "message": "Repositório local e remoto"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Cópia de trabalho para correções"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Cópia de trabalho para revisão"
+  },
+  "aiReviewRule_language": {
+    "message": "Linguagem de resposta"
+  },
+  "aiReviewRule_scope": {
+    "message": "Interpretação do filtro de arquivos"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Contexto de feedback"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Correções sem respostas"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Tarefa somente de descrição"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Feedback selecionado ausente"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Respostas prontas para postar após correções"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Revisar limites"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Fonte para revisão"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Alterações de código incluídas"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Revisão sem código incluído"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Fonte indisponível"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Resposta JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Encontrar locais e saída"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Estilo de resposta de acompanhamento"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Cabeça inalterada"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Posições da linha de comparação"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Comparação de revisão local"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Mudanças na filial alvo"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Revisão sem revisão de comparação"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Verifique novamente sem discussões"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Escopo de discussão selecionado"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Contexto diferencial cumulativo"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Discussões existentes em uma nova revisão"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Nova revisão em Importação"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Limites de revisão de importação"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Importar formato de descoberta"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Limites e formato da resposta"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Escopo da tarefa de resposta"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Adicionar campo"
+  },
+  "jiraQuickActionField": {
+    "message": "Campo"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Operação"
+  },
+  "jiraQuickActionValue": {
+    "message": "Valor"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Remover"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Adicionar"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Remover"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Substitua tudo"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Data de vencimento"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Campo personalizado (avançado)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Valores separados por vírgula. Adicionar/remover mantém outros valores; substituir tudo substitui a lista."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID do campo: customfield_12345. Insira o valor como JSON no formato esperado por este campo Jira."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Nome exato da transição Jira (ou status de destino)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Valor vazio: sem alteração."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Verifique o valor do campo: os campos personalizados requerem um ID válido e JSON; as datas usam YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Utilize cada campo apenas uma vez por botão."
+  },
+  "jiraQuickActionFailed": {
+    "message": "A ação falhou."
+  },
+  "jiraQuickActionPartial": {
+    "message": "O status mudou, mas a atualização do campo falhou."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Não foi possível atualizar o problema. Reabra o painel para verificar seus valores atuais."
+  },
+  "mrActions": {
+    "message": "ações MR"
+  },
+  "mrActionsHint": {
+    "message": "Crie botões nomeados para alterar rótulos ou limpar outros campos MR. Arraste-os na lista de botões para alterar sua ordem."
+  },
+  "mrActionsProfileHint": {
+    "message": "Editar esta lista cria ações específicas do projeto. Remova todas as entradas para ocultar esses botões neste projeto."
+  },
+  "mrActionAdd": {
+    "message": "Adicionar ação MR"
+  },
+  "mrActionLabel": {
+    "message": "Nome do botão"
+  },
+  "mrActionDelete": {
+    "message": "Excluir ação"
+  },
+  "mrActionType": {
+    "message": "Ação"
+  },
+  "mrActionLabels": {
+    "message": "Etiquetas"
+  },
+  "mrActionLabelsHint": {
+    "message": "Nomes exatos dos rótulos, separados por vírgulas ou novas linhas. Os espaços dentro dos nomes são preservados. Adicionar/substituir pode criar rótulos de projeto ausentes."
+  },
+  "mrAction_remove_labels": {
+    "message": "Remover rótulos especificados"
+  },
+  "mrAction_clear_labels": {
+    "message": "Limpar todos os rótulos"
+  },
+  "mrAction_add_labels": {
+    "message": "Adicionar rótulos"
+  },
+  "mrAction_set_labels": {
+    "message": "Substitua todas as etiquetas"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Limpar destinatários"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Limpar revisores"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Limpar marco"
+  },
+  "mrActionInvalid": {
+    "message": "Insira um nome de botão, escolha uma ação suportada e especifique pelo menos um rótulo para adicionar, remover ou substituir."
+  },
+  "mrActionConfirm": {
+    "message": "Aplicar “$1” a este MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab não retornou o status de rebase. Recarregue a solicitação de mesclagem e tente novamente."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab retornou uma página de jobs repetidos para o pipeline #$1. A lista de trabalhos não pôde ser totalmente carregada."
+  },
+  "displayPreferencesTitle": {
+    "message": "Regras e limites de exibição"
+  },
+  "displayPreferencesHint": {
+    "message": "Configurações globais; recarregue as guias GitLab após alterá-las. Mais trabalhos ou comentários aumentam a transferência de dados. As visualizações de log baixam o rastreamento completo antes de selecionar linhas não vazias. Os selos de revisor pesquisam nos comentários mais antigos “Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Trabalhos com falha na visualização"
+  },
+  "failedJobTraceLines": {
+    "message": "Linhas de log não vazias por job"
+  },
+  "reviewerNotesLimit": {
+    "message": "Comentários para procurar selos de revisores"
+  },
+  "mrSizeLines": {
+    "message": "MR limites de tamanho: linhas (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR limites de tamanho: arquivos (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Padrões adicionais de arquivos confidenciais"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Exclusões de arquivos confidenciais"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Use regras de arquivo confidenciais integradas"
+  },
+  "sizeThresholdsHint": {
+    "message": "Três números inteiros positivos crescentes separados por vírgulas. Os limites são inclusivos; mudanças maiores são XL. Os limites de arquivo se aplicam quando as contagens de linhas não estão disponíveis."
+  },
+  "sensitivePatternsHint": {
+    "message": "Um padrão por linha, sem distinção entre maiúsculas e minúsculas. * corresponde a qualquer texto (incluindo /), ? um personagem. Padrões sem/correspondem a nomes de arquivos; outros padrões correspondem ao caminho completo do repositório. As exclusões vencem. As regras integradas abrangem arquivos de ambiente, contêiner/CI, credenciais e chave privada. Desligue-os para usar apenas seus padrões."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Verifique os intervalos numéricos, três limites crescentes de tamanho e o comprimento dos padrões de arquivo."
+  },
+  "failedJobsPreview": {
+    "message": "Visualização: $1 trabalho(s) com falha — últimas $2 linhas não vazias",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Mais trabalhos com falha - abra o pipeline completo"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 linhas, $2 arquivos",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "Arquivos $1 alterados",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Verificação de arquivos confidenciais incompleta"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Não foi possível verificar todos os arquivos: a solicitação API falhou ou o limite de verificação do arquivo $1 foi atingido. As correspondências listadas são parciais; verifique a diferença MR completa.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Atenção: este relatório pode estar incompleto. A coleção é limitada a $1 MRs por categoria e $2 eventos de atividade.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 tópicos não resolvidos",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Esta visualização pode estar incompleta: erro API ou apenas as primeiras discussões $2 verificadas. Tópicos não resolvidos conhecidos: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "settingsTitle": { "message": "Configurações" },
+  "settingsActions": { "message": "MR e commits" },
+  "settingsActionsHint": { "message": "Merge requests, commits, versões e cherry-pick." },
+  "settingsCi": { "message": "CI/CD e tarefas" },
+  "settingsAppearance": { "message": "Interface do GitLab" },
+  "settingsData": { "message": "Dados e ajuda" },
+  "settingsSearch": { "message": "Buscar configurações" },
+  "settingsScope": { "message": "Escopo das configurações" },
+  "settingsProjectValue": { "message": "Valor do projeto" },
+  "settingsUseGlobal": { "message": "Usar valor global" },
+  "settingsProjectInheritanceHint": { "message": "Edite um valor para defini-lo neste projeto. Use o valor global para restaurar a herança." },
+  "settingsSharedPreferencesHint": { "message": "O idioma da interface, o som, as notificações e os relatórios entre projetos são globais. Edite-os em Todos os projetos." },
+  "settingsGlobal": { "message": "Todos os projetos" },
+  "settingsGlobalHint": { "message": "Estas configurações se aplicam a todos os projetos." },
+  "settingsProjectHint": { "message": "Este perfil substitui as configurações comuns para este projeto." },
+  "settingsGlobalOnly": { "message": "Esta seção usa configurações compartilhadas entre todos os projetos." },
+  "settingsQuick": { "message": "Configurações rápidas" },
+  "settingsNoResults": { "message": "Nenhuma configuração correspondente." },
+  "settingsRemoveProfile": { "message": "Remover perfil" },
+  "settingsNoProject": { "message": "Abra um projeto do GitLab para usar perfis de projeto." },
+  "settingsAll": { "message": "Todas as configurações" },
+  "settingsMoveUp": { "message": "Mover para cima" },
+  "settingsMoveDown": { "message": "Mover para baixo" },
+  "settingsConnection": { "message": "Conexão" },
+  "settingsJiraDisplay": { "message": "Jira no GitLab" },
+  "settingsAdvanced": { "message": "Configurações avançadas" },
+  "settingsAutosaveHint": { "message": "As alterações são salvas automaticamente." },
+  "settingsSaving": { "message": "Salvando…" },
+  "settingsLoadFailed": { "message": "Não foi possível carregar as configurações. Tente novamente antes de editar." },
+  "aiReviewShowFull": { "message": "Mostrar tudo" },
+  "aiReviewShowLess": { "message": "Mostrar menos" },
+  "aiReviewExpandCommentsSetting": { "message": "Mostrar comentários de revisão completos por padrão" },
+  "aiReviewExpandAll": { "message": "Expandir tudo" },
+  "aiReviewCollapseAll": { "message": "Recolher tudo" }
+}

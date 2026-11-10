@@ -1,0 +1,88 @@
+Язык: Итальянский (it)
+
+Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazione con un solo clic. Sostituisci le operazioni manuali in più passaggi (rebase, upgrade di versione, gestione della pipeline e unione) con un solo pulsante. Supporta HTTPS self-hosted GitLab e gitlab.com; la disponibilità dipende dalle capacità del server e dalle autorizzazioni dell'account. Nessun token API richiesto: utilizza la sessione del browser esistente.
+
+★ REVISIONE AI CON I TUOI STRUMENTI
+
+• Revisione completa MR: prepara un'attività che copra tutti i commit MR, con filtri di file configurabili
+• Correggi e rispondi: copia il feedback selezionato nella tua intelligenza artificiale di codifica e prepara risposte pronte per la pubblicazione
+• Revisione di follow-up: ricontrolla le correzioni e le modifiche rispetto a una revisione selezionata, anche dopo i push forzati
+• Importazione modificabile: incolla commenti e risposte AI come JSON, modifica il testo e pubblica gli elementi selezionati o salva le bozze delle revisioni. Facoltativamente, risolvi le discussioni dopo aver pubblicato le risposte
+• Istruzioni personalizzate: personalizza prompt e blocchi di istruzioni automatici; scegli la lingua di risposta
+• Condivisione manuale: utilizza il tuo strumento AI preferito. Nessuna chiave AI API nell'estensione e nessun caricamento automatico del codice
+
+★ UNISCI AZIONI DI RICHIESTA
+
+• Unione automatica: riorganizza e abilita "unisci quando la pipeline ha esito positivo" con un clic
+• Spedizione: flusso di rilascio completo: versione bump → pipeline → fusione automatica, tutto automatizzato
+• Forza l'unione: salta la pipeline e unisci immediatamente quando CI non è necessario
+• Version bump: incrementa la versione in package.json, pyproject.toml o qualsiasi file (patch/minore/maggiore)
+• Rebase: ramo rebase con o senza bump versione
+• Alterna Bozza/Pronto: cambia lo stato MR senza modificare il titolo
+• Commenti rapidi: pubblica commenti sui modelli su MR con un clic
+• Copia MR: copia immediatamente il titolo e il collegamento negli appunti
+
+★ CI/CD CONTROLLI PIPELINE
+
+• Nuova pipeline/Annulla pipeline: crea o annulla pipeline istantaneamente
+• Riprova tutti i lavori non riusciti: riavvia contemporaneamente tutti i lavori non riusciti nell'ultima pipeline
+• Pulsanti di lavoro personalizzati: attiva qualsiasi lavoro CI con un clic; concatenare più lavori (ad esempio build → deploy)
+• Visualizzazione rapida dei lavori non riusciti: visualizza i nomi dei lavori non riusciti e le righe del registro degli errori direttamente nella pagina MR
+• Esecuzione in background: le catene di lavoro personalizzate continuano dopo la navigazione della pagina
+
+★ INTEGRAZIONE JIRA (nessun token API)
+
+• Badge di stato Jira: stati dei ticket con codice colore (Fatto, In corso, QA, Da fare) analizzati dai titoli MR
+• Barra laterale completa del ticket: fai clic su qualsiasi badge per visualizzare riepilogo, stato, assegnatario, priorità, sprint, epico, etichette, descrizione e allegati
+• Modifica stato e assegnatario: cambia ticket e riassegna senza uscire GitLab
+• Jira azioni rapide: azioni composite (modifica stato + assegnazione) con un clic
+• Tipo di problema e icone di priorità: icone native Jira nell'elenco MR e nelle pagine dei dettagli
+• Badge del campo Jira sui commit: mostra la versione correzione, lo stato o qualsiasi campo accanto ai commit
+• Jira arricchimento nei report giornalieri: titoli dei ticket aggiunti automaticamente ai riepiloghi delle attività
+
+★ MR MIGLIORAMENTI DELL'ELENCO
+
+• Etichette taglia MR: badge S/M/L/XL codificati a colori in base al conteggio delle righe modificate
+• Indicatore di conflitti: badge rosso quando il ramo presenta conflitti di unione
+• Conteggio dei thread non risolti: visualizza a colpo d'occhio i thread di discussione aperti
+• Nomi dei rami: ramo di origine → destinazione visualizzato su ciascun MR
+• Indicatore di approvazione: mostra se hai approvato ciascun MR
+• Dim Draft MRs: attenua visivamente le bozze per concentrarsi sulle richieste di unione attive
+• Evidenzia il tuo MRs: bordo blu sul tuo MRs per una rapida identificazione
+• "Solo mio" / "Richiede la mia revisione" / "Raggruppa per autore" si attiva/disattiva
+• Badge "La tua recensione": rileva le menzioni configurate per il lavoro di revisore e le menzioni nei commenti
+• Copia MR dall'elenco: pulsante copia su ciascun elemento MR
+
+★ STRUMENTI DI PRODUTTIVITÀ
+
+• Pannello dei comandi (Cmd+K / Ctrl+K): consente di accedere all'elenco MR, alle pipeline, ai rami, ai problemi o alle azioni di attivazione
+• Ricerca file nella tavolozza: trova e apre qualsiasi file di progetto in base al nome
+• Rapporto attività quotidiana: riepilogo di MRs creato, unito, commentato, approvato. Copia in Slack o Jira
+• Scegli tra più rami: seleziona qualsiasi commit su più rami contemporaneamente con la creazione automaticaMR
+• Fallback intelligente: riproduzione automatica del commit escludendo il file di versione in caso di conflitto
+• Avviso file sensibili: badge arancione quando MR tocca le configurazioni .env, Dockerfile, CI o credenziali
+• Pulsanti di comando Git: copia i comandi git checkout e git fetch per il ramo MR
+• MR badge età: controlla da quanto tempo è aperta una richiesta di unione
+• Evidenzia i miei commenti: bordo colorato sui tuoi commenti nelle discussioni
+
+★ PERSONALIZZAZIONE
+
+• Profili per progetto: pulsanti, file di versione e lavori CI diversi per ciascun repository
+• Ordine dei pulsanti trascina e rilascia: disponi i pulsanti di azione nel modo che preferisci
+• Larghezza della scheda configurabile nelle differenze: imposta la visualizzazione della scheda su 2, 4 o 8 spazi
+• Comprimi le barre superiori/Nascondi la barra laterale destra: massimizza l'area di lavoro
+• Notifiche audio e desktop: ricevi una notifica quando le azioni vengono completate o fallite
+• Tema scuro: segue automaticamente le preferenze di sistema
+
+★ PERCHÉ GITLAB MR AZIONI?
+
+✓ Nessun token di accesso personale: utilizza i cookie di sessione GitLab esistenti
+✓ Nessun servizio intermediario: le richieste GitLab e Jira vanno direttamente ai server configurati
+✓ Supporta HTTPS self-hosted GitLab e gitlab.com; consultare la guida alla compatibilità per i contratti API testati
+✓ Integrazione Jira senza token API: utilizza i cookie di sessione del browser
+✓ Completamente configurabile per progetto: nessuna limitazione valida per tutti
+✓ Leggero: vengono eseguiti controlli in background per le azioni avviate; nessuna telemetria o caricamenti AI automatici
+✓ Interfaccia disponibile in 27 lingue
+✓ Sorgente aperta
+
+Scelto dagli sviluppatori che vogliono dedicare meno tempo a fare clic su GitLab e più tempo a scrivere il codice.

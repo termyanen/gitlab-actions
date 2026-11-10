@@ -5,13 +5,34 @@ var assert = require('node:assert/strict');
 var harness = require('./helpers/extension.cjs');
 var jiraUrl = 'https://jira.test';
 
-[401, 403].forEach(function(status) {
+test('Jira myself rejects a missing identity without hiding a broken session response', async function() {
+  var env = harness.background({jira: function() { return {displayName:'Alice'}; }});
+  var result = await env.finish(env.dispatch({type:'fetch-jira-myself', jiraUrl}));
+  assert.equal(result._errorKind, 'invalid-response');
+  assert.equal(result.id, undefined);
+  assert.equal(env.requests.length, 1);
+});
+
+[401].forEach(function(status) {
   test('Jira ' + status + ' stops remaining ticket requests', async function() {
     var env = harness.background({ jira: function() { return harness.response(status, {}); } });
     var result = await env.finish(env.dispatch({ type: 'fetch-jira-statuses', jiraUrl: jiraUrl, tickets: ['PROJ-1', 'PROJ-2'], showDetails: true }));
     assert.equal(result.statuses._authError, status);
+    assert.equal(result._failure._errorKind, 'auth');
     assert.equal(env.requests.length, 1);
   });
+});
+
+test('Jira 403 preserves allowed tickets and reports a partial permission failure', async function() {
+  var env = harness.background({ jira: function(req) {
+    return req.url.includes('PROJ-1') ? harness.response(403, {errorMessages:['Denied']}) : {fields:{status:{name:'Open'}}};
+  } });
+  var result = await env.finish(env.dispatch({type:'fetch-jira-statuses', jiraUrl, tickets:['PROJ-1','PROJ-2']}));
+  assert.equal(result.statuses['PROJ-2'].name, 'Open');
+  assert.equal(result.statuses._authError, undefined);
+  assert.equal(result._failure._errorKind, 'forbidden');
+  assert.equal(result._failure._httpStatus, 403);
+  assert.equal(env.requests.length, 2);
 });
 
 test('Jira statuses map details and tolerate a missing individual ticket', async function() {
@@ -21,6 +42,7 @@ test('Jira statuses map details and tolerate a missing individual ticket', async
   } });
   var result = await env.finish(env.dispatch({ type: 'fetch-jira-statuses', jiraUrl: jiraUrl, tickets: ['PROJ-1', 'PROJ-2'], showDetails: true }));
   assert.deepEqual(harness.plain(result.statuses), { 'PROJ-2': { name: 'In progress', categoryKey: 'indeterminate', priority: 'High', priorityIcon: 'priority', type: 'Bug', typeIcon: 'bug' } });
+  assert.equal(result._failure._errorKind, 'not-found');
 });
 
 [
@@ -151,4 +173,124 @@ test('empty actions and unavailable requested transitions cannot edit fields', a
     assert.ok(env.result._error);
     assert.equal(env.requests.length, 0);
   }
+});
+
+test('Jira field batches keep successful values and stop on an expired session', async function() {
+  var env = harness.background({ jira: function(req) {
+    return req.url.includes('PROJ-1') ? {fields:{fixVersions:[{name:'1.2'}]}} : harness.response(401, {});
+  } });
+  var result = await env.finish(env.dispatch({type:'fetch-jira-field-values', jiraUrl, tickets:['PROJ-1','PROJ-2','PROJ-3']}));
+  assert.deepEqual(harness.plain(result.values['PROJ-1']), {values:['1.2']});
+  assert.equal(result._failure._errorKind, 'auth');
+  assert.equal(env.requests.length, 2);
+});
+
+test('Jira network failure is visible and does not flood the remaining ticket batch', async function() {
+  var env = harness.background({ jira: function() { throw new TypeError('Network unavailable'); } });
+  var result = await env.finish(env.dispatch({type:'fetch-jira-statuses', jiraUrl, tickets:['PROJ-1','PROJ-2']}));
+  assert.equal(result._failure._errorKind, 'network');
+  assert.equal(env.requests.length, 1);
+});
+
+for (var example of [
+  {name:'login HTML', body:'<!doctype html><html><form id="login-form">Sign in</form></html>', kind:'auth'},
+  {name:'unexpected HTML', body:'<!doctype html><html><p>Proxy error</p></html>', kind:'invalid-response'},
+  {name:'invalid JSON', body:'{broken', kind:'invalid-response'},
+  {name:'redirected SSO login', body:'{}', redirected:true, url:'https://idp.test/login', kind:'auth'},
+  {name:'Seraph login rejection', body:'{}', status:403, headers:{'X-Seraph-LoginReason':'AUTHENTICATION_DENIED'}, kind:'auth'}
+]) {
+  test('Jira distinguishes ' + example.name + ' without exposing the response body', async function() {
+    var env = harness.background({});
+    var calls = 0;
+    env.context.fetch = async function() {
+      calls++;
+      return {ok: !example.status || example.status < 400, status:example.status || 200, redirected:example.redirected, url:example.url, headers:{get:name => example.headers?.[name] || null}, text:async() => example.body};
+    };
+    var result = await env.finish(env.dispatch({type:'fetch-jira-myself', jiraUrl}));
+    assert.equal(result._errorKind, example.kind);
+    assert.doesNotMatch(result._error, /<html|login-form|Proxy error|broken/);
+    assert.equal(calls, 1);
+  });
+}
+
+test('Jira host permission denial is actionable before an API request', async function() {
+  var env = harness.background({jira:function(){throw new Error('must not request');}});
+  env.chrome.permissions = {contains:async function(request){assert.deepEqual(harness.plain(request), {origins:['https://jira.test/*']});return false;}};
+  var result = await env.finish(env.dispatch({type:'fetch-jira-myself', jiraUrl}));
+  assert.equal(result._errorKind, 'permission');
+  assert.equal(env.requests.length, 0);
+});
+
+test('Jira field discovery propagates expired sessions before fetching an issue', async function() {
+  var env = harness.background({jira:function(){return harness.response(401,{});}});
+  var result = await env.finish(env.dispatch({type:'fetch-jira-issue',jiraUrl,ticket:'PROJ-1'}));
+  assert.equal(result._errorKind,'auth');
+  assert.equal(env.requests.length,1);
+});
+
+test('Jira session reads retain context paths and use browser-managed credentials', async function() {
+  var env=harness.background({});
+  var base='https://jira.test/jira';
+  env.chrome.cookies.getAll=async function(){throw new Error('Session cookies must remain browser-managed');};
+  env.context.fetch=async function(url,init){
+    assert.equal(url,base+'/rest/api/2/myself');
+    assert.equal(init.credentials,'include');
+    assert.equal(init.headers.Cookie,undefined);
+    return {ok:true,status:200,text:async()=>JSON.stringify({name:'alice',key:'JIRAUSER10000',displayName:'Alice'})};
+  };
+  var result=await env.finish(env.dispatch({type:'fetch-jira-myself',jiraUrl:base}));
+  assert.equal(result.id,'JIRAUSER10000');
+});
+
+test('Jira renamed and generated-key users are assigned by username, not by key', async function() {
+  var env=harness.background({jira:function(req){
+    if(req.method==='GET')return [{name:'alice',key:'JIRAUSER10000',displayName:'Alice'}];
+    assert.deepEqual(req.body,{fields:{assignee:{name:'alice'}}});
+    return harness.response(204,'');
+  }});
+  var users=await env.finish(env.dispatch({type:'search-jira-assignable',jiraUrl,ticket:'PROJ-1',query:'ali'}));
+  assert.equal(users.users[0].key,'alice');
+  var result=await env.finish(env.dispatch({type:'set-jira-assignee',jiraUrl,ticket:'PROJ-1',username:users.users[0].key}));
+  assert.equal(result.success,true);
+});
+
+test('Jira accountId-only users are not mistaken for Server usernames', async function() {
+  var env=harness.background({jira:function(){return [{accountId:'cloud-id',displayName:'Alice'}];}});
+  var result=await env.finish(env.dispatch({type:'search-jira-assignable',jiraUrl,ticket:'PROJ-1',query:'ali'}));
+  assert.equal(result._errorKind,'invalid-response');
+  assert.match(result._error,/accountId/);
+  assert.equal(env.requests.length,1);
+});
+
+test('an unresponsive Jira read times out, without an automatic retry', async function() {
+  var env=harness.background({});
+  var calls=0;
+  env.context.fetch=function(_url,init){calls++;return new Promise((_resolve,reject)=>init.signal.addEventListener('abort',()=>reject(new Error('aborted'))));};
+  var result=await env.finish(env.dispatch({type:'fetch-jira-myself',jiraUrl}));
+  assert.equal(result._errorKind,'network');
+  assert.match(result._error,/timed out/);
+  assert.equal(calls,1);
+});
+
+test('a failed Jira mutation is never retried and does not follow redirects', async function() {
+  var env=harness.background({});
+  var calls=0;
+  env.context.fetch=async function(_url,init){calls++;assert.equal(init.redirect,'error');throw new TypeError('Connection interrupted');};
+  var result=await env.finish(env.dispatch({type:'do-jira-transition',jiraUrl,ticket:'PROJ-1',transitionId:'31'}));
+  assert.equal(result._errorKind,'network');
+  assert.equal(calls,1);
+});
+
+test('Jira response-body disconnects report a network failure', async function() {
+  var env=harness.background({});
+  env.context.fetch=async function(){return {ok:true,status:200,text:async()=>{throw new TypeError('stream failed');}};};
+  var result=await env.finish(env.dispatch({type:'fetch-jira-myself',jiraUrl}));
+  assert.equal(result._errorKind,'network');
+});
+
+test('missing requested Jira statuses are a visible invalid response, not an empty success', async function() {
+  var env=harness.background({jira:()=>({fields:{}})});
+  var result=await env.finish(env.dispatch({type:'fetch-jira-statuses',jiraUrl,tickets:['PROJ-1','PROJ-2']}));
+  assert.equal(result._failure._errorKind,'invalid-response');
+  assert.equal(env.requests.length,1);
 });

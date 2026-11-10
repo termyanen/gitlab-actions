@@ -6,7 +6,7 @@ var fs = require('node:fs');
 var path = require('node:path');
 var vm = require('node:vm');
 var crypto = require('node:crypto');
-var source = fs.readFileSync(path.join(__dirname, '../review-import.js'), 'utf8');
+var source = require('./helpers/runtime.cjs').readRuntime('review-import.js');
 var HEAD = 'a'.repeat(40), BASE = 'b'.repeat(40), START = 'c'.repeat(40);
 
 function response(value, status, headers) { return new Response(JSON.stringify(value), { status: status || 200, headers: Object.assign({ 'content-type': 'application/json' }, headers) }); }
@@ -62,6 +62,7 @@ function environment(options) {
     throw new Error('Unexpected request: ' + url);
   }
   var sandbox = vm.createContext({
+    structuredClone: structuredClone,
     window: window, chrome: chrome, URL: URL, AbortController: AbortController, TextEncoder: TextEncoder, TextDecoder: options.noTextDecoder ? undefined : TextDecoder,
     navigator: options.locks ? { locks: options.locks } : {},
     setTimeout: options.fastTimeout ? function(fn) { return setTimeout(fn, 5); } : setTimeout, clearTimeout: clearTimeout,
@@ -77,7 +78,7 @@ function environment(options) {
       return defaults(url, init);
     }
   });
-  if (options.workflow) vm.runInContext(fs.readFileSync(path.join(__dirname, '../review-workflow.js'), 'utf8'), sandbox);
+  if (options.workflow) vm.runInContext(require('./helpers/runtime.cjs').readRuntime('review-workflow.js'), sandbox);
   vm.runInContext(source, sandbox, { filename: 'review-import.js' });
   return {
     chrome: chrome, api: window.GlReviewImport, context: context, state: state, window: window, requests: requests, stored: stored, writes: writes, notes: notes, drafts: drafts,
@@ -1021,7 +1022,7 @@ test('revision rechecks the publication lock after an awaited final journal read
     var env = replyEnvironment();
     var custom = 'Answer in German with concise evidence.';
     env.chrome.storage.sync = { get: function(defaults, callback) {
-      assert.deepEqual(Object.keys(defaults), [key]);
+      assert.deepEqual(Object.keys(defaults).sort(), [key, "projectProfiles"].sort());
       callback({ [key]: custom });
     } };
     var prompt = await env.api[method](env.context);
@@ -1505,4 +1506,15 @@ test('import and reply shortcuts use editable automatic rules without affecting 
   var plan = await env.api.prepare(env.context, env.json([reply({ body: '/merge' })]));
   assert.equal(plan.items[0].status, 'invalid');
   assert.equal(env.posts().length, 0);
+});
+
+test('import and reply prompts resolve every setting from their input project',async()=>{
+  const env=replyEnvironment({workflow:true});
+  const profiles={'team/repo':{overrides:{ai_review_response_language:'ru',ai_review_import_prompt:'PROJECT_IMPORT_PROMPT',ai_review_reply_prompt:'PROJECT_REPLY_PROMPT',ai_review_rule_repository:{enabled:true,text:'PROJECT_REPOSITORY_RULE'}}},'team/other':{overrides:{ai_review_response_language:'fr',ai_review_import_prompt:'WRONG_PROJECT'}}};
+  env.chrome.storage.sync={get(defaults,reply){reply({...defaults,ai_review_response_language:'de',projectProfiles:profiles});}};
+  const imported=await env.api.getPrompt(env.context);
+  const replies=await env.api.getReplyPrompt(env.context);
+  assert.match(imported,/PROJECT_IMPORT_PROMPT/);assert.match(replies,/PROJECT_REPLY_PROMPT/);
+  for(const text of [imported,replies]){assert.match(text,/^Response language selected by the user: Russian/);assert.match(text,/PROJECT_REPOSITORY_RULE/);assert.doesNotMatch(text,/WRONG_PROJECT/);}
+  assert.equal(env.posts().length,0);
 });

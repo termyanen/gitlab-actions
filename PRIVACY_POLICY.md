@@ -1,6 +1,6 @@
 # Privacy Policy — GitLab MR Actions
 
-**Last updated:** October 13, 2026
+**Last updated:** November 7, 2026
 
 ## Overview
 
@@ -29,14 +29,15 @@ Optional discussion resolution is sent to the same GitLab only when you explicit
 
 - **Preferences:** `chrome.storage.sync` stores settings, including custom review prompts, automatic instruction text and enabled states, and file filters, until changed or the extension is uninstalled. If Chrome Sync is enabled, Google may synchronize these preferences between your browsers. Do not put secrets or repository content into saved prompts or instructions if you do not want them in synchronized settings.
 - **Local caches:** `chrome.storage.local` stores a GitLab username cache and commit-version badge results, including project/file identifiers and commit hashes. Version results are capped at 1,000 entries. These caches remain until replaced, evicted where applicable, or extension data is removed. Other loaded content and UI state use memory or browser session storage.
+- **CI task recovery:** `chrome.storage.local` stores active job-chain checkpoints and up to 50 completed tasks: GitLab origin, project/MR/pipeline/job identifiers, MR title, job names, progress, timestamps and error messages. They remain until replaced or extension data is removed and are not synchronized through Chrome Sync. They contain no job logs, repository files or credentials.
 - **Duplicate-send protection:** review import stores a local digest identifier, delivery status, timestamp and, after confirmation, comment ID. These records prevent accidental reposting after interruptions and remain until extension data is removed. They contain no comment body, code, prompt or review transcript and are not a review history. They are not stored in Chrome Sync.
 - **Review content:** fetched discussions/code and pasted import text remain in page memory while the feature is in use. The extension does not save a persistent review transcript or snapshots. Closing the page clears that page's memory. Clipboard text remains under browser/operating-system control until replaced or cleared; clipboard synchronization tools are outside the extension's control.
-- **Credentials:** the extension does not persist session cookies or CSRF tokens; browser cookies remain in the browser's cookie store.
+- **Credentials:** the extension does not persist session cookies or CSRF tokens. The browser attaches the existing Jira session to permitted requests; the extension does not read the cookie store through the Cookies API.
 
 ## 4. Recipients
 
 - **Your GitLab instance:** API reads and user-triggered changes, including publishing selected review comments and drafts.
-- **Your configured Jira server:** optional integration after you grant host access.
+- **Your configured Jira server:** optional integration after you grant host access. The URL can be shared or overridden for a project; each distinct configured origin requires its own grant.
 - **Google Chrome Sync:** preferences only, when enabled in your browser.
 - **A destination you choose:** copying places text on the clipboard; you decide whether to paste it into an AI tool or another application. There is no automatic AI recipient.
 
@@ -48,14 +49,15 @@ The extension runs bundled JavaScript and does not download executable code or e
 
 | Permission | Purpose |
 |---|---|
-| `storage` | Preferences, local caches and duplicate-send protection |
+| `storage` | Preferences, local caches, CI task checkpoints and duplicate-send protection |
+| `alarms` | Wake the service worker to restore unfinished CI tasks |
 | `notifications` | Completion notifications for background jobs |
-| `tabs` | Communicate with GitLab tabs and locate tabs needed for user-triggered work |
-| `cookies` | Existing GitLab/Jira session authentication used by integration features |
-| Optional HTTPS host access | Requested for the configured Jira domain |
+| `tabs` | Read the active tab URL to identify the current project and locate matching GitLab tabs for user-triggered work |
+| Optional HTTPS host access | Requested for explicitly configured global/project Jira origins |
 | Content scripts on HTTPS pages | Recognize self-hosted GitLab installations on different domains and provide GitLab features there |
 
 AI review adds no new extension permissions. The browser controls site access; you can restrict it through the extension's site-access settings.
+Jira requests use the existing browser session with permission for the configured host; the extension does not request the `cookies` API permission.
 
 ## 6. Your choices and deletion
 
@@ -65,4 +67,4 @@ Clearing extension data does not delete comments or drafts already saved in GitL
 
 ## 7. Children, updates and contact
 
-This developer tool is not directed at children under 13. Policy updates are posted with a new date. The source is available for inspection in the [GitHub repository](https://github.com/termyanen/gitlab-actions). For questions, open a [GitHub issue](https://github.com/termyanen/gitlab-actions/issues).
+This developer tool is not directed at children under 13. Policy updates are posted with a new date. The source is available for inspection in the [GitHub repository](https://github.com/termyanen/gitlab-actions). For general questions, open a [GitHub issue](https://github.com/termyanen/gitlab-actions/issues). Report vulnerabilities through the [private security reporting procedure](https://github.com/termyanen/gitlab-actions/security/policy).

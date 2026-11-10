@@ -1,0 +1,2278 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Otomatisasi, Jira, CI/CD & Tinjauan AI"
+  },
+  "extDescription": {
+    "message": "Otomatisasi MR GitLab: gabung otomatis, naikkan versi, Jira, CI/CD, dan tinjauan dengan AI Anda. Tanpa token API."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Bagaimana cara kerjanya"
+  },
+  "openSettingsInTab": {
+    "message": "Buka pengaturan di tab baru"
+  },
+  "exportSettings": {
+    "message": "Ekspor pengaturan"
+  },
+  "importSettings": {
+    "message": "Impor pengaturan"
+  },
+  "settingsTransferHint": {
+    "message": "Bagikan semua pengaturan dan profil proyek sebagai file JSON."
+  },
+  "settingsImportReplace": {
+    "message": "Ini menggantikan semua pengaturan dan profil proyek saat ini."
+  },
+  "applySettingsImport": {
+    "message": "Ganti pengaturan"
+  },
+  "cancelSettingsImport": {
+    "message": "Membatalkan"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — profil proyek: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "File pengaturan tidak valid atau format tidak didukung."
+  },
+  "settingsFileTooLarge": {
+    "message": "File pengaturan melebihi batas penyimpanan Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Tidak dapat mengekspor setelan. Silakan coba lagi."
+  },
+  "settingsImportFailed": {
+    "message": "Tidak dapat mengimpor pengaturan. Konfigurasi Anda saat ini tidak berubah."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Izinkan akses ke situs Jira untuk mengimpor pengaturan ini."
+  },
+  "settingsImported": {
+    "message": "Pengaturan diimpor!"
+  },
+  "buttonOrder": {
+    "message": "Urutan tombol"
+  },
+  "buttonOrderHint": {
+    "message": "Tarik untuk menyusun ulang. Arahkan kursor untuk deskripsi. Pekerjaan khusus berwarna biru."
+  },
+  "general": {
+    "message": "Umum"
+  },
+  "soundNotifications": {
+    "message": "Notifikasi suara"
+  },
+  "desktopNotifications": {
+    "message": "Pemberitahuan desktop"
+  },
+  "showTimeTracker": {
+    "message": "Tampilkan lencana usia MR"
+  },
+  "skipConfirmations": {
+    "message": "Lewati konfirmasi tindakan MR"
+  },
+  "uxEnhancer": {
+    "message": "MR penyempurnaan daftar"
+  },
+  "dimDrafts": {
+    "message": "Redupkan Draf MRs dalam daftar"
+  },
+  "highlightOwnMrs": {
+    "message": "Sorot MRs Anda dalam daftar"
+  },
+  "showOnlyMine": {
+    "message": "Tombol \"Hanya milikku\" di halaman daftar"
+  },
+  "toggleOnlyMine": {
+    "message": "Hanya milikku"
+  },
+  "versionBump": {
+    "message": "Peningkatan versi"
+  },
+  "filePath": {
+    "message": "Jalur berkas"
+  },
+  "filePathHint": {
+    "message": "File yang berisi nomor versi"
+  },
+  "versionField": {
+    "message": "Bidang versi"
+  },
+  "versionFieldHint": {
+    "message": "Kunci JSON atau TOML (misalnya \"version\" atau \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategi"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Pesan komit"
+  },
+  "commitMessageHint": {
+    "message": "Gunakan {version} sebagai pengganti"
+  },
+  "quickComments": {
+    "message": "Komentar cepat"
+  },
+  "quickCommentsHint": {
+    "message": "Tombol sekali klik yang langsung mengirim komentar umum ke MR (bukan sebaris ke kode). Tombol muncul di bilah tindakan."
+  },
+  "quickCommentsAdd": {
+    "message": "Tambahkan komentar"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Komentar cepat"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Tombol komentar template yang dapat dikonfigurasi di halaman MR. Posting LGTM, Perlu perbaikan, atau komentar khusus apa pun dengan satu klik."
+  },
+  "reviewers": {
+    "message": "Peninjau"
+  },
+  "reviewersList": {
+    "message": "Daftar pengulas"
+  },
+  "reviewersListHint": {
+    "message": "Nama pengguna yang disebut dalam komentar Reviewers: (@user1, @user2). Jika diisi, pencarian komentar dan tugas CI dilewati. Tidak mengubah penetapan peninjau GitLab."
+  },
+  "jobName": {
+    "message": "Nama pekerjaan"
+  },
+  "jobNameHint": {
+    "message": "Tugas cadangan jika tidak ada komentar yang cocok dengan pola \"Reviewer(s):\"."
+  },
+  "customJobButtons": {
+    "message": "Tombol pekerjaan khusus"
+  },
+  "customJobsHint": {
+    "message": "Pisahkan dengan koma untuk menjalankan tugas secara berurutan: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Tombol Tambahkan pekerjaan"
+  },
+  "addProfileFor": {
+    "message": "+ Tambahkan profil untuk $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Saat ini: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Tersimpan!"
+  },
+  "unsavedChanges": {
+    "message": "Perubahan yang belum disimpan..."
+  },
+  "customFile": {
+    "message": "Berkas khusus..."
+  },
+  "plainText": {
+    "message": "teks biasa"
+  },
+  "removeProfile": {
+    "message": "Hapus profil untuk $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Bawaan"
+  },
+  "buttonsFor": {
+    "message": "Tombol untuk $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Ganti tombol mana yang akan ditampilkan untuk proyek ini."
+  },
+  "leaveEmptyDefault": {
+    "message": "Biarkan kosong untuk menggunakan default"
+  },
+  "projectSpecificJobs": {
+    "message": "Pekerjaan khusus proyek. Gunakan koma untuk membuat rantai."
+  },
+  "languageLabel": {
+    "message": "Bahasa"
+  },
+  "languageAuto": {
+    "message": "Otomatis (peramban)"
+  },
+  "btnVersion": {
+    "message": "Peningkatan versi"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Versi"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Penggabungan otomatis"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Paksa penggabungan"
+  },
+  "btnShip": {
+    "message": "Rebase + Versi + Penggabungan otomatis"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Versi + Penggabungan paksa"
+  },
+  "btnReviewers": {
+    "message": "Peninjau"
+  },
+  "btnPipelineRestart": {
+    "message": "Saluran pipa baru"
+  },
+  "btnPipelineCancel": {
+    "message": "Batalkan saluran pipa"
+  },
+  "btnDraftToggle": {
+    "message": "Draf / Siap beralih"
+  },
+  "btnRetryFailed": {
+    "message": "Coba lagi pekerjaan yang gagal"
+  },
+  "btnCopyMr": {
+    "message": "Salin MR"
+  },
+  "hintVersion": {
+    "message": "Membaca file yang dikonfigurasi (misalnya package.json), menambah versi berdasarkan strategi yang dipilih (patch/minor/mayor), berkomitmen dengan pesan templat Anda."
+  },
+  "hintRebase": {
+    "message": "Mengubah basis cabang sumber ke cabang target. Tidak menggabungkan atau mengaktifkan penggabungan otomatis."
+  },
+  "hintRebaseVersion": {
+    "message": "Rebase cabang ke target (jika diperlukan), lalu tambahkan versi pada file yang dikonfigurasi. Tidak bergabung."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Rebase cabang ke target (jika proyek menggunakan rebase/ff). Kemudian aktifkan \"gabungkan ketika saluran pipa berhasil\". Menggunakan pengaturan squash/hapus cabang dari MR."
+  },
+  "hintRebaseForce": {
+    "message": "Rebase dengan lewati CI, batalkan semua pipeline yang berjalan, lalu segera gabungkan tanpa menunggu CI. Menggunakan pengaturan cabang squash/hapus dari MR."
+  },
+  "hintShip": {
+    "message": "Alur penuh: rebase → versi tambahan dalam file yang dikonfigurasi → tunggu hingga MR disinkronkan → tunggu saluran baru → aktifkan penggabungan otomatis."
+  },
+  "hintForceShip": {
+    "message": "Aliran cepat: rebase (lewati CI) → versi tambahan → tunggu 15 detik → batalkan pipeline → segera gabung. Lewati pemeriksaan CI."
+  },
+  "hintReviewers": {
+    "message": "Kirim komentar yang menyebut peninjau yang dikonfigurasi, gunakan kembali komentar Reviewer(s): dari catatan terbaru, atau jalankan tugas CI yang dikonfigurasi."
+  },
+  "hintPipelineRestart": {
+    "message": "Membuat saluran pipa baru untuk cabang sumber melalui API. Berguna ketika saluran pipa macet atau Anda memerlukan proses baru."
+  },
+  "hintPipelineCancel": {
+    "message": "Meminta pembatalan saluran pipa yang berjalan, tertunda, atau dibuat dikembalikan untuk MR ini."
+  },
+  "hintDraftToggle": {
+    "message": "Menambah atau menghapus awalan \"Draft:\" dari judul MR. Tidak mengubah pengaturan MR lainnya."
+  },
+  "hintRetryFailed": {
+    "message": "Mencoba kembali pekerjaan yang gagal di saluran pipa MR saat ini. Pekerjaan yang sukses tidak terpengaruh."
+  },
+  "hintCopyMr": {
+    "message": "Menyalin judul MR dan tautan ke papan klip."
+  },
+  "toastRebasing": {
+    "message": "Merebas..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Mengaktifkan penggabungan otomatis..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Langkah 1/2: Rebasing..."
+  },
+  "toastStep22Automerge": {
+    "message": "Langkah 2/2: Mengaktifkan penggabungan otomatis..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Langkah 1/2: Rebasing (lewati CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Langkah 2/2: Membatalkan saluran pipa & menggabungkan..."
+  },
+  "toastCancellingMerging": {
+    "message": "Membatalkan jalur pipa & menggabungkan..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Membuat saluran pipa baru untuk $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Membatalkan saluran pipa $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Menandai sebagai Siap..."
+  },
+  "toastMarkingDraft": {
+    "message": "Menandai sebagai Draf..."
+  },
+  "toastRetrying": {
+    "message": "Mencoba kembali $1 pekerjaan yang gagal...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Tidak ada pekerjaan yang gagal dalam pipa MR saat ini"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Tidak ada saluran pipa yang berjalan untuk dibatalkan"
+  },
+  "toastAssigningReviewers": {
+    "message": "Posting komentar reviewer…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Memposting ulang komentar reviewer..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Tidak ada komentar reviewer ditemukan, memicu $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Menaikkan versi..."
+  },
+  "toastWaitingSync": {
+    "message": "Menunggu MR disinkronkan dengan v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Menunggu pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Percobaan auto-merge $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Menunggu MR disinkronkan... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Menunggu \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Menjalankan job \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Mencoba ulang job \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Job \"$1\" sudah berhasil, dilewati",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Job \"$1\" sudah $2, menunggu...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 selesai",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 gagal: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Judul dan link MR disalin!"
+  },
+  "toastWaiting15s": {
+    "message": "Menunggu 15 detik sebelum merge..."
+  },
+  "confirmRebase": {
+    "message": "Rebase cabang ini?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Menaikkan versi?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Gabung otomatis?"
+  },
+  "confirmAutomerge": {
+    "message": "Mengaktifkan auto-merge?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → GABUNG SEKARANG?"
+  },
+  "confirmForce": {
+    "message": "⚠️ GABUNG SEKARANG (lewati pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Naikkan versi → Gabung otomatis?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Naikkan versi → Gabung otomatis?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Naikkan versi → GABUNG SEKARANG?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Naikkan versi → GABUNG SEKARANG?"
+  },
+  "confirmNewPipeline": {
+    "message": "Buat pipeline baru untuk cabang ini?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Batalkan semua pipeline yang berjalan?"
+  },
+  "labelAutomerge": {
+    "message": "Gabung otomatis"
+  },
+  "labelForceMerge": {
+    "message": "Paksa gabung"
+  },
+  "labelVersionAutomerge": {
+    "message": "Versi + Gabung otomatis"
+  },
+  "labelVersionForceMerge": {
+    "message": "Versi + Paksa gabung"
+  },
+  "labelMarkReady": {
+    "message": "Tandai sebagai Siap"
+  },
+  "labelMarkDraft": {
+    "message": "Tandai sebagai Draft"
+  },
+  "labelRetryFailed": {
+    "message": "Coba ulang yang gagal"
+  },
+  "labelNewPipeline": {
+    "message": "Saluran pipa baru"
+  },
+  "timeTrackerTitle": {
+    "message": "Waktu sejak MR dibuat: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "Percepat alur kerja merge request-mu dengan aksi sekali klik."
+  },
+  "welcomeQuickStart": {
+    "message": "Mulai cepat"
+  },
+  "welcomeStep1Title": {
+    "message": "Buka halaman Merge Request apa saja"
+  },
+  "welcomeStep1Desc": {
+    "message": "Buka halaman MR HTTPS saat masuk ke GitLab.com atau GitLab self-hosted-mu. Izinkan ekstensi mengakses situs itu."
+  },
+  "welcomeStep2Title": {
+    "message": "Lihat tombol aksi muncul"
+  },
+  "welcomeStep2Desc": {
+    "message": "Tombol muncul di halaman MR. Satu set awal diaktifkan saat instalasi pertama."
+  },
+  "welcomeStep3Title": { "message": "Sesuaikan melalui pengaturan" },
+  "welcomeStep3Desc": { "message": "Gunakan popup untuk mengaktifkan atau menonaktifkan opsi dengan cepat. Buka “Semua pengaturan” untuk mengatur tindakan, versi, Jira, CI/CD, dan tinjauan AI." },
+  "welcomeEnabledDefault": {
+    "message": "Diaktifkan secara default"
+  },
+  "welcomeMoreActions": {
+    "message": "Lebih banyak aksi (aktifkan di pengaturan)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Bagaimana cara kerjanya"
+  },
+  "welcomeHowDesc": {
+    "message": "Ekstensi ini menggunakan sesi GitLab kamu yang sudah ada (cookies) untuk memanggil GitLab API atas nama kamu. Tidak perlu token akses pribadi."
+  },
+  "welcomeHowList1": {
+    "message": "Untuk GitLab.com dan GitLab self-hosted lewat HTTPS; fitur tergantung API server, tata letak halaman, dan izin kamu."
+  },
+  "welcomeHowList2": {
+    "message": "Aksi menggunakan izin sama seperti pengguna yang sedang login"
+  },
+  "welcomeHowList3": {
+    "message": "Rangkaian job kustom berjalan di latar belakang. Biarkan tab yang sudah login tetap terbuka di GitLab yang sama untuk akses API."
+  },
+  "welcomeHowList4": {
+    "message": "Profil per-proyek memungkinkan kamu menyesuaikan tombol untuk repositori yang berbeda"
+  },
+  "welcomeTip": { "message": "Buat profil proyek di “Semua pengaturan” jika proyek memerlukan berkas versi, tombol tindakan, atau job CI yang berbeda." },
+  "welcomeOpenSettings": {
+    "message": "Buka Pengaturan"
+  },
+  "cardAutomergeTitle": {
+    "message": "Gabungkan Otomatis"
+  },
+  "cardAutomergeDesc": {
+    "message": "Rebase cabang (jika perlu) dan aktifkan merge ketika pipeline berhasil."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Saluran pipa baru"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Buat pipeline baru untuk cabang sumber dengan satu klik."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Batalkan saluran pipa"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Minta pembatalan pipeline MR yang sedang berjalan atau tertunda."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Tombol Draft"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Ganti MR antara status Draft dan Ready tanpa mengubah judul."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Peningkatan versi"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Naikkan versi di package.json, pyproject.toml, atau file kustom. Strategi dapat dikonfigurasi (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Rilis (Versi + Merge)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase bila perlu, naikkan versi dan minta auto-merge. Biarkan tab MR tetap terbuka sampai aksi selesai."
+  },
+  "cardForceMergeTitle": {
+    "message": "Paksa merge"
+  },
+  "cardForceMergeDesc": {
+    "message": "Minta merge tanpa menunggu pipeline berhasil. Izin GitLab dan aturan merge tetap berlaku."
+  },
+  "cardReviewersTitle": {
+    "message": "Peninjau"
+  },
+  "cardReviewersDesc": {
+    "message": "Sebutkan username yang dikonfigurasi di komentar, pakai kembali komentar reviewer, atau jalankan job CI. Tidak menugaskan field reviewer bawaan GitLab."
+  },
+  "uiCustomization": {
+    "message": "Kustomisasi UI"
+  },
+  "collapseBars": {
+    "message": "Tombol collapse top bars"
+  },
+  "hideRightSidebar": {
+    "message": "Sembunyikan sidebar kanan di halaman MR"
+  },
+  "collapseTopBars": {
+    "message": "Tampilkan/sembunyikan bilah atas"
+  },
+  "cardCollapseTitle": {
+    "message": "Lipat bilah atas"
+  },
+  "cardCollapseDesc": {
+    "message": "Menambahkan tombol untuk collapse/expand navigation bars GitLab. Menghemat ruang dan membantu fokus pada konten."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Sembunyikan bagian UI"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Sembunyikan sidebar kanan di halaman MR untuk mendapatkan area konten full-width."
+  },
+  "jiraIntegration": {
+    "message": "Integrasi Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL Jira Server/Data Center, misalnya https://jira.company.com — masuk ke Jira, lalu klik Izinkan akses situs Jira. Cloud tidak sepenuhnya didukung."
+  },
+  "jiraGrantAccess": {
+    "message": "Izinkan akses situs Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Ekstensi diizinkan mengakses $1."
+  },
+  "jiraConnectionUnchecked": { "message": "Koneksi belum diperiksa." },
+  "jiraConnectionCheck": { "message": "Periksa koneksi" },
+  "jiraConnectionChecking": { "message": "Memeriksa koneksi ke $1…" },
+  "jiraConnectionConnected": { "message": "Pemeriksaan terakhir $1: sudah masuk; API tersedia." },
+  "jiraConnectionSignIn": { "message": "Masuk ke Jira" },
+  "jiraUrlInvalid": {
+    "message": "Masukkan URL dasar Jira HTTPS, tanpa kredensial/query/fragment."
+  },
+  "jiraErrorAuth": {
+    "message": "Sesi Jira kamu telah kedaluwarsa atau perlu masuk. Buka Jira, masuk, lalu coba muat ulang."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira menolak akses ke isu atau operasi ini. Periksa akun dan izin kamu di Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Ekstensi tidak bisa mengakses situs Jira ini. Periksa izin situs dan URL Jira di pengaturan ekstensi."
+  },
+  "jiraErrorNetwork": {
+    "message": "Tidak bisa menghubungi Jira. Periksa koneksi, VPN, dan URL Jira kamu, lalu coba muat ulang."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira sementara tidak tersedia atau sedang membatasi permintaan. Tunggu dan coba muat ulang."
+  },
+  "jiraErrorNotFound": {
+    "message": "Masalah Jira tidak dapat ditemukan atau tidak terlihat oleh akun Anda."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira mengembalikan respons yang tidak didukung. Periksa URL dan kompatibilitas Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "Permintaan Jira gagal. Buka Jira untuk memeriksa masalah dan akses Anda."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Perubahan mungkin sudah diterapkan. Periksa masalah di Jira sebelum mengulang tindakan."
+  },
+  "jiraErrorTransitions": {
+    "message": "Tidak dapat memuat transisi Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Buka Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Muat ulang"
+  },
+  "jiraDismissError": {
+    "message": "Tutup"
+  },
+  "jiraTicketRegex": {
+    "message": "Regex tiket"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Regex kustom untuk mengurai ID tiket dari judul MR. Default: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Tampilkan ikon tipe masalah & prioritas pada daftar MR"
+  },
+  "jiraQuickActions": {
+    "message": "Tindakan cepat"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Pilih kombinasi bidang apa saja untuk setiap tombol. Tinggalkan hanya perubahan yang seharusnya dilakukan. Versi dan komponen harus sudah ada di proyek Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Tambahkan aksi"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Label"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Status"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Nama pengguna"
+  },
+  "jiraSidebarStatus": {
+    "message": "Status"
+  },
+  "jiraSidebarType": {
+    "message": "Tipe"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioritas"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Penugasan"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Belum ditugaskan"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Cari pengguna..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Tidak ada pengguna ditemukan"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Batalkan penugasan"
+  },
+  "jiraSidebarReporter": {
+    "message": "Pelapor"
+  },
+  "jiraSidebarLabels": {
+    "message": "Label"
+  },
+  "jiraSidebarCreated": {
+    "message": "Dibuat"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Diperbarui"
+  },
+  "jiraSidebarDescription": {
+    "message": "Deskripsi"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Komponen"
+  },
+  "jiraSidebarResolution": {
+    "message": "Resolusi"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Terpengaruh"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Versi perbaikan"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Tidak ada"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Tidak ada versi ditemukan"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Cari versi..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Gagal memperbarui versi perbaikan"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Lampiran"
+  },
+  "jiraSidebarComments": {
+    "message": "Komentar"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Tambahkan komentar..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Komentar"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Tampilkan lebih banyak komentar"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Belum ada komentar"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Gagal memposting komentar"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Hapus komentar"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Hapus komentar ini?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Gagal menghapus komentar"
+  },
+  "cardJiraTitle": {
+    "message": "Lencana status Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Menampilkan status tiket Jira di halaman daftar MR. Mengambil ID tiket dari judul MR (misalnya CCT-1111) dan menampilkan lencana status berwarna. Atur URL Jira kamu di pengaturan."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Regex tiket kustom"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Konfigurasi ekspresi reguler kustom untuk mengambil ID tiket Jira dari judul MR. Berguna kalau proyekmu pakai prefix tiket non-standar."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Sidebar tiket Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Klik lencana Jira mana saja untuk membuka sidebar dengan detail lengkap tiket — ringkasan, status, tipe, prioritas, penanggung jawab, dan deskripsi. Baca, posting, dan hapus komentar sendiri tanpa meninggalkan GitLab. Versi perbaikan bisa langsung dipilih dari versi yang tersedia di proyek lewat sidebar."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Lampiran di sidebar"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Lihat gambar, video, dan file dari tiket Jira langsung di sidebar. Gambar dan video terbuka di lightbox layar penuh."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Lencana Jira di halaman MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Lencana status tiket Jira ditampilkan di judul MR di halaman detail. Klik lencana untuk membuka sidebar dengan detail tiket lengkap."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Ubah status Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Ubah status tiket langsung dari sidebar. Hanya menampilkan transisi yang tersedia dari status saat ini."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Ubah penugasan Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Klik penugasan untuk mencari dan menugaskan ulang. Fitur autocompelte dengan avatar, tombol hapus untuk menghapus penugasan."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Aksi cepat Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Tombol sekali klik untuk status, penugasan, label, versi, dan bidang lainnya. Setiap tombol bisa memperbarui satu bidang atau beberapa bidang sekaligus."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Ikon tipe & prioritas masalah"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Tampilkan tipe isu Jira dan ikon prioritas di samping lencana status di halaman daftar dan detail MR. Menggunakan ikon Jira asli."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebase cabang sumber ke cabang target tanpa melakukan merge."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Versi"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase cabang dan naikkan versi dalam satu klik. Tidak melakukan merge."
+  },
+  "cardCopyMrTitle": {
+    "message": "Salin MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Salin judul MR dan tautan ke clipboard dengan satu klik."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Coba lagi pekerjaan yang gagal"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Coba ulang pekerjaan yang gagal di pipeline MR saat ini. Pekerjaan yang berhasil tidak terpengaruh."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Peningkatan halaman daftar MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Perjelas Draft MR"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Secara visual perjelas Draft MR di halaman daftar merge request agar kamu bisa fokus pada yang aktif."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Sorot MR-mu"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Sorot MR-mu sendiri di daftar dengan border biru untuk identifikasi cepat."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Toggle \"Hanya milikku\""
+  },
+  "cardOnlyMineDesc": {
+    "message": "Toggle satu klik untuk menyaring daftar MR agar hanya menampilkan merge request milikmu."
+  },
+  "cardMrAgeTitle": {
+    "message": "Lencana usia MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Menunjukkan sudah berapa lama MR dibuat, ditampilkan sebagai lencana di halaman MR."
+  },
+  "showReviewerBadge": {
+    "message": "Lencana \"Ulasanmu\" dari komentar"
+  },
+  "badgeYourReview": {
+    "message": "Ulasanmu"
+  },
+  "badgeYourReviewHint": {
+    "message": "Kamu disebut sebagai reviewer dalam komentar MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Lencana \"Ulasanmu\""
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Mencari “Reviewer(s): @you” dalam komentar paling awal. Kedalaman pencarian dapat diatur (default 10). Terpisah dari fitur peninjau bawaan GitLab."
+  },
+  "showNeedsReview": {
+    "message": "Tombol \"Perlu ulasan saya\" di halaman daftar"
+  },
+  "toggleNeedsReview": {
+    "message": "Perlu ulasan saya"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Tombol \"Perlu ulasan saya\""
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Tombol sekali klik untuk memfilter daftar MR agar hanya menampilkan merge request di mana kamu ditugaskan sebagai reviewer."
+  },
+  "showCopyMr": {
+    "message": "Tombol salin di item daftar MR"
+  },
+  "showThreadsBadge": {
+    "message": "Jumlah thread belum terselesaikan di daftar MR"
+  },
+  "showSizeBadge": {
+    "message": "Label ukuran MR (S/M/L/XL) di daftar MR"
+  },
+  "showConflictsBadge": {
+    "message": "Tampilkan indikator konflik di daftar MR"
+  },
+  "showApprovalBadge": {
+    "message": "Tampilkan jumlah persetujuan dan indikator persetujuan saya di daftar MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Anda menyetujui"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Anda"
+  },
+  "cardThreadsTitle": {
+    "message": "Jumlah thread yang belum diselesaikan"
+  },
+  "cardThreadsDesc": {
+    "message": "Tampilkan jumlah thread yang belum diselesaikan. “+” menandai halaman pertama penuh; “?” berarti jumlah tidak tersedia."
+  },
+  "cardSizeTitle": {
+    "message": "Label ukuran MR"
+  },
+  "cardSizeDesc": {
+    "message": "Lencana S/M/L/XL dengan ambang garis dan file yang dapat dikonfigurasi di Aturan dan batas tampilan."
+  },
+  "conflictsBadge": {
+    "message": "Konflik"
+  },
+  "conflictsBadgeHint": {
+    "message": "MR ini memiliki konflik penggabungan yang harus diselesaikan"
+  },
+  "cardConflictsTitle": {
+    "message": "Indikator konflik"
+  },
+  "cardConflictsDesc": {
+    "message": "Menampilkan lencana MERAH KONFLIK di halaman detail MR ketika cabang memiliki konflik penggabungan."
+  },
+  "cardApprovalTitle": {
+    "message": "Indikator persetujuan saya"
+  },
+  "cardApprovalDesc": {
+    "message": "Menunjukkan apakah Anda telah menyetujui setiap MR di halaman daftar. Membedakan persetujuan Anda dari persetujuan orang lain."
+  },
+  "showBranches": {
+    "message": "Tampilkan cabang sumber dan target di daftar MR"
+  },
+  "showBranchesLinks": {
+    "message": "Buat nama cabang dapat diklik (membuka pohon cabang)"
+  },
+  "cardBranchesTitle": {
+    "message": "Nama cabang pada daftar MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Menampilkan nama cabang sumber dan target pada setiap MR di daftar, sehingga Anda dapat melihat dari mana kode berasal dan ke mana kode bergabung."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Salin MR dari daftar"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Menambahkan tombol salin ke setiap MR di halaman daftar. Menyalin judul MR dan tautan ke clipboard dengan satu klik."
+  },
+  "versionFromTarget": {
+    "message": "Baca versi dari cabang target"
+  },
+  "versionFromTargetHint": {
+    "message": "Membaca versi saat ini dari cabang target (misalnya main) alih-alih cabang sumber. Gunakan ini dengan strategi commit merge untuk menghindari versi yang kadaluarsa."
+  },
+  "showFailedJobView": {
+    "message": "Tampilkan tampilan cepat pekerjaan yang gagal di halaman MR"
+  },
+  "failedJobTraceError": {
+    "message": "Gagal memuat jejak"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Tampilan cepat pekerjaan gagal"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Pratinjau pekerjaan yang gagal dan log terakhir di halaman MR. Jumlah pekerjaan dan baris dapat dikonfigurasi dalam aturan dan batas tampilan."
+  },
+  "showCmdPalette": {
+    "message": "Palet perintah (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Laporan aktivitas harian"
+  },
+  "standupJiraEnrich": {
+    "message": "Tampilkan judul tiket Jira dalam laporan"
+  },
+  "cmdPlaceholder": {
+    "message": "Ketik perintah..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navigasi"
+  },
+  "cmdFooterSelect": {
+    "message": "pilih"
+  },
+  "cmdFooterClose": {
+    "message": "tutup"
+  },
+  "cmdEmpty": {
+    "message": "Tidak ada perintah yang cocok"
+  },
+  "cmdGroupNav": {
+    "message": "Navigasi"
+  },
+  "cmdGroupMr": {
+    "message": "Aksi MR"
+  },
+  "cmdGroupExt": {
+    "message": "Ekstensi"
+  },
+  "cmdGroupFiles": {
+    "message": "File"
+  },
+  "cmdNavMrs": {
+    "message": "Buka Merge Requests"
+  },
+  "cmdNavIssues": {
+    "message": "Buka Issues"
+  },
+  "cmdNavPipelines": {
+    "message": "Buka Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Buka Cabang"
+  },
+  "cmdNavRepo": {
+    "message": "Buka Repository"
+  },
+  "cmdNavTags": {
+    "message": "Buka Tag"
+  },
+  "cmdNavCommits": {
+    "message": "Buka Commits"
+  },
+  "cmdNavWiki": {
+    "message": "Buka Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Buka Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Buka Pengaturan"
+  },
+  "cmdCopyPath": {
+    "message": "Salin jalur proyek"
+  },
+  "cmdGroupPinned": {
+    "message": "Dipin"
+  },
+  "cmdExtSettings": {
+    "message": "Buka pengaturan ekstensi"
+  },
+  "cmdExtStandup": {
+    "message": "Hasilkan laporan aktivitas"
+  },
+  "standupTitle": {
+    "message": "Aktivitas Harian"
+  },
+  "standupCopy": {
+    "message": "Salin ke clipboard"
+  },
+  "standupCopied": {
+    "message": "Disalin!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Palet perintah"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Tekan Cmd+K (Mac) atau Ctrl+K (Win) di halaman GitLab mana pun. Navigasikan, jalankan aksi MR, cari file berdasarkan nama, dan buka di repositori."
+  },
+  "cardStandupTitle": {
+    "message": "Laporan aktivitas harian"
+  },
+  "cardStandupDesc": {
+    "message": "Hasilkan laporan aktivitas harian dari data GitLab Anda. Menampilkan MR yang dibuat, digabung, dan ditinjau. Salin dan tempel ke Slack atau Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick ke cabang"
+  },
+  "showGroupPlay": {
+    "message": "Tombol play grup di pipeline (menjalankan pekerjaan manual yang tersisa)"
+  },
+  "showCommitVersion": {
+    "message": "Lencana versi di halaman commit"
+  },
+  "showCommitVersionHint": {
+    "message": "Menampilkan versi dari file versi (lihat pengaturan peningkatan versi) di samping setiap commit; disorot saat versi berubah"
+  },
+  "groupPlayTooltip": {
+    "message": "Jalankan pekerjaan manual yang tersisa di grup ini"
+  },
+  "groupPlayError": {
+    "message": "Gagal memulai beberapa pekerjaan"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Tombol play grup"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Pada grafik pipeline, tombol putar di samping grup pekerjaan menjalankan semua pekerjaan manual yang tersisa — bahkan setelah beberapa pekerjaan di grup sudah dimulai dan tombol GitLab sendiri hilang."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Lencana versi pada commit"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Pada halaman commit cabang, setiap commit menunjukkan versi proyek dari file versi Anda pada commit itu. Teredam secara default, disorot ketika versi berubah — lihat sekilas commit mana yang masuk ke rilis mana."
+  },
+  "cherryPickBranches": {
+    "message": "Cabang cherry-pick"
+  },
+  "cherryPickProjectBranchesHint": { "message": "Tentukan cabang untuk proyek ini. Biarkan daftar kosong untuk menggunakan cabang global." },
+  "cherryPickNoBranches": { "message": "Belum ada cabang yang dikonfigurasi." },
+  "cherryPickBranchesHint": {
+    "message": "Cabang target default untuk cherry-pick. Anda dapat menambah atau menghapus cabang di modal."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Tambah cabang"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick ke cabang"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Tutup"
+  },
+  "cherryPickInProgress": {
+    "message": "Sedang melakukan cherry-picking..."
+  },
+  "cherryPickRemove": {
+    "message": "Hapus"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Nama cabang"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Sudah di-cherry-pick ke $1 cabang",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Mulai merge request baru dengan perubahan ini"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Buat MR secara default saat cherry-picking"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Jika terjadi konflik — commit tanpa file versi"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Jika cherry-pick gagal karena konflik file versi, ulangi perubahan sebagai commit baru tanpa menyertakan file versi"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Naikkan versi pada fallback"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Naikkan versi di cabang target dalam commit fallback yang sama"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Fallback pintar hanya menangani konflik file versi. Konflik terjadi di file lain"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "File dimodifikasi di cabang target — tidak bisa cherry-pick dengan aman"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "File versi berisi perubahan selain versi — tidak bisa dilewati dengan aman"
+  },
+  "commitsJiraField": {
+    "message": "Field Jira untuk lencana commit"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Nama field Jira untuk ditampilkan sebagai lencana di halaman commits (misalnya fixVersions, status, labels, components). Memerlukan URL Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick ke cabang"
+  },
+  "cardCherryPickDesc": {
+    "message": "Terapkan cherry-pick langsung ke cabang yang dipilih atau melalui MR baru. Jika penanganan alternatif cerdas diaktifkan, konflik file versi yang sudah diverifikasi dapat diatasi dengan menerapkan ulang perubahan tanpa file tersebut, dengan opsi menaikkan versi. Perubahan yang tidak aman dihentikan untuk diperiksa."
+  },
+  "mrDetailEnhancements": {
+    "message": "Peningkatan detail MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Peringatan file sensitif dalam diff"
+  },
+  "showGitCommands": {
+    "message": "Tombol perintah Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "SENSITIF: $1 file",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "MR ini mengubah file yang sensitif terhadap keamanan:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Peringatan file sensitif"
+  },
+  "cardSensitiveDesc": {
+    "message": "Menandai file sensitif menggunakan aturan bawaan, pola tambahan, dan pengecualian. Atur ini dalam aturan dan batas tampilan."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Tombol perintah Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Salin perintah checkout, pull, dan hard-reset. Periksa repositori dan remote origin Anda sebelum menjalankannya; hard reset akan menghapus perubahan lokal."
+  },
+  "updateBannerText": {
+    "message": "Versi baru tersedia! Lihat apa yang baru:"
+  },
+  "updateChangelog": {
+    "message": "Catatan perubahan"
+  },
+  "updateReviewAsk": {
+    "message": "Suka ekstensi ini?"
+  },
+  "updateReviewLink": {
+    "message": "Tinggalkan ulasan"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Ulasan terbantu AI, dari awal hingga akhir"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Ulas MR, perbaiki umpan balik yang dipilih, siapkan balasan, dan periksa ulang perubahan. Pratinjau dan edit komentar sebelum diposting ke GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Panduan ulasan AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Tidak ada unggahan AI otomatis. Salin konteks sendiri; komentar hanya dikirim ke GitLab ketika Anda memilih Terbitkan atau Tambahkan ke ulasan."
+  },
+  "aiReviewTitle": {
+    "message": "Ulasan AI"
+  },
+  "aiReviewOpen": {
+    "message": "Ulasan AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Salin komentar untuk AI"
+  },
+  "aiReviewLoading": {
+    "message": "Memuat diskusi…"
+  },
+  "aiReviewRetry": {
+    "message": "Coba lagi"
+  },
+  "aiReviewRefresh": {
+    "message": "Segarkan"
+  },
+  "aiReviewClose": {
+    "message": "Tutup"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Konfirmasi penutupan dialog ulasan dengan pekerjaan yang belum disimpan"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Tutup dialog ini? Semua edit yang belum disimpan dan data yang dimasukkan akan hilang."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Tutup dialog ini dan hentikan pengiriman lebih lanjut? Komentar yang sudah dikirim akan tetap berada di GitLab. Edit yang belum disimpan akan hilang."
+  },
+  "aiReviewAll": {
+    "message": "Semua"
+  },
+  "aiReviewUnresolved": {
+    "message": "Belum terselesaikan"
+  },
+  "aiReviewResolved": {
+    "message": "Terselesaikan"
+  },
+  "aiReviewGeneral": {
+    "message": "Komentar umum"
+  },
+  "aiReviewSearch": {
+    "message": "Cari komentar atau jalur berkas"
+  },
+  "aiReviewSelectShown": {
+    "message": "Pilih yang ditampilkan"
+  },
+  "aiReviewClear": {
+    "message": "Bersihkan pilihan"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Sertakan perubahan kode"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Untuk review baru dan berulang. Matikan jika AI bisa membaca repositori. Cuplikan pendek yang dilampirkan ke umpan balik tetap disertakan."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Pertimbangkan diskusi yang sudah ada"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Menambahkan komentar yang sudah diposting sebagai filter duplikat: AI meninjau seluruh MR secara independen, kemudian menghapus temuan yang mengulanginya. AI tidak membalas diskusi tersebut."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Sertakan deskripsi"
+  },
+  "aiReviewPrompt": {
+    "message": "Instruksi untuk AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Pulihkan prompt default"
+  },
+  "aiReviewPreview": {
+    "message": "Pratinjau"
+  },
+  "aiReviewCopied": {
+    "message": "Disalin!"
+  },
+  "aiReviewEmpty": {
+    "message": "Tidak ada komentar yang cocok."
+  },
+  "aiReviewPartial": {
+    "message": "Beberapa data tidak dapat dimuat. Ekspor menyertakan peringatan dan hanya konteks yang tersedia."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 dipilih",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Pilih teks pratinjau dan salin secara manual."
+  },
+  "aiReviewScopeComment": {
+    "message": "Komentar yang dipilih"
+  },
+  "aiReviewScopeThread": {
+    "message": "Diskusi yang dipilih"
+  },
+  "aiReviewPreparing": {
+    "message": "Menyiapkan konteks kode…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Tidak dapat memuat diskusi. Coba lagi, atau salin konteks yang tersedia."
+  },
+  "aiReviewShowReplies": {
+    "message": "Tampilkan balasan"
+  },
+  "aiReviewSize": {
+    "message": "Sekitar $1 karakter",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Membatalkan"
+  },
+  "showAiReviewCopy": {
+    "message": "Tampilkan salinan tinjauan AI dan kontrol impor"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Salin seluruh MR untuk tinjauan baru, umpan balik yang dipilih untuk perbaikan, atau impor komentar dan balasan AI dengan pratinjau yang dapat diedit sebelum mengirim."
+  },
+  "aiReviewFresh": {
+    "message": "Tinjau dari awal"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Prompt untuk tinjauan baru"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Hingga 1.500 karakter. Digunakan untuk meninjau seluruh MR dan semua commit-nya, terpisah dari perbaikan umpan balik. Anda dapat menentukan bahasa respons. Biarkan kosong untuk prompt default bahasa Inggris."
+  },
+  "aiReviewPromptHint": {
+    "message": "Hingga 1.500 karakter. Biarkan kosong untuk menggunakan prompt default bahasa Inggris. Berlaku untuk semua proyek."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Prompt tidak disimpan. Gunakan maksimal 1.500 karakter dan hapus karakter kontrol yang tidak biasa."
+  },
+  "settingsSaveFailed": {
+    "message": "Pengaturan tidak dapat disimpan. Coba lagi."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Perubahan di sini berlaku untuk ekspor ini. Atur prompt default Anda di pengaturan ekstensi."
+  },
+  "aiReviewReady": {
+    "message": "Pratinjau siap untuk disalin."
+  },
+  "aiReviewLoadHint": {
+    "message": "Memuat diskusi langsung dari GitLab, termasuk komentar yang tidak terlihat di halaman ini."
+  },
+  "aiReviewCommentContext": {
+    "message": "Balasan lain disertakan sebagai konteks. Hanya komentar yang dipilih yang diminta untuk tindakan."
+  },
+  "aiReviewOutdated": {
+    "message": "Revisi sebelumnya"
+  },
+  "aiReviewLink": {
+    "message": "Diskusi terbuka"
+  },
+  "aiReviewLoaded": {
+    "message": "Memuat $1 diskusi"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Mempersiapkan konteks kode: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Komentar ini tidak tersedia dari GitLab. Mungkin masih disimpan atau mungkin telah dihapus. Segarkan untuk mencoba lagi."
+  },
+  "aiReviewImportOpen": {
+    "message": "Impor tinjauan AI…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Impor tinjauan AI"
+  },
+  "aiReviewImportHelp": {
+    "message": "Tempelkan tanggapan AI di bawah untuk memeriksa, mengedit, dan memilih apa yang akan dipublikasikan. Pintasan prompt ada di Pengaturan Lanjutan."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Salin prompt untuk tinjauan baru"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Mempersiapkan prompt…"
+  },
+  "aiReviewImportInput": {
+    "message": "Tanggapan AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Tempelkan tanggapan JSON lengkap yang berisi komentar baru atau balasan untuk diskusi. Anda dapat mengedit teks dan memilih apa yang akan dikirim di pratinjau."
+  },
+  "aiReviewImportValidate": {
+    "message": "Periksa dan pratinjau"
+  },
+  "aiReviewImportChecking": {
+    "message": "Memeriksa revisi MR, baris, dan komentar yang ada…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Periksa tanggapan terhadap komentar pratinjau. Anda dapat mengedit teks mereka, menghapus centang untuk mengecualikan item, atau menambahkan komentar umum."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Pilih komentar siap"
+  },
+  "aiReviewImportPreview": {
+    "message": "Komentar untuk dikirim"
+  },
+  "aiReviewImportReady": {
+    "message": "Siap"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Perlu koreksi"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Perubahan file tambahan tidak dapat dimuat: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Diff tambahan melebihi batas impor 16 MiB. Hanya komentar pada baris yang diverifikasi yang dapat diimpor."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Sudah ada"
+  },
+  "aiReviewImportPublished": {
+    "message": "Diterbitkan"
+  },
+  "aiReviewImportDraft": {
+    "message": "Ditambahkan ke tinjauan"
+  },
+  "aiReviewImportFailed": {
+    "message": "Belum dikirim"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Pengiriman belum dikonfirmasi"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Belum dikirim"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Baris baru $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Baris lama $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Terbitkan yang dipilih"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Tambahkan ke tinjauan"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Menerbitkan mengirim komentar secara langsung. Tambahkan ke tinjauan menyimpan komentar yang belum diterbitkan untuk tinjauan GitLab Anda."
+  },
+  "aiReviewImportSending": {
+    "message": "Mengirim komentar yang dipilih…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Selesai. Periksa hasil di sebelah setiap komentar."
+  },
+  "aiReviewImportStopped": {
+    "message": "Dihentikan. Periksa hasil di sebelah setiap komentar sebelum mencoba lagi."
+  },
+  "aiReviewImportEdited": {
+    "message": "Respon berubah. Periksa lagi sebelum mengirim."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Clipboard tidak tersedia. Pilih teks di bawah ini dan salin secara manual."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Pengiriman tidak bisa dikonfirmasi. Periksa GitLab sebelum mencoba lagi."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Prompt untuk AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Siap: $1. Komentar lain memerlukan perhatian.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Berhenti mengirim"
+  },
+  "aiReviewImportError": {
+    "message": "Tidak dapat menyelesaikan operasi"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Tidak dapat menyiapkan prompt"
+  },
+  "aiReviewImportWarning": {
+    "message": "Periksa pemberitahuan"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Tinjauan AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Bahasa respon AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Otomatis — bahasa percakapan"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Berlaku untuk semua tugas tinjauan dan impor prompt. Kunci JSON, jalur, dan kode tidak diterjemahkan. Menyalin format saja tidak menambahkan instruksi bahasa."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Prompt untuk memperbaiki umpan balik"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Prompt untuk komentar tinjauan baru"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Prompt untuk balasan terhadap umpan balik"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Hingga 1500 karakter. Untuk pintasan tinjauan baru di Impor. Tab Tugas menggunakan prompt mereka sendiri. Konteks MR dan format JSON ditambahkan secara otomatis."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Hingga 1500 karakter. Untuk balasan pada diskusi yang dipilih di Salin atau semua diskusi yang belum terselesaikan di Impor. Tetapkan gaya dan bahasa; konteks dan format balasan ditambahkan secara otomatis."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Prompt balasan untuk semua diskusi yang belum terselesaikan"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Salin format respons"
+  },
+  "aiReviewImportFormat": {
+    "message": "Format respons untuk AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Siapkan balasan"
+  },
+  "aiReviewImportReply": {
+    "message": "Balas diskusi"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Komentar asli"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Balasan Anda"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Selesaikan diskusi setelah dipublikasikan"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Diskusi selesai."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Balasan diterbitkan, tetapi diskusi belum diselesaikan. Anda dapat menyelesaikannya di GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Balasan diterbitkan. Penyelesaian tidak dikonfirmasi; periksa diskusi di GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Penyelesaian bersifat opsional dan nonaktif secara default. Ini hanya dijalankan setelah balasan diterbitkan. Menambahkan draf tidak pernah menyelesaikan sebuah diskusi."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Versi MR telah berubah. Balasan tetap terkait dengan diskusi mereka; verifikasi teksnya terhadap perbaikan yang didorong. Temuan baru dari revisi lama diblokir."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Balasan ini terkait dengan diskusi, bukan revisi kode. Sebelum menerbitkan, pastikan perbaikan yang dijelaskan telah didorong ke MR ini."
+  },
+  "aiReviewImportEdit": {
+    "message": "Sunting teks"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Tambahkan komentar"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Simpan perubahan"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Membatalkan"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Teks komentar"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Sunting teks, lalu simpan untuk memeriksa perubahan sebelum menerbitkannya."
+  },
+  "aiReviewImportEditError": {
+    "message": "Tidak dapat menyimpan perubahan"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Pratinjau dapat memuat maksimal 200 komentar."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Prompt tinjauan ulang"
+  },
+  "aiReviewFileFilters": {
+    "message": "Berkas untuk ditinjau"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Berlaku untuk tinjauan baru, tinjauan ulang, dan prompt temuan baru, bukan untuk umpan balik terpilih atau prompt balasan. Pisahkan pola dengan baris baru atau koma; # memulai komentar. Gunakan *, **, ?. Aturan pengecualian diprioritaskan, termasuk jalur lama sebelum penggantian nama. Daftar kosong mencakup semuanya. Contoh: src/**, *.test.js, dist/. Maksimal 1500 karakter per daftar."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Sertakan ekstensi (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Sertakan jalur berkas"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Kecualikan jalur berkas"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Kecualikan folder"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Filter berkas tidak dapat disimpan atau diterapkan. Gunakan maksimal 1500 karakter per daftar dan hapus karakter kontrol yang tidak biasa."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Versi yang Anda tinjau"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Tinjauan penuh — tanpa versi sebelumnya"
+  },
+  "aiReviewRepeat": {
+    "message": "Tinjauan ulang"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Masukkan SHA commit"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Masukkan SHA commit yang telah ditinjau secara penuh (40 atau 64 karakter heksadesimal)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Pilih versi MR yang Anda tinjau sebelum meninggalkan komentar. Semua perubahan berikutnya hingga versi saat ini termasuk secara otomatis; Anda tidak perlu memilih commit satu per satu. Jika Anda tidak ingat versinya, pilih tinjauan penuh."
+  },
+  "aiReviewChooseTask": {
+    "message": "Pilih tugas"
+  },
+  "aiReviewTaskReview": {
+    "message": "Tinjauan baru"
+  },
+  "aiReviewTaskFix": {
+    "message": "Perbaiki temuan tinjauan"
+  },
+  "aiReviewTaskReply": {
+    "message": "Siapkan balasan"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Tinjauan lanjutan"
+  },
+  "aiReviewCopyTask": {
+    "message": "Salin tugas"
+  },
+  "aiReviewPasteResult": {
+    "message": "Tempel respons AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "Pengaturan lanjutan"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Instruksi tugas"
+  },
+  "aiReviewSelectThread": {
+    "message": "Pilih diskusi ini"
+  },
+  "aiReviewSelectAll": {
+    "message": "Pilih semua diskusi"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Tinjau semua commit MR sekaligus. AI mengembalikan temuan baru tanpa mengubah kode."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Pilih umpan balik untuk diperbaiki. Untuk sebuah MR, AI juga menyiapkan balasan yang menjelaskan apa yang telah dilakukan, apa yang tersisa, dan mengapa. Diskusi yang belum terselesaikan dipilih terlebih dahulu."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Siapkan juga balasan"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Pilih umpan balik untuk AI pengkodean Anda perbaiki. Diskusi yang belum terselesaikan dipilih terlebih dahulu."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Berikan tugas kepada AI pengkodean Anda dan periksa perubahan serta pengujiannya. Hasilnya adalah perbaikan dan ringkasan normal, tanpa balasan siap-pakai."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Setelah mendorong perbaikan, minta AI untuk memverifikasi kode dan menjelaskan hasilnya dalam diskusi yang dipilih."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Verifikasi umpan balik yang dipilih dan cari cacat baru. Pilih versi yang sebelumnya Anda tinjau, atau periksa MR saat ini secara penuh."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Tugas: seluruh MR, di semua commit."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Komentar terpilih: $1; konteks diskusi dan cuplikan kode yang tersedia disertakan."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Diskusi untuk balasan: $1, beserta seluruh percakapannya. AI membutuhkan akses ke repositori."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Diskusi untuk diverifikasi: $1, plus tinjauan perubahan kode."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Deskripsi disertakan."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Deskripsi tidak disertakan."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Perubahan kode disertakan, tergantung pada batasan pemuatan."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI harus membaca kode dari repositori."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Diskusi yang ada hanya ditambahkan sebagai filter duplikat."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Diskusi yang ada tidak ditambahkan."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Filter file aktif."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Tidak ada versi sebelumnya yang dipilih: MR saat ini akan diperiksa secara penuh."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Diskusi draf yang belum dipublikasikan tidak dapat menerima balasan dan tidak disertakan."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Pilih masukan di sisi kiri. Untuk tinjauan baru, gunakan tab Tinjauan Baru."
+  },
+  "aiReviewNextStep": {
+    "message": "Salin tugas ke alat AI Anda. Jika alat tersebut menghasilkan komentar atau balasan, gunakan Tempel respons AI untuk meninjau dan mengeditnya sebelum diposting."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Periksa perbaikan dan pengujian, dorong semua commit ke MR, lalu gunakan Tempel respons AI untuk meninjau balasan yang telah disiapkan sebelum diposting. Commit baru tidak memerlukan pembuatan ulang balasan."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Instruksi otomatis (lanjutan)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Semua blok diaktifkan secara default dan hanya digunakan untuk tugas yang relevan. Edit, nonaktifkan, atau hapus setiap blok. Prompt tugas juga memiliki instruksi sendiri. Data MR, contoh JSON, dan pemberitahuan pemuatan dihasilkan secara terpisah; pemeriksaan publikasi selalu berlaku."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Tambahkan ke tugas jika berlaku"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Hingga 1500 karakter. Teks kosong tidak menambah apa pun. Reset mengembalikan teks default dan mengaktifkan blok ini."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Gunakan {language} untuk bahasa respons yang dipilih. Maksimal 1500 karakter; teks kosong tidak menambah apa-apa."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Gunakan {selection} untuk diskusi yang dipilih atau belum terselesaikan. Maksimal 1500 karakter; teks kosong tidak menambah apa-apa."
+  },
+  "aiReviewRule_repository": {
+    "message": "Repositori lokal dan jarak jauh"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Salinan kerja untuk perbaikan"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Salinan kerja untuk tinjauan"
+  },
+  "aiReviewRule_language": {
+    "message": "Bahasa respons"
+  },
+  "aiReviewRule_scope": {
+    "message": "Interpretasi filter file"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Konteks umpan balik"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Perbaikan tanpa balasan"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Tugas hanya deskripsi"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Umpan balik terpilih yang hilang"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Balasan siap-posting setelah perbaikan"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Batas tinjauan"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Sumber untuk tinjauan"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Perubahan kode yang disertakan"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Tinjauan tanpa kode yang disertakan"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Sumber tidak tersedia"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Respons JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Menemukan lokasi dan keluaran"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Gaya balasan tindak lanjut"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Kepala yang tidak berubah"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Posisi garis perbandingan"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Perbandingan revisi lokal"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Perubahan cabang target"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Tinjau tanpa revisi perbandingan"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Periksa ulang tanpa diskusi"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Lingkup diskusi yang dipilih"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Konteks diff kumulatif"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Diskusi yang ada dalam tinjauan baru"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Tinjauan baru dalam Impor"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Batas tinjauan Impor"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Format temuan Impor"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Batas dan format balasan"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Lingkup tugas balasan"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Tambahkan bidang"
+  },
+  "jiraQuickActionField": {
+    "message": "Bidang"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Operasi"
+  },
+  "jiraQuickActionValue": {
+    "message": "Nilai"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Hapus"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Tambahkan"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Hapus"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Ganti semua"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Tanggal jatuh tempo"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Bidang kustom (lanjutan)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Nilai dipisahkan oleh koma. Tambah/hapus mempertahankan nilai lain; ganti semua menimpa daftar."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID Field: customfield_12345. Masukkan nilai sebagai JSON dalam format yang diharapkan oleh field Jira ini."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Nama transisi Jira yang tepat (atau status target)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Nilai kosong: tidak ada perubahan."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Periksa nilai field: custom field memerlukan ID dan JSON yang valid; tanggal menggunakan YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Gunakan setiap field hanya sekali per tombol."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Aksi gagal."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Status berubah, tetapi pembaruan field gagal."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Tidak dapat menyegarkan issue. Buka kembali panel untuk memeriksa nilai saat ini."
+  },
+  "mrActions": {
+    "message": "Aksi MR"
+  },
+  "mrActionsHint": {
+    "message": "Buat tombol bernama untuk mengubah label atau mengosongkan field MR lain. Seret mereka dalam daftar tombol untuk mengubah urutannya."
+  },
+  "mrActionsProfileHint": {
+    "message": "Mengedit daftar ini membuat tindakan khusus proyek. Hapus semua entri untuk menyembunyikan tombol ini pada proyek ini."
+  },
+  "mrActionAdd": {
+    "message": "Tambah aksi MR"
+  },
+  "mrActionLabel": {
+    "message": "Nama tombol"
+  },
+  "mrActionDelete": {
+    "message": "Hapus tindakan"
+  },
+  "mrActionType": {
+    "message": "Tindakan"
+  },
+  "mrActionLabels": {
+    "message": "Label"
+  },
+  "mrActionLabelsHint": {
+    "message": "Nama label yang tepat, dipisahkan dengan koma atau baris baru. Spasi di dalam nama tetap dipertahankan. Tambahkan/ganti dapat membuat label proyek yang hilang."
+  },
+  "mrAction_remove_labels": {
+    "message": "Hapus label yang ditentukan"
+  },
+  "mrAction_clear_labels": {
+    "message": "Bersihkan semua label"
+  },
+  "mrAction_add_labels": {
+    "message": "Tambahkan label"
+  },
+  "mrAction_set_labels": {
+    "message": "Ganti semua label"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Bersihkan penugasan"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Bersihkan peninjau"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Bersihkan tonggak"
+  },
+  "mrActionInvalid": {
+    "message": "Masukkan nama tombol, pilih tindakan yang didukung dan tentukan setidaknya satu label untuk menambah, menghapus, atau mengganti."
+  },
+  "mrActionConfirm": {
+    "message": "Terapkan “$1” ke MR ini?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab tidak mengembalikan status rebase. Muat ulang permintaan penggabungan dan coba lagi."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab mengembalikan halaman pekerjaan yang berulang untuk pipeline #$1. Daftar pekerjaan tidak dapat dimuat sepenuhnya."
+  },
+  "displayPreferencesTitle": {
+    "message": "Tampilkan aturan dan batasan"
+  },
+  "displayPreferencesHint": {
+    "message": "Pengaturan global; muat ulang tab GitLab setelah mengubahnya. Lebih banyak pekerjaan atau komentar meningkatkan transfer data. Pratinjau log mengunduh jejak penuh sebelum memilih baris yang tidak kosong. Lencana reviewer mencari komentar tertua untuk “Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Pekerjaan gagal untuk dipratinjau"
+  },
+  "failedJobTraceLines": {
+    "message": "Baris log tidak kosong per pekerjaan"
+  },
+  "reviewerNotesLimit": {
+    "message": "Komentar untuk dipindai untuk lencana reviewer"
+  },
+  "mrSizeLines": {
+    "message": "Ambang ukuran MR: baris (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Ambang ukuran MR: berkas (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Pola berkas sensitif tambahan"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Pengecualian berkas sensitif"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Gunakan aturan berkas sensitif bawaan"
+  },
+  "sizeThresholdsHint": {
+    "message": "Tiga bilangan bulat positif yang meningkat dipisahkan oleh koma. Batasan bersifat inklusif; perubahan yang lebih besar adalah XL. Ambang berkas berlaku ketika jumlah baris tidak tersedia."
+  },
+  "sensitivePatternsHint": {
+    "message": "Satu pola per baris, tidak peka huruf besar/kecil. * cocok dengan teks apa pun (termasuk /), ? satu karakter. Pola tanpa / cocok dengan nama file; pola lain cocok dengan jalur repositori penuh. Pengecualian menang. Aturan bawaan mencakup lingkungan, container/CI, file kredensial, dan kunci pribadi. Matikan untuk hanya menggunakan pola Anda."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Periksa rentang numerik, tiga ambang ukuran yang meningkat, dan panjang pola file."
+  },
+  "failedJobsPreview": {
+    "message": "Pratinjau: $1 pekerjaan gagal — $2 baris terakhir yang tidak kosong",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Lebih banyak pekerjaan gagal — buka seluruh pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 baris, $2 file",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 file diubah",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Pemindaian file sensitif belum selesai"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Tidak dapat memeriksa setiap file: permintaan API gagal atau batas pemindaian $1-file tercapai. Kecocokan yang tercantum bersifat sebagian; periksa diff MR penuh.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Peringatan: laporan ini mungkin tidak lengkap. Pengumpulan dibatasi hingga $1 MR per kategori dan $2 acara aktivitas.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 thread yang belum terselesaikan",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Pratinjau ini mungkin tidak lengkap: kesalahan API atau hanya $2 diskusi pertama yang diperiksa. Thread yang diketahui belum terselesaikan: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "settingsTitle": { "message": "Pengaturan" },
+  "settingsActions": { "message": "MR dan commit" },
+  "settingsActionsHint": { "message": "Merge request, commit, versi, dan cherry-pick." },
+  "settingsCi": { "message": "CI/CD dan job" },
+  "settingsAppearance": { "message": "Antarmuka GitLab" },
+  "settingsData": { "message": "Data dan bantuan" },
+  "settingsSearch": { "message": "Cari pengaturan" },
+  "settingsScope": { "message": "Cakupan pengaturan" },
+  "settingsProjectValue": { "message": "Nilai proyek" },
+  "settingsUseGlobal": { "message": "Gunakan nilai global" },
+  "settingsProjectInheritanceHint": { "message": "Ubah nilai untuk menetapkannya pada proyek ini. Gunakan nilai global untuk memulihkan pewarisan." },
+  "settingsSharedPreferencesHint": { "message": "Bahasa antarmuka, suara, notifikasi desktop, dan pengaturan laporan lintas proyek bersifat global. Ubah di Semua proyek." },
+  "settingsGlobal": { "message": "Semua proyek" },
+  "settingsGlobalHint": { "message": "Pengaturan ini berlaku untuk semua proyek." },
+  "settingsProjectHint": { "message": "Profil ini menggantikan pengaturan umum untuk proyek ini." },
+  "settingsGlobalOnly": { "message": "Bagian ini menggunakan pengaturan bersama untuk semua proyek." },
+  "settingsQuick": { "message": "Pengaturan cepat" },
+  "settingsNoResults": { "message": "Tidak ada pengaturan yang cocok." },
+  "settingsRemoveProfile": { "message": "Hapus profil" },
+  "settingsNoProject": { "message": "Buka proyek GitLab untuk menggunakan profil proyek." },
+  "settingsAll": { "message": "Semua pengaturan" },
+  "settingsMoveUp": { "message": "Pindahkan ke atas" },
+  "settingsMoveDown": { "message": "Pindahkan ke bawah" },
+  "settingsConnection": { "message": "Koneksi" },
+  "settingsJiraDisplay": { "message": "Jira di GitLab" },
+  "settingsAdvanced": { "message": "Pengaturan lanjutan" },
+  "settingsAutosaveHint": { "message": "Perubahan disimpan secara otomatis." },
+  "settingsSaving": { "message": "Menyimpan…" },
+  "settingsLoadFailed": { "message": "Pengaturan tidak dapat dimuat. Coba lagi sebelum mengedit." },
+  "aiReviewShowFull": { "message": "Tampilkan lengkap" },
+  "aiReviewShowLess": { "message": "Tampilkan lebih sedikit" },
+  "aiReviewExpandCommentsSetting": { "message": "Tampilkan komentar peninjauan secara lengkap secara default" },
+  "aiReviewExpandAll": { "message": "Perluas semua" },
+  "aiReviewCollapseAll": { "message": "Ciutkan semua" }
+}

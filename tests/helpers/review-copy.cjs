@@ -8,6 +8,7 @@ var messages = require('../../_locales/en/messages.json');
 // This fixture implements only the tree, form controls and events used by the
 // copy picker. The shipped initializer and every click handler run unchanged.
 function dom() {
+  class HTMLElement {}
   var observers = [];
   var document;
   function mutate(record) {
@@ -24,7 +25,8 @@ function dom() {
   }
   function element(tag) {
     var text = '';
-    var el = { tagName: tag.toUpperCase(), children: [], parentElement: null, attributes: {}, events: {}, value: '', checked: false, disabled: false, hidden: false, style: {} };
+    var el = { nodeType: 1, tagName: tag.toUpperCase(), children: [], parentElement: null, attributes: {}, events: {}, value: '', checked: false, disabled: false, hidden: false, style: {} };
+    Object.setPrototypeOf(el, HTMLElement.prototype);
     Object.defineProperties(el, {
       className: { get: function() { return el.attributes.class || ''; }, set: function(value) { el.attributes.class = String(value); } },
       id: { get: function() { return el.attributes.id || ''; }, set: function(value) { el.setAttribute('id', value); } },
@@ -36,6 +38,7 @@ function dom() {
       set: function(_, key, value) { el.setAttribute('data-' + key.replace(/[A-Z]/g, function(ch) { return '-' + ch.toLowerCase(); }), String(value)); return true; }
     });
     el.classList = {
+      contains: function(cls) { return el.className.split(/\s+/).includes(cls); },
       add: function(cls) { if (!el.className.split(/\s+/).includes(cls)) el.className += ' ' + cls; },
       remove: function(cls) { el.className = el.className.split(/\s+/).filter(function(item) { return item !== cls; }).join(' '); },
       toggle: function(cls, yes) { if (yes) this.add(cls); else this.remove(cls); }
@@ -103,6 +106,7 @@ function dom() {
       var event = Object.assign({ target: el, preventDefault: function() {}, stopPropagation: function() { stopped = true; }, stopImmediatePropagation: function() { stopped = true; } }, props);
       for (var node = el; node; node = node.parentElement) {
         (node.events[type] || []).forEach(function(fn) { fn(event); });
+        if (typeof node["on" + type] === "function") node["on" + type](event);
         if (stopped) break;
       }
     };
@@ -120,7 +124,7 @@ function dom() {
   document.getElementById = function(id) { return document.querySelector('#' + id); };
   function MutationObserver(callback) { this.callback = callback; this.records = []; observers.push(this); }
   MutationObserver.prototype.observe = function(target, options) { this.target = target; this.options = options; };
-  return { document: document, MutationObserver: MutationObserver };
+  return { document: document, MutationObserver: MutationObserver, HTMLElement };
 }
 
 function deferred() {
@@ -133,11 +137,11 @@ async function create(options) {
   options = options || {};
   var tree = dom();
   var document = tree.document;
-  var env = { document: document, loads: [], exports: [], freshExports: [], clipboard: [], clipboardRequests: [], manualCopies: [], timers: new Map(), intervals: [], windowEvents: {}, settingsEvents: [], settings: Object.assign({}, options.settings), settingsWrites: [] };
+  var env = { document: document, loads: [], exports: [], freshExports: [], clipboard: [], clipboardRequests: [], manualCopies: [], timers: new Map(), intervals: [], windowEvents: {}, settingsEvents: [], settings: Object.assign({}, options.settings), settingsWrites: [], settingsReads: [] };
   var runtime = { getURL: function(path) { return path; } };
   var storage = {
     sync: {
-      get: function(defaults, cb) { cb(Object.assign({}, defaults, env.settings)); },
+      get: function(defaults, cb) { var values=Object.assign({}, defaults, env.settings); if (options.deferredSettingsReads) env.settingsReads.push(() => cb(values)); else cb(values); },
       set: function(values, cb) {
         env.settingsWrites.push(harness.plain(values));
         if (options.storageFailure) {
@@ -159,8 +163,9 @@ async function create(options) {
   };
   var timerId = 0;
   env.context = vm.createContext({
+    structuredClone: structuredClone,
     window: { location: { origin: 'https://gitlab.test', pathname: options.pathname || '/team/repo/-/merge_requests/12' }, GlReviewImportUI: options.importUI, addEventListener: function(type, fn) { env.windowEvents[type] = fn; } },
-    document: document, MutationObserver: tree.MutationObserver, AbortController: AbortController, URL: URL,
+    document: document, HTMLElement: tree.HTMLElement, MutationObserver: tree.MutationObserver, AbortController: AbortController, URL: URL,
     setTimeout: function(fn) { env.timers.set(++timerId, fn); return timerId; }, clearTimeout: function(id) { env.timers.delete(id); },
     setInterval: function(fn) { env.intervals.push(fn); },
     navigator: { clipboard: { writeText: function(text) {

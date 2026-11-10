@@ -1,0 +1,88 @@
+Язык: Вьетнамский (vi)
+
+Tinh gọn quy trình yêu cầu hợp nhất GitLab của bạn với tự động hóa chỉ bằng một cú nhấp. Thay thế các thao tác thủ công nhiều bước — rebase, tăng phiên bản, quản lý pipeline và hợp nhất — chỉ bằng một nút bấm. Hỗ trợ GitLab tự lưu trữ qua HTTPS và gitlab.com; khả dụng tùy theo khả năng máy chủ và quyền tài khoản. Không yêu cầu token API — sử dụng phiên trình duyệt hiện có của bạn.
+
+★ ĐÁNH GIÁ AI VỚI CÔNG CỤ CỦA BẠN
+
+• Đánh giá MR đầy đủ — chuẩn bị một nhiệm vụ bao gồm tất cả các commit trong MR, với bộ lọc tệp có thể cấu hình
+• Sửa và trả lời — sao chép phản hồi được chọn vào AI lập trình của bạn và chuẩn bị các câu trả lời sẵn sàng để đăng
+• Đánh giá tiếp theo — kiểm tra lại các sửa đổi và thay đổi kể từ bản sửa đã chọn, bao gồm cả sau khi force push
+• Nhập có thể chỉnh sửa — dán các bình luận và phản hồi của AI dưới dạng JSON, chỉnh sửa văn bản của chúng và xuất bản các mục đã chọn hoặc lưu nháp xem xét. Tùy chọn giải quyết thảo luận sau khi xuất bản phản hồi
+• Hướng dẫn tùy chỉnh — tùy chỉnh các lệnh nhắc và khối hướng dẫn tự động; chọn ngôn ngữ phản hồi
+• Chia sẻ thủ công — sử dụng công cụ AI mà bạn ưa thích. Không có khóa API AI trong tiện ích mở rộng và không tự động tải mã lên
+
+★ CÁC HÀNH ĐỘNG YÊU CẦU HỢP NHẤT
+
+• Hợp nhất tự động — rebase và bật "hợp nhất khi pipeline thành công" chỉ với một cú nhấp
+• Phát hành — quy trình phát hành đầy đủ: tăng phiên bản → pipeline → hợp nhất tự động, tất cả được tự động hóa
+• Ép hợp nhất — bỏ qua pipeline và hợp nhất ngay lập tức khi CI không cần
+• Tăng phiên bản — tăng phiên bản trong package.json, pyproject.toml, hoặc bất kỳ tệp nào (patch / minor / major)
+• Rebase — rebase nhánh có hoặc không có tăng phiên bản
+• Chuyển đổi Nháp / Sẵn sàng — thay đổi trạng thái MR mà không cần chỉnh sửa tiêu đề
+• Bình luận nhanh — đăng bình luận mẫu lên MR chỉ với một cú nhấp
+• Sao chép MR — sao chép tiêu đề + liên kết vào clipboard ngay lập tức
+
+★ ĐIỀU KHIỂN CI/CD PIPELINE
+
+• Pipeline mới / Hủy pipeline — tạo hoặc hủy các pipeline ngay lập tức
+• Thử lại tất cả các công việc thất bại — khởi động lại tất cả các công việc thất bại trong pipeline mới nhất cùng lúc
+• Nút công việc tùy chỉnh — kích hoạt bất kỳ công việc CI nào chỉ với một cú nhấp; xâu chuỗi nhiều công việc (ví dụ: build → deploy)
+• Xem nhanh công việc thất bại — xem tên công việc thất bại và các dòng nhật ký lỗi trực tiếp trên trang MR
+• Thực thi nền — chuỗi công việc tùy chỉnh tiếp tục sau khi chuyển trang
+
+★ TÍCH HỢP JIRA (không cần token API)
+
+• Huy hiệu trạng thái Jira — trạng thái vé được mã màu (Hoàn thành, Đang tiến hành, QA, Cần làm) được phân tích từ tiêu đề MR
+• Thanh bên vé đầy đủ — nhấp vào bất kỳ huy hiệu nào để xem tóm tắt, trạng thái, người được giao, ưu tiên, sprint, epic, nhãn, mô tả và tệp đính kèm
+• Thay đổi trạng thái & người được giao — chuyển trạng thái vé và giao lại mà không rời GitLab
+• Hành động nhanh Jira — hành động tổng hợp (thay đổi trạng thái + giao) chỉ với một cú nhấp chuột
+• Biểu tượng loại & ưu tiên của vấn đề — biểu tượng gốc của Jira trên danh sách MR và trang chi tiết
+• Huy hiệu trường Jira trên commit — hiển thị Fix Version, trạng thái hoặc bất kỳ trường nào bên cạnh các commit
+• Cải thiện Jira trong báo cáo hàng ngày — tự động thêm tiêu đề vé vào tóm tắt hoạt động
+
+★ CẢI THIỆN DANH SÁCH MR
+
+• Nhãn kích thước MR — huy hiệu S / M / L / XL được đánh màu theo số dòng thay đổi
+• Chỉ báo xung đột — huy hiệu đỏ khi nhánh có xung đột hợp nhất
+• Số lượng thảo luận chưa giải quyết — xem các chủ đề thảo luận mở ngay lập tức
+• Tên nhánh — hiển thị nhánh nguồn → nhánh đích trên mỗi MR
+• Chỉ báo phê duyệt — hiển thị bạn có phê duyệt mỗi MR hay không
+• Làm mờ MR nháp — làm mờ trực quan các nháp để tập trung vào các merge request đang hoạt động
+• Nổi bật MR của bạn — viền xanh trên MR của bạn để nhận diện nhanh
+• Chuyển đổi "Chỉ của tôi" / "Cần tôi xem xét" / "Nhóm theo tác giả"
+• Huy hiệu "Đánh giá của bạn" — phát hiện các đề cập reviewer-job đã cấu hình và các bình luận đề cập
+• Sao chép MR từ danh sách — nút sao chép trên mỗi mục MR
+
+★ CÔNG CỤ NĂNG SUẤT
+
+• Bảng lệnh (Cmd+K / Ctrl+K) — điều hướng đến danh sách MR, pipeline, nhánh, issue, hoặc kích hoạt hành động
+• Tìm kiếm tệp trong bảng lệnh — tìm và mở bất kỳ tệp dự án nào theo tên
+• Báo cáo hoạt động hàng ngày — tóm tắt các MR đã tạo, đã merge, đã bình luận, đã duyệt. Sao chép sang Slack hoặc Jira
+• Cherry-pick sang nhiều nhánh — cherry-pick bất kỳ commit nào sang nhiều nhánh cùng lúc với việc tạo MR tự động
+• Khả năng cherry-pick thông minh khi xảy ra xung đột — tự động phát lại commit ngoại trừ tệp phiên bản khi có xung đột
+• Cảnh báo tệp nhạy cảm — huy hiệu màu cam khi MR tác động đến .env, Dockerfile, cấu hình CI, hoặc thông tin xác thực
+• Nút lệnh Git — sao chép lệnh git checkout và git fetch cho nhánh MR
+• Huy hiệu độ tuổi MR — xem một merge request đã mở trong bao lâu
+• Tô sáng nhận xét của tôi — viền màu trên các nhận xét của bạn trong thảo luận
+
+★ TÙY CHỈNH
+
+• Hồ sơ theo dự án — các nút, tệp phiên bản và công việc CI khác nhau cho mỗi kho lưu trữ
+• Kéo & thả thứ tự nút — sắp xếp các nút hành động theo cách bạn thích
+• Cấu hình chiều rộng tab trong phần diff — đặt hiển thị tab thành 2, 4 hoặc 8 khoảng trắng
+• Thu gọn thanh trên / Ẩn thanh bên phải — tối đa hóa khu vực làm việc của bạn
+• Thông báo âm thanh & trên máy tính để bàn — nhận thông báo khi các hành động hoàn tất hoặc thất bại
+• Giao diện tối — tự động theo sở thích hệ thống
+
+★ TẠI SAO DÙNG GITLAB MR ACTIONS?
+
+✓ Không dùng token truy cập cá nhân — sử dụng cookie phiên GitLab hiện có của bạn
+✓ Không dùng dịch vụ trung gian — các yêu cầu GitLab và Jira đi thẳng tới các máy chủ bạn cấu hình
+✓ Hỗ trợ GitLab tự lưu trữ qua HTTPS và gitlab.com; xem hướng dẫn tương thích để biết các hợp đồng API đã được thử nghiệm
+✓ Tích hợp Jira mà không cần token API — sử dụng cookie phiên trình duyệt
+✓ Hoàn toàn có thể cấu hình theo từng dự án — không có giới hạn chung cho tất cả
+✓ Nhẹ — kiểm tra nền chỉ chạy cho các hành động bạn bắt đầu; không thu thập dữ liệu hoặc tải AI tự động
+✓ Giao diện hỗ trợ 27 ngôn ngữ.
+✓ Mã nguồn mở
+
+Được các nhà phát triển tin tưởng, những người muốn dành ít thời gian hơn để nhấp qua GitLab và nhiều thời gian hơn để viết mã.

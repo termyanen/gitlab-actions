@@ -4,12 +4,8 @@ var fs = require('node:fs');
 var path = require('node:path');
 var vm = require('node:vm');
 var assert = require('node:assert/strict');
-var root = path.resolve(__dirname, '../..');
-
-// Optional local baseline comparison; ordinary tests always use the workspace.
-function readRuntime(file) {
-  return fs.readFileSync(path.join(process.env.EXTENSION_TEST_SOURCE_DIR || root, file), 'utf8');
-}
+var root = require('./runtime.cjs').root;
+var readRuntime = require('./runtime.cjs').readRuntime;
 
 function plain(value) {
   return JSON.parse(JSON.stringify(value));
@@ -84,12 +80,14 @@ function environment(options) {
   var notifications = [];
   var listeners = {};
   var settings = options.settings || {};
+  var localStorage = options.localStorage || {};
   var chrome = {
     runtime: {
       id: 'test-extension',
       getURL: function(file) { return 'chrome-extension://test-extension/' + file; },
       getManifest: function() { return JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'))); },
       onInstalled: { addListener: function(fn) { listeners.installed = fn; } },
+      onStartup: { addListener: function(fn) { listeners.startup = fn; } },
       onMessage: { addListener: function(fn) { listeners.message = fn; } },
       sendMessage: function(message, callback) {
         messages.push(plain(message));
@@ -97,7 +95,12 @@ function environment(options) {
       }
     },
     i18n: { getMessage: function(key, substitutions) { return key + (substitutions ? ':' + substitutions.join(',') : ''); } },
+    alarms: {onAlarm: {addListener: function(fn) {listeners.alarm = fn;}}, create: function() {}, clear: function() {}},
     storage: {
+      local: {
+        get: function(key, callback) { callback(plain(localStorage)); },
+        set: function(values, callback) { Object.assign(localStorage, plain(values)); if (callback) callback(); }
+      },
       sync: {
         get: function(defaults, callback) { callback(plain(Object.assign({}, defaults, settings))); },
         set: function(values, callback) { Object.assign(settings, values); if (callback) callback(); }
@@ -137,6 +140,7 @@ function environment(options) {
   };
   var context = vm.createContext({
     console: console,
+    AbortController: AbortController,
     URL: URL,
     chrome: chrome,
     document: document,
@@ -188,6 +192,7 @@ function environment(options) {
     messages: messages,
     notifications: notifications,
     chrome: chrome,
+    localStorage: localStorage,
     listeners: listeners,
     finish: function(promise) { return timers.finish(promise); },
     dispatch: function(message, sender) {
@@ -200,6 +205,14 @@ function environment(options) {
 
 function content(options) {
   var env = environment(options);
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
+    const { bundleForTest } = require('./runtime.cjs');
+    vm.runInContext(bundleForTest('src/features/mr-actions/index.ts', { globalName: 'MrActions' }), env.context);
+    vm.runInContext(bundleForTest('src/shared/lib/version/index.ts', { globalName: 'Version' }), env.context);
+    vm.runInContext(`globalThis.actions = { ...Version, ...MrActions.createMrActions({ origin: window.location.origin, projectId: 37, mrIid: 12, projectPath: 'team/repo' }, { t: chrome.i18n.getMessage, showToast() {}, pollTaskStatus() {} }) };`, env.context);
+    env.actions = env.context.actions;
+    return env;
+  }
   var source = readRuntime('content.js');
   var end = source.lastIndexOf('})();');
   assert.ok(end > 0, 'content.js IIFE must be present');
@@ -223,6 +236,12 @@ function background(options) {
 
 function proxyHelpers() {
   var env = environment();
+  if (!process.env.EXTENSION_TEST_SOURCE_DIR) {
+    const { bundleForTest } = require('./runtime.cjs');
+    vm.runInContext(bundleForTest('src/shared/lib/diff/index.ts', { globalName: 'Diff' }), env.context);
+    vm.runInContext(bundleForTest('src/shared/lib/version/index.ts', { globalName: 'Version' }), env.context);
+    return { ...env.context.Diff, ...env.context.Version };
+  }
   var source = readRuntime('content_proxy.js');
   var marker = 'if (!isGitLab()) return;';
   assert.ok(source.includes(marker), 'content_proxy.js GitLab guard must be present');

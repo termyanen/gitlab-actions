@@ -13,45 +13,75 @@ GitLab's UI requires multiple clicks and page reloads for common MR operations. 
 
 ### MR Detail Page — Action Buttons
 
+The toolbar separates MR age and warnings from actions, with quick comments in
+their own labelled row. Buttons share GitLab-style sizing and theme colors; force
+merge and pipeline cancellation use danger text. Your configured action order is
+preserved. MR age uses the selected interface language, with the creation date
+available on hover. Long labels wrap on narrow pages.
+
 | Button | What it does |
 |--------|-------------|
 | **Rebase** | Rebase branch without merging |
 | **Version Bump** | Commit version increment (patch/minor/major) via GitLab API |
 | **Rebase + Version** | Rebase, then bump version |
 | **Rebase + Auto-merge** | Rebase and enable auto-merge when pipeline passes |
-| **Ship** | Rebase + Version + Auto-merge — full release flow in one click |
-| **Force Merge** | Merge immediately, bypass pipeline wait |
-| **Retry Failed** | Retry all failed CI jobs |
+| **Ship** | Rebase when needed, bump the version, wait for MR/pipeline readiness, then request auto-merge |
+| **Force Merge / Force Ship** | Request merge without waiting for pipeline success; Force Ship also bumps the version. GitLab permissions and merge rules still apply |
+| **Retry Failed** | Retry failed jobs in the MR's current pipeline |
 | **New Pipeline** | Trigger a new pipeline |
-| **Cancel Pipeline** | Cancel running pipeline |
+| **Cancel Pipeline** | Request cancellation of running/pending MR pipelines |
 | **Draft Toggle** | Mark/unmark MR as draft |
 | **Copy MR** | Copy MR title + link to clipboard |
-| **Reviewers** | Quick-set reviewers from a preconfigured list |
+| **Reviewers** | Mention configured usernames in a comment, reuse a reviewer comment, or run the configured CI job |
 | **Custom Jobs** | Trigger any manually-configured CI job |
 | **MR Actions** | Named buttons to remove selected/all labels, add/replace labels, or clear assignees, reviewers or milestone |
 
-All buttons are configurable — show/hide, reorder via drag & drop. Per-project profiles let you override settings for specific repositories.
+All buttons are configurable — show/hide, reorder via drag & drop or keyboard-accessible arrow buttons. Per-project profiles let you override settings for specific repositories.
 
-In settings, open **MR actions → Add MR action**, enter a button name and choose
+Reviewers uses the team's `Reviewer:` / `Reviewers:` comment convention; it does
+not assign GitLab's native reviewer field. Keep the MR tab open until Ship,
+rebase or auto-merge setup finishes. Once auto-merge is enabled, GitLab handles
+the merge when its conditions are met. Custom job chains have a separate
+background tracker described below.
+
+In settings, open **MR & commits → MR actions → Add MR action**, enter a button name and choose
 an action. For selected labels, enter exact names separated by commas or new
 lines; spaces inside names are preserved. **Remove specified labels** leaves
 other labels intact. **Clear all labels** removes every label. Adding/replacing
 labels may create missing project labels. Each button changes one field and
 uses the common confirmation preference. The MR page refreshes after success.
 Buttons also appear in the command palette and can be reordered with other
-buttons. Project profiles inherit global MR actions until saved, then use their
-own list; an empty project list hides them. Export/import includes these actions.
+buttons. Project profiles inherit global MR actions until their list is edited, then
+use their own list; an explicitly empty project list hides them. Use the global
+value to restore inheritance. Export/import includes these actions.
+In **MR & commits**, uncheck a custom job or MR-action button to hide it without
+deleting its definition. Recheck it to restore the button in its saved order.
+Visibility is saved per global/project list and included in exports. Saved changes
+to toolbar buttons, their order and quick comments apply immediately to open MR
+pages, including project overrides and imports; no page reload is needed. Running
+actions keep their state, and hidden buttons cannot be launched from stale palette entries.
 
-Use **Export settings** at the top of the extension popup to download a JSON file
+Open **All settings → Data & help → Export settings** to download a JSON file
 with all settings, project profiles, custom buttons, Jira actions and AI prompts
 and instructions. Share the file, then use **Import settings**, select it and click
 **Replace settings** on the other installation. Import replaces the full
 configuration; it validates the file before writing and requests access to the
-configured Jira site when needed. Browser permissions, sessions and caches are
+distinct Jira origins configured globally or in project profiles when needed. Browser permissions, sessions and caches are
 not transferred. The file includes configured URLs, usernames and comment or
-prompt text. The ↗ button opens settings in a separate browser tab.
+prompt text. The popup provides sound and desktop notification toggles, an inline editor for every settings
+section and **How it works**. Jira issue type/priority icons remain configurable
+under **Jira integration** in either editor. **All settings** opens the
+complete settings page in a browser tab.
 
-### Copy Review Feedback for AI
+**How it works** opens the welcome guide, with section navigation, larger reading text,
+light/dark themes and a layout for narrow windows. It follows the interface language
+selected in settings, including changes made while the guide is open, across all 27 locales.
+
+<a id="copy-review-feedback-for-ai"></a>
+
+### AI review: copy, fix, reply and recheck
+
+Long comments use five-line previews with per-comment expand/collapse controls. The mouse wheel scrolls the whole list. In AI review settings, enable full comments by default globally or per project.
 
 [AI review guide / Гайд по ревью с ИИ](https://termyanen.github.io/gitlab-actions/review-guide.html) — step-by-step scenarios for authors and reviewers.
 Source guides: [English](docs/AI_REVIEW_GUIDE_EN.md), [Русский](docs/AI_REVIEW_GUIDE_RU.md).
@@ -198,8 +228,9 @@ cannot retrieve the old commit. Truncated diffs,
 missing discussions and context limits remain visible; the prompt requires the
 AI to obtain missing material before claiming complete verification. All three MR
 revision references are checked again before returning the packet. Import still
-validates revisions for new findings and discussion targets for replies before publishing; it never
-resolves discussions automatically.
+validates revisions for new findings and discussion targets for replies before publishing.
+Replies leave discussions open unless you explicitly select **Resolve discussion
+after publishing** in the import preview.
 
 ### File Filters
 
@@ -225,7 +256,7 @@ Filters limit code-review scope, not all text: commit messages, descriptions and
 quoted discussions can still mention excluded files. Each list allows up to 1,500
 characters, with an additional check against browser storage limits.
 
-**AI response language** in the review settings applies to every task and import prompt, independently of the interface language. Choose Automatic (conversation language), Russian, English, German, Spanish, French, Japanese or Simplified Chinese. It overrides saved prompt language instructions without translating JSON keys, paths or code. Format-only copying remains unchanged.
+**AI response language** in the review settings applies to every task and import prompt, independently of the interface language. Choose Automatic (conversation language) or any of the 27 supported interface locales. It overrides saved prompt language instructions without translating JSON keys, paths or code. Format-only copying remains unchanged.
 
 ### Import AI Review Comments
 
@@ -361,11 +392,45 @@ so identical answers to different threads remain independent.
 - **Dim Draft MRs** — visually de-emphasize draft MRs
 - **Highlight your MRs** — blue left border on your own MRs
 - **Copy MR from list** — copy title + link without opening the MR
-- **MR age badge** — shows time since MR was created
+- **Thread, size, conflict and approval badges** — show MR metadata, with incomplete counts marked
+- **Branch names** — source and target branches, with optional links
+
+### Page tools and background jobs
+
+- **MR detail tools:** age badge, failed-job log previews, sensitive-file reminders,
+  quick comments and copyable Git commands. Check commands against your local
+  repository before running them; hard reset discards local changes.
+- **Command palette:** Cmd+K on macOS or Ctrl+K elsewhere opens navigation,
+  available MR actions and repository file-name search.
+- **Daily activity report:** choose a day, collect created/merged/reviewed/open MRs
+  and optionally enrich them with Jira titles. Incomplete selections are marked.
+- **Custom job chains:** configure job names in order. The background tracker shows
+  progress and cancellation; checkpoints allow recovery after worker restarts.
+  Keep at least one signed-in tab on the same GitLab origin open for API access.
+  Cancelling a chain prevents subsequent actions; it does not cancel a job already
+  started in GitLab.
+- **Pipeline groups:** run remaining manual jobs from a group in the pipeline graph.
+- **Commit tools:** version badges use the configured version file; cherry-pick
+  commits to selected branches directly or through new MRs. Configure target branches
+  under **MR & commits → Cherry-pick branches** in **All projects** or a project
+  profile. An empty project list inherits the global branches; the editor previews
+  the effective list. With Smart fallback
+  enabled, a verified version-file conflict can be replayed without that file,
+  optionally bumping the target version in the same commit. Other conflicts,
+  unsafe changes and uncertain request outcomes stop for inspection.
+
+See [configuration and limits](docs/CONFIGURATION.md) for defaults, inheritance,
+cache lifetimes and collection limits.
 
 ### Jira Integration
 
-Deep integration with Jira via session cookies (no API tokens needed):
+Integration targets Jira Server / Data Center REST API v2 using your signed-in
+browser session. Set the HTTPS Jira base URL (including a context path such as
+`/jira`, if used), sign in to Jira in the same browser, and click **Allow Jira site
+access** beside the URL in extension settings. Saving the URL alone does not ask
+for permission. Use the same button to restore revoked site access without
+changing the URL; no API token is requested. Settings import requests access when
+you explicitly apply the imported configuration.
 
 - **Status badges** on MR list and detail pages with color coding
 - **Full ticket sidebar** — click any badge to view: summary, status, type, priority, assignee, reporter, labels, epic, sprint, components, versions, description, attachments
@@ -375,12 +440,28 @@ Deep integration with Jira via session cookies (no API tokens needed):
 - **Attachments** — view images/videos in lightbox, download files
 - **Clickable Epic Link** — opens epic in Jira
 
+The site-access status names the configured Jira host and confirms the browser
+permission, not the Jira login state.
+**Open Jira** in settings or popup opens your configured address, including any
+installation path, in a new tab. **Check connection** in either interface performs
+a read-only Jira identity request using your browser session. It shows the result
+and check time, with **Sign in to Jira** for expired/missing sessions and distinct
+permission, network and response errors. This confirms sign-in and API availability
+at that time, not permission to modify every issue. Retry after signing in; results
+are not stored or polled, and changing the URL or revoking access clears them.
+
+When configured Jira is unavailable, the extension distinguishes sign-in/session
+problems, denied operations, missing site permission and connection/server errors.
+Open Jira to sign in or check access, then retry loading data. Failed or uncertain
+writes are not automatically replayed. See [Jira compatibility and recovery](docs/JIRA_COMPATIBILITY.md)
+for supported contracts, Server/Data Center differences and checks for your instance.
+
 ### Version Bump
 
 Flexible configuration for automatic version bumping:
 
 - Supports `package.json`, `pyproject.toml`, `version.txt`, or any custom file
-- Configurable JSON path (e.g., `version`, `tool.poetry.version`)
+- Configurable JSON/TOML field path (e.g., `version`, `tool.poetry.version`)
 - Strategies: patch, minor, major
 - Custom commit message template
 
@@ -388,7 +469,7 @@ Flexible configuration for automatic version bumping:
 
 ### From Chrome Web Store
 
-1. Install from [Chrome Web Store](https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak) (link coming soon)
+1. Install from [Chrome Web Store](https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak)
 2. Open any GitLab merge request page
 3. Action buttons appear automatically
 
@@ -398,51 +479,131 @@ Flexible configuration for automatic version bumping:
    ```bash
    git clone https://github.com/termyanen/gitlab-actions.git
    ```
-2. Open `chrome://extensions/` in Chrome
-3. Enable "Developer mode" (top right)
-4. Click "Load unpacked" and select the cloned folder
-5. Open any GitLab merge request page
+2. Use Node.js 26 LTS (`nvm install`, then `nvm use`), then run `npm ci` and `npm run build`. Node 22.x (22.13+) and 24.x are also supported; use the latest patch of your chosen line. Node is needed only to build from source.
+3. Open `chrome://extensions/` and enable "Developer mode".
+4. Click "Load unpacked" and select the generated `dist/` folder.
+5. Open a GitLab merge request over HTTPS and allow the extension access to that site.
+
+Use `npm run dev` to rebuild JavaScript and copy changed assets during development.
+Reload the unpacked extension and the GitLab tab after a rebuild. Production
+builds contain no development server or source maps. Start with
+[the contributor guide](CONTRIBUTING.md) and [architecture map](docs/ARCHITECTURE.md).
 
 ## Configuration
 
-Click the extension icon to open settings:
+Click the extension icon for global sound and notification toggles,
+project context, the applicable Jira connection status and shortcuts. Choose **All settings** for the full workspace:
 
-- **Buttons** — toggle and reorder action buttons
-- **Version Bump** — file path, JSON field, strategy, commit template
-- **Custom Jobs** — add CI jobs to trigger manually
-- **MR List** — toggle list page enhancements
-- **Jira** — set Jira URL, ticket regex, quick actions
-- **Project Profiles** — per-project overrides for action buttons, jobs and version settings
-- **AI review** — show/hide copy controls and customize all five prompts and file filters, with independent resets
+- **MR & commits** — MR toolbar order, custom MR actions, quick comments,
+  reviewers, version files/strategies, commit-page version display and cherry-pick
+- **CI/CD & jobs** — custom job chains, grouped pipeline controls and failed-job/log preview limits
+- **Jira** — server URL and explicit site access, issue icons, standup enrichment, commit fields,
+  multi-field quick actions and advanced ticket matching
+- **AI review** — copy controls, all five prompts, automatic instructions, filters and response language
+- **GitLab interface** — MR list/detail enhancements, display thresholds and sensitive-file rules
+- **General** — interface language, notifications, sound and confirmations
+- **Data & help** — settings export/import; onboarding is linked in the sidebar
+
+Search matches translated section/setting text within the selected scope.
+**Settings scope** selects **All projects** or a project profile. Project profiles
+cover MR actions and lists, comments, commits/cherry-pick, versions, CI/CD, Jira,
+AI review, confirmations and GitLab appearance. Edit an inherited field to set a
+project value; **Use global value** restores inheritance. Existing settings and
+profiles keep their values, and saving an unrelated field does not copy all
+shared defaults into a profile. Interface language, sound, desktop notifications,
+cross-project report enrichment and remembered review-dialog choices stay global.
+Open settings from a GitLab MR, commit, branch or pipeline page to create its profile. Changes autosave; navigating within
+a form preserves drafts. The save status shows pending changes, writes
+and failures, with an explicit **Retry** button. Scope changes wait for a successful
+write; failed loads keep editing locked. Quick toggles stay synchronized between
+the popup and an open settings page, including while editing another setting. Empty profile fields show the inherited
+global values. Light/dark styling follows the browser/system theme. Successful save/import messages clear after 10 seconds; errors and unsaved-change warnings remain visible until resolved.
+
+Display policies support global defaults and project overrides, both included in
+settings export/import. Existing defaults remain unchanged. Reload GitLab tabs
+after changing non-toolbar settings. Incomplete
+file scans, thread counts and standup selections are marked explicitly. See
+[Configuration and operational limits](docs/CONFIGURATION.md) for defaults,
+accepted values, profile inheritance and fixed network/storage budgets.
 
 ## How It Works
 
 - **No tokens needed** — uses your existing GitLab session cookies for API calls
-- **Jira auth** — reads Jira session cookies via `chrome.cookies` API (grant permission once in settings)
+- **Jira auth** — uses your signed-in browser session after you grant access to the configured site; no `cookies` API permission is required
 - **Privacy** — no telemetry or automatic AI uploads; API requests go to your GitLab/Jira. Optional Chrome Sync stores preferences; AI sharing happens only when you paste the copied context. See the [privacy policy](PRIVACY_POLICY.md).
 - **Manifest V3** — modern Chrome extension architecture with service worker
 
 ## Supported Languages
 
-English, Русский, 中文, 日本語, Deutsch, Français, Español
+27 interface locales:
+
+English, Русский, Deutsch, Español, Français, 日本語, 简体中文, Português (Brasil), Italiano, Polski, 한국어, Türkçe, Nederlands, Bahasa Indonesia, Tiếng Việt, Čeština, Svenska, Română, हिन्दी, Suomi, Dansk, Magyar, Ελληνικά, Slovenčina, ไทย, Български, Bahasa Melayu
+
+Choose a language in settings or use the browser default. The same choices are available for AI responses. See [localization maintenance](docs/LOCALIZATION.md) and [store listing translations](store-listing/README.md). The website and long-form guides remain English/Russian.
 
 ## Compatibility
 
-- Chrome / Chromium-based browsers (Edge, Brave, Arc, etc.)
-- Any self-hosted GitLab instance
-- Any Jira Server / Data Center instance (Cloud support varies)
+- Chrome 110+ / corresponding Chromium-based browsers (Edge, Brave, Arc, etc.)
+- HTTPS GitLab.com and self-hosted GitLab, with site access allowed for the extension.
+  Features depend on the server's API, page layout and your permissions; see
+  [audited compatibility and live-test gaps](tests/README.md).
+- Optional Jira integration uses a signed-in browser session and access to the
+  configured HTTPS origin. It targets Server / Data Center APIs; server version,
+  SSO, account permissions and custom fields still affect individual features.
+  Jira Cloud is not fully supported. See [Jira compatibility](docs/JIRA_COMPATIBILITY.md).
+
+## Development architecture
+
+Extension runtime lives in `src/` and uses strict TypeScript with FSD layers:
+`app → pages → widgets → features → entities → shared`. Imports between slices
+use their public APIs; CI checks layer direction, prohibits sibling-slice
+imports, detects runtime cycles and unreachable source modules, and rejects legacy JavaScript/blanket type
+suppressions. Settings, the compact popup and welcome page use React + TypeScript with shared controls.
+React is bundled locally in shared UI chunks; content scripts and the service
+worker remain framework-free. esbuild and FSD boundaries are unchanged.
+
+Use the [feature implementation and architecture guide](docs/ARCHITECTURE.md)
+to choose an owning module, wire content/background/settings behavior, define
+public APIs and resolve dependency cycles. The same guide is linked from the
+shared agent instructions and contributor workflow.
+
+esbuild emits a small isolated-world content bootstrap and packaged ESM chunks.
+Routes load their widgets; review operations, Jira/cherry-pick dialogs, palette
+and standup load on demand. Route scopes release listeners, observers and timers,
+and abort obsolete reads. Popup and welcome are separate extension pages.
+Static manifest, HTML/CSS, icons and locales remain at the repository root to
+preserve version/release tooling; only `dist/` is loaded or packaged.
+
+CI chains keep checkpoints in local storage and use a one-minute alarm to wake
+the worker. Browser startup re-creates the alarm if Chrome discarded it. A live
+worker retains its 20-second job polling. Recovery keeps the
+selected pipeline and reconciles an interrupted job start before continuing;
+uncertain outcomes are reported for manual verification, without replaying a
+write. Preferences and exported settings keep their existing formats.
+
+The [migration plan](docs/REFACTOR_PLAN_RU.md) records the refactor history. Run
+`npm run format` after editing sources. `npm run check` includes strict typing,
+lint, formatting, FSD boundaries, regressions, bundle budgets and ZIP checks.
+`npm run test:browser` checks the installed production artifact on local fixtures.
 
 ## Contributing
 
-1. Fork the repo
-2. Create a feature branch
-3. Make your changes
-4. Test on a GitLab MR page
-5. Submit a pull request
+Start with [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification and review
+expectations. [AGENTS.md](AGENTS.md) documents architecture and safety constraints
+for contributors and coding agents; `CLAUDE.md` and `GEMINI.md` are symlinks to it.
+The [delivery procedure](docs/DELIVERY.md) defines PR contents, documentation
+updates and release preparation. Portable skills live in `.agents/skills/`.
+
+Use the [issue forms](https://github.com/termyanen/gitlab-actions/issues/new/choose)
+for bugs and feature requests. Report vulnerabilities privately using
+[SECURITY.md](SECURITY.md). Repository configuration and release checks that need
+maintainer verification are listed in [CONTRIBUTING.md](CONTRIBUTING.md#repository-setup-and-release-readiness).
 
 ## Testing
 
-Run `npm test` with Node.js 18.18+; no dependency installation is required. The
+Run `npm ci`, then `npm run check` with Node.js 26 LTS (`nvm use`). Node 22.x
+(22.13+) and 24.x also have CI compatibility checks. This checks TypeScript,
+lint, regressions and the production build. Use `npm test` for regressions only. The
 regression suite covers version bumps, MR actions, CI job chains, API relay, Jira
 handlers, cherry-pick flows and diff helpers, locales, and release packaging. Tests run in
 CI and before Chrome Web Store uploads. See [test coverage and browser checks](tests/README.md)
@@ -450,21 +611,56 @@ for details and the remaining end-to-end coverage gaps.
 
 ## Preparing a release
 
-`manifest.json` is the source of truth for the extension version. For each patch
-release:
+Follow the [release procedure and documentation matrix](docs/DELIVERY.md#prepare-a-release-locally).
+`manifest.json` is the version source. Update both root changelogs and the site's
+`softwareVersion`, then run `npm run docs:build` to regenerate site changelog copies
+and guide/privacy version footers. Record user-facing changes in EN/RU Unreleased
+sections until preparing a particular release; keep published history unchanged.
 
-1. Increment the patch component in `manifest.json`.
-2. Add or promote the release section in both `CHANGELOG.md` and `CHANGELOG_RU.md`;
-   describe fixes and relevant technical changes, keeping older entries unchanged.
-3. Update `softwareVersion` in `docs/index.html` to match. The website loads release
-   notes from the changelogs; the extension's update notice reads the manifest.
-4. Run `npm test` and the applicable [browser checks](tests/README.md). CI checks
-   version consistency, update behavior, and both ZIP packaging paths.
-5. Package with `bash pack.sh` when needed; the archive name comes from the manifest.
-   If creating a GitHub release, use the same version in its tag and release notes.
+`npm run release:check` checks consistency during development and is included in
+`npm run check`. Before release, `npm run release:check -- --ready` also rejects
+pending Unreleased notes. `npm run --silent release:notes` prints the current
+bilingual release notes. These commands do not modify files or publish anything.
+The procedure covers validation, ZIP packaging, PR contents and publication.
 
-The private `package.json` exists only to run tests and has no separate release
-version. Both packaging paths exclude it and the test/development files.
+The private `package.json` configures the development toolchain and has no separate
+release version. Both packaging paths build and package only `dist/`.
+
+### CI and Chrome Web Store configuration
+
+Pushes, pull requests and store uploads share `.github/workflows/verify.yml`
+on Ubuntu 24.04; the runner label is explicit to avoid an unplanned OS migration.
+It installs from the lockfile, validates workflows with actionlint, audits dev
+dependencies, and runs `npm run check`. It packages `extension.zip` once and
+stores it as the `extension-package` artifact. A separate job unpacks that ZIP
+for the Chromium regression and memory/performance checks. The store job waits
+for both jobs and uploads the same ZIP. Build and browser reports are retained
+for 14 days. `bash pack.sh` still creates `gitlab-mr-actions-v<version>.zip`.
+Both archives contain `manifest.json` at their root and packaged MV3 runtime,
+icons, CSS, HTML and locales, without development files.
+
+The store workflow uses Chrome Web Store API v2. Configure the following under
+**Settings → Secrets and variables → Actions**:
+
+| Setting | Storage | Value |
+| --- | --- | --- |
+| `CWS_PUBLISHER_ID` | Repository variable | Publisher ID from Developer Dashboard → Publisher → Settings; not a credential |
+| `CWS_EXTENSION_ID` | Existing repository secret | The store item ID |
+| `CWS_CLIENT_ID` | Existing repository secret | OAuth client ID |
+| `CWS_CLIENT_SECRET` | Repository secret | OAuth client secret |
+| `CWS_REFRESH_TOKEN` | Repository secret | Refresh token with the `chromewebstore` scope |
+
+A published GitHub release uploads the ZIP without submitting it for review.
+The manual workflow defaults to `upload`; selecting `publish` explicitly
+uploads and submits after successful processing. HTTP success alone does not
+count as successful submission. Release tags must match the manifest version
+(`v` prefix optional); bump the version before a new store release.
+
+The minimatch override fixes [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)
+in the development toolchain. Remove it when upstream dependency ranges include
+the fixed version. TypeScript remains on 6.0.3 because the installed
+typescript-eslint packages require `<6.1.0`; moving to TypeScript 7 requires a
+compatible linter release. Dependabot tracks npm and pinned GitHub Actions updates.
 
 ## License
 

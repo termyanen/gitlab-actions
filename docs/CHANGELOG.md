@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.0.1
+
+### New features
+
+- **New settings workspace** — a searchable full settings page, compact popup and welcome guide share a GitLab-inspired design, light/dark themes and layouts for narrow windows. Open settings sections directly inside the popup; collapse its Jira and project information blocks when not needed. Quick controls provide sound and desktop notification preferences.
+- **Project-specific configuration** — override repository settings per project, including MR/CI actions, quick comments, Jira, AI instructions, display rules and cherry-pick target branches. Unspecified values inherit common settings, with controls to restore inheritance. Existing profiles and JSON settings imports remain supported.
+- **Live toolbar configuration** — change button visibility and order, custom button labels and quick comments without reloading the MR. Disable custom jobs and MR actions without deleting them. The toolbar separates actions, comments, age and warnings while preserving running actions.
+- **More comfortable AI review** — long comments use five-line previews, individual expansion and Expand all / Collapse all controls. Choose the default globally or per project. The wheel scrolls the comment list; publication preserves expansion and the visible comment. Sending shows progress, a final result summary and retries for confirmed unsent comments without resending published items or drafts; uncertain deliveries are not automatically replayed.
+- **Jira connection status** — settings and popup show the configured Jira domain, an explicit read-only session check, the last check time and a link to that installation. Sign-in, permission and network errors have distinct feedback. Site access is granted or restored through an explicit button.
+- **27 languages** — 20 additional interface languages, also available for AI response-language selection. Settings, popup and onboarding follow the saved interface language. Store descriptions are provided separately for every supported language.
+- **Configurable display rules** — adjust MR size thresholds, failed-job preview and log limits, reviewer-comment scan depth, and sensitive-file patterns and exclusions. Partial previews and bounded reports identify their limits.
+
+### Bug fixes
+
+- **Daily activity** — use local-day boundaries, include GitLab's “pushed” events and retain earlier merges even if the MR was edited on a later day. Failed requests or invalid responses are reported as errors rather than empty activity.
+- **Jira operations** — fix Server/Data Center assignment when usernames differ from user keys. Keep unsent comment text after failures, distinguish inaccessible issues from expired sessions, and retain partial results of multi-step quick actions.
+- **Background job chains** — persist task checkpoints and resume tracking after extension service-worker restarts, without blindly replaying an already started job.
+- **GitLab previews and warnings** — match complete reviewer usernames, avoid presenting limited failed-job results as a total, and show sensitive-file warnings even when toolbar actions are hidden. Sensitive-file scans check later diff pages and disclose incomplete results.
+- **Themes** — correct light version badges on dark commit pages and theme fallbacks for AI, Git-command and pipeline controls.
+- **Settings autosave** — deleting quick comments, cherry-pick branches and custom job buttons saves the change. Save/import failures retain editable input and provide recovery feedback.
+
+### Technical
+
+- **TypeScript architecture** — reorganize runtime code into FSD modules with esbuild. Extension-owned settings, popup and welcome use shared React components; GitLab content scripts and the worker remain framework-free. Typed API/message validation, lifecycle cleanup and automated architecture, browser and performance checks cover the refactored workflows.
+- **Permissions and compatibility** — Chrome 110+ is required. The unused cookies permission is removed; alarms supports background task recovery. Jira continues to use explicit optional access and the browser session. Jira Server/Data Center is the primary target; Jira Cloud is not fully supported. Existing settings and defaults are preserved, with no manual reset required.
+- **Contributor and release tooling** — shared coding-agent instructions, PR/release procedures, documented module ownership and CI packaging checks accompany the new structure. Runtime size is reported alongside resource-retention checks.
+
 ## 1.13.3
 
 - **CI job lookup** — fix reviewers, custom job buttons, background chains and failed-job retries by selecting the MR head pipeline and reading later job pages when needed. If the head pipeline is unavailable, keep GitLab’s MR-pipeline preference for the current commit. Fork jobs use their own project, including older responses without a pipeline project ID; retry recovery stays in the original pipeline. Missing-job errors identify the checked pipeline.

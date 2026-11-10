@@ -1,0 +1,52 @@
+name: Bug report
+description: Report a reproducible problem with the extension or its tooling.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English and Russian reports are welcome. Search existing issues first.
+        Remove cookies, tokens, private repository code and personal data from logs/screenshots.
+        For a vulnerability, use the [private reporting procedure](https://github.com/termyanen/gitlab-actions/security/policy).
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the affected feature and the visible error or incorrect behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include relevant settings and page type. Use anonymized sample data.
+      placeholder: |
+        1. Open an MR / MR list / pipeline / settings page
+        2. Enable or change ...
+        3. Click ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Versions and environment
+      description: Use "unknown" where a server version is unavailable. For tooling issues, also include Node/npm and the exact command.
+      placeholder: |
+        Extension version (or local commit):
+        Install source (Chrome Web Store / unpacked dist):
+        Browser version and OS:
+        GitLab version:
+        Jira edition/version (if relevant):
+        Last version where this worked (if known):
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized logs, screenshots or a minimal fixture
+      description: Attach only the material needed to reproduce the issue. Do not attach a complete settings export with private project details.

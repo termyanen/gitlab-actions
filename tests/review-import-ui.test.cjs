@@ -155,8 +155,13 @@ test('per-item results update during sending and retry excludes delivered and un
   await env.preview([item('a'), item('b'), item('c'), item('d')]);
   await env.click('aiReviewImportPublish');
   var request = env.publications[0];
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /0 \/ 4$/);
   request.options.onProgress({ phase: 'publishing', completed: 1, total: 4, item: { id: 'a', status: 'published' } });
   assert.equal(env.choose('a').checked, false);
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /1 \/ 4$/);
+  request.options.onProgress({item: {id: 'a', status: 'published'}});
+  request.options.onProgress({item: {id: 'unrelated', status: 'published'}});
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /1 \/ 4$/);
   assert.equal(env.button('aiReviewImportPublish').disabled, true);
   request.resolve({ items: [
     { id: 'a', status: 'published' }, { id: 'b', status: 'unknown' },
@@ -167,6 +172,14 @@ test('per-item results update during sending and retry excludes delivered and un
   assert.deepEqual(env.checked(), ['c', 'd']);
   await env.click('aiReviewImportPublish');
   assert.deepEqual(env.publications[1].ids, ['c', 'd']);
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /0 \/ 2$/);
+  env.publications[1].options.onProgress({item: {id: 'c', status: 'published'}});
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /1 \/ 2$/);
+  env.publications[1].resolve({items: [{id: 'c', status: 'published'}, {id: 'd', status: 'published'}]});
+  await env.drain();
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /Published: 3 \/ 4/);
+  assert.deepEqual(env.checked(), []);
+  assert.equal(env.choose('b').disabled, true);
 });
 
 test('changing JSON invalidates preview and publication until it is checked again', async function() {
@@ -377,6 +390,47 @@ test('navigation during a batch aborts it when progress arrives and ignores stal
   request.resolve({ items: [{ id: 'a', status: 'published' }], warnings: [] });
   await env.drain();
   assert.equal(env.document.querySelector('.gl-review-import-overlay'), null);
+});
+
+test('declining SPA discard preserves import input when a pending validation responds', async function() {
+  var env = await setup({settings: {ai_review_confirm_close: true}});
+  await env.change(env.input, '{"version":1,"comments":[]}', 'input');
+  await env.click('aiReviewImportValidate');
+  var request = env.preparations[0];
+  var overlay = env.document.querySelector('.gl-review-import-overlay');
+  var confirmations = 0;
+  env.context.window.confirm = function() { confirmations++; return false; };
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/13';
+  assert.equal(env.importUI.close(), false);
+  assert.equal(request.options.signal.aborted, true);
+  request.reject(Object.assign(new Error('Cancelled'), {name: 'AbortError'}));
+  await env.drain();
+  assert.equal(env.document.querySelector('.gl-review-import-overlay'), overlay);
+  assert.equal(env.input.value, '{"version":1,"comments":[]}');
+  assert.equal(confirmations, 1);
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/12';
+  env.importUI.syncRoute();
+  assert.equal(env.button('aiReviewImportValidate').disabled, false);
+  assert.equal(env.button('aiReviewImportPublish').disabled, true);
+});
+
+test('a retained import requires revalidation after navigation interrupts a send', async function() {
+  var env = await setup({settings: {ai_review_confirm_close: true}});
+  await env.preview();
+  await env.click('aiReviewImportPublish');
+  var request = env.publications[0];
+  env.context.window.confirm = function() { return false; };
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/13';
+  assert.equal(env.importUI.close(), false);
+  assert.equal(request.options.signal.aborted, true);
+  request.resolve({items: [{id: 'a', status: 'published'}], warnings: []});
+  await env.drain();
+  env.context.window.location.pathname = '/team/repo/-/merge_requests/12';
+  env.importUI.syncRoute();
+  assert.ok(env.document.querySelector('.gl-review-import-overlay'));
+  assert.equal(env.button('aiReviewImportValidate').disabled, false);
+  assert.equal(env.button('aiReviewImportPublish').disabled, true);
+  assert.equal(env.publications.length, 1);
 });
 
 test('the same MR changes tab and GitLab subpath remain valid import contexts', async function() {
@@ -1055,4 +1109,117 @@ test('completed import closes without prompting even when confirmation is enable
   await env.drain();
   env.context.window.confirm = function() { throw new Error('All work completed'); };
   assert.equal(env.importUI.close(), true);
+});
+
+test('an early unrelated profile update cannot discard the initial global import close policy',async()=>{
+  const env=await setup({deferredSettingsReads:true,settings:{ai_review_confirm_close:true}});
+  env.settingsEvents.forEach(fn=>fn({projectProfiles:{newValue:{'team/other':{overrides:{ai_review_confirm_close:false}}}}},'sync'));
+  // Controls and the import dialog each own their initial read.
+  env.settingsReads.forEach(reply=>reply());
+  await env.drain();
+  env.openImport();
+  env.input=env.document.querySelector('.gl-review-import-input');
+  await env.change(env.input,'Unsaved imported review','input');
+  let asked=0;
+  env.context.window.confirm=()=>{asked++;return false};
+  env.importUI.close();
+  assert.equal(asked,1);
+  assert.ok(env.document.querySelector('.gl-review-import-overlay'));
+});
+
+test('import close policy stays bound to the retained dialog project',async()=>{
+  const profiles={'team/repo':{overrides:{ai_review_confirm_close:true}},'team/other':{overrides:{ai_review_confirm_close:false}}};
+  const env=await setup({settings:{projectProfiles:profiles}});
+  await env.change(env.input,'Unsaved imported review','input');
+  let asked=0;
+  env.context.window.confirm=()=>{asked++;return false};
+  env.context.window.location.pathname='/team/other/-/merge_requests/13';
+  env.settingsEvents.forEach(fn=>fn({projectProfiles:{newValue:profiles}},'sync'));
+  env.importUI.close();
+  assert.equal(asked,1);
+  assert.ok(env.document.querySelector('.gl-review-import-overlay'));
+});
+
+test('successful publications keep their preview body and report cumulative completion', async () => {
+  const env = await setup();
+  await env.preview([item('a'), item('b')]);
+  await env.click('aiReviewImportPublish');
+  const result = { id: 'a', status: 'published', message: 'Published.' };
+  env.publications[0].options.onProgress({ item: result });
+  await env.drain();
+  assert.equal(env.choose('a').closest('article').querySelector('.gl-review-import-message'), null);
+  env.publications[0].resolve({ items: [result, { id: 'b', status: 'published', message: 'Published.' }] });
+  await env.drain();
+  assert.match(env.document.querySelector('.gl-review-status').textContent, /Published: 2 \/ 2/);
+});
+
+test('publication totals distinguish errors, uncertain delivery and unselected comments', async () => {
+  const env = await setup();
+  await env.preview([item('a'), item('b'), item('c'), item('d')]);
+  env.choose('d').checked = false;
+  await env.change(env.choose('d'), false, 'change');
+  await env.click('aiReviewImportPublish');
+  env.publications[0].resolve({ items: [{ id: 'a', status: 'published' }, { id: 'b', status: 'failed', message: 'Forbidden' }, { id: 'c', status: 'unknown' }] });
+  await env.drain();
+  const status = env.document.querySelector('.gl-review-status');
+  assert.match(status.textContent, /Published: 1 \/ 4/);
+  assert.ok(status.textContent.includes(messages.aiReviewImportFailed.message + ': 1'));
+  assert.ok(status.textContent.includes(messages.aiReviewImportUnknown.message + ': 1'));
+  assert.ok(status.textContent.includes(messages.aiReviewImportReady.message + ': 1'));
+  assert.ok(status.classList.contains('gl-review-error'));
+});
+
+test('comment expansion inherits its setting, preserves manual choices during publication and respects project overrides', async () => {
+  const env = await setup({settings:{ai_review_expand_comments:true}});
+  await env.preview([item('a')]);
+  let preview = env.choose('a').closest('article').querySelector('.gl-review-comment');
+  assert.equal(preview.dataset.expanded,'true');
+  preview.querySelector('button').click();
+  assert.equal(preview.dataset.expanded,'false');
+  env.settingsEvents.forEach(fn=>fn({projectProfiles:{newValue:{'team/other':{overrides:{ai_review_expand_comments:false}}}}},'sync'));
+  assert.equal(env.choose('a').closest('article').querySelector('.gl-review-comment').dataset.expanded,'false');
+  await env.click('aiReviewImportPublish');
+  env.publications[0].options.onProgress({item:{id:'a',status:'published'}});
+  assert.equal(env.choose('a').closest('article').querySelector('.gl-review-comment').dataset.expanded,'false');
+  env.settingsEvents.forEach(fn=>fn({projectProfiles:{newValue:{'team/repo':{overrides:{ai_review_expand_comments:false}}}}},'sync'));
+  assert.equal(env.choose('a').closest('article').querySelector('.gl-review-comment').dataset.expanded,'false');
+});
+
+test('review comments default to compact previews for existing settings',async()=>{
+  const env=await setup();await env.preview();
+  assert.equal(env.document.querySelector('.gl-review-comment').dataset.expanded,'false');
+});
+
+test('comment preview resize observers are released on rerender and close', async()=>{
+  const env=await setup();const observers=new Set();
+  env.context.ResizeObserver=class {
+    constructor(){observers.add(this);}
+    observe(){}
+    disconnect(){observers.delete(this);}
+  };
+  await env.preview([item('a')]);
+  assert.equal(observers.size,1);
+  await env.click('aiReviewImportPublish');
+  env.publications[0].options.onProgress({item:{id:'a',status:'published'}});
+  assert.equal(observers.size,1);
+  env.importUI.close(true);
+  assert.equal(observers.size,0);
+});
+
+test('expand/collapse all survives progress and does not change saved defaults',async()=>{
+  const env=await setup();
+  await env.preview([item('a','ready',{body:'Line\n'.repeat(12)}),item('b','ready',{body:'Line\n'.repeat(12)})]);
+  const toggle=env.document.querySelector('.gl-review-comments-toggle-all');
+  assert.equal(toggle.disabled,false);
+  toggle.click();
+  assert.ok(env.document.querySelectorAll('.gl-review-comment').every(node=>node.dataset.expanded==='true'));
+  await env.click('aiReviewImportPublish');
+  env.publications[0].options.onProgress({item:{id:'a',status:'published'}});
+  assert.ok(env.document.querySelectorAll('.gl-review-comment').every(node=>node.dataset.expanded==='true'));
+  toggle.click();
+  assert.ok(env.document.querySelectorAll('.gl-review-comment').every(node=>node.dataset.expanded==='false'));
+  env.importUI.close(true);
+  env.openImport();env.input=env.document.querySelector('.gl-review-import-input');
+  await env.preview([item('c','ready',{body:'Line\n'.repeat(12)})]);
+  assert.equal(env.document.querySelector('.gl-review-comment').dataset.expanded,'false');
 });

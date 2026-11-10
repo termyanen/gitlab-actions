@@ -1,0 +1,2278 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — automatisering, Jira, CI/CD en AI-review"
+  },
+  "extDescription": {
+    "message": "Automatiseer GitLab-MR’s: merges, versies, Jira, CI/CD en reviews met je eigen AI. Geen API-tokens nodig."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Hoe het werkt"
+  },
+  "openSettingsInTab": {
+    "message": "Open instellingen in een nieuw tabblad"
+  },
+  "exportSettings": {
+    "message": "Exporteer instellingen"
+  },
+  "importSettings": {
+    "message": "Importeer instellingen"
+  },
+  "settingsTransferHint": {
+    "message": "Deel alle instellingen en projectprofielen als een JSON-bestand."
+  },
+  "settingsImportReplace": {
+    "message": "Dit vervangt alle huidige instellingen en projectprofielen."
+  },
+  "applySettingsImport": {
+    "message": "Instellingen vervangen"
+  },
+  "cancelSettingsImport": {
+    "message": "Annuleren"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — projectprofielen: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Ongeldig instellingenbestand of niet-ondersteund formaat."
+  },
+  "settingsFileTooLarge": {
+    "message": "Het instellingenbestand overschrijdt de opslaglimieten van Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Kon instellingen niet exporteren. Probeer het opnieuw."
+  },
+  "settingsImportFailed": {
+    "message": "Kon instellingen niet importeren. Je huidige configuratie blijft ongewijzigd."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Sta toegang tot de Jira-site toe om deze instellingen te importeren."
+  },
+  "settingsImported": {
+    "message": "Instellingen geïmporteerd!"
+  },
+  "buttonOrder": {
+    "message": "Knopvolgorde"
+  },
+  "buttonOrderHint": {
+    "message": "Sleep om te herschikken. Zweef voor beschrijving. Aangepaste taken in blauw."
+  },
+  "general": {
+    "message": "Algemeen"
+  },
+  "soundNotifications": {
+    "message": "Geluidsmeldingen"
+  },
+  "desktopNotifications": {
+    "message": "Desktopmeldingen"
+  },
+  "showTimeTracker": {
+    "message": "Toon MR-leeftijdsbadge"
+  },
+  "skipConfirmations": {
+    "message": "MR-actiebevestigingen overslaan"
+  },
+  "uxEnhancer": {
+    "message": "Verbeteringen MR-lijst"
+  },
+  "dimDrafts": {
+    "message": "Dim concept-MRs in lijst"
+  },
+  "highlightOwnMrs": {
+    "message": "Markeer jouw MRs in lijst"
+  },
+  "showOnlyMine": {
+    "message": "'Alleen de mijne'-schakelaar op lijstpagina"
+  },
+  "toggleOnlyMine": {
+    "message": "Alleen de mijne"
+  },
+  "versionBump": {
+    "message": "Versie-verhoging"
+  },
+  "filePath": {
+    "message": "Bestandslocatie"
+  },
+  "filePathHint": {
+    "message": "Bestand met versienummer"
+  },
+  "versionField": {
+    "message": "Versieveld"
+  },
+  "versionFieldHint": {
+    "message": "JSON-sleutel of TOML-sleutel (bijv. \"version\" of \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Strategie"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Commitbericht"
+  },
+  "commitMessageHint": {
+    "message": "Gebruik {version} als tijdelijke aanduiding"
+  },
+  "quickComments": {
+    "message": "Snelle reacties"
+  },
+  "quickCommentsHint": {
+    "message": "One-click knoppen die direct een algemeen commentaar op de MR plaatsen (niet inline bij de code). Knoppen verschijnen in de actiebalk."
+  },
+  "quickCommentsAdd": {
+    "message": "Commentaar toevoegen"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Snelle opmerkingen"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Configureerbare template-commentaarknoppen op de MR-pagina. Plaats LGTM, Heeft aanpassingen nodig, of elk gewenst commentaar met één klik."
+  },
+  "reviewers": {
+    "message": "Reviewers"
+  },
+  "reviewersList": {
+    "message": "Lijst met reviewers"
+  },
+  "reviewersListHint": {
+    "message": "Gebruikersnamen om te vermelden in een Reviewers: commentaar (@user1, @user2). Wanneer ingesteld, wordt commentaarscontrole en de CI-job overgeslagen. Verandert de GitLab reviewer-toewijzingen niet."
+  },
+  "jobName": {
+    "message": "Jobnaam"
+  },
+  "jobNameHint": {
+    "message": "Fallback-job als geen commentaar overeenkomt met het 'Reviewer(s):'-patroon"
+  },
+  "customJobButtons": {
+    "message": "Aangepaste jobknoppen"
+  },
+  "customJobsHint": {
+    "message": "Gebruik komma's om te ketenen: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Voeg jobknop toe"
+  },
+  "addProfileFor": {
+    "message": "+ Profiel toevoegen voor $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Huidig: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Opgeslagen!"
+  },
+  "unsavedChanges": {
+    "message": "Niet-opgeslagen wijzigingen..."
+  },
+  "customFile": {
+    "message": "Aangepast bestand..."
+  },
+  "plainText": {
+    "message": "platte tekst"
+  },
+  "removeProfile": {
+    "message": "Wil je profiel voor $1 verwijderen?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Standaard"
+  },
+  "buttonsFor": {
+    "message": "Knoppen voor $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Overschrijf welke knoppen je voor dit project wilt tonen."
+  },
+  "leaveEmptyDefault": {
+    "message": "Laat leeg om standaard te gebruiken"
+  },
+  "projectSpecificJobs": {
+    "message": "Projectspecifieke taken. Gebruik komma's om te combineren."
+  },
+  "languageLabel": {
+    "message": "Taal"
+  },
+  "languageAuto": {
+    "message": "Automatisch (browser)"
+  },
+  "btnVersion": {
+    "message": "Versie verhogen"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Rebase + Versie"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Rebase + Automatisch mergen"
+  },
+  "btnRebaseForce": {
+    "message": "Rebase + Forceren van merge"
+  },
+  "btnShip": {
+    "message": "Rebase + Versie + Automatisch mergen"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Versie + Forceren van merge"
+  },
+  "btnReviewers": {
+    "message": "Reviewers"
+  },
+  "btnPipelineRestart": {
+    "message": "Nieuwe pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Pipeline annuleren"
+  },
+  "btnDraftToggle": {
+    "message": "Concept / Klaar-schakelaar"
+  },
+  "btnRetryFailed": {
+    "message": "Mislukte taken opnieuw proberen"
+  },
+  "btnCopyMr": {
+    "message": "MR kopiëren"
+  },
+  "hintVersion": {
+    "message": "Leest het geconfigureerde bestand (bijv. package.json), verhoogt de versie met de gekozen strategie (patch/minor/major), commit met je sjabloonbericht."
+  },
+  "hintRebase": {
+    "message": "Zet de source branch opnieuw op de target branch. Mergeert niet en zet auto-merge niet aan."
+  },
+  "hintRebaseVersion": {
+    "message": "Zet de branch opnieuw op target (indien nodig), en verhoogt daarna de versie in het ingestelde bestand. Mergeert niet."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Zet de branch opnieuw op target (als het project rebase/ff gebruikt). Zet daarna 'merge when pipeline succeeds' aan. Gebruikt squash/delete branch instellingen van de MR."
+  },
+  "hintRebaseForce": {
+    "message": "Zet opnieuw op met skip CI, annuleert alle lopende pipelines, en mergeert daarna meteen zonder op CI te wachten. Gebruikt squash/delete branch instellingen van de MR."
+  },
+  "hintShip": {
+    "message": "Volledige flow: rebase → versie verhogen in het ingestelde bestand → wacht tot MR gesynchroniseerd is → wacht op nieuwe pipeline → zet auto-merge aan."
+  },
+  "hintForceShip": {
+    "message": "Snelle flow: rebase (skip CI) → versie verhogen → 15 seconden wachten → pipeline annuleren → meteen merge. Skip CI checks."
+  },
+  "hintReviewers": {
+    "message": "Plaats geconfigureerde reviewer-vermeldingen, hergebruik een reviewer(s): opmerking van recente notities, of voer de geconfigureerde CI-taak uit."
+  },
+  "hintPipelineRestart": {
+    "message": "Creëert een splinternieuwe pipeline voor de bronbranch via API. Handig als de pipeline vastzit of je een frisse run nodig hebt."
+  },
+  "hintPipelineCancel": {
+    "message": "Verzoekt om annulering van lopende, in afwachting zijnde of aangemaakte pipelines die voor deze MR zijn teruggegeven."
+  },
+  "hintDraftToggle": {
+    "message": "Voegt het “Draft:” voorvoegsel toe of verwijdert het uit de MR-titel. Verandert geen andere MR-instellingen."
+  },
+  "hintRetryFailed": {
+    "message": "Probeert mislukte taken opnieuw in de huidige pipeline van de MR. Succesvolle taken worden niet beïnvloed."
+  },
+  "hintCopyMr": {
+    "message": "Kopieert de MR-titel en link naar het klembord."
+  },
+  "toastRebasing": {
+    "message": "Rebasing..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Auto-merge inschakelen..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Stap 1/2: Rebasing..."
+  },
+  "toastStep22Automerge": {
+    "message": "Stap 2/2: Auto-merge inschakelen..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Stap 1/2: Rebasing (CI overslaan)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Stap 2/2: Pipeline annuleren & mergen..."
+  },
+  "toastCancellingMerging": {
+    "message": "Pipeline annuleren & mergen..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Nieuwe pipeline aan het maken voor $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Annuleren van $1 pipeline(s)...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Markeren als Klaar..."
+  },
+  "toastMarkingDraft": {
+    "message": "Markeren als Concept..."
+  },
+  "toastRetrying": {
+    "message": "Opnieuw proberen van $1 mislukte taak(ën)...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Geen mislukte taken in de huidige MR-pipeline"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Geen lopende pipelines om te annuleren"
+  },
+  "toastAssigningReviewers": {
+    "message": "Reviewer vermeldingen posten…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Reviewers commentaar opnieuw posten..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Geen commentaar van reviewers gevonden, triggeren van $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Versie verhogen..."
+  },
+  "toastWaitingSync": {
+    "message": "Wachten tot MR gesynchroniseerd is met v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Wachten op pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Auto-merge poging $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Wachten tot MR gesynchroniseerd is... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Wachten op \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Taak \"$1\" uitvoeren...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Taak \"$1\" opnieuw proberen...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Taak \"$1\" is al geslaagd, overslaan",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Taak \"$1\" is al $2, wachten...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 voltooid",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 mislukt: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR-titel en link gekopieerd!"
+  },
+  "toastWaiting15s": {
+    "message": "15s wachten voor merge..."
+  },
+  "confirmRebase": {
+    "message": "De branch rebasen?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Versie verhogen?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Automatisch mergen?"
+  },
+  "confirmAutomerge": {
+    "message": "Automatisch mergen inschakelen?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → NU MERGEN?"
+  },
+  "confirmForce": {
+    "message": "⚠️ NU MERGEN (pipeline overslaan)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Versie verhogen → Automatisch mergen?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Versie verhogen → Automatisch mergen?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Versie verhogen → NU MERGEN?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Versie verhogen → NU MERGEN?"
+  },
+  "confirmNewPipeline": {
+    "message": "Een nieuwe pipeline voor deze branch aanmaken?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Alle lopende pipelines annuleren?"
+  },
+  "labelAutomerge": {
+    "message": "Automatisch mergen"
+  },
+  "labelForceMerge": {
+    "message": "Geforceerd mergen"
+  },
+  "labelVersionAutomerge": {
+    "message": "Versie + Automatisch mergen"
+  },
+  "labelVersionForceMerge": {
+    "message": "Versie + Geforceerd mergen"
+  },
+  "labelMarkReady": {
+    "message": "Markeren als Klaar"
+  },
+  "labelMarkDraft": {
+    "message": "Markeren als Concept"
+  },
+  "labelRetryFailed": {
+    "message": "Mislukte poging opnieuw proberen"
+  },
+  "labelNewPipeline": {
+    "message": "Nieuwe pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Tijd sinds MR aangemaakt: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "Versnel je merge request workflow met één-klik acties."
+  },
+  "welcomeQuickStart": {
+    "message": "Snelstart"
+  },
+  "welcomeStep1Title": {
+    "message": "Open een willekeurige Merge Request-pagina"
+  },
+  "welcomeStep1Desc": {
+    "message": "Open een HTTPS MR-pagina terwijl je bent ingelogd op GitLab.com of je self-hosted GitLab. Sta de extensie toegang tot die site toe."
+  },
+  "welcomeStep2Title": {
+    "message": "Zie actieknoppen verschijnen"
+  },
+  "welcomeStep2Desc": {
+    "message": "Knoppen verschijnen op de MR-pagina. Een startset is ingeschakeld bij de eerste installatie."
+  },
+  "welcomeStep3Title": { "message": "Aanpassen via instellingen" },
+  "welcomeStep3Desc": { "message": "Gebruik de popup om opties snel aan of uit te zetten. Open ‘Alle instellingen’ om acties, versies, Jira, CI/CD en AI-reviews in te stellen." },
+  "welcomeEnabledDefault": {
+    "message": "Standaard ingeschakeld"
+  },
+  "welcomeMoreActions": {
+    "message": "Meer acties (inschakelen in instellingen)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Hoe het werkt"
+  },
+  "welcomeHowDesc": {
+    "message": "Deze extensie gebruikt je bestaande GitLab-sessie (cookies) om de GitLab API namens jou aan te roepen. Geen persoonlijke access tokens nodig."
+  },
+  "welcomeHowList1": {
+    "message": "Voor GitLab.com en self-hosted GitLab via HTTPS; functies zijn afhankelijk van server-API's, paginalay-out en je permissies."
+  },
+  "welcomeHowList2": {
+    "message": "Acties gebruiken dezelfde permissies als de ingelogde gebruiker"
+  },
+  "welcomeHowList3": {
+    "message": "Aangepaste job chains draaien op de achtergrond. Houd een ingelogd tabblad in dezelfde GitLab open voor API-toegang."
+  },
+  "welcomeHowList4": {
+    "message": "Profielen per project laten je knoppen aanpassen voor verschillende repositories"
+  },
+  "welcomeTip": { "message": "Maak projectprofielen in ‘Alle instellingen’ wanneer projecten verschillende versiebestanden, actieknoppen of CI-jobs nodig hebben." },
+  "welcomeOpenSettings": {
+    "message": "Open instellingen"
+  },
+  "cardAutomergeTitle": {
+    "message": "Automatisch samenvoegen"
+  },
+  "cardAutomergeDesc": {
+    "message": "Rebase de branch (indien nodig) en schakel samenvoegen in als de pipeline slaagt."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Nieuwe pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Maak met één klik een nieuwe pipeline voor de bronbranch."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Pipeline annuleren"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Vraag annulering aan van lopende of wachtende MR-pipelines."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Concept-schakelaar"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Wissel MR tussen concept- en klaar-status zonder de titel te bewerken."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Versie-upgrade"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Verhoog de versie in package.json, pyproject.toml, of een ander aangepast bestand. Configureerbare strategie (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Verzenden (Versie + Merge)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase indien nodig, verhoog de versie en vraag om automatische merge. Houd het MR-tabblad open totdat de actie is voltooid."
+  },
+  "cardForceMergeTitle": {
+    "message": "Force merge"
+  },
+  "cardForceMergeDesc": {
+    "message": "Vraag om merge zonder te wachten op succes van de pipeline. GitLab-permissies en merge-regels blijven van kracht."
+  },
+  "cardReviewersTitle": {
+    "message": "Reviewers"
+  },
+  "cardReviewersDesc": {
+    "message": "Noem geconfigureerde gebruikersnamen in een comment, hergebruik een reviewer-comment of voer een CI-job uit. Wijs het native reviewer-veld van GitLab niet toe."
+  },
+  "uiCustomization": {
+    "message": "UI-aanpassing"
+  },
+  "collapseBars": {
+    "message": "knop om bovenste balken te inklappen"
+  },
+  "hideRightSidebar": {
+    "message": "Verberg de rechterzijbalk op MR-pagina’s"
+  },
+  "collapseTopBars": {
+    "message": "Wissel bovenste balken"
+  },
+  "cardCollapseTitle": {
+    "message": "Vouw bovenste balken in"
+  },
+  "cardCollapseDesc": {
+    "message": "Voegt een knop toe om GitLab-navigatiebalken in of uit te klappen. Bespaart ruimte en helpt je focussen op de inhoud."
+  },
+  "cardHideSectionsTitle": {
+    "message": "UI-secties verbergen"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Verberg de rechterzijbalk op MR-pagina's om een inhoudsgebied met volledige breedte te krijgen."
+  },
+  "jiraIntegration": {
+    "message": "Jira-integratie"
+  },
+  "jiraUrl": {
+    "message": "Jira-URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center URL, bijvoorbeeld https://jira.company.com — meld u aan bij Jira en klik vervolgens op Jira-site toegang toestaan. Cloud wordt niet volledig ondersteund."
+  },
+  "jiraGrantAccess": {
+    "message": "Jira-site toegang toestaan"
+  },
+  "jiraAccessGranted": {
+    "message": "De extensie heeft toestemming om $1 te openen."
+  },
+  "jiraConnectionUnchecked": { "message": "De verbinding is nog niet gecontroleerd." },
+  "jiraConnectionCheck": { "message": "Verbinding controleren" },
+  "jiraConnectionChecking": { "message": "Verbinding met $1 controleren…" },
+  "jiraConnectionConnected": { "message": "Laatste controle van $1: aangemeld; API beschikbaar." },
+  "jiraConnectionSignIn": { "message": "Aanmelden bij Jira" },
+  "jiraUrlInvalid": {
+    "message": "Voer een HTTPS Jira-basis-URL in, zonder credentials/query/fragment."
+  },
+  "jiraErrorAuth": {
+    "message": "Uw Jira-sessie is verlopen of aanmelding is vereist. Open Jira, log in en probeer opnieuw te laden."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira heeft toegang tot dit issue of deze operatie geweigerd. Controleer uw account en machtigingen in Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "De extensie kan deze Jira-site niet openen. Controleer de site-permissie en Jira-URL in de extensie-instellingen."
+  },
+  "jiraErrorNetwork": {
+    "message": "Kon Jira niet bereiken. Controleer uw verbinding, VPN en Jira-URL en probeer opnieuw te laden."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira is tijdelijk niet beschikbaar of beperkt het aantal verzoeken. Wacht en probeer opnieuw te laden."
+  },
+  "jiraErrorNotFound": {
+    "message": "Er kon geen Jira-issue worden gevonden of het is niet zichtbaar voor uw account."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira heeft een niet-ondersteund antwoord geretourneerd. Controleer de URL en de compatibiliteit van de Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "Het Jira-verzoek is mislukt. Open Jira om het issue en uw toegang te controleren."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "De wijziging is mogelijk al toegepast. Controleer het issue in Jira voordat u de actie opnieuw uitvoert."
+  },
+  "jiraErrorTransitions": {
+    "message": "Kon Jira-transities niet laden."
+  },
+  "jiraOpenSite": {
+    "message": "Open Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Opnieuw laden"
+  },
+  "jiraDismissError": {
+    "message": "Sluiten"
+  },
+  "jiraTicketRegex": {
+    "message": "Ticket-regex"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Eigen reguliere expressie voor ticket-ID’s in MR-titels. Standaard: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Toon issue-type- en prioriteitsiconen in MR-lijst"
+  },
+  "jiraQuickActions": {
+    "message": "Snelle acties"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Kies elke combinatie van velden voor elke knop. Laat alleen de wijzigingen die gemaakt moeten worden. Versies en componenten moeten al bestaan in het Jira-project."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Actie toevoegen"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Label"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Status"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Gebruikersnaam"
+  },
+  "jiraSidebarStatus": {
+    "message": "Status"
+  },
+  "jiraSidebarType": {
+    "message": "Type"
+  },
+  "jiraSidebarPriority": {
+    "message": "Prioriteit"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Toegewezen aan"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Niet toegewezen"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Zoek gebruiker..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Geen gebruikers gevonden"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Toewijzing ongedaan maken"
+  },
+  "jiraSidebarReporter": {
+    "message": "Melder"
+  },
+  "jiraSidebarLabels": {
+    "message": "Labels"
+  },
+  "jiraSidebarCreated": {
+    "message": "Aangemaakt"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Bijgewerkt"
+  },
+  "jiraSidebarDescription": {
+    "message": "Beschrijving"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "Componenten"
+  },
+  "jiraSidebarResolution": {
+    "message": "Oplossing"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Beïnvloedt"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Oplossingsversie"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Geen"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Geen versies gevonden"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Zoek versies..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Bijwerken van oplossingsversies mislukt"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Bijlagen"
+  },
+  "jiraSidebarComments": {
+    "message": "Reacties"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Voeg een reactie toe..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Reactie"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Meer reacties weergeven"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Nog geen reacties"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Plaatsen van reactie mislukt"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Reactie verwijderen"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Deze reactie verwijderen?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Verwijderen van reactie mislukt"
+  },
+  "cardJiraTitle": {
+    "message": "Jira-statusbadges"
+  },
+  "cardJiraDesc": {
+    "message": "Toont Jira-ticketstatussen op de MR-lijstpagina. Parseert ticket-ID's uit MR-titels (bijv. CCT-1111) en toont gekleurde statusbadges. Stel uw Jira-URL in bij instellingen."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Aangepaste ticket-regex"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Stel een aangepaste reguliere expressie in voor het parseren van Jira-ticket-ID's uit MR-titels. Handig wanneer uw project niet-standaard ticketprefixen gebruikt."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Jira-ticketzijbalk"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Klik op een Jira-badge om een zijbalk te openen met volledige ticketdetails — samenvatting, status, type, prioriteit, toegewezen persoon en beschrijving. Lees, plaats en verwijder uw eigen reacties zonder GitLab te verlaten. Fix-versies kunnen direct uit de beschikbare versies van het project in de zijbalk worden gekozen."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Bijlagen in de zijbalk"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Bekijk afbeeldingen, video's en bestanden van Jira-tickets direct in de zijbalk. Afbeeldingen en video's openen in een fullscreen lightbox."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Jira-badges op MR-pagina"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Jira-ticketstatus-badges worden weergegeven in de MR-titel op de detailpagina. Klik op een badge om de zijbalk te openen met volledige ticketdetails."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Wijzig Jira-status"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Wijzig de ticketstatus direct vanuit de zijbalk. Toont alleen beschikbare overgangen vanuit de huidige status."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Wijzig Jira-toegewezen"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Klik op de toegewezen persoon om te zoeken en opnieuw toe te wijzen. Autocompletion met avatars, knop om de toegewezen persoon te verwijderen."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira-snellaagacties"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Eenklikknoppen voor status, toegewezen persoon, labels, versies en andere velden. Elke knop kan één veld of meerdere velden bijwerken."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Issue-type & prioriteitsiconen"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Toon Jira-issuetype- en prioriteitsiconen naast statusbadges op MR-lijsten en detailpagina's. Gebruikt native Jira-iconen."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebasen"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebase de bronbranch op de doelbranch zonder te mergen."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Versie"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase de branch en verhoog de versie met één klik. Mergeert niet."
+  },
+  "cardCopyMrTitle": {
+    "message": "Kopieer MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Kopieer de MR-titel en link naar het klembord met één klik."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Mislukte jobs opnieuw proberen"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Probeer mislukte jobs opnieuw in de huidige pipeline van de MR. Geslaagde jobs worden niet beïnvloed."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Verbeteringen van de MR-lijstpagina"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Dim Ontwerp-MRs"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Visueel dimmen van Ontwerp-MRs op de pagina met merge requests zodat je je kunt concentreren op de actieve."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Markeer je MRs"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Markeer je eigen MRs in de lijst met een blauwe rand voor snelle identificatie."
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"Alleen de mijne\"-schakelaar"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Eén-klik schakelaar om de MR-lijst te filteren zodat alleen jouw merge requests worden weergegeven."
+  },
+  "cardMrAgeTitle": {
+    "message": "MR ouderdomsbadge"
+  },
+  "cardMrAgeDesc": {
+    "message": "Toont hoe lang geleden de MR is gemaakt, weergegeven als een badge op de MR-pagina."
+  },
+  "showReviewerBadge": {
+    "message": "\"Jouw review\"-badge van opmerkingen"
+  },
+  "badgeYourReview": {
+    "message": "Jouw review"
+  },
+  "badgeYourReviewHint": {
+    "message": "Je wordt genoemd als reviewer in MR-opmerkingen"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "\"Jouw review\"-badge"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Zoekt de oudste opmerkingen naar “Reviewer(s): @you”. De zoekdiepte is configureerbaar (standaard 10). Afzonderlijk van de ingebouwde reviewer-functie van GitLab."
+  },
+  "showNeedsReview": {
+    "message": "\"Heeft mijn review nodig\"-schakelaar op de lijstpagina"
+  },
+  "toggleNeedsReview": {
+    "message": "Heeft mijn review nodig"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "\"Heeft mijn review nodig\"-schakelaar"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Eén-klik schakelaar om de MR-lijst te filteren zodat alleen merge requests worden weergegeven waarin je bent toegewezen als reviewer."
+  },
+  "showCopyMr": {
+    "message": "Kopieerknop op MR-lijstitems"
+  },
+  "showThreadsBadge": {
+    "message": "Aantal onopgeloste threads op MR-lijst"
+  },
+  "showSizeBadge": {
+    "message": "MR-grootte labels (S/M/L/XL) op MR-lijst"
+  },
+  "showConflictsBadge": {
+    "message": "Toon conflictenindicator op MR-lijst"
+  },
+  "showApprovalBadge": {
+    "message": "Toon goedkeuringsaantal en mijn goedkeuringindicator op MR-lijst"
+  },
+  "approvalBadgeMine": {
+    "message": "Je hebt goedgekeurd"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Jij"
+  },
+  "cardThreadsTitle": {
+    "message": "Aantal onopgeloste threads"
+  },
+  "cardThreadsDesc": {
+    "message": "Toon aantallen onopgeloste threads. '+' geeft een volledige eerste pagina aan; '?' betekent dat het aantal niet beschikbaar is."
+  },
+  "cardSizeTitle": {
+    "message": "MR-grootte labels"
+  },
+  "cardSizeDesc": {
+    "message": "S/M/L/XL-badges met configureerbare regels voor regels en bestanden in Weergaveregels en limieten."
+  },
+  "conflictsBadge": {
+    "message": "Conflicten"
+  },
+  "conflictsBadgeHint": {
+    "message": "Deze MR heeft merge-conflicten die moeten worden opgelost"
+  },
+  "cardConflictsTitle": {
+    "message": "Conflictenindicator"
+  },
+  "cardConflictsDesc": {
+    "message": "Toont een rood CONFLICTEN-badge op de MR-detailpagina wanneer de branch merge-conflicten heeft."
+  },
+  "cardApprovalTitle": {
+    "message": "Mijn goedkeuringindicator"
+  },
+  "cardApprovalDesc": {
+    "message": "Toont of je elke MR op de lijstpagina hebt goedgekeurd. Onderscheidt jouw goedkeuring van goedkeuringen door anderen."
+  },
+  "showBranches": {
+    "message": "Toon bron- en doelbranches op MR-lijst"
+  },
+  "showBranchesLinks": {
+    "message": "Maak branch-namen klikbaar (open branch-boom)"
+  },
+  "cardBranchesTitle": {
+    "message": "Branch-namen op MR-lijst"
+  },
+  "cardBranchesDesc": {
+    "message": "Toont bron- en doelbranch-namen op elke MR in de lijst, zodat je kunt zien waar de code vandaan komt en waar het in samenvoegt."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Kopieer MR van lijst"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Voegt een kopieerknop toe aan elke MR op de lijstpagina. Kopieert de MR-titel en link naar het klembord met één klik."
+  },
+  "versionFromTarget": {
+    "message": "Lees versie van doelbranch"
+  },
+  "versionFromTargetHint": {
+    "message": "Lees de huidige versie van de doelbranch (bijv. main) in plaats van de bronbranch. Gebruik dit met de merge commit-strategie om verouderde versies te vermijden."
+  },
+  "showFailedJobView": {
+    "message": "Toon snelle weergave van mislukte job op MR-pagina"
+  },
+  "failedJobTraceError": {
+    "message": "Kon trace niet laden"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Snelle weergave van mislukte job"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Bekijk mislukte jobs en log-eindes op de MR-pagina. Aantal jobs en regels zijn configureerbaar in weergaveregels en limieten."
+  },
+  "showCmdPalette": {
+    "message": "Commandopalet (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Dagelijks activiteitenrapport"
+  },
+  "standupJiraEnrich": {
+    "message": "Jira-tickettitels weergeven in rapport"
+  },
+  "cmdPlaceholder": {
+    "message": "Typ een opdracht..."
+  },
+  "cmdFooterNavigate": {
+    "message": "navigeren"
+  },
+  "cmdFooterSelect": {
+    "message": "selecteren"
+  },
+  "cmdFooterClose": {
+    "message": "sluiten"
+  },
+  "cmdEmpty": {
+    "message": "Geen overeenkomende opdrachten"
+  },
+  "cmdGroupNav": {
+    "message": "Navigatie"
+  },
+  "cmdGroupMr": {
+    "message": "MR Acties"
+  },
+  "cmdGroupExt": {
+    "message": "Extensie"
+  },
+  "cmdGroupFiles": {
+    "message": "Bestanden"
+  },
+  "cmdNavMrs": {
+    "message": "Ga naar Merge Requests"
+  },
+  "cmdNavIssues": {
+    "message": "Ga naar Issues"
+  },
+  "cmdNavPipelines": {
+    "message": "Ga naar Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Ga naar Branches"
+  },
+  "cmdNavRepo": {
+    "message": "Ga naar Repository"
+  },
+  "cmdNavTags": {
+    "message": "Ga naar Tags"
+  },
+  "cmdNavCommits": {
+    "message": "Ga naar Commits"
+  },
+  "cmdNavWiki": {
+    "message": "Ga naar Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Ga naar Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Ga naar Instellingen"
+  },
+  "cmdCopyPath": {
+    "message": "Kopieer projectpad"
+  },
+  "cmdGroupPinned": {
+    "message": "Vastgemaakt"
+  },
+  "cmdExtSettings": {
+    "message": "Open extensie-instellingen"
+  },
+  "cmdExtStandup": {
+    "message": "Genereer activiteitenrapport"
+  },
+  "standupTitle": {
+    "message": "Dagelijkse Activiteit"
+  },
+  "standupCopy": {
+    "message": "Kopieer naar klembord"
+  },
+  "standupCopied": {
+    "message": "Gekopieerd!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Opdrachtenpalet"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Druk op Cmd+K (Mac) of Ctrl+K (Win) op een willekeurige GitLab-pagina. Navigeer, voer MR-acties uit, zoek bestanden op naam en open ze in de repository."
+  },
+  "cardStandupTitle": {
+    "message": "Dagelijks activiteitenrapport"
+  },
+  "cardStandupDesc": {
+    "message": "Genereer een dagelijks activiteitenrapport van je GitLab-gegevens. Toont aangemaakte, gemergde en beoordeelde MRs. Kopieer en plak in Slack of Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-picken naar branches"
+  },
+  "showGroupPlay": {
+    "message": "Groepsspeelknop in pipeline (voer resterende handmatige taken uit)"
+  },
+  "showCommitVersion": {
+    "message": "Versiebadge op de pagina met commits"
+  },
+  "showCommitVersionHint": {
+    "message": "Toont de versie uit het versiebestand (zie Versie-upgrade instellingen) naast elke commit; gemarkeerd wanneer de versie is gewijzigd"
+  },
+  "groupPlayTooltip": {
+    "message": "Voer resterende handmatige taken in deze groep uit"
+  },
+  "groupPlayError": {
+    "message": "Kon sommige taken niet starten"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Groepsspeelknop"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Op de pipeline-grafiek voert een speelknop naast een taakgroep alle resterende handmatige taken uit — zelfs nadat sommige taken in de groep al zijn gestart en de eigen knop van GitLab verdwijnt."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Versiebadge op commits"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Op de pagina met branch commits toont elke commit de projectversie uit jouw versiebestand bij die commit. Standaard gedempt, gemarkeerd waar de versie is veranderd — zie in één oogopslag welke commits in welke release zijn gegaan."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-pick branches"
+  },
+  "cherryPickProjectBranchesHint": { "message": "Stel branches in voor dit project. Laat de lijst leeg om de globale branches te gebruiken." },
+  "cherryPickNoBranches": { "message": "Er zijn geen branches ingesteld." },
+  "cherryPickBranchesHint": {
+    "message": "Standaard doelbranches voor cherry-pick. Je kunt branches toevoegen of verwijderen in de modal."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Branch toevoegen"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-picken"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick naar branches"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Sluiten"
+  },
+  "cherryPickInProgress": {
+    "message": "Cherry-picken..."
+  },
+  "cherryPickRemove": {
+    "message": "Verwijderen"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Branchnaam"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-gepickt naar $1 branches",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Begin een nieuwe merge request met deze wijzigingen"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Maak standaard een MR aan bij het cherry-picken"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Bij conflict — commit zonder versiebestand"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Als cherry-pick mislukt door conflict in het versiebestand, voer wijzigingen opnieuw uit als een nieuwe commit exclusief het versiebestand"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Versie verhogen bij fallback"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Versie verhogen in de doelbranch binnen dezelfde fallback-commit"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Slimme fallback behandelt alleen conflicten in het versiebestand. Het conflict zit in een ander bestand"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Bestand is aangepast in de doelbranch — kan niet veilig worden cherry-pick"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Versiebestand bevat wijzigingen buiten de versie — kan niet veilig worden overgeslagen"
+  },
+  "commitsJiraField": {
+    "message": "Jira-veld voor commit-badges"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Naam van het Jira-veld om weer te geven als badges op de commit-pagina (bijv. fixVersions, status, labels, components). Vereist Jira-URL."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick naar branches"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick direct naar geselecteerde branches of via nieuwe MRs. Met ingeschakelde slimme fallback kunnen geverifieerde conflicten in het versiebestand worden afgespeeld zonder dat bestand, eventueel met een verhoging van de versie. Onveilige wijzigingen stoppen voor inspectie."
+  },
+  "mrDetailEnhancements": {
+    "message": "Verbeteringen in MR-details"
+  },
+  "showSensitiveWarning": {
+    "message": "Waarschuwing voor gevoelig bestand in diff"
+  },
+  "showGitCommands": {
+    "message": "Git-commando knoppen (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "GEVOELIG: $1 bestand(en)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Deze MR wijzigt beveiligingsgevoelige bestanden:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Waarschuwing voor gevoelig bestand"
+  },
+  "cardSensitiveDesc": {
+    "message": "Markeert gevoelige bestanden met ingebouwde regels, aanvullende patronen en uitsluitingen. Configureer ze in Weergaveregels en limieten."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Git-commando knoppen"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Kopieer opdrachten voor checkout, pull en hard reset. Controleer je repository en de remote origin voordat je ze uitvoert; hard reset verwijdert lokale wijzigingen."
+  },
+  "updateBannerText": {
+    "message": "Nieuwe versie beschikbaar! Bekijk wat er nieuw is:"
+  },
+  "updateChangelog": {
+    "message": "Changelog"
+  },
+  "updateReviewAsk": {
+    "message": "Vind je de extensie leuk?"
+  },
+  "updateReviewLink": {
+    "message": "Laat een review achter"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "AI-geassisteerde review, van begin tot eind"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Beoordeel een MR, verwerk geselecteerde feedback, bereid antwoorden voor en controleer de wijzigingen opnieuw. Bekijk en bewerk opmerkingen voordat u ze op GitLab plaatst."
+  },
+  "aiReviewGuide": {
+    "message": "AI-beoordelingsgids"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Geen automatische AI-upload. Kopieer de context zelf; opmerkingen worden alleen naar GitLab verzonden wanneer u Publiceren of Toevoegen aan beoordeling kiest."
+  },
+  "aiReviewTitle": {
+    "message": "AI-beoordeling"
+  },
+  "aiReviewOpen": {
+    "message": "AI-beoordeling…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Opmerking kopiëren voor AI"
+  },
+  "aiReviewLoading": {
+    "message": "Discussies laden…"
+  },
+  "aiReviewRetry": {
+    "message": "Opnieuw proberen"
+  },
+  "aiReviewRefresh": {
+    "message": "Vernieuwen"
+  },
+  "aiReviewClose": {
+    "message": "Sluiten"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Bevestig het sluiten van beoordelingsvensters met niet-opgeslagen werk"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Dit venster sluiten? Niet-opgeslagen bewerkingen en ingevoerde gegevens worden verwijderd."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Dit venster sluiten en verder verzenden stoppen? Reeds verzonden opmerkingen blijven in GitLab. Niet-opgeslagen bewerkingen gaan verloren."
+  },
+  "aiReviewAll": {
+    "message": "Alles"
+  },
+  "aiReviewUnresolved": {
+    "message": "Onopgelost"
+  },
+  "aiReviewResolved": {
+    "message": "Opgelost"
+  },
+  "aiReviewGeneral": {
+    "message": "Algemene opmerkingen"
+  },
+  "aiReviewSearch": {
+    "message": "Opmerkingen of bestandslocaties zoeken"
+  },
+  "aiReviewSelectShown": {
+    "message": "Getoond selecteren"
+  },
+  "aiReviewClear": {
+    "message": "Selectie wissen"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Inclusief codewijzigingen"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Voor nieuwe en herhaalde beoordelingen. Uitschakelen als de AI de repository kan lezen. Korte fragmenten die aan feedback zijn toegevoegd blijven inbegrepen."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Houd rekening met bestaande discussies"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Voegt al geplaatste opmerkingen toe als duplicaatfilter: de AI beoordeelt de volledige MR onafhankelijk en verwijdert vervolgens bevindingen die deze herhalen. Het reageert niet op die discussies."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Inclusief beschrijving"
+  },
+  "aiReviewPrompt": {
+    "message": "Instructies voor AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Standaardprompt herstellen"
+  },
+  "aiReviewPreview": {
+    "message": "Voorbeeld bekijken"
+  },
+  "aiReviewCopied": {
+    "message": "Gekopieerd!"
+  },
+  "aiReviewEmpty": {
+    "message": "Geen overeenkomende opmerkingen."
+  },
+  "aiReviewPartial": {
+    "message": "Sommige gegevens konden niet worden geladen. De export bevat een waarschuwing en alleen de beschikbare context."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 geselecteerd",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Selecteer de voorbeeldtekst en kopieer deze handmatig."
+  },
+  "aiReviewScopeComment": {
+    "message": "Geselecteerde opmerking"
+  },
+  "aiReviewScopeThread": {
+    "message": "Geselecteerde discussie"
+  },
+  "aiReviewPreparing": {
+    "message": "Codecontext voorbereiden…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Kan discussies niet laden. Probeer opnieuw, of kopieer de beschikbare context."
+  },
+  "aiReviewShowReplies": {
+    "message": "Toon antwoorden"
+  },
+  "aiReviewSize": {
+    "message": "Ongeveer $1 tekens",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Annuleren"
+  },
+  "showAiReviewCopy": {
+    "message": "Toon AI-beoordelingskopie en importeercontroles"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Kopieer de hele MR voor een nieuwe beoordeling, geselecteerde feedback voor correcties, of importeer AI-opmerkingen en -reacties met een bewerkbare preview voordat je verzendt."
+  },
+  "aiReviewFresh": {
+    "message": "Beoordeel vanaf nul"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Prompt voor een nieuwe beoordeling"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Maximaal 1.500 tekens. Wordt gebruikt om de hele MR en al zijn commits te beoordelen, apart van feedback correcties. Je kunt de responstaal specificeren. Laat leeg voor de standaard Engelse prompt."
+  },
+  "aiReviewPromptHint": {
+    "message": "Maximaal 1.500 tekens. Laat leeg om de standaard Engelse prompt te gebruiken. Toepasselijk op alle projecten."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Prompt niet opgeslagen. Gebruik maximaal 1.500 tekens en verwijder ongebruikelijke besturingskarakters."
+  },
+  "settingsSaveFailed": {
+    "message": "De instellingen konden niet worden opgeslagen. Probeer het opnieuw."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Wijzigingen hier zijn van toepassing op deze export. Stel je standaardprompt in via de extensie-instellingen."
+  },
+  "aiReviewReady": {
+    "message": "Voorvertoning is klaar om te kopiëren."
+  },
+  "aiReviewLoadHint": {
+    "message": "Laadt discussies rechtstreeks van GitLab, inclusief opmerkingen die niet op deze pagina zichtbaar zijn."
+  },
+  "aiReviewCommentContext": {
+    "message": "Andere antwoorden zijn opgenomen als context. Alleen geselecteerde opmerkingen worden aangevraagd voor actie."
+  },
+  "aiReviewOutdated": {
+    "message": "Eerdere revisie"
+  },
+  "aiReviewLink": {
+    "message": "Open discussie"
+  },
+  "aiReviewLoaded": {
+    "message": "$1 discussies geladen"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Codecontext voorbereiden: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Deze opmerking is niet beschikbaar vanuit GitLab. Mogelijk wordt deze nog opgeslagen of is verwijderd. Vernieuw om het opnieuw te proberen."
+  },
+  "aiReviewImportOpen": {
+    "message": "AI-beoordeling importeren…"
+  },
+  "aiReviewImportTitle": {
+    "message": "AI-beoordeling importeren"
+  },
+  "aiReviewImportHelp": {
+    "message": "Plak het AI-antwoord hieronder om te controleren, te bewerken en te kiezen wat te publiceren. Prompt-snelkoppelingen vind je onder Geavanceerde instellingen."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Kopieer prompt voor nieuwe beoordeling"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Prompt voorbereiden…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI-antwoord (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Plak het volledige JSON-antwoord met nieuwe opmerkingen of reacties op discussies. Je kunt de tekst bewerken en kiezen wat je in de preview wilt versturen."
+  },
+  "aiReviewImportValidate": {
+    "message": "Controleren en previewen"
+  },
+  "aiReviewImportChecking": {
+    "message": "Controleren van de MR-revisie, regels en bestaande opmerkingen…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Controleer het antwoord op preview-opmerkingen. Je kunt de tekst bewerken, selectievakjes wissen om items uit te sluiten, of een algemene opmerking toevoegen."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Selecteer gereed opmerkingen"
+  },
+  "aiReviewImportPreview": {
+    "message": "Opmerkingen om te verzenden"
+  },
+  "aiReviewImportReady": {
+    "message": "Gereed"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Correctie nodig"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Extra bestandswijzigingen konden niet worden geladen: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "De extra diff overschrijdt de importlimiet van 16 MiB. Alleen opmerkingen op geverifieerde regels kunnen worden geïmporteerd."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Bestaat al"
+  },
+  "aiReviewImportPublished": {
+    "message": "Gepubliceerd"
+  },
+  "aiReviewImportDraft": {
+    "message": "Toegevoegd aan review"
+  },
+  "aiReviewImportFailed": {
+    "message": "Niet verzonden"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Levering niet bevestigd"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Niet verzonden"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Nieuwe regel $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Oude regel $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Geselecteerde publiceren"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Toevoegen aan beoordeling"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Publiceren verzendt opmerkingen onmiddellijk. Toevoegen aan beoordeling slaat niet-gepubliceerde opmerkingen op voor uw GitLab-beoordeling."
+  },
+  "aiReviewImportSending": {
+    "message": "Verzenden van geselecteerde opmerkingen…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Klaar. Controleer het resultaat naast elke opmerking."
+  },
+  "aiReviewImportStopped": {
+    "message": "Gestopt. Controleer het resultaat naast elke opmerking voordat u opnieuw probeert."
+  },
+  "aiReviewImportEdited": {
+    "message": "Reactie gewijzigd. Controleer deze opnieuw voordat u verzendt."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Klembord niet beschikbaar. Selecteer de onderstaande tekst en kopieer deze handmatig."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Bezorging kon niet worden bevestigd. Controleer GitLab voordat u opnieuw probeert."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Prompt voor AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Klaar: $1. Andere opmerkingen vereisen aandacht.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Stop met verzenden"
+  },
+  "aiReviewImportError": {
+    "message": "Kon de bewerking niet voltooien"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Kon de prompt niet voorbereiden"
+  },
+  "aiReviewImportWarning": {
+    "message": "Beoordelingsmeldingen"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI-beoordeling"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Taalt van AI-respons"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Automatisch — gesprekstaal"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Van toepassing op alle beoordelingsopdrachten en importprompts. JSON-sleutels, paden en code worden niet vertaald. Alleen het formaat kopiëren voegt geen taalinstructies toe."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Prompt voor het corrigeren van feedback"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Prompt voor nieuwe beoordelingscommentaren"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Prompt voor antwoorden op feedback"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Tot 1500 tekens. Voor de snelkoppeling nieuwe beoordeling in Import. Taaktabbladen gebruiken hun eigen prompts. MR-context en het JSON-formaat worden automatisch toegevoegd."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Tot 1500 tekens. Voor antwoorden op geselecteerde discussies in Copy of alle onopgeloste discussies in Import. Stel stijl en taal in; context en het antwoordformaat worden automatisch toegevoegd."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Antwoordprompt voor alle onopgeloste discussies"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Kopieer antwoordformaat"
+  },
+  "aiReviewImportFormat": {
+    "message": "Antwoordformaat voor AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Bereid antwoorden voor"
+  },
+  "aiReviewImportReply": {
+    "message": "Reageer op discussie"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Origineel commentaar"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Uw antwoord"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Bespreking oplossen na publiceren"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Bespreking opgelost."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Antwoord gepubliceerd, maar de bespreking is niet opgelost. U kunt dit oplossen in GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Antwoord gepubliceerd. Oplossing is niet bevestigd; controleer de bespreking in GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Oplossing is optioneel en standaard uitgeschakeld. Het wordt pas uitgevoerd na het publiceren van het antwoord. Het toevoegen van een concept lost nooit een discussie op."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "De MR-versie is gewijzigd. Antwoorden blijven gekoppeld aan hun besprekingen; controleer hun tekst aan de hand van de gepushte correcties. Nieuwe bevindingen van een oude revisie zijn geblokkeerd."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Deze antwoorden zijn gekoppeld aan besprekingen, niet aan een code-revisie. Controleer voor het publiceren of de beschreven correcties naar deze MR zijn gepusht."
+  },
+  "aiReviewImportEdit": {
+    "message": "Tekst bewerken"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Commentaar toevoegen"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Wijzigingen opslaan"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Annuleren"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Opmerkingtekst"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Bewerk de tekst en sla deze vervolgens op om de wijzigingen te controleren voordat u publiceert."
+  },
+  "aiReviewImportEditError": {
+    "message": "Kon de wijzigingen niet opslaan"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "De voorbeeldweergave kan maximaal 200 opmerkingen bevatten."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Herhalingsbeoordelingsprompt"
+  },
+  "aiReviewFileFilters": {
+    "message": "Bestanden om te beoordelen"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Van toepassing op nieuwe en herhalingsbeoordelingen en prompts voor nieuwe bevindingen, niet op geselecteerde feedback of antwoord-prompts. Eén patroon per regel of komma; # start een opmerking. Gebruik *, **, ?. Uitsluitingen winnen, inclusief oude hernoemingspaden. Lege lijsten bevatten alles. Voorbeeld: src/**, *.test.js, dist/. Tot 1500 tekens per lijst."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Opnemen extensies (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Opnemen bestandspaden"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Bestandspaden uitsluiten"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Mappen uitsluiten"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Bestandfilters konden niet worden opgeslagen of toegepast. Gebruik maximaal 1500 tekens per lijst en verwijder ongebruikelijke besturingstekens."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Versie die u heeft beoordeeld"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Volledige beoordeling — geen eerdere versie"
+  },
+  "aiReviewRepeat": {
+    "message": "Herhaal beoordeling"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Voer een commit SHA in"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Voer de volledig beoordeelde commit SHA in (40 of 64 hexadecimale tekens)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Selecteer de MR-versie die u eerder heeft beoordeeld voordat u uw opmerkingen achterlaat. Alle daaropvolgende wijzigingen tot de huidige versie zijn automatisch inbegrepen; u hoeft geen afzonderlijke commits te selecteren. Als u de versie niet meer weet, kies dan een volledige beoordeling."
+  },
+  "aiReviewChooseTask": {
+    "message": "Kies een taak"
+  },
+  "aiReviewTaskReview": {
+    "message": "Nieuwe beoordeling"
+  },
+  "aiReviewTaskFix": {
+    "message": "Beoordelingsbevindingen herstellen"
+  },
+  "aiReviewTaskReply": {
+    "message": "Bereid antwoorden voor"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Follow-up beoordeling"
+  },
+  "aiReviewCopyTask": {
+    "message": "Kopieer taak"
+  },
+  "aiReviewPasteResult": {
+    "message": "Plak AI-antwoord"
+  },
+  "aiReviewAdvanced": {
+    "message": "Geavanceerde instellingen"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Taakinstructies"
+  },
+  "aiReviewSelectThread": {
+    "message": "Selecteer deze discussie"
+  },
+  "aiReviewSelectAll": {
+    "message": "Selecteer alle discussies"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Beoordeel alle MR-commits samen. De AI retourneert nieuwe bevindingen zonder de code te wijzigen."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Selecteer feedback om te herstellen. Voor een MR bereidt de AI ook antwoorden voor waarin wordt uitgelegd wat er is gedaan, wat nog resteert en waarom. Onopgeloste discussies worden aanvankelijk geselecteerd."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Bereid ook antwoorden voor"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Selecteer feedback die uw coderende AI moet herstellen. Onopgeloste discussies worden aanvankelijk geselecteerd."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Geef de taak aan uw coderende AI en controleer de wijzigingen en tests. Het resultaat is herstelwerk en een normale samenvatting, zonder direct klaar-om-te-plaatsen antwoorden."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Vraag de AI na het doorvoeren van de correcties om de code te verifiëren en het resultaat uit te leggen in de geselecteerde discussies."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Verifieer geselecteerde feedback en zoek naar nieuwe fouten. Kies de versie die u eerder heeft beoordeeld, of controleer de volledige huidige MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Taak: de gehele MR, over alle commits."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Geselecteerde opmerkingen: $1; discussietekst en beschikbare codefragmenten zijn inbegrepen."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Discussies voor antwoorden: $1, met hun volledige gesprek. De AI heeft toegang tot de repository nodig."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Discussies om te verifiëren: $1, plus een beoordeling van codewijzigingen."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Beschrijving opgenomen."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Beschrijving uitgesloten."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Codewijzigingen inbegrepen, onder voorbehoud van laadbeperkingen."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "De AI moet code uit de repository lezen."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Bestaande discussies worden alleen toegevoegd als duplicaatfilter."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Bestaande discussies worden niet toegevoegd."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Bestandsfilters zijn actief."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Geen eerdere versie geselecteerd: de volledige huidige MR wordt gecontroleerd."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Ongepubliceerde conceptdiscussies kunnen geen antwoorden ontvangen en zijn uitgesloten."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Selecteer feedback aan de linkerkant. Voor een nieuwe beoordeling, gebruik het tabblad Nieuwe beoordeling."
+  },
+  "aiReviewNextStep": {
+    "message": "Kopieer de taak naar je AI-tool. Als deze opmerkingen of reacties teruggeeft, gebruik dan 'Plak AI-respons' om ze te controleren en te bewerken voordat je ze plaatst."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Controleer de correcties en tests, push alle commits naar de MR en gebruik vervolgens 'Plak AI-respons' om de voorbereide reacties te controleren voordat je ze plaatst. Nieuwe commits vereisen geen regeneratie van reacties."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Automatische instructies (gevorderd)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Alle blokken zijn standaard ingeschakeld en worden alleen gebruikt voor relevante taken. Bewerk, schakel uit of wis een blok. Taakprompts hebben ook hun eigen instructies. MR-gegevens, JSON-voorbeelden en laadmeldingen worden apart gegenereerd; publicatiecontroles zijn altijd van toepassing."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Voeg toe aan de taak indien van toepassing"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Tot 1500 tekens. Lege tekst voegt niets toe. 'Reset' herstelt de standaardtekst en schakelt dit blok in."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Gebruik {language} voor de geselecteerde reactietaal. Tot 1500 tekens; lege tekst voegt niets toe."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Gebruik {selection} voor geselecteerde of onopgeloste discussies. Tot 1500 tekens; lege tekst voegt niets toe."
+  },
+  "aiReviewRule_repository": {
+    "message": "Lokale repository en remote"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Werkmap voor correcties"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Werkmap voor beoordeling"
+  },
+  "aiReviewRule_language": {
+    "message": "Reactietaal"
+  },
+  "aiReviewRule_scope": {
+    "message": "Bestandfilterinterpretatie"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Feedbackcontext"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Correcties zonder reacties"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Alleen-beschrijving taak"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Ontbrekende geselecteerde feedback"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Klaar-om-te-plaatsen reacties na correcties"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Beoordelingsgrenzen"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Bron voor beoordeling"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Inbegrepen codewijzigingen"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Beoordeling zonder inbegrepen code"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Niet-beschikbare bron"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON-reactie"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Locaties vinden en uitvoer"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Stijl van vervolgreactie"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Ongewijzigd hoofd"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Vergelijkingsregelposities"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Lokale revisievergelijking"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Wijzigingen in doelbranch"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Beoordeling zonder vergelijkingsrevisie"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Hercontrole zonder discussies"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Geselecteerde discussiebereik"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Cumulatieve diff-context"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Bestaande discussies in een nieuwe beoordeling"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Nieuwe beoordeling in Import"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Importbeoordelingsgrenzen"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Importbevindingformaat"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Antwoordgrenzen en -formaat"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Antwoordtaakbereik"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Veld toevoegen"
+  },
+  "jiraQuickActionField": {
+    "message": "Veld"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Bewerkingshandeling"
+  },
+  "jiraQuickActionValue": {
+    "message": "Waarde"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Verwijderen"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Toevoegen"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Verwijderen"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Alles vervangen"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Vervaldatum"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Aangepast veld (geavanceerd)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Waarden gescheiden door komma's. Toevoegen/verwijderen behoudt andere waarden; Alles vervangen overschrijft de lijst."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "Veld-ID: customfield_12345. Voer de waarde in als JSON in het formaat dat door dit Jira-veld wordt verwacht."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Exacte Jira-transitienaam (of doelstatus)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Lege waarde: geen wijziging."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Controleer de veldwaarde: aangepaste velden vereisen een geldig ID en JSON; gebruik YYYY-MM-DD voor datums."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Gebruik elk veld slechts één keer per knop."
+  },
+  "jiraQuickActionFailed": {
+    "message": "De actie is mislukt."
+  },
+  "jiraQuickActionPartial": {
+    "message": "De status is gewijzigd, maar het bijwerken van het veld is mislukt."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Kon het issue niet verversen. Heropen het paneel om de huidige waarden te controleren."
+  },
+  "mrActions": {
+    "message": "MR-acties"
+  },
+  "mrActionsHint": {
+    "message": "Maak benoemde knoppen om labels te wijzigen of andere MR-velden te wissen. Sleep ze in de knoppenlijst om de volgorde te wijzigen."
+  },
+  "mrActionsProfileHint": {
+    "message": "Door deze lijst te bewerken maak je projectspecifieke acties. Verwijder alle items om deze knoppen voor dit project te verbergen."
+  },
+  "mrActionAdd": {
+    "message": "MR-actie toevoegen"
+  },
+  "mrActionLabel": {
+    "message": "Knopnaam"
+  },
+  "mrActionDelete": {
+    "message": "Actie verwijderen"
+  },
+  "mrActionType": {
+    "message": "Actie"
+  },
+  "mrActionLabels": {
+    "message": "Labels"
+  },
+  "mrActionLabelsHint": {
+    "message": "Exacte labelnamen, gescheiden door komma's of nieuwe regels. Spaties in namen worden behouden. Toevoegen/vervangen kan ontbrekende projectlabels aanmaken."
+  },
+  "mrAction_remove_labels": {
+    "message": "Verwijder opgegeven labels"
+  },
+  "mrAction_clear_labels": {
+    "message": "Wis alle labels"
+  },
+  "mrAction_add_labels": {
+    "message": "Voeg labels toe"
+  },
+  "mrAction_set_labels": {
+    "message": "Vervang alle labels"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Wis toegewezen personen"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Wis beoordelaars"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Wis mijlpaal"
+  },
+  "mrActionInvalid": {
+    "message": "Voer een knopnaam in, kies een ondersteunde actie en specificeer ten minste één label om toe te voegen, te verwijderen of te vervangen."
+  },
+  "mrActionConfirm": {
+    "message": "“$1” toepassen op deze MR?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab heeft de rebase-status niet geretourneerd. Herlaad het merge request en probeer het opnieuw."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab heeft een pagina met herhaalde jobs geretourneerd voor pipeline #$1. De takenlijst kon niet volledig worden geladen."
+  },
+  "displayPreferencesTitle": {
+    "message": "Regels en limieten weergeven"
+  },
+  "displayPreferencesHint": {
+    "message": "Globale instellingen; herlaad GitLab-tabbladen na het wijzigen ervan. Meer taken of opmerkingen verhogen de gegevensoverdracht. Logvoorbeelden downloaden de volledige trace voordat niet-lege regels worden geselecteerd. Reviewer-badges doorzoeken de oudste opmerkingen naar “Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Mislukte taken om te bekijken"
+  },
+  "failedJobTraceLines": {
+    "message": "Niet-lege logregels per taak"
+  },
+  "reviewerNotesLimit": {
+    "message": "Opmerkingen om te doorzoeken naar reviewer-badges"
+  },
+  "mrSizeLines": {
+    "message": "MR-grootte drempels: regels (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR-grootte drempels: bestanden (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Aanvullende gevoelige bestandsformaten"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Uitsluitingen van gevoelige bestanden"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Ingebouwde regels voor gevoelige bestanden gebruiken"
+  },
+  "sizeThresholdsHint": {
+    "message": "Drie stijgende positieve gehele getallen gescheiden door komma's. De limieten zijn inclusief; grotere wijzigingen zijn XL. Bestandsdrempels zijn van toepassing wanneer regelaantallen niet beschikbaar zijn."
+  },
+  "sensitivePatternsHint": {
+    "message": "Eén patroon per regel, hoofdletterongevoelig. * komt overeen met elke tekst (inclusief /), ? met één teken. Patronen zonder / komen overeen met bestandsnamen; andere patronen komen overeen met het volledige repositorypad. Uitsluitingen hebben voorrang. Ingebouwde regels dekken omgeving, container/CI, inloggegevens en privésleutel-bestanden. Zet ze uit om alleen uw patronen te gebruiken."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Controleer de numerieke bereiken, drie toenemende grootte-drempels en de lengte van bestands patronen."
+  },
+  "failedJobsPreview": {
+    "message": "Voorbeeld: $1 mislukte taak(en) — laatste $2 niet-lege regels",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Meer mislukte taken — open de volledige pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 regels, $2 bestanden",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 bestanden gewijzigd",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Scan van gevoelige bestanden is onvolledig"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Niet elk bestand kon worden gecontroleerd: het API-verzoek mislukt of de $1-bestandenscanlimiet is bereikt. Vermelde overeenkomsten zijn gedeeltelijk; controleer het volledige MR-diff.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Waarschuwing: dit rapport kan onvolledig zijn. Verzameling is beperkt tot $1 MRs per categorie en $2 activiteitsevenementen.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 onopgeloste thread(s)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Deze preview kan onvolledig zijn: API-fout of alleen de eerste $2 discussies gecontroleerd. Bekende onopgeloste threads: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "settingsTitle": { "message": "Instellingen" },
+  "settingsActions": { "message": "MR en commits" },
+  "settingsActionsHint": { "message": "Merge requests, commits, versies en cherry-pick." },
+  "settingsCi": { "message": "CI/CD en jobs" },
+  "settingsAppearance": { "message": "GitLab-interface" },
+  "settingsData": { "message": "Gegevens en hulp" },
+  "settingsSearch": { "message": "Instellingen zoeken" },
+  "settingsScope": { "message": "Bereik van instellingen" },
+  "settingsProjectValue": { "message": "Projectwaarde" },
+  "settingsUseGlobal": { "message": "Globale waarde gebruiken" },
+  "settingsProjectInheritanceHint": { "message": "Wijzig een waarde om deze voor dit project in te stellen. Gebruik de globale waarde om overerving te herstellen." },
+  "settingsSharedPreferencesHint": { "message": "Interfacetaal, geluid, bureaubladmeldingen en projectoverstijgende rapportinstellingen zijn globaal. Bewerk ze onder Alle projecten." },
+  "settingsGlobal": { "message": "Alle projecten" },
+  "settingsGlobalHint": { "message": "Deze instellingen gelden voor alle projecten." },
+  "settingsProjectHint": { "message": "Dit profiel overschrijft de algemene instellingen voor dit project." },
+  "settingsGlobalOnly": { "message": "Dit onderdeel gebruikt gedeelde instellingen voor alle projecten." },
+  "settingsQuick": { "message": "Snelle instellingen" },
+  "settingsNoResults": { "message": "Geen overeenkomende instellingen." },
+  "settingsRemoveProfile": { "message": "Profiel verwijderen" },
+  "settingsNoProject": { "message": "Open een GitLab-project om projectprofielen te gebruiken." },
+  "settingsAll": { "message": "Alle instellingen" },
+  "settingsMoveUp": { "message": "Omhoog verplaatsen" },
+  "settingsMoveDown": { "message": "Omlaag verplaatsen" },
+  "settingsConnection": { "message": "Verbinding" },
+  "settingsJiraDisplay": { "message": "Jira in GitLab" },
+  "settingsAdvanced": { "message": "Geavanceerde instellingen" },
+  "settingsAutosaveHint": { "message": "Wijzigingen worden automatisch opgeslagen." },
+  "settingsSaving": { "message": "Opslaan…" },
+  "settingsLoadFailed": { "message": "De instellingen konden niet worden geladen. Probeer het opnieuw voordat je ze bewerkt." },
+  "aiReviewShowFull": { "message": "Volledig tonen" },
+  "aiReviewShowLess": { "message": "Minder tonen" },
+  "aiReviewExpandCommentsSetting": { "message": "Reviewopmerkingen standaard volledig tonen" },
+  "aiReviewExpandAll": { "message": "Alles uitvouwen" },
+  "aiReviewCollapseAll": { "message": "Alles samenvouwen" }
+}

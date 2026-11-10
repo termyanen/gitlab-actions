@@ -1,456 +1,557 @@
-'use strict';
+"use strict";
+const test = require("node:test");
+const assert = require("node:assert/strict");
+const vm = require("node:vm");
+const { bundleForTest } = require("./helpers/runtime.cjs");
+const messages = require("../_locales/en/messages.json");
 
-var test = require('node:test');
-var assert = require('node:assert/strict');
-var vm = require('node:vm');
-var harness = require('./helpers/extension.cjs');
-var messages = require('../_locales/en/messages.json');
-
-function popup(sharedPrompt, sharedFreshPrompt, savedData, sharedImport) {
-  var controls = new Map();
-  function element() {
-    return { value: '', checked: false, style: {}, className: '', textContent: '', events: {}, children: [], querySelectorAll: function() { return []; },
-      addEventListener: function(name, fn) { this.events[name] = fn; }, appendChild: function(el) { this.children.push(el); }, setAttribute: function() {},
-      matches: function(selectors) { return selectors.split(',').map(function(s) { return s.trim(); }).includes(this.tagName); } };
-  }
-  function control(id) { if (!controls.has(id)) controls.set(id, element()); return controls.get(id); }
-  var env = { writes: [], timers: new Map(), control: control };
-  var timerId = 0;
-  var document = { addEventListener: function() {}, getElementById: control, querySelectorAll: function() { return []; }, createElement: element, body: element() };
-  env.context = vm.createContext({
-    window: { innerWidth: 360, GlReviewImport: sharedImport, GlReviewExport: sharedPrompt || sharedFreshPrompt ? { DEFAULT_PROMPT: sharedPrompt, DEFAULT_FRESH_REVIEW_PROMPT: sharedFreshPrompt } : undefined }, document: document, TextEncoder: TextEncoder,
-    chrome: { runtime: {}, i18n: { getMessage: function(key) { return messages[key] && messages[key].message || key; } }, storage: { sync: { set: function(data, callback) { env.writes.push({ data: data, callback: callback }); } } }, permissions: { request: function() { throw new Error('Unexpected permission request'); } } },
-    setTimeout: function(fn) { env.timers.set(++timerId, fn); return timerId; }, clearTimeout: function(id) { env.timers.delete(id); }
-  });
-  vm.runInContext(harness.readRuntime('review-workflow.js'), env.context);
-  vm.runInContext(harness.readRuntime('popup.js'), env.context, { filename: 'popup.js' });
-  if (savedData) env.context.allData = savedData;
-  env.context.renderDefaultTab(element());
-  env.document = document;
-  env.save = function() { return env.context.saveDefaultTab(); };
-  env.respond = function(index, error) {
-    if (error) env.context.chrome.runtime.lastError = { message: error };
-    else delete env.context.chrome.runtime.lastError;
-    env.writes[index].callback();
-    delete env.context.chrome.runtime.lastError;
+// Exercise the same typed model used by React, without recreating DOM widgets or
+// exporting production test hooks. Browser tests cover rendering and events.
+const context = vm.createContext({
+  TextEncoder,
+  URL,
+  structuredClone,
+  crypto: require("node:crypto").webcrypto,
+});
+vm.runInContext(
+  bundleForTest("src/features/manage-settings/index.ts", {
+    globalName: "Config",
+  }),
+  context,
+);
+vm.runInContext(
+  bundleForTest("src/entities/review/index.ts", { globalName: "Review" }),
+  context,
+);
+vm.runInContext(
+  bundleForTest("src/pages/settings/model/draft.ts", { globalName: "Draft" }),
+  context,
+);
+const { Config, Review, Draft } = context;
+const t = (key) => messages[key]?.message || key;
+const plain = (value) => JSON.parse(JSON.stringify(value));
+function model(saved = {}, scope = "default") {
+  const data = {
+    ...structuredClone(Config.DEFAULTS),
+    ...structuredClone(saved),
   };
-  return env;
-}
-
-test('AI copy settings use the shared English prompt, default enabled state and a working reset action', function() {
-  var env = popup('Shared English default prompt.');
-  assert.equal(env.control('show_ai_review_copy').checked, true);
-  assert.equal(env.control('ai_review_prompt').value, 'Shared English default prompt.');
-  env.control('show_ai_review_copy').checked = false;
-  env.control('ai_review_prompt').value = 'Custom\nmultiline prompt';
-  assert.equal(env.save(), true);
-  assert.equal(env.writes[0].data.show_ai_review_copy, false);
-  assert.equal(env.writes[0].data.ai_review_prompt, 'Custom\nmultiline prompt');
-  env.control('resetAiReviewPrompt').events.click();
-  assert.equal(env.control('ai_review_prompt').value, 'Shared English default prompt.');
-  env.context.flushAutoSave();
-  assert.equal(env.writes[1].data.ai_review_prompt, 'Shared English default prompt.');
-});
-
-test('missing shared script still has an English fallback and a blank prompt restores it', function() {
-  var env = popup();
-  assert.match(env.control('ai_review_prompt').value, /^Review the feedback for this GitLab/);
-  env.control('ai_review_prompt').value = ' \n ';
-  env.save();
-  assert.equal(env.writes[0].data.ai_review_prompt, env.context.AI_REVIEW_DEFAULT_PROMPT);
-});
-
-test('prompt size validation permits Unicode but prevents invalid sync storage items without dropping the draft', function() {
-  var env = popup();
-  env.control('ai_review_prompt').value = '界'.repeat(1500);
-  assert.equal(env.save(), true);
-  env.control('ai_review_prompt').value = 'a'.repeat(1501);
-  assert.equal(env.save(), false);
-  assert.equal(env.writes.length, 1);
-  assert.equal(env.control('ai_review_prompt').value.length, 1501);
-  env.control('ai_review_prompt').value = '\u0001'.repeat(1500);
-  assert.equal(env.save(), false, 'JSON escapes count against the sync item quota');
-  assert.equal(env.writes.length, 1);
-  assert.equal(env.control('status').className, 'status failed');
-});
-
-test('storage errors never show Saved and successful retry clears the failure', function() {
-  var env = popup();
-  env.save();
-  env.respond(0, 'QUOTA_BYTES_PER_ITEM quota exceeded');
-  assert.equal(env.control('status').className, 'status failed');
-  assert.notEqual(env.control('status').textContent, messages.saved.message);
-  env.save();
-  env.respond(1);
-  assert.equal(env.control('status').className, 'status saved');
-});
-
-test('textarea input schedules autosave and flushing preserves a draft before form replacement', function() {
-  var env = popup();
-  env.context.attachAutoSave();
-  var prompt = env.control('ai_review_prompt');
-  prompt.tagName = 'textarea';
-  prompt.value = 'Latest unsaved instruction';
-  env.document.body.events.input({ target: prompt });
-  assert.equal(env.control('status').className, 'status unsaved');
-  assert.equal(env.context.flushAutoSave(), true);
-  assert.equal(env.writes.length, 1);
-  assert.equal(env.writes[0].data.ai_review_prompt, 'Latest unsaved instruction');
-  assert.equal(env.context.flushAutoSave(), true);
-  assert.equal(env.writes.length, 1, 'an already-flushed timer does not write twice');
-});
-
-test('a stale storage completion cannot replace a newer unsaved status', function() {
-  var env = popup();
-  env.context.scheduleAutoSave();
-  env.context.flushAutoSave();
-  env.control('ai_review_prompt').value = 'Newer draft';
-  env.context.scheduleAutoSave();
-  env.respond(0);
-  assert.equal(env.control('status').className, 'status unsaved');
-  env.context.flushAutoSave();
-  env.respond(1);
-  assert.equal(env.control('status').className, 'status saved');
-});
-
-test('failed debounced validation keeps edits protected when switching tabs after the timer has fired', function() {
-  var env = popup();
-  env.control('ai_review_filter_includeFiles').value = '界'.repeat(1500);
-  env.control('ai_review_filter_ignoreFiles').value = '界'.repeat(1500);
-  env.context.scheduleAutoSave();
-  var callback = env.timers.get(env.context._autoSaveTimer);
-  callback();
-  assert.equal(env.context._autoSaveTimer, null);
-  assert.equal(env.writes.length, 0, 'oversized sync item must not be written');
-  assert.equal(env.context.flushAutoSave(), false, 'switching tabs must still validate after the debounce fired');
-  assert.equal(env.control('ai_review_filter_includeFiles').value, '界'.repeat(1500));
-  env.control('ai_review_filter_ignoreFiles').value = '';
-  assert.equal(env.context.flushAutoSave(), true, 'correcting the input permits a retry without another timer');
-  assert.equal(env.writes.length, 1);
-  assert.equal(env.writes[0].data.ai_review_file_filter.includeFiles, '界'.repeat(1500));
-  assert.equal(env.context.flushAutoSave(), true);
-  assert.equal(env.writes.length, 1, 'a successful save clears the dirty flag');
-});
-
-test('fresh review has an independent shared default, saved value and reset action', function() {
-  var env = popup('Feedback default.', 'Fresh default.', {
-    ai_review_prompt: 'Fix feedback my way.', ai_review_fresh_prompt: 'Review security and answer in German.'
-  });
-  assert.equal(env.control('ai_review_prompt').value, 'Fix feedback my way.');
-  assert.equal(env.control('ai_review_fresh_prompt').value, 'Review security and answer in German.');
-  assert.equal(env.control('ai_review_fresh_prompt').placeholder, 'Fresh default.');
-  env.control('ai_review_fresh_prompt').value = 'My new review instructions.';
-  assert.equal(env.save(), true);
-  assert.equal(env.writes[0].data.ai_review_fresh_prompt, 'My new review instructions.');
-  assert.equal(env.writes[0].data.ai_review_prompt, 'Fix feedback my way.');
-  env.control('resetAiReviewFreshPrompt').events.click();
-  assert.equal(env.control('ai_review_fresh_prompt').value, 'Fresh default.');
-  assert.equal(env.control('ai_review_prompt').value, 'Fix feedback my way.');
-  env.context.flushAutoSave();
-  assert.equal(env.writes[1].data.ai_review_fresh_prompt, 'Fresh default.');
-  var reloaded = popup('Feedback default.', 'Fresh default.', env.writes[0].data);
-  assert.equal(reloaded.control('ai_review_fresh_prompt').value, 'My new review instructions.');
-});
-
-test('fresh review validates character and serialized byte limits before any settings write', function() {
-  var env = popup();
-  env.control('ai_review_fresh_prompt').value = '界'.repeat(1500);
-  assert.equal(env.save(), true);
-  env.control('ai_review_prompt').value = 'Feedback changed too.';
-  env.control('ai_review_fresh_prompt').value = 'a'.repeat(1501);
-  assert.equal(env.save(), false);
-  assert.equal(env.writes.length, 1);
-  assert.equal(env.control('ai_review_fresh_prompt').value.length, 1501);
-  env.control('ai_review_fresh_prompt').value = '\u0001'.repeat(1500);
-  assert.equal(env.save(), false, 'escaped control characters exceed the sync item quota');
-  assert.equal(env.writes.length, 1, 'invalid fresh prompt prevents saving unrelated changes too');
-  assert.equal(env.control('status').className, 'status failed');
-  env.control('ai_review_fresh_prompt').value = 'Valid fresh draft';
-  env.control('ai_review_prompt').value = 'a'.repeat(1501);
-  assert.equal(env.save(), false, 'both prompts are validated before writes');
-  assert.equal(env.control('ai_review_fresh_prompt').value, 'Valid fresh draft');
-  assert.equal(env.writes.length, 1);
-});
-
-test('fresh review fallback matches the shared default and blank instructions restore it', function() {
-  var shared = vm.createContext({ window: {} });
-  vm.runInContext(harness.readRuntime('review-export.js'), shared);
-  var env = popup();
-  assert.equal(env.context.AI_REVIEW_DEFAULT_FRESH_PROMPT, shared.window.GlReviewExport.DEFAULT_FRESH_REVIEW_PROMPT);
-  assert.match(env.control('ai_review_fresh_prompt').value, /every commit/);
-  assert.match(env.control('ai_review_fresh_prompt').value, /conversation language/);
-  env.control('ai_review_fresh_prompt').value = ' \n ';
-  env.save();
-  assert.equal(env.writes[0].data.ai_review_fresh_prompt, env.context.AI_REVIEW_DEFAULT_FRESH_PROMPT);
-});
-
-test('fresh review textarea participates in autosave without replacing feedback instructions', function() {
-  var env = popup('Feedback default.', 'Fresh default.');
-  env.context.attachAutoSave();
-  var prompt = env.control('ai_review_fresh_prompt');
-  prompt.tagName = 'textarea';
-  prompt.value = 'Latest fresh-review draft';
-  env.document.body.events.input({ target: prompt });
-  assert.equal(env.context.flushAutoSave(), true);
-  assert.equal(env.writes[0].data.ai_review_fresh_prompt, 'Latest fresh-review draft');
-  assert.equal(env.writes[0].data.ai_review_prompt, 'Feedback default.');
-});
-
-['import', 'reply'].forEach(function(kind) {
-  var key = 'ai_review_' + kind + '_prompt';
-  var reset = kind === 'import' ? 'resetAiReviewImportPrompt' : 'resetAiReviewReplyPrompt';
-  var shared = { DEFAULT_REVIEW_PROMPT: 'Review default.', DEFAULT_REPLY_PROMPT: 'Reply default.' };
-  var fallback = kind === 'import' ? shared.DEFAULT_REVIEW_PROMPT : shared.DEFAULT_REPLY_PROMPT;
-  test(kind + ' prompt saves independently, reloads and resets through autosave', function() {
-    var saved = { ai_review_prompt: 'Feedback custom.', ai_review_fresh_prompt: 'Fresh custom.', ai_review_import_prompt: 'Import custom.', ai_review_reply_prompt: 'Reply custom.' };
-    var env = popup(undefined, undefined, saved, shared);
-    assert.equal(env.control(key).value, saved[key]);
-    assert.equal(env.control(key).placeholder, fallback);
-    env.context.attachAutoSave();
-    var field = env.control(key);
-    field.value = 'Answer in German; focus on concrete changes.';
-    field.tagName = 'textarea';
-    env.document.body.events.input({ target: field });
-    assert.equal(env.context.flushAutoSave(), true);
-    assert.equal(env.writes[0].data[key], field.value);
-    Object.keys(saved).filter(function(other) { return other !== key; }).forEach(function(other) {
-      assert.equal(env.writes[0].data[other], saved[other]);
-    });
-    var reload = popup(undefined, undefined, env.writes[0].data, shared);
-    assert.equal(reload.control(key).value, field.value);
-    env.control(reset).events.click();
-    env.context.flushAutoSave();
-    assert.equal(env.writes[1].data[key], fallback);
-    Object.keys(saved).filter(function(other) { return other !== key; }).forEach(function(other) {
-      assert.equal(env.writes[1].data[other], saved[other]);
-    });
-  });
-  test(kind + ' prompt rejects overlong and oversized drafts before writing any settings', function() {
-    var env = popup();
-    env.control(key).value = '界'.repeat(1500);
-    assert.equal(env.save(), true);
-    ['x'.repeat(1501), '\u0001'.repeat(1500)].forEach(function(invalid) {
-      env.control(key).value = invalid;
-      env.control('ai_review_prompt').value = 'Another changed setting';
-      assert.equal(env.save(), false);
-      assert.equal(env.writes.length, 1);
-      assert.equal(env.control(key).value, invalid);
-    });
-  });
-});
-
-test('all popup prompt fallbacks match exported defaults and blank fields restore them', function() {
-  var shared = vm.createContext({ window: {} });
-  vm.runInContext(harness.readRuntime('review-export.js'), shared);
-  vm.runInContext(harness.readRuntime('review-import.js'), shared);
-  var defaults = {
-    ai_review_prompt: shared.window.GlReviewExport.DEFAULT_PROMPT,
-    ai_review_fresh_prompt: shared.window.GlReviewExport.DEFAULT_FRESH_REVIEW_PROMPT,
-    ai_review_import_prompt: shared.window.GlReviewImport.DEFAULT_REVIEW_PROMPT,
-    ai_review_reply_prompt: shared.window.GlReviewImport.DEFAULT_REPLY_PROMPT
-  };
-  var env = popup();
-  Object.keys(defaults).forEach(function(key) {
-    assert.equal(env.control(key).value, defaults[key]);
-    assert.ok(defaults[key].length <= 1500);
-    env.control(key).value = '   ';
-  });
-  assert.equal(env.save(), true);
-  Object.keys(defaults).forEach(function(key) { assert.equal(env.writes[0].data[key], defaults[key]); });
-});
-
-test('repeat-review prompt and all four file filters autosave, reload and validate atomically', function() {
-  var env = popup();
-  env.control('ai_review_repeat_prompt').value = 'Recheck fixes in English.';
-  env.control('ai_review_filter_includeExtensions').value = 'ts, js';
-  env.control('ai_review_filter_ignoreDirs').value = 'dist';
-  assert.equal(env.save(), true);
-  var restored = popup(undefined, undefined, env.writes[0].data);
-  assert.equal(restored.control('ai_review_repeat_prompt').value, 'Recheck fixes in English.');
-  assert.equal(restored.control('ai_review_filter_includeExtensions').value, 'ts, js');
-  assert.equal(restored.control('ai_review_filter_ignoreDirs').value, 'dist');
-  restored.control('resetAiReviewRepeatPrompt').events.click();
-  assert.equal(restored.control('ai_review_repeat_prompt').value, restored.context.window.GlReviewWorkflow.DEFAULT_REPEAT_PROMPT);
-  restored.context.flushAutoSave();
-  assert.equal(restored.writes[0].data.ai_review_file_filter.ignoreDirs, 'dist');
-  restored.control('ai_review_filter_ignoreFiles').value = 'a'.repeat(1501);
-  assert.equal(restored.save(), false);
-  assert.equal(restored.writes.length, 1);
-  restored.control('ai_review_filter_ignoreFiles').value = '';
-  restored.control('ai_review_repeat_prompt').value = 'a'.repeat(1501);
-  assert.equal(restored.save(), false);
-  assert.equal(restored.writes.length, 1);
-});
-
-test('AI response language is independent from interface language and survives saving', function() {
-  var env = popup(undefined, undefined, { language: 'de', ai_review_response_language: 'ru' });
-  assert.equal(env.control('ai_review_response_language').value, 'ru');
-  env.control('ai_review_response_language').value = 'ja';
-  assert.equal(env.save(), true);
-  assert.equal(env.writes[0].data.ai_review_response_language, 'ja');
-  var restored = popup(undefined, undefined, env.writes[0].data);
-  assert.equal(restored.control('ai_review_response_language').value, 'ja');
-  assert.equal(popup(undefined, undefined, { ai_review_response_language: 'invalid' }).control('ai_review_response_language').value, 'auto');
-});
-
-test('review close confirmation defaults off and persists the explicit setting', function() {
-  var env = popup();
-  assert.equal(env.control('ai_review_confirm_close').checked, false);
-  env.control('ai_review_confirm_close').checked = true;
-  assert.equal(env.save(), true);
-  assert.equal(env.writes[0].data.ai_review_confirm_close, true);
-  var restored = popup(undefined, undefined, env.writes[0].data);
-  assert.equal(restored.control('ai_review_confirm_close').checked, true);
-  restored.control('ai_review_confirm_close').checked = false;
-  restored.save();
-  assert.equal(restored.writes[0].data.ai_review_confirm_close, false);
-});
-
-test('automatic instruction settings default enabled, save independently, allow blank text and reset per block', function() {
-  var env = popup(), blocks = env.context.AI_REVIEW_RULES;
-  blocks.forEach(function(block) {
-    var key = 'ai_review_rule_' + block.id;
-    assert.equal(env.control(key + '_enabled').checked, true);
-    assert.equal(env.control(key).value, block.text);
-  });
-  env.control('ai_review_rule_repository').value = 'Use my prepared checkout.';
-  env.control('ai_review_rule_review_checkout_enabled').checked = false;
-  env.control('ai_review_rule_review_checkout').value = 'Keep this disabled text.';
-  env.control('ai_review_rule_language').value = '';
-  assert.equal(env.save(), true);
-  assert.equal(env.writes[0].data.ai_review_rule_repository.text, 'Use my prepared checkout.');
-  assert.equal(env.writes[0].data.ai_review_rule_review_checkout.enabled, false);
-  assert.equal(env.writes[0].data.ai_review_rule_language.text, '');
-  var restored = popup(undefined, undefined, env.writes[0].data);
-  assert.equal(restored.control('ai_review_rule_repository').value, 'Use my prepared checkout.');
-  assert.equal(restored.control('ai_review_rule_review_checkout_enabled').checked, false);
-  assert.equal(restored.control('ai_review_rule_review_checkout').value, 'Keep this disabled text.');
-  assert.equal(restored.control('ai_review_rule_language').value, '');
-  restored.control('ai_review_rule_review_checkout_reset').events.click();
-  assert.equal(restored.control('ai_review_rule_review_checkout_enabled').checked, true);
-  assert.notEqual(restored.control('ai_review_rule_review_checkout').value, 'Keep this disabled text.');
-  restored.context.flushAutoSave();
-  assert.equal(restored.writes[0].data.ai_review_rule_repository.text, 'Use my prepared checkout.');
-});
-
-test('an oversized automatic instruction prevents saving unrelated settings and preserves its draft', function() {
-  var env = popup();
-  env.control('ai_review_rule_repository').value = '\u0001'.repeat(1500);
-  env.control('show_ai_review_copy').checked = false;
-  env.context.scheduleAutoSave();
-  assert.equal(env.context.flushAutoSave(), false);
-  assert.equal(env.writes.length, 0);
-  assert.equal(env.control('ai_review_rule_repository').value.length, 1500);
-  env.control('ai_review_rule_repository').value = 'Valid custom instruction';
-  assert.equal(env.context.flushAutoSave(), true);
-  assert.equal(env.writes[0].data.show_ai_review_copy, false);
-});
-
-function jiraActionRows(env, actions) {
-  function fieldRow(change) {
-    var parts = { field: change.field, value: change.value, operation: change.operation || 'set', custom: change.custom || '' };
-    return { querySelector: function(selector) { return { value: parts[selector.match(/data-part="([^"]+)"/)[1]] }; } };
-  }
-  var original = env.document.querySelectorAll;
-  env.document.querySelectorAll = function(selector) {
-    if (selector !== '#jiraQuickActionsList .jira-quick-action') return original(selector);
-    return actions.map(function(action) {
-      return { querySelector: function() { return { value: action.label }; }, querySelectorAll: function() { return action.changes.map(fieldRow); } };
-    });
+  let draft = Draft.createDraft(data, scope);
+  return {
+    data,
+    get draft() {
+      return draft;
+    },
+    set(key, value) {
+      draft = { ...draft, fields: { ...draft.fields, [key]: value } };
+    },
+    change(values) {
+      draft = { ...draft, ...values };
+    },
+    reset(id) {
+      draft = Draft.resetDraftField(draft, id);
+    },
+    save() {
+      return plain(Draft.serializeDraft(draft, data, scope, t));
+    },
   };
 }
+const exportedPrompts = {
+  ai_review_prompt: Review.DEFAULT_PROMPT,
+  ai_review_fresh_prompt: Review.DEFAULT_FRESH_REVIEW_PROMPT,
+  ai_review_import_prompt: Review.DEFAULT_REVIEW_PROMPT,
+  ai_review_reply_prompt: Review.DEFAULT_REPLY_PROMPT,
+  ai_review_repeat_prompt: Review.DEFAULT_REPEAT_PROMPT,
+};
 
-test('Jira settings save version-only and assignee-only buttons without a status', function() {
-  var env = popup();
-  jiraActionRows(env, [
-    { label: 'Release', changes: [{ field: 'fixVersions', value: ' 2.0, 2.1, 2.0 ', operation: 'add' }] },
-    { label: 'Assign', changes: [{ field: 'assignee', value: ' alice ' }] }
+for (const prompt of Config.AI_REVIEW_PROMPTS) {
+  test(
+    prompt.key +
+      " defaults match review operations and blank text restores the shared prompt",
+    () => {
+      const env = model();
+      assert.equal(env.draft.fields[prompt.key], exportedPrompts[prompt.key]);
+      assert.ok(
+        exportedPrompts[prompt.key].length <=
+          Config.AI_REVIEW_PROMPT_MAX_LENGTH,
+      );
+      env.set(prompt.key, " \n ");
+      assert.equal(env.save()[prompt.key], exportedPrompts[prompt.key]);
+    },
+  );
+  test(
+    prompt.key +
+      " saves independently, reloads and resets without changing other prompts",
+    () => {
+      const saved = Object.fromEntries(
+        Config.AI_REVIEW_PROMPTS.map((item) => [
+          item.key,
+          "Custom " + item.key,
+        ]),
+      );
+      const env = model(saved);
+      env.set(prompt.key, "Answer in German; focus on concrete changes.");
+      const written = env.save();
+      assert.equal(
+        written[prompt.key],
+        "Answer in German; focus on concrete changes.",
+      );
+      for (const key of Object.keys(saved).filter((key) => key !== prompt.key))
+        assert.equal(written[key], saved[key]);
+      const reloaded = model(written);
+      assert.equal(reloaded.draft.fields[prompt.key], written[prompt.key]);
+      reloaded.reset(prompt.reset);
+      assert.equal(
+        reloaded.draft.fields[prompt.key],
+        exportedPrompts[prompt.key],
+      );
+      const reset = reloaded.save();
+      for (const key of Object.keys(saved).filter((key) => key !== prompt.key))
+        assert.equal(reset[key], saved[key]);
+    },
+  );
+  test(
+    prompt.key +
+      " accepts Unicode and rejects oversized character/serialized-byte drafts atomically",
+    () => {
+      const env = model();
+      env.set(prompt.key, "界".repeat(1500));
+      assert.equal(env.save()[prompt.key], "界".repeat(1500));
+      for (const invalid of ["x".repeat(1501), "\u0001".repeat(1500)]) {
+        env.set(prompt.key, invalid);
+        env.set("show_ai_review_copy", false);
+        const before = plain(env.draft);
+        assert.throws(
+          () => env.save(),
+          (error) => error.message === t("aiReviewPromptTooLong"),
+        );
+        assert.deepEqual(
+          plain(env.draft),
+          before,
+          "validation must leave every draft field editable",
+        );
+      }
+    },
+  );
+}
+
+test("AI copy enabled setting and review close confirmation keep their defaults and round-trip", () => {
+  const env = model();
+  assert.equal(env.draft.fields.show_ai_review_copy, true);
+  assert.equal(env.draft.fields.ai_review_confirm_close, false);
+  assert.equal(env.draft.fields.ai_review_expand_comments, false);
+  env.set("show_ai_review_copy", false);
+  env.set("ai_review_confirm_close", true);
+  env.set("ai_review_expand_comments", true);
+  const restored = model(env.save());
+  assert.equal(restored.draft.fields.show_ai_review_copy, false);
+  assert.equal(restored.draft.fields.ai_review_confirm_close, true);
+  assert.equal(restored.draft.fields.ai_review_expand_comments, true);
+  restored.set("ai_review_confirm_close", false);
+  assert.equal(restored.save().ai_review_confirm_close, false);
+});
+
+test("all file filters reload with the repeat prompt and reject invalid aggregate storage bytes", () => {
+  const env = model();
+  env.set("ai_review_repeat_prompt", "Recheck fixes in English.");
+  for (const [key, value] of Object.entries({
+    includeExtensions: "ts, js",
+    includeFiles: "src/*",
+    ignoreFiles: "*.generated.ts",
+    ignoreDirs: "dist",
+  }))
+    env.set("ai_review_filter_" + key, value);
+  const restored = model(env.save());
+  assert.equal(
+    restored.draft.fields.ai_review_repeat_prompt,
+    "Recheck fixes in English.",
+  );
+  assert.equal(
+    restored.draft.fields.ai_review_filter_includeExtensions,
+    "ts, js",
+  );
+  assert.equal(restored.draft.fields.ai_review_filter_includeFiles, "src/*");
+  assert.equal(
+    restored.draft.fields.ai_review_filter_ignoreFiles,
+    "*.generated.ts",
+  );
+  assert.equal(restored.draft.fields.ai_review_filter_ignoreDirs, "dist");
+  restored.reset("resetAiReviewRepeatPrompt");
+  assert.equal(restored.save().ai_review_file_filter.ignoreDirs, "dist");
+  restored.set("ai_review_filter_ignoreFiles", "x".repeat(1501));
+  assert.throws(
+    () => restored.save(),
+    (error) => error.message === t("aiReviewFilterInvalid"),
+  );
+  restored.set("ai_review_filter_ignoreFiles", "界".repeat(1500));
+  restored.set("ai_review_filter_includeFiles", "界".repeat(1500));
+  assert.throws(
+    () => restored.save(),
+    (error) => error.message === t("aiReviewFilterInvalid"),
+  );
+  assert.equal(
+    restored.draft.fields.ai_review_filter_includeFiles.length,
+    1500,
+  );
+  restored.set("ai_review_filter_ignoreFiles", "");
+  assert.equal(
+    restored.save().ai_review_file_filter.includeFiles,
+    "界".repeat(1500),
+  );
+});
+
+test("AI response language is independent from interface language and invalid saved language falls back", () => {
+  const env = model({ language: "de", ai_review_response_language: "ru" });
+  assert.equal(env.draft.fields.ai_review_response_language, "ru");
+  env.set("ai_review_response_language", "ja");
+  const result = env.save();
+  assert.equal(result.language, "de");
+  assert.equal(result.ai_review_response_language, "ja");
+  assert.equal(model(result).draft.fields.ai_review_response_language, "ja");
+  assert.equal(
+    model({ ai_review_response_language: "invalid" }).draft.fields
+      .ai_review_response_language,
+    "auto",
+  );
+});
+
+test("automatic instructions default enabled, allow blank/disabled text, round-trip and reset individually", () => {
+  const env = model();
+  for (const block of Config.AI_REVIEW_RULES) {
+    assert.equal(
+      env.draft.fields["ai_review_rule_" + block.id + "_enabled"],
+      true,
+    );
+    assert.equal(
+      env.draft.fields["ai_review_rule_" + block.id],
+      block.text.trim(),
+    );
+  }
+  env.set("ai_review_rule_repository", "Use my prepared checkout.");
+  env.set("ai_review_rule_review_checkout_enabled", false);
+  env.set("ai_review_rule_review_checkout", "Keep this disabled text.");
+  env.set("ai_review_rule_language", "");
+  const result = env.save();
+  assert.deepEqual(result.ai_review_rule_review_checkout, {
+    enabled: false,
+    text: "Keep this disabled text.",
+  });
+  assert.equal(
+    result.ai_review_rule_repository.text,
+    "Use my prepared checkout.",
+  );
+  assert.equal(result.ai_review_rule_language.text, "");
+  const restored = model(result);
+  assert.equal(
+    restored.draft.fields.ai_review_rule_review_checkout_enabled,
+    false,
+  );
+  restored.reset("ai_review_rule_review_checkout_reset");
+  assert.equal(
+    restored.draft.fields.ai_review_rule_review_checkout_enabled,
+    true,
+  );
+  assert.notEqual(
+    restored.draft.fields.ai_review_rule_review_checkout,
+    "Keep this disabled text.",
+  );
+  assert.equal(
+    restored.save().ai_review_rule_repository.text,
+    "Use my prepared checkout.",
+  );
+});
+
+test("oversized instruction rejects unrelated settings without changing the draft, then permits correction", () => {
+  const env = model();
+  env.set("ai_review_rule_repository", "\u0001".repeat(1500));
+  env.set("show_ai_review_copy", false);
+  assert.throws(
+    () => env.save(),
+    (error) => error.message === t("aiReviewPromptTooLong"),
+  );
+  assert.equal(env.draft.fields.ai_review_rule_repository.length, 1500);
+  env.set("ai_review_rule_repository", "Valid custom instruction");
+  assert.equal(env.save().show_ai_review_copy, false);
+});
+
+function jiraActions(env, actions) {
+  env.change({
+    jiraActions: actions.map((action, i) => ({
+      id: "action-" + i,
+      label: action.label,
+      fields: action.changes.map((change, j) => ({
+        id: "field-" + j,
+        operation: "set",
+        custom: "",
+        ...change,
+      })),
+    })),
+  });
+}
+
+test("Jira settings save version-only and assignee-only buttons without a status", () => {
+  const env = model();
+  jiraActions(env, [
+    {
+      label: "Release",
+      changes: [
+        { field: "fixVersions", value: " 2.0, 2.1, 2.0 ", operation: "add" },
+      ],
+    },
+    { label: "Assign", changes: [{ field: "assignee", value: " alice " }] },
   ]);
-  assert.equal(env.save(), true);
-  assert.deepEqual(harness.plain(env.writes[0].data.jiraQuickActions), [
-    { label: 'Release', status: '', assignee: '', updates: [{ field: 'fixVersions', operation: 'add', value: ['2.0', '2.1'] }] },
-    { label: 'Assign', status: '', assignee: 'alice', updates: [] }
+  assert.deepEqual(env.save().jiraQuickActions, [
+    {
+      label: "Release",
+      status: "",
+      assignee: "",
+      updates: [
+        { field: "fixVersions", operation: "add", value: ["2.0", "2.1"] },
+      ],
+    },
+    { label: "Assign", status: "", assignee: "alice", updates: [] },
   ]);
 });
 
-test('Jira settings preserve legacy status+assignee fields and serialize list/custom changes', function() {
-  var env = popup();
-  jiraActionRows(env, [{ label: 'Review', changes: [
-    { field: 'status', value: 'Review' }, { field: 'assignee', value: 'alice' },
-    { field: 'labels', value: 'old', operation: 'remove' },
-    { field: 'custom', custom: 'customfield_12345', value: '{"value":"Option"}' }
-  ] }]);
-  env.save();
-  assert.deepEqual(harness.plain(env.writes[0].data.jiraQuickActions), [{ label: 'Review', status: 'Review', assignee: 'alice', updates: [
-    { field: 'labels', operation: 'remove', value: ['old'] },
-    { field: 'customfield_12345', operation: 'set', value: { value: 'Option' } }
-  ] }]);
+test("Jira settings preserve status, assignee, list operations and custom JSON across reload", () => {
+  const env = model();
+  jiraActions(env, [
+    {
+      label: "Review",
+      changes: [
+        { field: "status", value: "Review" },
+        { field: "assignee", value: "alice" },
+        { field: "labels", value: "old", operation: "remove" },
+        {
+          field: "custom",
+          custom: "customfield_12345",
+          value: '{"value":"Option"}',
+        },
+      ],
+    },
+  ]);
+  const actions = [
+    {
+      label: "Review",
+      status: "Review",
+      assignee: "alice",
+      updates: [
+        { field: "labels", operation: "remove", value: ["old"] },
+        {
+          field: "customfield_12345",
+          operation: "set",
+          value: { value: "Option" },
+        },
+      ],
+    },
+  ];
+  assert.deepEqual(env.save().jiraQuickActions, actions);
+  assert.deepEqual(model(env.save()).save().jiraQuickActions, actions);
 });
 
 [
-  [{ field: 'custom', custom: 'customfield_12345', value: '{broken' }],
-  [{ field: 'custom', custom: 'bad_id', value: 'null' }],
-  [{ field: 'labels', value: 'a' }, { field: 'labels', value: 'b' }],
-  [{ field: 'status', value: 'Review' }, { field: 'status', value: 'Done' }],
-  [{ field: 'duedate', value: '2026-02-30' }],
-  [{ field: 'duedate', value: 'tomorrow' }]
-].forEach(function(changes, index) {
-  test('invalid Jira settings ' + index + ' preserve the draft and prevent every settings write', function() {
-    var env = popup();
-    jiraActionRows(env, [{ label: 'Invalid', changes: changes }]);
-    assert.equal(env.save(), false);
-    assert.equal(env.writes.length, 0);
-    assert.equal(env.control('status').className, 'status failed');
-  });
+  [{ field: "custom", custom: "customfield_12345", value: "{broken" }],
+  [{ field: "custom", custom: "bad_id", value: "null" }],
+  [
+    { field: "labels", value: "a" },
+    { field: "labels", value: "b" },
+  ],
+  [
+    { field: "status", value: "Review" },
+    { field: "status", value: "Done" },
+  ],
+  [{ field: "duedate", value: "2026-02-30" }],
+  [{ field: "duedate", value: "tomorrow" }],
+].forEach((changes, index) => {
+  test(
+    "invalid Jira action " +
+      index +
+      " rejects serialization without dropping draft text",
+    () => {
+      const env = model();
+      jiraActions(env, [{ label: "Invalid", changes }]);
+      const before = plain(env.draft);
+      assert.throws(() => env.save());
+      assert.deepEqual(plain(env.draft), before);
+    },
+  );
 });
 
-test('empty Jira changes are omitted while zero, false and null custom values are retained', function() {
-  var env = popup();
-  jiraActionRows(env, [
-    { label: 'Empty', changes: [{ field: 'status', value: ' ' }, { field: 'labels', value: ', , ' }] },
-    { label: 'Values', changes: [
-      { field: 'custom', custom: 'customfield_1', value: '0' },
-      { field: 'custom', custom: 'customfield_2', value: 'false' },
-      { field: 'custom', custom: 'customfield_3', value: 'null' }
-    ] }
+test("empty Jira changes are omitted while custom zero, false and null values survive round-trip", () => {
+  const env = model();
+  jiraActions(env, [
+    {
+      label: "Empty",
+      changes: [
+        { field: "status", value: " " },
+        { field: "labels", value: ", , " },
+      ],
+    },
+    {
+      label: "Values",
+      changes: [
+        { field: "custom", custom: "customfield_1", value: "0" },
+        { field: "custom", custom: "customfield_2", value: "false" },
+        { field: "custom", custom: "customfield_3", value: "null" },
+      ],
+    },
   ]);
-  env.save();
-  var actions = harness.plain(env.writes[0].data.jiraQuickActions);
+  const actions = env.save().jiraQuickActions;
   assert.equal(actions.length, 1);
-  assert.deepEqual(actions[0].updates.map(function(change) { return change.value; }), [0, false, null]);
+  assert.deepEqual(
+    actions[0].updates.map((update) => update.value),
+    [0, false, null],
+  );
+  assert.deepEqual(model(env.save()).save().jiraQuickActions, actions);
 });
 
-function mrActionRow(id, label, type, labels) {
-  return {dataset:{id:id},querySelector:function(selector) {
-    var field = selector.match(/data-field="([^"]+)"/)[1];
-    return {value:{label:label,type:type,labels:labels}[field]};
-  }};
-}
-
-test('MR action settings normalize labels and prevent incomplete actions from saving', function() {
-  var env = popup();
-  var rows = [mrActionRow('qa',' Remove QA ','remove_labels',' QA ready, bug\nQA ready, тип::ошибка ')];
-  env.document.querySelectorAll = function(selector) { return selector === '#mrActionsList .mr-action' ? rows : []; };
-  assert.equal(env.save(), true);
-  assert.deepEqual(JSON.parse(JSON.stringify(env.writes[0].data.mrActions)), [{id:'qa',label:'Remove QA',type:'remove_labels',labels:'QA ready, bug, тип::ошибка'}]);
-  rows = [mrActionRow('qa','Remove QA','remove_labels',' , \n')];
-  assert.equal(env.save(), false);
-  assert.equal(env.writes.length, 1);
-  assert.equal(env.control('status').textContent, messages.mrActionInvalid.message);
+test("MR actions normalize labels and reject incomplete global and project drafts", () => {
+  for (const scope of ["default", "team/repo"]) {
+    const env = model({ projectProfiles: { "team/repo": {} } }, scope);
+    env.change({
+      actions: [
+        {
+          id: "qa",
+          label: " Remove QA ",
+          type: "remove_labels",
+          labels: " QA ready, bug\nQA ready, тип::ошибка ",
+        },
+      ],
+    });
+    const result = env.save();
+    const settings =
+      scope === "default" ? result : result.projectProfiles[scope];
+    assert.deepEqual(settings.mrActions, [
+      {
+        id: "qa",
+        label: "Remove QA",
+        type: "remove_labels",
+        labels: "QA ready, bug, тип::ошибка",
+      },
+    ]);
+    env.change({
+      actions: [
+        {
+          id: "qa",
+          label: "Remove QA",
+          type: "remove_labels",
+          labels: " , \n",
+        },
+      ],
+    });
+    const before = plain(env.draft);
+    assert.throws(
+      () => env.save(),
+      (error) => error.message === t("mrActionInvalid"),
+    );
+    assert.deepEqual(plain(env.draft), before);
+    env.change({
+      actions: [{ id: "bad", label: "", type: "clear_labels", labels: "" }],
+    });
+    assert.throws(() => env.save());
+  }
 });
 
-test('MR action button order retains custom jobs and stable identities after removal', function() {
-  var env = popup();
-  var ordered = env.context.buildOrderedList(['mr_action_second','custom_0','btn_ship','mr_action_removed','mr_action_first'], {btn_ship:true}, [{label:'Deploy',jobName:'deploy'}],
-    [{id:'first',label:'First',type:'clear_labels',labels:''},{id:'second',label:'Second',type:'clear_reviewers',labels:''}]);
-  assert.deepEqual(Array.from(ordered.slice(0,4), function(item) { return item.key; }), ['mr_action_second','custom_0','btn_ship','mr_action_first']);
-  assert.equal(ordered[0].isCustom, true);
+test("toolbar order retains job and action identity, drops deleted actions and remaps incomplete job rows", () => {
+  const env = model();
+  env.change({
+    order: [
+      "mr_action_second",
+      "custom_1",
+      "btn_ship",
+      "mr_action_removed",
+      "mr_action_first",
+    ],
+    jobs: [
+      { label: "Draft", jobName: "" },
+      { label: "Deploy", jobName: "deploy" },
+    ],
+    actions: [
+      { id: "first", label: "First", type: "clear_labels", labels: "" },
+      { id: "second", label: "Second", type: "clear_reviewers", labels: "" },
+    ],
+  });
+  assert.deepEqual(Array.from(Draft.orderedKeys(env.draft).slice(0, 4)), [
+    "mr_action_second",
+    "custom_1",
+    "btn_ship",
+    "mr_action_first",
+  ]);
+  const result = env.save();
+  assert.deepEqual(result.customJobs, [{ label: "Deploy", jobName: "deploy" }]);
+  assert.deepEqual(result.buttonOrder.slice(0, 4), [
+    "mr_action_second",
+    "custom_0",
+    "btn_ship",
+    "mr_action_first",
+  ]);
 });
 
-test('invalid project MR action preserves the current form and prevents profile writes', function() {
-  var env = popup();
-  env.context.activeTab = 'team/repo';
-  env.document.querySelectorAll = function(selector) { return selector === '#profileMrActionsList .mr-action' ? [mrActionRow('bad','','clear_labels','')] : []; };
-  assert.equal(env.context.saveSettings(), false);
-  assert.equal(env.writes.length, 0);
+test("quick comments, cherry-pick branches, display preferences and reviewer/version fields preserve contracts", () => {
+  const env = model();
+  env.change({
+    comments: [
+      { label: " LGTM ", text: " Looks good " },
+      { label: "Incomplete", text: "" },
+    ],
+    branches: [" release/test ", "  "],
+  });
+  env.set("failed_jobs_limit", "12");
+  env.set("reviewersList", " alice, bob ");
+  env.set("versionFilePreset", "custom");
+  env.set("versionFile", " VERSION ");
+  const result = env.save();
+  assert.deepEqual(result.quickComments, [
+    { label: "LGTM", text: "Looks good" },
+  ]);
+  assert.deepEqual(result.cherry_pick_branches, ["release/test"]);
+  assert.equal(result.failed_jobs_limit, 12);
+  assert.equal(result.reviewersList, "alice, bob");
+  assert.equal(result.versionFile, "VERSION");
+  assert.equal(model(result).draft.fields.versionFile, "VERSION");
+  env.set("failed_jobs_limit", "0");
+  assert.throws(
+    () => env.save(),
+    (error) => error.message === t("displayPreferencesInvalid"),
+  );
+});
+
+test("blank project overrides keep inheritance and do not replace global settings or other profiles", () => {
+  const env = model(
+    {
+      versionFile: "pyproject.toml",
+      versionStrategy: "major",
+      projectProfiles: {
+        "team/repo": {},
+        "other/repo": { versionStrategy: "minor" },
+      },
+    },
+    "team/repo",
+  );
+  assert.equal(env.draft.fields.versionFilePreset, "");
+  assert.equal(env.draft.fields.versionStrategy, "");
+  const result = env.save();
+  assert.deepEqual(Object.keys(result), ["projectProfiles"]);
+  assert.equal(result.projectProfiles["team/repo"].versionFile, undefined);
+  assert.equal(result.projectProfiles["team/repo"].versionStrategy, undefined);
+  assert.equal(result.projectProfiles["other/repo"].versionStrategy, "minor");
+});
+
+test("project cherry-pick branches stay independent and empty lists restore inheritance", () => {
+  const saved = {
+    cherry_pick_branches: ["global/release"],
+    projectProfiles: { "team/repo": {}, "other/repo": { cherry_pick_branches: ["other/release"] } },
+  };
+  const inherited = model(saved, "team/repo");
+  assert.deepEqual(plain(inherited.draft.branches), []);
+  assert.equal(inherited.save().projectProfiles["team/repo"].cherry_pick_branches, undefined);
+  inherited.change({branches: [" release/project ", "", "release/project", "release/second"]});
+  const patch = inherited.save();
+  assert.deepEqual(patch.projectProfiles["team/repo"].cherry_pick_branches, ["release/project", "release/second"]);
+  assert.deepEqual(patch.projectProfiles["other/repo"], saved.projectProfiles["other/repo"]);
+  assert.equal(patch.cherry_pick_branches, undefined);
+  const restored = model({...saved, ...patch}, "team/repo");
+  assert.deepEqual(plain(restored.draft.branches), ["release/project", "release/second"]);
+  restored.change({branches: ["   "]});
+  assert.equal(restored.save().projectProfiles["team/repo"].cherry_pick_branches, undefined);
+  assert.deepEqual(model(saved).save().cherry_pick_branches, ["global/release"]);
 });

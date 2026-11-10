@@ -1,0 +1,2278 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Tự động hóa, Jira, CI/CD và đánh giá AI"
+  },
+  "extDescription": {
+    "message": "Tự động hóa MR GitLab: hợp nhất, nâng phiên bản, Jira, CI/CD và đánh giá bằng AI của bạn. Không cần token API."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "Cách hoạt động"
+  },
+  "openSettingsInTab": {
+    "message": "Mở cài đặt trong tab mới"
+  },
+  "exportSettings": {
+    "message": "Xuất cài đặt"
+  },
+  "importSettings": {
+    "message": "Nhập cài đặt"
+  },
+  "settingsTransferHint": {
+    "message": "Chia sẻ tất cả cài đặt và hồ sơ dự án dưới dạng tệp JSON."
+  },
+  "settingsImportReplace": {
+    "message": "Điều này sẽ thay thế tất cả cài đặt và hồ sơ dự án hiện tại."
+  },
+  "applySettingsImport": {
+    "message": "Thay thế cài đặt"
+  },
+  "cancelSettingsImport": {
+    "message": "Hủy"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — hồ sơ dự án: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Tệp cài đặt không hợp lệ hoặc định dạng không được hỗ trợ."
+  },
+  "settingsFileTooLarge": {
+    "message": "Tệp cài đặt vượt quá giới hạn lưu trữ của Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Không thể xuất cài đặt. Vui lòng thử lại."
+  },
+  "settingsImportFailed": {
+    "message": "Không thể nhập cài đặt. Cấu hình hiện tại của bạn không thay đổi."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Cho phép truy cập trang Jira để nhập các cài đặt này."
+  },
+  "settingsImported": {
+    "message": "Cài đặt đã được nhập!"
+  },
+  "buttonOrder": {
+    "message": "Thứ tự nút"
+  },
+  "buttonOrderHint": {
+    "message": "Kéo để sắp xếp lại. Di chuột để xem mô tả. Công việc tùy chỉnh màu xanh."
+  },
+  "general": {
+    "message": "Chung"
+  },
+  "soundNotifications": {
+    "message": "Thông báo âm thanh"
+  },
+  "desktopNotifications": {
+    "message": "Thông báo trên máy tính"
+  },
+  "showTimeTracker": {
+    "message": "Hiển thị huy hiệu độ tuổi MR"
+  },
+  "skipConfirmations": {
+    "message": "Bỏ qua xác nhận hành động MR"
+  },
+  "uxEnhancer": {
+    "message": "Nâng cấp danh sách MR"
+  },
+  "dimDrafts": {
+    "message": "Làm mờ các MR bản nháp trong danh sách"
+  },
+  "highlightOwnMrs": {
+    "message": "Làm nổi bật các MR của bạn trong danh sách"
+  },
+  "showOnlyMine": {
+    "message": "Chuyển đổi 'Chỉ của tôi' trên trang danh sách"
+  },
+  "toggleOnlyMine": {
+    "message": "Chỉ của tôi"
+  },
+  "versionBump": {
+    "message": "Tăng phiên bản"
+  },
+  "filePath": {
+    "message": "Đường dẫn tệp"
+  },
+  "filePathHint": {
+    "message": "Tệp chứa số phiên bản"
+  },
+  "versionField": {
+    "message": "Trường phiên bản"
+  },
+  "versionFieldHint": {
+    "message": "Khóa JSON hoặc khóa TOML (ví dụ: \"version\" hoặc \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Chiến lược"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Tin nhắn commit"
+  },
+  "commitMessageHint": {
+    "message": "Sử dụng {version} như chỗ giữ"
+  },
+  "quickComments": {
+    "message": "Bình luận nhanh"
+  },
+  "quickCommentsHint": {
+    "message": "Nút một lần nhấp để đăng ngay một bình luận chung lên MR (không nhúng vào mã). Nút xuất hiện trên thanh hành động."
+  },
+  "quickCommentsAdd": {
+    "message": "Thêm bình luận"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Bình luận nhanh"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Nút bình luận mẫu có thể cấu hình trên trang MR. Đăng LGTM, Needs fixes hoặc bất kỳ bình luận tùy chỉnh nào chỉ với một lần nhấp."
+  },
+  "reviewers": {
+    "message": "Người đánh giá"
+  },
+  "reviewersList": {
+    "message": "Danh sách người đánh giá"
+  },
+  "reviewersListHint": {
+    "message": "Tên người dùng cần nhắc trong bình luận Reviewers: (@user1, @user2). Khi được đặt, bỏ qua tìm kiếm bình luận và tác vụ CI. Không đổi phân công người đánh giá GitLab."
+  },
+  "jobName": {
+    "message": "Tên công việc"
+  },
+  "jobNameHint": {
+    "message": "Công việc dự phòng nếu không có bình luận nào khớp với mẫu \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Nút công việc tùy chỉnh"
+  },
+  "customJobsHint": {
+    "message": "Dùng dấu phẩy để nối: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Thêm nút công việc"
+  },
+  "addProfileFor": {
+    "message": "+ Thêm hồ sơ cho $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Hiện tại: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Đã lưu!"
+  },
+  "unsavedChanges": {
+    "message": "Thay đổi chưa được lưu..."
+  },
+  "customFile": {
+    "message": "Tệp tùy chỉnh..."
+  },
+  "plainText": {
+    "message": "văn bản thuần"
+  },
+  "removeProfile": {
+    "message": "Xóa hồ sơ cho $1?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Mặc định"
+  },
+  "buttonsFor": {
+    "message": "Nút cho $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Ghi đè các nút hiển thị cho dự án này."
+  },
+  "leaveEmptyDefault": {
+    "message": "Để trống để dùng mặc định"
+  },
+  "projectSpecificJobs": {
+    "message": "Công việc riêng cho dự án. Dùng dấu phẩy để xâu chuỗi."
+  },
+  "languageLabel": {
+    "message": "Ngôn ngữ"
+  },
+  "languageAuto": {
+    "message": "Tự động (trình duyệt)"
+  },
+  "btnVersion": {
+    "message": "Tăng phiên bản"
+  },
+  "btnRebase": {
+    "message": "Tái cơ sở"
+  },
+  "btnRebaseVersion": {
+    "message": "Tái cơ sở + Phiên bản"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Tái cơ sở + Tự động hợp nhất"
+  },
+  "btnRebaseForce": {
+    "message": "Tái cơ sở + Ép hợp nhất"
+  },
+  "btnShip": {
+    "message": "Tái cơ sở + Phiên bản + Tự động hợp nhất"
+  },
+  "btnForceShip": {
+    "message": "Tái cơ sở + Phiên bản + Ép hợp nhất"
+  },
+  "btnReviewers": {
+    "message": "Người đánh giá"
+  },
+  "btnPipelineRestart": {
+    "message": "Quy trình mới"
+  },
+  "btnPipelineCancel": {
+    "message": "Hủy quy trình"
+  },
+  "btnDraftToggle": {
+    "message": "Chuyển đổi bản nháp / sẵn sàng"
+  },
+  "btnRetryFailed": {
+    "message": "Thử lại các công việc thất bại"
+  },
+  "btnCopyMr": {
+    "message": "Sao chép MR"
+  },
+  "hintVersion": {
+    "message": "Đọc tệp đã cấu hình (ví dụ package.json), tăng phiên bản theo chiến lược chọn (patch/nhỏ/lớn), commit với thông điệp mẫu của bạn."
+  },
+  "hintRebase": {
+    "message": "Rebase nhánh nguồn lên nhánh đích. Không hợp nhất hoặc bật hợp nhất tự động."
+  },
+  "hintRebaseVersion": {
+    "message": "Rebase nhánh lên nhánh đích nếu cần, rồi tăng phiên bản trong tệp đã cấu hình. Không hợp nhất."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Rebase nhánh lên nhánh đích nếu dự án dùng rebase/ff, rồi bật hợp nhất khi pipeline thành công. Dùng cài đặt squash và xóa nhánh của MR."
+  },
+  "hintRebaseForce": {
+    "message": "Rebase và bỏ qua CI, hủy tất cả pipeline đang chạy rồi hợp nhất ngay mà không đợi CI. Dùng cài đặt squash và xóa nhánh của MR."
+  },
+  "hintShip": {
+    "message": "Quy trình đầy đủ: rebase → tăng phiên bản trong tập tin đã cấu hình → chờ MR đồng bộ → chờ pipeline mới → bật hợp nhất tự động."
+  },
+  "hintForceShip": {
+    "message": "Quy trình nhanh: rebase (skip CI) → tăng phiên bản → chờ 15 giây → hủy pipeline → hợp nhất ngay lập tức. Bỏ qua các kiểm tra CI."
+  },
+  "hintReviewers": {
+    "message": "Đăng lời nhắc những người đánh giá đã cấu hình, dùng lại bình luận Reviewer(s): gần đây hoặc chạy tác vụ CI đã cấu hình."
+  },
+  "hintPipelineRestart": {
+    "message": "Tạo một pipeline hoàn toàn mới cho nhánh nguồn thông qua API. Hữu ích khi pipeline bị kẹt hoặc bạn cần chạy lại mới."
+  },
+  "hintPipelineCancel": {
+    "message": "Yêu cầu hủy các pipeline đang chạy, đang chờ hoặc đã được tạo cho MR này."
+  },
+  "hintDraftToggle": {
+    "message": "Thêm hoặc xóa tiền tố \"Draft:\" từ tiêu đề MR. Không thay đổi bất kỳ cài đặt MR nào khác."
+  },
+  "hintRetryFailed": {
+    "message": "Thử lại các công việc thất bại trong pipeline hiện tại của MR. Các công việc thành công không bị ảnh hưởng."
+  },
+  "hintCopyMr": {
+    "message": "Sao chép tiêu đề MR và liên kết vào khay nhớ tạm."
+  },
+  "toastRebasing": {
+    "message": "Đang rebase..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Bật tự động hợp nhất..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Bước 1/2: Đang rebase..."
+  },
+  "toastStep22Automerge": {
+    "message": "Bước 2/2: Bật tự động hợp nhất..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Bước 1/2: Đang rebase (bỏ qua CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Bước 2/2: Hủy pipeline & hợp nhất..."
+  },
+  "toastCancellingMerging": {
+    "message": "Hủy pipeline & hợp nhất..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Đang tạo pipeline mới cho $1…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Hủy pipeline $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Đánh dấu là sẵn sàng..."
+  },
+  "toastMarkingDraft": {
+    "message": "Đánh dấu là bản nháp..."
+  },
+  "toastRetrying": {
+    "message": "Thử lại công việc thất bại $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Không có công việc thất bại nào trong pipeline MR hiện tại"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Không có pipeline đang chạy để hủy"
+  },
+  "toastAssigningReviewers": {
+    "message": "Bài đăng của người đánh giá đề cập..."
+  },
+  "toastRepostingReviewers": {
+    "message": "Đăng lại bình luận của các đánh giá..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Không tìm thấy bình luận của người đánh giá, đang chạy $1…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Nâng cấp phiên bản..."
+  },
+  "toastWaitingSync": {
+    "message": "Đang chờ MR đồng bộ với v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Đang chờ pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Thử hợp nhất tự động $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Đang chờ MR đồng bộ... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Chờ \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Chơi trò \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Thử lại công việc \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Công việc \"$1\" đã thành công, bỏ qua",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Công việc \"$1\" đã là $2 rồi, đang chờ...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 hoàn thành",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 thất bại: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Tiêu đề và liên kết MR đã được sao chép!"
+  },
+  "toastWaiting15s": {
+    "message": "Chờ 15 giây trước khi gộp..."
+  },
+  "confirmRebase": {
+    "message": "Rebase nhánh?"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Tăng phiên bản?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Tự động gộp?"
+  },
+  "confirmAutomerge": {
+    "message": "Bật tự động gộp?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → GỘP NGAY?"
+  },
+  "confirmForce": {
+    "message": "⚠️ GỘP NGAY (bỏ qua pipeline)?"
+  },
+  "confirmShip": {
+    "message": "Rebase → Tăng phiên bản → Tự động gộp?"
+  },
+  "confirmShipNoRebase": {
+    "message": "Tăng phiên bản → Tự động gộp?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Tăng phiên bản → GỘP NGAY?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Tăng phiên bản → GỘP NGAY?"
+  },
+  "confirmNewPipeline": {
+    "message": "Tạo pipeline mới cho nhánh này?"
+  },
+  "confirmCancelPipeline": {
+    "message": "Hủy tất cả các pipeline đang chạy?"
+  },
+  "labelAutomerge": {
+    "message": "Tự động gộp"
+  },
+  "labelForceMerge": {
+    "message": "Gộp bắt buộc"
+  },
+  "labelVersionAutomerge": {
+    "message": "Phiên bản + Tự động gộp"
+  },
+  "labelVersionForceMerge": {
+    "message": "Phiên bản + Gộp bắt buộc"
+  },
+  "labelMarkReady": {
+    "message": "Đánh dấu là Sẵn sàng"
+  },
+  "labelMarkDraft": {
+    "message": "Đánh dấu là Bản nháp"
+  },
+  "labelRetryFailed": {
+    "message": "Chạy lại tác vụ thất bại"
+  },
+  "labelNewPipeline": {
+    "message": "Pipeline mới"
+  },
+  "timeTrackerTitle": {
+    "message": "Thời gian kể từ khi MR được tạo: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "Tăng tốc quy trình yêu cầu hợp nhất của bạn với các hành động chỉ bằng một cú nhấp chuột."
+  },
+  "welcomeQuickStart": {
+    "message": "Bắt đầu nhanh"
+  },
+  "welcomeStep1Title": {
+    "message": "Mở bất kỳ trang Yêu cầu Hợp nhất nào"
+  },
+  "welcomeStep1Desc": {
+    "message": "Mở một trang MR HTTPS trong khi đã đăng nhập vào GitLab.com hoặc GitLab tự lưu trữ của bạn. Cho phép tiện ích mở rộng truy cập vào trang đó."
+  },
+  "welcomeStep2Title": {
+    "message": "Xem các nút hành động xuất hiện"
+  },
+  "welcomeStep2Desc": {
+    "message": "Các nút xuất hiện trên trang MR. Một bộ nút khởi đầu được kích hoạt khi cài đặt lần đầu."
+  },
+  "welcomeStep3Title": { "message": "Tùy chỉnh trong cài đặt" },
+  "welcomeStep3Desc": { "message": "Dùng cửa sổ bật lên để bật hoặc tắt nhanh các tùy chọn. Mở “Tất cả cài đặt” để cấu hình thao tác, phiên bản, Jira, CI/CD và đánh giá bằng AI." },
+  "welcomeEnabledDefault": {
+    "message": "Bật theo mặc định"
+  },
+  "welcomeMoreActions": {
+    "message": "Thêm hành động (kích hoạt trong cài đặt)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Cách hoạt động"
+  },
+  "welcomeHowDesc": {
+    "message": "Tiện ích mở rộng này sử dụng phiên GitLab hiện có của bạn (cookie) để gọi API GitLab thay cho bạn. Không cần mã truy cập cá nhân."
+  },
+  "welcomeHowList1": {
+    "message": "Đối với GitLab.com và GitLab tự lưu trữ qua HTTPS; các tính năng phụ thuộc vào API của máy chủ, bố cục trang và quyền của bạn."
+  },
+  "welcomeHowList2": {
+    "message": "Các hành động sử dụng cùng quyền với người dùng đã đăng nhập của bạn"
+  },
+  "welcomeHowList3": {
+    "message": "Các chuỗi công việc tùy chỉnh chạy ở chế độ nền. Giữ một tab đã đăng nhập trên cùng một GitLab mở để truy cập API."
+  },
+  "welcomeHowList4": {
+    "message": "Hồ sơ theo dự án cho phép bạn tùy chỉnh nút cho các kho lưu trữ khác nhau"
+  },
+  "welcomeTip": { "message": "Tạo hồ sơ dự án trong “Tất cả cài đặt” khi các dự án cần tệp phiên bản, nút thao tác hoặc tác vụ CI khác nhau." },
+  "welcomeOpenSettings": {
+    "message": "Mở Cài đặt"
+  },
+  "cardAutomergeTitle": {
+    "message": "Tự động hợp nhất"
+  },
+  "cardAutomergeDesc": {
+    "message": "Rebase nhánh (nếu cần) và bật hợp nhất khi pipeline thành công."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Pipeline mới"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Tạo một pipeline mới cho nhánh nguồn chỉ với một cú nhấp."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Hủy pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Yêu cầu hủy các pipeline MR đang chạy hoặc đang chờ."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Chuyển đổi bản nháp"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Chuyển MR giữa trạng thái Bản nháp và Sẵn sàng mà không chỉnh sửa tiêu đề."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Tăng phiên bản"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Tăng phiên bản trong package.json, pyproject.toml hoặc tệp tùy chỉnh. Có thể chọn chiến lược patch/minor/major."
+  },
+  "cardShipTitle": {
+    "message": "Phát hành (Phiên bản + Hợp nhất)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase khi cần, tăng phiên bản và yêu cầu tự động hợp nhất. Giữ tab MR mở cho đến khi hành động hoàn tất."
+  },
+  "cardForceMergeTitle": {
+    "message": "Ép hợp nhất"
+  },
+  "cardForceMergeDesc": {
+    "message": "Yêu cầu hợp nhất mà không cần chờ pipeline thành công. Quyền và quy tắc hợp nhất của GitLab vẫn áp dụng."
+  },
+  "cardReviewersTitle": {
+    "message": "Người đánh giá"
+  },
+  "cardReviewersDesc": {
+    "message": "Nhắc các tên người dùng đã cấu hình trong một bình luận, tái sử dụng bình luận của người đánh giá, hoặc chạy một job CI. Không gán trường người đánh giá gốc của GitLab."
+  },
+  "uiCustomization": {
+    "message": "Tùy chỉnh giao diện"
+  },
+  "collapseBars": {
+    "message": "Nút thu gọn thanh đầu"
+  },
+  "hideRightSidebar": {
+    "message": "Ẩn thanh bên phải trên các trang MR"
+  },
+  "collapseTopBars": {
+    "message": "Chuyển đổi thanh trên cùng"
+  },
+  "cardCollapseTitle": {
+    "message": "Thu gọn thanh trên cùng"
+  },
+  "cardCollapseDesc": {
+    "message": "Thêm một nút để thu gọn/mở rộng thanh điều hướng GitLab. Tiết kiệm không gian và giúp bạn tập trung vào nội dung."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Ẩn các phần giao diện người dùng"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Ẩn thanh bên phải trên các trang MR để có khu vực nội dung toàn chiều rộng."
+  },
+  "jiraIntegration": {
+    "message": "Tích hợp Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL Jira Server/Data Center, ví dụ: https://jira.company.com — đăng nhập vào Jira, sau đó nhấn Cho phép truy cập trang Jira. Cloud không được hỗ trợ đầy đủ."
+  },
+  "jiraGrantAccess": {
+    "message": "Cho phép truy cập trang Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Tiện ích được phép truy cập $1."
+  },
+  "jiraConnectionUnchecked": { "message": "Chưa kiểm tra kết nối." },
+  "jiraConnectionCheck": { "message": "Kiểm tra kết nối" },
+  "jiraConnectionChecking": { "message": "Đang kiểm tra kết nối đến $1…" },
+  "jiraConnectionConnected": { "message": "Lần kiểm tra gần nhất của $1: đã đăng nhập; API khả dụng." },
+  "jiraConnectionSignIn": { "message": "Đăng nhập vào Jira" },
+  "jiraUrlInvalid": {
+    "message": "Nhập URL cơ sở HTTPS của Jira, không kèm thông tin đăng nhập/truy vấn/đoạn."
+  },
+  "jiraErrorAuth": {
+    "message": "Phiên làm việc Jira của bạn đã hết hạn hoặc cần đăng nhập. Mở Jira, đăng nhập, sau đó thử tải lại."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira từ chối quyền truy cập vào vấn đề hoặc thao tác này. Kiểm tra tài khoản và quyền hạn của bạn trong Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Tiện ích mở rộng không thể truy cập vào trang Jira này. Kiểm tra quyền truy cập trang và URL Jira trong cài đặt tiện ích."
+  },
+  "jiraErrorNetwork": {
+    "message": "Không thể kết nối tới Jira. Kiểm tra kết nối, VPN và URL Jira của bạn, sau đó thử tải lại."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira tạm thời không khả dụng hoặc đang giới hạn các yêu cầu. Vui lòng đợi và thử tải lại."
+  },
+  "jiraErrorNotFound": {
+    "message": "Không tìm thấy vấn đề Jira hoặc vấn đề không hiển thị với tài khoản của bạn."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira trả về phản hồi không được hỗ trợ. Kiểm tra URL và khả năng tương thích với Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "Yêu cầu Jira thất bại. Mở Jira để kiểm tra vấn đề và quyền truy cập của bạn."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Thay đổi có thể đã được áp dụng. Kiểm tra vấn đề trong Jira trước khi lặp lại hành động."
+  },
+  "jiraErrorTransitions": {
+    "message": "Không thể tải các chuyển tiếp Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Mở Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Thử tải lại"
+  },
+  "jiraDismissError": {
+    "message": "Đóng"
+  },
+  "jiraTicketRegex": {
+    "message": "Bảng xếp hạng vé"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Biểu thức chính quy để lấy mã vé từ tiêu đề MR. Mặc định: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Hiển thị biểu tượng loại vấn đề & ưu tiên trên danh sách MR"
+  },
+  "jiraQuickActions": {
+    "message": "Hành động nhanh"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Chọn bất kỳ tổ hợp trường nào cho mỗi nút. Chỉ giữ lại các thay đổi mà nó nên thực hiện. Các phiên bản và thành phần phải đã tồn tại trong dự án Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Thêm hành động"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Nhãn"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Tình trạng"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Tên người dùng"
+  },
+  "jiraSidebarStatus": {
+    "message": "Tình trạng"
+  },
+  "jiraSidebarType": {
+    "message": "Loại"
+  },
+  "jiraSidebarPriority": {
+    "message": "Ưu tiên"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Người được chuyển nhượng"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Chưa được gán"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Tìm kiếm người dùng..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Không tìm thấy người dùng nào"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Hủy gán"
+  },
+  "jiraSidebarReporter": {
+    "message": "Phóng viên"
+  },
+  "jiraSidebarLabels": {
+    "message": "Nhãn"
+  },
+  "jiraSidebarCreated": {
+    "message": "Đã tạo"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Đã cập nhật"
+  },
+  "jiraSidebarDescription": {
+    "message": "Mô tả"
+  },
+  "jiraSidebarEpic": {
+    "message": "Sử thi"
+  },
+  "jiraSidebarSprint": {
+    "message": "Chạy nước rút"
+  },
+  "jiraSidebarComponents": {
+    "message": "Thành phần"
+  },
+  "jiraSidebarResolution": {
+    "message": "Kết quả giải quyết"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Ảnh hưởng"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Phiên bản sửa lỗi."
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Không có"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Không tìm thấy phiên bản nào"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Tìm kiếm các phiên bản..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Không thể cập nhật các phiên bản sửa lỗi"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Tệp đính kèm"
+  },
+  "jiraSidebarComments": {
+    "message": "Bình luận"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Thêm bình luận..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Bình luận"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Hiển thị thêm bình luận"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Chưa có bình luận nào"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Không thể đăng bình luận"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Xóa bình luận"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Xóa bình luận này?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Không thể xóa bình luận"
+  },
+  "cardJiraTitle": {
+    "message": "Biểu tượng trạng thái Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Hiển thị trạng thái vé Jira trên trang danh sách MR. Phân tích ID vé từ tiêu đề MR (ví dụ: CCT-1111) và hiển thị biểu tượng trạng thái màu. Đặt URL Jira của bạn trong cài đặt."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Biểu thức chính quy vé tùy chỉnh"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Cấu hình biểu thức chính quy tùy chỉnh để phân tích ID vé Jira từ tiêu đề MR. Hữu ích khi dự án của bạn sử dụng tiền tố vé không chuẩn."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Thanh bên vé Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Nhấp vào bất kỳ biểu tượng Jira nào để mở thanh bên với đầy đủ chi tiết vé — tóm tắt, trạng thái, loại, mức độ ưu tiên, người được giao và mô tả. Đọc, đăng và xóa các bình luận của riêng bạn mà không rời GitLab. Phiên bản sửa chữa có thể được chọn từ các phiên bản có sẵn của dự án trực tiếp trong thanh bên."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Tệp đính kèm trong thanh bên"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Xem hình ảnh, video và tệp từ các vé Jira trực tiếp trong thanh bên. Hình ảnh và video sẽ mở trong chế độ lightbox toàn màn hình."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Biểu tượng Jira trên trang MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Biểu tượng trạng thái vé Jira được hiển thị trong tiêu đề MR trên trang chi tiết. Nhấp vào biểu tượng để mở thanh bên với đầy đủ chi tiết vé."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Thay đổi trạng thái Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Thay đổi trạng thái vé trực tiếp từ thanh bên. Chỉ hiển thị các chuyển đổi có sẵn từ trạng thái hiện tại."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Thay đổi người được giao Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Nhấp vào người được giao để tìm kiếm và chỉ định lại. Tự động hoàn thành với ảnh đại diện, nút bỏ chỉ định để xóa người được giao."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Hành động nhanh Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Nút một cú nhấp cho trạng thái, người được giao, nhãn, phiên bản và các trường khác. Mỗi nút có thể cập nhật một trường hoặc nhiều trường."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Biểu tượng loại vấn đề & độ ưu tiên"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Hiển thị biểu tượng loại vấn đề và độ ưu tiên của Jira bên cạnh huy hiệu trạng thái trên danh sách MR và trang chi tiết. Sử dụng biểu tượng gốc của Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Rebase"
+  },
+  "cardRebaseDesc": {
+    "message": "Rebase nhánh nguồn lên nhánh đích mà không gộp."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Rebase + Phiên bản"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Rebase nhánh và tăng phiên bản chỉ với một cú nhấp. Không gộp."
+  },
+  "cardCopyMrTitle": {
+    "message": "Sao chép MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Sao chép tiêu đề MR và liên kết vào clipboard chỉ với một cú nhấp."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Thử lại các công việc thất bại"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Thử lại các công việc thất bại trong pipeline hiện tại của MR. Các công việc thành công không bị ảnh hưởng."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Cải tiến trang danh sách MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Tô mờ các MR nháp"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Tô mờ trực quan các MR nháp trên trang danh sách merge requests để bạn có thể tập trung vào các MR đang hoạt động."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Nổi bật MR của bạn"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Nổi bật các MR của bạn trong danh sách bằng viền màu xanh để nhận diện nhanh."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Chuyển đổi \"Chỉ của tôi\""
+  },
+  "cardOnlyMineDesc": {
+    "message": "Chuyển đổi một lần nhấp để lọc danh sách MR chỉ hiển thị merge requests của bạn."
+  },
+  "cardMrAgeTitle": {
+    "message": "Huy hiệu độ tuổi MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Hiển thị MR được tạo cách đây bao lâu, được hiển thị dưới dạng huy hiệu trên trang MR."
+  },
+  "showReviewerBadge": {
+    "message": "Huy hiệu \"Đánh giá của bạn\" từ bình luận"
+  },
+  "badgeYourReview": {
+    "message": "Đánh giá của bạn"
+  },
+  "badgeYourReviewHint": {
+    "message": "Bạn được đề cập là người đánh giá trong các bình luận MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Huy hiệu \"Đánh giá của bạn\""
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Tìm kiếm các bình luận cũ nhất cho “Reviewer(s): @you”. Độ sâu quét có thể cấu hình (mặc định là 10). Tách biệt với tính năng reviewer tích hợp sẵn của GitLab."
+  },
+  "showNeedsReview": {
+    "message": "Chuyển đổi \"Cần tôi xem xét\" trên trang danh sách"
+  },
+  "toggleNeedsReview": {
+    "message": "Cần tôi xem xét"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Chuyển đổi \"Cần tôi xem xét\""
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Chuyển đổi một click để lọc danh sách MR chỉ hiển thị các merge request mà bạn được phân công làm reviewer."
+  },
+  "showCopyMr": {
+    "message": "Nút sao chép trên các mục trong danh sách MR"
+  },
+  "showThreadsBadge": {
+    "message": "Số lượng chủ đề chưa giải quyết trên danh sách MR"
+  },
+  "showSizeBadge": {
+    "message": "Nhãn kích thước MR (S/M/L/XL) trên danh sách MR"
+  },
+  "showConflictsBadge": {
+    "message": "Hiển thị chỉ số xung đột trên danh sách MR"
+  },
+  "showApprovalBadge": {
+    "message": "Hiển thị số lượng phê duyệt và chỉ số phê duyệt của tôi trên danh sách MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Bạn đã phê duyệt"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Bạn"
+  },
+  "cardThreadsTitle": {
+    "message": "Số lượng chủ đề chưa giải quyết"
+  },
+  "cardThreadsDesc": {
+    "message": "Hiển thị số lượng chủ đề chưa giải quyết. “+” đánh dấu một trang đầu đầy đủ; “?” có nghĩa là số lượng không khả dụng."
+  },
+  "cardSizeTitle": {
+    "message": "Nhãn kích thước MR"
+  },
+  "cardSizeDesc": {
+    "message": "Huy hiệu S/M/L/XL với ngưỡng dòng và tệp có thể cấu hình trong quy tắc và giới hạn hiển thị."
+  },
+  "conflictsBadge": {
+    "message": "Xung đột"
+  },
+  "conflictsBadgeHint": {
+    "message": "MR này có xung đột hợp nhất cần được giải quyết"
+  },
+  "cardConflictsTitle": {
+    "message": "Chỉ báo xung đột"
+  },
+  "cardConflictsDesc": {
+    "message": "Hiển thị huy hiệu CONFLICTS màu đỏ trên trang chi tiết MR khi nhánh có xung đột hợp nhất."
+  },
+  "cardApprovalTitle": {
+    "message": "Chỉ báo phê duyệt của tôi"
+  },
+  "cardApprovalDesc": {
+    "message": "Hiển thị bạn có phê duyệt mỗi MR trên trang danh sách hay không. Phân biệt phê duyệt của bạn với phê duyệt của người khác."
+  },
+  "showBranches": {
+    "message": "Hiển thị nhánh nguồn và nhánh đích trên danh sách MR"
+  },
+  "showBranchesLinks": {
+    "message": "Làm cho tên nhánh có thể nhấp được (mở cây nhánh)"
+  },
+  "cardBranchesTitle": {
+    "message": "Tên nhánh trên danh sách MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Hiển thị tên nhánh nguồn và nhánh đích trên mỗi MR trong danh sách, để bạn có thể thấy mã đến từ đâu và được hợp nhất vào đâu."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Sao chép MR từ danh sách"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Thêm nút sao chép vào mỗi MR trên trang danh sách. Sao chép tiêu đề MR và liên kết vào clipboard chỉ với một cú nhấp."
+  },
+  "versionFromTarget": {
+    "message": "Đọc phiên bản từ nhánh mục tiêu"
+  },
+  "versionFromTargetHint": {
+    "message": "Đọc phiên bản hiện tại từ nhánh mục tiêu (ví dụ: main) thay vì nhánh nguồn. Sử dụng điều này với chiến lược commit hợp nhất để tránh các phiên bản cũ."
+  },
+  "showFailedJobView": {
+    "message": "Hiển thị chế độ xem nhanh công việc thất bại trên trang MR"
+  },
+  "failedJobTraceError": {
+    "message": "Không thể tải bản ghi"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Chế độ xem nhanh công việc thất bại"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Xem trước các công việc thất bại và phần cuối của nhật ký trên trang MR. Số lượng công việc và dòng có thể cấu hình trong Quy tắc và giới hạn hiển thị."
+  },
+  "showCmdPalette": {
+    "message": "Bảng lệnh (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Báo cáo hoạt động hàng ngày"
+  },
+  "standupJiraEnrich": {
+    "message": "Hiển thị tiêu đề Jira ticket trong báo cáo"
+  },
+  "cmdPlaceholder": {
+    "message": "Gõ một lệnh..."
+  },
+  "cmdFooterNavigate": {
+    "message": "điều hướng"
+  },
+  "cmdFooterSelect": {
+    "message": "chọn"
+  },
+  "cmdFooterClose": {
+    "message": "đóng"
+  },
+  "cmdEmpty": {
+    "message": "Không có lệnh nào phù hợp"
+  },
+  "cmdGroupNav": {
+    "message": "Điều hướng"
+  },
+  "cmdGroupMr": {
+    "message": "Hành động MR"
+  },
+  "cmdGroupExt": {
+    "message": "Tiện ích mở rộng"
+  },
+  "cmdGroupFiles": {
+    "message": "Tệp"
+  },
+  "cmdNavMrs": {
+    "message": "Đi tới Yêu cầu Hợp nhất"
+  },
+  "cmdNavIssues": {
+    "message": "Đi tới Vấn đề"
+  },
+  "cmdNavPipelines": {
+    "message": "Đi tới Ống dẫn"
+  },
+  "cmdNavBranches": {
+    "message": "Đi tới Nhánh"
+  },
+  "cmdNavRepo": {
+    "message": "Đi tới Kho lưu trữ"
+  },
+  "cmdNavTags": {
+    "message": "Đi tới Nhãn"
+  },
+  "cmdNavCommits": {
+    "message": "Đi tới Cam kết"
+  },
+  "cmdNavWiki": {
+    "message": "Đi tới Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Đi tới Đoạn trích"
+  },
+  "cmdNavSettings": {
+    "message": "Đi tới Cài đặt"
+  },
+  "cmdCopyPath": {
+    "message": "Sao chép đường dẫn dự án"
+  },
+  "cmdGroupPinned": {
+    "message": "Ghim"
+  },
+  "cmdExtSettings": {
+    "message": "Mở cài đặt tiện ích mở rộng"
+  },
+  "cmdExtStandup": {
+    "message": "Tạo báo cáo hoạt động"
+  },
+  "standupTitle": {
+    "message": "Hoạt động hàng ngày"
+  },
+  "standupCopy": {
+    "message": "Sao chép vào bộ nhớ tạm"
+  },
+  "standupCopied": {
+    "message": "Đã sao chép!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Bảng lệnh"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Nhấn Cmd+K (Mac) hoặc Ctrl+K (Win) trên bất kỳ trang GitLab nào. Điều hướng, thực hiện hành động MR, tìm kiếm tệp theo tên và mở chúng trong kho."
+  },
+  "cardStandupTitle": {
+    "message": "Báo cáo hoạt động hàng ngày"
+  },
+  "cardStandupDesc": {
+    "message": "Tạo báo cáo hoạt động hàng ngày từ dữ liệu GitLab của bạn. Hiển thị các MR đã tạo, đã hợp nhất và đã xem xét. Sao chép và dán vào Slack hoặc Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick sang các nhánh"
+  },
+  "showGroupPlay": {
+    "message": "Nút phát nhóm trong pipeline (chạy các công việc thủ công còn lại)"
+  },
+  "showCommitVersion": {
+    "message": "Biểu tượng phiên bản trên trang commits"
+  },
+  "showCommitVersionHint": {
+    "message": "Hiển thị phiên bản từ tệp phiên bản (xem Cài đặt tăng phiên bản) bên cạnh mỗi commit; được làm nổi bật nơi phiên bản thay đổi"
+  },
+  "groupPlayTooltip": {
+    "message": "Chạy các công việc thủ công còn lại trong nhóm này"
+  },
+  "groupPlayError": {
+    "message": "Không thể bắt đầu một số công việc"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Nút phát nhóm"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Trên biểu đồ pipeline, một nút phát bên cạnh nhóm công việc chạy tất cả các công việc thủ công còn lại — ngay cả khi một số công việc trong nhóm đã bắt đầu và nút của GitLab đã biến mất."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Biểu tượng phiên bản trên commits"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Trên trang commits của nhánh, mỗi commit hiển thị phiên bản dự án từ tệp phiên bản của bạn tại commit đó. Mặc định bị làm mờ, được làm nổi bật nơi phiên bản thay đổi — xem ngay commit nào đã đi vào bản phát hành nào."
+  },
+  "cherryPickBranches": {
+    "message": "Nhánh đích cho cherry-pick"
+  },
+  "cherryPickProjectBranchesHint": { "message": "Đặt các nhánh cho dự án này. Để trống danh sách để sử dụng các nhánh chung." },
+  "cherryPickNoBranches": { "message": "Chưa cấu hình nhánh nào." },
+  "cherryPickBranchesHint": {
+    "message": "Các nhánh đích mặc định cho cherry-pick. Bạn có thể thêm hoặc xóa nhánh trong hộp thoại."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Thêm nhánh"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick sang các nhánh"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Đóng"
+  },
+  "cherryPickInProgress": {
+    "message": "Đang cherry-pick…"
+  },
+  "cherryPickRemove": {
+    "message": "Xóa"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Tên nhánh"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Đã cherry-pick sang $1 nhánh",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Bắt đầu yêu cầu hợp nhất mới với những thay đổi này"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Mặc định tạo MR khi cherry-pick"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Khi xung đột — commit mà không có file phiên bản"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Nếu cherry-pick thất bại do xung đột tệp phiên bản, áp dụng lại thay đổi thành commit mới và bỏ qua tệp phiên bản"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Tăng phiên bản khi dự phòng"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Tăng phiên bản trong nhánh mục tiêu trong cùng commit dự phòng"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Dự phòng thông minh chỉ xử lý xung đột file phiên bản. Xung đột ở file khác"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Tệp đã được chỉnh sửa trong nhánh đích — không thể cherry-pick an toàn"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Tệp phiên bản chứa các thay đổi vượt quá phiên bản — không thể bỏ qua an toàn"
+  },
+  "commitsJiraField": {
+    "message": "Trường Jira cho huy hiệu commit"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Tên trường Jira hiển thị dưới dạng huy hiệu trên trang commit (ví dụ: fixVersions, status, labels, components). Yêu cầu URL Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick sang các nhánh"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick trực tiếp sang các nhánh được chọn hoặc thông qua các MR mới. Khi bật Smart fallback, các xung đột trong tệp phiên bản đã được xác minh có thể được phát lại mà không có tệp đó, tùy chọn tăng phiên bản. Các thay đổi không an toàn sẽ dừng để kiểm tra."
+  },
+  "mrDetailEnhancements": {
+    "message": "Cải tiến chi tiết MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Cảnh báo tệp nhạy cảm trong diff"
+  },
+  "showGitCommands": {
+    "message": "Nút lệnh Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "NHẠY CẢM: $1 tệp",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "MR này chỉnh sửa các tệp nhạy cảm về bảo mật:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Cảnh báo tập tin nhạy cảm"
+  },
+  "cardSensitiveDesc": {
+    "message": "Đánh dấu các tập tin nhạy cảm bằng các quy tắc tích hợp, các mẫu bổ sung và loại trừ. Cấu hình chúng trong Quy tắc hiển thị và giới hạn."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Nút lệnh Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Sao chép lệnh checkout, pull và hard-reset. Kiểm tra kho lưu trữ và remote origin của bạn trước khi chạy; hard reset sẽ bỏ các thay đổi cục bộ."
+  },
+  "updateBannerText": {
+    "message": "Phiên bản mới đã có! Xem những gì mới:"
+  },
+  "updateChangelog": {
+    "message": "Nhật ký thay đổi"
+  },
+  "updateReviewAsk": {
+    "message": "Thích tiện ích mở rộng này?"
+  },
+  "updateReviewLink": {
+    "message": "Để lại đánh giá"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Đánh giá hỗ trợ AI, từ đầu đến cuối"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Đánh giá một MR, sửa phản hồi đã chọn, chuẩn bị trả lời và kiểm tra lại các thay đổi. Xem trước và chỉnh sửa nhận xét trước khi đăng lên GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Hướng dẫn đánh giá AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Không tự động tải lên AI. Sao chép ngữ cảnh tự mình; các nhận xét chỉ được gửi đến GitLab khi bạn chọn Xuất bản hoặc Thêm vào đánh giá."
+  },
+  "aiReviewTitle": {
+    "message": "Đánh giá AI"
+  },
+  "aiReviewOpen": {
+    "message": "Đang đánh giá AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Sao chép nhận xét cho AI"
+  },
+  "aiReviewLoading": {
+    "message": "Đang tải các cuộc thảo luận…"
+  },
+  "aiReviewRetry": {
+    "message": "Thử lại"
+  },
+  "aiReviewRefresh": {
+    "message": "Làm mới"
+  },
+  "aiReviewClose": {
+    "message": "Đóng"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Xác nhận đóng các hộp thoại đánh giá với công việc chưa lưu"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Đóng hộp thoại này? Các chỉnh sửa chưa lưu và dữ liệu đã nhập sẽ bị mất."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Đóng hộp thoại này và ngừng gửi thêm? Các nhận xét đã gửi sẽ vẫn còn trong GitLab. Các chỉnh sửa chưa lưu sẽ bị mất."
+  },
+  "aiReviewAll": {
+    "message": "Tất cả"
+  },
+  "aiReviewUnresolved": {
+    "message": "Chưa giải quyết"
+  },
+  "aiReviewResolved": {
+    "message": "Đã giải quyết"
+  },
+  "aiReviewGeneral": {
+    "message": "Nhận xét chung"
+  },
+  "aiReviewSearch": {
+    "message": "Tìm kiếm nhận xét hoặc đường dẫn tệp"
+  },
+  "aiReviewSelectShown": {
+    "message": "Chọn hiển thị"
+  },
+  "aiReviewClear": {
+    "message": "Xóa lựa chọn"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Bao gồm thay đổi mã"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Dành cho các đánh giá mới và lặp lại. Bỏ qua nếu AI có thể đọc kho lưu trữ. Các đoạn trích ngắn đính kèm trong phản hồi vẫn được giữ lại."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Tính đến các cuộc thảo luận hiện có"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Thêm các bình luận đã đăng làm bộ lọc trùng lặp: AI xem xét toàn bộ MR một cách độc lập, sau đó bỏ các phát hiện trùng lặp với chúng. Nó không trả lời các cuộc thảo luận đó."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Bao gồm mô tả"
+  },
+  "aiReviewPrompt": {
+    "message": "Hướng dẫn cho AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Khôi phục lệnh nhắc mặc định"
+  },
+  "aiReviewPreview": {
+    "message": "Xem trước"
+  },
+  "aiReviewCopied": {
+    "message": "Đã sao chép!"
+  },
+  "aiReviewEmpty": {
+    "message": "Không có bình luận phù hợp."
+  },
+  "aiReviewPartial": {
+    "message": "Một số dữ liệu không thể tải được. Tệp xuất khẩu bao gồm cảnh báo và chỉ chứa ngữ cảnh hiện có."
+  },
+  "aiReviewSelectedCount": {
+    "message": "Đã chọn $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Chọn văn bản xem trước và sao chép thủ công."
+  },
+  "aiReviewScopeComment": {
+    "message": "Bình luận đã chọn"
+  },
+  "aiReviewScopeThread": {
+    "message": "Thảo luận đã chọn"
+  },
+  "aiReviewPreparing": {
+    "message": "Đang chuẩn bị ngữ cảnh mã…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Không thể tải các cuộc thảo luận. Thử lại, hoặc sao chép ngữ cảnh hiện có."
+  },
+  "aiReviewShowReplies": {
+    "message": "Hiển thị trả lời"
+  },
+  "aiReviewSize": {
+    "message": "Khoảng $1 ký tự",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Hủy"
+  },
+  "showAiReviewCopy": {
+    "message": "Hiển thị bản sao đánh giá AI và các điều khiển nhập"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Sao chép toàn bộ MR để đánh giá mới, phản hồi được chọn để sửa lỗi, hoặc nhập các nhận xét và trả lời của AI với bản xem trước có thể chỉnh sửa trước khi gửi."
+  },
+  "aiReviewFresh": {
+    "message": "Đánh giá từ đầu"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Nhắc nhở để đánh giá mới"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Tối đa 1.500 ký tự. Dùng để đánh giá toàn bộ MR và tất cả các commit của nó, tách biệt với việc sửa lỗi phản hồi. Bạn có thể chỉ định ngôn ngữ phản hồi. Để trống để sử dụng nhắc nhở tiếng Anh mặc định."
+  },
+  "aiReviewPromptHint": {
+    "message": "Tối đa 1.500 ký tự. Để trống để sử dụng nhắc nhở tiếng Anh mặc định. Áp dụng cho tất cả các dự án."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Nhắc nhở chưa được lưu. Sử dụng tối đa 1.500 ký tự và loại bỏ các ký tự điều khiển bất thường."
+  },
+  "settingsSaveFailed": {
+    "message": "Không thể lưu cài đặt. Hãy thử lại."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Các thay đổi ở đây áp dụng cho xuất này. Đặt gợi ý mặc định của bạn trong cài đặt tiện ích mở rộng."
+  },
+  "aiReviewReady": {
+    "message": "Xem trước đã sẵn sàng để sao chép."
+  },
+  "aiReviewLoadHint": {
+    "message": "Tải các cuộc thảo luận trực tiếp từ GitLab, bao gồm cả các bình luận không hiển thị trên trang này."
+  },
+  "aiReviewCommentContext": {
+    "message": "Các phản hồi khác được bao gồm làm ngữ cảnh. Chỉ các bình luận được chọn mới yêu cầu thực hiện hành động."
+  },
+  "aiReviewOutdated": {
+    "message": "Phiên bản trước"
+  },
+  "aiReviewLink": {
+    "message": "Mở thảo luận"
+  },
+  "aiReviewLoaded": {
+    "message": "Đã tải $1 cuộc thảo luận"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Chuẩn bị ngữ cảnh mã: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Bình luận này không có sẵn từ GitLab. Nó có thể vẫn đang được lưu hoặc đã bị xóa. Làm mới để thử lại."
+  },
+  "aiReviewImportOpen": {
+    "message": "Nhập đánh giá AI…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Nhập đánh giá AI"
+  },
+  "aiReviewImportHelp": {
+    "message": "Dán phản hồi AI bên dưới để kiểm tra, chỉnh sửa và chọn những gì sẽ xuất bản. Các phím tắt gợi ý nằm trong cài đặt nâng cao."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Sao chép lệnh nhắc cho đánh giá mới"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Đang chuẩn bị lệnh nhắc…"
+  },
+  "aiReviewImportInput": {
+    "message": "Phản hồi AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Dán phản hồi JSON đầy đủ chứa các bình luận mới hoặc trả lời cho các thảo luận. Bạn có thể chỉnh sửa văn bản và chọn những gì muốn gửi trong bản xem trước."
+  },
+  "aiReviewImportValidate": {
+    "message": "Kiểm tra và xem trước"
+  },
+  "aiReviewImportChecking": {
+    "message": "Đang kiểm tra bản sửa MR, các dòng và các bình luận hiện có…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Kiểm tra phản hồi với các bình luận xem trước. Bạn có thể chỉnh sửa văn bản của chúng, bỏ chọn hộp để loại trừ mục, hoặc thêm bình luận chung."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Chọn các bình luận sẵn sàng"
+  },
+  "aiReviewImportPreview": {
+    "message": "Bình luận để gửi"
+  },
+  "aiReviewImportReady": {
+    "message": "Sẵn sàng"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Cần chỉnh sửa"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Không thể tải các thay đổi tệp bổ sung: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Sự khác biệt bổ sung vượt quá giới hạn nhập 16 MiB. Chỉ các bình luận trên các dòng đã xác minh mới có thể được nhập."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Đã tồn tại"
+  },
+  "aiReviewImportPublished": {
+    "message": "Đã xuất bản"
+  },
+  "aiReviewImportDraft": {
+    "message": "Đã thêm vào đánh giá"
+  },
+  "aiReviewImportFailed": {
+    "message": "Chưa gửi"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Giao hàng chưa được xác nhận"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Chưa gửi"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Dòng mới $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Dòng cũ $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Xuất bản đã chọn"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Thêm vào đánh giá"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Xuất bản sẽ gửi nhận xét ngay lập tức. Thêm vào đánh giá lưu các nhận xét chưa xuất bản để đánh giá trên GitLab của bạn."
+  },
+  "aiReviewImportSending": {
+    "message": "Đang gửi nhận xét đã chọn…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Hoàn tất. Kiểm tra kết quả bên cạnh mỗi nhận xét."
+  },
+  "aiReviewImportStopped": {
+    "message": "Đã dừng. Kiểm tra kết quả bên cạnh mỗi nhận xét trước khi thử lại."
+  },
+  "aiReviewImportEdited": {
+    "message": "Phản hồi đã thay đổi. Kiểm tra lại trước khi gửi."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Không thể dùng khay nhớ tạm. Chọn văn bản bên dưới và sao chép thủ công."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Không thể xác nhận giao hàng. Kiểm tra GitLab trước khi thử lại."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Gợi ý cho AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Sẵn sàng: $1. Các nhận xét khác cần chú ý.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Dừng gửi"
+  },
+  "aiReviewImportError": {
+    "message": "Không thể hoàn thành thao tác"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Không thể chuẩn bị gợi ý"
+  },
+  "aiReviewImportWarning": {
+    "message": "Thông báo đánh giá"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Đánh giá AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Ngôn ngữ phản hồi AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Tự động — ngôn ngữ hội thoại"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Áp dụng cho tất cả các nhiệm vụ đánh giá và lệnh nhập. Các khóa JSON, đường dẫn và mã không được dịch. Chỉ sao chép định dạng không thêm lệnh ngôn ngữ."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Lệnh nhắc để sửa phản hồi"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Lệnh nhắc cho các bình luận đánh giá mới"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Lệnh nhắc cho các phản hồi đối với phản hồi"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Tối đa 1500 ký tự. Dùng cho phím tắt đánh giá mới trong Nhập. Các tab nhiệm vụ sử dụng lệnh nhắc riêng. Ngữ cảnh MR và định dạng JSON được thêm tự động."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Tối đa 1500 ký tự. Dùng cho phản hồi các thảo luận đã chọn trong Sao chép hoặc tất cả các thảo luận chưa giải quyết trong Nhập. Đặt phong cách và ngôn ngữ; ngữ cảnh và định dạng phản hồi được thêm tự động."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Lệnh nhắc phản hồi cho tất cả các thảo luận chưa giải quyết"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Sao chép định dạng phản hồi"
+  },
+  "aiReviewImportFormat": {
+    "message": "Định dạng phản hồi cho AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Chuẩn bị phản hồi"
+  },
+  "aiReviewImportReply": {
+    "message": "Trả lời thảo luận"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Bình luận gốc"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Phản hồi của bạn"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Giải quyết thảo luận sau khi xuất bản"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Thảo luận đã được giải quyết."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Phản hồi đã được xuất bản, nhưng thảo luận chưa được giải quyết. Bạn có thể giải quyết nó trong GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Phản hồi đã được xuất bản. Việc giải quyết chưa được xác nhận; kiểm tra thảo luận trong GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Việc giải quyết là tùy chọn và mặc định tắt. Nó chỉ thực hiện sau khi xuất bản phản hồi. Thêm bản nháp không bao giờ giải quyết một thảo luận."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Phiên bản MR đã thay đổi. Các phản hồi vẫn được liên kết với các thảo luận của chúng; xác minh văn bản của chúng với các bản sửa được đẩy lên. Những phát hiện mới từ phiên bản cũ bị chặn."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Những phản hồi này liên kết với các cuộc thảo luận, không phải một bản sửa mã. Trước khi xuất bản, hãy xác minh rằng các sửa lỗi được mô tả đã được đẩy lên MR này."
+  },
+  "aiReviewImportEdit": {
+    "message": "Chỉnh sửa văn bản"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Thêm bình luận"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Lưu thay đổi"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Hủy"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Văn bản bình luận"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Chỉnh sửa văn bản, sau đó lưu để kiểm tra các thay đổi trước khi xuất bản."
+  },
+  "aiReviewImportEditError": {
+    "message": "Không thể lưu thay đổi"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Bản xem trước có thể chứa tối đa 200 bình luận."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Nhắc nhở kiểm tra lại"
+  },
+  "aiReviewFileFilters": {
+    "message": "Các tệp cần xem xét"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Áp dụng cho đánh giá mới, đánh giá lại và lời nhắc tìm lỗi mới; không áp dụng cho phản hồi được chọn hay lời nhắc trả lời. Mỗi mẫu trên một dòng hoặc phân cách bằng dấu phẩy; # bắt đầu chú thích. Dùng *, **, ?. Quy tắc loại trừ được ưu tiên, kể cả đường dẫn cũ khi đổi tên. Danh sách trống bao gồm tất cả. Ví dụ: src/**, *.test.js, dist/. Tối đa 1500 ký tự mỗi danh sách."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Bao gồm các phần mở rộng (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Bao gồm đường dẫn tệp"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Loại trừ đường dẫn tệp"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Loại trừ thư mục"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Bộ lọc tệp không thể được lưu hoặc áp dụng. Sử dụng tối đa 1500 ký tự cho mỗi danh sách và loại bỏ các ký tự điều khiển bất thường."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Phiên bản bạn đã xem xét"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Xem xét đầy đủ — không có phiên bản trước"
+  },
+  "aiReviewRepeat": {
+    "message": "Lặp lại xem xét"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Nhập SHA của commit"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Nhập SHA đầy đủ của commit đã được xem xét (40 hoặc 64 ký tự thập lục phân)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Chọn phiên bản MR bạn đã xem xét trước khi để lại bình luận. Tất cả các thay đổi tiếp theo cho đến phiên bản hiện tại sẽ được bao gồm tự động; bạn không cần chọn từng commit riêng lẻ. Nếu bạn không nhớ phiên bản, hãy chọn xem xét đầy đủ."
+  },
+  "aiReviewChooseTask": {
+    "message": "Chọn một nhiệm vụ"
+  },
+  "aiReviewTaskReview": {
+    "message": "Xem xét mới"
+  },
+  "aiReviewTaskFix": {
+    "message": "Sửa các phát hiện trong quá trình xem xét"
+  },
+  "aiReviewTaskReply": {
+    "message": "Chuẩn bị trả lời"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Đánh giá tiếp theo"
+  },
+  "aiReviewCopyTask": {
+    "message": "Sao chép nhiệm vụ"
+  },
+  "aiReviewPasteResult": {
+    "message": "Dán phản hồi AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "Cài đặt nâng cao"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Hướng dẫn nhiệm vụ"
+  },
+  "aiReviewSelectThread": {
+    "message": "Chọn thảo luận này"
+  },
+  "aiReviewSelectAll": {
+    "message": "Chọn tất cả thảo luận"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Xem lại tất cả các commit MR cùng nhau. AI đưa ra các phát hiện mới mà không thay đổi mã."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Chọn phản hồi để sửa. Đối với một MR, AI cũng chuẩn bị các phản hồi giải thích những gì đã làm, những gì còn lại và lý do. Các thảo luận chưa được giải quyết được chọn ban đầu."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Chuẩn bị phản hồi nữa"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Chọn phản hồi để AI lập trình của bạn sửa. Các thảo luận chưa được giải quyết được chọn ban đầu."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Giao nhiệm vụ cho AI lập trình của bạn và kiểm tra các thay đổi và kiểm thử của nó. Kết quả là các sửa lỗi và bản tóm tắt bình thường, không bao gồm các phản hồi sẵn sàng để đăng."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Sau khi đẩy các bản sửa lỗi, yêu cầu AI kiểm tra mã và giải thích kết quả trong các cuộc thảo luận đã chọn."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Xác minh phản hồi đã chọn và tìm các lỗi mới. Chọn phiên bản bạn đã xem trước đó, hoặc kiểm tra toàn bộ MR hiện tại."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Nhiệm vụ: toàn bộ MR, qua tất cả các commit."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Bình luận được chọn: $1; bối cảnh thảo luận và đoạn mã có sẵn được bao gồm."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Các cuộc thảo luận để trả lời: $1, với toàn bộ hội thoại của chúng. AI cần quyền truy cập vào kho."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Các cuộc thảo luận cần xác minh: $1, cộng với việc xem xét các thay đổi mã."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Bao gồm mô tả."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Không bao gồm mô tả."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Bao gồm các thay đổi mã, tùy thuộc vào giới hạn tải."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI phải đọc mã từ kho."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Các cuộc thảo luận hiện có chỉ được thêm như một bộ lọc trùng lặp."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Các thảo luận hiện có không được thêm vào."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Bộ lọc tệp đang hoạt động."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Chưa chọn phiên bản trước: toàn bộ MR hiện tại sẽ được kiểm tra."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Các thảo luận nháp chưa xuất bản không thể nhận phản hồi và bị loại trừ."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Chọn phản hồi ở bên trái. Để thực hiện đánh giá mới, sử dụng tab Đánh giá mới."
+  },
+  "aiReviewNextStep": {
+    "message": "Sao chép nhiệm vụ vào công cụ AI của bạn. Nếu nó trả về nhận xét hoặc phản hồi, hãy sử dụng Dán phản hồi AI để xem xét và chỉnh sửa trước khi đăng."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Kiểm tra các bản sửa và kết quả kiểm thử, đẩy tất cả commit lên MR, rồi dùng Dán phản hồi AI để xem lại các câu trả lời trước khi đăng. Commit mới không yêu cầu tạo lại câu trả lời."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Hướng dẫn tự động (nâng cao)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Tất cả các khối được bật theo mặc định và chỉ được sử dụng cho các nhiệm vụ liên quan. Chỉnh sửa, tắt hoặc xóa bất kỳ khối nào. Các lời nhắc nhiệm vụ cũng có hướng dẫn riêng. Dữ liệu MR, ví dụ JSON và thông báo tải được tạo riêng; các kiểm tra xuất bản luôn được áp dụng."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Thêm vào nhiệm vụ khi phù hợp"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Tối đa 1500 ký tự. Văn bản để trống không thêm gì. Đặt lại sẽ khôi phục văn bản mặc định và bật khối này."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Sử dụng {language} cho ngôn ngữ phản hồi đã chọn. Tối đa 1500 ký tự; văn bản để trống không thêm gì."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Sử dụng {selection} cho các thảo luận đã chọn hoặc chưa giải quyết. Tối đa 1500 ký tự; văn bản để trống không thêm gì."
+  },
+  "aiReviewRule_repository": {
+    "message": "Kho lưu trữ cục bộ và từ xa"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Bản sao làm việc để sửa lỗi"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Bản sao làm việc để xem xét"
+  },
+  "aiReviewRule_language": {
+    "message": "Ngôn ngữ phản hồi"
+  },
+  "aiReviewRule_scope": {
+    "message": "Giải thích bộ lọc tệp"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Ngữ cảnh phản hồi"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Sửa lỗi mà không có phản hồi"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Nhiệm vụ chỉ có mô tả"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Thiếu phản hồi được chọn"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Phản hồi sẵn sàng đăng sau khi sửa lỗi"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Ranh giới xem xét"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Nguồn để xem xét"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Bao gồm các thay đổi mã"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Xem xét mà không bao gồm mã"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Nguồn không khả dụng"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Phản hồi JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Tìm vị trí và xuất ra"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Theo dõi kiểu phản hồi"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Đầu không thay đổi"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Vị trí dòng so sánh"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "So sánh sửa đổi cục bộ"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Thay đổi nhánh mục tiêu"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Xem xét mà không so sánh sửa đổi"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Kiểm tra lại mà không có thảo luận"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Phạm vi thảo luận được chọn"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Ngữ cảnh khác biệt tích lũy"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Các thảo luận hiện có trong đánh giá mới"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Đánh giá mới trong Nhập khẩu"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Ranh giới đánh giá nhập khẩu"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Nhập định dạng tìm kiếm"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Ranh giới và định dạng trả lời"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Phạm vi nhiệm vụ trả lời"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Thêm trường"
+  },
+  "jiraQuickActionField": {
+    "message": "Trường"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Hoạt động"
+  },
+  "jiraQuickActionValue": {
+    "message": "Giá trị"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Xóa"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Thêm"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Xóa"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Thay thế tất cả"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Ngày hết hạn"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Trường tùy chỉnh (nâng cao)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Các giá trị cách nhau bằng dấu phẩy. Thêm/xóa giữ các giá trị khác; thay thế tất cả sẽ ghi đè danh sách."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "ID trường: customfield_12345. Nhập giá trị ở dạng JSON theo định dạng mà trường Jira này yêu cầu."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Tên chuyển trạng thái Jira chính xác (hoặc trạng thái mục tiêu)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Giá trị trống: không thay đổi."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Kiểm tra giá trị trường: các trường tùy chỉnh yêu cầu ID và JSON hợp lệ; ngày tháng sử dụng định dạng YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Sử dụng mỗi trường chỉ một lần cho mỗi nút."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Hành động thất bại."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Trạng thái đã thay đổi, nhưng việc cập nhật trường thất bại."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Không thể làm mới vấn đề. Mở lại bảng điều khiển để kiểm tra các giá trị hiện tại của nó."
+  },
+  "mrActions": {
+    "message": "Hành động MR"
+  },
+  "mrActionsHint": {
+    "message": "Tạo các nút có tên để thay đổi nhãn hoặc xóa các trường MR khác. Kéo chúng trong danh sách nút để thay đổi thứ tự."
+  },
+  "mrActionsProfileHint": {
+    "message": "Chỉnh sửa danh sách này sẽ tạo các hành động riêng cho dự án. Xóa mọi mục để ẩn các nút này trong dự án."
+  },
+  "mrActionAdd": {
+    "message": "Thêm hành động MR"
+  },
+  "mrActionLabel": {
+    "message": "Tên nút"
+  },
+  "mrActionDelete": {
+    "message": "Xóa hành động"
+  },
+  "mrActionType": {
+    "message": "Hành động"
+  },
+  "mrActionLabels": {
+    "message": "Nhãn"
+  },
+  "mrActionLabelsHint": {
+    "message": "Tên nhãn chính xác, phân tách bằng dấu phẩy hoặc dòng mới. Giữ nguyên khoảng trắng trong tên. Thêm/thay thế có thể tạo các nhãn dự án còn thiếu."
+  },
+  "mrAction_remove_labels": {
+    "message": "Xóa các nhãn đã chỉ định"
+  },
+  "mrAction_clear_labels": {
+    "message": "Xóa tất cả nhãn"
+  },
+  "mrAction_add_labels": {
+    "message": "Thêm nhãn"
+  },
+  "mrAction_set_labels": {
+    "message": "Thay thế tất cả nhãn"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Xóa người được giao"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Xóa người đánh giá"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Xóa mốc"
+  },
+  "mrActionInvalid": {
+    "message": "Nhập tên nút, chọn một hành động được hỗ trợ và xác định ít nhất một nhãn để thêm, xóa hoặc thay thế."
+  },
+  "mrActionConfirm": {
+    "message": "Áp dụng “$1” cho MR này không?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab không trả về trạng thái rebase. Tải lại merge request và thử lại."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab trả về trang công việc lặp lại cho pipeline #$1. Danh sách công việc không thể tải đầy đủ."
+  },
+  "displayPreferencesTitle": {
+    "message": "Hiển thị quy tắc và giới hạn"
+  },
+  "displayPreferencesHint": {
+    "message": "Cài đặt toàn cục; tải lại các tab GitLab sau khi thay đổi chúng. Nhiều công việc hoặc bình luận hơn sẽ tăng dung lượng dữ liệu truyền. Xem trước nhật ký tải toàn bộ trace trước khi chọn các dòng không rỗng. Huy hiệu người đánh giá tìm kiếm bình luận cũ nhất cho “Reviewer(s): @username”."
+  },
+  "failedJobsLimit": {
+    "message": "Công việc thất bại để xem trước"
+  },
+  "failedJobTraceLines": {
+    "message": "Dòng nhật ký không rỗng mỗi công việc"
+  },
+  "reviewerNotesLimit": {
+    "message": "Bình luận để quét huy hiệu người đánh giá"
+  },
+  "mrSizeLines": {
+    "message": "Ngưỡng kích thước MR: số dòng (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Ngưỡng kích thước MR: tệp tin (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Các mẫu tệp nhạy cảm bổ sung"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Loại trừ tệp nhạy cảm"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Sử dụng quy tắc tệp nhạy cảm tích hợp sẵn"
+  },
+  "sizeThresholdsHint": {
+    "message": "Ba số nguyên dương tăng dần, cách nhau bằng dấu phẩy. Các giới hạn bao gồm cả hai đầu; các thay đổi lớn hơn là XL. Ngưỡng tệp áp dụng khi số dòng không có sẵn."
+  },
+  "sensitivePatternsHint": {
+    "message": "Một mẫu trên mỗi dòng, không phân biệt chữ hoa chữ thường. * khớp với bất kỳ văn bản nào (bao gồm /), ? khớp với một ký tự. Các mẫu không có / khớp với tên tệp; các mẫu khác khớp với toàn bộ đường dẫn kho. Các loại trừ được ưu tiên. Quy tắc tích hợp sẵn bao gồm các tệp môi trường, container/CI, thông tin xác thực và khóa riêng. Tắt chúng để chỉ sử dụng các mẫu của bạn."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Kiểm tra các phạm vi số, ba ngưỡng kích thước tăng dần và độ dài của các mẫu tệp."
+  },
+  "failedJobsPreview": {
+    "message": "Xem trước: $1 công việc thất bại — $2 dòng cuối cùng không rỗng",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Thêm công việc thất bại — mở toàn bộ pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 dòng, $2 tệp",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 tệp đã thay đổi",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Quét tệp nhạy cảm chưa hoàn tất"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Không thể kiểm tra hết tất cả các tệp: yêu cầu API thất bại hoặc đã đạt giới hạn quét $1 tệp. Các kết quả được liệt kê là một phần; kiểm tra sự khác biệt MR đầy đủ.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Cảnh báo: báo cáo này có thể chưa đầy đủ. Việc thu thập bị giới hạn ở $1 MR cho mỗi danh mục và $2 sự kiện hoạt động.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 luồng chưa được giải quyết",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Xem trước này có thể chưa đầy đủ: lỗi API hoặc chỉ kiểm tra $2 thảo luận đầu tiên. Các luồng chưa giải quyết đã biết: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "settingsTitle": { "message": "Cài đặt" },
+  "settingsActions": { "message": "MR và commit" },
+  "settingsActionsHint": { "message": "Yêu cầu hợp nhất, commit, phiên bản và cherry-pick." },
+  "settingsCi": { "message": "CI/CD và tác vụ" },
+  "settingsAppearance": { "message": "Giao diện GitLab" },
+  "settingsData": { "message": "Dữ liệu và trợ giúp" },
+  "settingsSearch": { "message": "Tìm kiếm cài đặt" },
+  "settingsScope": { "message": "Phạm vi cài đặt" },
+  "settingsProjectValue": { "message": "Giá trị dự án" },
+  "settingsUseGlobal": { "message": "Dùng giá trị chung" },
+  "settingsProjectInheritanceHint": { "message": "Chỉnh sửa giá trị để đặt riêng cho dự án này. Dùng giá trị chung để khôi phục kế thừa." },
+  "settingsSharedPreferencesHint": { "message": "Ngôn ngữ giao diện, âm thanh, thông báo trên máy tính và báo cáo giữa các dự án là cài đặt chung. Chỉnh sửa trong Tất cả dự án." },
+  "settingsGlobal": { "message": "Tất cả dự án" },
+  "settingsGlobalHint": { "message": "Các cài đặt này áp dụng cho tất cả dự án." },
+  "settingsProjectHint": { "message": "Hồ sơ này ghi đè cài đặt chung cho dự án này." },
+  "settingsGlobalOnly": { "message": "Mục này sử dụng cài đặt chung cho tất cả dự án." },
+  "settingsQuick": { "message": "Cài đặt nhanh" },
+  "settingsNoResults": { "message": "Không tìm thấy cài đặt phù hợp." },
+  "settingsRemoveProfile": { "message": "Xóa hồ sơ" },
+  "settingsNoProject": { "message": "Mở một dự án GitLab để sử dụng hồ sơ dự án." },
+  "settingsAll": { "message": "Tất cả cài đặt" },
+  "settingsMoveUp": { "message": "Di chuyển lên" },
+  "settingsMoveDown": { "message": "Di chuyển xuống" },
+  "settingsConnection": { "message": "Kết nối" },
+  "settingsJiraDisplay": { "message": "Jira trong GitLab" },
+  "settingsAdvanced": { "message": "Cài đặt nâng cao" },
+  "settingsAutosaveHint": { "message": "Các thay đổi được lưu tự động." },
+  "settingsSaving": { "message": "Đang lưu…" },
+  "settingsLoadFailed": { "message": "Không thể tải cài đặt. Hãy thử lại trước khi chỉnh sửa." },
+  "aiReviewShowFull": { "message": "Hiển thị toàn bộ" },
+  "aiReviewShowLess": { "message": "Thu gọn" },
+  "aiReviewExpandCommentsSetting": { "message": "Mặc định hiển thị toàn bộ bình luận đánh giá" },
+  "aiReviewExpandAll": { "message": "Mở rộng tất cả" },
+  "aiReviewCollapseAll": { "message": "Thu gọn tất cả" }
+}

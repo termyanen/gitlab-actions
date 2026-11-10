@@ -1,0 +1,2278 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — Αυτοματισμοί, Jira, CI/CD και AI"
+  },
+  "extDescription": {
+    "message": "Αυτοματοποιήστε τα MR του GitLab: συγχώνευση, εκδόσεις, Jira, CI/CD και έλεγχος με AI. Χωρίς διακριτικά API."
+  },
+  "popupTitle": {
+    "message": "Δράσεις GitLab MR"
+  },
+  "howItWorks": {
+    "message": "Πώς δουλεύει"
+  },
+  "openSettingsInTab": {
+    "message": "Άνοιξε τις ρυθμίσεις σε μια νέα καρτέλα"
+  },
+  "exportSettings": {
+    "message": "Εξαγωγή ρυθμίσεων"
+  },
+  "importSettings": {
+    "message": "Εισαγωγή ρυθμίσεων"
+  },
+  "settingsTransferHint": {
+    "message": "Μοιράσου όλες τις ρυθμίσεις και τα προφίλ έργων ως αρχείο JSON."
+  },
+  "settingsImportReplace": {
+    "message": "Αυτό αντικαθιστά όλες τις τρέχουσες ρυθμίσεις και τα προφίλ έργων."
+  },
+  "applySettingsImport": {
+    "message": "Αντικατάσταση ρυθμίσεων"
+  },
+  "cancelSettingsImport": {
+    "message": "Ακύρωση"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — προφίλ έργων: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "Άκυρο αρχείο ρυθμίσεων ή μη υποστηριζόμενη μορφή."
+  },
+  "settingsFileTooLarge": {
+    "message": "Το αρχείο ρυθμίσεων υπερβαίνει τα όρια αποθήκευσης του Chrome Sync."
+  },
+  "settingsExportFailed": {
+    "message": "Δεν ήταν δυνατή η εξαγωγή των ρυθμίσεων. Παρακαλώ προσπάθησε ξανά."
+  },
+  "settingsImportFailed": {
+    "message": "Δεν ήταν δυνατή η εισαγωγή των ρυθμίσεων. Η τρέχουσα διαμόρφωσή σου παραμένει αμετάβλητη."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "Επιτρέψτε την πρόσβαση στον ιστότοπο Jira για να εισαγάγετε αυτές τις ρυθμίσεις."
+  },
+  "settingsImported": {
+    "message": "Ρυθμίσεις εισήχθησαν!"
+  },
+  "buttonOrder": {
+    "message": "Σειρά κουμπιών"
+  },
+  "buttonOrderHint": {
+    "message": "Σύρετε για αναδιάταξη. Περάστε το ποντίκι για περιγραφή. Προσαρμοσμένες εργασίες με μπλε χρώμα."
+  },
+  "general": {
+    "message": "Γενικά"
+  },
+  "soundNotifications": {
+    "message": "Ειδοποιήσεις ήχου"
+  },
+  "desktopNotifications": {
+    "message": "Ειδοποιήσεις επιφάνειας εργασίας"
+  },
+  "showTimeTracker": {
+    "message": "Εμφάνιση ηλικίας MR"
+  },
+  "skipConfirmations": {
+    "message": "Παράλειψη επιβεβαίωσης ενεργειών MR"
+  },
+  "uxEnhancer": {
+    "message": "Βελτιώσεις λίστας MR"
+  },
+  "dimDrafts": {
+    "message": "Θολώστε τα πρόχειρα MR στη λίστα"
+  },
+  "highlightOwnMrs": {
+    "message": "Επισημάνετε τα MR σας στη λίστα"
+  },
+  "showOnlyMine": {
+    "message": "Εναλλαγή «Μόνο δικά μου» στη σελίδα λίστας"
+  },
+  "toggleOnlyMine": {
+    "message": "Μόνο δικά μου"
+  },
+  "versionBump": {
+    "message": "Αύξηση έκδοσης"
+  },
+  "filePath": {
+    "message": "Διαδρομή αρχείου"
+  },
+  "filePathHint": {
+    "message": "Αρχείο που περιέχει τον αριθμό έκδοσης"
+  },
+  "versionField": {
+    "message": "Πεδίο έκδοσης"
+  },
+  "versionFieldHint": {
+    "message": "Κλειδί JSON ή κλειδί TOML (π.χ. \"version\" ή \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "Στρατηγική"
+  },
+  "strategyPatch": {
+    "message": "Διορθωτική έκδοση (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Δευτερεύουσα έκδοση (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Κύρια έκδοση (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "Μήνυμα commit"
+  },
+  "commitMessageHint": {
+    "message": "Χρησιμοποιήστε {version} ως δείκτη θέσης"
+  },
+  "quickComments": {
+    "message": "Γρήγορα σχόλια"
+  },
+  "quickCommentsHint": {
+    "message": "Κουμπιά με ένα κλικ που δημοσιεύουν άμεσα ένα γενικό σχόλιο στο MR (όχι στο κομμάτι του κώδικα). Τα κουμπιά εμφανίζονται στη γραμμή ενεργειών."
+  },
+  "quickCommentsAdd": {
+    "message": "Πρόσθεσε σχόλιο"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "Γρήγορα σχόλια"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "Ρυθμιζόμενα κουμπιά προτύπων σχολίων στη σελίδα MR. Δημοσίευσε το LGTM, Needs fixes ή οποιοδήποτε προσαρμοσμένο σχόλιο με ένα κλικ."
+  },
+  "reviewers": {
+    "message": "Ελεγκτές κώδικα"
+  },
+  "reviewersList": {
+    "message": "Λίστα ελεγκτών κώδικα"
+  },
+  "reviewersListHint": {
+    "message": "Ονόματα χρηστών για αναφορά σε σχόλιο Reviewers: (@user1, @user2). Όταν οριστούν, παραλείπεται η αναζήτηση σχολίων και η εργασία CI. Δεν αλλάζει τις αναθέσεις ελεγκτών κώδικα στο GitLab."
+  },
+  "jobName": {
+    "message": "Όνομα εργασίας"
+  },
+  "jobNameHint": {
+    "message": "Εφεδρική εργασία αν κανένα σχόλιο δεν ταιριάζει με το πρότυπο \"Reviewer(s):\""
+  },
+  "customJobButtons": {
+    "message": "Προσαρμοσμένα κουμπιά εργασίας"
+  },
+  "customJobsHint": {
+    "message": "Χρησιμοποιήστε κόμματα για αλυσίδωση: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ Πρόσθεσε κουμπί εργασίας"
+  },
+  "addProfileFor": {
+    "message": "+ Πρόσθεσε προφίλ για $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "Τρέχον: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "Αποθηκεύτηκε!"
+  },
+  "unsavedChanges": {
+    "message": "Μη αποθηκευμένες αλλαγές..."
+  },
+  "customFile": {
+    "message": "Προσαρμοσμένο αρχείο..."
+  },
+  "plainText": {
+    "message": "απλό κείμενο"
+  },
+  "removeProfile": {
+    "message": "Αφαίρεση προφίλ για $1;",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "Προεπιλογή"
+  },
+  "buttonsFor": {
+    "message": "Κουμπιά για $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "Υπερκαθορισμός ποια κουμπιά θα εμφανίζονται για αυτό το έργο."
+  },
+  "leaveEmptyDefault": {
+    "message": "Αφήστε κενό για χρήση της προεπιλογής"
+  },
+  "projectSpecificJobs": {
+    "message": "Εργασίες συγκεκριμένες για το έργο. Χρησιμοποιήστε κόμμα για αλυσίδωση."
+  },
+  "languageLabel": {
+    "message": "Γλώσσα"
+  },
+  "languageAuto": {
+    "message": "Αυτόματο (πρόγραμμα περιήγησης)"
+  },
+  "btnVersion": {
+    "message": "Αύξηση έκδοσης"
+  },
+  "btnRebase": {
+    "message": "Rebase"
+  },
+  "btnRebaseVersion": {
+    "message": "Επαναβάση + Έκδοση"
+  },
+  "btnRebaseAutomerge": {
+    "message": "Επαναβάση + Αυτόματη συγχώνευση"
+  },
+  "btnRebaseForce": {
+    "message": "Επαναβάση + Αναγκαστική συγχώνευση"
+  },
+  "btnShip": {
+    "message": "Rebase + Έκδοση + Αυτόματη συγχώνευση"
+  },
+  "btnForceShip": {
+    "message": "Rebase + Έκδοση + Αναγκαστική συγχώνευση"
+  },
+  "btnReviewers": {
+    "message": "Ελεγκτές κώδικα"
+  },
+  "btnPipelineRestart": {
+    "message": "Νέο pipeline"
+  },
+  "btnPipelineCancel": {
+    "message": "Ακύρωση pipeline"
+  },
+  "btnDraftToggle": {
+    "message": "Εναλλαγή Πρόχειρο / Έτοιμο"
+  },
+  "btnRetryFailed": {
+    "message": "Επανάληψη αποτυχημένων εργασιών"
+  },
+  "btnCopyMr": {
+    "message": "Αντιγραφή MR"
+  },
+  "hintVersion": {
+    "message": "Διαβάζει το διαμορφωμένο αρχείο (π.χ. package.json), αυξάνει την έκδοση με τη στρατηγική που επιλέξατε (patch/minor/major), και κάνει commit με το προτυποποιημένο μήνυμά σας."
+  },
+  "hintRebase": {
+    "message": "Κάνει rebase του φορυού πηγής στον στόχο. Δεν συγχωνεύει ούτε ενεργοποιεί το auto-merge."
+  },
+  "hintRebaseVersion": {
+    "message": "Κάνει rebase του φορυού στον στόχο (αν χρειάζεται), μετά αυξάνει την έκδοση στο διαμορφωμένο αρχείο. Δεν συγχωνεύει."
+  },
+  "hintRebaseAutomerge": {
+    "message": "Εκτελεί rebase του κλάδου στον κλάδο προορισμού (αν το έργο χρησιμοποιεί rebase/ff). Στη συνέχεια ενεργοποιεί τη συγχώνευση μετά την επιτυχία του pipeline. Χρησιμοποιεί τις ρυθμίσεις squash και διαγραφής κλάδου του MR."
+  },
+  "hintRebaseForce": {
+    "message": "Κάνει rebase και παραλείπει το CI, ακυρώνει όλα τα τρέχοντα pipelines, μετά συγχωνεύει αμέσως χωρίς να περιμένει το CI. Χρησιμοποιεί τις ρυθμίσεις squash/delete branch από το MR."
+  },
+  "hintShip": {
+    "message": "Πλήρης ροή: rebase → αύξηση έκδοσης στο διαμορφωμένο αρχείο → περιμένει το MR να συγχρονιστεί → περιμένει νέο pipeline → ενεργοποιεί το auto-merge."
+  },
+  "hintForceShip": {
+    "message": "Γρήγορη ροή: rebase (παράλειψη CI) → αύξηση έκδοσης → περιμένει 15δλ → ακύρωση pipeline → συγχώνευση αμέσως. Παραλείπει τους ελέγχους CI."
+  },
+  "hintReviewers": {
+    "message": "Δημοσιεύει αναφορές στους καθορισμένους ελεγκτές κώδικα, επαναχρησιμοποιεί σχόλιο Reviewer(s): από πρόσφατες σημειώσεις ή εκτελεί την καθορισμένη εργασία CI."
+  },
+  "hintPipelineRestart": {
+    "message": "Δημιουργεί ένα εντελώς νέο pipeline για το αρχικό branch μέσω API. Χρήσιμο όταν το pipeline έχει κολλήσει ή χρειάζεστε μια νέα εκτέλεση."
+  },
+  "hintPipelineCancel": {
+    "message": "Ζητά την ακύρωση των τρεχόντων, εκκρεμών ή δημιουργημένων pipelines που επιστράφηκαν για αυτό το MR."
+  },
+  "hintDraftToggle": {
+    "message": "Προσθέτει ή αφαιρεί το πρόθεμα «Draft:» από τον τίτλο του MR. Δεν αλλάζει καμία άλλη ρύθμιση του MR."
+  },
+  "hintRetryFailed": {
+    "message": "Επαναλαμβάνει τις αποτυχημένες δουλειές στο τρέχον pipeline του MR. Οι επιτυχημένες δουλειές δεν επηρεάζονται."
+  },
+  "hintCopyMr": {
+    "message": "Αντιγράφει τον τίτλο και τον σύνδεσμο του MR στο πρόχειρο."
+  },
+  "toastRebasing": {
+    "message": "Επαναβάθμιση..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "Ενεργοποίηση αυτόματης συγχώνευσης..."
+  },
+  "toastStep12Rebasing": {
+    "message": "Βήμα 1/2: Επαναβάθμιση..."
+  },
+  "toastStep22Automerge": {
+    "message": "Βήμα 2/2: Ενεργοποίηση αυτόματης συγχώνευσης..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "Βήμα 1/2: Επαναβάθμιση (παράλειψη CI)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "Βήμα 2/2: Ακύρωση pipeline & συγχώνευση..."
+  },
+  "toastCancellingMerging": {
+    "message": "Ακύρωση pipeline & συγχώνευση..."
+  },
+  "toastCreatingPipeline": {
+    "message": "Δημιουργία νέου pipeline για $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "Ακύρωση $1 pipeline...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "Επισήμανση ως έτοιμο..."
+  },
+  "toastMarkingDraft": {
+    "message": "Επισήμανση ως προσχέδιο..."
+  },
+  "toastRetrying": {
+    "message": "Επανάληψη $1 αποτυχημένων εργασιών...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "Δεν υπάρχουν αποτυχημένες εργασίες στο τρέχον pipeline του MR"
+  },
+  "toastNoRunningPipelines": {
+    "message": "Δεν υπάρχουν ενεργά pipeline για ακύρωση"
+  },
+  "toastAssigningReviewers": {
+    "message": "Δημοσίευση αναφορών σε ελεγκτές κώδικα…"
+  },
+  "toastRepostingReviewers": {
+    "message": "Αναδημοσίευση σχολίου ελεγκτών κώδικα..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "Δεν βρέθηκε σχόλιο ελεγκτών κώδικα· εκκίνηση $1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "Αύξηση έκδοσης..."
+  },
+  "toastWaitingSync": {
+    "message": "Περιμένοντας το MR να συγχρονιστεί με το v$1...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "Αναμονή για το pipeline..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "Προσπάθεια αυτόματης συγχώνευσης $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "Αναμονή για συγχρονισμό MR... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "Περιμένοντας το \"$1\"... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "Παίζοντας δουλειά \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "Επανάληψη της εργασίας \"$1\"...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "Η δουλειά «$1» έχει ήδη πετύχει, παρακάμπτοντας",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "Η δουλειά \"$1\" είναι ήδη $2, περιμένοντας...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 ολοκληρώθηκε",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 απέτυχε: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "Ο τίτλος και ο σύνδεσμος του MR αντιγράφηκαν!"
+  },
+  "toastWaiting15s": {
+    "message": "Αναμονή 15s πριν τη συγχώνευση..."
+  },
+  "confirmRebase": {
+    "message": "Να εκτελεστεί rebase του κλάδου;"
+  },
+  "confirmRebaseVersion": {
+    "message": "Rebase → Αύξηση έκδοσης;"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "Rebase → Αυτόματη συγχώνευση;"
+  },
+  "confirmAutomerge": {
+    "message": "Ενεργοποίηση αυτόματης συγχώνευσης;"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ Rebase → ΣΥΓΧΩΝΕΥΣΗ ΤΩΡΑ;"
+  },
+  "confirmForce": {
+    "message": "⚠️ ΣΥΓΧΩΝΕΥΣΗ ΤΩΡΑ (παράκαμψη pipeline);"
+  },
+  "confirmShip": {
+    "message": "Rebase → Αύξηση έκδοσης → Αυτόματη συγχώνευση;"
+  },
+  "confirmShipNoRebase": {
+    "message": "Αύξηση έκδοσης → Αυτόματη συγχώνευση;"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ Rebase → Αύξηση έκδοσης → ΣΥΓΧΩΝΕΥΣΗ ΤΩΡΑ;"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ Αύξηση έκδοσης → ΣΥΓΧΩΝΕΥΣΗ ΤΩΡΑ;"
+  },
+  "confirmNewPipeline": {
+    "message": "Δημιουργία νέου pipeline για αυτό το branch;"
+  },
+  "confirmCancelPipeline": {
+    "message": "Ακύρωση όλων των ενεργών pipeline;"
+  },
+  "labelAutomerge": {
+    "message": "Αυτόματη συγχώνευση"
+  },
+  "labelForceMerge": {
+    "message": "Ισχυρή συγχώνευση"
+  },
+  "labelVersionAutomerge": {
+    "message": "Έκδοση + Αυτόματη συγχώνευση"
+  },
+  "labelVersionForceMerge": {
+    "message": "Έκδοση + Ισχυρή συγχώνευση"
+  },
+  "labelMarkReady": {
+    "message": "Σήμανση ως Έτοιμο"
+  },
+  "labelMarkDraft": {
+    "message": "Σήμανση ως Πρόχειρο"
+  },
+  "labelRetryFailed": {
+    "message": "Επανάληψη αποτυχίας"
+  },
+  "labelNewPipeline": {
+    "message": "Νέο pipeline"
+  },
+  "timeTrackerTitle": {
+    "message": "Χρόνος από τη δημιουργία MR: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "Ενέργειες GitLab MR"
+  },
+  "welcomeSubtitle": {
+    "message": "Επιτάχυνε τη ροή εργασίας του merge request με ενέργειες με ένα κλικ."
+  },
+  "welcomeQuickStart": {
+    "message": "Γρήγορη εκκίνηση"
+  },
+  "welcomeStep1Title": {
+    "message": "Άνοιξε οποιαδήποτε σελίδα Merge Request"
+  },
+  "welcomeStep1Desc": {
+    "message": "Άνοιξε μια σελίδα HTTPS MR ενώ είσαι συνδεδεμένος στο GitLab.com ή στο δικό σου self-hosted GitLab. Επίτρεψε στην επέκταση πρόσβαση σε αυτόν τον ιστότοπο."
+  },
+  "welcomeStep2Title": {
+    "message": "Δες τα κουμπιά δράσης να εμφανίζονται"
+  },
+  "welcomeStep2Desc": {
+    "message": "Τα κουμπιά εμφανίζονται στη σελίδα MR. Ένα αρχικό σετ ενεργοποιείται στην πρώτη εγκατάσταση."
+  },
+  "welcomeStep3Title": { "message": "Προσαρμογή από τις ρυθμίσεις" },
+  "welcomeStep3Desc": { "message": "Χρησιμοποιήστε το αναδυόμενο παράθυρο για γρήγορη ενεργοποίηση ή απενεργοποίηση επιλογών. Ανοίξτε «Όλες οι ρυθμίσεις» για να διαμορφώσετε ενέργειες, εκδόσεις, Jira, CI/CD και έλεγχο με AI." },
+  "welcomeEnabledDefault": {
+    "message": "Ενεργοποιημένο από προεπιλογή"
+  },
+  "welcomeMoreActions": {
+    "message": "Περισσότερες ενέργειες (ενεργοποίηση στις ρυθμίσεις)"
+  },
+  "welcomeHowItWorks": {
+    "message": "Πώς λειτουργεί"
+  },
+  "welcomeHowDesc": {
+    "message": "Αυτή η επέκταση χρησιμοποιεί τη διαρκή συνεδρία σου στο GitLab (cookies) για να καλέσει το GitLab API εκ μέρους σου. Δεν χρειάζονται προσωπικά access tokens."
+  },
+  "welcomeHowList1": {
+    "message": "Για GitLab.com και self-hosted GitLab μέσω HTTPS· τα χαρακτηριστικά εξαρτώνται από τα APIs του server, τη διάταξη της σελίδας και τα δικαιώματά σου."
+  },
+  "welcomeHowList2": {
+    "message": "Οι ενέργειες χρησιμοποιούν τα ίδια δικαιώματα με τον χρήστη που έχετε συνδεθεί"
+  },
+  "welcomeHowList3": {
+    "message": "Οι προσαρμοσμένες αλυσίδες εργασιών τρέχουν στο παρασκήνιο. Κρατήστε μια καρτέλα ανοικτή στο ίδιο GitLab για πρόσβαση στο API."
+  },
+  "welcomeHowList4": {
+    "message": "Τα προφίλ ανά έργο σας επιτρέπουν να προσαρμόζετε κουμπιά για διαφορετικά αποθετήρια"
+  },
+  "welcomeTip": { "message": "Δημιουργήστε προφίλ έργων στην ενότητα «Όλες οι ρυθμίσεις», όταν τα έργα χρειάζονται διαφορετικά αρχεία εκδόσεων, κουμπιά ενεργειών ή εργασίες CI." },
+  "welcomeOpenSettings": {
+    "message": "Άνοιγμα Ρυθμίσεων"
+  },
+  "cardAutomergeTitle": {
+    "message": "Αυτόματη συγχώνευση"
+  },
+  "cardAutomergeDesc": {
+    "message": "Εκτελέστε rebase του κλάδου (αν χρειάζεται) και ενεργοποιήστε τη συγχώνευση μετά την επιτυχία του pipeline."
+  },
+  "cardNewPipelineTitle": {
+    "message": "Νέο pipeline"
+  },
+  "cardNewPipelineDesc": {
+    "message": "Δημιουργήστε ένα καινούριο pipeline για το αρχικό branch με ένα κλικ."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "Ακύρωση pipeline"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "Ζητήστε ακύρωση των τρεχόντων ή σε εκκρεμότητα MR pipelines."
+  },
+  "cardDraftToggleTitle": {
+    "message": "Εναλλαγή προσχέδιου"
+  },
+  "cardDraftToggleDesc": {
+    "message": "Αλλάξτε το MR μεταξύ της κατάστασης Προσχέδιο και Έτοιμο χωρίς να επεξεργάζεστε τον τίτλο."
+  },
+  "cardVersionBumpTitle": {
+    "message": "Αύξηση έκδοσης"
+  },
+  "cardVersionBumpDesc": {
+    "message": "Αύξηση έκδοσης στο package.json, pyproject.toml ή σε οποιοδήποτε προσαρμοσμένο αρχείο. Ρυθμιζόμενη στρατηγική (patch/minor/major)."
+  },
+  "cardShipTitle": {
+    "message": "Έκδοση (Αύξηση έκδοσης + Συγχώνευση)"
+  },
+  "cardShipDesc": {
+    "message": "Rebase όταν χρειάζεται, αύξηση της έκδοσης και αίτηση αυτοματοποιημένης συγχώνευσης. Κράτα την καρτέλα MR ανοιχτή μέχρι να ολοκληρωθεί η ενέργεια."
+  },
+  "cardForceMergeTitle": {
+    "message": "Αναγκαστική συγχώνευση"
+  },
+  "cardForceMergeDesc": {
+    "message": "Αίτηση συγχώνευσης χωρίς να περιμένεις επιτυχία του pipeline. Οι άδειες και οι κανόνες συγχώνευσης του GitLab ισχύουν ακόμα."
+  },
+  "cardReviewersTitle": {
+    "message": "Ελεγκτές κώδικα"
+  },
+  "cardReviewersDesc": {
+    "message": "Αναφέρει τα καθορισμένα ονόματα χρηστών σε σχόλιο, επαναχρησιμοποιεί σχόλιο ελεγκτών κώδικα ή εκτελεί εργασία CI. Δεν αλλάζει το ενσωματωμένο πεδίο ελεγκτών κώδικα του GitLab."
+  },
+  "uiCustomization": {
+    "message": "Προσαρμογή UI"
+  },
+  "collapseBars": {
+    "message": "Κουμπί για απόκρυψη των κορυφαίων μπαρών"
+  },
+  "hideRightSidebar": {
+    "message": "Απόκρυψη δεξιάς πλαϊνής μπάρας στις σελίδες MR"
+  },
+  "collapseTopBars": {
+    "message": "Εναλλαγή κορυφαίων μπαρών"
+  },
+  "cardCollapseTitle": {
+    "message": "Απόκρυψη κορυφαίων μπαρών"
+  },
+  "cardCollapseDesc": {
+    "message": "Προσθέτει ένα κουμπί για να κρύβεις/ανοίγεις τις μπάρες πλοήγησης του GitLab. Εξοικονομεί χώρο και βοηθά να επικεντρωθείς στο περιεχόμενο."
+  },
+  "cardHideSectionsTitle": {
+    "message": "Απόκρυψη τμημάτων UI"
+  },
+  "cardHideSectionsDesc": {
+    "message": "Απόκρυψη δεξιάς πλαϊνής στήλης σε σελίδες MR για πλήρη περιοχή περιεχομένου."
+  },
+  "jiraIntegration": {
+    "message": "Ενσωμάτωση Jira"
+  },
+  "jiraUrl": {
+    "message": "URL Jira"
+  },
+  "jiraUrlHint": {
+    "message": "URL διακομιστή/data center Jira, π.χ. https://jira.company.com — συνδεθείτε στο Jira και μετά κάντε κλικ στο Επιτρέψτε πρόσβαση στον ιστότοπο Jira. Το Cloud δεν υποστηρίζεται πλήρως."
+  },
+  "jiraGrantAccess": {
+    "message": "Επιτρέψτε πρόσβαση στον ιστότοπο Jira"
+  },
+  "jiraAccessGranted": {
+    "message": "Η επέκταση έχει άδεια πρόσβασης στο $1."
+  },
+  "jiraConnectionUnchecked": { "message": "Η σύνδεση δεν έχει ελεγχθεί ακόμη." },
+  "jiraConnectionCheck": { "message": "Έλεγχος σύνδεσης" },
+  "jiraConnectionChecking": { "message": "Έλεγχος σύνδεσης με $1…" },
+  "jiraConnectionConnected": { "message": "Τελευταίος έλεγχος του $1: η είσοδος επιβεβαιώθηκε· το API είναι διαθέσιμο." },
+  "jiraConnectionSignIn": { "message": "Είσοδος στο Jira" },
+  "jiraUrlInvalid": {
+    "message": "Εισάγετε ένα βασικό URL Jira με HTTPS, χωρίς διαπιστευτήρια/ερωτήματα/τμήματα."
+  },
+  "jiraErrorAuth": {
+    "message": "Η συνεδρία σας στο Jira έχει λήξει ή απαιτείται σύνδεση. Ανοίξτε το Jira, συνδεθείτε και προσπαθήστε ξανά."
+  },
+  "jiraErrorForbidden": {
+    "message": "Το Jira δεν επέτρεψε πρόσβαση σε αυτό το ζήτημα ή λειτουργία. Ελέγξτε τον λογαριασμό σας και τα δικαιώματα στο Jira."
+  },
+  "jiraErrorPermission": {
+    "message": "Η επέκταση δεν μπορεί να έχει πρόσβαση σε αυτόν τον ιστότοπο Jira. Ελέγξτε τα δικαιώματα ιστότοπου και το URL Jira στις ρυθμίσεις της επέκτασης."
+  },
+  "jiraErrorNetwork": {
+    "message": "Δεν ήταν δυνατή η σύνδεση με το Jira. Έλεγξε τη σύνδεσή σου, το VPN και το URL του Jira, και δοκίμασε ξανά να φορτώσεις."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Το Jira είναι προσωρινά μη διαθέσιμο ή περιορίζει τα αιτήματα. Περίμενε και δοκίμασέ το ξανά."
+  },
+  "jiraErrorNotFound": {
+    "message": "Δεν βρέθηκε ζήτημα στο Jira ή δεν είναι ορατό στο λογαριασμό σου."
+  },
+  "jiraErrorResponse": {
+    "message": "Το Jira επέστρεψε μη υποστηριζόμενη απάντηση. Ελέγξτε το URL και τη συμβατότητα με Jira Server/Data Center."
+  },
+  "jiraErrorUnknown": {
+    "message": "Το αίτημα στο Jira απέτυχε. Άνοιξε το Jira για να δεις το ζήτημα και την πρόσβασή σου."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "Η αλλαγή ενδέχεται να έχει ήδη εφαρμοστεί. Ελέγξτε το ζήτημα στο Jira πριν επαναλάβετε την ενέργεια."
+  },
+  "jiraErrorTransitions": {
+    "message": "Δεν ήταν δυνατή η φόρτωση των μεταβάσεων στο Jira."
+  },
+  "jiraOpenSite": {
+    "message": "Άνοιξε το Jira"
+  },
+  "jiraRetryRead": {
+    "message": "Δοκίμασε ξανά να φορτώσεις"
+  },
+  "jiraDismissError": {
+    "message": "Κλείσιμο"
+  },
+  "jiraTicketRegex": {
+    "message": "Regex για εισιτήρια"
+  },
+  "jiraTicketRegexHint": {
+    "message": "Προσαρμοσμένο regex για την ανάλυση των IDs των εισιτηρίων από τους τίτλους των MR. Προεπιλογή: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "Εμφάνισε εικονίδια τύπου ζητήματος & προτεραιότητας στη λίστα MR"
+  },
+  "jiraQuickActions": {
+    "message": "Γρήγορες ενέργειες"
+  },
+  "jiraQuickActionsHint": {
+    "message": "Επιλέξτε οποιονδήποτε συνδυασμό πεδίων για κάθε κουμπί. Αφήστε μόνο τις αλλαγές που πρέπει να κάνει. Οι εκδόσεις και τα στοιχεία πρέπει ήδη να υπάρχουν στο έργο Jira."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "Προσθήκη ενέργειας"
+  },
+  "jiraQuickActionLabel": {
+    "message": "Ετικέτα"
+  },
+  "jiraQuickActionStatus": {
+    "message": "Κατάσταση"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "Όνομα χρήστη"
+  },
+  "jiraSidebarStatus": {
+    "message": "Κατάσταση"
+  },
+  "jiraSidebarType": {
+    "message": "Τύπος"
+  },
+  "jiraSidebarPriority": {
+    "message": "Προτεραιότητα"
+  },
+  "jiraSidebarAssignee": {
+    "message": "Εκχωρημένος"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "Χωρίς ανάθεση"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "Αναζήτηση χρήστη..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "Δεν βρέθηκαν χρήστες"
+  },
+  "jiraSidebarUnassign": {
+    "message": "Αποανάθεση"
+  },
+  "jiraSidebarReporter": {
+    "message": "Αναφέρων"
+  },
+  "jiraSidebarLabels": {
+    "message": "Ετικέτες"
+  },
+  "jiraSidebarCreated": {
+    "message": "Δημιουργήθηκε"
+  },
+  "jiraSidebarUpdated": {
+    "message": "Ενημερώθηκε"
+  },
+  "jiraSidebarDescription": {
+    "message": "Περιγραφή"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Σπριντ"
+  },
+  "jiraSidebarComponents": {
+    "message": "Συστατικά"
+  },
+  "jiraSidebarResolution": {
+    "message": "Επίλυση"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "Επηρεάζει"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "Έκδοση διόρθωσης"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "Καμία"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "Δεν βρέθηκαν εκδόσεις"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "Αναζήτηση εκδόσεων..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "Αποτυχία ενημέρωσης εκδόσεων διόρθωσης"
+  },
+  "jiraSidebarAttachments": {
+    "message": "Επισυνάψεις"
+  },
+  "jiraSidebarComments": {
+    "message": "Σχόλια"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "Προσθήκη σχολίου..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "Σχόλιο"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "Εμφάνιση περισσοτέρων σχολίων"
+  },
+  "jiraSidebarNoComments": {
+    "message": "Δεν υπάρχουν σχόλια ακόμα"
+  },
+  "jiraSidebarCommentError": {
+    "message": "Αποτυχία στην ανάρτηση σχολίου"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "Διαγραφή σχολίου"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "Διαγραφή αυτού του σχολίου;"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "Αποτυχία στη διαγραφή σχολίου"
+  },
+  "cardJiraTitle": {
+    "message": "Σήματα κατάστασης Jira"
+  },
+  "cardJiraDesc": {
+    "message": "Εμφανίζει τις καταστάσεις των εισιτηρίων Jira στη σελίδα λίστας MR. Διαβάζει τα IDs των εισιτηρίων από τους τίτλους MR (π.χ. CCT-1111) και εμφανίζει έγχρωμα σήματα κατάστασης. Ρύθμισε το URL του Jira στις ρυθμίσεις."
+  },
+  "cardJiraRegexTitle": {
+    "message": "Προσαρμοσμένο regex εισιτηρίου"
+  },
+  "cardJiraRegexDesc": {
+    "message": "Ρύθμισε μια προσαρμοσμένη έκφραση τακτικής για την ανάγνωση των IDs των εισιτηρίων Jira από τους τίτλους MR. Χρήσιμο όταν το έργο σου χρησιμοποιεί μη τυπικά πρόθεματα εισιτηρίων."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Πλευρική μπάρα εισιτηρίου Jira"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Κάνε κλικ σε οποιοδήποτε σήμα Jira για να ανοίξει μια πλευρική μπάρα με όλες τις λεπτομέρειες του εισιτηρίου — περίληψη, κατάσταση, τύπος, προτεραιότητα, υπεύθυνος και περιγραφή. Διάβασε, ανάρτησε και διέγραψε τα δικά σου σχόλια χωρίς να φύγεις από το GitLab. Οι εκδόσεις επισκευής μπορούν να επιλεγούν απευθείας από τις διαθέσιμες εκδόσεις του έργου στην πλευρική μπάρα."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "Συνημμένα στην πλαϊνή μπάρα"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "Δες εικόνες, βίντεο και αρχεία από τα Jira tickets απευθείας στην πλαϊνή μπάρα. Οι εικόνες και τα βίντεο ανοίγουν σε fullscreen lightbox."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Σήματα Jira στη σελίδα MR"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Τα σήματα κατάστασης των Jira ticket εμφανίζονται στον τίτλο του MR στη σελίδα λεπτομερειών. Κάνε κλικ σε ένα σήμα για να ανοίξεις την πλαϊνή μπάρα με όλες τις λεπτομέρειες του ticket."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "Αλλαγή κατάστασης Jira"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "Άλλαξε την κατάσταση του ticket απευθείας από την πλαϊνή μπάρα. Δείχνει μόνο τις διαθέσιμες μεταβάσεις από την τρέχουσα κατάσταση."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "Αλλαγή υπεύθυνου Jira"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "Κάνε κλικ στον υπεύθυνο για αναζήτηση και επανατοποθέτηση. Αυτόματη συμπλήρωση με avatar, κουμπί αφαίρεσης υπεύθυνου για να το διαγράψεις."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Γρήγορες ενέργειες Jira"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "Κουμπιά με ένα κλικ για κατάσταση, υπεύθυνο, ετικέτες, εκδόσεις και άλλα πεδία. Κάθε κουμπί μπορεί να ενημερώσει ένα ή περισσότερα πεδία."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "Εικονίδια τύπου ζητήματος & προτεραιότητας"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "Δείξε τα εικονίδια τύπου και προτεραιότητας του Jira δίπλα στα σήματα κατάστασης στις σελίδες λίστας και λεπτομερειών MR. Χρησιμοποιεί τα εγγενή εικονίδια του Jira."
+  },
+  "cardRebaseTitle": {
+    "message": "Επαναβάση"
+  },
+  "cardRebaseDesc": {
+    "message": "Κάνε επαναβάση του αρχικού κλάδου στον κλάδο στόχο χωρίς συγχώνευση."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "Επαναβάση + Έκδοση"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "Κάνε επαναβάση στον κλάδο και αναβάθμισε έκδοση με ένα κλικ. Δεν συγχωνεύει."
+  },
+  "cardCopyMrTitle": {
+    "message": "Αντιγραφή MR"
+  },
+  "cardCopyMrDesc": {
+    "message": "Αντέγραψε τον τίτλο του MR και τον σύνδεσμο στο πρόχειρο με ένα κλικ."
+  },
+  "cardRetryFailedTitle": {
+    "message": "Επανάληψη αποτυχημένων εργασιών"
+  },
+  "cardRetryFailedDesc": {
+    "message": "Επανάλαβε τις αποτυχημένες εργασίες στο τρέχον pipeline του MR. Οι επιτυχημένες εργασίες δεν επηρεάζονται."
+  },
+  "welcomeMrListFeatures": {
+    "message": "Βελτιώσεις στη σελίδα λίστας MR"
+  },
+  "cardDimDraftsTitle": {
+    "message": "Αχνάρισμα πρόχειρων MR"
+  },
+  "cardDimDraftsDesc": {
+    "message": "Κάνε τα Πρόχειρα MR να φαίνονται αχνά στη λίστα merge requests για να μπορείς να επικεντρωθείς στα ενεργά."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "Τόνισε τα MR σου"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "Τόνισε τα δικά σου MR στη λίστα με ένα μπλε περίγραμμα για γρήγορη αναγνώριση."
+  },
+  "cardOnlyMineTitle": {
+    "message": "Εναλλαγή «Μόνο δικά μου»"
+  },
+  "cardOnlyMineDesc": {
+    "message": "Με ένα κλικ φίλτραρε τη λίστα MR για να δείξεις μόνο τα merge requests σου."
+  },
+  "cardMrAgeTitle": {
+    "message": "Σήμα ηλικίας MR"
+  },
+  "cardMrAgeDesc": {
+    "message": "Δείχνει πότε δημιουργήθηκε το MR, εμφανίζεται ως σήμα στη σελίδα του MR."
+  },
+  "showReviewerBadge": {
+    "message": "Σήμα «Ο έλεγχός σας» από σχόλια"
+  },
+  "badgeYourReview": {
+    "message": "Ο έλεγχός σας"
+  },
+  "badgeYourReviewHint": {
+    "message": "Σε αναφέρουν ως reviewer στα σχόλια του MR"
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "Σήμα «Ο έλεγχός σας»"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "Αναζητά στα παλαιότερα σχόλια το «Reviewer(s): @you». Το βάθος αναζήτησης ρυθμίζεται (προεπιλογή: 10). Λειτουργεί ανεξάρτητα από την ενσωματωμένη λειτουργία ελεγκτών κώδικα του GitLab."
+  },
+  "showNeedsReview": {
+    "message": "Εναλλαγή «Χρειάζεται τον έλεγχό μου» στη σελίδα λίστας"
+  },
+  "toggleNeedsReview": {
+    "message": "Χρειάζεται τον έλεγχό μου"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "Εναλλαγή «Χρειάζεται τον έλεγχό μου»"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "Με ένα κλικ φίλτραρε τη λίστα MR για να δείξεις μόνο τα merge requests όπου έχεις ανατεθεί ως reviewer."
+  },
+  "showCopyMr": {
+    "message": "Κουμπί αντιγραφής στα στοιχεία της λίστας MR"
+  },
+  "showThreadsBadge": {
+    "message": "Αριθμός μη επιλυμένων συζητήσεων στη λίστα MR"
+  },
+  "showSizeBadge": {
+    "message": "Ετικέτες μεγέθους MR (S/M/L/XL) στη λίστα MR"
+  },
+  "showConflictsBadge": {
+    "message": "Εμφάνιση δείκτη συγκρούσεων στη λίστα MR"
+  },
+  "showApprovalBadge": {
+    "message": "Εμφάνιση πλήθους εγκρίσεων και του δείκτη της δικής μου έγκρισης στη λίστα MR"
+  },
+  "approvalBadgeMine": {
+    "message": "Εχεις εγκρίνει"
+  },
+  "approvalBadgeMineShort": {
+    "message": "Εσύ"
+  },
+  "cardThreadsTitle": {
+    "message": "Αριθμός ανεπίλυτων θεμάτων"
+  },
+  "cardThreadsDesc": {
+    "message": "Εμφάνιση αριθμού ανεπίλυτων θεμάτων. Το “+” σημαίνει μια πλήρη πρώτη σελίδα· το “?” σημαίνει ότι ο αριθμός δεν είναι διαθέσιμος."
+  },
+  "cardSizeTitle": {
+    "message": "Ετικέτες μεγέθους MR"
+  },
+  "cardSizeDesc": {
+    "message": "Σήματα S/M/L/XL με ρυθμιζόμενα όρια γραμμών και αρχείων στους Κανόνες και όρια εμφάνισης."
+  },
+  "conflictsBadge": {
+    "message": "Συγκρούσεις"
+  },
+  "conflictsBadgeHint": {
+    "message": "Αυτό το MR έχει συγκρούσεις συγχώνευσης που πρέπει να επιλυθούν"
+  },
+  "cardConflictsTitle": {
+    "message": "Δείκτης συγκρούσεων"
+  },
+  "cardConflictsDesc": {
+    "message": "Δείχνει ένα κόκκινο σήμα CONFLICTS στη σελίδα λεπτομερειών MR όταν το branch έχει συγκρούσεις συγχώνευσης."
+  },
+  "cardApprovalTitle": {
+    "message": "Δείκτης της έγκρισής μου"
+  },
+  "cardApprovalDesc": {
+    "message": "Δείχνει εάν έχεις εγκρίνει κάθε MR στη σελίδα λίστας. Διαχωρίζει την έγκρισή σου από τις εγκρίσεις άλλων."
+  },
+  "showBranches": {
+    "message": "Εμφάνιση branches πηγής και στόχου στη λίστα MR"
+  },
+  "showBranchesLinks": {
+    "message": "Κάνε τα ονόματα των branch κλικαμπλ (άνοιξε δέντρο branch)"
+  },
+  "cardBranchesTitle": {
+    "message": "Ονόματα branch στη λίστα MR"
+  },
+  "cardBranchesDesc": {
+    "message": "Εμφανίζει τα ονόματα του source και target branch σε κάθε MR στη λίστα, ώστε να βλέπεις από πού προέρχεται ο κώδικας και πού συγχωνεύεται."
+  },
+  "cardCopyMrListTitle": {
+    "message": "Αντιγραφή MR από τη λίστα"
+  },
+  "cardCopyMrListDesc": {
+    "message": "Προσθέτει ένα κουμπί αντιγραφής σε κάθε MR στη σελίδα λίστας. Αντιγράφει τον τίτλο και το link του MR στο clipboard με ένα κλικ."
+  },
+  "versionFromTarget": {
+    "message": "Ανάγνωση έκδοσης από το target branch"
+  },
+  "versionFromTargetHint": {
+    "message": "Ανέβασε την τρέχουσα έκδοση από το target branch (π.χ. main) αντί από το source branch. Χρησιμοποίησέ το με τη στρατηγική merge commit για να αποφύγεις ξεπερασμένες εκδόσεις."
+  },
+  "showFailedJobView": {
+    "message": "Εμφάνιση γρήγορης προβολής αποτυχημένων εργασιών στη σελίδα MR"
+  },
+  "failedJobTraceError": {
+    "message": "Δεν ήταν δυνατή η φόρτωση του αρχείου καταγραφής"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "Γρήγορη προβολή αποτυχημένων εργασιών"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "Προεπισκόπηση αποτυχημένων εργασιών και των τελευταίων γραμμών καταγραφής στη σελίδα MR. Ο αριθμός εργασιών και γραμμών ρυθμίζεται στους κανόνες και τα όρια εμφάνισης."
+  },
+  "showCmdPalette": {
+    "message": "Παλέτα εντολών (Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "Ημερήσια αναφορά δραστηριότητας"
+  },
+  "standupJiraEnrich": {
+    "message": "Εμφάνιση τίτλων εισιτηρίων Jira στην αναφορά"
+  },
+  "cmdPlaceholder": {
+    "message": "Πληκτρολογήστε μια εντολή..."
+  },
+  "cmdFooterNavigate": {
+    "message": "πλοήγηση"
+  },
+  "cmdFooterSelect": {
+    "message": "επιλέξτε"
+  },
+  "cmdFooterClose": {
+    "message": "κλείσιμο"
+  },
+  "cmdEmpty": {
+    "message": "Καμία ταιριαστή εντολή"
+  },
+  "cmdGroupNav": {
+    "message": "Πλοήγηση"
+  },
+  "cmdGroupMr": {
+    "message": "Ενέργειες MR"
+  },
+  "cmdGroupExt": {
+    "message": "Επέκταση"
+  },
+  "cmdGroupFiles": {
+    "message": "Αρχεία"
+  },
+  "cmdNavMrs": {
+    "message": "Μετάβαση σε Αιτήματα Συγχώνευσης"
+  },
+  "cmdNavIssues": {
+    "message": "Μετάβαση σε Θέματα"
+  },
+  "cmdNavPipelines": {
+    "message": "Μετάβαση σε Pipelines"
+  },
+  "cmdNavBranches": {
+    "message": "Μετάβαση σε Κλαδιά"
+  },
+  "cmdNavRepo": {
+    "message": "Μετάβαση σε Αποθετήριο"
+  },
+  "cmdNavTags": {
+    "message": "Μετάβαση σε Ετικέτες"
+  },
+  "cmdNavCommits": {
+    "message": "Μετάβαση σε Commits"
+  },
+  "cmdNavWiki": {
+    "message": "Μετάβαση σε Wiki"
+  },
+  "cmdNavSnippets": {
+    "message": "Μετάβαση σε Snippets"
+  },
+  "cmdNavSettings": {
+    "message": "Μετάβαση στις Ρυθμίσεις"
+  },
+  "cmdCopyPath": {
+    "message": "Αντιγραφή διαδρομής έργου"
+  },
+  "cmdGroupPinned": {
+    "message": "Κολλημένο"
+  },
+  "cmdExtSettings": {
+    "message": "Άνοιγμα ρυθμίσεων επέκτασης"
+  },
+  "cmdExtStandup": {
+    "message": "Δημιουργία αναφοράς δραστηριότητας"
+  },
+  "standupTitle": {
+    "message": "Ημερήσια Δραστηριότητα"
+  },
+  "standupCopy": {
+    "message": "Αντιγραφή στο πρόχειρο"
+  },
+  "standupCopied": {
+    "message": "Αντιγράφηκε!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "Παλέτα εντολών"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "Πατήστε Cmd+K (Mac) ή Ctrl+K (Win) σε οποιαδήποτε σελίδα GitLab. Πλοηγηθείτε, εκτελέστε ενέργειες MR, αναζητήστε αρχεία κατά όνομα και ανοίξτε τα στο αποθετήριο."
+  },
+  "cardStandupTitle": {
+    "message": "Ημερήσια αναφορά δραστηριότητας"
+  },
+  "cardStandupDesc": {
+    "message": "Δημιουργήστε μια ημερήσια αναφορά δραστηριότητας από τα δεδομένα σας στο GitLab. Δείχνει τα MRs που δημιουργήθηκαν, συγχωνεύτηκαν και αναθεωρήθηκαν. Αντιγράψτε και επικολλήστε στο Slack ή στο Jira."
+  },
+  "showCherryPick": {
+    "message": "Cherry-pick σε κλάδους"
+  },
+  "showGroupPlay": {
+    "message": "Κουμπί ομαδικής εκτέλεσης στο pipeline (εκτελεί τα υπόλοιπα χειροκίνητα jobs)"
+  },
+  "showCommitVersion": {
+    "message": "Σήμα έκδοσης στη σελίδα των commits"
+  },
+  "showCommitVersionHint": {
+    "message": "Δείχνει την έκδοση από το αρχείο έκδοσης (βλέπε ρυθμίσεις αύξησης έκδοσης) δίπλα σε κάθε commit· επισημαίνεται όταν αλλάζει η έκδοση"
+  },
+  "groupPlayTooltip": {
+    "message": "Εκτέλεση των υπόλοιπων χειροκίνητων jobs σε αυτήν την ομάδα"
+  },
+  "groupPlayError": {
+    "message": "Απέτυχε η εκκίνηση ορισμένων jobs"
+  },
+  "cardGroupPlayTitle": {
+    "message": "Κουμπί ομαδικής εκτέλεσης"
+  },
+  "cardGroupPlayDesc": {
+    "message": "Στο γράφημα του pipeline, ένα κουμπί play δίπλα σε μια ομάδα jobs εκτελεί όλα τα υπόλοιπα χειροκίνητα jobs — ακόμα και μετά την εκκίνηση κάποιων jobs στην ομάδα και ενώ το κουμπί του GitLab εξαφανίζεται."
+  },
+  "cardCommitVersionTitle": {
+    "message": "Σήμα έκδοσης στα commits"
+  },
+  "cardCommitVersionDesc": {
+    "message": "Στη σελίδα με τα commits του branch, κάθε commit δείχνει την έκδοση του project από το αρχείο έκδοσης σου σε εκείνο το commit. Σιωπηλό από προεπιλογή, επισημασμένο εκεί που άλλαξε η έκδοση — δες με μια ματιά ποια commits πήγαν σε ποιο release."
+  },
+  "cherryPickBranches": {
+    "message": "Κλάδοι για cherry-pick"
+  },
+  "cherryPickProjectBranchesHint": { "message": "Ορίστε κλάδους για αυτό το έργο. Αφήστε τη λίστα κενή για να χρησιμοποιηθούν οι καθολικοί κλάδοι." },
+  "cherryPickNoBranches": { "message": "Δεν έχουν οριστεί κλάδοι." },
+  "cherryPickBranchesHint": {
+    "message": "Προεπιλεγμένα target branches για cherry-pick. Μπορείς να προσθέσεις ή να αφαιρέσεις branches στο modal."
+  },
+  "cherryPickBranchAdd": {
+    "message": "Πρόσθεσε branch"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "Cherry-pick σε branches"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "Κλείσε"
+  },
+  "cherryPickInProgress": {
+    "message": "Κάνει cherry-picking..."
+  },
+  "cherryPickRemove": {
+    "message": "Αφαίρεσε"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "Όνομα branch"
+  },
+  "cherryPickAllSuccess": {
+    "message": "Cherry-picked σε $1 branches",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "Ξεκίνα ένα νέο merge request με αυτές τις αλλαγές"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "Δημιούργησε MR από προεπιλογή όταν κάνεις cherry-picking"
+  },
+  "cherryPickSmartFallback": {
+    "message": "Σε περίπτωση διένεξης — commit χωρίς το αρχείο έκδοσης"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "Αν το cherry-pick αποτύχει λόγω διένεξης στο αρχείο έκδοσης, επανέφερε τις αλλαγές ως νέο commit χωρίς το αρχείο έκδοσης"
+  },
+  "cherryPickBumpVersion": {
+    "message": "Αύξηση έκδοσης στο fallback"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "Αύξηση έκδοσης στο target branch μέσα στην ίδια commit fallback"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "Το έξυπνο fallback χειρίζεται μόνο συγκρούσεις στο αρχείο έκδοσης. Η σύγκρουση είναι σε άλλο αρχείο"
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "Το αρχείο τροποποιήθηκε στο target branch — δεν μπορεί να γίνει με ασφάλεια cherry-pick"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "Το αρχείο έκδοσης περιέχει αλλαγές πέρα από την έκδοση — δεν μπορεί να παραλειφθεί με ασφάλεια"
+  },
+  "commitsJiraField": {
+    "message": "Πεδίο Jira για badges commit"
+  },
+  "commitsJiraFieldHint": {
+    "message": "Όνομα πεδίου Jira που εμφανίζεται ως badges στη σελίδα commits (π.χ. fixVersions, status, labels, components). Απαιτεί URL Jira."
+  },
+  "cardCherryPickTitle": {
+    "message": "Cherry-pick σε branch"
+  },
+  "cardCherryPickDesc": {
+    "message": "Cherry-pick σε επιλεγμένα branch άμεσα ή μέσω νέων MRs. Με το έξυπνο fallback ενεργοποιημένο, οι επαληθευμένες συγκρούσεις στο αρχείο έκδοσης μπορούν να επαναληφθούν χωρίς το αρχείο, με προαιρετική αύξηση της έκδοσης. Οι μη ασφαλείς αλλαγές σταματούν για επιθεώρηση."
+  },
+  "mrDetailEnhancements": {
+    "message": "Ενισχύσεις λεπτομερειών MR"
+  },
+  "showSensitiveWarning": {
+    "message": "Προειδοποίηση για ευαίσθητο αρχείο στο diff"
+  },
+  "showGitCommands": {
+    "message": "Κουμπιά εντολών Git (checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "ΕΥΑΙΣΘΗΤΟ: $1 αρχείο(α)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "Αυτό το MR τροποποιεί αρχεία που είναι ευαίσθητα για την ασφάλεια:"
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "Προειδοποίηση για ευαίσθητο αρχείο"
+  },
+  "cardSensitiveDesc": {
+    "message": "Επισημαίνει ευαίσθητα αρχεία χρησιμοποιώντας ενσωματωμένους κανόνες, επιπλέον μοτίβα και εξαιρέσεις. Διαμορφώστε τα στους κανόνες προβολής και τα όρια."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Κουμπιά εντολών Git"
+  },
+  "cardGitCommandsDesc": {
+    "message": "Αντιγράψτε εντολές checkout, pull και hard-reset. Ελέγξτε το repository και το origin remote πριν τις εκτελέσετε. Η σκληρή επαναφορά διαγράφει τις τοπικές αλλαγές."
+  },
+  "updateBannerText": {
+    "message": "Μια νέα έκδοση είναι διαθέσιμη! Δείτε τι νέο υπάρχει:"
+  },
+  "updateChangelog": {
+    "message": "Ημερολόγιο αλλαγών"
+  },
+  "updateReviewAsk": {
+    "message": "Σου αρέσει η επέκταση;"
+  },
+  "updateReviewLink": {
+    "message": "Αφήστε μια αξιολόγηση"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "Αξιολόγηση με βοήθεια AI, από την αρχή μέχρι το τέλος"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "Ανασκόπηση ενός MR, διόρθωση επιλεγμένων σχολίων, προετοιμασία απαντήσεων και επανέλεγχος αλλαγών. Προεπισκόπηση και επεξεργασία σχολίων πριν τα αναρτήσετε στο GitLab."
+  },
+  "aiReviewGuide": {
+    "message": "Οδηγός ανασκόπησης AI"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "Καμία αυτόματη μεταφόρτωση AI. Αντιγράψτε το πλαίσιο μόνοι σας· τα σχόλια στέλνονται στο GitLab μόνο όταν επιλέξετε Δημοσίευση ή Προσθήκη για ανασκόπηση."
+  },
+  "aiReviewTitle": {
+    "message": "Ανασκόπηση AI"
+  },
+  "aiReviewOpen": {
+    "message": "Ανασκόπηση AI…"
+  },
+  "aiReviewCopyComment": {
+    "message": "Αντιγραφή σχολίου για AI"
+  },
+  "aiReviewLoading": {
+    "message": "Φόρτωση συζητήσεων…"
+  },
+  "aiReviewRetry": {
+    "message": "Επανάληψη"
+  },
+  "aiReviewRefresh": {
+    "message": "Ανανέωση"
+  },
+  "aiReviewClose": {
+    "message": "Κλείσιμο"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "Επιβεβαίωση κλεισίματος διαλόγων ανασκόπησης με μη αποθηκευμένη εργασία"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "Να κλείσει αυτό το παράθυρο; Οι μη αποθηκευμένες αλλαγές και τα δεδομένα που εισαγάγατε θα χαθούν."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "Να κλείσει το παράθυρο και να σταματήσει η περαιτέρω αποστολή; Τα ήδη σταλμένα σχόλια θα παραμείνουν στο GitLab. Οι μη αποθηκευμένες αλλαγές θα χαθούν."
+  },
+  "aiReviewAll": {
+    "message": "Όλα"
+  },
+  "aiReviewUnresolved": {
+    "message": "Μη επιλυμένα"
+  },
+  "aiReviewResolved": {
+    "message": "Επιλυμένα"
+  },
+  "aiReviewGeneral": {
+    "message": "Γενικά σχόλια"
+  },
+  "aiReviewSearch": {
+    "message": "Αναζήτηση σχολίων ή διαδρομών αρχείων"
+  },
+  "aiReviewSelectShown": {
+    "message": "Επιλογή εμφανιζόμενων"
+  },
+  "aiReviewClear": {
+    "message": "Καθαρισμός επιλογής"
+  },
+  "aiReviewIncludeCode": {
+    "message": "Συμπερίληψη αλλαγών κώδικα"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "Για νέες και επαναλαμβανόμενες αναθεωρήσεις. Αφήστε το αν η AI μπορεί να διαβάσει το αποθετήριο. Σύντομα αποσπάσματα που επισυνάπτονται στα σχόλια παραμένουν περιλαμβανόμενα."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "Λάβετε υπόψη υπάρχουσες συζητήσεις"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "Προσθέτει ήδη δημοσιευμένα σχόλια ως φίλτρο διπλοτυπιών: η AI αναθεωρεί ολόκληρο το MR ανεξάρτητα, και στη συνέχεια παραλείπει ευρήματα που τα επαναλαμβάνουν. Δεν απαντά σε αυτές τις συζητήσεις."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "Συμπερίληψη περιγραφής"
+  },
+  "aiReviewPrompt": {
+    "message": "Οδηγίες για την AI"
+  },
+  "aiReviewResetPrompt": {
+    "message": "Επαναφορά προεπιλεγμένου αιτήματος"
+  },
+  "aiReviewPreview": {
+    "message": "Προεπισκόπηση"
+  },
+  "aiReviewCopied": {
+    "message": "Αντιγράφηκε!"
+  },
+  "aiReviewEmpty": {
+    "message": "Δεν υπάρχουν αντίστοιχα σχόλια."
+  },
+  "aiReviewPartial": {
+    "message": "Κάποια δεδομένα δεν ήταν δυνατή η φόρτωση. Η εξαγωγή περιλαμβάνει προειδοποίηση και μόνο το διαθέσιμο πλαίσιο."
+  },
+  "aiReviewSelectedCount": {
+    "message": "Επιλεγμένο $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "Επιλέξτε το κείμενο προεπισκόπησης και αντιγράψτε το χειροκίνητα."
+  },
+  "aiReviewScopeComment": {
+    "message": "Επιλεγμένο σχόλιο"
+  },
+  "aiReviewScopeThread": {
+    "message": "Επιλεγμένη συζήτηση"
+  },
+  "aiReviewPreparing": {
+    "message": "Προετοιμασία πλαισίου κώδικα…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "Δεν ήταν δυνατή η φόρτωση συζητήσεων. Δοκιμάστε ξανά ή αντιγράψτε το διαθέσιμο περιεχόμενο."
+  },
+  "aiReviewShowReplies": {
+    "message": "Δείξε απαντήσεις"
+  },
+  "aiReviewSize": {
+    "message": "Περίπου $1 χαρακτήρες",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "Ακύρωση"
+  },
+  "showAiReviewCopy": {
+    "message": "Δείξε αντίγραφο ανασκόπησης AI και στοιχεία εισαγωγής"
+  },
+  "aiReviewSettingsHint": {
+    "message": "Αντίγραψε ολόκληρο το MR για νέα ανασκόπηση, επιλεγμένα σχόλια για διορθώσεις ή εισάγετε σχόλια και απαντήσεις AI με προεπισκόπηση επεξεργάσιμη πριν αποστείλετε."
+  },
+  "aiReviewFresh": {
+    "message": "Ανασκόπηση από την αρχή"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "Ερώτηση για νέα ανασκόπηση"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "Μέχρι 1.500 χαρακτήρες. Χρησιμοποιείται για ανασκόπηση ολόκληρου του MR και όλων των commits του, ξεχωριστά από διορθώσεις σχολίων. Μπορείτε να καθορίσετε τη γλώσσα απάντησης. Αφήστε κενό για προεπιλεγμένη αγγλική ερώτηση."
+  },
+  "aiReviewPromptHint": {
+    "message": "Μέχρι 1.500 χαρακτήρες. Αφήστε κενό για να χρησιμοποιήσετε την προεπιλεγμένη αγγλική ερώτηση. Ισχύει για όλα τα έργα."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "Η ερώτηση δεν αποθηκεύτηκε. Χρησιμοποιήστε το πολύ 1.500 χαρακτήρες και αφαιρέστε ασυνήθιστους χαρακτήρες ελέγχου."
+  },
+  "settingsSaveFailed": {
+    "message": "Δεν ήταν δυνατή η αποθήκευση των ρυθμίσεων. Δοκιμάστε ξανά."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "Οι αλλαγές εδώ εφαρμόζονται σε αυτήν την εξαγωγή. Όρισε το προεπιλεγμένο prompt σου στις ρυθμίσεις της επέκτασης."
+  },
+  "aiReviewReady": {
+    "message": "Η προεπισκόπηση είναι έτοιμη για αντιγραφή."
+  },
+  "aiReviewLoadHint": {
+    "message": "Φορτώνει συζητήσεις απευθείας από το GitLab, συμπεριλαμβανομένων σχολίων που δεν φαίνονται σε αυτή τη σελίδα."
+  },
+  "aiReviewCommentContext": {
+    "message": "Άλλες απαντήσεις περιλαμβάνονται ως πλαίσιο. Μόνο τα επιλεγμένα σχόλια ζητούνται για ενέργεια."
+  },
+  "aiReviewOutdated": {
+    "message": "Προηγούμενη αναθεώρηση"
+  },
+  "aiReviewLink": {
+    "message": "Άνοιγμα συζήτησης"
+  },
+  "aiReviewLoaded": {
+    "message": "Φορτώθηκαν $1 συζητήσεις"
+  },
+  "aiReviewCodeProgress": {
+    "message": "Προετοιμασία πλαισίου κώδικα: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "Αυτό το σχόλιο δεν είναι διαθέσιμο από το GitLab. Μπορεί να αποθηκεύεται ακόμα ή να έχει διαγραφεί. Ανανέωσε για να ξαναδοκιμάσεις."
+  },
+  "aiReviewImportOpen": {
+    "message": "Εισαγωγή αξιολόγησης AI…"
+  },
+  "aiReviewImportTitle": {
+    "message": "Εισαγωγή αξιολόγησης AI"
+  },
+  "aiReviewImportHelp": {
+    "message": "Επικόλλησε την απάντηση AI παρακάτω για έλεγχο, επεξεργασία και επιλογή τι να δημοσιευτεί. Συντομεύσεις prompt υπάρχουν στις Προηγμένες ρυθμίσεις."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "Αντιγραφή prompt για νέα αξιολόγηση"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "Προετοιμάζοντας την εντολή…"
+  },
+  "aiReviewImportInput": {
+    "message": "Απόκριση AI (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "Επικόλλησε την πλήρη απόκριση JSON που περιέχει νέα σχόλια ή απαντήσεις σε συζητήσεις. Μπορείς να επεξεργαστείς το κείμενο και να επιλέξεις τι θα στείλεις στην προεπισκόπηση."
+  },
+  "aiReviewImportValidate": {
+    "message": "Έλεγχος και προεπισκόπηση"
+  },
+  "aiReviewImportChecking": {
+    "message": "Έλεγχος της αναθεώρησης MR, των γραμμών και των υπαρχόντων σχολίων…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "Έλεγχος της απόκρισης στα σχόλια προεπισκόπησης. Μπορείς να επεξεργαστείς το κείμενο, να καθαρίσεις τα κουτάκια για να εξαιρέσεις στοιχεία ή να προσθέσεις ένα γενικό σχόλιο."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "Επιλογή έτοιμων σχολίων"
+  },
+  "aiReviewImportPreview": {
+    "message": "Σχόλια προς αποστολή"
+  },
+  "aiReviewImportReady": {
+    "message": "Έτοιμο"
+  },
+  "aiReviewImportInvalid": {
+    "message": "Απαιτεί διόρθωση"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "Οι πρόσθετες αλλαγές αρχείων δεν μπόρεσαν να φορτωθούν: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "Η πρόσθετη διαφορά υπερβαίνει το όριο εισαγωγής 16 MiB. Μόνο σχόλια σε επαληθευμένες γραμμές μπορούν να εισαχθούν."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "Υπάρχει ήδη"
+  },
+  "aiReviewImportPublished": {
+    "message": "Δημοσιεύτηκε"
+  },
+  "aiReviewImportDraft": {
+    "message": "Προστέθηκε για ανασκόπηση"
+  },
+  "aiReviewImportFailed": {
+    "message": "Δεν στάλθηκε"
+  },
+  "aiReviewImportUnknown": {
+    "message": "Η αποστολή δεν επιβεβαιώθηκε"
+  },
+  "aiReviewImportSkipped": {
+    "message": "Δεν στάλθηκε"
+  },
+  "aiReviewImportNewLine": {
+    "message": "Νέα γραμμή $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "Παλιά γραμμή $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "Δημοσίευση επιλεγμένων"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "Προσθήκη για ανασκόπηση"
+  },
+  "aiReviewImportSendHint": {
+    "message": "Η δημοσίευση στέλνει τα σχόλια αμέσως. Η προσθήκη για ανασκόπηση αποθηκεύει μη δημοσιευμένα σχόλια για την ανασκόπηση στο GitLab."
+  },
+  "aiReviewImportSending": {
+    "message": "Αποστολή επιλεγμένων σχολίων…"
+  },
+  "aiReviewImportFinished": {
+    "message": "Ολοκληρώθηκε. Έλεγξε το αποτέλεσμα δίπλα σε κάθε σχόλιο."
+  },
+  "aiReviewImportStopped": {
+    "message": "Σταμάτησε. Έλεγξε το αποτέλεσμα δίπλα σε κάθε σχόλιο πριν προσπαθήσεις ξανά."
+  },
+  "aiReviewImportEdited": {
+    "message": "Η απάντηση άλλαξε. Έλεγξέ τη ξανά πριν την στείλεις."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "Το πρόχειρο δεν είναι διαθέσιμο. Επίλεξε το παρακάτω κείμενο και κάνε αντιγραφή χειροκίνητα."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "Δεν ήταν δυνατή η επιβεβαίωση της αποστολής. Ελέγξτε το GitLab πριν προσπαθήσετε ξανά."
+  },
+  "aiReviewImportPrompt": {
+    "message": "Παράθυρο για AI"
+  },
+  "aiReviewImportChecked": {
+    "message": "Έτοιμο: $1. Άλλα σχόλια χρειάζονται προσοχή.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "Σταμάτα την αποστολή"
+  },
+  "aiReviewImportError": {
+    "message": "Δεν ήταν δυνατή η ολοκλήρωση της ενέργειας"
+  },
+  "aiReviewImportPromptError": {
+    "message": "Δεν ήταν δυνατή η προετοιμασία του παραθύρου διαλόγου"
+  },
+  "aiReviewImportWarning": {
+    "message": "Ειδοποιήσεις ανασκόπησης"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "Ανασκόπηση AI"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "Γλώσσα απάντησης AI"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "Αυτόματο — γλώσσα συνομιλίας"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "Ισχύει για όλες τις εργασίες αναθεώρησης και τα μηνύματα εισαγωγής. Τα κλειδιά JSON, οι διαδρομές και ο κώδικας δεν μεταφράζονται. Η αντιγραφή μόνο της μορφής δεν προσθέτει οδηγίες γλώσσας."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "Πρόταση για διόρθωση σχολίων"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "Πρόταση για νέα σχόλια αναθεώρησης"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "Πρόταση για απαντήσεις σε σχόλια"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "Έως και 1500 χαρακτήρες. Για τη συντόμευση νέας αναθεώρησης στο Εισαγωγή. Οι καρτέλες εργασιών χρησιμοποιούν τις δικές τους προτάσεις. Το περιβάλλον MR και η μορφή JSON προστίθενται αυτόματα."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "Έως 1500 χαρακτήρες. Για απαντήσεις σε επιλεγμένες συζητήσεις στο Αντιγράφημα ή σε όλες τις ανεπίλυτες συζητήσεις στο Εισαγωγή. Ορίστε στυλ και γλώσσα· το περιβάλλον και η μορφή απάντησης προστίθενται αυτόματα."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "Πρόταση απάντησης για όλες τις ανεπίλυτες συζητήσεις"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "Αντιγραφή μορφής απάντησης"
+  },
+  "aiReviewImportFormat": {
+    "message": "Μορφή απάντησης για AI"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "Προετοιμάστε απαντήσεις"
+  },
+  "aiReviewImportReply": {
+    "message": "Απάντηση σε συζήτηση"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "Αρχικό σχόλιο"
+  },
+  "aiReviewImportReplyText": {
+    "message": "Η απάντησή σου"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "Επίλυση συζήτησης μετά τη δημοσίευση"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "Η συζήτηση επιλύθηκε."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "Η απάντηση δημοσιεύτηκε, αλλά η συζήτηση δεν επιλύθηκε. Μπορείς να την επιλύσεις στο GitLab."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "Η απάντηση δημοσιεύτηκε. Η επίλυση δεν επιβεβαιώθηκε· τσέκαρε τη συζήτηση στο GitLab."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "Η επίλυση είναι προαιρετική και απενεργοποιημένη από προεπιλογή. Εκτελείται μόνο μετά τη δημοσίευση της απάντησης. Η προσθήκη προσχεδίου ποτέ δεν επιλύει μια συζήτηση."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "Η έκδοση του MR άλλαξε. Οι απαντήσεις παραμένουν συνδεδεμένες με τις συζητήσεις τους· επαλήθευσε το κείμενό τους με τις διορθώσεις που ανέβηκαν. Νέες ανακαλύψεις από παλιά αναθεώρηση δεν επιτρέπονται."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "Αυτές οι απαντήσεις συνδέονται με συζητήσεις, όχι με αναθεώρηση κώδικα. Πριν τη δημοσίευση, επαλήθευσε ότι οι περιγραφόμενες διορθώσεις έχουν ανέβει σε αυτό το MR."
+  },
+  "aiReviewImportEdit": {
+    "message": "Επεξεργασία κειμένου"
+  },
+  "aiReviewImportAddComment": {
+    "message": "Πρόσθεσε σχόλιο"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "Αποθήκευση αλλαγών"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "Ακύρωση"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "Κείμενο σχολίου"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "Επεξεργαστείτε το κείμενο και μετά αποθηκεύστε το για να ελέγξετε τις αλλαγές πριν τη δημοσίευση."
+  },
+  "aiReviewImportEditError": {
+    "message": "Δεν ήταν δυνατή η αποθήκευση των αλλαγών"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "Η προεπισκόπηση μπορεί να περιέχει το πολύ 200 σχόλια."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "Προτροπή επαναληπτικής αξιολόγησης"
+  },
+  "aiReviewFileFilters": {
+    "message": "Αρχεία προς αξιολόγηση"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "Ισχύει για νέους και επαναληπτικούς ελέγχους και οδηγίες για νέα ευρήματα, όχι για επιλεγμένα σχόλια ή οδηγίες απάντησης. Ένα μοτίβο ανά γραμμή ή χωρισμένο με κόμμα· το # αρχίζει σχόλιο. Χρησιμοποιήστε *, **, ?. Οι εξαιρέσεις έχουν προτεραιότητα, ακόμη και για παλιές διαδρομές μετονομασμένων αρχείων. Κενές λίστες περιλαμβάνουν τα πάντα. Παράδειγμα: src/**, *.test.js, dist/. Έως 1500 χαρακτήρες ανά λίστα."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "Συμπεριλάβετε επεκτάσεις (js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "Συμπεριλάβετε διαδρομές αρχείων"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "Αποκλείστε διαδρομές αρχείων"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "Αποκλείστε φακέλους"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "Τα φίλτρα αρχείων δεν μπόρεσαν να αποθηκευτούν ή να εφαρμοστούν. Χρησιμοποιήστε το πολύ 1500 χαρακτήρες ανά λίστα και αφαιρέστε ασυνήθιστους χαρακτήρες ελέγχου."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "Έκδοση που αξιολογήσατε"
+  },
+  "aiReviewPreviousNone": {
+    "message": "Πλήρης ανασκόπηση — καμία προηγούμενη έκδοση"
+  },
+  "aiReviewRepeat": {
+    "message": "Επανάληψη ανασκόπησης"
+  },
+  "aiReviewPreviousManual": {
+    "message": "Εισαγάγετε ένα SHA commit"
+  },
+  "aiReviewPreviousSha": {
+    "message": "Εισαγάγετε το πλήρες SHA του commit που ανασκοπήθηκε (40 ή 64 δεκαεξαδικούς χαρακτήρες)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "Επιλέξτε την έκδοση MR που ανασκοπήσατε πριν αφήσετε τα σχόλιά σας. Όλες οι επόμενες αλλαγές μέχρι την τρέχουσα έκδοση περιλαμβάνονται αυτόματα· δεν χρειάζεται να επιλέξετε μεμονωμένα commits. Αν δεν θυμάστε την έκδοση, επιλέξτε πλήρη ανασκόπηση."
+  },
+  "aiReviewChooseTask": {
+    "message": "Επιλέξτε μια εργασία"
+  },
+  "aiReviewTaskReview": {
+    "message": "Νέα ανασκόπηση"
+  },
+  "aiReviewTaskFix": {
+    "message": "Διορθώστε τα ευρήματα της ανασκόπησης"
+  },
+  "aiReviewTaskReply": {
+    "message": "Προετοιμάστε απαντήσεις"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "Ανασκόπηση επακόλουθη"
+  },
+  "aiReviewCopyTask": {
+    "message": "Αντιγράψτε εργασία"
+  },
+  "aiReviewPasteResult": {
+    "message": "Επικολλήστε απάντηση AI"
+  },
+  "aiReviewAdvanced": {
+    "message": "Προηγμένες ρυθμίσεις"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "Οδηγίες εργασίας"
+  },
+  "aiReviewSelectThread": {
+    "message": "Επιλέξτε αυτή τη συζήτηση"
+  },
+  "aiReviewSelectAll": {
+    "message": "Επιλέξτε όλες τις συζητήσεις"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "Αξιολογήστε όλα τα MR commits μαζί. Το AI επιστρέφει νέα ευρήματα χωρίς να αλλάξει τον κώδικα."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "Επιλέξτε τα σχόλια για διόρθωση. Για ένα MR, η AI ετοιμάζει επίσης απαντήσεις που εξηγούν τι έγινε, τι μένει και γιατί. Αρχικά επιλέγονται οι ανοιχτές συζητήσεις."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "Ετοιμάστε κι εσείς απαντήσεις"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "Επιλέξτε τα σχόλια που η coding AI σας πρέπει να διορθώσει. Αρχικά επιλέγονται οι ανοιχτές συζητήσεις."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "Δώστε την εργασία στην coding AI σας και ελέγξτε τις αλλαγές και τα τεστ της. Το αποτέλεσμα είναι διορθώσεις και μια κανονική περίληψη, χωρίς έτοιμες προς δημοσίευση απαντήσεις."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "Μετά την εφαρμογή των διορθώσεων, ζητήστε από την AI να επαληθεύσει τον κώδικα και να εξηγήσει το αποτέλεσμα στις επιλεγμένες συζητήσεις."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "Επαληθεύστε τα επιλεγμένα σχόλια και αναζητήστε νέα σφάλματα. Επιλέξτε την έκδοση που είχατε προηγουμένως αναθεωρήσει ή ελέγξτε ολόκληρο το τρέχον MR."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "Εργασία: ολόκληρο το MR, σε όλα τα commits."
+  },
+  "aiReviewSummaryFix": {
+    "message": "Επιλεγμένα σχόλια: $1; το πλαίσιο της συζήτησης και τα διαθέσιμα αποσπάσματα κώδικα περιλαμβάνονται."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "Συζητήσεις για απαντήσεις: $1, με όλη τη συνομιλία τους. Η AI χρειάζεται πρόσβαση στο αποθετήριο."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "Συζητήσεις για επαλήθευση: $1, συν μια ανασκόπηση των αλλαγών κώδικα."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "Περιγραφή περιλαμβάνεται."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "Περιγραφή εξαιρείται."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "Αλλαγές στον κώδικα περιλαμβάνονται, υπό όρους φόρτωσης."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "Η AI πρέπει να διαβάσει τον κώδικα από το αποθετήριο."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "Υπάρχουσες συζητήσεις προστίθενται μόνο ως φίλτρο διπλοτύπων."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "Υπάρχουσες συζητήσεις δεν προστίθενται."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "Τα φίλτρα αρχείων είναι ενεργά."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "Δεν επιλέχθηκε προηγούμενη έκδοση: θα ελεγχθεί ολόκληρο το τρέχον MR."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "Αδημοσίευτες συζητήσεις πρόχειρου κειμένου δεν μπορούν να λάβουν απαντήσεις και εξαιρούνται."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "Επιλέξτε σχόλια στα αριστερά. Για μια νέα ανασκόπηση, χρησιμοποιήστε την καρτέλα Νέα ανασκόπηση."
+  },
+  "aiReviewNextStep": {
+    "message": "Αντέγραψε την εργασία στο εργαλείο AI σου. Αν επιστρέψει σχόλια ή απαντήσεις, χρησιμοποίησε το Paste AI response για να τα ελέγξεις και να τα επεξεργαστείς πριν τα δημοσιεύσεις."
+  },
+  "aiReviewNextFixStep": {
+    "message": "Έλεγξε τις διορθώσεις και τις δοκιμές, σπρώξε όλα τα commits στο MR, και μετά χρησιμοποίησε το Paste AI response για να δεις τις έτοιμες απαντήσεις πριν τις δημοσιεύσεις. Τα νέα commits δεν απαιτούν αναδημιουργία των απαντήσεων."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "Αυτόματες οδηγίες (προχωρημένο)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "Όλα τα μπλοκ είναι ενεργοποιημένα από προεπιλογή και χρησιμοποιούνται μόνο για σχετικές εργασίες. Επεξεργάσου, απενεργοποίησε ή καθάρισε οποιοδήποτε μπλοκ. Οι οδηγίες των εντολών της εργασίας έχουν επίσης τις δικές τους οδηγίες. Τα δεδομένα του MR, τα παραδείγματα JSON και οι ειδοποιήσεις φόρτωσης παράγονται ξεχωριστά· οι έλεγχοι δημοσίευσης εφαρμόζονται πάντα."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "Πρόσθεσε στην εργασία όταν είναι εφαρμόσιμο"
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "Έως 1500 χαρακτήρες. Κενό κείμενο δεν προσθέτει τίποτα. Το Reset επαναφέρει το προεπιλεγμένο κείμενο και ενεργοποιεί αυτό το μπλοκ."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "Χρησιμοποίησε {language} για τη γλώσσα απάντησης που έχει επιλεγεί. Μέχρι 1500 χαρακτήρες· κενό κείμενο δεν προσθέτει τίποτα."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "Χρησιμοποίησε {selection} για επιλεγμένες ή ανοιχτές συζητήσεις. Μέχρι 1500 χαρακτήρες· κενό κείμενο δεν προσθέτει τίποτα."
+  },
+  "aiReviewRule_repository": {
+    "message": "Τοπικό αποθετήριο και απομακρυσμένο"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "Αντίγραφο εργασίας για διορθώσεις"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "Αντίγραφο εργασίας για αναθεώρηση"
+  },
+  "aiReviewRule_language": {
+    "message": "Γλώσσα απάντησης"
+  },
+  "aiReviewRule_scope": {
+    "message": "Ερμηνεία φίλτρου αρχείων"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "Πλαίσιο σχολίων"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "Διορθώσεις χωρίς απαντήσεις"
+  },
+  "aiReviewRule_description_task": {
+    "message": "Εργασία μόνο με περιγραφή"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "Λείπουν επιλεγμένα σχόλια"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "Έτοιμες προς ανάρτηση απαντήσεις μετά τις διορθώσεις"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "Όρια αναθεώρησης"
+  },
+  "aiReviewRule_review_source": {
+    "message": "Πηγή για αναθεώρηση"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "Συμπεριλαμβανόμενες αλλαγές κώδικα"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "Αναθεώρηση χωρίς συμπεριλαμβανόμενο κώδικα"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "Μη διαθέσιμη πηγή"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "Απάντηση JSON"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "Εύρεση θέσεων και έξοδος"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "Στυλ απάντησης για συνέχεια"
+  },
+  "aiReviewRule_same_head": {
+    "message": "Αμετάβλητο επικεφαλής"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "Θέσεις γραμμής σύγκρισης"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "Σύγκριση τοπικής αναθεώρησης"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "Αλλαγές στον στοχευμένο κλάδο"
+  },
+  "aiReviewRule_full_review": {
+    "message": "Ανασκόπηση χωρίς σύγκριση αναθεώρησης"
+  },
+  "aiReviewRule_code_only": {
+    "message": "Επανέλεγχος χωρίς συζητήσεις"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "Επιλεγμένο πεδίο συζήτησης"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "Συνολικό πλαίσιο διαφοράς"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "Υπάρχουσες συζητήσεις σε νέα ανασκόπηση"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Νέα ανασκόπηση στην Εισαγωγή"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "Όρια ανασκόπησης εισαγωγής"
+  },
+  "aiReviewRule_import_format": {
+    "message": "Μορφότυπο εύρεσης εισαγωγής"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "Όρια και μορφότυπο απάντησης"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "Πεδίο εργασίας απάντησης"
+  },
+  "jiraQuickActionAddField": {
+    "message": "Πρόσθεσε πεδίο"
+  },
+  "jiraQuickActionField": {
+    "message": "Πεδίο"
+  },
+  "jiraQuickActionOperation": {
+    "message": "Λειτουργία"
+  },
+  "jiraQuickActionValue": {
+    "message": "Τιμή"
+  },
+  "jiraQuickActionRemove": {
+    "message": "Αφαίρεση"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "Πρόσθεση"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "Αφαίρεση"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "Αντικατάσταση όλων"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "Ημερομηνία λήξης"
+  },
+  "jiraQuickActionCustom": {
+    "message": "Προσαρμοσμένο πεδίο (προχωρημένο)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "Τιμές χωρισμένες με κόμματα. Η προσθήκη/αφαίρεση κρατάει τις άλλες τιμές· η αντικατάσταση όλων υπερισχύει της λίστας."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "Αναγνωριστικό πεδίου: customfield_12345. Εισάγετε την τιμή ως JSON στο μορφότυπο που περιμένει αυτό το πεδίο Jira."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "Ακριβές όνομα μετάβασης Jira (ή κατάσταση-στόχος)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "Κενή τιμή: καμία αλλαγή."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "Ελέγξτε την τιμή του πεδίου: τα προσαρμοσμένα πεδία απαιτούν έγκυρο ID και JSON· οι ημερομηνίες χρησιμοποιούν μορφή YYYY-MM-DD."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "Χρησιμοποιήστε κάθε πεδίο μόνο μία φορά ανά κουμπί."
+  },
+  "jiraQuickActionFailed": {
+    "message": "Η ενέργεια απέτυχε."
+  },
+  "jiraQuickActionPartial": {
+    "message": "Η κατάσταση άλλαξε, αλλά η ενημέρωση του πεδίου απέτυχε."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "Αδύνατη η ανανέωση του θέματος. Ανοίξτε ξανά τον πίνακα για να ελέγξετε τις τρέχουσες τιμές του."
+  },
+  "mrActions": {
+    "message": "Ενέργειες MR"
+  },
+  "mrActionsHint": {
+    "message": "Δημιουργήστε ονομασμένα κουμπιά για να αλλάξετε ετικέτες ή να καθαρίσετε άλλα πεδία MR. Σύρετέ τα στη λίστα κουμπιών για να αλλάξετε τη σειρά τους."
+  },
+  "mrActionsProfileHint": {
+    "message": "Η επεξεργασία αυτής της λίστας δημιουργεί ενέργειες για το συγκεκριμένο έργο. Καταργήστε όλες τις καταχωρίσεις για να αποκρύψετε αυτά τα κουμπιά στο έργο."
+  },
+  "mrActionAdd": {
+    "message": "Προσθήκη ενέργειας MR"
+  },
+  "mrActionLabel": {
+    "message": "Όνομα κουμπιού"
+  },
+  "mrActionDelete": {
+    "message": "Διαγραφή ενέργειας"
+  },
+  "mrActionType": {
+    "message": "Ενέργεια"
+  },
+  "mrActionLabels": {
+    "message": "Ετικέτες"
+  },
+  "mrActionLabelsHint": {
+    "message": "Ακριβή ονόματα ετικετών, χωρισμένα με κόμματα ή νέες γραμμές. Τα κενά μέσα στα ονόματα διατηρούνται. Το προσθήκη/αντικατάσταση μπορεί να δημιουργήσει ετικέτες έργου που λείπουν."
+  },
+  "mrAction_remove_labels": {
+    "message": "Αφαίρεση καθορισμένων ετικετών"
+  },
+  "mrAction_clear_labels": {
+    "message": "Καθαρισμός όλων των ετικετών"
+  },
+  "mrAction_add_labels": {
+    "message": "Προσθήκη ετικετών"
+  },
+  "mrAction_set_labels": {
+    "message": "Αντικατάσταση όλων των ετικετών"
+  },
+  "mrAction_clear_assignees": {
+    "message": "Καθαρισμός ανατεθειμένων"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "Αφαίρεση ελεγκτών κώδικα"
+  },
+  "mrAction_clear_milestone": {
+    "message": "Καθαρισμός ορόσημου"
+  },
+  "mrActionInvalid": {
+    "message": "Εισάγετε ένα όνομα κουμπιού, επιλέξτε μια υποστηριζόμενη ενέργεια και καθορίστε τουλάχιστον μία ετικέτα για προσθήκη, αφαίρεση ή αντικατάσταση."
+  },
+  "mrActionConfirm": {
+    "message": "Εφαρμόζουμε το “$1” σε αυτό το MR;\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "Το GitLab δεν επέστρεψε την κατάσταση επαναβάσης. Φορτώστε ξανά το αίτημα συγχώνευσης και προσπαθήστε ξανά."
+  },
+  "errorJobsPageRepeated": {
+    "message": "Το GitLab επέστρεψε μια σελίδα επαναλαμβανόμενων εργασιών για το pipeline #$1. Η λίστα εργασιών δεν μπορούσε να φορτωθεί πλήρως."
+  },
+  "displayPreferencesTitle": {
+    "message": "Εμφάνιση κανόνων και ορίων"
+  },
+  "displayPreferencesHint": {
+    "message": "Καθολικές ρυθμίσεις· ανανεώστε τις καρτέλες του GitLab μετά την αλλαγή τους. Περισσότερες εργασίες ή σχόλια αυξάνουν τη μεταφορά δεδομένων. Οι προεπισκοπήσεις καταγραφής κατεβάζουν ολόκληρο το αρχείο πριν επιλέξουν μη κενές γραμμές. Τα σήματα ελεγκτών κώδικα αναζητούν στα παλαιότερα σχόλια το «Reviewer(s): @username»."
+  },
+  "failedJobsLimit": {
+    "message": "Αποτυχημένες εργασίες για προεπισκόπηση"
+  },
+  "failedJobTraceLines": {
+    "message": "Μη κενές γραμμές καταγραφής ανά εργασία"
+  },
+  "reviewerNotesLimit": {
+    "message": "Σχόλια προς αναζήτηση για σήματα ελεγκτών κώδικα"
+  },
+  "mrSizeLines": {
+    "message": "Όρια μεγέθους MR: γραμμές (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "Όρια μεγέθους MR: αρχεία (S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "Πρόσθετα ευαίσθητα πρότυπα αρχείων"
+  },
+  "sensitiveFileExclusions": {
+    "message": "Εξαιρέσεις ευαίσθητων αρχείων"
+  },
+  "sensitiveFileDefaults": {
+    "message": "Χρήση ενσωματωμένων κανόνων για ευαίσθητα αρχεία"
+  },
+  "sizeThresholdsHint": {
+    "message": "Τρεις αυξανόμενοι θετικοί ακέραιοι διαχωρισμένοι με κόμματα. Τα όρια είναι περιληπτικά· μεγαλύτερες αλλαγές είναι XL. Τα όρια αρχείων εφαρμόζονται όταν οι μετρήσεις γραμμών δεν είναι διαθέσιμες."
+  },
+  "sensitivePatternsHint": {
+    "message": "Ένα μοτίβο ανά γραμμή, χωρίς διάκριση πεζών-κεφαλαίων. Το * ταιριάζει με οποιοδήποτε κείμενο (συμπεριλαμβανομένου του /), το ? με έναν χαρακτήρα. Τα μοτίβα χωρίς / ταιριάζουν με ονόματα αρχείων· άλλα μοτίβα ταιριάζουν με ολόκληρη τη διαδρομή του αποθετηρίου. Οι εξαιρέσεις έχουν προτεραιότητα. Οι ενσωματωμένοι κανόνες καλύπτουν περιβάλλον, container/CI, αρχεία διαπιστευτηρίων και ιδιωτικών κλειδιών. Απενεργοποιήστε τους για να χρησιμοποιήσετε μόνο τα μοτίβα σας."
+  },
+  "displayPreferencesInvalid": {
+    "message": "Ελέγξτε τα αριθμητικά εύρη, τα τρία αυξανόμενα όρια μεγέθους και το μήκος των μοτίβων αρχείων."
+  },
+  "failedJobsPreview": {
+    "message": "Προεπισκόπηση: $1 αποτυχημένες δουλειές — τελευταίες $2 μη κενές γραμμές",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "Περισσότερες αποτυχημένες δουλειές — ανοίξτε όλο το pipeline"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 γραμμές, $2 αρχεία",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 αρχεία τροποποιήθηκαν",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "Η σάρωση ευαίσθητων αρχείων δεν ολοκληρώθηκε"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "Δεν ήταν δυνατός ο έλεγχος κάθε αρχείου: η αίτηση API απέτυχε ή φτάσαμε το όριο σάρωσης $1 αρχείων. Οι καταχωρημένες αντιστοιχίες είναι μερικές· ελέγξτε τη διαφορά του πλήρους MR.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "Προειδοποίηση: αυτή η αναφορά μπορεί να είναι ελλιπής. Η συλλογή περιορίζεται σε $1 MRs ανά κατηγορία και $2 γεγονότα δραστηριότητας.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 εκκρεμείς συζητήσεις",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "Αυτή η προεπισκόπηση μπορεί να είναι ελλιπής: σφάλμα API ή έχουν ελεγχθεί μόνο οι πρώτες $2 συζητήσεις. Γνωστές εκκρεμείς συζητήσεις: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "settingsTitle": { "message": "Ρυθμίσεις" },
+  "settingsActions": { "message": "MR και commit" },
+  "settingsActionsHint": { "message": "Αιτήματα συγχώνευσης, commit, εκδόσεις και cherry-pick." },
+  "settingsCi": { "message": "CI/CD και εργασίες" },
+  "settingsAppearance": { "message": "Περιβάλλον GitLab" },
+  "settingsData": { "message": "Δεδομένα και βοήθεια" },
+  "settingsSearch": { "message": "Αναζήτηση ρυθμίσεων" },
+  "settingsScope": { "message": "Πεδίο εφαρμογής ρυθμίσεων" },
+  "settingsProjectValue": { "message": "Τιμή έργου" },
+  "settingsUseGlobal": { "message": "Χρήση καθολικής τιμής" },
+  "settingsProjectInheritanceHint": { "message": "Αλλάξτε μια τιμή για να την ορίσετε για αυτό το έργο. Χρησιμοποιήστε την καθολική τιμή για επαναφορά της κληρονόμησης." },
+  "settingsSharedPreferencesHint": { "message": "Η γλώσσα διεπαφής, ο ήχος, οι ειδοποιήσεις επιφάνειας εργασίας και οι αναφορές όλων των έργων έχουν καθολικές ρυθμίσεις. Αλλάξτε τις στην ενότητα Όλα τα έργα." },
+  "settingsGlobal": { "message": "Όλα τα έργα" },
+  "settingsGlobalHint": { "message": "Αυτές οι ρυθμίσεις ισχύουν για όλα τα έργα." },
+  "settingsProjectHint": { "message": "Αυτό το προφίλ αντικαθιστά τις κοινές ρυθμίσεις για αυτό το έργο." },
+  "settingsGlobalOnly": { "message": "Αυτή η ενότητα χρησιμοποιεί κοινές ρυθμίσεις για όλα τα έργα." },
+  "settingsQuick": { "message": "Γρήγορες ρυθμίσεις" },
+  "settingsNoResults": { "message": "Δεν βρέθηκαν αντίστοιχες ρυθμίσεις." },
+  "settingsRemoveProfile": { "message": "Κατάργηση προφίλ" },
+  "settingsNoProject": { "message": "Ανοίξτε ένα έργο GitLab για να χρησιμοποιήσετε προφίλ έργων." },
+  "settingsAll": { "message": "Όλες οι ρυθμίσεις" },
+  "settingsMoveUp": { "message": "Μετακίνηση προς τα πάνω" },
+  "settingsMoveDown": { "message": "Μετακίνηση προς τα κάτω" },
+  "settingsConnection": { "message": "Σύνδεση" },
+  "settingsJiraDisplay": { "message": "Jira στο GitLab" },
+  "settingsAdvanced": { "message": "Σύνθετες ρυθμίσεις" },
+  "settingsAutosaveHint": { "message": "Οι αλλαγές αποθηκεύονται αυτόματα." },
+  "settingsSaving": { "message": "Αποθήκευση…" },
+  "settingsLoadFailed": { "message": "Δεν ήταν δυνατή η φόρτωση των ρυθμίσεων. Δοκιμάστε ξανά πριν τις επεξεργαστείτε." },
+  "aiReviewShowFull": { "message": "Εμφάνιση ολόκληρου" },
+  "aiReviewShowLess": { "message": "Σύμπτυξη" },
+  "aiReviewExpandCommentsSetting": { "message": "Εμφάνιση ολόκληρων των σχολίων ελέγχου από προεπιλογή" },
+  "aiReviewExpandAll": { "message": "Ανάπτυξη όλων" },
+  "aiReviewCollapseAll": { "message": "Σύμπτυξη όλων" }
+}

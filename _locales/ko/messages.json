@@ -1,0 +1,2278 @@
+{
+  "extName": {
+    "message": "GitLab MR Actions — 병합 요청 자동화, Jira, CI/CD 및 AI 검토"
+  },
+  "extDescription": {
+    "message": "GitLab MR을 한 번의 클릭으로 자동화: 자동 병합, 버전 업데이트, Jira, CI/CD, AI 검토. API 토큰이 필요 없습니다."
+  },
+  "popupTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "howItWorks": {
+    "message": "작동 원리"
+  },
+  "openSettingsInTab": {
+    "message": "새 탭에서 설정 열기"
+  },
+  "exportSettings": {
+    "message": "설정 내보내기"
+  },
+  "importSettings": {
+    "message": "설정 가져오기"
+  },
+  "settingsTransferHint": {
+    "message": "모든 설정과 프로젝트 프로필을 JSON 파일로 공유하세요."
+  },
+  "settingsImportReplace": {
+    "message": "이는 현재 설정과 프로젝트 프로필을 모두 대체합니다."
+  },
+  "applySettingsImport": {
+    "message": "설정 바꾸기"
+  },
+  "cancelSettingsImport": {
+    "message": "취소"
+  },
+  "settingsImportSummary": {
+    "message": "$1 — 프로젝트 프로필: $2."
+  },
+  "settingsFileInvalid": {
+    "message": "설정 파일이 잘못되었거나 지원되지 않는 형식입니다."
+  },
+  "settingsFileTooLarge": {
+    "message": "설정 파일이 Chrome Sync 저장 한도를 초과합니다."
+  },
+  "settingsExportFailed": {
+    "message": "설정을 내보낼 수 없습니다. 다시 시도해 주세요."
+  },
+  "settingsImportFailed": {
+    "message": "설정을 가져올 수 없습니다. 현재 구성은 변경되지 않습니다."
+  },
+  "settingsImportPermissionDenied": {
+    "message": "이 설정을 가져오려면 Jira 사이트에 대한 액세스를 허용하세요."
+  },
+  "settingsImported": {
+    "message": "설정을 가져왔습니다!"
+  },
+  "buttonOrder": {
+    "message": "버튼 순서"
+  },
+  "buttonOrderHint": {
+    "message": "재정렬하려면 드래그하세요. 설명을 보려면 마우스를 가져가세요. 파란색은 사용자 정의 작업입니다."
+  },
+  "general": {
+    "message": "일반"
+  },
+  "soundNotifications": {
+    "message": "소리 알림"
+  },
+  "desktopNotifications": {
+    "message": "데스크톱 알림"
+  },
+  "showTimeTracker": {
+    "message": "MR 연령 배지 표시"
+  },
+  "skipConfirmations": {
+    "message": "MR 작업 확인 건너뛰기"
+  },
+  "uxEnhancer": {
+    "message": "MR 목록 개선"
+  },
+  "dimDrafts": {
+    "message": "목록의 초안 MR 흐리게 표시"
+  },
+  "highlightOwnMrs": {
+    "message": "목록에서 내 MR 강조 표시"
+  },
+  "showOnlyMine": {
+    "message": "목록 페이지의 \"내 것만\" 토글"
+  },
+  "toggleOnlyMine": {
+    "message": "내 MR만"
+  },
+  "versionBump": {
+    "message": "버전 올리기"
+  },
+  "filePath": {
+    "message": "파일 경로"
+  },
+  "filePathHint": {
+    "message": "버전 번호가 포함된 파일"
+  },
+  "versionField": {
+    "message": "버전 필드"
+  },
+  "versionFieldHint": {
+    "message": "JSON 키 또는 TOML 키(예: \"version\" 또는 \"tool.poetry.version\")"
+  },
+  "strategy": {
+    "message": "전략"
+  },
+  "strategyPatch": {
+    "message": "Patch (0.0.X)"
+  },
+  "strategyMinor": {
+    "message": "Minor (0.X.0)"
+  },
+  "strategyMajor": {
+    "message": "Major (X.0.0)"
+  },
+  "commitMessage": {
+    "message": "커밋 메시지"
+  },
+  "commitMessageHint": {
+    "message": "{version}을 자리 표시자로 사용"
+  },
+  "quickComments": {
+    "message": "빠른 댓글"
+  },
+  "quickCommentsHint": {
+    "message": "MR(코드 인라인 아님)에 일반 주석을 즉시 게시하는 원클릭 버튼입니다. 작업 표시줄에 버튼이 나타납니다."
+  },
+  "quickCommentsAdd": {
+    "message": "댓글 추가"
+  },
+  "cardQuickCommentsTitle": {
+    "message": "빠른 댓글"
+  },
+  "cardQuickCommentsDesc": {
+    "message": "MR 페이지에서 구성 가능한 템플릿 설명 버튼. 한 번의 클릭으로 LGTM 게시, 수정 필요 또는 맞춤 댓글을 작성할 수 있습니다."
+  },
+  "reviewers": {
+    "message": "리뷰어"
+  },
+  "reviewersList": {
+    "message": "리뷰어 목록"
+  },
+  "reviewersListHint": {
+    "message": "Reviewers: 댓글에서 언급할 사용자 이름(@user1, @user2). 설정하면 댓글 검색과 CI 작업을 건너뜁니다. GitLab 리뷰어 지정은 변경하지 않습니다."
+  },
+  "jobName": {
+    "message": "작업 이름"
+  },
+  "jobNameHint": {
+    "message": "\"Reviewer(s):\" 패턴과 일치하는 댓글이 없는 경우 대체 작업"
+  },
+  "customJobButtons": {
+    "message": "사용자 정의 작업 버튼"
+  },
+  "customJobsHint": {
+    "message": "작업을 순서대로 실행하려면 쉼표로 구분하세요: build, deploy"
+  },
+  "addJobButton": {
+    "message": "+ 작업 추가 버튼"
+  },
+  "addProfileFor": {
+    "message": "+ $1에 대한 프로필 추가",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "current": {
+    "message": "현재: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "saved": {
+    "message": "저장되었습니다!"
+  },
+  "unsavedChanges": {
+    "message": "저장되지 않은 변경사항..."
+  },
+  "customFile": {
+    "message": "사용자 정의 파일..."
+  },
+  "plainText": {
+    "message": "일반 텍스트"
+  },
+  "removeProfile": {
+    "message": "$1의 프로필을 삭제하시겠습니까?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "default": {
+    "message": "기본"
+  },
+  "buttonsFor": {
+    "message": "$1용 버튼",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "overrideHint": {
+    "message": "이 프로젝트에 표시할 버튼을 재정의합니다."
+  },
+  "leaveEmptyDefault": {
+    "message": "기본값을 사용하려면 비워 두세요."
+  },
+  "projectSpecificJobs": {
+    "message": "프로젝트별 작업. 연결하려면 쉼표를 사용하세요."
+  },
+  "languageLabel": {
+    "message": "언어"
+  },
+  "languageAuto": {
+    "message": "자동(브라우저)"
+  },
+  "btnVersion": {
+    "message": "버전 올리기"
+  },
+  "btnRebase": {
+    "message": "리베이스"
+  },
+  "btnRebaseVersion": {
+    "message": "리베이스 + 버전"
+  },
+  "btnRebaseAutomerge": {
+    "message": "리베이스 + 자동 병합"
+  },
+  "btnRebaseForce": {
+    "message": "리베이스 + 강제 병합"
+  },
+  "btnShip": {
+    "message": "리베이스 + 버전 + 자동 병합"
+  },
+  "btnForceShip": {
+    "message": "리베이스 + 버전 + 강제 병합"
+  },
+  "btnReviewers": {
+    "message": "리뷰어"
+  },
+  "btnPipelineRestart": {
+    "message": "새로운 파이프라인"
+  },
+  "btnPipelineCancel": {
+    "message": "파이프라인 취소"
+  },
+  "btnDraftToggle": {
+    "message": "초안/준비 토글"
+  },
+  "btnRetryFailed": {
+    "message": "실패한 작업 재시도"
+  },
+  "btnCopyMr": {
+    "message": "MR 복사"
+  },
+  "hintVersion": {
+    "message": "설정된 파일(예: package.json)을 읽고 선택한 전략(patch/minor/major)에 따라 버전을 올린 뒤 템플릿 메시지로 커밋합니다."
+  },
+  "hintRebase": {
+    "message": "소스 브랜치를 대상 브랜치 위로 리베이스합니다. 병합하거나 자동 병합을 활성화하지 않습니다."
+  },
+  "hintRebaseVersion": {
+    "message": "분기를 대상으로 리베이스하고(필요한 경우) 구성된 파일의 버전을 높입니다. 병합하지 않습니다."
+  },
+  "hintRebaseAutomerge": {
+    "message": "프로젝트가 rebase/ff를 사용하면 대상 브랜치 위로 리베이스한 다음 파이프라인 성공 시 자동 병합을 활성화합니다. MR의 squash 및 브랜치 삭제 설정을 사용합니다."
+  },
+  "hintRebaseForce": {
+    "message": "CI를 건너뛰어 리베이스하고 실행 중인 모든 파이프라인을 취소한 뒤 CI를 기다리지 않고 즉시 병합합니다. MR의 squash 및 브랜치 삭제 설정을 사용합니다."
+  },
+  "hintShip": {
+    "message": "전체 흐름: 리베이스 → 구성된 파일의 범프 버전 → MR이 동기화될 때까지 대기 → 새 파이프라인 대기 → 자동 병합 활성화."
+  },
+  "hintForceShip": {
+    "message": "빠른 흐름: 리베이스(CI 건너뛰기) → 범프 버전 → 15초 대기 → 파이프라인 취소 → 즉시 병합. CI 검사를 건너뜁니다."
+  },
+  "hintReviewers": {
+    "message": "설정된 리뷰어를 언급하는 댓글을 게시하거나, 최근 댓글의 Reviewer(s): 댓글을 재사용하거나, 설정된 CI 작업을 실행합니다."
+  },
+  "hintPipelineRestart": {
+    "message": "API을 통해 소스 분기에 대한 새로운 파이프라인을 생성합니다. 파이프라인이 중단되었거나 새로 실행해야 할 때 유용합니다."
+  },
+  "hintPipelineCancel": {
+    "message": "이 MR에 대해 반환된 실행 중, 보류 중 또는 생성된 파이프라인의 취소를 요청합니다."
+  },
+  "hintDraftToggle": {
+    "message": "MR 제목에서 “Draft:” 접두사를 추가하거나 제거합니다. 다른 MR 설정은 변경하지 않습니다."
+  },
+  "hintRetryFailed": {
+    "message": "MR의 현재 파이프라인에서 실패한 작업을 재시도합니다. 성공적인 작업은 영향을 받지 않습니다."
+  },
+  "hintCopyMr": {
+    "message": "MR 제목과 링크를 클립보드에 복사합니다."
+  },
+  "toastRebasing": {
+    "message": "리베이스 중..."
+  },
+  "toastEnablingAutomerge": {
+    "message": "자동 병합 활성화 중..."
+  },
+  "toastStep12Rebasing": {
+    "message": "1/2단계: 리베이스..."
+  },
+  "toastStep22Automerge": {
+    "message": "2/2단계: 자동 병합 활성화 중..."
+  },
+  "toastStep12RebasingSki": {
+    "message": "1/2단계: 리베이스(CI 건너뛰기)..."
+  },
+  "toastStep22Cancelling": {
+    "message": "2/2단계: 파이프라인 취소 및 병합..."
+  },
+  "toastCancellingMerging": {
+    "message": "파이프라인 취소 중 & 병합 중..."
+  },
+  "toastCreatingPipeline": {
+    "message": "$1에 대한 새 파이프라인 생성 중...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastCancellingPipelines": {
+    "message": "$1 파이프라인 취소 중...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastMarkingReady": {
+    "message": "준비로 표시 중..."
+  },
+  "toastMarkingDraft": {
+    "message": "초안으로 표시 중..."
+  },
+  "toastRetrying": {
+    "message": "실패한 작업 $1개 재시도 중…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastNoFailedJobs": {
+    "message": "현재 MR 파이프라인에 실패한 작업이 없습니다"
+  },
+  "toastNoRunningPipelines": {
+    "message": "취소할 실행 중인 파이프라인이 없습니다"
+  },
+  "toastAssigningReviewers": {
+    "message": "검토자 언급 게시 중..."
+  },
+  "toastRepostingReviewers": {
+    "message": "검토자 의견 재게시 중..."
+  },
+  "toastNoReviewersTriggering": {
+    "message": "검토자 의견이 발견되지 않아 $1가 트리거됩니다...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastVersionBump": {
+    "message": "버전 올리는 중…"
+  },
+  "toastWaitingSync": {
+    "message": "MR이 v$1과 동기화되기를 기다리는 중...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastWaitingPipeline": {
+    "message": "파이프라인을 기다리는 중..."
+  },
+  "toastAutomergeAttempt": {
+    "message": "자동 병합 시도 $1/$2...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingMrSync": {
+    "message": "MR이(가) 동기화되기를 기다리는 중... ($1/$2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastWaitingForJob": {
+    "message": "\"$1\"을(를) 기다리는 중... ($2)",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastPlayingJob": {
+    "message": "“$1” 작업 시작 중…",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastRetryingJob": {
+    "message": "\"$1\" 작업 재시도 중...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadySucceeded": {
+    "message": "작업 \"$1\"이(가) 이미 성공했습니다. 건너뛰는 중입니다.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastJobAlreadyStatus": {
+    "message": "작업 \"$1\"은(는) 이미 $2입니다. 대기 중입니다...",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCompleted": {
+    "message": "$1 완료됨",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "toastFailed": {
+    "message": "$1 실패: $2",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "toastCopied": {
+    "message": "MR 제목과 링크가 복사되었습니다!"
+  },
+  "toastWaiting15s": {
+    "message": "병합 전 15초 대기 중..."
+  },
+  "confirmRebase": {
+    "message": "브랜치를 리베이스하시겠습니까?"
+  },
+  "confirmRebaseVersion": {
+    "message": "리베이스 → 버전 범프?"
+  },
+  "confirmRebaseAutomerge": {
+    "message": "리베이스 → 자동 병합?"
+  },
+  "confirmAutomerge": {
+    "message": "자동 병합 활성화?"
+  },
+  "confirmRebaseForce": {
+    "message": "⚠️ 리베이스한 뒤 지금 병합하시겠습니까?"
+  },
+  "confirmForce": {
+    "message": "⚠️ 파이프라인을 건너뛰고 지금 병합하시겠습니까?"
+  },
+  "confirmShip": {
+    "message": "리베이스 → 버전 범프 → 자동 병합?"
+  },
+  "confirmShipNoRebase": {
+    "message": "버전 범프 → 자동 병합?"
+  },
+  "confirmForceShip": {
+    "message": "⚠️ 리베이스 → 버전 올리기 → 지금 병합하시겠습니까?"
+  },
+  "confirmForceShipNoRebase": {
+    "message": "⚠️ 버전 올리기 → 지금 병합하시겠습니까?"
+  },
+  "confirmNewPipeline": {
+    "message": "이 분기에 대한 새 파이프라인을 생성하시겠습니까?"
+  },
+  "confirmCancelPipeline": {
+    "message": "실행 중인 모든 파이프라인을 취소하시겠습니까?"
+  },
+  "labelAutomerge": {
+    "message": "자동 병합"
+  },
+  "labelForceMerge": {
+    "message": "강제 병합"
+  },
+  "labelVersionAutomerge": {
+    "message": "버전 + 자동 병합"
+  },
+  "labelVersionForceMerge": {
+    "message": "버전 + 강제 병합"
+  },
+  "labelMarkReady": {
+    "message": "준비됨으로 표시"
+  },
+  "labelMarkDraft": {
+    "message": "초안으로 표시"
+  },
+  "labelRetryFailed": {
+    "message": "실패한 작업 재시도"
+  },
+  "labelNewPipeline": {
+    "message": "새로운 파이프라인"
+  },
+  "timeTrackerTitle": {
+    "message": "MR 생성 이후 시간: $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "welcomeTitle": {
+    "message": "GitLab MR Actions"
+  },
+  "welcomeSubtitle": {
+    "message": "원클릭 작업으로 병합 요청 워크플로의 속도를 높이세요."
+  },
+  "welcomeQuickStart": {
+    "message": "빠른 시작"
+  },
+  "welcomeStep1Title": {
+    "message": "병합 요청 페이지를 엽니다."
+  },
+  "welcomeStep1Desc": {
+    "message": "GitLab.com 또는 자체 호스팅 GitLab에 로그인한 상태에서 HTTPS MR 페이지를 엽니다. 해당 사이트에 대한 확장 액세스를 허용합니다."
+  },
+  "welcomeStep2Title": {
+    "message": "작업 버튼이 나타나는지 확인하세요."
+  },
+  "welcomeStep2Desc": {
+    "message": "MR 페이지에 버튼이 나타납니다. 첫 번째 설치 시 스타터 세트가 활성화됩니다."
+  },
+  "welcomeStep3Title": { "message": "설정에서 맞춤 구성" },
+  "welcomeStep3Desc": { "message": "팝업에서 옵션을 빠르게 켜거나 끄세요. 작업, 버전, Jira, CI/CD 및 AI 리뷰를 구성하려면 '모든 설정'을 여세요." },
+  "welcomeEnabledDefault": {
+    "message": "기본적으로 활성화됨"
+  },
+  "welcomeMoreActions": {
+    "message": "추가 작업(설정에서 활성화)"
+  },
+  "welcomeHowItWorks": {
+    "message": "작동 원리"
+  },
+  "welcomeHowDesc": {
+    "message": "이 확장 프로그램은 기존 GitLab 세션(쿠키)을 사용하여 사용자를 대신하여 GitLab API을 호출합니다. 개인 액세스 토큰이 필요하지 않습니다."
+  },
+  "welcomeHowList1": {
+    "message": "GitLab.com 및 HTTPS를 통한 자체 호스팅 GitLab의 경우; 기능은 서버 API, 페이지 레이아웃 및 권한에 따라 다릅니다."
+  },
+  "welcomeHowList2": {
+    "message": "작업은 로그인한 사용자와 동일한 권한을 사용합니다"
+  },
+  "welcomeHowList3": {
+    "message": "사용자 정의 작업 체인은 백그라운드에서 실행됩니다. API 액세스를 위해 동일한 GitLab에 로그인된 탭을 열어두세요."
+  },
+  "welcomeHowList4": {
+    "message": "프로젝트별 프로필을 사용하면 다양한 저장소에 대한 버튼을 사용자 정의할 수 있습니다"
+  },
+  "welcomeTip": { "message": "프로젝트마다 다른 버전 파일, 작업 버튼 또는 CI 작업이 필요하면 '모든 설정'에서 프로젝트 프로필을 만드세요." },
+  "welcomeOpenSettings": {
+    "message": "설정 열기"
+  },
+  "cardAutomergeTitle": {
+    "message": "자동 병합"
+  },
+  "cardAutomergeDesc": {
+    "message": "분기를 리베이스하고(필요한 경우) 파이프라인이 성공하면 병합을 활성화합니다."
+  },
+  "cardNewPipelineTitle": {
+    "message": "새로운 파이프라인"
+  },
+  "cardNewPipelineDesc": {
+    "message": "한 번의 클릭으로 소스 분기에 대한 새로운 파이프라인을 생성합니다."
+  },
+  "cardCancelPipelineTitle": {
+    "message": "파이프라인 취소"
+  },
+  "cardCancelPipelineDesc": {
+    "message": "이 MR에서 실행 중이거나 대기 중인 파이프라인의 취소를 요청합니다."
+  },
+  "cardDraftToggleTitle": {
+    "message": "초안 토글"
+  },
+  "cardDraftToggleDesc": {
+    "message": "제목을 편집하지 않고 MR을 초안과 준비 상태 간에 전환합니다."
+  },
+  "cardVersionBumpTitle": {
+    "message": "버전 범프"
+  },
+  "cardVersionBumpDesc": {
+    "message": "package.json, pyproject.toml 또는 사용자 지정 파일의 버전을 올립니다. 전략(patch/minor/major)을 설정할 수 있습니다."
+  },
+  "cardShipTitle": {
+    "message": "릴리스(버전 + 병합)"
+  },
+  "cardShipDesc": {
+    "message": "필요할 때 리베이스하고 버전을 올리고 자동 병합을 요청합니다. 작업이 완료될 때까지 MR 탭을 열어 둡니다."
+  },
+  "cardForceMergeTitle": {
+    "message": "강제 병합"
+  },
+  "cardForceMergeDesc": {
+    "message": "파이프라인 성공을 기다리지 않고 병합을 요청합니다. GitLab 권한 및 병합 규칙은 계속 적용됩니다."
+  },
+  "cardReviewersTitle": {
+    "message": "리뷰어"
+  },
+  "cardReviewersDesc": {
+    "message": "댓글에서 구성된 사용자 이름을 언급하거나, 리뷰어 댓글을 재사용하거나, CI 작업을 실행하세요. GitLab의 기본 검토자 필드를 할당하지 않습니다."
+  },
+  "uiCustomization": {
+    "message": "UI 사용자 정의"
+  },
+  "collapseBars": {
+    "message": "상단 표시줄 축소 버튼"
+  },
+  "hideRightSidebar": {
+    "message": "MR 페이지에서 오른쪽 사이드바 숨기기"
+  },
+  "collapseTopBars": {
+    "message": "상단 표시줄 전환"
+  },
+  "cardCollapseTitle": {
+    "message": "상단 표시줄 접기"
+  },
+  "cardCollapseDesc": {
+    "message": "GitLab 탐색 모음을 축소/확장하는 버튼을 추가합니다. 공간을 절약하고 콘텐츠에 집중하는 데 도움이 됩니다."
+  },
+  "cardHideSectionsTitle": {
+    "message": "UI 섹션 숨기기"
+  },
+  "cardHideSectionsDesc": {
+    "message": "전체 너비 콘텐츠 영역을 얻으려면 MR 페이지의 오른쪽 사이드바를 숨깁니다."
+  },
+  "jiraIntegration": {
+    "message": "Jira 통합"
+  },
+  "jiraUrl": {
+    "message": "Jira URL"
+  },
+  "jiraUrlHint": {
+    "message": "Jira Server/Data Center URL(예: https://jira.company.com). Jira에 로그인한 뒤 Jira 사이트 액세스 허용을 클릭하세요. Cloud는 완전히 지원되지 않습니다."
+  },
+  "jiraGrantAccess": {
+    "message": "Jira 사이트 액세스를 허용"
+  },
+  "jiraAccessGranted": {
+    "message": "확장 프로그램의 $1 접근이 허용되었습니다."
+  },
+  "jiraConnectionUnchecked": { "message": "아직 연결을 확인하지 않았습니다." },
+  "jiraConnectionCheck": { "message": "연결 확인" },
+  "jiraConnectionChecking": { "message": "$1 연결 확인 중…" },
+  "jiraConnectionConnected": { "message": "$1의 마지막 확인 결과: 로그인됨, API 사용 가능." },
+  "jiraConnectionSignIn": { "message": "Jira에 로그인" },
+  "jiraUrlInvalid": {
+    "message": "자격 증명/쿼리/조각 없이 HTTPS Jira 기본 URL을 입력하세요."
+  },
+  "jiraErrorAuth": {
+    "message": "Jira 세션이 만료되었거나 로그인이 필요합니다. Jira을 열고 로그인한 후 로드를 다시 시도하세요."
+  },
+  "jiraErrorForbidden": {
+    "message": "Jira이 이 문제 또는 작업에 대한 액세스를 거부했습니다. Jira에서 계정과 권한을 확인하세요."
+  },
+  "jiraErrorPermission": {
+    "message": "확장 프로그램이 이 Jira 사이트에 액세스할 수 없습니다. 확장 설정에서 사이트 권한과 Jira URL을 확인하세요."
+  },
+  "jiraErrorNetwork": {
+    "message": "Jira에 도달할 수 없습니다. 연결, VPN 및 Jira URL을 확인한 후 로드를 다시 시도하세요."
+  },
+  "jiraErrorUnavailable": {
+    "message": "Jira을(를) 일시적으로 사용할 수 없거나 요청을 제한하고 있습니다. 기다렸다가 다시 로드해 보세요."
+  },
+  "jiraErrorNotFound": {
+    "message": "Jira 문제를 찾을 수 없거나 귀하의 계정에 표시되지 않습니다."
+  },
+  "jiraErrorResponse": {
+    "message": "Jira가 지원되지 않는 응답을 반환했습니다. URL과 Server/Data Center 호환성을 확인하세요."
+  },
+  "jiraErrorUnknown": {
+    "message": "Jira 요청이 실패했습니다. Jira을 열어 문제와 액세스 권한을 확인하세요."
+  },
+  "jiraErrorWriteUncertain": {
+    "message": "변경 사항이 이미 적용되었을 수 있습니다. 작업을 반복하기 전에 Jira에서 문제를 확인하세요."
+  },
+  "jiraErrorTransitions": {
+    "message": "Jira 전환을 로드할 수 없습니다."
+  },
+  "jiraOpenSite": {
+    "message": "Jira 열기"
+  },
+  "jiraRetryRead": {
+    "message": "로드를 다시 시도하세요."
+  },
+  "jiraDismissError": {
+    "message": "닫기"
+  },
+  "jiraTicketRegex": {
+    "message": "티켓 정규식"
+  },
+  "jiraTicketRegexHint": {
+    "message": "MR 타이틀에서 티켓 ID를 구문 분석하기 위한 사용자 정의 정규식입니다. 기본값: [A-Z][A-Z0-9]+-\\d+"
+  },
+  "showJiraDetails": {
+    "message": "MR 목록에 문제 유형 및 우선순위 아이콘 표시"
+  },
+  "jiraQuickActions": {
+    "message": "빠른 조치"
+  },
+  "jiraQuickActionsHint": {
+    "message": "각 버튼에 대한 필드 조합을 선택합니다. 변경해야 하는 부분만 그대로 둡니다. 버전 및 구성 요소는 Jira 프로젝트에 이미 존재해야 합니다."
+  },
+  "jiraQuickActionsAdd": {
+    "message": "작업 추가"
+  },
+  "jiraQuickActionLabel": {
+    "message": "라벨"
+  },
+  "jiraQuickActionStatus": {
+    "message": "상태"
+  },
+  "jiraQuickActionAssignee": {
+    "message": "사용자 이름"
+  },
+  "jiraSidebarStatus": {
+    "message": "상태"
+  },
+  "jiraSidebarType": {
+    "message": "유형"
+  },
+  "jiraSidebarPriority": {
+    "message": "우선 순위"
+  },
+  "jiraSidebarAssignee": {
+    "message": "담당자"
+  },
+  "jiraSidebarUnassigned": {
+    "message": "할당되지 않음"
+  },
+  "jiraSidebarSearchUser": {
+    "message": "사용자 검색..."
+  },
+  "jiraSidebarNoUsers": {
+    "message": "사용자를 찾을 수 없음"
+  },
+  "jiraSidebarUnassign": {
+    "message": "할당 해제"
+  },
+  "jiraSidebarReporter": {
+    "message": "보고자"
+  },
+  "jiraSidebarLabels": {
+    "message": "레이블"
+  },
+  "jiraSidebarCreated": {
+    "message": "생성됨"
+  },
+  "jiraSidebarUpdated": {
+    "message": "업데이트됨"
+  },
+  "jiraSidebarDescription": {
+    "message": "설명"
+  },
+  "jiraSidebarEpic": {
+    "message": "Epic"
+  },
+  "jiraSidebarSprint": {
+    "message": "Sprint"
+  },
+  "jiraSidebarComponents": {
+    "message": "구성 요소"
+  },
+  "jiraSidebarResolution": {
+    "message": "해결 결과"
+  },
+  "jiraSidebarAffectsVersions": {
+    "message": "영향받는 버전"
+  },
+  "jiraSidebarFixVersions": {
+    "message": "수정 버전"
+  },
+  "jiraSidebarNoFixVersions": {
+    "message": "없음"
+  },
+  "jiraSidebarNoVersions": {
+    "message": "버전 없음"
+  },
+  "jiraSidebarSearchVersions": {
+    "message": "버전 검색..."
+  },
+  "jiraSidebarFixVersionsError": {
+    "message": "수정 버전 업데이트 실패"
+  },
+  "jiraSidebarAttachments": {
+    "message": "첨부 파일"
+  },
+  "jiraSidebarComments": {
+    "message": "댓글"
+  },
+  "jiraSidebarCommentPlaceholder": {
+    "message": "댓글 추가..."
+  },
+  "jiraSidebarCommentSubmit": {
+    "message": "댓글"
+  },
+  "jiraSidebarLoadMoreComments": {
+    "message": "댓글 더 보기"
+  },
+  "jiraSidebarNoComments": {
+    "message": "아직 댓글이 없습니다"
+  },
+  "jiraSidebarCommentError": {
+    "message": "댓글 게시 실패"
+  },
+  "jiraSidebarCommentDelete": {
+    "message": "댓글 삭제"
+  },
+  "jiraSidebarCommentDeleteConfirm": {
+    "message": "댓글을 삭제하시겠습니까?"
+  },
+  "jiraSidebarCommentDeleteError": {
+    "message": "댓글 삭제에 실패했습니다"
+  },
+  "cardJiraTitle": {
+    "message": "Jira 상태 배지"
+  },
+  "cardJiraDesc": {
+    "message": "MR 목록 페이지에 Jira 티켓 상태를 표시합니다. MR 타이틀(예: CCT-1111)에서 티켓 ID를 구문 분석하고 컬러 상태 배지를 표시합니다. 설정에서 Jira URL을 설정하세요."
+  },
+  "cardJiraRegexTitle": {
+    "message": "사용자 지정 티켓 정규식"
+  },
+  "cardJiraRegexDesc": {
+    "message": "MR 제목에서 Jira 티켓 ID를 구문 분석하기 위한 사용자 지정 정규 표현식을 구성하세요. 프로젝트에서 비표준 티켓 접두어를 사용할 때 유용합니다."
+  },
+  "cardJiraSidebarTitle": {
+    "message": "Jira 티켓 사이드바"
+  },
+  "cardJiraSidebarDesc": {
+    "message": "Jira 배지를 클릭하면 전체 티켓 세부 정보(요약, 상태, 유형, 우선순위, 담당자 및 설명)가 포함된 사이드바가 열립니다. GitLab을(를) 떠나지 않고도 자신의 댓글을 읽고, 게시하고, 삭제할 수 있습니다. 수정 버전은 사이드바에 있는 프로젝트의 사용 가능한 버전에서 직접 선택할 수 있습니다."
+  },
+  "cardJiraAttachmentsTitle": {
+    "message": "사이드바의 첨부 파일"
+  },
+  "cardJiraAttachmentsDesc": {
+    "message": "사이드바에서 직접 Jira 티켓의 이미지, 비디오, 파일을 봅니다. 이미지와 비디오는 전체 화면 라이트박스에서 열립니다."
+  },
+  "cardJiraDetailTitle": {
+    "message": "Jira 배지는 MR 페이지"
+  },
+  "cardJiraDetailDesc": {
+    "message": "Jira 티켓 상태 배지는 세부 정보 페이지의 MR 제목에 표시됩니다. 전체 티켓 세부 정보가 포함된 사이드바를 열려면 배지를 클릭하세요."
+  },
+  "cardJiraStatusChangeTitle": {
+    "message": "변경 Jira 상태"
+  },
+  "cardJiraStatusChangeDesc": {
+    "message": "사이드바에서 직접 티켓 상태를 변경하세요. 현재 상태에서 사용 가능한 전환만 표시합니다."
+  },
+  "cardJiraAssigneeTitle": {
+    "message": "변경 Jira 담당자"
+  },
+  "cardJiraAssigneeDesc": {
+    "message": "검색하고 재할당할 담당자를 클릭하세요. 아바타로 자동 완성, 담당자를 제거하기 위한 할당 취소 버튼."
+  },
+  "cardJiraQuickActionsTitle": {
+    "message": "Jira 빠른 작업"
+  },
+  "cardJiraQuickActionsDesc": {
+    "message": "상태, 담당자, 레이블, 버전 및 기타 필드에 대한 원클릭 버튼. 각 버튼은 하나 또는 여러 필드를 업데이트할 수 있습니다."
+  },
+  "cardJiraDetailsTitle": {
+    "message": "문제 유형 및 우선순위 아이콘"
+  },
+  "cardJiraDetailsDesc": {
+    "message": "MR 목록 및 세부 정보 페이지의 상태 배지 옆에 Jira 문제 유형 및 우선순위 아이콘을 표시합니다. 기본 Jira 아이콘을 사용합니다."
+  },
+  "cardRebaseTitle": {
+    "message": "리베이스"
+  },
+  "cardRebaseDesc": {
+    "message": "병합하지 않고 소스 브랜치를 대상 브랜치로 리베이스합니다."
+  },
+  "cardRebaseVersionTitle": {
+    "message": "리베이스 + 버전"
+  },
+  "cardRebaseVersionDesc": {
+    "message": "한 번의 클릭으로 브랜치 및 범프 버전을 리베이스합니다. 병합되지 않습니다."
+  },
+  "cardCopyMrTitle": {
+    "message": "MR 복사"
+  },
+  "cardCopyMrDesc": {
+    "message": "한 번의 클릭으로 MR 제목과 링크를 클립보드에 복사합니다."
+  },
+  "cardRetryFailedTitle": {
+    "message": "실패한 작업 재시도"
+  },
+  "cardRetryFailedDesc": {
+    "message": "MR의 현재 파이프라인에서 실패한 작업을 재시도합니다. 성공적인 작업은 영향을 받지 않습니다."
+  },
+  "welcomeMrListFeatures": {
+    "message": "MR 목록 페이지 개선"
+  },
+  "cardDimDraftsTitle": {
+    "message": "초안 MR 흐리게 표시"
+  },
+  "cardDimDraftsDesc": {
+    "message": "MR 목록에서 초안 MR을 흐리게 표시하여 활성 병합 요청에 집중할 수 있습니다."
+  },
+  "cardHighlightOwnTitle": {
+    "message": "내 MR 강조 표시"
+  },
+  "cardHighlightOwnDesc": {
+    "message": "목록에서 내가 만든 MR을 파란색 테두리로 강조하여 쉽게 찾을 수 있습니다."
+  },
+  "cardOnlyMineTitle": {
+    "message": "\"내 것만\" 토글"
+  },
+  "cardOnlyMineDesc": {
+    "message": "한 번의 클릭으로 MR 목록을 필터링하여 내가 만든 병합 요청만 표시합니다."
+  },
+  "cardMrAgeTitle": {
+    "message": "MR 연령 배지"
+  },
+  "cardMrAgeDesc": {
+    "message": "MR이 생성된 지 얼마나 됐는지 표시하고 MR 페이지에 배지로 표시됩니다."
+  },
+  "showReviewerBadge": {
+    "message": "댓글의 '내 리뷰' 배지"
+  },
+  "badgeYourReview": {
+    "message": "귀하의 리뷰"
+  },
+  "badgeYourReviewHint": {
+    "message": "귀하는 MR 댓글에서 리뷰어로 언급되었습니다."
+  },
+  "cardReviewerBadgeTitle": {
+    "message": "'내 리뷰' 배지"
+  },
+  "cardReviewerBadgeDesc": {
+    "message": "가장 오래된 댓글에서 “Reviewer(s): @you”를 검색합니다. 검색할 댓글 수는 설정할 수 있으며 기본값은 10입니다. GitLab의 기본 리뷰어 기능과는 별개입니다."
+  },
+  "showNeedsReview": {
+    "message": "목록 페이지의 '검토 필요' 전환"
+  },
+  "toggleNeedsReview": {
+    "message": "내 검토가 필요합니다"
+  },
+  "cardNeedsReviewTitle": {
+    "message": "'검토 필요' 토글"
+  },
+  "cardNeedsReviewDesc": {
+    "message": "한 번의 클릭으로 MR 목록을 필터링하여 검토자로 지정된 병합 요청만 표시할 수 있습니다."
+  },
+  "showCopyMr": {
+    "message": "MR 목록 항목의 복사 버튼"
+  },
+  "showThreadsBadge": {
+    "message": "해결되지 않은 스레드는 MR 목록에 포함됩니다."
+  },
+  "showSizeBadge": {
+    "message": "MR 목록의 MR 사이즈 라벨(S/M/L/XL)"
+  },
+  "showConflictsBadge": {
+    "message": "MR 목록에 충돌 표시기 표시"
+  },
+  "showApprovalBadge": {
+    "message": "MR 목록에 승인 횟수 및 내 승인 표시 표시"
+  },
+  "approvalBadgeMine": {
+    "message": "승인하셨습니다"
+  },
+  "approvalBadgeMineShort": {
+    "message": "나"
+  },
+  "cardThreadsTitle": {
+    "message": "해결되지 않은 스레드 수"
+  },
+  "cardThreadsDesc": {
+    "message": "해결되지 않은 스레드 수를 표시합니다. \"+\"는 전체 첫 페이지를 표시합니다. “?” 카운트가 불가능하다는 뜻입니다."
+  },
+  "cardSizeTitle": {
+    "message": "MR 사이즈 라벨"
+  },
+  "cardSizeDesc": {
+    "message": "표시 규칙 및 제한에서 구성 가능한 라인 및 파일 임계값이 있는 S/M/L/XL 배지."
+  },
+  "conflictsBadge": {
+    "message": "충돌"
+  },
+  "conflictsBadgeHint": {
+    "message": "이 MR에는 해결해야 할 병합 충돌이 있습니다."
+  },
+  "cardConflictsTitle": {
+    "message": "충돌 표시기"
+  },
+  "cardConflictsDesc": {
+    "message": "분기에 병합 충돌이 있는 경우 MR 세부 정보 페이지에 빨간색 CONFLICTS 배지가 표시됩니다."
+  },
+  "cardApprovalTitle": {
+    "message": "내 승인 표시기"
+  },
+  "cardApprovalDesc": {
+    "message": "목록 페이지에서 각 MR을(를) 승인했는지 여부를 표시합니다. 귀하의 승인과 다른 사람의 승인을 구별합니다."
+  },
+  "showBranches": {
+    "message": "MR 목록에 소스 및 대상 분기 표시"
+  },
+  "showBranchesLinks": {
+    "message": "분기 이름을 클릭 가능하게 만듭니다(분기 트리 열기)"
+  },
+  "cardBranchesTitle": {
+    "message": "MR 목록의 분기 이름"
+  },
+  "cardBranchesDesc": {
+    "message": "각 MR에 소스 및 대상 분기 이름을 표시합니다. 목록을 사용하면 코드가 어디서 오고 어디서 병합되는지 확인할 수 있습니다."
+  },
+  "cardCopyMrListTitle": {
+    "message": "목록에서 MR 복사"
+  },
+  "cardCopyMrListDesc": {
+    "message": "목록 페이지의 각 MR에 복사 버튼을 추가합니다. 한 번의 클릭으로 MR 제목과 링크를 클립보드에 복사합니다."
+  },
+  "versionFromTarget": {
+    "message": "대상 브랜치에서 버전 읽기"
+  },
+  "versionFromTargetHint": {
+    "message": "소스 브랜치 대신 대상 브랜치(예: main)에서 현재 버전을 읽습니다. 오래된 버전을 사용하지 않도록 merge commit 전략과 함께 사용하세요."
+  },
+  "showFailedJobView": {
+    "message": "MR 페이지에 실패한 작업 빠른 보기 표시"
+  },
+  "failedJobTraceError": {
+    "message": "추적을 로드할 수 없습니다"
+  },
+  "cardFailedJobViewTitle": {
+    "message": "실패한 작업 빠른 보기"
+  },
+  "cardFailedJobViewDesc": {
+    "message": "MR 페이지에서 실패한 작업 및 로그 테일을 미리 봅니다. 작업 및 줄 수는 표시 규칙 및 제한에서 구성할 수 있습니다."
+  },
+  "showCmdPalette": {
+    "message": "명령 팔레트(Cmd+K / Ctrl+K)"
+  },
+  "showStandup": {
+    "message": "일일 활동 보고서"
+  },
+  "standupJiraEnrich": {
+    "message": "보고서에 Jira 티켓 제목 표시"
+  },
+  "cmdPlaceholder": {
+    "message": "명령을 입력하세요..."
+  },
+  "cmdFooterNavigate": {
+    "message": "이동"
+  },
+  "cmdFooterSelect": {
+    "message": "선택"
+  },
+  "cmdFooterClose": {
+    "message": "닫기"
+  },
+  "cmdEmpty": {
+    "message": "일치하는 명령 없음"
+  },
+  "cmdGroupNav": {
+    "message": "탐색"
+  },
+  "cmdGroupMr": {
+    "message": "MR 작업"
+  },
+  "cmdGroupExt": {
+    "message": "확장"
+  },
+  "cmdGroupFiles": {
+    "message": "파일"
+  },
+  "cmdNavMrs": {
+    "message": "병합 요청으로 이동"
+  },
+  "cmdNavIssues": {
+    "message": "문제로 이동"
+  },
+  "cmdNavPipelines": {
+    "message": "파이프라인으로 이동"
+  },
+  "cmdNavBranches": {
+    "message": "분기로 이동"
+  },
+  "cmdNavRepo": {
+    "message": "저장소로 이동"
+  },
+  "cmdNavTags": {
+    "message": "태그로 이동"
+  },
+  "cmdNavCommits": {
+    "message": "커밋으로 이동"
+  },
+  "cmdNavWiki": {
+    "message": "Wiki로 이동"
+  },
+  "cmdNavSnippets": {
+    "message": "조각으로 이동"
+  },
+  "cmdNavSettings": {
+    "message": "설정으로 이동"
+  },
+  "cmdCopyPath": {
+    "message": "프로젝트 경로 복사"
+  },
+  "cmdGroupPinned": {
+    "message": "고정됨"
+  },
+  "cmdExtSettings": {
+    "message": "확장 설정 열기"
+  },
+  "cmdExtStandup": {
+    "message": "활동 보고서 생성"
+  },
+  "standupTitle": {
+    "message": "일일 활동"
+  },
+  "standupCopy": {
+    "message": "클립보드에 복사"
+  },
+  "standupCopied": {
+    "message": "복사됨!"
+  },
+  "cardCmdPaletteTitle": {
+    "message": "명령 팔레트"
+  },
+  "cardCmdPaletteDesc": {
+    "message": "GitLab 페이지에서 Cmd+K(Mac) 또는 Ctrl+K(Win)을 누르세요. MR 작업을 탐색하고 실행하고 이름으로 파일을 검색하고 저장소에서 엽니다."
+  },
+  "cardStandupTitle": {
+    "message": "일일 활동 보고서"
+  },
+  "cardStandupDesc": {
+    "message": "GitLab 데이터로 일일 활동 보고서를 생성합니다. 생성, 병합, 검토한 MR을 표시합니다. Slack 또는 Jira에 복사하여 붙여넣으세요."
+  },
+  "showCherryPick": {
+    "message": "브랜치에 대한 Cherry-pick"
+  },
+  "showGroupPlay": {
+    "message": "파이프라인의 그룹 재생 버튼(나머지 수동 작업 실행)"
+  },
+  "showCommitVersion": {
+    "message": "커밋 페이지의 버전 배지"
+  },
+  "showCommitVersionHint": {
+    "message": "각 커밋 옆에 버전 파일의 버전을 표시합니다(버전 범프 설정 참조). 버전이 변경된 곳에서 강조 표시됨"
+  },
+  "groupPlayTooltip": {
+    "message": "이 그룹의 나머지 수동 작업 실행"
+  },
+  "groupPlayError": {
+    "message": "일부 작업을 시작하지 못했습니다"
+  },
+  "cardGroupPlayTitle": {
+    "message": "그룹 재생 버튼"
+  },
+  "cardGroupPlayDesc": {
+    "message": "파이프라인 그래프에서 작업 그룹 옆의 재생 버튼은 그룹의 일부 작업이 이미 시작되고 GitLab의 자체 버튼이 시작된 후에도 나머지 수동 작업을 모두 실행합니다. 사라집니다."
+  },
+  "cardCommitVersionTitle": {
+    "message": "커밋의 버전 배지"
+  },
+  "cardCommitVersionDesc": {
+    "message": "브랜치 커밋 페이지에서 각 커밋은 해당 커밋의 버전 파일에 있는 프로젝트 버전을 표시합니다. 기본적으로 음소거되고 버전이 변경된 부분이 강조 표시됩니다. 어떤 커밋이 어떤 릴리스에 들어갔는지 한눈에 확인할 수 있습니다."
+  },
+  "cherryPickBranches": {
+    "message": "Cherry-Pick 브랜치"
+  },
+  "cherryPickProjectBranchesHint": { "message": "이 프로젝트의 브랜치를 설정하세요. 목록을 비워 두면 공통 설정의 브랜치를 사용합니다." },
+  "cherryPickNoBranches": { "message": "설정된 브랜치가 없습니다." },
+  "cherryPickBranchesHint": {
+    "message": "Cherry-Pick의 기본 대상 브랜치입니다. 모달에서 분기를 추가하거나 제거할 수 있습니다."
+  },
+  "cherryPickBranchAdd": {
+    "message": "분기 추가"
+  },
+  "cherryPickTitle": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickToBranches": {
+    "message": "브랜치에 대한 Cherry-pick"
+  },
+  "cherryPickStart": {
+    "message": "Cherry-pick"
+  },
+  "cherryPickClose": {
+    "message": "닫기"
+  },
+  "cherryPickInProgress": {
+    "message": "체리픽 적용 중…"
+  },
+  "cherryPickRemove": {
+    "message": "제거"
+  },
+  "cherryPickBranchPlaceholder": {
+    "message": "분기 이름"
+  },
+  "cherryPickAllSuccess": {
+    "message": "브랜치 $1개에 체리픽을 적용했습니다",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "cherryPickCreateMr": {
+    "message": "다음 변경 사항으로 새 병합 요청 시작"
+  },
+  "cherryPickCreateMrDefault": {
+    "message": "체리픽 시 기본적으로 MR 생성"
+  },
+  "cherryPickSmartFallback": {
+    "message": "충돌 시 — 버전 파일 없이 커밋"
+  },
+  "cherryPickSmartFallbackHint": {
+    "message": "버전 파일 충돌로 체리픽이 실패하면 해당 파일을 제외한 변경 사항을 새 커밋으로 적용합니다."
+  },
+  "cherryPickBumpVersion": {
+    "message": "대체 처리 시 버전 올리기"
+  },
+  "cherryPickBumpVersionHint": {
+    "message": "같은 대체 커밋에서 대상 브랜치의 버전을 올립니다"
+  },
+  "cherryPickFallbackNoVersionFile": {
+    "message": "스마트 폴백은 버전 파일 충돌만 처리합니다. 충돌이 다른 파일에 있습니다."
+  },
+  "cherryPickFallbackDiverged": {
+    "message": "대상 브랜치에서 파일이 변경되어 안전하게 체리픽할 수 없습니다"
+  },
+  "cherryPickFallbackVersionFileHasOtherChanges": {
+    "message": "버전 파일에 버전 번호 외의 변경 사항이 있어 안전하게 건너뛸 수 없습니다."
+  },
+  "commitsJiraField": {
+    "message": "커밋 배지용 Jira 필드"
+  },
+  "commitsJiraFieldHint": {
+    "message": "커밋 페이지의 배지에 표시할 Jira 필드 이름(예: fixVersions, status, labels, components). Jira URL이 필요합니다."
+  },
+  "cardCherryPickTitle": {
+    "message": "브랜치에 대한 Cherry-pick"
+  },
+  "cardCherryPickDesc": {
+    "message": "선택한 브랜치에 직접 또는 새 MR을 통해 체리픽합니다. 스마트 대체 처리를 켜면 확인된 버전 파일 충돌에 대해 해당 파일을 제외하고 변경을 적용하며, 선택적으로 버전도 올립니다. 안전하지 않은 변경은 검토를 위해 중단됩니다."
+  },
+  "mrDetailEnhancements": {
+    "message": "MR 세부 사항 개선"
+  },
+  "showSensitiveWarning": {
+    "message": "diff의 민감한 파일 경고"
+  },
+  "showGitCommands": {
+    "message": "Git 명령 버튼(checkout, pull, reset)"
+  },
+  "sensitiveWarningBadge": {
+    "message": "민감한 항목: $1 파일",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveWarningHint": {
+    "message": "이 MR은 보안에 민감한 파일을 수정합니다."
+  },
+  "gitCmdCheckout": {
+    "message": "checkout"
+  },
+  "gitCmdPull": {
+    "message": "pull"
+  },
+  "gitCmdReset": {
+    "message": "reset"
+  },
+  "cardSensitiveTitle": {
+    "message": "민감한 파일 경고"
+  },
+  "cardSensitiveDesc": {
+    "message": "기본 제공 규칙, 추가 패턴 및 제외를 사용하여 민감한 파일에 플래그를 지정합니다. 표시 규칙 및 제한에서 구성합니다."
+  },
+  "cardGitCommandsTitle": {
+    "message": "Git 명령 버튼"
+  },
+  "cardGitCommandsDesc": {
+    "message": "checkout, pull, hard-reset 명령을 복사합니다. 실행 전에 저장소와 origin 원격 저장소를 확인하세요. hard reset은 로컬 변경 사항을 삭제합니다."
+  },
+  "updateBannerText": {
+    "message": "새 버전을 사용할 수 있습니다! 새로운 기능을 확인하세요:"
+  },
+  "updateChangelog": {
+    "message": "변경 내역"
+  },
+  "updateReviewAsk": {
+    "message": "확장 프로그램이 마음에 드시나요?"
+  },
+  "updateReviewLink": {
+    "message": "리뷰를 남겨주세요"
+  },
+  "aiReviewFeatureTitle": {
+    "message": "AI 지원 검토, 엔드투엔드"
+  },
+  "aiReviewFeatureDesc": {
+    "message": "MR을 검토하고, 선택한 피드백을 수정하고, 응답을 준비하고, 변경 사항을 다시 확인하세요. GitLab에 게시하기 전에 댓글을 미리 보고 편집하세요."
+  },
+  "aiReviewGuide": {
+    "message": "AI 리뷰 가이드"
+  },
+  "aiReviewPrivacyHint": {
+    "message": "자동 AI 업로드 금지. 컨텍스트는 스스로 복사하세요; 댓글은 '공개' 또는 '리뷰에 추가'를 선택할 때만 GitLab으로 전송됩니다."
+  },
+  "aiReviewTitle": {
+    "message": "AI 리뷰"
+  },
+  "aiReviewOpen": {
+    "message": "AI 리뷰…"
+  },
+  "aiReviewCopyComment": {
+    "message": "AI용 댓글 복사"
+  },
+  "aiReviewLoading": {
+    "message": "토론 불러오는 중…"
+  },
+  "aiReviewRetry": {
+    "message": "재시도"
+  },
+  "aiReviewRefresh": {
+    "message": "새로 고침"
+  },
+  "aiReviewClose": {
+    "message": "닫기"
+  },
+  "aiReviewConfirmCloseSetting": {
+    "message": "저장되지 않은 작업이 있는 상태로 리뷰 대화창을 닫으시겠어요?"
+  },
+  "aiReviewConfirmDiscard": {
+    "message": "이 대화창을 닫으시겠어요? 저장되지 않은 편집 내용 및 입력된 데이터는 사라집니다."
+  },
+  "aiReviewConfirmStopAndClose": {
+    "message": "이 대화창을 닫고 더 이상 전송하지 않으시겠어요? 이미 전송된 댓글은 GitLab에 남아있습니다. 저장되지 않은 편집 내용은 사라집니다."
+  },
+  "aiReviewAll": {
+    "message": "전체"
+  },
+  "aiReviewUnresolved": {
+    "message": "해결되지 않음"
+  },
+  "aiReviewResolved": {
+    "message": "해결됨"
+  },
+  "aiReviewGeneral": {
+    "message": "일반 댓글"
+  },
+  "aiReviewSearch": {
+    "message": "댓글이나 파일 경로 검색"
+  },
+  "aiReviewSelectShown": {
+    "message": "표시된 항목 선택"
+  },
+  "aiReviewClear": {
+    "message": "선택 해제"
+  },
+  "aiReviewIncludeCode": {
+    "message": "코드 변경 사항 포함"
+  },
+  "aiReviewIncludeCodeHint": {
+    "message": "새 리뷰와 재리뷰용. AI가 리포지토리를 읽을 수 있다면 생략하세요. 피드백에 첨부된 짧은 발췌문은 포함된 상태로 남습니다."
+  },
+  "aiReviewIncludeExisting": {
+    "message": "기존 논의를 고려하세요"
+  },
+  "aiReviewIncludeExistingHint": {
+    "message": "이미 게시된 댓글을 중복 필터로 추가: AI가 전체 MR을 독립적으로 리뷰한 후 반복되는 발견사항은 제외합니다. 해당 논의에는 답변하지 않습니다."
+  },
+  "aiReviewIncludeDescription": {
+    "message": "설명 포함"
+  },
+  "aiReviewPrompt": {
+    "message": "AI를 위한 지침"
+  },
+  "aiReviewResetPrompt": {
+    "message": "기본 프롬프트 복원"
+  },
+  "aiReviewPreview": {
+    "message": "미리보기"
+  },
+  "aiReviewCopied": {
+    "message": "복사됨!"
+  },
+  "aiReviewEmpty": {
+    "message": "일치하는 댓글 없음."
+  },
+  "aiReviewPartial": {
+    "message": "일부 데이터를 불러올 수 없습니다. 내보내기에는 경고와 사용 가능한 컨텍스트만 포함됩니다."
+  },
+  "aiReviewSelectedCount": {
+    "message": "$1 선택됨",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewManualCopy": {
+    "message": "미리보기 텍스트를 선택하고 수동으로 복사하세요."
+  },
+  "aiReviewScopeComment": {
+    "message": "선택된 댓글"
+  },
+  "aiReviewScopeThread": {
+    "message": "선택된 논의"
+  },
+  "aiReviewPreparing": {
+    "message": "코드 컨텍스트 준비 중…"
+  },
+  "aiReviewLoadFailed": {
+    "message": "토론을 불러올 수 없습니다. 다시 시도하거나 사용 가능한 컨텍스트를 복사하세요."
+  },
+  "aiReviewShowReplies": {
+    "message": "답글 보기"
+  },
+  "aiReviewSize": {
+    "message": "약 $1 문자",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewCancel": {
+    "message": "취소"
+  },
+  "showAiReviewCopy": {
+    "message": "AI 리뷰 사본과 가져오기 컨트롤 보기"
+  },
+  "aiReviewSettingsHint": {
+    "message": "전체 MR을 복사하여 새 리뷰를 시작하거나, 수정할 피드백만 선택하거나, 전송 전에 편집 가능한 미리 보기와 함께 AI 코멘트와 답글을 가져오세요."
+  },
+  "aiReviewFresh": {
+    "message": "처음부터 리뷰"
+  },
+  "aiReviewFreshPrompt": {
+    "message": "새 리뷰를 위한 프롬프트"
+  },
+  "aiReviewFreshPromptHint": {
+    "message": "최대 1,500자. 전체 MR과 모든 커밋을 피드백 수정과 별개로 리뷰하는 데 사용됩니다. 응답 언어를 지정할 수 있습니다. 기본 영어 프롬프트는 비워두세요."
+  },
+  "aiReviewPromptHint": {
+    "message": "최대 1,500자. 기본 영어 프롬프트를 사용하려면 비워두세요. 모든 프로젝트에 적용됩니다."
+  },
+  "aiReviewPromptTooLong": {
+    "message": "프롬프트가 저장되지 않았습니다. 최대 1,500자를 사용하고 특이한 제어 문자는 제거하세요."
+  },
+  "settingsSaveFailed": {
+    "message": "설정을 저장하지 못했습니다. 다시 시도하세요."
+  },
+  "aiReviewPromptSessionHint": {
+    "message": "여기서 변경한 내용은 이 내보내기에 적용됩니다. 기본 프롬프트는 확장 설정에서 설정하세요."
+  },
+  "aiReviewReady": {
+    "message": "미리보기가 복사할 준비가 되었습니다."
+  },
+  "aiReviewLoadHint": {
+    "message": "GitLab에서 직접 토론을 불러옵니다. 이 페이지에서 보이지 않는 댓글도 포함됩니다."
+  },
+  "aiReviewCommentContext": {
+    "message": "다른 답글은 참고용으로 포함됩니다. 실행을 요청한 것은 선택된 댓글뿐입니다."
+  },
+  "aiReviewOutdated": {
+    "message": "이전 수정본"
+  },
+  "aiReviewLink": {
+    "message": "토론 열기"
+  },
+  "aiReviewLoaded": {
+    "message": "$1개의 토론을 불러왔습니다"
+  },
+  "aiReviewCodeProgress": {
+    "message": "코드 컨텍스트 준비 중: $1 / $2…"
+  },
+  "aiReviewNoteUnavailable": {
+    "message": "이 댓글은 GitLab에서 사용할 수 없습니다. 아직 저장 중이거나 삭제되었을 수 있습니다. 다시 시도하려면 새로고침하세요."
+  },
+  "aiReviewImportOpen": {
+    "message": "AI 리뷰 가져오는 중…"
+  },
+  "aiReviewImportTitle": {
+    "message": "AI 리뷰 가져오기"
+  },
+  "aiReviewImportHelp": {
+    "message": "아래에 AI 응답을 붙여넣고 확인, 수정 및 게시할 내용을 선택하세요. 프롬프트 단축키는 고급 설정에 있습니다."
+  },
+  "aiReviewImportCopyPrompt": {
+    "message": "새 리뷰용 프롬프트 복사"
+  },
+  "aiReviewImportPromptLoading": {
+    "message": "프롬프트 준비 중…"
+  },
+  "aiReviewImportInput": {
+    "message": "AI 응답 (JSON)"
+  },
+  "aiReviewImportInputHint": {
+    "message": "새 댓글이나 토론에 대한 답변을 포함한 전체 JSON 응답을 붙여넣으세요. 텍스트를 편집하거나 미리보기에서 보낼 내용을 선택할 수 있어요."
+  },
+  "aiReviewImportValidate": {
+    "message": "확인 및 미리보기"
+  },
+  "aiReviewImportChecking": {
+    "message": "MR 변경 사항, 라인, 기존 댓글 확인 중…"
+  },
+  "aiReviewImportEmpty": {
+    "message": "미리보기 댓글에 대한 답변 확인. 텍스트를 편집하거나, 항목 제외를 위해 체크박스를 지우거나, 일반 댓글을 추가할 수 있어요."
+  },
+  "aiReviewImportSelectReady": {
+    "message": "준비된 댓글 선택"
+  },
+  "aiReviewImportPreview": {
+    "message": "보낼 댓글"
+  },
+  "aiReviewImportReady": {
+    "message": "준비 완료"
+  },
+  "aiReviewImportInvalid": {
+    "message": "수정 필요"
+  },
+  "aiReviewImportDiffRecoveryFailed": {
+    "message": "추가 파일 변경 사항을 불러올 수 없음: $error$",
+    "placeholders": {
+      "error": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportDiffResponseTooLarge": {
+    "message": "추가 diff가 16MiB 가져오기 제한을 초과했습니다. 확인된 라인에만 댓글을 가져올 수 있어요."
+  },
+  "aiReviewImportDuplicate": {
+    "message": "이미 존재"
+  },
+  "aiReviewImportPublished": {
+    "message": "게시됨"
+  },
+  "aiReviewImportDraft": {
+    "message": "리뷰에 추가됨"
+  },
+  "aiReviewImportFailed": {
+    "message": "전송되지 않음"
+  },
+  "aiReviewImportUnknown": {
+    "message": "배달 확인되지 않음"
+  },
+  "aiReviewImportSkipped": {
+    "message": "전송되지 않음"
+  },
+  "aiReviewImportNewLine": {
+    "message": "새 줄 $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportOldLine": {
+    "message": "이전 줄 $1",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportPublish": {
+    "message": "선택한 항목 게시"
+  },
+  "aiReviewImportAddDrafts": {
+    "message": "검토에 추가"
+  },
+  "aiReviewImportSendHint": {
+    "message": "게시하면 댓글이 바로 전송됩니다. 검토에 추가하면 게시되지 않은 댓글이 GitLab 검토용으로 저장됩니다."
+  },
+  "aiReviewImportSending": {
+    "message": "선택한 댓글 전송 중…"
+  },
+  "aiReviewImportFinished": {
+    "message": "완료. 각 댓글 옆에서 결과 확인하세요."
+  },
+  "aiReviewImportStopped": {
+    "message": "중지됨. 재시도하기 전에 각 댓글 옆에서 결과 확인하세요."
+  },
+  "aiReviewImportEdited": {
+    "message": "응답이 변경되었습니다. 전송하기 전에 다시 확인하세요."
+  },
+  "aiReviewImportCopyFailed": {
+    "message": "클립보드 사용 불가. 아래 텍스트를 선택해서 수동으로 복사하세요."
+  },
+  "aiReviewImportUnsafeRetry": {
+    "message": "배달을 확인할 수 없습니다. 재시도하기 전에 GitLab 확인하세요."
+  },
+  "aiReviewImportPrompt": {
+    "message": "AI용 프롬프트"
+  },
+  "aiReviewImportChecked": {
+    "message": "준비 완료: $1. 다른 댓글도 확인이 필요합니다.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "aiReviewImportStop": {
+    "message": "전송 중지"
+  },
+  "aiReviewImportError": {
+    "message": "작업을 완료할 수 없습니다"
+  },
+  "aiReviewImportPromptError": {
+    "message": "프롬프트를 준비할 수 없습니다"
+  },
+  "aiReviewImportWarning": {
+    "message": "리뷰 알림"
+  },
+  "aiReviewSettingsTitle": {
+    "message": "AI 리뷰"
+  },
+  "aiReviewResponseLanguage": {
+    "message": "AI 응답 언어"
+  },
+  "aiReviewResponseLanguageAuto": {
+    "message": "자동 — 대화 언어"
+  },
+  "aiReviewResponseLanguageHint": {
+    "message": "모든 리뷰 작업과 임포트 프롬프트에 적용됩니다. JSON 키, 경로 및 코드는 번역되지 않습니다. 형식만 복사해도 언어 지침이 추가되지는 않습니다."
+  },
+  "aiReviewFeedbackPrompt": {
+    "message": "피드백 수정용 프롬프트"
+  },
+  "aiReviewImportPromptSetting": {
+    "message": "새 리뷰 댓글용 프롬프트"
+  },
+  "aiReviewReplyPromptSetting": {
+    "message": "피드백에 대한 답변 프롬프트"
+  },
+  "aiReviewImportPromptSettingHint": {
+    "message": "최대 1500자. 임포트의 새 리뷰 단축용. 작업 탭은 자체 프롬프트를 사용합니다. MR 컨텍스트와 JSON 형식은 자동으로 추가됩니다."
+  },
+  "aiReviewReplyPromptSettingHint": {
+    "message": "최대 1500자. 복사에서 선택한 토론 또는 임포트에서 모든 해결되지 않은 토론에 대한 답변용. 스타일과 언어를 설정할 수 있으며, 컨텍스트와 답변 형식은 자동으로 추가됩니다."
+  },
+  "aiReviewImportCopyAllReplyPrompt": {
+    "message": "모든 해결되지 않은 토론에 대한 답변 프롬프트"
+  },
+  "aiReviewImportCopyFormat": {
+    "message": "응답 형식 복사"
+  },
+  "aiReviewImportFormat": {
+    "message": "AI용 응답 형식"
+  },
+  "aiReviewImportCopyReplyPrompt": {
+    "message": "답장 준비"
+  },
+  "aiReviewImportReply": {
+    "message": "토론에 답장"
+  },
+  "aiReviewImportOriginalComment": {
+    "message": "원래 댓글"
+  },
+  "aiReviewImportReplyText": {
+    "message": "당신의 답장"
+  },
+  "aiReviewImportResolveAfterReply": {
+    "message": "게시 후 토론 해결"
+  },
+  "aiReviewImportResolveSuccess": {
+    "message": "토론이 해결되었습니다."
+  },
+  "aiReviewImportResolveFailed": {
+    "message": "답장이 게시되었지만 토론은 해결되지 않았습니다. GitLab에서 해결할 수 있습니다."
+  },
+  "aiReviewImportResolveUnknown": {
+    "message": "답장이 게시되었습니다. 해결 여부가 확인되지 않았습니다. GitLab에서 토론을 확인하세요."
+  },
+  "aiReviewImportReplyHint": {
+    "message": "해결은 선택 사항이며 기본적으로 꺼져 있습니다. 답장을 게시한 후에만 실행됩니다. 초안을 추가해도 토론은 해결되지 않습니다."
+  },
+  "aiReviewReplyVersionChanged": {
+    "message": "MR 버전이 변경되었습니다. 답장은 여전히 토론과 연결되어 있으므로, 푸시된 수정 사항에 맞게 내용을 확인하세요. 이전 리비전에서 나온 새로운 발견 사항은 차단됩니다."
+  },
+  "aiReviewReplyVerifyPushed": {
+    "message": "이 답글들은 코드 수정이 아니라 토론과 연결되어 있어요. 배포 전에 설명된 수정 사항이 이 MR에 반영되었는지 확인하세요."
+  },
+  "aiReviewImportEdit": {
+    "message": "텍스트 편집"
+  },
+  "aiReviewImportAddComment": {
+    "message": "댓글 추가"
+  },
+  "aiReviewImportSaveEdit": {
+    "message": "변경 사항 저장"
+  },
+  "aiReviewImportCancelEdit": {
+    "message": "취소"
+  },
+  "aiReviewImportEditorLabel": {
+    "message": "댓글 텍스트"
+  },
+  "aiReviewImportEditingHint": {
+    "message": "텍스트를 편집한 후, 배포 전에 변경 사항을 확인하려면 저장하세요."
+  },
+  "aiReviewImportEditError": {
+    "message": "변경 사항을 저장할 수 없음"
+  },
+  "aiReviewImportCommentLimit": {
+    "message": "미리보기에는 최대 200개의 댓글만 포함될 수 있어요."
+  },
+  "aiReviewRepeatPrompt": {
+    "message": "반복 검토 요청"
+  },
+  "aiReviewFileFilters": {
+    "message": "검토할 파일"
+  },
+  "aiReviewFileFiltersHint": {
+    "message": "새 검토, 반복 검토, 새 발견 사항 프롬프트에 적용됩니다. 선택한 피드백이나 답글 프롬프트에는 적용되지 않습니다. 패턴은 줄바꿈 또는 쉼표로 구분하며 #은 주석을 시작합니다. *, **, ?를 사용할 수 있습니다. 이전 이름 변경 경로를 포함해 제외 규칙이 우선합니다. 목록이 비어 있으면 모두 포함합니다. 예: src/**, *.test.js, dist/. 목록당 최대 1500자입니다."
+  },
+  "aiReviewIncludeExtensions": {
+    "message": "확장자 포함(js, ts, py)"
+  },
+  "aiReviewIncludeFiles": {
+    "message": "파일 경로 포함"
+  },
+  "aiReviewIgnoreFiles": {
+    "message": "파일 경로 제외"
+  },
+  "aiReviewIgnoreDirs": {
+    "message": "폴더 제외"
+  },
+  "aiReviewFilterInvalid": {
+    "message": "파일 필터를 저장하거나 적용할 수 없습니다. 리스트당 최대 1500자까지만 사용하고, 특이한 제어 문자는 제거하세요."
+  },
+  "aiReviewPreviousRevision": {
+    "message": "검토한 버전"
+  },
+  "aiReviewPreviousNone": {
+    "message": "전체 검토 — 이전 버전 없음"
+  },
+  "aiReviewRepeat": {
+    "message": "리뷰 반복"
+  },
+  "aiReviewPreviousManual": {
+    "message": "커밋 SHA 입력"
+  },
+  "aiReviewPreviousSha": {
+    "message": "전체 검토한 커밋 SHA 입력 (16진수 40자 또는 64자)"
+  },
+  "aiReviewPreviousHint": {
+    "message": "댓글 남기기 전에 검토한 MR 버전을 선택하세요. 이후 변경 사항은 자동으로 포함되므로 개별 커밋 선택은 필요 없습니다. 버전을 기억하지 못하면 전체 검토를 선택하세요."
+  },
+  "aiReviewChooseTask": {
+    "message": "작업 선택"
+  },
+  "aiReviewTaskReview": {
+    "message": "새 리뷰"
+  },
+  "aiReviewTaskFix": {
+    "message": "리뷰 결과 수정"
+  },
+  "aiReviewTaskReply": {
+    "message": "답변 준비"
+  },
+  "aiReviewTaskRepeat": {
+    "message": "후속 리뷰"
+  },
+  "aiReviewCopyTask": {
+    "message": "작업 복사"
+  },
+  "aiReviewPasteResult": {
+    "message": "AI 응답 붙여넣기"
+  },
+  "aiReviewAdvanced": {
+    "message": "고급 설정"
+  },
+  "aiReviewTaskPrompt": {
+    "message": "작업 지침"
+  },
+  "aiReviewSelectThread": {
+    "message": "이 토론 선택"
+  },
+  "aiReviewSelectAll": {
+    "message": "모든 토론 선택"
+  },
+  "aiReviewTaskReviewHint": {
+    "message": "모든 MR 커밋을 함께 검토하세요. AI는 코드를 변경하지 않고 새로운 발견을 제공합니다."
+  },
+  "aiReviewTaskFixHint": {
+    "message": "수정할 피드백 선택. MR의 경우, AI가 수행한 내용, 남은 내용 및 이유를 설명하는 답변도 준비합니다. 미해결 토론이 처음에 선택됩니다."
+  },
+  "aiReviewIncludeReplies": {
+    "message": "답변도 준비"
+  },
+  "aiReviewTaskFixOnlyHint": {
+    "message": "코딩 AI가 수정할 피드백 선택. 미해결 토론이 처음에 선택됩니다."
+  },
+  "aiReviewNextFixOnlyStep": {
+    "message": "작업을 코딩 AI에 맡기고 변경 사항과 테스트를 확인하세요. 결과는 수정 사항과 일반 요약이며, 바로 게시할 답변은 포함되지 않습니다."
+  },
+  "aiReviewTaskReplyHint": {
+    "message": "수정 사항을 푸시한 후, AI에게 코드를 검증하고 선택된 토론에서 결과를 설명하도록 요청하세요."
+  },
+  "aiReviewTaskRepeatHint": {
+    "message": "선택한 피드백을 확인하고 새로운 결함이 있는지 찾아보세요. 이전에 검토한 버전을 선택하거나 전체 현재 MR을 확인하세요."
+  },
+  "aiReviewSummaryFresh": {
+    "message": "작업: 전체 MR, 모든 커밋 포함."
+  },
+  "aiReviewSummaryFix": {
+    "message": "선택한 댓글: $1; 토론 맥락과 사용 가능한 코드 발췌 포함."
+  },
+  "aiReviewSummaryReplies": {
+    "message": "답글용 토론: $1, 전체 대화 포함. AI는 저장소 접근 권한이 필요함."
+  },
+  "aiReviewSummaryRepeat": {
+    "message": "검증할 토론: $1, 코드 변경 검토 포함."
+  },
+  "aiReviewSummaryDescriptionOn": {
+    "message": "설명 포함됨."
+  },
+  "aiReviewSummaryDescriptionOff": {
+    "message": "설명 제외됨."
+  },
+  "aiReviewSummaryCodeOn": {
+    "message": "코드 변경 포함, 로딩 제한 적용."
+  },
+  "aiReviewSummaryCodeOff": {
+    "message": "AI는 저장소에서 코드를 읽어야 함."
+  },
+  "aiReviewSummaryExistingOn": {
+    "message": "기존 토론은 중복 필터로만 추가됨."
+  },
+  "aiReviewSummaryExistingOff": {
+    "message": "기존 토론은 추가되지 않음."
+  },
+  "aiReviewSummaryFiltered": {
+    "message": "파일 필터가 활성화됨."
+  },
+  "aiReviewSummaryFullRepeat": {
+    "message": "이전 버전을 선택하지 않았습니다: 현재 전체 MR이 확인됩니다."
+  },
+  "aiReviewSummaryDraftsExcluded": {
+    "message": "발표되지 않은 초안 토론은 답변을 받을 수 없으며 제외됩니다."
+  },
+  "aiReviewChooseFeedback": {
+    "message": "왼쪽에서 피드백을 선택하세요. 새 리뷰를 원하면 'New review' 탭을 사용하세요."
+  },
+  "aiReviewNextStep": {
+    "message": "작업을 AI 도구에 복사하세요. 댓글이나 답글을 받으면 “AI 응답 붙여넣기”를 사용하여 게시 전에 검토하고 편집하세요."
+  },
+  "aiReviewNextFixStep": {
+    "message": "수정 사항과 테스트를 확인하고 모든 커밋을 MR에 푸시한 뒤 “AI 응답 붙여넣기”에서 준비된 답글을 검토하고 게시하세요. 새 커밋이 있어도 답글을 다시 생성할 필요는 없습니다."
+  },
+  "aiReviewAutomaticInstructions": {
+    "message": "자동 지침 (고급)"
+  },
+  "aiReviewAutomaticInstructionsHint": {
+    "message": "모든 블록은 기본적으로 활성화되어 있으며 관련 작업에만 사용됩니다. 블록을 편집, 비활성화 또는 삭제할 수 있습니다. 작업 프롬프트에도 자체 지침이 있습니다. MR 데이터, JSON 예제 및 로딩 알림은 별도로 생성됩니다; 게시물 확인은 항상 적용됩니다."
+  },
+  "aiReviewInstructionEnabled": {
+    "message": "해당되는 경우 작업에 추가하세요."
+  },
+  "aiReviewInstructionTextHint": {
+    "message": "최대 1500자. 빈 텍스트는 아무 것도 추가하지 않습니다. 재설정은 기본 텍스트를 복원하고 이 블록을 활성화합니다."
+  },
+  "aiReviewLanguageTemplateHint": {
+    "message": "선택한 응답 언어에 {language}를 사용하세요. 최대 1500자; 빈 텍스트는 아무 것도 추가하지 않습니다."
+  },
+  "aiReviewSelectionTemplateHint": {
+    "message": "선택되었거나 해결되지 않은 논의에 {selection}을 사용하세요. 최대 1500자; 빈 텍스트는 아무 것도 추가하지 않습니다."
+  },
+  "aiReviewRule_repository": {
+    "message": "로컬 저장소 및 원격 저장소"
+  },
+  "aiReviewRule_fix_checkout": {
+    "message": "수정용 작업 복사본"
+  },
+  "aiReviewRule_review_checkout": {
+    "message": "검토용 작업 복사본"
+  },
+  "aiReviewRule_language": {
+    "message": "응답 언어"
+  },
+  "aiReviewRule_scope": {
+    "message": "파일 필터 해석"
+  },
+  "aiReviewRule_feedback_context": {
+    "message": "피드백 컨텍스트"
+  },
+  "aiReviewRule_fix_summary": {
+    "message": "답변 없는 수정"
+  },
+  "aiReviewRule_description_task": {
+    "message": "설명만 있는 작업"
+  },
+  "aiReviewRule_missing_feedback": {
+    "message": "선택된 피드백 누락"
+  },
+  "aiReviewRule_fix_replies": {
+    "message": "수정 후 바로 게시 가능한 답변"
+  },
+  "aiReviewRule_review_safety": {
+    "message": "리뷰 범위"
+  },
+  "aiReviewRule_review_source": {
+    "message": "리뷰 소스"
+  },
+  "aiReviewRule_included_diff": {
+    "message": "포함된 코드 변경"
+  },
+  "aiReviewRule_omitted_diff": {
+    "message": "코드 포함 없이 리뷰"
+  },
+  "aiReviewRule_missing_source": {
+    "message": "사용 불가 소스"
+  },
+  "aiReviewRule_format_intro": {
+    "message": "JSON 응답"
+  },
+  "aiReviewRule_finding_format": {
+    "message": "위치 찾기 및 출력"
+  },
+  "aiReviewRule_repeat_replies": {
+    "message": "후속 답변 스타일"
+  },
+  "aiReviewRule_same_head": {
+    "message": "변경 없는 헤드"
+  },
+  "aiReviewRule_comparison_lines": {
+    "message": "비교 라인 위치"
+  },
+  "aiReviewRule_compare_locally": {
+    "message": "로컬 리비전 비교"
+  },
+  "aiReviewRule_target_changed": {
+    "message": "대상 브랜치 변경"
+  },
+  "aiReviewRule_full_review": {
+    "message": "비교 리비전 없이 리뷰"
+  },
+  "aiReviewRule_code_only": {
+    "message": "토론 없이 재검토"
+  },
+  "aiReviewRule_selected_threads": {
+    "message": "선택된 토론 범위"
+  },
+  "aiReviewRule_cumulative_diff": {
+    "message": "누적 diff 컨텍스트"
+  },
+  "aiReviewRule_existing_discussions": {
+    "message": "새 리뷰에서 기존 토론"
+  },
+  "aiReviewRule_import_task": {
+    "message": "Import에서 새 리뷰"
+  },
+  "aiReviewRule_import_safety": {
+    "message": "리뷰 범위 가져오기"
+  },
+  "aiReviewRule_import_format": {
+    "message": "파일 찾기 형식 불러오기"
+  },
+  "aiReviewRule_reply_format": {
+    "message": "답변 경계 및 형식"
+  },
+  "aiReviewRule_reply_task": {
+    "message": "답변 작업 범위"
+  },
+  "jiraQuickActionAddField": {
+    "message": "필드 추가"
+  },
+  "jiraQuickActionField": {
+    "message": "필드"
+  },
+  "jiraQuickActionOperation": {
+    "message": "작업"
+  },
+  "jiraQuickActionValue": {
+    "message": "값"
+  },
+  "jiraQuickActionRemove": {
+    "message": "제거"
+  },
+  "jiraQuickActionAddValues": {
+    "message": "추가"
+  },
+  "jiraQuickActionRemoveValues": {
+    "message": "제거"
+  },
+  "jiraQuickActionSetValues": {
+    "message": "모두 교체"
+  },
+  "jiraQuickActionDueDate": {
+    "message": "마감일"
+  },
+  "jiraQuickActionCustom": {
+    "message": "사용자 정의 필드 (고급)"
+  },
+  "jiraQuickActionListHint": {
+    "message": "값은 쉼표로 구분. 추가/제거는 다른 값 유지, 모두 교체는 리스트 덮어쓰기."
+  },
+  "jiraQuickActionCustomHint": {
+    "message": "필드 ID: customfield_12345. 이 Jira 필드에서 기대하는 JSON 형식으로 값 입력."
+  },
+  "jiraQuickActionStatusHint": {
+    "message": "정확한 Jira 전환 이름(또는 목표 상태)."
+  },
+  "jiraQuickActionValueHint": {
+    "message": "빈 값: 변경 없음."
+  },
+  "jiraQuickActionInvalid": {
+    "message": "필드 값 확인: 사용자 정의 필드는 유효한 ID와 JSON 필요; 날짜는 YYYY-MM-DD 형식 사용."
+  },
+  "jiraQuickActionDuplicate": {
+    "message": "버튼 당 각 필드는 한 번만 사용."
+  },
+  "jiraQuickActionFailed": {
+    "message": "작업 실패."
+  },
+  "jiraQuickActionPartial": {
+    "message": "상태는 변경되었지만 필드 업데이트 실패."
+  },
+  "jiraQuickActionRefreshFailed": {
+    "message": "문제를 새로고침할 수 없습니다. 패널을 다시 열어 현재 값을 확인하세요."
+  },
+  "mrActions": {
+    "message": "MR 액션"
+  },
+  "mrActionsHint": {
+    "message": "레이블을 변경하거나 다른 MR 필드를 지우는 이름 있는 버튼을 만드세요. 버튼 목록에서 끌어 원하는 순서로 바꿀 수 있습니다."
+  },
+  "mrActionsProfileHint": {
+    "message": "이 목록을 편집하면 프로젝트별 작업이 생성됩니다. 모든 항목을 삭제하면 이 프로젝트에서 해당 버튼이 숨겨집니다."
+  },
+  "mrActionAdd": {
+    "message": "MR 액션 추가"
+  },
+  "mrActionLabel": {
+    "message": "버튼 이름"
+  },
+  "mrActionDelete": {
+    "message": "액션 삭제"
+  },
+  "mrActionType": {
+    "message": "액션"
+  },
+  "mrActionLabels": {
+    "message": "레이블"
+  },
+  "mrActionLabelsHint": {
+    "message": "정확한 레이블 이름, 쉼표 또는 새 줄로 구분. 이름 안의 공백은 유지됩니다. 추가/교체는 누락된 프로젝트 레이블을 만들 수 있습니다."
+  },
+  "mrAction_remove_labels": {
+    "message": "지정한 레이블 제거"
+  },
+  "mrAction_clear_labels": {
+    "message": "모든 레이블 지우기"
+  },
+  "mrAction_add_labels": {
+    "message": "레이블 추가"
+  },
+  "mrAction_set_labels": {
+    "message": "모든 레이블 교체"
+  },
+  "mrAction_clear_assignees": {
+    "message": "담당자 지우기"
+  },
+  "mrAction_clear_reviewers": {
+    "message": "리뷰어 지우기"
+  },
+  "mrAction_clear_milestone": {
+    "message": "마일스톤 지우기"
+  },
+  "mrActionInvalid": {
+    "message": "버튼 이름을 입력하고, 지원되는 작업을 선택한 다음 추가, 제거 또는 교체를 위해 최소한 하나의 레이블을 지정하세요."
+  },
+  "mrActionConfirm": {
+    "message": "이 MR에 \"$1\"을 적용할까요?\n$2"
+  },
+  "errorRebaseStatusMissing": {
+    "message": "GitLab이 리베이스 상태를 반환하지 않았습니다. 머지 요청을 다시 불러오고 다시 시도하세요."
+  },
+  "errorJobsPageRepeated": {
+    "message": "GitLab이 파이프라인 #$1에 대해 반복된 작업 페이지를 반환했습니다. 작업 목록을 완전히 불러올 수 없습니다."
+  },
+  "displayPreferencesTitle": {
+    "message": "규칙 및 제한 표시"
+  },
+  "displayPreferencesHint": {
+    "message": "전역 설정; 변경 후 GitLab 탭을 다시 불러오세요. 작업이나 댓글이 많을수록 데이터 전송이 증가합니다. 로그 미리보기는 비어 있지 않은 줄을 선택하기 전에 전체 트레이스를 다운로드합니다. 리뷰어 배지는 가장 오래된 댓글에서 'Reviewer(s): @username'을 검색합니다."
+  },
+  "failedJobsLimit": {
+    "message": "미리보기 실패한 작업"
+  },
+  "failedJobTraceLines": {
+    "message": "작업별 비어 있지 않은 로그 줄 수"
+  },
+  "reviewerNotesLimit": {
+    "message": "리뷰어 배지를 검색할 댓글"
+  },
+  "mrSizeLines": {
+    "message": "MR 크기 기준: 줄 수 (S, M, L)"
+  },
+  "mrSizeFiles": {
+    "message": "MR 크기 기준: 파일(S, M, L)"
+  },
+  "sensitiveFilePatterns": {
+    "message": "추가 민감 파일 패턴"
+  },
+  "sensitiveFileExclusions": {
+    "message": "민감 파일 제외"
+  },
+  "sensitiveFileDefaults": {
+    "message": "내장 민감 파일 규칙 사용"
+  },
+  "sizeThresholdsHint": {
+    "message": "쉼표로 구분된 점점 커지는 세 개의 양의 정수. 한도는 포함되며, 더 큰 변경은 XL입니다. 줄 수를 알 수 없을 때 파일 기준이 적용됩니다."
+  },
+  "sensitivePatternsHint": {
+    "message": "한 줄에 하나씩 패턴, 대소문자 구분 없음. *는 모든 텍스트( / 포함), ?는 한 문자와 매치됩니다. / 없이 작성된 패턴은 파일 이름과 매치되고, 다른 패턴은 전체 저장소 경로와 매치됩니다. 제외 규칙이 우선합니다. 내장 규칙은 환경, 컨테이너/CI, 자격 증명 및 개인 키 파일을 다룹니다. 자신의 패턴만 사용하려면 끄세요."
+  },
+  "displayPreferencesInvalid": {
+    "message": "숫자 범위, 점점 커지는 세 가지 크기 기준, 파일 패턴 길이를 확인하세요."
+  },
+  "failedJobsPreview": {
+    "message": "미리보기: $1 실패한 작업 — 최근 $2 비어있지 않은 줄",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "failedJobsOpenPipeline": {
+    "message": "더 많은 실패한 작업 — 전체 파이프라인 열기"
+  },
+  "mrSizeLinesTooltip": {
+    "message": "$1 줄, $2 파일",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "mrSizeFilesTooltip": {
+    "message": "$1 파일 변경됨",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sensitiveScanIncomplete": {
+    "message": "민감 파일 스캔 미완료"
+  },
+  "sensitiveScanIncompleteHint": {
+    "message": "모든 파일을 확인할 수 없음: API 요청 실패 또는 $1 파일 스캔 한도 도달. 나열된 일치는 일부입니다; 전체 MR 차이를 확인하세요.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "standupPartialWarning": {
+    "message": "경고: 이 보고서는 불완전할 수 있습니다. 수집은 카테고리당 $1 MRs 및 $2 활동 이벤트로 제한됩니다.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "threadsCountHint": {
+    "message": "$1 해결되지 않은 스레드",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "threadsIncompleteHint": {
+    "message": "이 미리보기는 불완전할 수 있음: API 오류 또는 처음 $2 논의만 확인됨. 알려진 해결되지 않은 스레드: $1.",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "settingsTitle": { "message": "설정" },
+  "settingsActions": { "message": "MR 및 커밋" },
+  "settingsActionsHint": { "message": "병합 요청, 커밋, 버전 및 체리픽." },
+  "settingsCi": { "message": "CI/CD 및 작업" },
+  "settingsAppearance": { "message": "GitLab 인터페이스" },
+  "settingsData": { "message": "데이터 및 도움말" },
+  "settingsSearch": { "message": "설정 검색" },
+  "settingsScope": { "message": "설정 적용 범위" },
+  "settingsProjectValue": { "message": "프로젝트 값" },
+  "settingsUseGlobal": { "message": "공통 값 사용" },
+  "settingsProjectInheritanceHint": { "message": "값을 수정하면 이 프로젝트에만 적용됩니다. 공통 값을 사용하면 상속이 복원됩니다." },
+  "settingsSharedPreferencesHint": { "message": "인터페이스 언어, 소리, 데스크톱 알림 및 프로젝트 간 보고서 설정은 공통입니다. 모든 프로젝트에서 수정하세요." },
+  "settingsGlobal": { "message": "모든 프로젝트" },
+  "settingsGlobalHint": { "message": "이 설정은 모든 프로젝트에 적용됩니다." },
+  "settingsProjectHint": { "message": "이 프로필은 이 프로젝트의 공통 설정을 재정의합니다." },
+  "settingsGlobalOnly": { "message": "이 섹션은 모든 프로젝트의 공통 설정을 사용합니다." },
+  "settingsQuick": { "message": "빠른 설정" },
+  "settingsNoResults": { "message": "일치하는 설정이 없습니다." },
+  "settingsRemoveProfile": { "message": "프로필 삭제" },
+  "settingsNoProject": { "message": "프로젝트 프로필을 사용하려면 GitLab 프로젝트를 여세요." },
+  "settingsAll": { "message": "모든 설정" },
+  "settingsMoveUp": { "message": "위로 이동" },
+  "settingsMoveDown": { "message": "아래로 이동" },
+  "settingsConnection": { "message": "연결" },
+  "settingsJiraDisplay": { "message": "GitLab의 Jira" },
+  "settingsAdvanced": { "message": "고급 설정" },
+  "settingsAutosaveHint": { "message": "변경 사항은 자동으로 저장됩니다." },
+  "settingsSaving": { "message": "저장 중…" },
+  "settingsLoadFailed": { "message": "설정을 불러오지 못했습니다. 편집하기 전에 다시 시도하세요." },
+  "aiReviewShowFull": { "message": "전체 보기" },
+  "aiReviewShowLess": { "message": "접기" },
+  "aiReviewExpandCommentsSetting": { "message": "기본적으로 리뷰 댓글 전체 표시" },
+  "aiReviewExpandAll": { "message": "모두 펼치기" },
+  "aiReviewCollapseAll": { "message": "모두 접기" }
+}

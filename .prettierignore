@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.reports/
+.venv-docs/
+docs/index.html
+docs/guide.js
+docs/guide.css

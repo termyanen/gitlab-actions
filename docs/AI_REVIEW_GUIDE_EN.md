@@ -25,14 +25,24 @@ Use **Select all discussions** to include resolved and general threads too. The 
 
 Review dialogs close without confirmation by default. Enable **Confirm closing review dialogs with unsaved work** in the extension’s **AI review** settings if you want a prompt before discarding changed inputs, selections or unfinished imports. Cancel keeps your work in the open dialog. A fully completed import closes without prompting even with this setting enabled. Closing during publication stops further sending but does not undo comments already sent.
 
+## Settings scope
+
+In extension settings, select **All projects** or a project before opening **AI
+review**. Visibility, the five prompts, automatic instructions, file filters,
+response language and close confirmation can be overridden for that project.
+Unchanged fields inherit shared values; **Use global value** restores inheritance.
+Existing settings and profiles retain their values. Remembered dialog choices such
+as including existing discussions remain global. Temporary edits inside a review
+dialog apply to that task and do not create a saved project profile.
+
 ## Before starting
 
 Open an MR and hover over the extension icons to find **AI review…** and **Import AI review…**. If they are missing, check that AI review is enabled in the extension settings. Reload the GitLab page after updating the extension.
 
-- **Local repository first:** compact export is the default. Open the task in an AI tool with the project available locally. Prompts instruct it to inspect local Git first and fetch missing commits through a verified configured remote using existing authentication. Review tasks use the specified revisions without changing your branch, with a separate worktree when needed. Fix tasks preserve the MR branch's later commits and uncommitted fixes. These instructions also apply to saved custom prompts; no reset is needed. Enable **Include code changes** for fresh/repeat review when local source is unavailable. A diff may still omit dependencies or tests; the AI should request the specific missing material, not GitLab access by default.
+- **Local repository first:** compact export is the default. Open the task in an AI tool with the project available locally. Prompts instruct it to inspect local Git first and fetch missing commits through a verified configured remote using existing authentication. Review tasks use the specified revisions without changing your branch, with a separate worktree when needed. Fix tasks preserve the MR branch's later commits and uncommitted fixes. The default automatic instruction blocks also apply to saved custom prompts while those blocks are enabled; no prompt reset is needed. Enable **Include code changes** for fresh/repeat review when local source is unavailable. A diff may still omit dependencies or tests; the AI should request the specific missing material, not GitLab access by default.
 - **Description:** **Include description** adds the author's requirements and background. This preference is remembered. **Include code changes** starts unchecked whenever you open a new copy window.
 - **File scope:** use **Advanced settings → Files to review** for a temporary scope, such as `src/**`. Empty lists include everything. Extension and path inclusion are alternatives, while exclusions win, including on either side of a rename. A scoped review is not a review of all files.
-- **Language and criteria:** **AI review** settings have separate prompts for fixing feedback, fresh review, new findings, replies and repeat review. Choose **AI response language** for all tasks and import prompts: Automatic follows the AI conversation, or select Russian, English, German, Spanish, French, Japanese or Simplified Chinese. This is independent of the interface language and overrides conflicting language instructions in saved prompts. JSON keys, paths and code remain unchanged. Copy response format stays language-neutral. Set review criteria and style in the task prompts. The extension adds MR details and the required JSON format automatically.
+- **Language and criteria:** **AI review** settings have separate prompts for fixing feedback, fresh review, new findings, replies and repeat review. Choose **AI response language** for all tasks and import prompts: Automatic follows the AI conversation, or select any of the 27 supported interface locales. This is independent of the interface language and overrides conflicting language instructions in saved prompts. JSON keys, paths and code remain unchanged. Copy response format stays language-neutral. Set review criteria and style in the task prompts. The extension adds MR details and the required JSON format automatically.
 
 ## Configure automatic instructions
 
@@ -79,6 +89,14 @@ These steps apply to new findings, replies and repeat reviews.
 5. Choose **Publish selected** to send immediately, or **Add to review** to create your unpublished GitLab drafts. Submit those drafts using GitLab's own review controls when ready for teammates to see them.
 6. Check the outcome on every card. Some comments may succeed while others need corrections or another check.
 
+While sending, the counter shows processed comments out of the current selection (for example, 3 / 10), including failed attempts. After a partial failure, confirmed unsent comments remain selected: use **Publish selected** again to retry them. Published comments and drafts are excluded. Unconfirmed deliveries remain blocked until you check GitLab and validate the response again. Each attempt starts its own progress counter; completion totals cover the whole preview.
+
+Use **Expand all / Collapse all** above the list to change every comment in the current window without changing saved settings.
+
+Long comments initially show five lines. **Show full comment** expands one comment; **Show less** collapses it again. The wheel always scrolls the message list. Enable **Show review comments in full by default** in **AI review** settings to change the default globally or for one project.
+
+Successful cards keep their size and gain a green border. The completion summary counts published comments, review drafts, remaining comments, errors and unconfirmed deliveries separately. A full published count means all comments were published; drafts still need to be submitted in GitLab.
+
 Previewing and saving edits do not publish anything. For an open, resolvable thread, you can enable **Resolve discussion after publishing** on its reply; it is off by default. The extension publishes the reply first, checks the discussion again, then requests resolution using your GitLab permissions. The card shows the resolution result separately. If resolution fails or cannot be confirmed, the reply remains published: check the thread in GitLab without posting the reply again. Adding a draft never resolves a discussion, and this choice is not deferred until the draft is published. Approval, reopening and merging remain separate GitLab actions. An empty findings list does not approve the MR.
 
 ## Fix selected feedback
@@ -93,7 +111,6 @@ Previewing and saving edits do not publish anything. For an open, resolvable thr
 **Prepare replies** remains useful when you fixed the code yourself or need to regenerate explanations. Replies to unpublished drafts without a published discussion target cannot be imported.
 
 The **Prepare replies too** checkbox is on by default in **Fix review findings**. Turn it off to request fixes and a normal summary without importable replies. It applies to this open window and keeps its value when switching tabs.
-
 
 For one finding, use its copy icon. If a thread has replies, choose **Select this discussion** inside the picker, then **Copy task**. Short code excerpts attached to feedback remain included regardless of the optional full-diff checkbox.
 

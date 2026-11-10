@@ -1,14 +1,181 @@
 # Regression tests
 
-Run from the repository root with Node.js 18.18 or newer:
+Run from the repository root with Node.js 26 LTS selected by `.nvmrc`:
 
 ```sh
+nvm install
+nvm use
+npm ci
 npm test
 ```
 
-No npm dependencies or install step are needed. Packaging checks also use Bash,
-`zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI runs on Node.js
-22 on pushes and pull requests, and before Chrome Web Store uploads.
+The esbuild/TypeScript toolchain is installed from the lockfile. Packaging checks
+also use Bash, `zip` and `unzip` (available on macOS and the Ubuntu CI runner). CI
+builds/packages and runs Chromium on Node 26. Separate jobs run static and regression
+checks on the supported Node 22.x (22.13+) and 24.x lines, on pushes and pull requests
+and before Chrome Web Store uploads. Other majors are not included in the support
+contract; use the latest security patch of a supported line.
+
+The shared verification workflow packages once, then runs the browser suite and
+profiler against the unpacked ZIP. The store upload job consumes the same
+artifact only after all verification jobs succeed. `chrome-web-store.test.cjs`
+uses injected transport responses to cover API v2 upload, polling, explicit
+submission, HTTP/application failures, OAuth form encoding and version/tag
+validation. No test reads deployment credentials or contacts the store.
+
+`npm run release:check` validates versions, EN/RU changelog history and generated
+site copies/footers without changing files. `-- --ready` also rejects pending
+Unreleased notes. Regression fixtures cover stale pages, translations, duplicate
+or misordered versions and release-note extraction. CI regenerates the website
+with the pinned `docs/requirements.txt` and fails on a generated-file diff. See
+[the delivery procedure](../docs/DELIVERY.md) for PR and release requirements.
+
+`npm test` first builds the production extension and verifies its manifest,
+resources, CSP and packaging. A test-only module adapter supports moving
+regressions from legacy scripts to TypeScript exports without shipping test hooks.
+
+`type-boundaries.test.cjs` exercises malformed and legacy API responses, unknown
+errors, Jira message/authentication/partial-write results, durable task validation,
+invalid review rows, detached snapshots, version paths containing prototype names,
+SHA-256 journal identities and checked extension-page mount nodes. Existing review regressions
+also verify partial discussion recovery and prevention of ambiguous write retries.
+`npm run check` enforces strict indexed/optional-property checks and the unsafe-value,
+unsafe-assertion and non-null assertion ESLint rules; tests alone do not run those gates.
+Initial source and production bundle sizes are recorded in
+`fixtures/refactor-baseline.json`. Release graph checks enforce 2 KiB for the
+all-HTTPS bootstrap and 20 KB for common GitLab startup. Initial MR JavaScript
+size is informational: `.reports/performance.json` retains `current.mrInitialJs`
+and the baseline comparison, without a size threshold that fails the build.
+The existing lazy-loading, React isolation, popup/vendor size and runtime
+resource-retention checks remain enforced. Bundle bytes are not browser CPU,
+memory or latency measurements.
+
+Run `npm run test:performance` for a real Chromium resource-retention check.
+It loads the packaged extension into a temporary profile, intercepts every
+HTTP(S) request, and writes `.reports/runtime-performance.json`. The workload
+replaces 20 MR rows 60 times on one route, then opens both review dialogs and
+navigates away/back 20 times. Warm-up precedes each measurement. CDP forces GC
+and records live DOM nodes, listeners, JS heap, script/task time and list latency.
+The latter includes the intentional list debounce; it is not network latency.
+Resource budgets fail the command if a scenario retains more than 600 extra
+nodes, 5 listeners or 2 MiB of JS heap. Timing is reported without a flaky
+machine-dependent pass/fail threshold.
+
+To compare existing production builds without rebuilding either:
+
+```sh
+node scripts/profile-runtime.mjs /absolute/path/to/old/dist .reports/runtime-before.json
+node scripts/profile-runtime.mjs dist .reports/runtime-after.json --check
+```
+
+`tests/browser/lifecycle.spec.cjs` additionally tests delayed/out-of-order Jira
+and standup replies, ticket switching, loading/posting/deleting Jira comments,
+completed Jira mutations, and 100 dialog openings with deliberately undelivered
+responses. Memory assertions wait for
+rendering frames before GC so transient renderer references are not mistaken
+for leaks. These focused fixtures bundle production widget modules with a fake
+Chrome transport; `extension.spec.cjs` and the profiler use the installed
+production extension and real Chrome extension APIs.
+
+`toolbar-style-update.spec.cjs` installs the new toolbar with a legacy CSS fixture
+to reproduce the old-layout mismatch, then updates the same unpacked extension
+without changing its version or settings, then reopens the same persistent Chromium
+profile with its existing disk cache. It checks the generated manifest's CSS
+reference, group spacing, comment-row position and removal of the old clock
+pseudo-element. The installed-extension test also asserts computed toolbar layout
+under page CSP; checking only the presence of buttons is insufficient.
+
+`mr-toolbar-layout.spec.cjs` verifies the toolbar's separate metadata, warning,
+action and comment areas in light/dark themes and modern/legacy host shapes,
+including keyboard focus, narrow viewports, long labels, hidden/empty groups and
+live rerendering. Representative native medium/small button rules load after the
+extension CSS to catch host-specificity regressions; toolbar targets are compared
+with the native medium control while native small controls remain unchanged. A
+separate check covers missing host button CSS. These fixtures use theme-token
+fallbacks and sizing fragments, not complete historical GitLab stylesheets. Screenshots are written to `.reports/toolbar-*.png`;
+`docs/screenshots/1-mr-toolbar.png` is the light desktop fixture capture. The
+age formatter also checks invalid/future dates and all 27 supported locales.
+
+`mr-toolbar-mount.spec.cjs` covers late GitLab widget/project metadata, live
+button visibility/order/label changes, global/project settings, stale settings
+reads, focus and running-action preservation, hidden palette actions and storage
+listener cleanup. Its memory check compares 50 updates after 10 warm-up updates
+and records DOM/listener counters. `extension.spec.cjs` also toggles checkboxes
+in the real settings page while an MR fixture stays open, exercising Chrome
+storage events across extension/content contexts without reloading the MR.
+
+`jira-status.spec.cjs` covers expired sessions, read retries, partial forbidden
+responses, offline notices and commit badge recovery. `jira-errors.spec.cjs`
+covers sidebar read/write failures, retained drafts, duplicate-submit prevention,
+account changes and partial quick actions. `jira-session.spec.cjs` runs the built
+worker with fake Secure HttpOnly `SameSite=None/Lax/Strict` cookies and a test-only
+Jira host grant. A temporary HTTPS server on `127.0.0.1` checks the actual received
+cookies without the Cookies API permission for identity reads and `POST`/`PUT`/`DELETE`
+writes. The fixture requires a session and verifies assignee/version updates,
+transitions, comment creation/deletion, request bodies and absence of duplicate
+writes. It does not emulate Jira's workflow permissions or CSRF/SSO policies.
+OpenSSL must be available to generate
+its temporary self-signed certificate (macOS and the Ubuntu CI runner provide it).
+Certificate checks are bypassed only in this disposable browser profile. External
+HTTP(S) requests are blocked; loopback requests are not intercepted because the
+interception headers omit cookies Chrome adds later.
+
+[`jira-cross-site.spec.cjs`](browser/jira-cross-site.spec.cjs) uses distinct
+`gitlab.test` and `jira.test` HTTPS hosts mapped to loopback. Production badge and
+sidebar controls trigger worker reads and five writes, with `SameSite=None/Lax/Strict`
+cookies received by the server in both global third-party-cookie modes on
+Chromium 158.0.8127.18. The fixture verifies the live browser setting, first-party
+cookies and an ordinary cross-site page fetch: the latter sends only the `None`
+cookie when allowed and no cookies when blocked. This negative control confirms
+blocking works; the extension worker remains authenticated with only the test Jira
+host grant and no Cookies API permission. The report records the browser version,
+setting, observed cookies and writes.
+
+These fixtures do not automate Chrome's native optional-permission prompt or
+certify other browser versions, explicit site cookie bans, enterprise policies,
+partitioned sessions or a real Jira/SSO deployment. See
+[Jira compatibility and recovery](../docs/JIRA_COMPATIBILITY.md).
+
+Browser smoke checks install the actual production build in a separate Chromium
+profile, intercept HTTP(S) fixtures (except the isolated loopback HTTPS tests),
+and exercise real Chrome APIs:
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/ms-playwright npx playwright install chromium
+npm run test:browser
+```
+
+These checks cover settings autosave/reload, preserving edits across profile and
+language changes, an unrelated HTTPS page, review
+controls under DOM updates, untrusted page messages, and lazy UI under a restrictive
+page CSP. They also cover SPA cleanup of Git commands, failed-job panels and
+approval badges, late API responses, stale palette actions, and an in-flight MR
+action retaining its original target during DOM replacement. A real worker
+stop/restart is tested both for saved status and for an active job chain completing
+without replaying its play request. They use local fixtures and do not establish
+compatibility with a live GitLab/Jira server. Each run removes its test profile.
+
+The refactor review against `main` (`1d97afe`) ran the same 659 behavioral checks
+against both implementations; all passed on both. This is a historical comparison,
+documented in [the refactor audit](../docs/REFACTOR_PLAN_RU.md). Current test counts
+come from the command output. Review UI regressions also cover
+keeping an edited draft when navigation is declined, ignoring late validation
+responses, recovering from an aborted export after returning, and requiring new
+validation after an interrupted import send. Test counts are not a
+whole-extension coverage percentage.
+
+Architecture fixtures verify downward imports, slice and Shared public APIs,
+cycles through barrels, re-exports and literal lazy imports, mixed/type-only
+dependency handling, explicit exports, named timer policies, and the packaged
+bootstrap exception for dynamic imports. CommonJS loads, unsupported source
+extensions and source symlinks are rejected instead of bypassing the graph.
+Reachability fixtures catch detached modules (including detached cycles), accept
+type-only/lazy dependencies and ambient declarations, and reject missing entry points.
+They exercise both accepted and rejected dependency graphs; run them directly
+with `node --test tests/architecture.test.cjs` after a rule change. See the
+[implementation guide](../docs/ARCHITECTURE.md) for module ownership and cycle fixes.
+TypeScript also checks
+unused locals/parameters, accidental switch fallthrough and missing overrides.
 
 ## What is covered
 
@@ -16,7 +183,7 @@ No npm dependencies or install step are needed. Packaging checks also use Bash,
 | --- | --- |
 | Version bump | Source/target version base, JSON/TOML/plain text, nested fields, preservation of source changes, Unicode, strategies, project overrides, failed reads/writes, concurrent source edits |
 | MR workflows | Ship with merge/semi-linear/fast-forward history, Force Ship, rebase + auto-merge, delayed SHA/diff-head updates, commits fallback, rebase/pipeline timeouts, temporary/fatal merge errors and retry limits, branch removal settings, pipeline actions, draft toggle, copy, fixed reviewers, custom job dispatch, configurable MR label/field actions, validation, API failures and project overrides |
-| Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, and a simulated fresh worker |
+| Background chains | One pipeline per chain, multi-job execution, retries, concurrent retry after 403, missing pipelines, polling, failure, timeout, cancellation before/during API requests and polling, independent explicit starts across tabs/new pipelines, unique IDs, tab closure, durable checkpoints, restart reconciliation, persistence failure and alarms |
 | GitLab API relay | Originating tab preference, frozen tabs, no open tabs, API errors, no replay of ambiguously delivered mutations |
 | Jira API handlers | Statuses/details, expired sessions, transitions, assignee, fix versions, posting/deleting comments, mutation errors; field-only and composite quick actions, add/remove/set payloads, custom fields, validation before writes, partial failures without retries |
 | Jira quick-action settings | Assignee/version-only actions, legacy status+assignee shape, list normalization, custom JSON including null/false/zero, duplicate fields and invalid dates/JSON preventing settings writes |
@@ -33,14 +200,14 @@ No npm dependencies or install step are needed. Packaging checks also use Bash,
 | Extension integrity | JavaScript syntax, locale key parity, manifest resource paths, version consistency across the manifest, website metadata and both changelogs |
 | Distribution | Actual ZIP builds from both `pack.sh` and the workflow, required extension resources, exclusion of test files and `node_modules` |
 
-The harness evaluates the checked-in JavaScript in isolated Node VM contexts.
-It exposes the original functions **in tests only**; no test hooks or extra
+The harness evaluates the bundled TypeScript modules in isolated Node VM contexts.
+It exposes module functions and controlled UI bindings **in tests only**; no test hooks or extra
 modules are added to the extension. Network requests and Chrome APIs are mocked,
 timers are advanced deterministically, and presentation methods such as toasts
 are stubbed. No test sends requests to a real GitLab/Jira instance. Packaging runs
 in temporary directories, so existing release archives are untouched.
 
-Cherry-pick tests expose the original nested modal function in the VM and drive
+Cherry-pick tests call the public dialog factory in the VM and drive
 its event handlers through a small control/row fixture; the real API adapter,
 promise chains, diff replay and version parsers run unchanged. This fixture does
 not test HTML layout or GitLab selectors. Requests assert the GitLab
@@ -52,6 +219,12 @@ small DOM fixture with asynchronous mutation delivery and detached-subtree
 handling. They cover the existing modern and legacy selector shapes in the
 fixture, but do not establish compatibility with every live GitLab version or
 replace browser checks of native DOM behavior.
+
+For injected UI changes, use the [GitLab UI verification checklist](../docs/GITLAB_UI.md#verify-an-injected-ui-change).
+The API compatibility fixtures do not load historical GitLab stylesheets, and the
+browser suite is not a visual regression matrix across GitLab versions and themes.
+Record the actual DOM variants, themes and live server versions checked in the PR;
+do not infer visual compatibility from an API fixture's version label.
 
 Assertions check observable results and API requests rather than snapshots of
 the implementation. New bug fixes should first add a regression that fails with
@@ -253,13 +426,13 @@ still need tests; their absence does not establish a bug.
 
 | Priority | Area | Scenarios still missing |
 | --- | --- | --- |
-| Next | Real browser lifecycle | Actual Chrome worker suspension/restart, offline request completion and page reloads. The fresh-VM test confirms existing behavior: tasks live in worker memory, become `not_found` after restart, and are not automatically replayed. Automatic recovery is not implemented. Cherry-pick retry checkpoints last only while its modal remains open. |
-| Next | Popup/settings | Debounced autosave, profile switching, button reordering, language changes and permission approval/denial in Chrome. |
+| Next | Real browser lifecycle | Natural idle suspension, browser shutdown/relaunch, offline request completion and page reloads. Explicit Chromium worker stop/restart and active job-chain recovery are covered; persisted checkpoints reconcile the pinned pipeline before continuing and do not blindly replay an uncertain mutation. Cherry-pick retry checkpoints last only while its modal remains open. |
+| Next | Popup/settings | Drag-and-drop button reordering and actual host-permission approval/denial dialogs. Autosave/reload, draft preservation across profile/language switches and display-rule validation already have Chromium coverage. |
 | Next | GitLab DOM and navigation | Live selector fallbacks across GitLab versions, navigation between page types, repeated injection, confirmation dialogs, command palette, task progress, failed-job panel and sidebar badges. MR list pagination and Jira rendering have fixture coverage. |
-| Next | Group play | Parent/child pipelines with matching stage names, pagination, status changes while starting a group and partial API failures. |
-| Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog, Jira enrichment failures and malformed/empty-matching ticket regexes. |
+| Partial | Group play | Chromium covers unrelated graph columns, a disappearing pipeline mapping and a successful retry without an unintended write. Still verify parent/child pipelines with matching stage names, pagination and partial API failures on real deployments. |
+| Next | Daily activity report | Date/timezone boundaries, event pagination, report watchdog and malformed/empty-matching ticket regexes. Configured Jira enrichment failures preserve the GitLab report and offer a read retry in fixtures. |
 | Next | Jira sidebar and quick actions | Full issue/custom-field mapping, comment pagination, attachments/media, real cookie sessions and instance-specific edit permissions. API-handler tests cover multi-step quick actions with partial failures; a local Chrome fixture covers field-only availability, refreshes and duplicate clicks. |
-| Next | Badges and caches | Cache persistence/expiry/eviction, failed fetches, incremental multi-ticket rendering and commit version comparisons across pages. |
+| Next | Badges and caches | Cache persistence/expiry/eviction, incremental multi-ticket rendering and commit version comparisons across pages. Jira auth/offline/403 failures, explicit read retries and recovery of partially cached commit fields have fixture coverage. |
 
 The next layer needs representative GitLab DOM fixtures and a dedicated test
 instance; VM checks cannot establish real Chrome scheduling, cookie/permission
@@ -348,3 +521,68 @@ project inheritance and empty overrides, confirmation cancellation, command
 palette dispatch, API error recovery and a subsequent successful action. The
 Russian popup was inspected at 360 px in dark mode. No real MR was modified;
 live GitLab permissions and server-specific behavior still require a live check.
+
+### Settings redesign coverage
+
+The Chromium suite checks the pre-redesign static control inventory, categorized
+navigation, draft preservation, project/global scope, persisted profile removal,
+keyboard reordering, editor deletion autosave and shared popup toggles. All 27
+locales load in both surfaces; popup height and narrow full-page overflow are
+checked. Screenshots cover light/dark layouts. The inventory fixture records
+pre-redesign control IDs; extend it alongside intentional new settings.
+
+Settings recovery checks delay and fail storage writes, verify retained drafts,
+explicit retry, failed-load locking, global search from a project scope, and a
+save/reload round trip for all legacy switches and toolbar buttons. A two-page
+scenario checks quick-toggle synchronization with unrelated full-form edits.
+Import feedback expires after ten seconds without changing persisted data; stale
+success timers cannot hide errors or newer edits. Accordion chevrons retain native
+keyboard behavior in light/dark, narrow layouts and reduced-motion mode.
+
+React settings coverage uses pure draft/controller tests for validation, autosave,
+serialization and transfer; browser tests exercise the actual controlled inputs,
+all locales, stable list editors and permission request races. The build check
+verifies one shared React renderer, separate application/runtime size budgets,
+MIT notices and no React dependency reachable from content scripts or the worker.
+`browser/react-lifecycle.spec.cjs` verifies stable Chrome subscription counts across
+popup toggle/language renders and full-settings section/profile navigation. It
+dispatches `pagehide`, checks unmount and complete subscription cleanup, then
+delivers previously captured callbacks to verify that a closed view stays closed.
+Timing and heap observations are diagnostics, not machine-dependent test thresholds.
+
+Welcome browser checks preserve the pre-migration inventory of 113 localized text
+keys and 44 feature cards across all 27 locales, including live/automatic language
+selection. Both light/dark themes are checked at 1280px and 320px; reading text stays
+at least 16px with no horizontal overflow. Keyboard links, settings-read recovery,
+stale initial reads and subscription teardown are exercised on the packaged page.
+
+`browser/jira-connection.spec.cjs` exercises the shared session check through the
+production worker with local response fixtures: authenticated identity, login HTML,
+401/403/404/429/5xx, offline/malformed replies, missing host access, timeout, stale
+responses, URL changes, permission revocation, page teardown and all 27 locales.
+The probe only reads; it does not establish permissions to mutate a specific issue.
+
+`browser/mr-toolbar-mount.spec.cjs` covers delayed project metadata (inserted
+elements and attribute-only hydration), invalid ID placeholders, replacement of
+the MR widget during pending API reads, duplicate prevention and observer cleanup.
+
+
+Project cherry-pick branch regressions cover settings draft isolation, removal of
+an override, old and new export/import shapes, and rejection of malformed lists.
+`cherry-pick-profiles.spec.cjs` opens the actual dialog from commit-list and detail
+controls with exact/pattern profiles, empty overrides and unrelated projects.
+`settings-editors.spec.cjs` checks inheritance hints, autosave/reload, updated global
+lists, empty lists and long branch names in light/dark and narrow layouts. These
+fixtures never start a cherry-pick or contact a production GitLab server.
+
+
+`project-settings.test.cjs` covers scope policy, explicit false/empty overrides,
+legacy-profile preservation, reset-to-global behavior, nested import validation,
+project capture before delayed reads and distinct Jira-origin requests on import.
+The project-settings browser scenario in `settings-editors.spec.cjs` edits multiple
+categories, preserves unrelated profiles and global values, reloads saved settings,
+restores inheritance, keeps search in the selected scope, and checks light/dark
+layouts at desktop and narrow widths. Runtime integration checks must also verify
+that the owning GitLab feature reads the effective profile: a saved field alone is
+not evidence that an override is applied. No fixture should request production
+credentials or start writes on a real GitLab/Jira instance.

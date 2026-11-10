@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GitLab Actions - One-Click MR Workflow, Auto-Merge, Jira Integration, AI Review</title>
-  <meta name="description" content="Free Chrome extension for GitLab merge requests. One-click rebase, auto-merge, version bump, CI job management, and deep Jira integration. Works with self-hosted GitLab. No API tokens needed. Now with AI review using your own tools.">
+  <meta name="description" content="Free Chrome extension for GitLab merge requests. One-click rebase, auto-merge, version bump, CI job management, and deep Jira integration. Works with self-hosted GitLab. No API tokens needed. AI-assisted review with your own tools.">
   <meta name="keywords" content="GitLab, Chrome extension, browser extension, merge request, auto-merge, rebase, version bump, Jira integration, CI/CD, DevOps, code review, productivity, GitLab tools, MR workflow, GitLab plugin, GitLab automation, self-hosted GitLab, merge request actions, GitLab CI, pipeline management, developer tools">
   <meta name="author" content="Roman Termyanen">
   <meta name="robots" content="index, follow">
@@ -12,7 +12,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="GitLab Actions - Automate Your GitLab MR Workflow">
-  <meta property="og:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. No tokens needed. Now with AI review using your own tools.">
+  <meta property="og:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. No tokens needed. AI-assisted review with your own tools.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://termyanen.github.io/gitlab-actions">
   <meta property="og:site_name" content="GitLab Actions">
@@ -25,13 +25,12 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="GitLab Actions - Automate Your GitLab MR Workflow">
-  <meta name="twitter:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. Now with AI review using your own tools.">
+  <meta name="twitter:description" content="Free Chrome extension: one-click rebase, auto-merge, version bump, Jira integration for GitLab merge requests. AI-assisted review with your own tools.">
   <meta name="twitter:image" content="https://termyanen.github.io/gitlab-actions/og-image.png">
 
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -42,13 +41,13 @@
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Chrome",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Chrome extension for GitLab merge requests: one-click rebase, auto-merge, version bump, CI jobs, Jira integration. No tokens needed. Now with AI review using your own tools.",
+    "description": "Chrome extension for GitLab merge requests: one-click rebase, auto-merge, version bump, CI jobs, Jira integration. No tokens needed. AI-assisted review with your own tools.",
     "url": "https://termyanen.github.io/gitlab-actions",
     "downloadUrl": "https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak",
-    "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
+    "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-toolbar.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
-    "softwareVersion": "1.13.3",
+    "softwareVersion": "2.0.1",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "ru", "zh", "ja", "de", "fr", "es"],
     "keywords": "GitLab, Chrome extension, merge request, auto-merge, rebase, Jira, CI/CD, DevOps"
@@ -418,10 +417,10 @@
   <header class="hero">
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      <span data-i18n-html="heroBadge">Free Chrome Extension &middot; Open Source &middot; 7 Languages</span>
+      <span data-i18n-html="heroBadge">Free Chrome Extension &middot; Open Source &middot; 27 Locales</span>
     </div>
     <h1 data-i18n-html="heroTitle">Automate the routine in <span>GitLab</span></h1>
-    <p class="hero-sub" data-i18n="heroSub">Rebase, bump version, auto-merge, manage CI jobs, and track Jira tickets &mdash; all without leaving the merge request page. Works with any self-hosted GitLab. No API tokens needed. Now with AI review using your own tools.</p>
+    <p class="hero-sub" data-i18n="heroSub">Rebase, bump versions, manage pipelines and Jira tickets, and review code with your own AI tool. For GitLab.com and self-hosted GitLab over HTTPS, using your existing session.</p>
     <div class="hero-actions">
       <a href="https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak" class="btn-primary" target="_blank">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M8 6.5v7l6-3.5-6-3.5z" fill="currentColor"/></svg>
@@ -434,16 +433,16 @@
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-value">5 <small data-i18n="statSec">sec</small></div>
-        <div class="hero-stat-label" data-i18n="statShip">to ship a merge request</div>
+        <div class="hero-stat-value">27</div>
+        <div class="hero-stat-label" data-i18n="statLanguages">interface locales</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">10x</div>
-        <div class="hero-stat-label" data-i18n="statClicks">fewer clicks per MR</div>
+        <div class="hero-stat-value">4</div>
+        <div class="hero-stat-label" data-i18n="statTasks">AI review tasks</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-value">0</div>
-        <div class="hero-stat-label" data-i18n="statTokens">tokens or setup needed</div>
+        <div class="hero-stat-label" data-i18n="statUploads">automatic AI uploads</div>
       </div>
     </div>
     <a href="#features" class="scroll-hint" aria-label="Scroll down">
@@ -453,7 +452,7 @@
 
   <section class="section ai-review-section" id="ai-review">
     <div class="section-header">
-      <div class="section-label" data-i18n="aiLabel">New in 1.13 · AI review workflow</div>
+      <div class="section-label" data-i18n="aiLabel">AI review workflow</div>
       <h2 data-i18n="aiTitle">From first review to verified fixes</h2>
       <p data-i18n="aiSub">Use your own AI tool. Copy the task, bring back the answer, and decide what gets posted.</p>
     </div>
@@ -470,8 +469,8 @@
   <section class="section" id="features" style="padding-top:40px">
     <div class="section-header">
       <div class="section-label" data-i18n="secMrLabel">MR Detail Page</div>
-      <h2 data-i18n="secMrTitle">14 action buttons, one click each</h2>
-      <p data-i18n="secMrSub">Every common merge request operation - from rebase to full release - available directly on the MR page.</p>
+      <h2 data-i18n="secMrTitle">Actions for your MR workflow</h2>
+      <p data-i18n="secMrSub">Choose the buttons you need for versioning, CI, comments and merge operations.</p>
     </div>
     <div class="bento">
       <!-- Ship -->
@@ -480,7 +479,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10L8 14L16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fShipTitle">Ship in One Click</h3>
-        <p data-i18n="fShipDesc">Rebase, bump version, and enable auto-merge &mdash; the entire release flow in a single button. Also available: Force Ship for immediate merge bypassing pipeline wait.</p>
+        <p data-i18n="fShipDesc">Rebase when needed, bump the version and request auto-merge. Force Ship requests merge without waiting for pipeline success. GitLab permissions and merge rules still apply; keep the MR tab open until setup finishes.</p>
         <div class="bento-tags">
           <span class="bento-tag">Rebase</span>
           <span class="bento-tag">Version Bump</span>
@@ -498,7 +497,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M4.93 4.93l2.83 2.83M12.24 12.24l2.83 2.83M2 10h4M14 10h4M4.93 15.07l2.83-2.83M12.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fCiTitle">CI/CD Pipeline Control</h3>
-        <p data-i18n="fCiDesc">New pipeline, cancel running, retry all failed jobs, trigger custom manual jobs &mdash; manage your CI without navigating away from the MR.</p>
+        <p data-i18n="fCiDesc">New pipeline, cancel running, retry all failed jobs, trigger custom manual jobs — manage your CI without navigating away from the MR.</p>
       </div>
       <!-- Failed Job Quick View -->
       <div class="bento-card">
@@ -506,7 +505,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 6v5M10 13v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fFailedJobTitle">Failed Job Quick View</h3>
-        <p data-i18n="fFailedJobDesc">When a pipeline fails, see failed job names and the last lines of the error log right on the MR page. No need to click through multiple pages to find what went wrong.</p>
+        <p data-i18n="fFailedJobDesc">Preview failed jobs and log tails on the MR page. Configure job and line counts in Display rules and limits; open the full pipeline when more jobs are available.</p>
       </div>
       <!-- Version bump -->
       <div class="bento-card">
@@ -514,7 +513,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v14M6 7l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fVersionTitle">Smart Version Bump</h3>
-        <p data-i18n="fVersionDesc">Automatic version increment for package.json, pyproject.toml, version.txt, or any custom file. Configurable JSON path, strategy (patch/minor/major), commit message template, and option to read version from the target branch.</p>
+        <p data-i18n="fVersionDesc">Bump a version in JSON, TOML or a plain-text file. Configure the file, field path, patch/minor/major strategy and commit message, with an option to read the version from the target branch.</p>
       </div>
       <!-- Reviewers -->
       <div class="bento-card">
@@ -522,7 +521,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-2.2 1.8-4 4-4h6c2.2 0 4 1.8 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fReviewTitle">Quick Reviewers</h3>
-        <p data-i18n="fReviewDesc">Set merge request reviewers from a preconfigured list in one click. No need to search for usernames each time.</p>
+        <p data-i18n="fReviewDesc">Mention configured usernames in a comment, reuse a Reviewer(s): comment, or trigger the configured CI job. This action does not assign GitLab’s native reviewer field.</p>
       </div>
       <!-- Draft + Copy -->
       <div class="bento-card">
@@ -538,7 +537,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fCustomTitle">Fully Customizable</h3>
-        <p data-i18n="fCustomDesc">Drag &amp; drop button order, per-project profiles with separate settings, custom CI job buttons. Configure everything from the extension popup.</p>
+        <p data-i18n="fCustomDesc">Edit a settings section directly below the popup menu, or open the full searchable workspace. Set shared defaults or project-specific MR, commit, CI/CD, Jira, AI and appearance preferences; project fields show their source and can return to the global value. Existing settings are preserved. Notification toggles stay global. Saved toolbar buttons and order update open MR pages without a reload. Export/import transfers all profiles.</p>
       </div>
       <!-- Quick Comments -->
       <div class="bento-card">
@@ -546,7 +545,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14a1 1 0 011 1v8a1 1 0 01-1 1h-5l-4 4v-4H3a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fQuickCommTitle">Quick Comments</h3>
-        <p data-i18n="fQuickCommDesc">One-click buttons that instantly post a general comment to the MR. Configure templates like LGTM, Needs fixes, or any custom text in settings.</p>
+        <p data-i18n="fQuickCommDesc">A separate Quick comments row posts general MR comments in one click. Configure templates like LGTM, Needs fixes, or any custom text in settings.</p>
       </div>
       <!-- Collapse & Hide -->
       <div class="bento-card">
@@ -554,7 +553,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 7h12M4 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 4l3 3 3-3M7 16l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fUiTitle">UI Customization</h3>
-        <p data-i18n="fUiDesc">Collapse top navigation bars with a toggle button. Hide the right sidebar on MR pages for full-width content. State persisted per session.</p>
+        <p data-i18n="fUiDesc">Collapse top navigation bars, remembering their state for the tab session. A separate saved preference hides the MR’s right sidebar.</p>
       </div>
       <!-- Command Palette -->
       <div class="bento-card span-2">
@@ -570,7 +569,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="12" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 10h6M7 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fStandupTitle">Daily Activity Report</h3>
-        <p data-i18n="fStandupDesc">Generate a daily activity report from GitLab: MRs created, merged, reviewed, and in progress. Copy-paste ready for Slack or Jira.</p>
+        <p data-i18n="fStandupDesc">Choose a day and collect created, merged, reviewed and open MRs. Optionally add Jira titles, then copy the report. Selection limits and incomplete results are shown explicitly.</p>
       </div>
       <!-- Group play button -->
       <div class="bento-card">
@@ -578,7 +577,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7.5l4 2.5-4 2.5v-5z" fill="currentColor"/></svg>
         </div>
         <h3 data-i18n="fGroupPlayTitle">Group play button</h3>
-        <p data-i18n="fGroupPlayDesc">GitLab's own "run group" button disappears once any job in a manual group starts. This one stays: on the pipeline graph it runs all remaining manual jobs in the group with one click, skipping jobs already running, succeeded, or failed.</p>
+        <p data-i18n="fGroupPlayDesc">Run remaining manual jobs in a group from the pipeline graph. Jobs already running, successful or failed are skipped.</p>
       </div>
       <!-- Cherry-pick -->
       <div class="bento-card">
@@ -586,7 +585,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 17v-3a2 2 0 012-2h1M15 17v-3a2 2 0 00-2-2h-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fCherryPickTitle">Cherry-pick to branches</h3>
-        <p data-i18n="fCherryPickDesc">Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries &mdash; it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit and open the full Jira ticket sidebar when clicked.</p>
+        <p data-i18n="fCherryPickDesc">Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.</p>
       </div>
       <!-- Version badge on commits -->
       <div class="bento-card">
@@ -594,7 +593,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10h4l1.5-3 3 6L13 10h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
         </div>
         <h3 data-i18n="fCommitVersionTitle">Version badge on commits</h3>
-        <p data-i18n="fCommitVersionDesc">On the branch commits page, each commit shows the project version from your version file at that commit. Muted by default, highlighted where the version changed &mdash; see at a glance which commits went into which release. Cached per commit SHA, so repeat visits cost zero API requests.</p>
+        <p data-i18n="fCommitVersionDesc">Show the configured version file’s value beside branch commits and highlight changes. A bounded local cache reuses results for the same project, file, field and commit.</p>
       </div>
       <!-- Background tracker -->
       <div class="bento-card">
@@ -602,7 +601,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h8M6 12h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fTrackerTitle">Background Job Tracker</h3>
-        <p data-i18n="fTrackerDesc">Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.</p>
+        <p data-i18n="fTrackerDesc">Custom CI job chains run in the background with progress, cancellation and restart recovery. Keep a signed-in tab on the same GitLab open for API access. Cancellation stops later actions, not jobs already started.</p>
       </div>
       <!-- Sensitive file warning -->
       <div class="bento-card">
@@ -610,7 +609,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3L2 17h16L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 9v3M10 14v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fSensitiveTitle">Sensitive File Warning</h3>
-        <p data-i18n="fSensitiveDesc">Warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.</p>
+        <p data-i18n="fSensitiveDesc">Flag sensitive files with built-in rules, additional patterns and exclusions. Settings control the rules; incomplete scans are marked explicitly.</p>
       </div>
       <!-- Git commands -->
       <div class="bento-card">
@@ -618,7 +617,15 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 10h2l1-2 2 4 1-2h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fGitCmdTitle">Git Command Buttons</h3>
-        <p data-i18n="fGitCmdDesc">Copy ready-to-run checkout, pull, and hard-reset commands for the MR's source branch with one click. Handy for local testing and code review.</p>
+        <p data-i18n="fGitCmdDesc">Copy checkout, pull and hard-reset commands for the MR source branch. Check the local repository and origin remote before running them; hard reset discards local changes.</p>
+      </div>
+      <div class="feature-card">
+        <h3 data-i18n="fAgeTitle">MR Age Badge</h3>
+        <p data-i18n="fAgeDesc">Show labelled, localized MR age in the toolbar header, separate from action buttons and warnings. Hover to see the creation date; enable the time tracker in settings.</p>
+      </div>
+      <div class="feature-card">
+        <h3 data-i18n="fConfirmTitle">Skip Confirmations</h3>
+        <p data-i18n="fConfirmDesc">Skip the extension’s MR action confirmations. Review close prompts, settings replacement and browser permission dialogs have separate controls.</p>
       </div>
     </div>
   </section>
@@ -651,7 +658,7 @@
         <div class="feature-dot" style="background:var(--purple)"></div>
         <div>
           <h4 data-i18n="fReviewerTitle">"Your Review" Badge</h4>
-          <p data-i18n="fReviewerDesc">Scans MR comments for reviewer assignments. Shows a badge when you are mentioned as a reviewer. Cached for 5 minutes.</p>
+          <p data-i18n="fReviewerDesc">Find exact reviewer mentions in the oldest MR comments. Configure scan depth (10 comments by default). Results are cached for 5 minutes.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -665,14 +672,14 @@
         <div class="feature-dot" style="background:var(--red)"></div>
         <div>
           <h4 data-i18n="fThreadsTitle">Unresolved Threads Count</h4>
-          <p data-i18n="fThreadsDesc">Red badge showing the number of unresolved discussion threads on each MR. Fetched via API with 5-minute cache.</p>
+          <p data-i18n="fThreadsDesc">Show unresolved thread counts with a five-minute cache. A full first page is marked with “+”; an unavailable count is shown as “?”.</p>
         </div>
       </div>
       <div class="feature-item">
         <div class="feature-dot" style="background:var(--cyan)"></div>
         <div>
           <h4 data-i18n="fSizeTitle">MR Size Labels</h4>
-          <p data-i18n="fSizeDesc">Color-coded S/M/L/XL badges based on lines changed. Quickly assess MR complexity before opening.</p>
+          <p data-i18n="fSizeDesc">S/M/L/XL badges with configurable line and file thresholds. GitLab lower-bound counts stay marked as partial.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -686,7 +693,7 @@
         <div class="feature-dot" style="background:var(--green)"></div>
         <div>
           <h4 data-i18n="fApprovalTitle">My Approval Indicator</h4>
-          <p data-i18n="fApprovalDesc">Enhances the approval badge on the MR list. Shows "You +N" when you approved, or the total count when approved by others only.</p>
+          <p data-i18n="fApprovalDesc">Enhances the approval badge on the MR list. Shows “You +N” when you approved, or the total count when approved by others only.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -694,20 +701,6 @@
         <div>
           <h4 data-i18n="fBranchesTitle">Branch Names</h4>
           <p data-i18n="fBranchesDesc">Shows source and target branch names on each MR in the list. See at a glance where the code comes from and where it merges into.</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-dot" style="background:var(--cyan)"></div>
-        <div>
-          <h4 data-i18n="fAgeTitle">MR Age Badge</h4>
-          <p data-i18n="fAgeDesc">Shows time elapsed since the MR was created. Quickly spot stale merge requests that need attention.</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-dot" style="background:var(--orange)"></div>
-        <div>
-          <h4 data-i18n="fConfirmTitle">Skip Confirmations</h4>
-          <p data-i18n="fConfirmDesc">Optional setting to disable all confirmation dialogs for one-click workflow. For experienced users who prefer speed.</p>
         </div>
       </div>
     </div>
@@ -720,7 +713,7 @@
     <div class="section-header">
       <div class="section-label" data-i18n="secJiraLabel">Jira Integration</div>
       <h2 data-i18n="secJiraTitle">Jira context without leaving GitLab</h2>
-      <p data-i18n="secJiraSub">See ticket status, change assignee, transition workflows &mdash; all from the merge request page. Uses session cookies, no API tokens.</p>
+      <p data-i18n="secJiraSub">Jira Server/Data Center statuses, assignees and workflow actions from the merge request page. Uses your signed-in browser session. Set the Jira URL and click “Allow Jira site access” in extension settings; the same button restores revoked access. “Check connection” in settings or popup confirms your session and shows the last check time or an actionable error.</p>
     </div>
     <div class="bento">
       <div class="bento-card span-2">
@@ -735,7 +728,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10L8 14L16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fBadgesTitle">Status Badges</h3>
-        <p data-i18n="fBadgesDesc">Color-coded Jira status badges on MR list and detail pages. Parses ticket IDs from MR titles via configurable regex. Green for Done, blue for In Progress, yellow for In Review.</p>
+        <p data-i18n="fBadgesDesc">Show Jira ticket statuses on MR lists and detail pages, with colors based on status categories and names. Configure the ticket-ID pattern and Jira HTTPS address globally or per project.</p>
       </div>
       <div class="bento-card">
         <div class="bento-icon icon-orange">
@@ -767,23 +760,23 @@
   <section class="section" id="how-it-works">
     <div class="section-header">
       <div class="section-label" data-i18n="secHowLabel">How it works</div>
-      <h2 data-i18n="secHowTitle">Up and running in 30 seconds</h2>
+      <h2 data-i18n="secHowTitle">Install, configure and use</h2>
     </div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <h3 data-i18n="step1Title">Install the Extension</h3>
-        <p data-i18n="step1Desc">Add from Chrome Web Store with one click. No API tokens, no configuration files, no admin access required.</p>
+        <p data-i18n="step1Desc">Install from Chrome Web Store and allow access to your GitLab site. GitLab actions use your existing session; no personal access token is required.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3 data-i18n="step2Title">Open Any Merge Request</h3>
-        <p data-i18n="step2Desc">Navigate to any MR on your self-hosted GitLab instance. Action buttons appear automatically above the MR description.</p>
+        <h3 data-i18n="step2Title">Open a merge request</h3>
+        <p data-i18n="step2Desc">Open an HTTPS GitLab MR while signed in. Configure optional buttons, your version file and project profiles. Jira needs its HTTPS address and a separate permission.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3 data-i18n="step3Title">Click and Ship</h3>
-        <p data-i18n="step3Desc">Rebase, bump version, and enable auto-merge &mdash; all in one click. Background tracker shows progress in real time.</p>
+        <h3 data-i18n="step3Title">Run the action you need</h3>
+        <p data-i18n="step3Desc">Choose an MR action and check its result. Server APIs, project rules and your permissions determine availability; merge and pipeline completion times vary.</p>
       </div>
     </div>
   </section>
@@ -842,7 +835,7 @@
   <script>
     var LANG = {
       en: {
-        aiLabel: "New in 1.13 · AI review workflow",
+        aiLabel: "AI review workflow",
         aiTitle: "From first review to verified fixes",
         aiSub: "Use your own AI tool. Copy the task, bring back the answer, and decide what gets posted.",
         aiStep1: "Review",
@@ -856,45 +849,45 @@
         aiPrivacy: "No AI account or API key in the extension. Nothing is uploaded to an AI provider automatically. GitLab receives comments only when you publish or add drafts.",
         aiGuide: "AI review guide",
 
-        navFeatures: 'Features', navJira: 'Jira', navHow: 'How it works', navInstall: 'Install',
-        heroBadge: 'Free Chrome Extension &middot; Open Source &middot; 7 Languages',
+        navFeatures: 'Features', navHow: 'How it works', navInstall: 'Install',
+        heroBadge: 'Free Chrome Extension &middot; Open Source &middot; 27 Locales',
         heroTitle: 'Automate the routine in <span>GitLab</span>',
-        heroSub: 'Rebase, bump version, auto-merge, manage CI jobs, and track Jira tickets \u2014 all without leaving the merge request page. Works with any self-hosted GitLab. No API tokens needed. Now with AI review using your own tools.',
+        heroSub: "Rebase, bump versions, manage pipelines and Jira tickets, and review code with your own AI tool. For GitLab.com and self-hosted GitLab over HTTPS, using your existing session.",
         ctaInstall: 'Install Free from Chrome Web Store', ctaGithub: 'Star on GitHub',
-        statSec: 'sec', statShip: 'to ship a merge request', statClicks: 'fewer clicks per MR', statTokens: 'tokens or setup needed',
+        statLanguages: 'interface locales', statTasks: 'AI review tasks', statUploads: 'automatic AI uploads',
 
-        secMrLabel: 'MR Detail Page', secMrTitle: '14 action buttons, one click each',
-        secMrSub: 'Every common merge request operation \u2014 from rebase to full release \u2014 available directly on the MR page.',
+        secMrLabel: 'MR Detail Page', secMrTitle: "Actions for your MR workflow",
+        secMrSub: "Choose the buttons you need for versioning, CI, comments and merge operations.",
         fShipTitle: 'Ship in One Click',
-        fShipDesc: 'Rebase, bump version, and enable auto-merge \u2014 the entire release flow in a single button. Also available: Force Ship for immediate merge bypassing pipeline wait.',
+        fShipDesc: "Rebase when needed, bump the version and request auto-merge. Force Ship requests merge without waiting for pipeline success. GitLab permissions and merge rules still apply; keep the MR tab open until setup finishes.",
         fCiTitle: 'CI/CD Pipeline Control',
         fCiDesc: 'New pipeline, cancel running, retry all failed jobs, trigger custom manual jobs \u2014 manage your CI without navigating away from the MR.',
         fFailedJobTitle: 'Failed Job Quick View',
-        fFailedJobDesc: 'When a pipeline fails, see failed job names and the last lines of the error log right on the MR page. No need to click through multiple pages to find what went wrong.',
+        fFailedJobDesc: 'Preview failed jobs and log tails on the MR page. Configure job and line counts in Display rules and limits; open the full pipeline when more jobs are available.',
         fVersionTitle: 'Smart Version Bump',
-        fVersionDesc: 'Automatic version increment for package.json, pyproject.toml, version.txt, or any custom file. Configurable JSON path, strategy (patch/minor/major), commit message template, and option to read version from the target branch.',
+        fVersionDesc: "Bump a version in JSON, TOML or a plain-text file. Configure the file, field path, patch/minor/major strategy and commit message, with an option to read the version from the target branch.",
         fReviewTitle: 'Quick Reviewers',
-        fReviewDesc: 'Set merge request reviewers from a preconfigured list in one click. No need to search for usernames each time.',
+        fReviewDesc: "Mention configured usernames in a comment, reuse a Reviewer(s): comment, or trigger the configured CI job. This action does not assign GitLab’s native reviewer field.",
         fDraftTitle: 'Draft Toggle & Copy MR',
         fDraftDesc: 'Mark or unmark MR as draft instantly. Copy MR title and link to clipboard for sharing in messengers and task trackers.',
         fCustomTitle: 'Fully Customizable',
-        fCustomDesc: 'Drag & drop button order, per-project profiles with separate settings, custom CI job buttons. Configure everything from the extension popup.',
+        fCustomDesc: "Edit a settings section directly below the popup menu, or open the full searchable workspace. Set shared defaults or project-specific MR, commit, CI/CD, Jira, AI and appearance preferences; project fields show their source and can return to the global value. Existing settings are preserved. Notification toggles stay global. Saved toolbar buttons and order update open MR pages without a reload. Export/import transfers all profiles.",
         fCmdPaletteTitle: 'Command Palette (Cmd+K)',
         fCmdPaletteDesc: 'Press Cmd+K (Mac) or Ctrl+K (Win) on any GitLab page. Navigate, run MR actions, search files by name and open them in the repo. Keyboard navigation, contextual commands.',
         fStandupTitle: 'Daily Activity Report',
-        fStandupDesc: 'Generate a daily activity report from GitLab: MRs created, merged, reviewed, and in progress. With Jira integration, ticket titles are automatically added to MR entries. Copy-paste ready for Slack or Jira.',
+        fStandupDesc: "Choose a day and collect created, merged, reviewed and open MRs. Optionally add Jira titles, then copy the report. Selection limits and incomplete results are shown explicitly.",
         fGroupPlayTitle: 'Group play button',
-        fGroupPlayDesc: 'GitLab\'s own "run group" button disappears once any job in a manual group starts. This one stays: on the pipeline graph it runs all remaining manual jobs in the group with one click, skipping jobs already running, succeeded, or failed.',
+        fGroupPlayDesc: "Run remaining manual jobs in a group from the pipeline graph. Jobs already running, successful or failed are skipped.",
         fCommitVersionTitle: 'Version badge on commits',
-        fCommitVersionDesc: 'On the branch commits page, each commit shows the project version from your version file at that commit. Muted by default, highlighted where the version changed \u2014 see at a glance which commits went into which release. Cached per commit SHA, so repeat visits cost zero API requests.',
+        fCommitVersionDesc: "Show the configured version file’s value beside branch commits and highlight changes. A bounded local cache reuses results for the same project, file, field and commit.",
         fCherryPickTitle: 'Cherry-pick to branches',
-        fCherryPickDesc: 'Cherry-pick any commit to multiple branches at once with real-time status. If a cherry-pick fails due to a version file conflict, the extension automatically retries \u2014 it replays the commit without the version file and optionally bumps the version, all in a single commit preserving the original author. Jira field badges (e.g. Fix Version) can be shown next to each commit and open the full Jira ticket sidebar when clicked.',
+        fCherryPickDesc: "Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.",
         fTrackerTitle: 'Background Job Tracker',
-        fTrackerDesc: 'Long-running operations (Ship, Rebase + Auto-merge) run in the background service worker. A floating tracker panel shows real-time progress with step-by-step visualization and cancel support. Works across all GitLab tabs.',
+        fTrackerDesc: "Custom CI job chains run in the background with progress, cancellation and restart recovery. Keep a signed-in tab on the same GitLab open for API access. Cancellation stops later actions, not jobs already started.",
         fSensitiveTitle: 'Sensitive File Warning',
-        fSensitiveDesc: 'Warning badge when the MR modifies security-sensitive files like .env, Dockerfile, CI configs, or credential files.',
+        fSensitiveDesc: 'Flag sensitive files with built-in rules, additional patterns and exclusions. Settings control the rules; incomplete scans are marked explicitly.',
         fGitCmdTitle: 'Git Command Buttons',
-        fGitCmdDesc: 'Copy ready-to-run checkout, pull, and hard-reset commands for the MR\'s source branch with one click. Handy for local testing and code review.',
+        fGitCmdDesc: "Copy checkout, pull and hard-reset commands for the MR source branch. Check the local repository and origin remote before running them; hard reset discards local changes.",
 
         secListLabel: 'MR List Page', secListTitle: 'Smarter merge request list',
         secListSub: 'Enhancements that help you find, filter, and manage merge requests faster.',
@@ -903,13 +896,13 @@
         fDimTitle: 'Dim Drafts & Highlight Own MRs',
         fDimDesc: 'Draft MRs are visually dimmed. Your own MRs get a blue left border for instant recognition.',
         fReviewerTitle: '"Your Review" Badge',
-        fReviewerDesc: 'Scans MR comments for reviewer assignments. Shows a badge when you are mentioned as a reviewer. Cached for 5 minutes.',
+        fReviewerDesc: 'Find exact reviewer mentions in the oldest MR comments. Configure scan depth (10 comments by default). Results are cached for 5 minutes.',
         fCopyListTitle: 'Copy MR from List',
         fCopyListDesc: 'Copy button on each MR in the list. Copies title and link to clipboard without opening the merge request.',
         fThreadsTitle: 'Unresolved Threads Count',
-        fThreadsDesc: 'Red badge showing the number of unresolved discussion threads on each MR. Fetched via API with 5-minute cache.',
+        fThreadsDesc: "Show unresolved thread counts with a five-minute cache. A full first page is marked with “+”; an unavailable count is shown as “?”.",
         fSizeTitle: 'MR Size Labels',
-        fSizeDesc: 'Color-coded S/M/L/XL badges based on lines changed. Quickly assess MR complexity before opening.',
+        fSizeDesc: 'S/M/L/XL badges with configurable line and file thresholds. GitLab lower-bound counts stay marked as partial.',
         fConflictsTitle: 'Conflicts Indicator',
         fConflictsDesc: 'Red CONFLICTS badge on MR list and detail pages when the branch has merge conflicts that need to be resolved.',
         fApprovalTitle: 'My Approval Indicator',
@@ -917,36 +910,35 @@
         fBranchesTitle: 'Branch Names',
         fBranchesDesc: 'Shows source and target branch names on each MR in the list. See at a glance where the code comes from and where it merges into.',
         fAgeTitle: 'MR Age Badge',
-        fAgeDesc: 'Shows time elapsed since the MR was created. Quickly spot stale merge requests that need attention.',
+        fAgeDesc: "Show labelled, localized MR age in the toolbar header, separate from action buttons and warnings. Hover to see the creation date; enable the time tracker in settings.",
         fConfirmTitle: 'Skip Confirmations',
-        fConfirmDesc: 'Optional setting to disable all confirmation dialogs for one-click workflow. For experienced users who prefer speed.',
+        fConfirmDesc: "Skip the extension’s MR action confirmations. Review close prompts, settings replacement and browser permission dialogs have separate controls.",
         fQuickCommTitle: 'Quick Comments',
-        fQuickCommDesc: 'One-click buttons that instantly post a general comment to the MR. Configure templates like LGTM, Needs fixes, or any custom text in settings.',
+        fQuickCommDesc: 'A separate Quick comments row posts general MR comments in one click. Configure templates like LGTM, Needs fixes, or any custom text in settings.',
         fUiTitle: 'UI Customization',
-        fUiDesc: 'Collapse top navigation bars with a toggle button. Hide the right sidebar on MR pages for full-width content. State persisted per session.',
+        fUiDesc: "Collapse top navigation bars, remembering their state for the tab session. A separate saved preference hides the MR’s right sidebar.",
 
         secJiraLabel: 'Jira Integration', secJiraTitle: 'Jira context without leaving GitLab',
-        secJiraSub: 'See ticket status, change assignee, transition workflows \u2014 all from the merge request page. Uses session cookies, no API tokens.',
+        secJiraSub: 'Jira Server/Data Center statuses, assignees and workflow actions from the merge request page. Uses your signed-in browser session. Set the Jira URL and click “Allow Jira site access” in extension settings; the same button restores revoked access. “Check connection” in settings or popup confirms your session and shows the last check time or an actionable error.',
         fSidebarTitle: 'Full Ticket Sidebar',
         fSidebarDesc: 'Click any Jira badge to open a detailed sidebar: summary, status, resolution, type, priority, assignee, reporter, labels, epic link, sprint, components, versions, fix versions (editable, pick from the project\'s available versions), dates, and description with rendered wiki markup. Attachments with image/video lightbox. Read, post, and delete your own comments without leaving GitLab.',
         fBadgesTitle: 'Status Badges',
-        fBadgesDesc: 'Color-coded Jira status badges on MR list and detail pages. Parses ticket IDs from MR titles via configurable regex. Green for Done, blue for In Progress, yellow for In Review.',
+        fBadgesDesc: "Show Jira ticket statuses on MR lists and detail pages, with colors based on status categories and names. Configure the ticket-ID pattern and Jira HTTPS address globally or per project.",
         fIconsTitle: 'Type & Priority Icons',
         fIconsDesc: 'Native Jira icons for issue type and priority displayed next to status badges. Enable in settings for additional context at a glance.',
         fTransTitle: 'Change Status & Assignee',
         fTransDesc: 'Transition buttons show only available workflow actions. Change ticket status without leaving GitLab. Click assignee to search and reassign with autocomplete.',
         fQuickTitle: 'Quick Actions',
         fQuickDesc: 'Configure each button to update one field or several: status, assignee, labels, Fix Version and more. Add, remove or replace list values. Field-only actions work independently of workflow transitions.',
-        fEpicTitle: 'Epic Link & Sprint',
-        fEpicDesc: 'Clickable epic link opens directly in Jira. Sprint field shows current sprint name. Custom fields discovered automatically per Jira instance.',
 
-        secHowLabel: 'How it works', secHowTitle: 'Up and running in 30 seconds',
+
+        secHowLabel: 'How it works', secHowTitle: "Install, configure and use",
         step1Title: 'Install the Extension',
-        step1Desc: 'Add from Chrome Web Store with one click. No API tokens, no configuration files, no admin access required.',
-        step2Title: 'Open Any Merge Request',
-        step2Desc: 'Navigate to any MR on your self-hosted GitLab instance. Action buttons appear automatically above the MR description.',
-        step3Title: 'Click and Ship',
-        step3Desc: 'Rebase, bump version, and enable auto-merge \u2014 all in one click. Background tracker shows progress in real time.',
+        step1Desc: "Install from Chrome Web Store and allow access to your GitLab site. GitLab actions use your existing session; no personal access token is required.",
+        step2Title: "Open a merge request",
+        step2Desc: "Open an HTTPS GitLab MR while signed in. Configure optional buttons, your version file and project profiles. Jira needs its HTTPS address and a separate permission.",
+        step3Title: "Run the action you need",
+        step3Desc: "Choose an MR action and check its result. Server APIs, project rules and your permissions determine availability; merge and pipeline completion times vary.",
 
         secScreenLabel: 'Screenshots', secScreenTitle: 'See it in action',
         secChangeLabel: 'Changelog', secChangeTitle: "What's new",
@@ -959,7 +951,7 @@
         footerPrivacy: 'Privacy Policy'
       },
       ru: {
-        aiLabel: "Новое в 1.13 · Ревью с ИИ",
+        aiLabel: "Ревью с ИИ",
         aiTitle: "От первого ревью до проверки исправлений",
         aiSub: "Работайте со своим ИИ. Скопируйте задание, верните ответ и решите, что публиковать.",
         aiStep1: "Проверьте MR",
@@ -973,45 +965,45 @@
         aiPrivacy: "Без аккаунта ИИ и API-ключа в расширении. Автоматической отправки провайдеру ИИ нет. Комментарии попадают в GitLab только по кнопке публикации или добавления в черновики.",
         aiGuide: "Гайд по ревью с ИИ",
 
-        navFeatures: 'Возможности', navJira: 'Jira', navHow: 'Как работает', navInstall: 'Установить',
-        heroBadge: 'Бесплатное расширение для Chrome &middot; Open Source &middot; 7 языков',
+        navFeatures: 'Возможности', navHow: 'Как работает', navInstall: 'Установить',
+        heroBadge: 'Бесплатное расширение для Chrome &middot; Open Source &middot; 27 локализаций',
         heroTitle: 'Автоматизируйте рутину в <span>GitLab</span>',
-        heroSub: 'Rebase, версия, auto-merge, CI-джобы и Jira \u2014 всё прямо на странице merge request. Работает с любым self-hosted GitLab. Без токенов. Плюс ревью с вашим ИИ.',
+        heroSub: "Rebase, версии, пайплайны, Jira и ревью с вашим ИИ. Для GitLab.com и self-hosted GitLab по HTTPS с вашей текущей сессией.",
         ctaInstall: 'Установить из Chrome Web Store', ctaGithub: 'GitHub',
-        statSec: 'сек', statShip: 'на отправку merge request', statClicks: 'меньше кликов на MR', statTokens: 'токенов и настроек',
+        statLanguages: 'языков интерфейса', statTasks: 'сценария ревью с ИИ', statUploads: 'автоматических отправок в ИИ',
 
-        secMrLabel: 'Страница MR', secMrTitle: '14 кнопок действий, каждая в один клик',
-        secMrSub: 'Все типичные операции с merge request \u2014 от rebase до полного релиза \u2014 доступны прямо на странице MR.',
+        secMrLabel: 'Страница MR', secMrTitle: "Действия для работы с MR",
+        secMrSub: "Включите нужные кнопки для версий, CI, комментариев и слияния.",
         fShipTitle: 'Ship одной кнопкой',
-        fShipDesc: 'Rebase, поднятие версии и auto-merge \u2014 весь процесс релиза в одном клике. Также доступен Force Ship для немедленного мержа без ожидания пайплайна.',
+        fShipDesc: "Rebase при необходимости, повышение версии и включение auto-merge. Force Ship запрашивает merge без ожидания успешного пайплайна. Права и правила GitLab сохраняются; держите вкладку MR открытой до завершения операции.",
         fCiTitle: 'Управление CI/CD',
         fCiDesc: 'Новый пайплайн, отмена запущенного, перезапуск упавших джобов, запуск кастомных ручных джобов \u2014 всё без перехода на другие страницы.',
         fFailedJobTitle: 'Быстрый просмотр ошибок',
-        fFailedJobDesc: 'При падении пайплайна показывает имена упавших джобов и последние строки лога ошибки прямо на странице MR. Не нужно кликать в пайплайн, чтобы найти ошибку.',
+        fFailedJobDesc: 'Предпросмотр упавших jobs и последних строк логов прямо в MR. Число jobs и строк задаётся в настройках; остальные доступны по ссылке на полный pipeline.',
         fVersionTitle: 'Умный Version Bump',
-        fVersionDesc: 'Автоматическое поднятие версии в package.json, pyproject.toml, version.txt или любом другом файле. Настраиваемый путь, стратегия (patch/minor/major), шаблон коммита и чтение версии из target-ветки.',
+        fVersionDesc: "Поднимайте версию в JSON, TOML или текстовом файле. Настройте файл, путь к полю, стратегию patch/minor/major и сообщение коммита; при необходимости читайте версию из целевой ветки.",
         fReviewTitle: 'Быстрые ревьюеры',
-        fReviewDesc: 'Назначение ревьюеров из предварительно настроенного списка в один клик. Не нужно каждый раз искать юзернеймы.',
+        fReviewDesc: "Упомяните настроенных пользователей в комментарии, повторите комментарий Reviewer(s): или запустите настроенную CI-джобу. Действие не назначает ревьюеров в штатном поле GitLab.",
         fDraftTitle: 'Draft Toggle и Copy MR',
         fDraftDesc: 'Мгновенная отметка MR как черновика. Копирование заголовка и ссылки MR в буфер обмена для отправки в мессенджеры и трекеры задач.',
         fCustomTitle: 'Полная настройка',
-        fCustomDesc: 'Drag & drop порядок кнопок, профили по проектам с отдельными настройками, кастомные CI-джобы. Всё настраивается из попапа расширения.',
+        fCustomDesc: "Настраивайте раздел прямо под меню popup или откройте полную страницу с поиском. Задавайте общие значения или свои параметры MR, коммитов, CI/CD, Jira, AI-ревью и оформления для проекта. У проектного поля видно источник значения; можно вернуть общее. Прежние настройки сохраняются, переключатели уведомлений остаются общими. Сохранённые кнопки панели и их порядок обновляются на открытых MR без перезагрузки. Экспорт/импорт переносит все профили.",
         fCmdPaletteTitle: 'Командная палитра (Cmd+K)',
         fCmdPaletteDesc: 'Нажмите Cmd+K (Mac) или Ctrl+K (Win) на любой странице GitLab. Навигация, действия MR, поиск файлов по имени и открытие в репозитории.',
         fStandupTitle: 'Отчёт по дневной активности',
-        fStandupDesc: 'Сгенерируйте отчёт по активности за день: созданные, смёрженные и отревьюенные MR. При интеграции с Jira к записям автоматически добавляются названия задач. Готов для вставки в Slack или Jira.',
+        fStandupDesc: "Выберите день и соберите созданные, смерженные, проверенные и открытые MR. При необходимости добавьте названия задач Jira и скопируйте отчёт. Лимиты выборки и неполные результаты отмечаются явно.",
         fGroupPlayTitle: 'Кнопка запуска группы',
-        fGroupPlayDesc: 'Родная кнопка запуска группы у GitLab пропадает, как только стартует хоть одна джоба из manual-группы. Эта кнопка остаётся: в графе пайплайна она одним кликом запускает все оставшиеся manual-джобы группы, пропуская уже запущенные, выполненные и упавшие.',
+        fGroupPlayDesc: "Запустите оставшиеся manual-джобы группы из графа пайплайна. Уже выполняющиеся, успешные и упавшие jobs пропускаются.",
         fCommitVersionTitle: 'Бейдж версии у коммитов',
-        fCommitVersionDesc: 'На странице коммитов ветки у каждого коммита показывается версия проекта из файла версии на момент этого коммита. Обычно приглушённый, подсвечивается при смене версии \u2014 сразу видно, какие коммиты попали в какой релиз. Кэш по SHA коммита \u2014 повторные заходы не тратят API-запросов.',
+        fCommitVersionDesc: "Показывайте значение из настроенного файла версии рядом с коммитами ветки и выделяйте изменения. Ограниченный локальный кэш повторно использует результаты для того же проекта, файла, поля и коммита.",
         fCherryPickTitle: 'Cherry-pick в ветки',
-        fCherryPickDesc: 'Cherry-pick любого коммита в несколько веток одновременно со статусом в реальном времени. Если cherry-pick упал из-за конфликта с файлом версии, расширение автоматически повторит \u2014 перенесёт изменения без файла версии и при необходимости поднимет версию, всё в одном коммите с сохранением оригинального автора. Рядом с каждым коммитом можно показать бейджи Jira-полей (напр. Fix Version) — клик по бейджу открывает полноценный сайдбар тикета Jira.',
+        fCherryPickDesc: "Перенесите коммит в выбранные ветки напрямую или через новые MR. Задайте ветки для проекта или используйте общий список. Умный fallback позволяет перенести проверенные изменения без конфликтующего файла версии, при необходимости подняв версию. Небезопасные изменения и неизвестный результат требуют проверки.",
         fTrackerTitle: 'Трекер фоновых задач',
-        fTrackerDesc: 'Долгие операции (Ship, Rebase + Auto-merge) выполняются в фоновом service worker. Плавающая панель показывает прогресс в реальном времени с визуализацией шагов и кнопкой отмены. Работает на всех вкладках GitLab.',
+        fTrackerDesc: "Цепочки пользовательских CI-джоб работают в фоне: прогресс, отмена и восстановление после перезапуска. Для API нужна открытая вкладка того же GitLab с активной сессией. Отмена останавливает следующие действия, но не уже запущенные jobs.",
         fSensitiveTitle: 'Предупреждение о чувствительных файлах',
-        fSensitiveDesc: 'Бейдж-предупреждение, когда MR изменяет файлы безопасности: .env, Dockerfile, CI-конфиги, файлы с ключами.',
+        fSensitiveDesc: 'Проверка чувствительных файлов по встроенным правилам, своим шаблонам и исключениям. Правила настраиваются; неполная проверка явно отмечается.',
         fGitCmdTitle: 'Кнопки git-команд',
-        fGitCmdDesc: 'Копирование готовых команд checkout, pull и hard reset для ветки MR одним кликом. Удобно для локального тестирования и ревью.',
+        fGitCmdDesc: "Копируйте команды checkout, pull и hard reset для исходной ветки MR. Перед выполнением проверьте локальный репозиторий и remote origin; hard reset удаляет локальные изменения.",
 
         secListLabel: 'Список MR', secListTitle: 'Улучшенный список merge requests',
         secListSub: 'Фичи, которые помогают быстрее находить, фильтровать и управлять merge requests.',
@@ -1020,13 +1012,13 @@
         fDimTitle: 'Затемнение черновиков и подсветка своих MR',
         fDimDesc: 'Черновые MR визуально приглушены. Ваши собственные MR выделены синей полоской слева.',
         fReviewerTitle: 'Бейдж "Ваше ревью"',
-        fReviewerDesc: 'Сканирует комментарии MR на назначение ревьюеров. Показывает бейдж, когда вы упомянуты как ревьюер. Кэш 5 минут.',
+        fReviewerDesc: 'Поиск точных упоминаний ревьюера в первых комментариях MR. Глубина поиска настраивается (по умолчанию 10). Кэш — 5 минут.',
         fCopyListTitle: 'Копирование MR из списка',
         fCopyListDesc: 'Кнопка копирования на каждом MR в списке. Копирует заголовок и ссылку в буфер без открытия merge request.',
         fThreadsTitle: 'Нерешённые треды',
-        fThreadsDesc: 'Красный бейдж с количеством нерешённых тредов на каждом MR. Данные из API с кэшем 5 минут.',
+        fThreadsDesc: "Показывайте число нерешённых обсуждений с кэшем на пять минут. Полная первая страница отмечается «+», недоступное число — «?».",
         fSizeTitle: 'Размер MR',
-        fSizeDesc: 'Цветные бейджи S/M/L/XL по количеству изменённых строк. Быстрая оценка сложности MR.',
+        fSizeDesc: 'Бейджи S/M/L/XL с настраиваемыми порогами строк и файлов. Нижние границы счётчиков GitLab сохраняют отметку о неполноте.',
         fConflictsTitle: 'Индикатор конфликтов',
         fConflictsDesc: 'Красный бейдж КОНФЛИКТЫ в списке и на странице MR, когда в ветке есть конфликты слияния.',
         fApprovalTitle: 'Индикатор моего аппрува',
@@ -1034,36 +1026,35 @@
         fBranchesTitle: 'Названия веток',
         fBranchesDesc: 'Показывает исходную и целевую ветки на каждом MR в списке. Сразу видно, откуда и куда мерджится код.',
         fAgeTitle: 'Возраст MR',
-        fAgeDesc: 'Показывает время с момента создания MR. Быстро находите застоявшиеся merge requests.',
+        fAgeDesc: "Подписанное время с создания MR в заголовке панели, отдельно от кнопок и предупреждений. Единицы времени переведены, дата создания видна при наведении. Включите трекер времени в настройках.",
         fConfirmTitle: 'Пропуск подтверждений',
-        fConfirmDesc: 'Опциональная настройка отключения всех диалогов подтверждения. Для опытных пользователей, которые ценят скорость.',
+        fConfirmDesc: "Пропускайте подтверждения действий MR. Закрытие окон ревью, замена настроек и разрешения браузера управляются отдельно.",
         fQuickCommTitle: 'Быстрые комментарии',
-        fQuickCommDesc: 'Кнопки для мгновенной отправки общего комментария к MR. Настройте шаблоны типа LGTM, Needs fixes или любой текст.',
+        fQuickCommDesc: 'Отдельная строка «Быстрые комментарии» для отправки общих комментариев к MR одним нажатием. Настройте шаблоны типа LGTM, Needs fixes или любой текст.',
         fUiTitle: 'Настройка интерфейса',
-        fUiDesc: 'Сворачивание верхних панелей навигации кнопкой. Скрытие правого сайдбара на страницах MR для контента на всю ширину. Состояние сохраняется в сессии.',
+        fUiDesc: "Сворачивайте верхние панели: состояние сохраняется на время сессии вкладки. Отдельная сохраняемая настройка скрывает правый сайдбар MR.",
 
         secJiraLabel: 'Интеграция с Jira', secJiraTitle: 'Контекст Jira без выхода из GitLab',
-        secJiraSub: 'Статусы тикетов, смена ответственного, переходы по воркфлоу \u2014 всё со страницы merge request. Через session cookies, без API-токенов.',
+        secJiraSub: 'Статусы задач, исполнители и переходы Jira Server/Data Center со страницы merge request. Используется текущая сессия браузера. Укажите URL Jira и нажмите «Разрешить доступ к Jira» в настройках расширения; та же кнопка восстановит отозванный доступ. «Проверить подключение» в настройках или popup подтверждает сессию и показывает время проверки или понятную ошибку.',
         fSidebarTitle: 'Полный сайдбар тикета',
         fSidebarDesc: 'Клик по любому Jira-бейджу открывает сайдбар: тема, статус, резолюция, тип, приоритет, исполнитель, автор, метки, эпик, спринт, компоненты, версии, fix versions (редактируемо, выбор из доступных версий проекта), даты и описание с рендером wiki-разметки. Вложения с лайтбоксом для картинок и видео. Чтение, отправка и удаление своих комментариев без выхода из GitLab.',
         fBadgesTitle: 'Статусные бейджи',
-        fBadgesDesc: 'Цветные бейджи статусов Jira на списке и странице MR. Парсит ID тикетов из заголовков MR через настраиваемое регулярное выражение.',
+        fBadgesDesc: "Показывайте статусы Jira в списке и на странице MR; цвета зависят от категории и названия статуса. Настройте шаблон ID тикетов и HTTPS-адрес Jira для всех проектов или отдельно для проекта.",
         fIconsTitle: 'Иконки типа и приоритета',
         fIconsDesc: 'Нативные иконки Jira для типа задачи и приоритета рядом со статусными бейджами. Включается в настройках.',
         fTransTitle: 'Смена статуса и исполнителя',
         fTransDesc: 'Кнопки переходов показывают только доступные действия воркфлоу. Смена статуса тикета без выхода из GitLab. Поиск и переназначение исполнителя с автокомплитом.',
         fQuickTitle: 'Быстрые действия',
         fQuickDesc: 'Каждая кнопка меняет одно поле или несколько: статус, исполнителя, метки, Fix Version и другие. Добавление, удаление и замена значений списков. Действия без смены статуса работают независимо от переходов.',
-        fEpicTitle: 'Эпик и Спринт',
-        fEpicDesc: 'Кликабельная ссылка на эпик открывается в Jira. Поле спринта показывает текущий спринт. Кастомные поля определяются автоматически для каждого экземпляра Jira.',
 
-        secHowLabel: 'Как это работает', secHowTitle: 'Готово за 30 секунд',
+
+        secHowLabel: 'Как это работает', secHowTitle: "Установите, настройте и пользуйтесь",
         step1Title: 'Установите расширение',
-        step1Desc: 'Один клик в Chrome Web Store. Без токенов, конфигов и админского доступа.',
-        step2Title: 'Откройте любой Merge Request',
-        step2Desc: 'Перейдите на любой MR в вашем self-hosted GitLab. Кнопки действий появятся автоматически.',
-        step3Title: 'Кликните и отправляйте',
-        step3Desc: 'Rebase, поднятие версии и auto-merge \u2014 всё в одном клике. Фоновый трекер показывает прогресс.',
+        step1Desc: "Установите расширение из Chrome Web Store и разрешите доступ к сайту GitLab. Действия используют вашу текущую сессию; персональный токен не нужен.",
+        step2Title: "Откройте merge request",
+        step2Desc: "Откройте MR в GitLab по HTTPS с активной сессией. Настройте дополнительные кнопки, файл версии и профили проектов. Для Jira нужны её HTTPS-адрес и отдельное разрешение.",
+        step3Title: "Выполните нужное действие",
+        step3Desc: "Выберите действие MR и проверьте результат. Доступность зависит от API сервера, правил проекта и ваших прав; время merge и завершения пайплайна различается.",
 
         secScreenLabel: 'Скриншоты', secScreenTitle: 'Как это выглядит',
         secChangeLabel: 'Изменения', secChangeTitle: 'Что нового',
@@ -1113,9 +1104,9 @@
 
     // ── SCREENSHOTS ──
     var SCREENSHOTS = [
-      { file: 'screenshots/1-mr-buttons-and-jira-badges.png', en: 'Action buttons and Jira badges on MR page', ru: 'Кнопки действий и Jira-бейджи на странице MR' },
+      { file: 'screenshots/1-mr-toolbar.png', en: 'MR toolbar: actions, age and quick comments', ru: 'Панель MR: действия, время и быстрые комментарии' },
       { file: 'screenshots/2-jira-badges-and-sidebar.png', en: 'Jira badges on MR list and ticket sidebar', ru: 'Jira-бейджи в списке MR и сайдбар тикета' },
-      { file: 'screenshots/3-settings.png', en: 'Extension settings popup', ru: 'Попап с настройками расширения' },
+      { file: 'screenshots/3-settings.png', en: 'Settings workspace', ru: 'Страница настроек расширения' },
       { file: 'screenshots/4-tracker.png', en: 'Background job tracker panel', ru: 'Панель трекера фоновых задач' }
     ];
 

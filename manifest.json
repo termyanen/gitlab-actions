@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
+  "minimum_chrome_version": "110",
   "name": "__MSG_extName__",
-  "version": "1.13.3",
+  "version": "2.0.1",
   "description": "__MSG_extDescription__",
   "homepage_url": "https://github.com/termyanen/gitlab-actions",
   "default_locale": "en",
-  "permissions": ["storage", "notifications", "tabs", "cookies"],
+  "permissions": ["storage", "notifications", "tabs", "alarms"],
   "optional_host_permissions": ["https://*/"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'none'"
@@ -15,20 +16,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*/*/-/merge_requests/*"],
-      "js": ["content.js"],
-      "css": ["content.css"],
-      "run_at": "document_idle"
-    },
-    {
       "matches": ["https://*/*"],
-      "js": ["content_proxy.js", "review-workflow.js", "review-export.js", "review-import.js", "review-import-ui.js", "review-copy.js"],
+      "js": ["content_proxy.js"],
       "css": ["content.css"],
       "run_at": "document_idle"
     }
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "quick-popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",
@@ -40,8 +35,14 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "web_accessible_resources": [{
-    "resources": ["_locales/*/messages.json"],
-    "matches": ["https://*/*"]
-  }]
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "_locales/*/messages.json",
+        "modules/*.js",
+        "modules/chunks/*.js"
+      ],
+      "matches": ["https://*/*"]
+    }
+  ]
 }

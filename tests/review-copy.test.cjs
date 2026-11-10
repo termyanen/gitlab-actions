@@ -1290,3 +1290,105 @@ test('dirty copy closes without asking by default and close setting changes pres
   await env.click('aiReviewClose');
   assert.equal(env.document.querySelector('.gl-review-overlay'), null);
 });
+
+test('declining SPA discard preserves the draft and does not repeatedly prompt on the same route', async function() {
+  var env = await picker({ settings: { ai_review_confirm_close: true } });
+  var original = env.document.querySelector('.gl-review-overlay');
+  var prompt = env.document.querySelector('.gl-review-task-prompt');
+  await env.change(prompt, 'Keep these unsaved instructions', 'input');
+  var confirmations = 0;
+  env.context.window.confirm = function() { confirmations++; return false; };
+  await env.navigate('/team/repo/-/merge_requests/13');
+  await env.navigate('/team/repo/-/merge_requests/13');
+  assert.equal(confirmations, 1);
+  assert.equal(env.document.querySelector('.gl-review-overlay'), original);
+  assert.equal(prompt.value, 'Keep these unsaved instructions');
+  assert.equal(env.loads[0].options.signal.aborted, true);
+  env.context.window.confirm = function() { return true; };
+  await env.click('aiReviewClose');
+  assert.equal(env.document.querySelector('.gl-review-overlay'), null);
+});
+
+for (const destination of ['/team/repo/-/merge_requests/13', '/team/repo/-/pipelines/100']) {
+  test('a retained draft can prepare again after navigating to ' + destination + ' and returning', async function() {
+    var env = await picker({ settings: { ai_review_confirm_close: true }, deferredExports: true });
+    var prompt = env.document.querySelector('.gl-review-task-prompt');
+    await env.change(prompt, 'Keep these instructions', 'input');
+    await env.click('aiReviewPreview');
+    var request = env.exports[0];
+    var confirmations = 0;
+    env.context.window.confirm = function() { confirmations++; return false; };
+    await env.navigate(destination);
+    await env.navigate(destination);
+    assert.equal(confirmations, 1);
+    assert.equal(request.options.signal.aborted, true);
+    assert.equal(env.button('aiReviewPreview').disabled, true);
+    request.reject(Object.assign(new Error('Cancelled'), {name: 'AbortError'}));
+    await env.drain();
+    await env.navigate('/team/repo/-/merge_requests/12');
+    assert.equal(prompt.value, 'Keep these instructions');
+    assert.equal(env.button('aiReviewPreview').disabled, false);
+    await env.click('aiReviewPreview');
+    assert.equal(env.exports.length, 2);
+  });
+}
+
+for (const pathname of ['/team/repo/-/merge_requests/12', '/team/repo/merge_requests/12']) {
+  test('project review prompts follow parsed context on ' + pathname, async () => {
+    const env=await picker({pathname,settings:{ai_review_prompt:'Global prompt',projectProfiles:{'team/repo':{overrides:{ai_review_prompt:'Project prompt'}}}}});
+    assert.equal(env.document.querySelector('.gl-review-task-prompt').value,'Project prompt');
+  });
+}
+
+test('a click immediately after SPA navigation uses the destination project settings',async()=>{
+  const env=await ui.create({settings:{ai_review_prompt:'Global prompt',projectProfiles:{'team/repo':{overrides:{ai_review_prompt:'First project'}},'team/next':{overrides:{ai_review_prompt:'Second project'}}}}});
+  env.context.window.location.pathname='/team/next/-/merge_requests/13';
+  await env.click('aiReviewOpen');
+  assert.equal(env.document.querySelector('.gl-review-task-prompt').value,'Second project');
+});
+
+test('a disabled destination project cannot be opened via a launcher left before route polling',async()=>{
+  const env=await ui.create({settings:{projectProfiles:{'team/next':{overrides:{show_ai_review_copy:false}}}}});
+  env.context.window.location.pathname='/team/next/-/merge_requests/13';
+  await env.click('aiReviewOpen');
+  assert.equal(env.document.querySelector('.gl-review-overlay'),null);
+});
+
+test('retained project review drafts keep their own close policy when another project changes',async()=>{
+  const profiles={'team/repo':{overrides:{ai_review_confirm_close:true,ai_review_prompt:'Original project'}},'team/next':{overrides:{ai_review_confirm_close:false,ai_review_prompt:'Other project'}}};
+  const env=await picker({settings:{projectProfiles:profiles}});
+  const overlay=env.document.querySelector('.gl-review-overlay');
+  await env.change(env.document.querySelector('.gl-review-task-prompt'),'Keep unsaved draft','input');
+  let confirmations=0;
+  env.context.window.confirm=()=>{confirmations++;return false};
+  await env.navigate('/team/next/-/merge_requests/13');
+  const changed={...profiles,'team/next':{overrides:{ai_review_confirm_close:false,ai_review_prompt:'Changed other project'}}};
+  env.settingsEvents.forEach(fn=>fn({projectProfiles:{newValue:changed}},'sync'));
+  await env.click('aiReviewClose');
+  assert.equal(env.document.querySelector('.gl-review-overlay'),overlay);
+  assert.equal(confirmations,2);
+});
+
+test('a late initial settings read cannot replace a newer project profile update',async()=>{
+  const env=await ui.create({deferredSettingsReads:true,settings:{projectProfiles:{'team/repo':{overrides:{ai_review_prompt:'Stale project'}}}}});
+  env.settingsEvents.forEach(fn=>fn({projectProfiles:{newValue:{'team/repo':{overrides:{ai_review_prompt:'Latest project'}}}}},'sync'));
+  env.settingsReads[0]();
+  await env.drain();
+  await env.click('aiReviewOpen');
+  assert.equal(env.document.querySelector('.gl-review-task-prompt').value,'Latest project');
+});
+
+test('review picker expands and collapses all comment previews without changing selection',async()=>{
+  const env=await ui.create();
+  await env.click('aiReviewOpen');
+  await env.respond([{id:'long',notes:[note(1,'Line\n'.repeat(12),{resolvable:true,resolved:false})]}]);
+  const toggle=env.document.querySelector('.gl-review-comments-toggle-all');
+  const selected=check(env,1).checked;
+  assert.equal(toggle.disabled,false);
+  toggle.click();
+  assert.equal(env.document.querySelector('.gl-review-comment').dataset.expanded,'true');
+  assert.equal(check(env,1).checked,selected);
+  toggle.click();
+  assert.equal(env.document.querySelector('.gl-review-comment').dataset.expanded,'false');
+  assert.equal(check(env,1).checked,selected);
+});
