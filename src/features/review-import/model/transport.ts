@@ -1,6 +1,6 @@
 import { readMergeRequest } from "../../../entities/merge-request";
 import type { ReviewContext } from "../../../entities/review";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import {
   decodeArray,
   decodeResponse,
