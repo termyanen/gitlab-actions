@@ -2249,12 +2249,14 @@
   border-color: var(--gl-border-color-strong, #868686);
   color: var(--gl-text-color, #303030);
 }
-:where(html.gl-actions-host) .gl-dark .gl-mr-ext-git-cmd-btn {
+:where(html.gl-actions-host):where(.gl-dark, [data-theme="dark"]) .gl-mr-ext-git-cmd-btn,
+:where(html.gl-actions-host) :where(.gl-dark, [data-theme="dark"]) .gl-mr-ext-git-cmd-btn {
   background: var(--gl-background-color-default, #1f1f1f);
   color: var(--gl-text-color-secondary, #999);
   border-color: var(--gl-border-color-default, #404040);
 }
-:where(html.gl-actions-host) .gl-dark .gl-mr-ext-git-cmd-btn:hover {
+:where(html.gl-actions-host):where(.gl-dark, [data-theme="dark"]) .gl-mr-ext-git-cmd-btn:hover,
+:where(html.gl-actions-host) :where(.gl-dark, [data-theme="dark"]) .gl-mr-ext-git-cmd-btn:hover {
   color: var(--gl-text-color, #e0e0e0);
   border-color: var(--gl-border-color-strong, #666);
 }
@@ -2313,12 +2315,14 @@
   color: var(--red-500, #dd2b0e);
   border-color: currentColor;
 }
-:where(html.gl-actions-host) .gl-dark .gl-group-play-btn {
+:where(html.gl-actions-host):where(.gl-dark, [data-theme="dark"]) .gl-group-play-btn,
+:where(html.gl-actions-host) :where(.gl-dark, [data-theme="dark"]) .gl-group-play-btn {
   background: var(--gl-background-color-default, #28272d);
   color: var(--gl-text-color, #ececef);
   border-color: var(--gl-border-color-strong, #737278);
 }
-:where(html.gl-actions-host) .gl-dark .gl-group-play-btn:hover {
+:where(html.gl-actions-host):where(.gl-dark, [data-theme="dark"]) .gl-group-play-btn:hover,
+:where(html.gl-actions-host) :where(.gl-dark, [data-theme="dark"]) .gl-group-play-btn:hover {
   background: var(--gl-background-color-subtle, #333238);
 }
 :where(html.gl-actions-host) .gl-review-launcher,
@@ -2333,10 +2337,7 @@
   font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 :where(html.gl-actions-host):is(.gl-dark, [data-theme="dark"]) :is(.gl-review-launcher, .gl-review-inline, .gl-review-overlay),
-:where(html.gl-actions-host) .gl-dark .gl-review-launcher,
-:where(html.gl-actions-host) .gl-dark .gl-review-inline,
-:where(html.gl-actions-host) .gl-dark .gl-review-overlay,
-:where(html.gl-actions-host) [data-theme="dark"] .gl-review-overlay {
+:where(html.gl-actions-host) :is(.gl-dark, [data-theme="dark"]) :is(.gl-review-launcher, .gl-review-inline, .gl-review-overlay) {
   --gl-review-bg: var(--gl-background-color-default, #1f1e27);
   --gl-review-fg: var(--gl-text-color-default, #ececef);
   --gl-review-muted: var(--gl-text-color-subtle, #b5b4be);

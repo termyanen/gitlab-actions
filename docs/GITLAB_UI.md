@@ -61,6 +61,10 @@ requires its own justification and bundle/performance evidence.
   Use foreground/background/border values for their intended role. Reuse an
   existing local token family, such as `--gl-review-*`, within its owning surface.
   Do not replace the host's theme tokens globally.
+- Cover both root and ancestor theme markers (`.gl-dark` and `[data-theme="dark"]`)
+  for fallback colors. Keep success/error state selectors stronger than generic
+  theme selectors; `tests/browser/review-theme.spec.cjs` checks both marker placements
+  and theme changes without rebuilding controls.
 - Preserve fallback values for hosts without a token. Where a gap requires local
   values, check readable foreground/background pairs in both light and dark modes;
   a light fallback alone is insufficient evidence. Do not guess a GitLab version
