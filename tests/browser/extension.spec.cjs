@@ -1135,6 +1135,9 @@ test('compact scope selector switches global and project settings without extra 
       await expect(editor.locator('#profileScope')).toHaveValue('team/compact');
       await expect(editor.locator('#profileReviewersJob')).toHaveValue('project-job');
       await expect(editor.locator('#scopeHint')).toBeHidden();
+      await expect(editor.locator('.workspace-bar')).toBeHidden();
+      await expect(editor.locator('.page-heading')).toBeHidden();
+      await expect(editor.locator('#profileScope')).toBeVisible();
       await editor.locator('#profileScope').selectOption('default');
       await expect(editor.locator('#reviewersJob')).toHaveValue('global-job');
       await editor.locator('#profileScope').selectOption('team/compact');

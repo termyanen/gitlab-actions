@@ -269,8 +269,11 @@ export function SettingsPage() {
         </nav>
       </aside>
       <main className="settings-main">
-        <div className="workspace-bar">
-          <span id="currentProject" hidden={!state.currentProject}>
+        <div className="workspace-bar" hidden={isEmbeddedSettings() && !status}>
+          <span
+            id="currentProject"
+            hidden={isEmbeddedSettings() || !state.currentProject}
+          >
             {state.currentProject ? t("current", [state.currentProject]) : ""}
           </span>
           <div className="save-feedback">
@@ -288,6 +291,7 @@ export function SettingsPage() {
           </div>
           <SettingsButton
             id="openSettingsTab"
+            hidden={isEmbeddedSettings()}
             title={t("openSettingsInTab")}
             aria-label={t("openSettingsInTab")}
             disabled={disabled}
@@ -299,7 +303,7 @@ export function SettingsPage() {
         {!isEmbeddedSettings() && (
           <ReleaseNotice id="updateBanner" language={language} t={t} />
         )}
-        <header className="page-heading">
+        <header className="page-heading" hidden={isEmbeddedSettings()}>
           <h1 id="settingsHeading" tabIndex={-1} ref={heading}>
             {t(headingKey)}
           </h1>
