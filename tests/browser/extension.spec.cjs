@@ -1122,7 +1122,7 @@ test('compact scope selector switches global and project settings without extra 
   const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
   const page = await context.newPage();
   try {
-    await worker.evaluate(() => chrome.storage.sync.set({language:'en',reviewersJob:'global-job',projectProfiles:{'team/compact':{reviewersJob:'project-job'}}}));
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en',reviewersJob:'global-job',projectProfiles:{'team/compact':{reviewersJob:'project-job',customJobs:[{label:'Build Windows',jobName:'review branch deploy'}]}}}));
     await page.addInitScript(() => {
       chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/compact/-/merge_requests/1'}]);
     });
@@ -1144,6 +1144,15 @@ test('compact scope selector switches global and project settings without extra 
       await expect(editor.locator('#profileReviewersJob')).toHaveValue('project-job');
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await page.screenshot({path:`.reports/popup-compact-scope-${theme}.png`});
+      await page.locator('.popup-shortcuts [data-category="ci"]').click();
+      const jobs = editor.locator('[data-setting="customJobs"]');
+      const status = jobs.locator('.setting-inheritance-status');
+      await expect(status).toContainText('Project value');
+      const statusBox = await status.boundingBox();
+      const listBox = await editor.locator('#profileCustomJobsList').boundingBox();
+      expect(statusBox.y + statusBox.height).toBeLessThanOrEqual(listBox.y);
+      await jobs.screenshot({path:`.reports/popup-custom-jobs-${theme}.png`});
+      await page.locator('.popup-shortcuts [data-category="actions"]').click();
     }
     await page.locator('.popup-shortcuts [data-category="jira"]').click();
     await expect(editor.locator('#profileScope')).toHaveValue('team/compact');

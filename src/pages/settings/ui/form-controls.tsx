@@ -168,9 +168,11 @@ export function Section({
 export function SettingInheritance({
   settingKey,
   children,
+  statusPosition = "after",
 }: {
   settingKey: string;
   children: ReactNode;
+  statusPosition?: "before" | "after";
 }) {
   const { draft, update, t, profile } = useSettingsForm();
   const key = projectFieldKey(settingKey);
@@ -188,22 +190,26 @@ export function SettingInheritance({
     ? draft.legacyKeys?.includes(legacyKey) === true &&
       (typeof legacyValue !== "string" || !!legacyValue.trim())
     : draft.overrides?.includes(key) === true;
+  const status = (
+    <div className="setting-inheritance-status">
+      <span>{t(own ? "settingsProjectValue" : "settingsGlobal")}</span>
+      {own && (
+        <SettingsButton
+          className="inherit-reset"
+          icon="reset"
+          title={t("settingsUseGlobal")}
+          onClick={() => update(inheritProjectSetting(draft, legacyKey))}
+        >
+          {t("settingsUseGlobal")}
+        </SettingsButton>
+      )}
+    </div>
+  );
   return (
     <div className="setting-inheritance" data-setting={key}>
+      {statusPosition === "before" && status}
       {children}
-      <div className="setting-inheritance-status">
-        <span>{t(own ? "settingsProjectValue" : "settingsGlobal")}</span>
-        {own && (
-          <SettingsButton
-            className="inherit-reset"
-            icon="reset"
-            title={t("settingsUseGlobal")}
-            onClick={() => update(inheritProjectSetting(draft, legacyKey))}
-          >
-            {t("settingsUseGlobal")}
-          </SettingsButton>
-        )}
-      </div>
+      {statusPosition === "after" && status}
     </div>
   );
 }
