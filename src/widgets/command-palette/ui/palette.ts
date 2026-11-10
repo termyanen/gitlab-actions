@@ -1,3 +1,4 @@
+import { getProjectSettings } from "../../../shared/api/project-settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { msg } from "../../../shared/i18n";
 import { escHtml } from "../../../shared/lib/html";
@@ -43,7 +44,7 @@ export function startCommandPalette(
   const GITLAB_URL = window.location.origin;
   const api = createSessionApi(() => GITLAB_URL, scope.signal);
   try {
-    chrome.storage.sync.get(
+    getProjectSettings(
       { show_cmd_palette: true, show_standup: true },
       scope.guard(function (s: {
         show_cmd_palette: boolean;

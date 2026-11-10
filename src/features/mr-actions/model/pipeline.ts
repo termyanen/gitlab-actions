@@ -7,7 +7,7 @@ import {
   readPipeline,
 } from "../../../entities/pipeline";
 import { MR_DEFAULTS } from "../../../entities/settings";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { errorMessage } from "../../../shared/lib/errors";
 import { sleep } from "../../../shared/lib/time";
 import {

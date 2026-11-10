@@ -1,11 +1,13 @@
 import type { DisplayPreferences } from "./display-preferences";
 export interface MrAction {
+  enabled?: boolean;
   id: string;
   label: string;
   type: string;
   labels?: string;
 }
 export interface CustomJob {
+  enabled?: boolean;
   label: string;
   jobName: string;
 }
@@ -14,6 +16,8 @@ export interface QuickComment {
   text: string;
 }
 export interface ProjectProfile {
+  overrides?: Record<string, unknown>;
+  cherry_pick_branches?: string[];
   versionFile?: string;
   versionPath?: string;
   versionStrategy?: string;

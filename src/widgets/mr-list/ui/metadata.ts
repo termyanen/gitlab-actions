@@ -1,5 +1,6 @@
 import type { SessionApi } from "../../../shared/api/gitlab";
-import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
+import { SEL } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { q, qAll } from "../../../shared/lib/dom";
 import { reportError } from "../../../shared/lib/errors";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";

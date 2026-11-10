@@ -10,6 +10,7 @@ export interface InstructionSetting {
 }
 
 export interface InstructionOptions {
+  settingsProjectPath?: string;
   signal?: AbortSignal;
   instructionSettings?: Record<string, InstructionSetting>;
 }

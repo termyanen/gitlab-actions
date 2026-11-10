@@ -4,7 +4,7 @@ import {
   readMergeRequest,
 } from "../../../entities/merge-request";
 import { createSessionApi } from "../../../shared/api/gitlab";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { applyUnifiedDiff } from "../../../shared/lib/diff";
 import {
   errorCode,

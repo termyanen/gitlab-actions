@@ -1,4 +1,4 @@
-import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
+import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab-api";
 import { REQUEST_TIMEOUT } from "./limits";
 import type {
   ExportOptions,

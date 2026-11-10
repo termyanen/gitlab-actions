@@ -1,4 +1,4 @@
-import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
+import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab-api";
 import type { ReviewContext, ReviewLocation } from "./types";
 export function parsePage(
   location: ReviewLocation | null | undefined,

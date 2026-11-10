@@ -21,3 +21,8 @@ export type {
   ProjectProfile,
   QuickComment,
 } from "./model/types";
+export { QUICK_SETTINGS_DEFAULTS } from "./model/quick-preferences";
+
+export { normalizeCherryPickBranches } from "./model/project-profile";
+
+export { getRepositorySettings } from "./model/project-profile";

@@ -23,7 +23,7 @@ export function createRepeatReviewExporter(
     context: ReviewContext,
     options: ExportOptions = {},
   ) {
-    options = options || {};
+    options = { ...options, settingsProjectPath: context.projectPath };
     if (reviewWorkflow)
       options = await reviewWorkflow.instructionOptions(options);
     if (
@@ -40,7 +40,10 @@ export function createRepeatReviewExporter(
     const workflow = reviewWorkflow;
     if (!workflow)
       throw new Error("Reload the extension to enable repeat reviews.");
-    const saved = await workflow.settings(options.signal);
+    const saved = await workflow.settings(
+      options.signal,
+      options.settingsProjectPath,
+    );
     const baseline =
       typeof options.baselineHead === "string"
         ? options.baselineHead.trim()

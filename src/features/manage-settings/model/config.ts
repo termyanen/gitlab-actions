@@ -120,6 +120,7 @@ const BASE_DEFAULTS = {
   },
   ai_review_response_language: "auto",
   ai_review_confirm_close: false,
+  ai_review_expand_comments: false,
   ai_review_fresh_existing: false,
   show_cherry_pick: true,
   show_commit_version: false,

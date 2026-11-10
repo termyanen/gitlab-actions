@@ -1,3 +1,4 @@
+import { getProjectSettings } from "../../../shared/api/project-settings";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
@@ -38,25 +39,30 @@ export function startCommitJira(
 
   if (isCommitsPage()) {
     try {
-      chrome.storage.sync.get(
+      getProjectSettings(
         {
           jira_url: "",
           jira_ticket_regex: "",
           commits_jira_field: "fixVersions, status",
+          skip_confirmations: false,
         },
         scope.guard(function (s: {
           jira_url: string;
           jira_ticket_regex: string;
           commits_jira_field: string;
+          skip_confirmations: boolean;
         }) {
           if (chrome.runtime.lastError || !s.jira_url || !s.commits_jira_field)
             return;
           setJiraTicketRegex(s.jira_ticket_regex);
+          jiraState.skipConfirmations = !!s.skip_confirmations;
           const jiraUrl = s.jira_url;
           if (jiraState.url !== jiraUrl) {
             jiraState.url = jiraUrl;
             jiraState.authFailed = false;
             delete jiraState.failure;
+            jiraState.cache = {};
+            jiraState.myselfCache = {};
           }
           const jiraFields = s.commits_jira_field
             .split(",")

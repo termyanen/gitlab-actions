@@ -38,7 +38,8 @@ export function createReviewContextLoader({
       );
     const workflow = reviewWorkflow;
     const scope = workflow
-      ? options.fileFilter || (await workflow.settings(options.signal)).filter
+      ? options.fileFilter ||
+        (await workflow.settings(options.signal, context.projectPath)).filter
       : null;
     const warnings: string[] = [];
     const path =
