@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Consistent dark-theme controls** — AI launch/reply buttons, Git-command buttons and pipeline stage actions recognize GitLab theme markers on the root or a surrounding element. Stage success/error colors remain visible when the theme changes.
+
 - **Legacy profile selection** — settings and the compact popup select the same exact or partial project profile as GitLab actions. Opening settings no longer shows global values while a legacy pattern is active.
 
 - **Stable review scroll position** — retain the visible comment and its expanded/collapsed state during publication, including errors that make earlier cards taller. Browser regressions cover bulk toggles, mixed states, progress and completion in both themes and compact layouts.
