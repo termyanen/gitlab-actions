@@ -1,3 +1,4 @@
+import { applyProjectSettings } from "../../../shared/api/project-settings";
 import type * as Workflow from "../../../entities/review";
 import type { ReviewContext } from "../../../entities/review";
 import type { createReviewExporter } from "../../../features/review-export";
@@ -6,6 +7,7 @@ import { ROUTE_POLL_INTERVAL_MS } from "../../../shared/config/runtime";
 import type { Translate } from "../../../shared/i18n";
 import { readMessages } from "../../../shared/i18n";
 import { errorMessage, reportError, toError } from "../../../shared/lib/errors";
+import { readGitLabRelativeRoot } from "../../../shared/lib/project-url";
 import { element, eventElement } from "../../../shared/ui/dom";
 import { createReviewDialogActions } from "./actions";
 import { createReviewThreads } from "./threads";
@@ -17,6 +19,7 @@ import type {
   ReviewTask,
 } from "./types";
 import { createReviewWindow } from "./window";
+const COMMENT_EXPANSION_SETTING = "ai_review_expand_comments";
 const CONTROLS_MOUNT_DEBOUNCE_MS = 180;
 
 export function startReviewControls(
@@ -38,7 +41,13 @@ export function startReviewControls(
     selection,
     matchesStatus,
     visibleThreads,
-  } = createReviewThreads(data, t, invalidate, (state) => updateActions(state));
+  } = createReviewThreads(
+    data,
+    t,
+    invalidate,
+    (state) => updateActions(state),
+    () => settings[COMMENT_EXPANSION_SETTING] === true,
+  );
   const { prepare, load, updateActions, intentThread } =
     createReviewDialogActions(
       data,
@@ -66,10 +75,22 @@ export function startReviewControls(
     ai_review_reply_prompt: "",
     ai_review_repeat_prompt: "",
     language: "auto",
+    ai_review_response_language: "auto",
     ai_review_confirm_close: false,
+    [COMMENT_EXPANSION_SETTING]: false,
   };
   const workflow = getWorkflow();
   if (workflow) Object.assign(settings, workflow.instructionDefaults());
+  const savedSettings: ReviewSettings = { ...settings };
+  let savedProfiles: unknown = {};
+  function resolveSettings(
+    project = active?.context.projectPath || route()?.projectPath || null,
+  ) {
+    Object.assign(
+      settings,
+      applyProjectSettings(savedSettings, savedProfiles, project),
+    );
+  }
   let messages: Record<string, { message: string }> | null = null;
   settings.ai_review_confirm_close = false;
   let active: ReviewDialogState | null = null;
@@ -81,11 +102,12 @@ export function startReviewControls(
   let languageRun = 0;
   let descriptionSaveRun = 0;
   let relativeRoot: string | undefined;
-  const { open } = createReviewWindow({
+  const { open: openWindow } = createReviewWindow({
     route,
     getImportDialog,
     close,
     settings,
+    resolveSettings,
     data,
     getImporter,
     getWorkflow,
@@ -113,6 +135,13 @@ export function startReviewControls(
       visibleThreads,
     },
   });
+
+  function open(intent?: ReviewIntent) {
+    // A launcher can be clicked before the route poll observes pushState.
+    // Reconcile the old dialog and route before configuring the new window.
+    mount();
+    if (retainedRoute === null) openWindow(intent);
+  }
 
   function t(key: string, substitutions?: Parameters<Translate>[1]) {
     let text = messages && messages[key] && messages[key].message;
@@ -170,39 +199,7 @@ export function startReviewControls(
   }
 
   function route() {
-    if (relativeRoot !== undefined) {
-      return data.parsePage({
-        origin: window.location.origin,
-        pathname: window.location.pathname,
-        relativeUrlRoot: relativeRoot,
-      });
-    }
-    let prefix = "";
-    const meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="gitlab-relative-url-root"], meta[name="relative-url-root"]',
-    );
-    if (meta) prefix = meta.content || "";
-    if (!prefix && document.body)
-      prefix = document.body.getAttribute("data-relative-url-root") || "";
-    if (!prefix) {
-      // gon is in the page's JS world; read just its JSON string, never execute it.
-      const scripts = document.querySelectorAll("script:not([src])");
-      for (const currentScript of scripts) {
-        const match = (currentScript.textContent || "").match(
-          /(?:gon\.)?"?relative_url_root"?\s*(?:=|:)\s*("(?:[^"\\]|\\.)*")/,
-        );
-        if (match?.[1]) {
-          try {
-            const parsed: unknown = JSON.parse(match[1]);
-            if (typeof parsed === "string") prefix = parsed;
-          } catch {
-            /* The browser API may be unavailable. */
-          }
-          break;
-        }
-      }
-    }
-    relativeRoot = typeof prefix === "string" ? prefix : "";
+    relativeRoot ??= readGitLabRelativeRoot();
     return data.parsePage({
       origin: window.location.origin,
       pathname: window.location.pathname,
@@ -266,6 +263,7 @@ export function startReviewControls(
     if (old.loadController) old.loadController.abort();
     if (old.exportController) old.exportController.abort();
     if (old.versionsController) old.versionsController.abort();
+    old.commentPreviews?.dispose();
     old.overlay.remove();
     document.removeEventListener("keydown", old.onKeydown, true);
     if (old.previousFocus && old.previousFocus.isConnected)
@@ -297,6 +295,8 @@ export function startReviewControls(
   function rememberDescription(state: ReviewDialogState) {
     const run = ++descriptionSaveRun;
     settings.ai_review_include_description = state.includeDescription.checked;
+    savedSettings.ai_review_include_description =
+      settings.ai_review_include_description;
     if (state.descriptionSaveFailed) {
       state.descriptionSaveFailed = false;
       status(state, "");
@@ -322,6 +322,7 @@ export function startReviewControls(
 
   function rememberExisting(state: ReviewDialogState) {
     settings.ai_review_fresh_existing = state.includeExisting.checked;
+    savedSettings.ai_review_fresh_existing = settings.ai_review_fresh_existing;
     try {
       chrome.storage.sync.set(
         { ai_review_fresh_existing: settings.ai_review_fresh_existing },
@@ -533,7 +534,13 @@ export function startReviewControls(
         });
       pageKey = nextKey;
     }
-    if (!context || settings.show_ai_review_copy === false) return;
+    resolveSettings(context?.projectPath || null);
+    if (!context || settings.show_ai_review_copy === false) {
+      document
+        .querySelectorAll(".gl-review-launcher, .gl-review-inline")
+        .forEach((el) => el.remove());
+      return;
+    }
     let launcher = document.querySelector(
       ".gl-review-launcher:not(.gl-review-import-launcher)",
     );
@@ -685,31 +692,49 @@ export function startReviewControls(
       .catch(function () {});
   }
 
-  chrome.storage.sync.get(settings, function (values) {
-    if (chrome.runtime.lastError) return;
-    Object.assign(settings, values);
-    language().then(mount).catch(reportError);
-  });
+  const defaults = { ...savedSettings };
+  const changesBeforeRead: Record<string, unknown> = {};
+  let initialReadPending = true;
   const onSettingsChanged = (
     changes: Record<string, chrome.storage.StorageChange>,
     area: string,
   ) => {
-    if (area !== "sync") return;
-    if (changes.ai_review_response_language && active) invalidate(active);
-    let relevant = false;
-    Object.keys(settings).forEach(function (key) {
-      if (changes[key]) {
-        settings[key] = changes[key].newValue;
-        // A remembered checkbox value applies to future pickers. Saving it (or
-        // receiving another tab's choice) must not close an ongoing export.
-        if (
-          key !== "ai_review_include_description" &&
-          key !== "ai_review_fresh_existing" &&
-          key !== "ai_review_confirm_close"
-        )
-          relevant = true;
-      }
-    });
+    if (area !== "sync" || disposed) return;
+    if (initialReadPending)
+      for (const [key, change] of Object.entries(changes))
+        changesBeforeRead[key] = change.newValue;
+    const previous = { ...settings };
+    if (changes.projectProfiles)
+      savedProfiles = changes.projectProfiles.newValue;
+    for (const key of Object.keys(savedSettings))
+      if (changes[key])
+        savedSettings[key] = changes[key].newValue ?? defaults[key];
+    resolveSettings();
+    if (
+      previous.ai_review_response_language !==
+        settings.ai_review_response_language &&
+      active
+    )
+      invalidate(active);
+    const relevant = Object.keys(settings).some(
+      (key) =>
+        ![
+          "ai_review_include_description",
+          "ai_review_response_language",
+          "ai_review_fresh_existing",
+          "ai_review_confirm_close",
+          COMMENT_EXPANSION_SETTING,
+        ].includes(key) &&
+        JSON.stringify(previous[key]) !== JSON.stringify(settings[key]),
+    );
+    if (
+      active &&
+      previous[COMMENT_EXPANSION_SETTING] !==
+        settings[COMMENT_EXPANSION_SETTING]
+    ) {
+      active.commentChoices?.clear();
+      renderThreads(active);
+    }
     if (!relevant) return;
     if (close() === false) return;
     if (getImportDialog()?.close() === false) return;
@@ -721,6 +746,28 @@ export function startReviewControls(
     language().then(mount).catch(reportError);
   };
   chrome.storage.onChanged?.addListener(onSettingsChanged);
+  chrome.storage.sync.get(
+    { ...settings, projectProfiles: {} },
+    function (values) {
+      const failed = !!chrome.runtime.lastError;
+      if (disposed || failed) return;
+      initialReadPending = false;
+      Object.assign(values, changesBeforeRead);
+      savedProfiles = values.projectProfiles;
+      Object.assign(
+        savedSettings,
+        Object.fromEntries(
+          Object.keys(defaults).map((key) => [
+            key,
+            values[key] ?? defaults[key],
+          ]),
+        ),
+      );
+      resolveSettings();
+      language().then(mount).catch(reportError);
+    },
+  );
+
   const observer = new MutationObserver(function (records) {
     if (
       records.some(function (record) {

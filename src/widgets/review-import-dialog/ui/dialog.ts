@@ -1,3 +1,7 @@
+import {
+  applyProjectSettings,
+  currentProjectPath,
+} from "../../../shared/api/project-settings";
 import type { ReviewContext } from "../../../entities/review";
 import type {
   ImportEdit,
@@ -16,6 +20,7 @@ export function createImportDialog(
 ) {
   const { button, selectable, editable, canResolve, render } =
     createImportRenderer({
+      expandedByDefault: expandedComments,
       startEditor,
       updateActions,
       saveEditor,
@@ -35,6 +40,25 @@ export function createImportDialog(
   );
   let active: ImportDialogState | null = null;
   let confirmClose = false;
+  let savedClose = false;
+  let savedExpand = false;
+  let savedProfiles: unknown = {};
+  function expandedComments(state: ImportDialogState) {
+    return applyProjectSettings(
+      { ai_review_expand_comments: savedExpand },
+      savedProfiles,
+      state.context.projectPath,
+    ).ai_review_expand_comments;
+  }
+  function resolveClose(
+    project = active?.context.projectPath || currentProjectPath(),
+  ) {
+    confirmClose = applyProjectSettings(
+      { ai_review_confirm_close: savedClose },
+      savedProfiles,
+      project,
+    ).ai_review_confirm_close;
+  }
 
   function samePage(context: ReviewContext) {
     try {
@@ -122,6 +146,7 @@ export function createImportDialog(
     const old = active;
     active = null;
     if (old.controller) old.controller.abort();
+    old.commentPreviews?.dispose();
     old.overlay.remove();
     document.removeEventListener("keydown", old.onKeydown, true);
     if (old.previousFocus && old.previousFocus.isConnected)
@@ -544,7 +569,10 @@ export function createImportDialog(
     const completed = new Set<string>();
     state.busy = "sending";
     state.stopping = false;
-    setStatus(state, state.t("aiReviewImportSending"));
+    setStatus(
+      state,
+      `${state.t("aiReviewImportSending")} 0 / ${selected.length}`,
+    );
     updateActions(state);
     const csrfMeta = document.querySelector<HTMLMetaElement>(
       'meta[name="csrf-token"]',
@@ -566,9 +594,19 @@ export function createImportDialog(
                 })
               : [],
           onProgress: function (progress) {
-            if (!current(state) || state.run !== run || !progress.item) return;
+            if (
+              !current(state) ||
+              state.run !== run ||
+              !progress.item ||
+              !selected.includes(progress.item.id)
+            )
+              return;
             completed.add(progress.item.id);
             acceptResult(state, progress.item);
+            setStatus(
+              state,
+              `${state.t("aiReviewImportSending")} ${completed.size} / ${selected.length}`,
+            );
             render(state);
           },
         });
@@ -622,6 +660,52 @@ export function createImportDialog(
         if (!current(state) || state.run !== run) return;
         state.busy = "";
         state.stopping = false;
+        const counts = new Map<string, number>([
+          [
+            mode === "draft"
+              ? "aiReviewImportDraft"
+              : "aiReviewImportPublished",
+            0,
+          ],
+        ]);
+        let hasErrors = false;
+        for (const item of plan.items) {
+          const result = state.results.get(item.id) || item;
+          const key = {
+            published: "aiReviewImportPublished",
+            draft: "aiReviewImportDraft",
+            duplicate: "aiReviewImportDuplicate",
+            failed: "aiReviewImportFailed",
+            unknown: "aiReviewImportUnknown",
+            skipped: "aiReviewImportSkipped",
+            ready: "aiReviewImportReady",
+            invalid: "aiReviewImportInvalid",
+          }[result.status];
+          counts.set(key, (counts.get(key) || 0) + 1);
+          if (["failed", "unknown", "invalid"].includes(result.status))
+            hasErrors = true;
+          if (result.resolveStatus) {
+            const resolveKey =
+              result.resolveStatus === "resolved"
+                ? "aiReviewImportResolveSuccess"
+                : result.resolveStatus === "unknown"
+                  ? "aiReviewImportResolveUnknown"
+                  : "aiReviewImportResolveFailed";
+            counts.set(resolveKey, (counts.get(resolveKey) || 0) + 1);
+            if (result.resolveStatus !== "resolved") hasErrors = true;
+          }
+        }
+        const summary = [...counts]
+          .map(
+            ([key, count]) =>
+              `${state.t(key)}: ${count}${key === "aiReviewImportPublished" || key === "aiReviewImportDraft" ? ` / ${plan.items.length}` : ""}`,
+          )
+          .join(" · ");
+        setStatus(
+          state,
+          `${state.status.textContent} ${summary}`,
+          hasErrors || state.status.classList.contains("gl-review-error"),
+        );
         render(state);
       })
       .catch(reportError);
@@ -637,6 +721,7 @@ export function createImportDialog(
       return;
     if (close() === false) return;
 
+    resolveClose(context.projectPath);
     const state = buildWindow(context, options);
     active = state;
     document.addEventListener("keydown", state.onKeydown, true);
@@ -645,21 +730,58 @@ export function createImportDialog(
     state.input.focus();
   }
 
-  let closeSettingChanged = false;
+  const changedBeforeRead = new Set<string>();
+  let disposed = false;
+  let initialReadPending = true;
   const onSettingsChanged = (
     changes: Record<string, chrome.storage.StorageChange>,
     area: string,
   ) => {
-    if (area !== "sync" || !changes.ai_review_confirm_close) return;
-    closeSettingChanged = true;
-    confirmClose = changes.ai_review_confirm_close.newValue === true;
+    if (
+      disposed ||
+      area !== "sync" ||
+      (!changes.ai_review_confirm_close &&
+        !changes.ai_review_expand_comments &&
+        !changes.projectProfiles)
+    )
+      return;
+    const previousExpand = active ? expandedComments(active) : undefined;
+    if (initialReadPending)
+      for (const key of Object.keys(changes)) changedBeforeRead.add(key);
+    if (changes.ai_review_confirm_close)
+      savedClose = changes.ai_review_confirm_close.newValue === true;
+    if (changes.ai_review_expand_comments)
+      savedExpand = changes.ai_review_expand_comments.newValue === true;
+    if (changes.projectProfiles)
+      savedProfiles = changes.projectProfiles.newValue;
+    resolveClose();
+    if (active && previousExpand !== expandedComments(active)) {
+      active.commentChoices?.clear();
+      render(active);
+    }
   };
   if (typeof chrome !== "undefined" && chrome.storage) {
     chrome.storage.onChanged?.addListener(onSettingsChanged);
-    chrome.storage.sync?.get({ ai_review_confirm_close: false }, (values) => {
-      if (chrome.runtime.lastError || closeSettingChanged) return;
-      confirmClose = values.ai_review_confirm_close === true;
-    });
+    chrome.storage.sync?.get(
+      {
+        ai_review_confirm_close: false,
+        ai_review_expand_comments: false,
+        projectProfiles: {},
+      },
+      (values) => {
+        const failed = !!chrome.runtime.lastError;
+        if (disposed || failed) return;
+        initialReadPending = false;
+        if (!changedBeforeRead.has("ai_review_confirm_close"))
+          savedClose = values.ai_review_confirm_close === true;
+        if (!changedBeforeRead.has("ai_review_expand_comments"))
+          savedExpand = values.ai_review_expand_comments === true;
+        if (!changedBeforeRead.has("projectProfiles"))
+          savedProfiles = values.projectProfiles;
+        resolveClose();
+        if (active) render(active);
+      },
+    );
   }
   return {
     open,
@@ -671,6 +793,7 @@ export function createImportDialog(
       }
     },
     dispose() {
+      disposed = true;
       close(true);
       if (typeof chrome !== "undefined")
         chrome.storage?.onChanged?.removeListener(onSettingsChanged);

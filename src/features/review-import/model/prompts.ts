@@ -1,3 +1,4 @@
+import { getProjectSettings } from "../../../shared/api/project-settings";
 import type * as defaultWorkflow from "../../../entities/review";
 import type {
   InstructionOptions,
@@ -52,17 +53,25 @@ export function createImportPrompts(
       const defaults: Record<string, string> = {};
       defaults[key] = fallback;
       try {
-        sync.get(defaults, function (values) {
-          if (chrome.runtime && chrome.runtime.lastError) {
-            finish(new Error("Could not load AI prompt settings. Try again."));
-            return;
-          }
-          const value = values && values[key];
-          finish(
-            null,
-            typeof value === "string" && value.trim() ? value.trim() : fallback,
-          );
-        });
+        getProjectSettings(
+          defaults,
+          function (values) {
+            if (chrome.runtime && chrome.runtime.lastError) {
+              finish(
+                new Error("Could not load AI prompt settings. Try again."),
+              );
+              return;
+            }
+            const value = values && values[key];
+            finish(
+              null,
+              typeof value === "string" && value.trim()
+                ? value.trim()
+                : fallback,
+            );
+          },
+          options.settingsProjectPath,
+        );
       } catch {
         finish(new Error("Could not load AI prompt settings. Try again."));
       }
@@ -125,7 +134,7 @@ export function createImportPrompts(
     inputContext: ReviewContext,
     options: ImportOptions = {},
   ) {
-    options = options || {};
+    options = { ...options, settingsProjectPath: inputContext.projectPath };
     if (reviewWorkflow)
       options = await reviewWorkflow.instructionOptions(options);
     const context = safeContext(inputContext);
@@ -136,7 +145,12 @@ export function createImportPrompts(
     );
     const scope = reviewWorkflow
       ? options.fileFilter ||
-        (await reviewWorkflow.settings(options.signal)).filter
+        (
+          await reviewWorkflow.settings(
+            options.signal,
+            options.settingsProjectPath,
+          )
+        ).filter
       : null;
     const scopeText =
       scope && reviewWorkflow ? reviewWorkflow.scopeText(scope, options) : "";
@@ -210,7 +224,7 @@ export function createImportPrompts(
     inputContext: ReviewContext,
     options: ImportOptions = {},
   ) {
-    options = options || {};
+    options = { ...options, settingsProjectPath: inputContext.projectPath };
     if (reviewWorkflow)
       options = await reviewWorkflow.instructionOptions(options);
     if (

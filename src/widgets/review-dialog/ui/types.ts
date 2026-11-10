@@ -1,3 +1,4 @@
+import type { createCommentPreviews } from "../../../shared/ui/review-comment";
 import type { ReviewContext, FileFilter } from "../../../entities/review";
 import type {
   ReviewSnapshot,
@@ -27,9 +28,13 @@ export interface ReviewSettings {
   ai_review_reply_prompt: string;
   ai_review_repeat_prompt: string;
   ai_review_confirm_close: boolean;
+  ai_review_expand_comments: boolean;
   language: string;
 }
 export interface ReviewDialogState {
+  commentPreviews?: ReturnType<typeof createCommentPreviews>;
+  commentChoices?: Map<string, boolean>;
+  expandComments: HTMLButtonElement;
   context: ReviewContext;
   intent: ReviewIntent;
   selected: Set<string>;
