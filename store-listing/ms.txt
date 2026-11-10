@@ -86,4 +86,3 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 ✓ Sumber terbuka
 
 Dipercayai oleh pembangun yang ingin menghabiskan lebih sedikit masa mengklik melalui GitLab dan lebih banyak masa menulis kod.
-

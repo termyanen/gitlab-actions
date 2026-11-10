@@ -45,7 +45,7 @@ for commits, pushes, PR creation and publication; do not request it again if giv
 | --- | --- | --- |
 | User-visible feature, fix, changed default or behavior | `CHANGELOG.md` and `CHANGELOG_RU.md` with matching scope | `docs/CHANGELOG*.md` via `npm run docs:build` |
 | New capability or changed usage/settings | Relevant `README.md` feature/settings section | `docs/index.html`: markup plus both `LANG.en` and `LANG.ru`; update claims/screenshots when affected |
-| New discoverable extension feature | `welcome.html`, if the feature belongs in onboarding | User-facing keys in all supported `_locales/*/messages.json` files |
+| New discoverable extension feature | `src/pages/welcome/model/content.ts` and `src/pages/welcome/ui/welcome.tsx`, if the feature belongs in onboarding; `welcome.html` is only the React mount | User-facing keys in all supported `_locales/*/messages.json` files |
 | AI review/export/import workflow or format | `README.md` and both `docs/AI_REVIEW_GUIDE_EN.md` / `docs/AI_REVIEW_GUIDE_RU.md` | `docs/review-guide.html` via generator; update related site examples |
 | Data use, storage, permissions or external integration | `PRIVACY_POLICY.md`, `docs/PRIVACY_POLICY_RU.md`, relevant README claims | `docs/privacy.html` via generator; store privacy disclosures need a separate authorized dashboard update |
 | Browser permission or exposed-resource scope | `docs/PERMISSIONS.md` inventory and PR permission rationale | Proposed Chrome Web Store justifications, install/update warning impact and permission-denial/upgrade checks; update user-facing privacy/usage copy when behavior changes |
