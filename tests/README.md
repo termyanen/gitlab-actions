@@ -43,9 +43,12 @@ also verify partial discussion recovery and prevention of ambiguous write retrie
 unsafe-assertion and non-null assertion ESLint rules; tests alone do not run those gates.
 Initial source and production bundle sizes are recorded in
 `fixtures/refactor-baseline.json`. Release graph checks enforce 2 KiB for the
-all-HTTPS bootstrap, 20 KB for common GitLab startup and 160 KB for initial MR
-JavaScript. `.reports/performance.json` records the comparison; these are not
-browser CPU, memory or latency measurements.
+all-HTTPS bootstrap and 20 KB for common GitLab startup. Initial MR JavaScript
+size is informational: `.reports/performance.json` retains `current.mrInitialJs`
+and the baseline comparison, without a size threshold that fails the build.
+The existing lazy-loading, React isolation, popup/vendor size and runtime
+resource-retention checks remain enforced. Bundle bytes are not browser CPU,
+memory or latency measurements.
 
 Run `npm run test:performance` for a real Chromium resource-retention check.
 It loads the packaged extension into a temporary profile, intercepts every
