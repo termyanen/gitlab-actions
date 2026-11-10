@@ -215,3 +215,14 @@ for (const pageScript of ['gon.relative_url_root = "";', 'window.gon = {"relativ
     assert.equal(scans,1);
   });
 }
+
+test('settings scope and runtime resolve the same exact or legacy partial profile',()=>{
+  const profiles={'app':{reviewersJob:'first'},'team/app':{reviewersJob:'exact'},'team':{reviewersJob:'last'}};
+  for(const [project,key] of [['team/app','team/app'],['team/app-two','app'],['other/repo',null],[null,null]]) {
+    assert.equal(Scoped.findSettingsProfileKey(profiles,project),key);
+    assert.equal(Scoped.findSettingsProfile(profiles,project),key?profiles[key]:null);
+  }
+  assert.equal(Scoped.findSettingsProfileKey({'team/app':null,team:{}},'team/app'),'team');
+  const shared={};
+  assert.equal(Scoped.findSettingsProfileKey({'':shared,other:shared,app:shared},'team/app'),'app');
+});

@@ -1,3 +1,4 @@
+import { findSettingsProfileKey } from "../../../shared/api/project-settings";
 import {
   DEFAULTS,
   SETTINGS_FILE_MAX_BYTES,
@@ -240,9 +241,7 @@ export class SettingsController {
       );
       project = project || tabProject || null;
       const scope =
-        project && Object.hasOwn(settings.projectProfiles, project)
-          ? project
-          : "default";
+        findSettingsProfileKey(settings.projectProfiles, project) ?? "default";
       this.patch({
         data: settings,
         draft: this.loadDraft(

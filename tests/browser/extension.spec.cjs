@@ -1167,3 +1167,38 @@ test('compact Jira and scope sections collapse with keyboard and persist indepen
   await page.evaluate(() => { localStorage.removeItem('popup.disclosure.jira'); localStorage.removeItem('popup.disclosure.scope'); });
   await page.close();
 });
+
+test('legacy partial profiles open the same effective settings in popup and full page', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', jira_url:'',projectProfiles:{
+      'legacy':{reviewersJob:'first-pattern'},
+      'team/legacy':{reviewersJob:'second-pattern'},
+    }}));
+    await page.addInitScript(() => {
+      chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/legacy-app/-/merge_requests/42'}]);
+    });
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await expect(page.locator('.project-card')).toContainText('This profile overrides');
+    await page.locator('.popup-shortcuts [data-category="actions"]').click();
+    const editor = page.frameLocator('#popupSettingsEditor');
+    await expect(editor.locator('#profileScope')).toHaveValue('legacy');
+    await expect(editor.locator('#profileReviewersJob')).toHaveValue('first-pattern');
+    await editor.locator('#profileReviewersJob').fill('edited-pattern');
+    await expect.poll(() => worker.evaluate(async () => (await chrome.storage.sync.get('projectProfiles')).projectProfiles.legacy.reviewersJob)).toBe('edited-pattern');
+    await page.goto(`chrome-extension://${extensionId}/popup.html?project=team/legacy-app`);
+    await expect(page.locator('#profileScope')).toHaveValue('legacy');
+    await expect(page.locator('#profileReviewersJob')).toHaveValue('edited-pattern');
+    await worker.evaluate(async () => {
+      const {projectProfiles} = await chrome.storage.sync.get('projectProfiles');
+      await chrome.storage.sync.set({projectProfiles:{...projectProfiles,'team/legacy-app':{reviewersJob:'exact'}}});
+    });
+    await page.reload();
+    await expect(page.locator('#profileScope')).toHaveValue('team/legacy-app');
+    await expect(page.locator('#profileReviewersJob')).toHaveValue('exact');
+  } finally {
+    await page.close();
+    await worker.evaluate(async saved => {await chrome.storage.sync.clear();await chrome.storage.sync.set(saved);}, previous);
+  }
+});
