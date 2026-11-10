@@ -1,80 +1,31 @@
 # Changelog
 
-## Unreleased
+## 2.0.1
 
-- **Consistent dark-theme controls** — AI launch/reply buttons, Git-command buttons and pipeline stage actions recognize GitLab theme markers on the root or a surrounding element. Stage success/error colors remain visible when the theme changes.
+### New features
 
-- **Legacy profile selection** — settings and the compact popup select the same exact or partial project profile as GitLab actions. Opening settings no longer shows global values while a legacy pattern is active.
+- **New settings workspace** — a searchable full settings page, compact popup and welcome guide share a GitLab-inspired design, light/dark themes and layouts for narrow windows. Open settings sections directly inside the popup; collapse its Jira and project information blocks when not needed. Quick controls provide sound and desktop notification preferences.
+- **Project-specific configuration** — override repository settings per project, including MR/CI actions, quick comments, Jira, AI instructions, display rules and cherry-pick target branches. Unspecified values inherit common settings, with controls to restore inheritance. Existing profiles and JSON settings imports remain supported.
+- **Live toolbar configuration** — change button visibility and order, custom button labels and quick comments without reloading the MR. Disable custom jobs and MR actions without deleting them. The toolbar separates actions, comments, age and warnings while preserving running actions.
+- **More comfortable AI review** — long comments use five-line previews, individual expansion and Expand all / Collapse all controls. Choose the default globally or per project. The wheel scrolls the comment list; publication preserves expansion and the visible comment. Sending shows progress, a final result summary and retries for confirmed unsent comments without resending published items or drafts; uncertain deliveries are not automatically replayed.
+- **Jira connection status** — settings and popup show the configured Jira domain, an explicit read-only session check, the last check time and a link to that installation. Sign-in, permission and network errors have distinct feedback. Site access is granted or restored through an explicit button.
+- **27 languages** — 20 additional interface languages, also available for AI response-language selection. Settings, popup and onboarding follow the saved interface language. Store descriptions are provided separately for every supported language.
+- **Configurable display rules** — adjust MR size thresholds, failed-job preview and log limits, reviewer-comment scan depth, and sensitive-file patterns and exclusions. Partial previews and bounded reports identify their limits.
 
-- **Stable review scroll position** — retain the visible comment and its expanded/collapsed state during publication, including errors that make earlier cards taller. Browser regressions cover bulk toggles, mixed states, progress and completion in both themes and compact layouts.
+### Bug fixes
 
-- **Expand or collapse all review comments** — both review dialogs have a list-level toggle. Its choice stays local to the current window and survives card updates without changing saved defaults. Remove the extra wheel-target padding beside the list; keep the scrollbar gutter.
+- **Daily activity** — use local-day boundaries, include GitLab's “pushed” events and retain earlier merges even if the MR was edited on a later day. Failed requests or invalid responses are reported as errors rather than empty activity.
+- **Jira operations** — fix Server/Data Center assignment when usernames differ from user keys. Keep unsent comment text after failures, distinguish inaccessible issues from expired sessions, and retain partial results of multi-step quick actions.
+- **Background job chains** — persist task checkpoints and resume tracking after extension service-worker restarts, without blindly replaying an already started job.
+- **GitLab previews and warnings** — match complete reviewer usernames, avoid presenting limited failed-job results as a total, and show sensitive-file warnings even when toolbar actions are hidden. Sensitive-file scans check later diff pages and disclose incomplete results.
+- **Themes** — correct light version badges on dark commit pages and theme fallbacks for AI, Git-command and pipeline controls.
+- **Settings autosave** — deleting quick comments, cherry-pick branches and custom job buttons saves the change. Save/import failures retain editable input and provide recovery feedback.
 
-- **Compact review comments** — long comments show five lines with Show full comment / Show less controls, while the wheel scrolls the message list. AI review settings can expand comments by default globally or per project. Manual choices survive publication updates; labels are translated into all 27 languages.
+### Technical
 
-- **Review dialog scrolling** — long read-only comments scroll with the message list instead of trapping the mouse wheel. Both columns and text editors use visible, full-width scrollbar rails; editors retain text scrolling and pass scrolling to their column at the edges.
-
-- **Daily activity diagnostics** — invalid GitLab responses identify the source, record index and failing schema field without exposing response values. Validation failures remain errors rather than empty activity reports.
-
-- **Daily activity reliability** — accept documented nullable GitLab event/MR fields, recognize push events, and use local-day boundaries (including daylight saving). Later MR edits no longer exclude an earlier merge from the candidate query; existing report limits and warnings remain.
-
-- **Collapsible popup context** — collapse Jira connection controls and the project/global scope hint independently. Each choice is remembered locally; full-page settings remain expanded.
-
-- **Review sending progress** — show processed comments out of the current selection while sending. Retrying keeps only confirmed unsent comments selected; published comments, drafts and uncertain deliveries are excluded.
-
-- **Review publication feedback** — successful comment cards keep their height and scroll position, with a green border and status instead of an extra message. Completion shows cumulative published/draft totals, unsent comments, errors and uncertain delivery separately.
-
-- **Compact editor alignment** — project inheritance resets use accessible icons with translated tooltips in the popup, without squeezing button labels. Align Jira field removal beside its selector and add space above transfer hints. Full-page reset labels remain visible.
-
-- **Consistent compact controls** — popup and embedded settings share readable 14 px control text, consistent button padding and input heights, larger icon hit areas and a compact heading scale in both themes. Full-page settings keep their existing scale.
-
-- **Single popup release notice** — embedded settings do not mount a second update banner; standalone settings retain their notice. The passive autosave hint also stays on the full page only; saving, success and error feedback remain visible in the popup.
-
-- **Popup scrolling** — sections expand to their full height below the menu, with one popup scrollbar. Jira connection status moves above the menu in a compact block. Initial content waits for its local access state so the project card does not flash above Jira and jump downward.
-
-- **Inline popup settings** — category buttons open the shared settings editor below the menu, preserving drafts and project scope without a new tab. The full-page button remains available.
-
-- **Project settings across sections** — override MR/commit tools, CI, Jira, AI review and GitLab appearance per project, with visible inheritance and a return-to-global action. Existing profiles and global values are preserved; unrelated saves no longer copy shared defaults into profiles. Search keeps the selected scope, the popup uses the project Jira URL, and import/export includes overrides. Language, notifications and cross-project report preferences remain global. No additional manifest permissions. Project-specific Jira servers also reset authentication and ticket caches on navigation; commit badges now read plain `VERSION`/`.text` files and case-insensitive JSON/TOML extensions.
-
-- **Project settings reliability** — new profiles inherit shared CI jobs until edited. Open settings pages synchronize saved changes, profiles and imports; saves merge only edited fields with current storage so another window’s unrelated changes are preserved. Unchanged legacy branches and overrides retain their stored form, and imports reject rows with missing required properties. Project routing ignores stale SPA metadata, cherry-pick from legacy commit URLs uses the correct profile, Jira details caches stay isolated by server, and commit Jira actions respect the project’s confirmation preference.
-
-- **Project cherry-pick branches** — configure target branches per project under MR & commits. An empty project list inherits global branches; the editor previews the effective list. Commit lists and commit details use the matching profile, and export/import preserves overrides. Includes guidance in all 27 languages.
-
-- **Content stylesheet updates** — package injected CSS under a content-derived filename and register that exact file in the built manifest. This avoids reusing the previous build’s CSS URL when toolbar markup changes, including local rebuilds at the same extension version. Browser regressions verify installed CSS layout under page CSP and replacement of the legacy stylesheet during an unpacked extension update.
-
-- **Commit version badge themes** — fix light backgrounds on dark GitLab commit pages. Normal and changed-version badges follow theme markers on either the document root or a parent container, use semantic host colors when available, and update when the theme changes without reloading.
-
-- **Clearer MR toolbar** — separate labelled action/comment groups from MR age and warnings. Use consistent GitLab button classes, semantic theme colors and keyboard focus, with wrapping long labels on narrow pages. Buttons use the native medium size to match Merge; remove the conflicting small-size class that compressed them under GitLab’s host CSS. Force merge and pipeline cancellation retain a danger accent. Age uses localized units; invalid dates no longer show NaN. Live settings, custom order and running controls are preserved.
-
-- **Live MR toolbar settings** — saved changes to built-in/custom button visibility, labels, order and quick comments update open MR pages without a reload, including project overrides and imports. Unchanged controls retain focus and running state; stale settings reads are ignored and hidden actions cannot run from an outdated command palette. Settings updates do not refetch GitLab data.
-
-- **Custom button visibility** — enable the button-order checkboxes for custom CI jobs and MR actions. Turn buttons off without deleting their definitions; preserve visibility through reloads, reordering, deletion of neighbouring jobs, project profiles and export/import. Disabled buttons are omitted from the MR toolbar and command palette. Existing entries remain enabled by default.
-
-- **Clearer navigation** — rename the shared settings/popup section to **MR & commits** in all 27 languages, making its scope explicit. Update the settings instructions and site screenshot to match.
-
-- **GitLab MR response compatibility** — accept `should_remove_source_branch: null`, which GitLab returns when no per-MR deletion preference is set. The stricter response validator previously rejected the entire MR and hid its toolbar. Preserve the project’s forced-deletion setting and report mounting errors once in the console instead of silently swallowing them.
-
-- **MR toolbar mounting** — keep waiting when GitLab provides the project ID after startup, ignore invalid ID placeholders and mount into the current widget if GitLab replaces it during API reads. Prevent duplicate toolbars and release the observer on navigation.
-
-- **Jira connection check** — settings and popup can confirm the browser session with a read-only identity request. Show the last check time, a sign-in link for authentication failures and distinct access/network/API errors. Checks are explicit, uncached and never write to Jira; stale results are discarded on URL changes, revoked access and page teardown. All 27 languages are supported.
-
-- **Jira access feedback** — distinguish site permission from authentication: granted access names the configured Jira host and no longer tells signed-in users to log in again. Settings and popup link directly to the configured HTTPS Jira URL, preserving installation paths and hiding links for invalid URLs. Updated all 27 translations.
-- **Popup navigation** — expose the same seven sections and welcome guide as the settings sidebar, from one shared navigation catalogue. Quick controls now focus on sound and desktop notifications; Jira type/priority icons remain in Jira settings. Project context is preserved when opening each section.
-- **Settings accordions** — replace native triangles with theme-aware chevrons, preserving keyboard interaction and reduced-motion preferences.
-- **Welcome guide** — bring onboarding to the shared React design with section navigation, larger 16px reading text, light/dark themes and narrow-screen layouts. Preserve every instruction and feature card in all 27 locales; the guide now follows the saved interface language and live changes, with retry after settings-read failures.
-- **React settings UI** — migrate the full settings page and compact popup to React + TypeScript with shared controls, typed drafts and independent persistence. Preserve the GitLab-inspired design, all settings/project profiles, transfer format and 27 locales. React is confined to extension pages; GitLab content scripts and the worker do not load it.
-- **Settings feedback and recovery** — explicit pending/error status and retry; successful save/import feedback clears after 10 seconds; failed loads keep editing locked, scope changes wait for storage confirmation, and unsaved edits trigger a close warning. Search finds global settings from project profiles, and inherited values are visible in empty profile fields. Avoid a duplicate blur-time save that could mask a write failure. Keep quick toggles synchronized with an open settings page so unrelated edits do not revert them.
-- **Settings workspace** — a compact popup and a searchable full settings page with GitLab-inspired light/dark styling. The MR & commits section covers both workflows; limits live with their features. Explicit global/project scope, accessible reordering and aligned select arrows preserve existing settings and import/export. The welcome guide sits alongside other sidebar navigation items. New labels are translated into all 27 locales; deleting quick comments, cherry-pick branches or job buttons now autosaves.
-
-- **27 interface locales** — added 20 languages to the original seven. Interface selection, AI response-language choices and settings import share one catalogue. Every locale includes all interface messages and a separate store listing; localization checks cover the full catalogue.
-
-- **Jira session recovery** — show actionable sign-in, permission, network and response errors with read-only retries, while keeping available GitLab/Jira data. A denied issue no longer disables the whole Jira session. Preserve unsent comment text and partial quick-action outcomes; uncertain writes are never replayed automatically. Fix Server/Data Center assignment when the username differs from the user key, and use the browser session without the unnecessary `cookies` permission. A dedicated settings button grants or restores Jira site access; autosave does not request permissions.
-- **Validated external data** — reject malformed GitLab/Jira responses and worker messages before using them, and ignore invalid saved job checkpoints. Review imports retain invalid rows for correction; partial discussion exports and legacy nullable fields remain supported. Version-file paths no longer traverse inherited object properties. Group job buttons recover from missing pipeline mappings and clear an earlier error after a successful retry.
-- **Accurate feature guidance** — corrected README, website and onboarding descriptions of reviewer mentions, background job chains, confirmations, pipeline selection and compatibility. Updated seven interface translations and the settings screenshot; removed unsupported speed/setup claims. Runtime behavior is unchanged.
-- **Configurable display rules** — set MR size thresholds, failed-job preview count, log line count, reviewer-comment scan depth, and sensitive-file patterns/exclusions. All previous defaults are preserved; settings are validated and included in export/import.
-- **More accurate previews** — reviewer badges match complete usernames. Failed-job previews link to the full pipeline without presenting a partial count as a total. Thread previews and GitLab lower-bound file counts remain visibly partial.
-- **Independent warnings** — the sensitive-file warning also works with all toolbar buttons and the time tracker disabled; the empty toolbar no longer causes repeated MR initialization.
-- **Transparent scan limits** — sensitive-file checks read later diff pages and mark API errors/scan limits. Standup reports warn when bounded selections may omit activity. Added a configuration/limits guide and translated settings/onboarding descriptions.
+- **TypeScript architecture** — reorganize runtime code into FSD modules with esbuild. Extension-owned settings, popup and welcome use shared React components; GitLab content scripts and the worker remain framework-free. Typed API/message validation, lifecycle cleanup and automated architecture, browser and performance checks cover the refactored workflows.
+- **Permissions and compatibility** — Chrome 110+ is required. The unused cookies permission is removed; alarms supports background task recovery. Jira continues to use explicit optional access and the browser session. Jira Server/Data Center is the primary target; Jira Cloud is not fully supported. Existing settings and defaults are preserved, with no manual reset required.
+- **Contributor and release tooling** — shared coding-agent instructions, PR/release procedures, documented module ownership and CI packaging checks accompany the new structure. Runtime size is reported alongside resource-retention checks.
 
 ## 1.13.3
 

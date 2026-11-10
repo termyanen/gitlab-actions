@@ -35,7 +35,8 @@ layout or the accuracy of prose.
 
 Landing-page copy has three surfaces: the static English markup and `LANG.en` /
 `LANG.ru` in `index.html`. Keep all three aligned. Welcome-page copy uses all supported
-`_locales/*/messages.json` dictionaries plus the English fallback in `../welcome.html`.
+`_locales/*/messages.json` dictionaries and `src/pages/welcome/` React components;
+`welcome.html` contains only the mount point.
 Check descriptions against runtime behavior and installation defaults; do not infer
 background execution, unlimited data, or universal server support from a feature name.
 Published changelog entries and dated audit reports are history, not current usage instructions.
