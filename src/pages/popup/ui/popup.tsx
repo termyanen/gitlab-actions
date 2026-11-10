@@ -1,4 +1,7 @@
-import { applyProjectSettings } from "../../../shared/api/project-settings";
+import {
+  applyProjectSettings,
+  findSettingsProfileKey,
+} from "../../../shared/api/project-settings";
 import { categories } from "../../../shared/config/settings-navigation";
 import type { Category } from "../../../shared/config/settings-navigation";
 import { lazy, Suspense, useRef, useState } from "react";
@@ -8,7 +11,6 @@ import { SETTINGS_PAGE, WELCOME_PAGE } from "../../../shared/config/extension";
 import { readJiraBaseUrl } from "../../../shared/config/jira";
 import { mountReactPage } from "../../../shared/lib/react-page";
 import { useUiLanguage } from "../../../shared/lib/ui-language";
-import { isRecord } from "../../../shared/lib/validation";
 import {
   SettingsBrand,
   SettingsButton,
@@ -68,10 +70,10 @@ function Popup() {
       </>
     );
   if (state.loading || (loading && !editorUrl)) return null;
-  const hasProfile =
-    state.project &&
-    isRecord(state.data.projectProfiles) &&
-    Object.hasOwn(state.data.projectProfiles, state.project);
+  const hasProfile = findSettingsProfileKey(
+    state.data.projectProfiles,
+    state.project || null,
+  );
   const effective = applyProjectSettings(
     { jira_url: "", ...state.data },
     state.data.projectProfiles,

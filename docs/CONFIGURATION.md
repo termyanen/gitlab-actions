@@ -155,7 +155,10 @@ when other jobs are deleted or the button order changes.
 An exact repository-path match wins. For legacy partial profile keys, the first
 matching substring in stored profile order wins; there is no wildcard or
 longest-prefix matching. Prefer full `group/project` paths to avoid ambiguous
-matches. Imported profile keys follow the same rule.
+matches. Imported profile keys follow the same rule. Settings and the compact popup
+select that same effective profile when opened from a repository. Editing a legacy
+partial profile affects every repository it matches; create an exact project
+profile when changes should apply to only one repository.
 
 ## Fixed operational bounds
 
