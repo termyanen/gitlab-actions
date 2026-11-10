@@ -6,7 +6,7 @@ import type {
   MrActionContext,
   createMrActions,
 } from "../../../features/mr-actions";
-import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab";
+import { GITLAB_API_PREFIX } from "../../../shared/config/gitlab-api";
 import type { Translate } from "../../../shared/i18n";
 import { reportError } from "../../../shared/lib/errors";
 import { escHtml } from "../../../shared/lib/html";
