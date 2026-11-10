@@ -27,6 +27,25 @@ export function findSettingsProfile(
       return profile;
   return null;
 }
+/** Resolve editor scope through the runtime matcher without adding UI code to content bundles. */
+export function findSettingsProfileKey(
+  profiles: unknown,
+  project: string | null,
+): string | null {
+  const profile = findSettingsProfile(profiles, project);
+  if (!profile || !isRecord(profiles)) return null;
+  if (
+    project &&
+    Object.hasOwn(profiles, project) &&
+    profiles[project] === profile
+  )
+    return project;
+  return (
+    Object.keys(profiles).find(
+      (key) => key && project?.includes(key) && profiles[key] === profile,
+    ) ?? null
+  );
+}
 /** Only requested keys can cross this boundary; domain consumers still validate values. */
 export function applyProjectSettings<T extends Record<string, unknown>>(
   values: T,
