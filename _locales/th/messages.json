@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "ปุ่มจะปรากฏบนหน้า MR ชุดเริ่มต้นจะเปิดใช้งานตอนติดตั้งครั้งแรก"
   },
-  "welcomeStep3Title": {
-    "message": "ปรับแต่งผ่านป๊อปอัปของส่วนขยาย"
-  },
-  "welcomeStep3Desc": {
-    "message": "คลิกไอคอนส่วนขยายเพื่อเปิด/ปิดปุ่ม ตั้งค่าไฟล์เพิ่มเวอร์ชัน เพิ่มปุ่มงานแบบกำหนดเอง และอื่น ๆ"
-  },
+  "welcomeStep3Title": { "message": "ปรับแต่งในการตั้งค่า" },
+  "welcomeStep3Desc": { "message": "ใช้ป๊อปอัปเพื่อเปิดหรือปิดตัวเลือกอย่างรวดเร็ว เปิด “การตั้งค่าทั้งหมด” เพื่อกำหนดค่าการดำเนินการ เวอร์ชัน Jira, CI/CD และการรีวิวด้วย AI" },
   "welcomeEnabledDefault": {
     "message": "เปิดใช้งานโดยค่าเริ่มต้น"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "โปรไฟล์ต่อโปรเจกต์ช่วยให้คุณปรับปุ่มสำหรับรีโปแต่ละอันได้"
   },
-  "welcomeTip": {
-    "message": "คุณสามารถสร้างโปรไฟล์ต่อโปรเจกต์ได้ในการตั้งค่าแบบป๊อปอัพ ซึ่งมีประโยชน์เมื่อโปรเจกต์ต่างกันต้องใช้ไฟล์เวอร์ชันหรืองาน CI แบบกำหนดเองต่างกัน"
-  },
+  "welcomeTip": { "message": "สร้างโปรไฟล์โปรเจกต์ใน “การตั้งค่าทั้งหมด” เมื่อแต่ละโปรเจกต์ต้องใช้ไฟล์เวอร์ชัน ปุ่มดำเนินการ หรืองาน CI ที่แตกต่างกัน" },
   "welcomeOpenSettings": {
     "message": "เปิดการตั้งค่า"
   },
@@ -689,8 +683,13 @@
     "message": "อนุญาตการเข้าถึงไซต์ Jira"
   },
   "jiraAccessGranted": {
-    "message": "ได้รับสิทธิ์เข้าถึงไซต์แล้ว ลงชื่อเข้าใช้ Jira ในเบราว์เซอร์นี้"
+    "message": "ส่วนขยายได้รับอนุญาตให้เข้าถึง $1 แล้ว"
   },
+  "jiraConnectionUnchecked": { "message": "ยังไม่ได้ตรวจสอบการเชื่อมต่อ" },
+  "jiraConnectionCheck": { "message": "ตรวจสอบการเชื่อมต่อ" },
+  "jiraConnectionChecking": { "message": "กำลังตรวจสอบการเชื่อมต่อกับ $1…" },
+  "jiraConnectionConnected": { "message": "ผลการตรวจสอบ $1 ล่าสุด: เข้าสู่ระบบแล้ว และ API พร้อมใช้งาน" },
+  "jiraConnectionSignIn": { "message": "เข้าสู่ระบบ Jira" },
   "jiraUrlInvalid": {
     "message": "ใส่ URL พื้นฐานของ Jira แบบ HTTPS โดยไม่รวมข้อมูลเข้าสู่ระบบ/query/fragment"
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "สาขา Cherry-pick"
   },
+  "cherryPickProjectBranchesHint": { "message": "กำหนดสาขาสำหรับโปรเจกต์นี้ เว้นรายการว่างไว้เพื่อใช้สาขาจากการตั้งค่าส่วนกลาง" },
+  "cherryPickNoBranches": { "message": "ยังไม่ได้กำหนดสาขา" },
   "cherryPickBranchesHint": {
     "message": "สาขาเป้าหมายเริ่มต้นสำหรับ Cherry-pick คุณสามารถเพิ่มหรือลบสาขาในหน้าต่างโมดอลได้"
   },
@@ -1492,7 +1493,7 @@
     "message": "ยังไม่ได้บันทึกคำสั่ง ใช้สูงสุด 1,500 ตัวอักษรและลบตัวอักษรควบคุมที่ผิดปกติออก"
   },
   "settingsSaveFailed": {
-    "message": "ไม่สามารถบันทึกการตั้งค่าได้ ลองเปลี่ยนแปลงแล้วลองอีกครั้ง"
+    "message": "บันทึกการตั้งค่าไม่สำเร็จ โปรดลองอีกครั้ง"
   },
   "aiReviewPromptSessionHint": {
     "message": "การเปลี่ยนแปลงที่นี่จะใช้กับการส่งออกนี้ ตั้งค่าคำสั่งเริ่มต้นของคุณในส่วนขยาย"
@@ -2073,7 +2074,7 @@
     "message": "สร้างปุ่มชื่อเพื่อเปลี่ยนป้ายกำกับหรือเคลียร์ฟิลด์ MR อื่นๆ ลากพวกมันในรายการปุ่มเพื่อเปลี่ยนลำดับ"
   },
   "mrActionsProfileHint": {
-    "message": "โปรเจกต์นี้ใช้รายการการกระทำของตัวเองหลังบันทึก ลบรายการทั้งหมดเพื่อซ่อนปุ่มเหล่านี้สำหรับโปรเจกต์นี้"
+    "message": "การแก้ไขรายการนี้จะสร้างการดำเนินการเฉพาะโปรเจกต์ ลบทุกรายการเพื่อซ่อนปุ่มเหล่านี้ในโปรเจกต์นี้"
   },
   "mrActionAdd": {
     "message": "เพิ่มการกระทำ MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "การตั้งค่า" },
+  "settingsActions": { "message": "MR และคอมมิต" },
+  "settingsActionsHint": { "message": "คำขอรวมโค้ด คอมมิต เวอร์ชัน และ cherry-pick" },
+  "settingsCi": { "message": "CI/CD และงาน" },
+  "settingsAppearance": { "message": "อินเทอร์เฟซ GitLab" },
+  "settingsData": { "message": "ข้อมูลและความช่วยเหลือ" },
+  "settingsSearch": { "message": "ค้นหาการตั้งค่า" },
+  "settingsScope": { "message": "ขอบเขตการตั้งค่า" },
+  "settingsProjectValue": { "message": "ค่าของโปรเจกต์" },
+  "settingsUseGlobal": { "message": "ใช้ค่าส่วนกลาง" },
+  "settingsProjectInheritanceHint": { "message": "แก้ไขค่าเพื่อกำหนดเฉพาะโปรเจกต์นี้ ใช้ค่าส่วนกลางเพื่อกลับไปรับค่าจากการตั้งค่าส่วนกลาง" },
+  "settingsSharedPreferencesHint": { "message": "ภาษาของอินเทอร์เฟซ เสียง การแจ้งเตือนบนเดสก์ท็อป และการตั้งค่ารายงานข้ามโปรเจกต์เป็นค่าส่วนกลาง แก้ไขได้ในทุกโปรเจกต์" },
+  "settingsGlobal": { "message": "ทุกโปรเจกต์" },
+  "settingsGlobalHint": { "message": "การตั้งค่าเหล่านี้ใช้กับทุกโปรเจกต์" },
+  "settingsProjectHint": { "message": "โปรไฟล์นี้จะแทนที่การตั้งค่าร่วมสำหรับโปรเจกต์นี้" },
+  "settingsGlobalOnly": { "message": "ส่วนนี้ใช้การตั้งค่าร่วมสำหรับทุกโปรเจกต์" },
+  "settingsQuick": { "message": "การตั้งค่าด่วน" },
+  "settingsNoResults": { "message": "ไม่พบการตั้งค่าที่ตรงกัน" },
+  "settingsRemoveProfile": { "message": "ลบโปรไฟล์" },
+  "settingsNoProject": { "message": "เปิดโปรเจกต์ GitLab เพื่อใช้โปรไฟล์โปรเจกต์" },
+  "settingsAll": { "message": "การตั้งค่าทั้งหมด" },
+  "settingsMoveUp": { "message": "เลื่อนขึ้น" },
+  "settingsMoveDown": { "message": "เลื่อนลง" },
+  "settingsConnection": { "message": "การเชื่อมต่อ" },
+  "settingsJiraDisplay": { "message": "Jira ใน GitLab" },
+  "settingsAdvanced": { "message": "การตั้งค่าขั้นสูง" },
+  "settingsAutosaveHint": { "message": "บันทึกการเปลี่ยนแปลงโดยอัตโนมัติ" },
+  "settingsSaving": { "message": "กำลังบันทึก…" },
+  "settingsLoadFailed": { "message": "โหลดการตั้งค่าไม่สำเร็จ โปรดลองอีกครั้งก่อนแก้ไข" },
+  "aiReviewShowFull": { "message": "แสดงทั้งหมด" },
+  "aiReviewShowLess": { "message": "ย่อ" },
+  "aiReviewExpandCommentsSetting": { "message": "แสดงความคิดเห็นในการตรวจทานแบบเต็มตามค่าเริ่มต้น" },
+  "aiReviewExpandAll": { "message": "ขยายทั้งหมด" },
+  "aiReviewCollapseAll": { "message": "ย่อทั้งหมด" }
 }

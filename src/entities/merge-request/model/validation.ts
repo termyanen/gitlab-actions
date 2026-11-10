@@ -56,7 +56,8 @@ export const readActiveMergeRequest = decoder(
     blocking_discussions_resolved: optional(isBoolean),
     squash: optional(isBoolean),
     force_remove_source_branch: optional(isBoolean),
-    should_remove_source_branch: optional(isBoolean),
+    // GitLab returns null when no per-MR removal preference is set.
+    should_remove_source_branch: optional(nullable(isBoolean)),
     diff_head_sha: optional(isString),
     head_pipeline: optional(
       nullable(

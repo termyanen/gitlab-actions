@@ -1,3 +1,4 @@
+import { applyProjectSettings, currentProjectPath } from "../project-settings";
 import { checkAbort } from "../../lib/abort";
 
 /** Reading storage does not make the stored values trusted. Validate at use. */
@@ -41,4 +42,17 @@ export function readStorage(
       finish(error);
     }
   });
+}
+
+export async function readProjectSettings(
+  defaults: Record<string, unknown>,
+  signal?: AbortSignal,
+  project: string | null = currentProjectPath(),
+): Promise<Record<string, unknown>> {
+  const saved = await readStorage(
+    "sync",
+    { ...defaults, projectProfiles: {} },
+    signal,
+  );
+  return applyProjectSettings(saved, saved.projectProfiles, project);
 }

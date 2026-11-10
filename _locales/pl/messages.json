@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Przyciski pojawiają się na stronie MR. Podstawowy zestaw jest włączany przy pierwszej instalacji."
   },
-  "welcomeStep3Title": {
-    "message": "Dostosuj przez wyskakujące okienko rozszerzenia"
-  },
-  "welcomeStep3Desc": {
-    "message": "Kliknij ikonę rozszerzenia, żeby włączać/wyłączać przyciski, ustawić plik podwyższenia wersji, dodać niestandardowe przyciski zadań i więcej."
-  },
+  "welcomeStep3Title": { "message": "Dostosuj w ustawieniach" },
+  "welcomeStep3Desc": { "message": "Używaj okna rozszerzenia do szybkiego przełączania opcji. Otwórz „Wszystkie ustawienia”, aby skonfigurować działania, wersje, Jira, CI/CD i przegląd AI." },
   "welcomeEnabledDefault": {
     "message": "Włączone domyślnie"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profile dla poszczególnych projektów pozwalają dostosować przyciski dla różnych repozytoriów"
   },
-  "welcomeTip": {
-    "message": "Możesz tworzyć profile dla poszczególnych projektów w ustawieniach w wyskakującym okienku. Przydaje się to, gdy różne projekty potrzebują różnych plików wersji lub niestandardowych zadań CI."
-  },
+  "welcomeTip": { "message": "Twórz profile projektów w sekcji „Wszystkie ustawienia”, gdy projekty wymagają różnych plików wersji, przycisków działań lub zadań CI." },
   "welcomeOpenSettings": {
     "message": "Otwórz ustawienia"
   },
@@ -689,8 +683,13 @@
     "message": "Zezwól na dostęp do strony Jira"
   },
   "jiraAccessGranted": {
-    "message": "Dostęp do strony przyznany. Zaloguj się do Jira w tej przeglądarce."
+    "message": "Rozszerzenie ma uprawnienia dostępu do $1."
   },
+  "jiraConnectionUnchecked": { "message": "Połączenie nie zostało jeszcze sprawdzone." },
+  "jiraConnectionCheck": { "message": "Sprawdź połączenie" },
+  "jiraConnectionChecking": { "message": "Sprawdzanie połączenia z $1…" },
+  "jiraConnectionConnected": { "message": "Ostatnie sprawdzenie $1: zalogowano; API dostępne." },
+  "jiraConnectionSignIn": { "message": "Zaloguj się do Jira" },
   "jiraUrlInvalid": {
     "message": "Wprowadź bazowy URL Jira HTTPS, bez danych logowania/parametrów/fragmentów."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick gałęzi"
   },
+  "cherryPickProjectBranchesHint": { "message": "Ustaw gałęzie dla tego projektu. Pozostaw listę pustą, aby użyć gałęzi globalnych." },
+  "cherryPickNoBranches": { "message": "Nie ustawiono żadnych gałęzi." },
   "cherryPickBranchesHint": {
     "message": "Domyślne docelowe gałęzie do cherry-pick. Możesz dodać lub usunąć gałęzie w oknie modalnym."
   },
@@ -1492,7 +1493,7 @@
     "message": "Zapytanie nie zostało zapisane. Użyj maksymalnie 1500 znaków i usuń nietypowe znaki kontrolne."
   },
   "settingsSaveFailed": {
-    "message": "Nie udało się zapisać ustawień. Wprowadź zmianę, aby spróbować ponownie."
+    "message": "Nie udało się zapisać ustawień. Spróbuj ponownie."
   },
   "aiReviewPromptSessionHint": {
     "message": "Zmiany tutaj dotyczą tego eksportu. Ustaw domyślny prompt w ustawieniach rozszerzenia."
@@ -2073,7 +2074,7 @@
     "message": "Twórz nazwane przyciski do zmiany etykiet lub czyszczenia innych pól MR. Przeciągaj je na liście przycisków, aby zmienić ich kolejność."
   },
   "mrActionsProfileHint": {
-    "message": "Ten projekt używa własnej listy akcji po zapisaniu. Usuń wszystkie wpisy, aby ukryć te przyciski dla tego projektu."
+    "message": "Edycja tej listy tworzy działania dla tego projektu. Usuń wszystkie wpisy, aby ukryć te przyciski w projekcie."
   },
   "mrActionAdd": {
     "message": "Dodaj akcję MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Ustawienia" },
+  "settingsActions": { "message": "MR i commity" },
+  "settingsActionsHint": { "message": "Merge requesty, commity, wersje i cherry-pick." },
+  "settingsCi": { "message": "CI/CD i zadania" },
+  "settingsAppearance": { "message": "Interfejs GitLab" },
+  "settingsData": { "message": "Dane i pomoc" },
+  "settingsSearch": { "message": "Szukaj ustawień" },
+  "settingsScope": { "message": "Zakres ustawień" },
+  "settingsProjectValue": { "message": "Wartość projektu" },
+  "settingsUseGlobal": { "message": "Użyj wartości globalnej" },
+  "settingsProjectInheritanceHint": { "message": "Zmień wartość, aby ustawić ją dla tego projektu. Użyj wartości globalnej, aby przywrócić dziedziczenie." },
+  "settingsSharedPreferencesHint": { "message": "Język interfejsu, dźwięk, powiadomienia i ustawienia raportów między projektami są globalne. Edytuj je w sekcji Wszystkie projekty." },
+  "settingsGlobal": { "message": "Wszystkie projekty" },
+  "settingsGlobalHint": { "message": "Te ustawienia dotyczą wszystkich projektów." },
+  "settingsProjectHint": { "message": "Ten profil zastępuje wspólne ustawienia dla tego projektu." },
+  "settingsGlobalOnly": { "message": "Ta sekcja korzysta ze wspólnych ustawień dla wszystkich projektów." },
+  "settingsQuick": { "message": "Szybkie ustawienia" },
+  "settingsNoResults": { "message": "Nie znaleziono pasujących ustawień." },
+  "settingsRemoveProfile": { "message": "Usuń profil" },
+  "settingsNoProject": { "message": "Otwórz projekt GitLab, aby korzystać z profili projektów." },
+  "settingsAll": { "message": "Wszystkie ustawienia" },
+  "settingsMoveUp": { "message": "Przenieś w górę" },
+  "settingsMoveDown": { "message": "Przenieś w dół" },
+  "settingsConnection": { "message": "Połączenie" },
+  "settingsJiraDisplay": { "message": "Jira w GitLab" },
+  "settingsAdvanced": { "message": "Ustawienia zaawansowane" },
+  "settingsAutosaveHint": { "message": "Zmiany są zapisywane automatycznie." },
+  "settingsSaving": { "message": "Zapisywanie…" },
+  "settingsLoadFailed": { "message": "Nie udało się wczytać ustawień. Spróbuj ponownie przed edycją." },
+  "aiReviewShowFull": { "message": "Pokaż całość" },
+  "aiReviewShowLess": { "message": "Zwiń" },
+  "aiReviewExpandCommentsSetting": { "message": "Domyślnie pokazuj pełne komentarze do przeglądu" },
+  "aiReviewExpandAll": { "message": "Rozwiń wszystko" },
+  "aiReviewCollapseAll": { "message": "Zwiń wszystko" }
 }

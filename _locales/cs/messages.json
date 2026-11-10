@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Tlačítka se objeví na stránce MR. Sada pro začátečníky je aktivní při první instalaci."
   },
-  "welcomeStep3Title": {
-    "message": "Přizpůsobení přes vyskakovací okno rozšíření"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klikněte na ikonu rozšíření pro povolení/zakázání tlačítek, nastavení souboru pro zvýšení verze, přidání vlastních tlačítek úloh a další."
-  },
+  "welcomeStep3Title": { "message": "Přizpůsobte si nastavení" },
+  "welcomeStep3Desc": { "message": "Vyskakovací okno slouží k rychlému přepínání voleb. Otevřete „Všechna nastavení“ a nastavte akce, verze, Jiru, CI/CD a AI revize." },
   "welcomeEnabledDefault": {
     "message": "Ve výchozím nastavení povoleno"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profily na úrovni projektu vám umožňují přizpůsobit tlačítka pro různé repozitáře"
   },
-  "welcomeTip": {
-    "message": "Můžete si vytvořit profily na úrovni projektu v nastavení vyskakovacího okna. To je užitečné, když různé projekty potřebují různé soubory verzí nebo vlastní CI úlohy."
-  },
+  "welcomeTip": { "message": "V části „Všechna nastavení“ vytvořte profily projektů, pokud projekty potřebují různé soubory verzí, tlačítka akcí nebo úlohy CI." },
   "welcomeOpenSettings": {
     "message": "Otevřít nastavení"
   },
@@ -689,8 +683,13 @@
     "message": "Povolit přístup k webu Jira"
   },
   "jiraAccessGranted": {
-    "message": "Přístup k webu udělen. Přihlaste se do Jira v tomto prohlížeči."
+    "message": "Rozšíření má povolen přístup k $1."
   },
+  "jiraConnectionUnchecked": { "message": "Připojení zatím nebylo ověřeno." },
+  "jiraConnectionCheck": { "message": "Ověřit připojení" },
+  "jiraConnectionChecking": { "message": "Ověřování připojení k $1…" },
+  "jiraConnectionConnected": { "message": "Poslední kontrola $1: přihlášení potvrzeno; API je dostupné." },
+  "jiraConnectionSignIn": { "message": "Přihlásit se do Jira" },
   "jiraUrlInvalid": {
     "message": "Zadejte základní URL Jira přes HTTPS, bez přihlašovacích údajů/dotazů/fragmentů."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick větve"
   },
+  "cherryPickProjectBranchesHint": { "message": "Nastavte větve pro tento projekt. Ponechte seznam prázdný, pokud chcete použít globální větve." },
+  "cherryPickNoBranches": { "message": "Nejsou nastaveny žádné větve." },
   "cherryPickBranchesHint": {
     "message": "Výchozí cílové větve pro cherry-pick. V rámci modálního okna můžete přidat nebo odebrat větve."
   },
@@ -1492,7 +1493,7 @@
     "message": "Výzva nebyla uložena. Použijte maximálně 1 500 znaků a odstraňte zvláštní řídicí znaky."
   },
   "settingsSaveFailed": {
-    "message": "Nastavení nebylo možné uložit. Pro znovupokus proveďte změnu."
+    "message": "Nastavení se nepodařilo uložit. Zkuste to znovu."
   },
   "aiReviewPromptSessionHint": {
     "message": "Změny zde platí pro tento export. Nastavte výchozí výzvu v nastavení rozšíření."
@@ -2073,7 +2074,7 @@
     "message": "Vytvořte pojmenovaná tlačítka pro změnu štítků nebo vymazání jiných MR polí. Přetahujte je v seznamu tlačítek pro změnu jejich pořadí."
   },
   "mrActionsProfileHint": {
-    "message": "Tento projekt používá po uložení vlastní seznam akcí. Odstraňte všechny položky pro skrytí těchto tlačítek pro tento projekt."
+    "message": "Úpravou tohoto seznamu vytvoříte akce pro tento projekt. Odebráním všech položek tato tlačítka v projektu skryjete."
   },
   "mrActionAdd": {
     "message": "Přidat akci MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Nastavení" },
+  "settingsActions": { "message": "MR a commity" },
+  "settingsActionsHint": { "message": "Merge requesty, commity, verze a cherry-pick." },
+  "settingsCi": { "message": "CI/CD a úlohy" },
+  "settingsAppearance": { "message": "Rozhraní GitLabu" },
+  "settingsData": { "message": "Data a nápověda" },
+  "settingsSearch": { "message": "Hledat nastavení" },
+  "settingsScope": { "message": "Rozsah nastavení" },
+  "settingsProjectValue": { "message": "Hodnota projektu" },
+  "settingsUseGlobal": { "message": "Použít globální hodnotu" },
+  "settingsProjectInheritanceHint": { "message": "Změnou hodnoty ji nastavíte pro tento projekt. Použitím globální hodnoty obnovíte dědičnost." },
+  "settingsSharedPreferencesHint": { "message": "Jazyk rozhraní, zvuk, oznámení a nastavení přehledu napříč projekty jsou globální. Upravte je v části Všechny projekty." },
+  "settingsGlobal": { "message": "Všechny projekty" },
+  "settingsGlobalHint": { "message": "Tato nastavení platí pro všechny projekty." },
+  "settingsProjectHint": { "message": "Tento profil přepisuje společná nastavení pro tento projekt." },
+  "settingsGlobalOnly": { "message": "Tato sekce používá společná nastavení pro všechny projekty." },
+  "settingsQuick": { "message": "Rychlá nastavení" },
+  "settingsNoResults": { "message": "Nenalezena žádná odpovídající nastavení." },
+  "settingsRemoveProfile": { "message": "Odstranit profil" },
+  "settingsNoProject": { "message": "Chcete-li používat profily projektů, otevřete projekt v GitLabu." },
+  "settingsAll": { "message": "Všechna nastavení" },
+  "settingsMoveUp": { "message": "Posunout nahoru" },
+  "settingsMoveDown": { "message": "Posunout dolů" },
+  "settingsConnection": { "message": "Připojení" },
+  "settingsJiraDisplay": { "message": "Jira v GitLabu" },
+  "settingsAdvanced": { "message": "Pokročilá nastavení" },
+  "settingsAutosaveHint": { "message": "Změny se ukládají automaticky." },
+  "settingsSaving": { "message": "Ukládání…" },
+  "settingsLoadFailed": { "message": "Nastavení se nepodařilo načíst. Před úpravou to zkuste znovu." },
+  "aiReviewShowFull": { "message": "Zobrazit celé" },
+  "aiReviewShowLess": { "message": "Sbalit" },
+  "aiReviewExpandCommentsSetting": { "message": "Ve výchozím nastavení zobrazovat celé komentáře k revizi" },
+  "aiReviewExpandAll": { "message": "Rozbalit vše" },
+  "aiReviewCollapseAll": { "message": "Sbalit vše" }
 }

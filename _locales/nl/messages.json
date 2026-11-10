@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Knoppen verschijnen op de MR-pagina. Een startset is ingeschakeld bij de eerste installatie."
   },
-  "welcomeStep3Title": {
-    "message": "Pas aan via het extensie-popup"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klik op het extensiepictogram om knoppen in/uit te schakelen, stel een versieverhogingsbestand in, voeg aangepaste jobknoppen toe, en meer."
-  },
+  "welcomeStep3Title": { "message": "Aanpassen via instellingen" },
+  "welcomeStep3Desc": { "message": "Gebruik de popup om opties snel aan of uit te zetten. Open ‘Alle instellingen’ om acties, versies, Jira, CI/CD en AI-reviews in te stellen." },
   "welcomeEnabledDefault": {
     "message": "Standaard ingeschakeld"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profielen per project laten je knoppen aanpassen voor verschillende repositories"
   },
-  "welcomeTip": {
-    "message": "Je kunt profielen per project aanmaken in de popup-instellingen. Dit is handig wanneer verschillende projecten verschillende versiebestanden of aangepaste CI-jobs nodig hebben."
-  },
+  "welcomeTip": { "message": "Maak projectprofielen in ‘Alle instellingen’ wanneer projecten verschillende versiebestanden, actieknoppen of CI-jobs nodig hebben." },
   "welcomeOpenSettings": {
     "message": "Open instellingen"
   },
@@ -689,8 +683,13 @@
     "message": "Jira-site toegang toestaan"
   },
   "jiraAccessGranted": {
-    "message": "Site-toegang verleend. Meld u aan bij Jira in deze browser."
+    "message": "De extensie heeft toestemming om $1 te openen."
   },
+  "jiraConnectionUnchecked": { "message": "De verbinding is nog niet gecontroleerd." },
+  "jiraConnectionCheck": { "message": "Verbinding controleren" },
+  "jiraConnectionChecking": { "message": "Verbinding met $1 controleren…" },
+  "jiraConnectionConnected": { "message": "Laatste controle van $1: aangemeld; API beschikbaar." },
+  "jiraConnectionSignIn": { "message": "Aanmelden bij Jira" },
   "jiraUrlInvalid": {
     "message": "Voer een HTTPS Jira-basis-URL in, zonder credentials/query/fragment."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick branches"
   },
+  "cherryPickProjectBranchesHint": { "message": "Stel branches in voor dit project. Laat de lijst leeg om de globale branches te gebruiken." },
+  "cherryPickNoBranches": { "message": "Er zijn geen branches ingesteld." },
   "cherryPickBranchesHint": {
     "message": "Standaard doelbranches voor cherry-pick. Je kunt branches toevoegen of verwijderen in de modal."
   },
@@ -1492,7 +1493,7 @@
     "message": "Prompt niet opgeslagen. Gebruik maximaal 1.500 tekens en verwijder ongebruikelijke besturingskarakters."
   },
   "settingsSaveFailed": {
-    "message": "Instellingen konden niet worden opgeslagen. Breng een wijziging aan om het opnieuw te proberen."
+    "message": "De instellingen konden niet worden opgeslagen. Probeer het opnieuw."
   },
   "aiReviewPromptSessionHint": {
     "message": "Wijzigingen hier zijn van toepassing op deze export. Stel je standaardprompt in via de extensie-instellingen."
@@ -2073,7 +2074,7 @@
     "message": "Maak benoemde knoppen om labels te wijzigen of andere MR-velden te wissen. Sleep ze in de knoppenlijst om de volgorde te wijzigen."
   },
   "mrActionsProfileHint": {
-    "message": "Dit project gebruikt zijn eigen actielijst na het opslaan. Verwijder alle vermeldingen om deze knoppen voor dit project te verbergen."
+    "message": "Door deze lijst te bewerken maak je projectspecifieke acties. Verwijder alle items om deze knoppen voor dit project te verbergen."
   },
   "mrActionAdd": {
     "message": "MR-actie toevoegen"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Instellingen" },
+  "settingsActions": { "message": "MR en commits" },
+  "settingsActionsHint": { "message": "Merge requests, commits, versies en cherry-pick." },
+  "settingsCi": { "message": "CI/CD en jobs" },
+  "settingsAppearance": { "message": "GitLab-interface" },
+  "settingsData": { "message": "Gegevens en hulp" },
+  "settingsSearch": { "message": "Instellingen zoeken" },
+  "settingsScope": { "message": "Bereik van instellingen" },
+  "settingsProjectValue": { "message": "Projectwaarde" },
+  "settingsUseGlobal": { "message": "Globale waarde gebruiken" },
+  "settingsProjectInheritanceHint": { "message": "Wijzig een waarde om deze voor dit project in te stellen. Gebruik de globale waarde om overerving te herstellen." },
+  "settingsSharedPreferencesHint": { "message": "Interfacetaal, geluid, bureaubladmeldingen en projectoverstijgende rapportinstellingen zijn globaal. Bewerk ze onder Alle projecten." },
+  "settingsGlobal": { "message": "Alle projecten" },
+  "settingsGlobalHint": { "message": "Deze instellingen gelden voor alle projecten." },
+  "settingsProjectHint": { "message": "Dit profiel overschrijft de algemene instellingen voor dit project." },
+  "settingsGlobalOnly": { "message": "Dit onderdeel gebruikt gedeelde instellingen voor alle projecten." },
+  "settingsQuick": { "message": "Snelle instellingen" },
+  "settingsNoResults": { "message": "Geen overeenkomende instellingen." },
+  "settingsRemoveProfile": { "message": "Profiel verwijderen" },
+  "settingsNoProject": { "message": "Open een GitLab-project om projectprofielen te gebruiken." },
+  "settingsAll": { "message": "Alle instellingen" },
+  "settingsMoveUp": { "message": "Omhoog verplaatsen" },
+  "settingsMoveDown": { "message": "Omlaag verplaatsen" },
+  "settingsConnection": { "message": "Verbinding" },
+  "settingsJiraDisplay": { "message": "Jira in GitLab" },
+  "settingsAdvanced": { "message": "Geavanceerde instellingen" },
+  "settingsAutosaveHint": { "message": "Wijzigingen worden automatisch opgeslagen." },
+  "settingsSaving": { "message": "Opslaan…" },
+  "settingsLoadFailed": { "message": "De instellingen konden niet worden geladen. Probeer het opnieuw voordat je ze bewerkt." },
+  "aiReviewShowFull": { "message": "Volledig tonen" },
+  "aiReviewShowLess": { "message": "Minder tonen" },
+  "aiReviewExpandCommentsSetting": { "message": "Reviewopmerkingen standaard volledig tonen" },
+  "aiReviewExpandAll": { "message": "Alles uitvouwen" },
+  "aiReviewCollapseAll": { "message": "Alles samenvouwen" }
 }

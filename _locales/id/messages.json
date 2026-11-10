@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Tombol muncul di halaman MR. Satu set awal diaktifkan saat instalasi pertama."
   },
-  "welcomeStep3Title": {
-    "message": "Sesuaikan lewat popup ekstensi"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klik ikon ekstensi untuk mengaktifkan/nonaktifkan tombol, atur file versi bump, tambah tombol job kustom, dan lainnya."
-  },
+  "welcomeStep3Title": { "message": "Sesuaikan melalui pengaturan" },
+  "welcomeStep3Desc": { "message": "Gunakan popup untuk mengaktifkan atau menonaktifkan opsi dengan cepat. Buka “Semua pengaturan” untuk mengatur tindakan, versi, Jira, CI/CD, dan tinjauan AI." },
   "welcomeEnabledDefault": {
     "message": "Diaktifkan secara default"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profil per-proyek memungkinkan kamu menyesuaikan tombol untuk repositori yang berbeda"
   },
-  "welcomeTip": {
-    "message": "Kamu bisa membuat profil per-proyek di pengaturan popup. Ini berguna ketika proyek yang berbeda membutuhkan file versi yang berbeda atau pekerjaan CI kustom."
-  },
+  "welcomeTip": { "message": "Buat profil proyek di “Semua pengaturan” jika proyek memerlukan berkas versi, tombol tindakan, atau job CI yang berbeda." },
   "welcomeOpenSettings": {
     "message": "Buka Pengaturan"
   },
@@ -689,8 +683,13 @@
     "message": "Izinkan akses situs Jira"
   },
   "jiraAccessGranted": {
-    "message": "Akses situs diberikan. Masuk ke Jira di browser ini."
+    "message": "Ekstensi diizinkan mengakses $1."
   },
+  "jiraConnectionUnchecked": { "message": "Koneksi belum diperiksa." },
+  "jiraConnectionCheck": { "message": "Periksa koneksi" },
+  "jiraConnectionChecking": { "message": "Memeriksa koneksi ke $1…" },
+  "jiraConnectionConnected": { "message": "Pemeriksaan terakhir $1: sudah masuk; API tersedia." },
+  "jiraConnectionSignIn": { "message": "Masuk ke Jira" },
   "jiraUrlInvalid": {
     "message": "Masukkan URL dasar Jira HTTPS, tanpa kredensial/query/fragment."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cabang cherry-pick"
   },
+  "cherryPickProjectBranchesHint": { "message": "Tentukan cabang untuk proyek ini. Biarkan daftar kosong untuk menggunakan cabang global." },
+  "cherryPickNoBranches": { "message": "Belum ada cabang yang dikonfigurasi." },
   "cherryPickBranchesHint": {
     "message": "Cabang target default untuk cherry-pick. Anda dapat menambah atau menghapus cabang di modal."
   },
@@ -1492,7 +1493,7 @@
     "message": "Prompt tidak disimpan. Gunakan maksimal 1.500 karakter dan hapus karakter kontrol yang tidak biasa."
   },
   "settingsSaveFailed": {
-    "message": "Pengaturan tidak dapat disimpan. Lakukan perubahan untuk mencoba lagi."
+    "message": "Pengaturan tidak dapat disimpan. Coba lagi."
   },
   "aiReviewPromptSessionHint": {
     "message": "Perubahan di sini berlaku untuk ekspor ini. Atur prompt default Anda di pengaturan ekstensi."
@@ -2073,7 +2074,7 @@
     "message": "Buat tombol bernama untuk mengubah label atau mengosongkan field MR lain. Seret mereka dalam daftar tombol untuk mengubah urutannya."
   },
   "mrActionsProfileHint": {
-    "message": "Proyek ini menggunakan daftar aksi sendiri setelah menyimpan. Hapus semua entri untuk menyembunyikan tombol ini untuk proyek ini."
+    "message": "Mengedit daftar ini membuat tindakan khusus proyek. Hapus semua entri untuk menyembunyikan tombol ini pada proyek ini."
   },
   "mrActionAdd": {
     "message": "Tambah aksi MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Pengaturan" },
+  "settingsActions": { "message": "MR dan commit" },
+  "settingsActionsHint": { "message": "Merge request, commit, versi, dan cherry-pick." },
+  "settingsCi": { "message": "CI/CD dan job" },
+  "settingsAppearance": { "message": "Antarmuka GitLab" },
+  "settingsData": { "message": "Data dan bantuan" },
+  "settingsSearch": { "message": "Cari pengaturan" },
+  "settingsScope": { "message": "Cakupan pengaturan" },
+  "settingsProjectValue": { "message": "Nilai proyek" },
+  "settingsUseGlobal": { "message": "Gunakan nilai global" },
+  "settingsProjectInheritanceHint": { "message": "Ubah nilai untuk menetapkannya pada proyek ini. Gunakan nilai global untuk memulihkan pewarisan." },
+  "settingsSharedPreferencesHint": { "message": "Bahasa antarmuka, suara, notifikasi desktop, dan pengaturan laporan lintas proyek bersifat global. Ubah di Semua proyek." },
+  "settingsGlobal": { "message": "Semua proyek" },
+  "settingsGlobalHint": { "message": "Pengaturan ini berlaku untuk semua proyek." },
+  "settingsProjectHint": { "message": "Profil ini menggantikan pengaturan umum untuk proyek ini." },
+  "settingsGlobalOnly": { "message": "Bagian ini menggunakan pengaturan bersama untuk semua proyek." },
+  "settingsQuick": { "message": "Pengaturan cepat" },
+  "settingsNoResults": { "message": "Tidak ada pengaturan yang cocok." },
+  "settingsRemoveProfile": { "message": "Hapus profil" },
+  "settingsNoProject": { "message": "Buka proyek GitLab untuk menggunakan profil proyek." },
+  "settingsAll": { "message": "Semua pengaturan" },
+  "settingsMoveUp": { "message": "Pindahkan ke atas" },
+  "settingsMoveDown": { "message": "Pindahkan ke bawah" },
+  "settingsConnection": { "message": "Koneksi" },
+  "settingsJiraDisplay": { "message": "Jira di GitLab" },
+  "settingsAdvanced": { "message": "Pengaturan lanjutan" },
+  "settingsAutosaveHint": { "message": "Perubahan disimpan secara otomatis." },
+  "settingsSaving": { "message": "Menyimpan…" },
+  "settingsLoadFailed": { "message": "Pengaturan tidak dapat dimuat. Coba lagi sebelum mengedit." },
+  "aiReviewShowFull": { "message": "Tampilkan lengkap" },
+  "aiReviewShowLess": { "message": "Tampilkan lebih sedikit" },
+  "aiReviewExpandCommentsSetting": { "message": "Tampilkan komentar peninjauan secara lengkap secara default" },
+  "aiReviewExpandAll": { "message": "Perluas semua" },
+  "aiReviewCollapseAll": { "message": "Ciutkan semua" }
 }

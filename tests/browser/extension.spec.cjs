@@ -5,6 +5,8 @@ const path = require('node:path');
 
 let context, worker, extensionId, profile;
 const runtimeErrors = [];
+async function section(page, category) { await page.locator('#settingsNav [data-category="' + category + '"]').click(); }
+async function policy(page, id) { const detail = page.locator('details').filter({has:page.locator('#' + id)}); if (!await detail.getAttribute('open').then(v => v !== null)) await detail.locator('summary').click(); }
 
 function fixtureMr(iid, overrides = {}) {
   return {
@@ -92,12 +94,15 @@ test('settings forms preserve drafts across profile switches and language re-ren
   try {
     await page.goto(`chrome-extension://${extensionId}/popup.html`);
     await expect(page.locator('#ai_review_prompt')).toHaveValue('Saved instruction');
+    await section(page, 'ai');
     await page.locator('#ai_review_prompt').fill('Preserve this edited instruction');
-    await page.locator('#tabs [data-tab="team/form-fixture"]').click();
+    await section(page, 'actions');
+    await page.locator('#profileScope').selectOption('team/form-fixture');
     await expect(page.locator('#profileVersionStrategy')).toHaveValue('major');
     await page.locator('#profileVersionStrategy').selectOption('patch');
-    await page.locator('#tabs [data-tab="default"]').click();
+    await page.locator('#profileScope').selectOption('default');
     await expect(page.locator('#ai_review_prompt')).toHaveValue('Preserve this edited instruction');
+    await section(page, 'general');
     await page.locator('#language').selectOption('ru');
     await expect(page.locator('#language')).toHaveValue('ru');
     await expect.poll(() => worker.evaluate(() => chrome.storage.sync.get(['ai_review_prompt', 'projectProfiles', 'language']))).toMatchObject({
@@ -106,7 +111,8 @@ test('settings forms preserve drafts across profile switches and language re-ren
     });
     await page.reload();
     await expect(page.locator('#ai_review_prompt')).toHaveValue('Preserve this edited instruction');
-    await page.locator('#tabs [data-tab="team/form-fixture"]').click();
+    await section(page, 'actions');
+    await page.locator('#profileScope').selectOption('team/form-fixture');
     await expect(page.locator('#profileVersionStrategy')).toHaveValue('patch');
   } finally {
     await page.close();
@@ -424,11 +430,16 @@ test('display preferences save, survive reload and reject invalid policies atomi
     await worker.evaluate(() => chrome.storage.sync.set({language:'en'}));
     await page.setViewportSize({width:420, height:900});
     await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await section(page, 'ci');
     const details = page.locator('details').filter({has:page.locator('#failed_jobs_limit')});
     await details.locator('summary').click();
     await page.locator('#failed_jobs_limit').fill('3');
     await page.locator('#failed_job_trace_lines').fill('100');
+    await section(page, 'actions');
+    await policy(page, 'reviewer_notes_limit');
     await page.locator('#reviewer_notes_limit').fill('25');
+    await section(page, 'appearance');
+    await policy(page, 'mr_size_lines');
     await page.locator('#mr_size_lines').fill('20, 80, 300');
     await page.locator('#mr_size_files').fill('2, 8, 20');
     await page.locator('#sensitive_file_defaults').uncheck();
@@ -440,22 +451,30 @@ test('display preferences save, survive reload and reject invalid policies atomi
       sensitive_file_patterns:'private/*\n*.token', sensitive_file_exclusions:'*.example',
     });
     await page.reload();
+    await section(page, 'ci');
     await details.locator('summary').click();
     await expect(page.locator('#failed_jobs_limit')).toHaveValue('3');
     await expect(page.locator('#sensitive_file_patterns')).toHaveValue('private/*\n*.token');
     await fs.mkdir(path.resolve('.reports'), {recursive:true});
-    await expect(page.locator("#status")).not.toBeVisible();
+    await expect(page.locator("#status")).toBeVisible();
     await details.screenshot({path:path.resolve('.reports/display-preferences-en.png')});
+    await section(page, 'appearance');
+    await policy(page, 'mr_size_lines');
     await page.locator('#mr_size_lines').fill('30, 10, 20');
+    await page.locator('#settingsSearch').fill('');
+    await page.locator('#settingsNav [data-category="ci"]').click();
     await page.locator('#failed_jobs_limit').fill('4');
     await expect(page.locator('#status')).toContainText('three increasing');
     expect(await worker.evaluate(() => chrome.storage.sync.get(['mr_size_lines', 'failed_jobs_limit']))).toEqual({mr_size_lines:'20, 80, 300', failed_jobs_limit:3});
+    await section(page, 'appearance');
     await page.locator('#mr_size_lines').fill('30, 60, 90');
+    await section(page, 'general');
     await page.locator('#language').selectOption('ru');
     await expect(page.locator('#failed_jobs_limit')).toHaveValue('4');
+    await section(page, 'ci');
     await details.locator('summary').click();
     await expect(details.locator('summary')).toHaveText('Правила отображения и ограничения');
-    await expect(page.locator("#status")).not.toBeVisible();
+    await expect(page.locator("#status")).toBeVisible();
     await details.screenshot({path:path.resolve('.reports/display-preferences-ru.png')});
   } finally {
     await page.close();
@@ -582,16 +601,29 @@ test('all interface languages load, persist and keep AI language independent', a
     await expect(page.locator('#ai_review_response_language option')).toHaveCount(locales.length + 1);
     for (const locale of locales) {
       const messages = JSON.parse(await fs.readFile(path.resolve(__dirname, '../../_locales', locale, 'messages.json'), 'utf8'));
-      await page.locator('#language').selectOption(locale);
+      await section(page, 'general');
+    await page.locator('#language').selectOption(locale);
+      await expect(page.locator('html')).toHaveAttribute('lang', locale.replace('_','-'));
       await expect(page.locator('#language option[value="auto"]')).toHaveText(messages.languageAuto.message);
+      await expect(page.locator('#settingsNav [data-category="actions"]')).toHaveAccessibleName(messages.settingsActions.message);
+      await section(page, 'actions');
+      await expect(page.locator('.page-heading h1')).toHaveText(messages.settingsActions.message);
+      await section(page, 'general');
       await expect.poll(async () => worker.evaluate(async () => (await chrome.storage.sync.get('language')).language)).toBe(locale);
       await page.reload();
       await expect(page.locator('#language')).toHaveValue(locale);
       if (['it', 'pt_BR', 'pl', 'nl', 'ko', 'hi', 'th', 'el', 'fi'].includes(locale)) await page.screenshot({path: testInfo.outputPath('settings-' + locale + '.png')});
+      await expect(page.locator('html')).toHaveAttribute('lang', locale.replace('_','-'));
       await expect(page.locator('#language option[value="auto"]')).toHaveText(messages.languageAuto.message);
+      await expect(page.locator('#settingsNav [data-category="actions"]')).toHaveAccessibleName(messages.settingsActions.message);
+      await section(page, 'actions');
+      await expect(page.locator('.page-heading h1')).toHaveText(messages.settingsActions.message);
+      await section(page, 'general');
     }
+    await section(page, 'ai');
     await page.locator('#ai_review_response_language').selectOption('pt_BR');
     await expect.poll(async () => worker.evaluate(async () => (await chrome.storage.sync.get('ai_review_response_language')).ai_review_response_language)).toBe('pt_BR');
+    await section(page, 'general');
     await page.locator('#language').selectOption('pl');
     await expect(page.locator('#ai_review_response_language')).toHaveValue('pt_BR');
 
@@ -599,4 +631,539 @@ test('all interface languages load, persist and keep AI language independent', a
     await worker.evaluate(async () => chrome.storage.sync.set({language: 'en', ai_review_response_language: 'auto'}));
     await page.close();
   }
+});
+
+test('settings redesign retains every original control, scopes and editor deletions', async ({}, testInfo) => {
+  const inventory = require('../fixtures/settings-control-inventory.json');
+  const keys = ['language', 'projectProfiles', 'quickComments', 'cherry_pick_branches', 'buttonOrder'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', projectProfiles:{'team/design':{}}, quickComments:[{label:'LGTM',text:'Looks good'}], cherry_pick_branches:['release/test']}));
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(page.locator('#profileScope')).toBeVisible();
+    for (const id of inventory.default) {
+      await expect(page.locator('#'+id)).toHaveCount(1);
+      expect(await page.locator('#'+id).evaluate(node => !!node.closest('.settings-section[data-category]')), id).toBe(true);
+    }
+    const initialIds = await page.locator('.tab-content input[id], .tab-content select[id], .tab-content textarea[id]').evaluateAll(nodes => nodes.map(node => node.id));
+    expect(new Set(initialIds).size).toBe(initialIds.length);
+    await page.locator('#quickCommentsList .remove-btn').click();
+    await page.locator('#cherryPickBranchesList .remove-btn').click();
+    await expect.poll(() => worker.evaluate(() => chrome.storage.sync.get(['quickComments','cherry_pick_branches']))).toEqual({quickComments:[],cherry_pick_branches:[]});
+    const firstKey = await page.locator('#buttonOrder .btn-item').first().getAttribute('data-key');
+    await page.locator('#buttonOrder .btn-item').first().getByRole('button', {name:/Move down/}).click();
+    await expect.poll(() => worker.evaluate(async () => (await chrome.storage.sync.get('buttonOrder')).buttonOrder?.[1])).toBe(firstKey);
+    expect(await page.locator('#buttonOrder .btn-item').nth(1).getAttribute('data-key')).toBe(firstKey);
+    await page.locator('#profileScope').selectOption('team/design');
+    for (const id of inventory.profile) await expect(page.locator('#'+id)).toHaveCount(1);
+    await section(page, 'jira');
+    await expect(page.locator('#globalOnlyHint')).toBeHidden();
+    await expect(page.locator('[data-setting="jira_url"]')).toContainText('All projects');
+    await expect(page.locator('#jira_url')).toBeVisible();
+    await page.locator('#profileScope').selectOption('default');
+    await expect(page.locator('#globalOnlyHint')).toBeHidden();
+    await page.evaluate(() => scrollTo(0, 0));
+    await expect(page.locator('#status')).toBeVisible();
+    await page.screenshot({path: testInfo.outputPath('jira-light.png'), fullPage:true});
+    await page.emulateMedia({colorScheme:'dark'});
+    await page.screenshot({path: testInfo.outputPath('jira-dark.png'), fullPage:true});
+    for (const category of ['actions','ci','jira','ai','appearance','general','data']) {
+      await section(page, category);
+      await page.setViewportSize({width:390,height:850});
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), category).toBe(true);
+    }
+    await page.locator('#settingsSearch').fill('Jira');
+    await expect(page.locator('#jira_url')).toBeVisible();
+    await page.locator('#settingsSearch').fill('zzzzzz-no-setting');
+    await expect(page.locator('#settingsNoResults')).toBeVisible();
+    await page.locator('#settingsSearch').fill('');
+    await section(page, 'actions');
+    await page.locator('#profileScope').selectOption('team/design');
+    page.once('dialog', dialog => dialog.accept());
+    await page.getByRole('button', {name:'Remove profile', exact:true}).click();
+    await expect.poll(() => worker.evaluate(() => chrome.storage.sync.get('projectProfiles'))).toEqual({projectProfiles:{}});
+    await page.reload();
+    await expect(page.locator('#profileScope option')).toHaveCount(1);
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
+
+test('compact popup keeps global toggles, project links and every locale within Chrome limits', async ({}, testInfo) => {
+  test.setTimeout(90_000);
+  const keys = ['language','sound_enabled','jira_url','projectProfiles'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  const calls = [];
+  page.on('request', request => { if (/^https?:/.test(request.url())) calls.push(request.url()); });
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', sound_enabled:false, jira_url:'', projectProfiles:{}}));
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await expect(page.locator('#sound_enabled')).toBeVisible();
+    await page.locator('#sound_enabled').check();
+    await expect.poll(() => worker.evaluate(() => chrome.storage.sync.get('sound_enabled'))).toEqual({sound_enabled:true});
+    await page.screenshot({path:testInfo.outputPath('popup-light.png')});
+    const newPage = context.waitForEvent('page');
+    await page.getByRole('button', {name:'All settings', exact:true}).click();
+    const opened = await newPage;
+    await expect(opened.locator('#profileScope')).toBeVisible();
+    await opened.close();
+    const locales = (await fs.readdir(path.resolve('_locales'), {withFileTypes:true})).filter(entry => entry.isDirectory()).map(entry => entry.name);
+    for (const locale of locales) {
+      await worker.evaluate(language => chrome.storage.sync.set({language}), locale);
+      await page.reload();
+      const messages = JSON.parse(await fs.readFile(path.resolve('_locales',locale,'messages.json'),'utf8'));
+      await expect(page.getByRole('button', {name:messages.settingsAll.message,exact:true})).toBeVisible();
+      await expect(page.locator('.popup-shortcuts [data-category="actions"]')).toHaveAccessibleName(messages.settingsActions.message);
+      const size = await page.locator('#popupRoot').boundingBox();
+      expect(size.height).toBeLessThanOrEqual(600);
+      expect(await page.evaluate(() => document.body.scrollWidth <= 410)).toBe(true);
+      await page.emulateMedia({colorScheme:'dark'});
+      if (['ru','de','hi','th'].includes(locale)) await page.locator('#popupRoot').screenshot({path:testInfo.outputPath('popup-'+locale+'-dark.png')});
+    }
+    expect(calls).toEqual([]);
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
+
+
+test('popup preserves release notices and carries commit project context into settings', async () => {
+  const keys = ['language','projectProfiles','update_version','update_dismissed'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en',projectProfiles:{'team/commit-project':{}},update_version:'9.9.9',update_dismissed:''}));
+    await page.addInitScript(() => {
+      // Only the active-tab context is supplied by a fixture; storage remains real.
+      chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/commit-project/-/commit/abc123'}]);
+    });
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await expect(page.locator('.project-card')).toContainText('team/commit-project');
+    await expect(page.locator('.update-banner')).toContainText('v9.9.9');
+    await expect(page.getByRole('button', {name:'Jira integration', exact:true})).toBeVisible();
+    await page.locator('.update-banner').getByRole('button', {name:'Close',exact:true}).click();
+    await expect.poll(() => worker.evaluate(async () => (await chrome.storage.sync.get('update_dismissed')).update_dismissed)).toBe('9.9.9');
+    const pagesBefore = context.pages().length;
+    await page.getByRole('button', {name:'MR & commits',exact:true}).click();
+    const settings = page.frameLocator('#popupSettingsEditor');
+    await expect(settings.locator('#profileScope')).toHaveValue('team/commit-project');
+    await expect(settings.locator('#profileVersionStrategy')).toBeVisible();
+    await settings.locator('#profileReviewersJob').fill('inline-job');
+    for (const section of ['ci','jira','ai','appearance','general','data','actions']) {
+      await page.locator('.popup-shortcuts [data-category="'+section+'"]').click();
+      await expect(settings.locator('#settingsNav [data-category="'+section+'"]')).toHaveAttribute('aria-current','page');
+    }
+    await expect(settings.locator('#profileReviewersJob')).toHaveValue('inline-job');
+    await expect.poll(() => worker.evaluate(async () => (await chrome.storage.sync.get('projectProfiles')).projectProfiles['team/commit-project'].reviewersJob)).toBe('inline-job');
+    expect(context.pages().length).toBe(pagesBefore);
+    for (const colorScheme of ['light','dark']) {
+      await page.emulateMedia({colorScheme});
+      await page.screenshot({path:'.reports/inline-popup-'+colorScheme+'.png',fullPage:true});
+      expect(await settings.locator('body').evaluate(el => el.scrollWidth <= innerWidth)).toBe(true);
+    }
+    await page.locator('.popup-shortcuts [data-category="actions"]').click();
+    await expect(page.locator('#popupSettingsEditor')).toBeHidden();
+    await page.locator('.popup-shortcuts [data-category="actions"]').click();
+    await expect(settings.locator('#profileReviewersJob')).toHaveValue('inline-job');
+    await expect.poll(() => settings.locator('.settings-shell').evaluate(el => Math.ceil(el.getBoundingClientRect().height))).toBeGreaterThan(600);
+    await expect.poll(() => settings.locator('body').evaluate(el => el.scrollHeight <= innerHeight + 2)).toBe(true);
+    const editorNode = await page.locator('#popupSettingsEditor').elementHandle();
+    await worker.evaluate(() => chrome.storage.sync.set({language:'ru'}));
+    await expect(page.locator('html')).toHaveAttribute('lang','ru');
+    expect(await editorNode.evaluate(node => node.isConnected)).toBe(true);
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en'}));
+    await expect(page.locator('html')).toHaveAttribute('lang','en');
+    const openedGuide = context.waitForEvent('page');
+    await page.locator('.popup-shortcuts').getByRole('link', {name:'How it works',exact:true}).click();
+    const guide = await openedGuide;
+    try {
+      await expect(guide.locator('.welcome-card')).toHaveCount(44);
+      expect(new URL(guide.url()).pathname).toBe('/welcome.html');
+    } finally { await guide.close(); }
+    await page.reload();
+    await expect(page.locator('.update-banner')).toBeHidden();
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys,previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys,previous});
+  }
+});
+
+
+test('settings keep failed drafts, wait for storage before switching scope and allow explicit retry', async () => {
+  const keys = ['language', 'projectProfiles', 'reviewersList'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', reviewersList:'original', projectProfiles:{'team/save-state':{}}}));
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(page.locator('#status')).toHaveText('Changes save automatically.');
+    await page.evaluate(() => {
+      const set = chrome.storage.sync.set.bind(chrome.storage.sync);
+      window.pendingWrites = [];
+      chrome.storage.sync.set = (data, callback) => pendingWrites.push({data, callback});
+      window.replyWrite = (failed) => {
+        const {data, callback} = pendingWrites.shift();
+        if (!failed) return set(data, callback);
+        Object.defineProperty(chrome.runtime, 'lastError', {configurable:true, get:() => ({message:'Fixture quota failure'})});
+        callback();
+        delete chrome.runtime.lastError;
+      };
+    });
+    await page.locator('#reviewersList').fill('preserved-draft');
+    await expect.poll(() => page.evaluate(() => pendingWrites.length)).toBe(1);
+    await expect(page.locator('#status')).toHaveText('Saving…');
+    expect(await page.evaluate(() => !window.dispatchEvent(new Event('beforeunload', {cancelable:true})))).toBe(true);
+    await page.evaluate(() => replyWrite(true));
+    await expect(page.locator('#retrySave')).toBeVisible();
+    await page.locator('#profileScope').selectOption('team/save-state');
+    await expect.poll(() => page.evaluate(() => pendingWrites.length)).toBe(1);
+    await expect(page.locator('#profileScope')).toHaveValue('default');
+    await expect(page.locator('#reviewersList')).toHaveValue('preserved-draft');
+    await page.evaluate(() => replyWrite(true));
+    await expect(page.locator('#profileScope')).toHaveValue('default');
+    await expect(page.locator('#status')).toHaveText('Settings could not be saved. Please retry.');
+    await expect(page.locator('#retrySave')).toBeVisible();
+    await page.getByRole('button', {name:'Retry',exact:true}).click();
+    await expect.poll(() => page.evaluate(() => pendingWrites.length)).toBe(1);
+    await page.evaluate(() => replyWrite(false));
+    await expect(page.locator('#status')).toHaveText('Saved!');
+    await expect(page.locator('#retrySave')).toBeHidden();
+    expect(await page.evaluate(() => !window.dispatchEvent(new Event('beforeunload', {cancelable:true})))).toBe(false);
+    await expect.poll(() => worker.evaluate(async () => (await chrome.storage.sync.get('reviewersList')).reviewersList)).toBe('preserved-draft');
+    await page.locator('#profileScope').selectOption('team/save-state');
+    await expect(page.locator('#profileVersionStrategy')).toBeVisible();
+    await expect(page.locator('#profileReviewersList')).toHaveAttribute('placeholder', 'preserved-draft');
+    await expect(page.locator('#profileVersionFilePreset option').first()).toContainText('package.json');
+    // Search is global, even while the selected project has its own profile.
+    await page.locator('#settingsSearch').fill('Jira');
+    await expect(page.locator('#jira_url')).toBeVisible();
+    await expect(page.locator('#globalOnlyHint')).toBeHidden();
+    await expect(page.locator('[data-setting="jira_url"]')).toContainText('All projects');
+    await expect(page.locator('#settingsSearch')).toBeFocused();
+    await page.locator('#settingsSearch').fill('');
+    await expect(page.locator('#profileVersionStrategy')).toBeVisible();
+    await expect(page.locator('#profileScope')).toHaveValue('team/save-state');
+  } finally {
+    await page.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
+
+test('settings read failure leaves editing locked and offers a working reload', async () => {
+  const page = await context.newPage();
+  try {
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem('read-failed')) return;
+      sessionStorage.setItem('read-failed', 'yes');
+      chrome.storage.sync.get = (_keys, callback) => {
+        Object.defineProperty(chrome.runtime, 'lastError', {configurable:true, get:() => ({message:'Fixture read failure'})});
+        callback({});
+        delete chrome.runtime.lastError;
+      };
+    });
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(page.locator('#status')).toHaveClass('status failed');
+    await expect(page.locator('#settingsSearch')).toBeDisabled();
+    await expect(page.locator('.tab-content input')).toHaveCount(0);
+    await page.locator('#retrySave').click();
+    await expect(page.locator('#profileScope')).toBeVisible();
+    await expect(page.locator('#settingsSearch')).toBeEnabled();
+    await expect(page.locator('#retrySave')).toBeHidden();
+  } finally { await page.close(); }
+});
+
+test('all legacy switches and toolbar buttons round-trip through the redesigned form', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', projectProfiles:{}}));
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(page.locator('#profileScope')).toBeVisible();
+    const controls = await page.locator('.tab-content input[type="checkbox"]').evaluateAll(inputs => inputs.flatMap(input => {
+      const key = input.id || input.closest('[data-key]')?.dataset.key;
+      if (!key || input.disabled || key.startsWith('ai_review_rule_')) return [];
+      return [{key, checked:!input.checked, category:input.closest('.settings-section').dataset.category}];
+    }));
+    const expected = {};
+    for (const control of controls) {
+      await section(page, control.category);
+      const input = control.key.startsWith('btn_') ? page.locator('#buttonOrder [data-key="'+control.key+'"] input') : page.locator('#'+control.key);
+      const details = input.locator('xpath=ancestor::details');
+      for (const detail of await details.all()) if (!await detail.getAttribute('open').then(v => v !== null)) await detail.locator('summary').first().click();
+      await input.setChecked(control.checked);
+      expected[control.key] = control.checked;
+    }
+    expect(Object.keys(expected).length).toBeGreaterThan(45);
+    await expect.poll(() => worker.evaluate(keys => chrome.storage.sync.get(keys), Object.keys(expected))).toEqual(expected);
+    await page.reload();
+    await expect(page.locator('#profileScope')).toBeVisible();
+    for (const [key, value] of Object.entries(expected)) {
+      const input = key.startsWith('btn_') ? page.locator('#buttonOrder [data-key="'+key+'"] input') : page.locator('#'+key);
+      await expect(input).toBeChecked({checked:value});
+    }
+  } finally {
+    await page.close();
+    await worker.evaluate(async previous => { await chrome.storage.sync.clear(); await chrome.storage.sync.set(previous); }, previous);
+  }
+});
+
+
+test('popup changes stay in sync with an open settings form without losing unrelated edits', async () => {
+  const keys = ['language','sound_enabled','notifications_enabled','show_jira_details','reviewersList'];
+  const previous = await worker.evaluate(keys => chrome.storage.sync.get(keys), keys);
+  const page = await context.newPage();
+  const popup = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en', sound_enabled:false, notifications_enabled:false, show_jira_details:true, reviewersList:''}));
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
+    await popup.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await expect(page.locator('#reviewersList')).toBeVisible();
+    await popup.locator('#sound_enabled').check();
+    await popup.locator('#notifications_enabled').check();
+    await expect(popup.locator('#show_jira_details')).toHaveCount(0);
+    await expect(page.locator('#show_jira_details')).toBeChecked();
+    for (const id of ['sound_enabled','notifications_enabled']) await expect(page.locator('#'+id)).toBeChecked();
+    await page.locator('#reviewersList').fill('keep-popup-settings');
+    await expect(page.locator('#status')).toHaveText('Saved!');
+    await expect.poll(() => worker.evaluate(keys => chrome.storage.sync.get(keys), keys)).toMatchObject({sound_enabled:true, notifications_enabled:true, show_jira_details:true, reviewersList:'keep-popup-settings'});
+    await section(page, 'general');
+    await page.locator('#sound_enabled').uncheck();
+    await expect(popup.locator('#sound_enabled')).not.toBeChecked();
+  } finally {
+    await page.close(); await popup.close();
+    await worker.evaluate(async ({keys, previous}) => { await chrome.storage.sync.remove(keys); await chrome.storage.sync.set(previous); }, {keys, previous});
+  }
+});
+
+test('saving a checkbox in settings updates open MR tabs through real Chrome storage events',async()=>{
+ const previous=await worker.evaluate(()=>chrome.storage.sync.get(null));
+ const settings=await context.newPage();
+ const mr=await context.newPage();
+ try{
+  await worker.evaluate(()=>chrome.storage.sync.set({language:'en',projectProfiles:{},customJobs:[{label:'Live deploy',jobName:'deploy'}],mrActions:[{id:'live-clear',label:'Live clear',type:'clear_labels',labels:''}]}));
+  await mr.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+  await expect(mr.locator('.gl-mr-actions-ext').getByRole('button',{name:'Live deploy',exact:true})).toBeVisible();
+  await settings.goto(`chrome-extension://${extensionId}/popup.html#section=actions`);
+  await expect(settings.locator('#profileScope')).toBeVisible();
+  await settings.locator('#profileScope').selectOption('default');
+  await section(settings,'actions');
+  const job=settings.locator('#buttonOrder').getByRole('checkbox',{name:'Live deploy',exact:true});
+  const action=settings.locator('#buttonOrder').getByRole('checkbox',{name:'Live clear',exact:true});
+  await job.uncheck();await action.uncheck();
+  await expect(mr.locator('.gl-mr-actions-ext .btn-custom-job')).toHaveCount(0);
+  await job.check();await action.check();
+  await expect(mr.locator('.gl-mr-actions-ext .btn-custom-job')).toHaveText(['Live deploy','Live clear']);
+  await expect(mr.locator('.gl-mr-actions-ext')).toHaveCount(1);
+  expect(mr.url()).toBe('https://gitlab.test/team/repo/-/merge_requests/42');
+ }finally{
+  await settings.close();await mr.close();
+  await worker.evaluate(async previous=>{await chrome.storage.sync.clear();await chrome.storage.sync.set(previous);},previous);
+ }
+ expect(runtimeErrors).toEqual([]);
+});
+
+test('installed MR toolbar loads matching layout styles under the GitLab page CSP',async()=>{
+ const previous=await worker.evaluate(()=>chrome.storage.sync.get(null));
+ const page=await context.newPage();
+ try{
+  await worker.evaluate(()=>chrome.storage.sync.set({language:'ru',projectProfiles:{},show_time_tracker:true,customJobs:[{label:'Удалить все метки',jobName:'test'}],quickComments:[{label:'Плюс',text:'+'},{label:'Позвать ревьюера',text:'Review please'}]}));
+  await page.route('**/api/v4/projects/37/merge_requests/42',route=>route.fulfill({contentType:'application/json',body:JSON.stringify(fixtureMr(42,{created_at:'2026-11-06T12:00:00Z'}))}));
+  await page.goto('https://gitlab.test/team/repo/-/merge_requests/42');
+  await page.evaluate(()=>document.documentElement.classList.add('gl-dark'));
+  const toolbar=page.locator('.gl-mr-actions-ext');
+  await expect(toolbar).toBeVisible();
+  await expect(toolbar).toHaveCSS('flex-direction','column');
+  await expect(page.locator('.gl-mr-actions-buttons')).toHaveCSS('display','flex');
+  await expect(page.locator('.gl-mr-actions-buttons')).toHaveCSS('column-gap','8px');
+  await expect(page.locator('.gl-mr-actions-comments')).toHaveCSS('display','flex');
+  const positions=await page.evaluate(()=>{
+   const actions=document.querySelector('.gl-mr-actions-buttons').getBoundingClientRect();
+   const comments=document.querySelector('.gl-mr-actions-comments').getBoundingClientRect();
+   const time=document.querySelector('.gl-mr-actions-time');
+   return {actionsBottom:actions.bottom,commentsTop:comments.top,emoji:getComputedStyle(time,'::before').content,timeBackground:getComputedStyle(time).backgroundColor,timeBorder:getComputedStyle(time).borderWidth};
+  });
+  expect(positions.commentsTop).toBeGreaterThan(positions.actionsBottom);
+  expect(positions.emoji).toBe('none');
+  expect(positions.timeBackground).toBe('rgba(0, 0, 0, 0)');
+  expect(positions.timeBorder).toBe('0px');
+  await toolbar.screenshot({path:'.reports/toolbar-installed-css.png'});
+ }finally{
+  await page.close();
+  await worker.evaluate(async previous=>{await chrome.storage.sync.clear();await chrome.storage.sync.set(previous);},previous);
+ }
+ expect(runtimeErrors).toEqual([]);
+});
+
+test('popup first reveal waits for Jira access state and keeps the project card below Jira', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
+  const page = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en',jira_url:'https://jira.fixture.test',projectProfiles:{'team/stable':{}}}));
+    await page.addInitScript(() => {
+      chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/stable/-/merge_requests/1'}]);
+      chrome.permissions.contains = (_request, callback) => { window.releaseJiraAccess = () => callback(true); };
+    });
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await expect.poll(() => page.evaluate(() => typeof window.releaseJiraAccess)).toBe('function');
+    await expect(page.locator('.project-card')).toBeHidden();
+    await page.evaluate(() => window.releaseJiraAccess());
+    await expect(page.locator('.project-card')).toBeVisible();
+    await expect(page.locator('.jira-access-summary')).toBeVisible();
+    const positions = await page.evaluate(async () => {
+      const samples=[];
+      for(let i=0;i<12;i++) {
+        await new Promise(requestAnimationFrame);
+        const project=document.querySelector('.project-card').getBoundingClientRect();
+        const jira=document.querySelector('.jira-access-summary').getBoundingClientRect();
+        samples.push({top:project.top,afterJira:project.top>=jira.bottom});
+      }
+      return samples;
+    });
+    expect(positions.every(sample=>sample.afterJira)).toBe(true);
+    expect(new Set(positions.map(sample=>sample.top)).size).toBe(1);
+  } finally {
+    await page.close();
+    await worker.evaluate(async previous => { await chrome.storage.sync.clear(); await chrome.storage.sync.set(previous); }, previous);
+  }
+});
+
+test('release notice appears once in popup sections and remains available in standalone settings', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
+  const popup = await context.newPage();
+  const standalone = await context.newPage();
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en',update_version:'9.9.9',update_dismissed:''}));
+    await popup.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await standalone.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(popup.locator('.update-banner')).toBeVisible();
+    await expect(standalone.locator('#updateBanner')).toBeVisible();
+    await expect(standalone.locator('#status')).toHaveText('Changes save automatically.');
+    for (const section of ['actions','jira','general']) {
+      await popup.locator(`.popup-shortcuts [data-category="${section}"]`).click();
+      const editor = popup.frameLocator('#popupSettingsEditor');
+      await expect(editor.locator('#profileScope')).toBeVisible();
+      await expect(editor.locator('.update-banner')).toHaveCount(0);
+      await expect(editor.locator('#status')).toBeEmpty();
+      await expect(popup.locator('.update-banner')).toHaveCount(1);
+    }
+    const editor = popup.frameLocator('#popupSettingsEditor');
+    await editor.locator('#sound_enabled').click();
+    await expect(editor.locator('#status')).toHaveText('Saved!');
+    await popup.locator('.update-banner .update-close').click();
+    await expect(popup.locator('.update-banner')).toBeHidden();
+    await expect(standalone.locator('#updateBanner')).toBeHidden();
+  } finally {
+    await popup.close(); await standalone.close();
+    await worker.evaluate(async previous => { await chrome.storage.sync.clear(); await chrome.storage.sync.set(previous); }, previous);
+  }
+});
+
+test('compact controls use readable consistent typography and padding in both themes', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
+  const page = await context.newPage();
+  await page.setViewportSize({width:410,height:600});
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'ru',update_version:'',jira_url:'',projectProfiles:{},customJobs:[{label:'Проверить сборку',jobName:'build'}]}));
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    const menu=page.locator('.popup-shortcuts [data-category="ci"]');
+    await expect(menu).toBeVisible();
+    for(const colorScheme of ['light','dark']) {
+      await page.emulateMedia({colorScheme});
+      await page.screenshot({path:'.reports/compact-menu-'+colorScheme+'.png'});
+      const metrics=await menu.evaluate(el=>({font:getComputedStyle(el).fontSize,line:getComputedStyle(el).lineHeight,padding:getComputedStyle(el).padding,height:el.getBoundingClientRect().height}));
+      expect(metrics).toMatchObject({font:'14px',line:'20px',padding:'9px 12px'});
+      expect(metrics.height).toBeGreaterThanOrEqual(40);
+      await menu.click();
+      const editor=page.frameLocator('#popupSettingsEditor');
+      const button=editor.locator('#addCustomJob');
+      await expect(button).toBeVisible();
+      expect(await button.evaluate(el=>({font:getComputedStyle(el).fontSize,line:getComputedStyle(el).lineHeight,padding:getComputedStyle(el).padding,height:el.getBoundingClientRect().height}))).toEqual({font:'14px',line:'20px',padding:'7px 12px',height:36});
+      expect(await editor.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
+      await button.scrollIntoViewIfNeeded();
+      await page.screenshot({path:'.reports/compact-editor-'+colorScheme+'.png'});
+      await menu.click();
+    }
+  } finally {
+    await page.close();
+    await worker.evaluate(async previous=>{await chrome.storage.sync.clear();await chrome.storage.sync.set(previous);},previous);
+  }
+});
+
+test('compact inheritance icons and Jira removal controls leave room for labels', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
+  const page = await context.newPage();
+  await page.setViewportSize({width:410,height:600});
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'ru',jira_url:'',update_version:'',projectProfiles:{'team/spacing':{buttons:{btn_pipeline_cancel:false},versionFile:'VERSION'}},jiraQuickActions:[{label:'Версия 3.78',updates:[{field:'fixVersions',operation:'add',value:['Web 3.78']}]}]}));
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await page.locator('.popup-shortcuts [data-category="actions"]').click();
+    const editor=page.frameLocator('#popupSettingsEditor');
+    await editor.locator('#profileScope').selectOption('team/spacing');
+    const row=editor.locator('#profileButtonOrder [data-key="btn_pipeline_cancel"]');
+    const reset=row.locator('.inherit-reset');
+    await expect(reset).toHaveAttribute('title',/Использовать общее/);
+    expect(await reset.evaluate(el=>el.getBoundingClientRect().width)).toBe(32);
+    await expect(reset.locator('span')).toBeHidden();
+    expect(await row.locator('.btn-label').evaluate(el=>el.getBoundingClientRect().width)).toBeGreaterThan(100);
+    for(const colorScheme of ['light','dark']) {
+      await page.emulateMedia({colorScheme});
+      await row.screenshot({path:'.reports/inheritance-row-'+colorScheme+'.png'});
+    }
+    await reset.click();
+    await expect(reset).toHaveCount(0);
+    await page.locator('.popup-shortcuts [data-category="jira"]').click();
+    const jira=editor.locator('.jira-quick-action').first();
+    const field=jira.locator('[data-part="field"]');
+    const remove=jira.locator('.jqa-change .remove-btn');
+    await expect(field).toBeVisible();
+    await expect(remove).toBeVisible();
+    const fieldBox=await field.boundingBox(), removeBox=await remove.boundingBox();
+    expect(Math.abs(fieldBox.y+fieldBox.height/2-removeBox.y-removeBox.height/2)).toBeLessThan(2);
+    expect(removeBox.x).toBeGreaterThan(fieldBox.x+fieldBox.width);
+    await jira.screenshot({path:'.reports/jira-field-alignment.png'});
+    await page.locator('.popup-shortcuts [data-category="data"]').click();
+    await expect(editor.locator('#settingsTransferHint')).toBeVisible();
+    expect(await editor.locator('#settingsTransferHint').evaluate(el=>el.getBoundingClientRect().top-el.previousElementSibling.getBoundingClientRect().bottom)).toBeGreaterThanOrEqual(12);
+  } finally {
+    await page.close();
+    await worker.evaluate(async previous=>{await chrome.storage.sync.clear();await chrome.storage.sync.set(previous);},previous);
+  }
+});
+
+test('compact Jira and scope sections collapse with keyboard and persist independently', async () => {
+  await worker.evaluate(async () => chrome.storage.sync.set({ language: 'ru', jira_url: 'https://jira.fixture.test' }));
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 410, height: 600 });
+  await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+  const jira = page.locator('[data-popup-disclosure="jira"]');
+  const scope = page.locator('[data-popup-disclosure="scope"]');
+  await expect(jira).toHaveAttribute('open', '');
+  await expect(scope).toHaveAttribute('open', '');
+  for (const theme of ['light', 'dark']) {
+    await page.emulateMedia({ colorScheme: theme });
+    await jira.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(jira).not.toHaveAttribute('open');
+    await expect(jira.locator('.jira-access-summary')).toBeHidden();
+    await expect(scope).toHaveAttribute('open', '');
+    await scope.locator('summary').click();
+    await expect(scope).not.toHaveAttribute('open');
+    await page.reload();
+    await expect(jira.locator('summary')).toBeVisible();
+    await expect(jira).not.toHaveAttribute('open');
+    await expect(scope).not.toHaveAttribute('open');
+    if (theme === 'dark') await page.screenshot({ path: '.reports/popup-disclosure-collapsed.png' });
+    await jira.locator('summary').click();
+    await scope.locator('summary').focus();
+    await page.keyboard.press('Space');
+    await expect(jira.locator('.jira-access-summary')).toBeVisible();
+    await expect(scope).toHaveAttribute('open', '');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  await page.evaluate(() => { localStorage.removeItem('popup.disclosure.jira'); localStorage.removeItem('popup.disclosure.scope'); });
+  await page.close();
 });

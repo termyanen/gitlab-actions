@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "MR sayfasında düğmeler görünür. İlk kurulumda bir başlangıç ​​seti etkinleştirilir."
   },
-  "welcomeStep3Title": {
-    "message": "Uzantı açılır penceresi aracılığıyla özelleştirin"
-  },
-  "welcomeStep3Desc": {
-    "message": "Düğmeleri etkinleştirmek/devre dışı bırakmak, sürüm yükseltme dosyasını ayarlamak, özel iş düğmeleri eklemek ve daha fazlasını yapmak için uzantı simgesini tıklayın."
-  },
+  "welcomeStep3Title": { "message": "Ayarlardan özelleştirin" },
+  "welcomeStep3Desc": { "message": "Seçenekleri hızlıca açıp kapatmak için açılır pencereyi kullanın. İşlemleri, sürümleri, Jira'yı, CI/CD'yi ve yapay zekâ incelemesini yapılandırmak için “Tüm ayarlar”ı açın." },
   "welcomeEnabledDefault": {
     "message": "Varsayılan olarak etkin"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Proje başına profiller, farklı depolar için düğmeleri özelleştirmenize olanak tanır"
   },
-  "welcomeTip": {
-    "message": "Açılır ayarlarda proje başına profiller oluşturabilirsiniz. Bu, farklı projeler farklı sürüm dosyalarına veya özel CI işlerine ihtiyaç duyduğunda kullanışlıdır."
-  },
+  "welcomeTip": { "message": "Projelerin farklı sürüm dosyalarına, işlem düğmelerine veya CI işlerine ihtiyacı olduğunda “Tüm ayarlar”da proje profilleri oluşturun." },
   "welcomeOpenSettings": {
     "message": "Ayarları Aç"
   },
@@ -689,8 +683,13 @@
     "message": "Jira site erişimine izin ver"
   },
   "jiraAccessGranted": {
-    "message": "Siteye erişim izni verildi. Bu tarayıcıda Jira adresinde oturum açın."
+    "message": "Uzantının $1 adresine erişmesine izin verildi."
   },
+  "jiraConnectionUnchecked": { "message": "Bağlantı henüz kontrol edilmedi." },
+  "jiraConnectionCheck": { "message": "Bağlantıyı kontrol et" },
+  "jiraConnectionChecking": { "message": "$1 bağlantısı kontrol ediliyor…" },
+  "jiraConnectionConnected": { "message": "$1 için son kontrol: oturum açık; API kullanılabilir." },
+  "jiraConnectionSignIn": { "message": "Jira’da oturum aç" },
   "jiraUrlInvalid": {
     "message": "Kimlik bilgileri/sorgu/parça olmadan bir HTTPS Jira temel URL'si girin."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick hedef dalları"
   },
+  "cherryPickProjectBranchesHint": { "message": "Bu proje için dalları belirleyin. Genel dalları kullanmak için listeyi boş bırakın." },
+  "cherryPickNoBranches": { "message": "Yapılandırılmış dal yok." },
   "cherryPickBranchesHint": {
     "message": "Cherry-pick için varsayılan hedef dallar. İletişim kutusunda dal ekleyebilir veya kaldırabilirsiniz."
   },
@@ -1492,7 +1493,7 @@
     "message": "İstem kaydedilmedi. En fazla 1.500 karakter kullanın ve olağandışı kontrol karakterlerini kaldırın."
   },
   "settingsSaveFailed": {
-    "message": "Ayarlar kaydedilemedi. Yeniden denemek için değişiklik yapın."
+    "message": "Ayarlar kaydedilemedi. Tekrar deneyin."
   },
   "aiReviewPromptSessionHint": {
     "message": "Buradaki değişiklikler bu dışa aktarıma uygulanır. Uzantı ayarlarında varsayılan isteminizi ayarlayın."
@@ -2073,7 +2074,7 @@
     "message": "Etiketleri değiştirmek veya diğer MR alanlarını temizlemek için adlandırılmış butonlar oluşturun. Sıralarını değiştirmek için buton listesinde sürükleyin."
   },
   "mrActionsProfileHint": {
-    "message": "Bu proje kaydettikten sonra kendi işlem listesini kullanıyor. Bu butonları bu proje için gizlemek istiyorsanız tüm girişleri silin."
+    "message": "Bu listeyi düzenlemek projeye özel eylemler oluşturur. Bu projede bu düğmeleri gizlemek için tüm girdileri kaldırın."
   },
   "mrActionAdd": {
     "message": "MR işlemi ekle"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Ayarlar" },
+  "settingsActions": { "message": "MR ve commitler" },
+  "settingsActionsHint": { "message": "Birleştirme istekleri, commitler, sürümler ve cherry-pick." },
+  "settingsCi": { "message": "CI/CD ve işler" },
+  "settingsAppearance": { "message": "GitLab arayüzü" },
+  "settingsData": { "message": "Veriler ve yardım" },
+  "settingsSearch": { "message": "Ayarlarda ara" },
+  "settingsScope": { "message": "Ayarların kapsamı" },
+  "settingsProjectValue": { "message": "Proje değeri" },
+  "settingsUseGlobal": { "message": "Genel değeri kullan" },
+  "settingsProjectInheritanceHint": { "message": "Bu projeye özel bir değer belirlemek için değeri değiştirin. Devralmayı geri yüklemek için genel değeri kullanın." },
+  "settingsSharedPreferencesHint": { "message": "Arayüz dili, ses, masaüstü bildirimleri ve projeler arası rapor ayarları geneldir. Bunları Tüm projeler bölümünde düzenleyin." },
+  "settingsGlobal": { "message": "Tüm projeler" },
+  "settingsGlobalHint": { "message": "Bu ayarlar tüm projelere uygulanır." },
+  "settingsProjectHint": { "message": "Bu profil, bu proje için ortak ayarları geçersiz kılar." },
+  "settingsGlobalOnly": { "message": "Bu bölüm, tüm projeler için ortak ayarları kullanır." },
+  "settingsQuick": { "message": "Hızlı ayarlar" },
+  "settingsNoResults": { "message": "Eşleşen ayar bulunamadı." },
+  "settingsRemoveProfile": { "message": "Profili kaldır" },
+  "settingsNoProject": { "message": "Proje profillerini kullanmak için bir GitLab projesi açın." },
+  "settingsAll": { "message": "Tüm ayarlar" },
+  "settingsMoveUp": { "message": "Yukarı taşı" },
+  "settingsMoveDown": { "message": "Aşağı taşı" },
+  "settingsConnection": { "message": "Bağlantı" },
+  "settingsJiraDisplay": { "message": "GitLab içinde Jira" },
+  "settingsAdvanced": { "message": "Gelişmiş ayarlar" },
+  "settingsAutosaveHint": { "message": "Değişiklikler otomatik olarak kaydedilir." },
+  "settingsSaving": { "message": "Kaydediliyor…" },
+  "settingsLoadFailed": { "message": "Ayarlar yüklenemedi. Düzenlemeden önce tekrar deneyin." },
+  "aiReviewShowFull": { "message": "Tamamını göster" },
+  "aiReviewShowLess": { "message": "Daralt" },
+  "aiReviewExpandCommentsSetting": { "message": "İnceleme yorumlarını varsayılan olarak tam göster" },
+  "aiReviewExpandAll": { "message": "Tümünü genişlet" },
+  "aiReviewCollapseAll": { "message": "Tümünü daralt" }
 }

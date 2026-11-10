@@ -1,3 +1,4 @@
+import { getProjectSettings } from "../../../shared/api/project-settings";
 import type { JiraQuickAction, JiraState } from "../../../entities/jira-issue";
 import {
   sendJiraMessage,
@@ -176,7 +177,7 @@ export function createJiraPanel(
               .forEach((notice) => notice.remove());
           }
           renderJiraSidebarContent(sidebar, resp, jiraUrl);
-          chrome.storage.sync.get(
+          getProjectSettings(
             { jiraQuickActions: [] },
             session.once(function (s: { jiraQuickActions: JiraQuickAction[] }) {
               loadJiraTransitions(

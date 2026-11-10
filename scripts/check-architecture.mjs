@@ -2,11 +2,23 @@ import ts from "typescript";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { moduleEntryPoints, scriptEntryPoints } from "./entrypoints.mjs";
+import {
+  moduleEntryPoints,
+  scriptEntryPoints,
+  uiEntryPoints,
+} from "./entrypoints.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const layers = ["app", "pages", "widgets", "features", "entities", "shared"];
 const publicEntries = /^(?:index|background|content)\.ts$/;
+const reactPackages = new Set([
+  "react",
+  "react/jsx-runtime",
+  "react/jsx-dev-runtime",
+  "react-dom/client",
+]);
+const reactSurfaces =
+  /^(?:pages\/(?:settings|popup|welcome)\/|shared\/ui\/settings\/|shared\/lib\/(?:react-page|ui-language)\/|features\/(?:view-release-notes|check-jira-connection)\/)/;
 
 /** Checks source boundaries without loading or executing application modules. */
 export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
@@ -14,6 +26,7 @@ export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
   const violations = [];
   const graph = new Map();
   const sourceGraph = new Map();
+  const reactRuntimeFiles = new Set();
   const label = (file) => relative(sourceRoot, file).split(sep).join("/");
 
   function files(directory) {
@@ -26,14 +39,14 @@ export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
       if (
         entry.isFile() &&
         /\.[cm]?[jt]sx?$/.test(entry.name) &&
-        !entry.name.endsWith(".ts")
+        !/\.tsx?$/.test(entry.name)
       )
         violations.push(
-          `${label(path)}: runtime must be TypeScript .ts covered by typecheck and architecture checks`,
+          `${label(path)}: runtime must be TypeScript .ts/.tsx covered by typecheck and architecture checks`,
         );
       return entry.isDirectory()
         ? files(path)
-        : path.endsWith(".ts")
+        : /\.tsx?$/.test(path)
           ? [path]
           : [];
     });
@@ -41,6 +54,10 @@ export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
 
   function checkImport(file, specifier, runtime = true) {
     if (!specifier.startsWith(".")) {
+      if (reactPackages.has(specifier) && reactSurfaces.test(label(file))) {
+        if (runtime) reactRuntimeFiles.add(file);
+        return;
+      }
       violations.push(
         `${label(file)}: runtime source imports must be relative: ${specifier}`,
       );
@@ -50,9 +67,11 @@ export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
     const target = [
       resolved,
       resolved + ".ts",
+      resolved + ".tsx",
       resolved.replace(/\.js$/, ".ts"),
+      resolved.replace(/\.js$/, ".tsx"),
       join(resolved, "index.ts"),
-    ].find((candidate) => existsSync(candidate) && /\.ts$/.test(candidate));
+    ].find((candidate) => existsSync(candidate) && /\.tsx?$/.test(candidate));
     if (!target) {
       violations.push(`${label(file)}: unresolved import ${specifier}`);
       return;
@@ -116,6 +135,18 @@ export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
     if (/@ts-(?:nocheck|ignore)\b/.test(source.text))
       violations.push(`${label(file)}: blanket TypeScript suppression`);
     function visit(node) {
+      // Automatic JSX injects react/jsx-runtime even without an explicit import.
+      if (
+        ts.isJsxElement(node) ||
+        ts.isJsxSelfClosingElement(node) ||
+        ts.isJsxFragment(node)
+      ) {
+        reactRuntimeFiles.add(file);
+        if (!reactSurfaces.test(label(file)))
+          violations.push(
+            `${label(file)}: JSX belongs only to extension-owned React UI surfaces`,
+          );
+      }
       if (
         (ts.isImportEqualsDeclaration(node) &&
           ts.isExternalModuleReference(node.moduleReference)) ||
@@ -221,6 +252,26 @@ export function checkArchitecture(sourceRoot, { entryPoints } = {}) {
     active.delete(file);
   }
   sourceFiles.forEach(visitDependency);
+  // A permitted Shared component must never pull React into content or worker
+  // code indirectly. Check the transitive runtime graph, including lazy imports.
+  for (const start of sourceFiles.filter((file) =>
+    /^(?:app\/(?:content|background)\/|app\/entrypoints\/(?!popup\.ts$|quick-popup\.ts$|welcome\.ts$))/.test(
+      label(file),
+    ),
+  )) {
+    const seen = new Set();
+    function checkReactIsolation(file) {
+      if (seen.has(file)) return;
+      seen.add(file);
+      if (reactRuntimeFiles.has(file))
+        violations.push(
+          `${label(start)}: non-UI runtime reaches React through ${label(file)}`,
+        );
+      for (const dependency of graph.get(file) || [])
+        checkReactIsolation(dependency);
+    }
+    checkReactIsolation(start);
+  }
   if (entryPoints) {
     const reachable = new Set();
     function visitSource(file) {
@@ -252,6 +303,7 @@ if (import.meta.url === pathToFileURL(resolve(process.argv[1] || "")).href) {
     entryPoints: [
       ...Object.values(scriptEntryPoints),
       ...Object.values(moduleEntryPoints),
+      ...Object.values(uiEntryPoints),
     ].map((entry) => resolve(root, entry)),
   });
   if (violations.length) {
