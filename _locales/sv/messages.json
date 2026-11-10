@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Knappar visas på MR-sidan. Ett startset aktiveras vid första installation."
   },
-  "welcomeStep3Title": {
-    "message": "Anpassa via tilläggspopup"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klicka på tilläggsikonen för att aktivera/inaktivera knappar, ställa in version bump-fil, lägga till egna jobbknappar och mer."
-  },
+  "welcomeStep3Title": { "message": "Anpassa i inställningarna" },
+  "welcomeStep3Desc": { "message": "Använd popupfönstret för att snabbt slå på eller av alternativ. Öppna ”Alla inställningar” för att konfigurera åtgärder, versioner, Jira, CI/CD och AI-granskning." },
   "welcomeEnabledDefault": {
     "message": "Aktiverat som standard"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profil per projekt låter dig anpassa knappar för olika repositories"
   },
-  "welcomeTip": {
-    "message": "Du kan skapa profiler per projekt i popup-inställningarna. Detta är användbart när olika projekt behöver olika versionsfiler eller anpassade CI-jobb."
-  },
+  "welcomeTip": { "message": "Skapa projektprofiler under ”Alla inställningar” när projekten behöver olika versionsfiler, åtgärdsknappar eller CI-jobb." },
   "welcomeOpenSettings": {
     "message": "Öppna inställningar"
   },
@@ -689,8 +683,13 @@
     "message": "Tillåt åtkomst för Jira-webbplatsen"
   },
   "jiraAccessGranted": {
-    "message": "Åtkomst till webbplatsen beviljad. Logga in på Jira i den här webbläsaren."
+    "message": "Tillägget har behörighet att komma åt $1."
   },
+  "jiraConnectionUnchecked": { "message": "Anslutningen har inte kontrollerats ännu." },
+  "jiraConnectionCheck": { "message": "Kontrollera anslutningen" },
+  "jiraConnectionChecking": { "message": "Kontrollerar anslutningen till $1…" },
+  "jiraConnectionConnected": { "message": "Senaste kontroll av $1: inloggad; API tillgängligt." },
+  "jiraConnectionSignIn": { "message": "Logga in på Jira" },
   "jiraUrlInvalid": {
     "message": "Ange en HTTPS Jira-bas-URL, utan inloggningsuppgifter/frågeparametrar/fragment."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick-brancher"
   },
+  "cherryPickProjectBranchesHint": { "message": "Ange grenar för det här projektet. Lämna listan tom för att använda de globala grenarna." },
+  "cherryPickNoBranches": { "message": "Inga grenar har angetts." },
   "cherryPickBranchesHint": {
     "message": "Standardmålsbrancher för cherry-pick. Du kan lägga till eller ta bort brancher i modal-fönstret."
   },
@@ -1492,7 +1493,7 @@
     "message": "Prompt sparades inte. Använd högst 1 500 tecken och ta bort ovanliga kontrolltecken."
   },
   "settingsSaveFailed": {
-    "message": "Inställningarna kunde inte sparas. Gör en ändring för att försöka igen."
+    "message": "Inställningarna kunde inte sparas. Försök igen."
   },
   "aiReviewPromptSessionHint": {
     "message": "Ändringar här påverkar denna export. Ställ in din standardprompt i tilläggsinställningarna."
@@ -2073,7 +2074,7 @@
     "message": "Skapa namngivna knappar för att ändra etiketter eller rensa andra MR-fält. Dra dem i knapp-listan för att ändra deras ordning."
   },
   "mrActionsProfileHint": {
-    "message": "Detta projekt använder sin egen åtgärdslista efter sparande. Ta bort alla poster för att dölja dessa knappar för detta projekt."
+    "message": "Om du redigerar listan skapas projektspecifika åtgärder. Ta bort alla poster för att dölja knapparna för projektet."
   },
   "mrActionAdd": {
     "message": "Lägg till MR-åtgärd"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Inställningar" },
+  "settingsActions": { "message": "MR och commits" },
+  "settingsActionsHint": { "message": "Merge requests, commits, versioner och cherry-pick." },
+  "settingsCi": { "message": "CI/CD och jobb" },
+  "settingsAppearance": { "message": "GitLab-gränssnitt" },
+  "settingsData": { "message": "Data och hjälp" },
+  "settingsSearch": { "message": "Sök inställningar" },
+  "settingsScope": { "message": "Inställningarnas omfattning" },
+  "settingsProjectValue": { "message": "Projektvärde" },
+  "settingsUseGlobal": { "message": "Använd globalt värde" },
+  "settingsProjectInheritanceHint": { "message": "Ändra ett värde för att ange det för det här projektet. Använd det globala värdet för att återställa arv." },
+  "settingsSharedPreferencesHint": { "message": "Gränssnittsspråk, ljud, skrivbordsaviseringar och rapportinställningar för flera projekt är globala. Redigera dem under Alla projekt." },
+  "settingsGlobal": { "message": "Alla projekt" },
+  "settingsGlobalHint": { "message": "Dessa inställningar gäller för alla projekt." },
+  "settingsProjectHint": { "message": "Den här profilen åsidosätter de gemensamma inställningarna för detta projekt." },
+  "settingsGlobalOnly": { "message": "Det här avsnittet använder gemensamma inställningar för alla projekt." },
+  "settingsQuick": { "message": "Snabbinställningar" },
+  "settingsNoResults": { "message": "Inga matchande inställningar." },
+  "settingsRemoveProfile": { "message": "Ta bort profil" },
+  "settingsNoProject": { "message": "Öppna ett GitLab-projekt för att använda projektprofiler." },
+  "settingsAll": { "message": "Alla inställningar" },
+  "settingsMoveUp": { "message": "Flytta upp" },
+  "settingsMoveDown": { "message": "Flytta ned" },
+  "settingsConnection": { "message": "Anslutning" },
+  "settingsJiraDisplay": { "message": "Jira i GitLab" },
+  "settingsAdvanced": { "message": "Avancerade inställningar" },
+  "settingsAutosaveHint": { "message": "Ändringar sparas automatiskt." },
+  "settingsSaving": { "message": "Sparar…" },
+  "settingsLoadFailed": { "message": "Inställningarna kunde inte läsas in. Försök igen innan du redigerar." },
+  "aiReviewShowFull": { "message": "Visa hela kommentaren" },
+  "aiReviewShowLess": { "message": "Visa mindre" },
+  "aiReviewExpandCommentsSetting": { "message": "Visa granskningskommentarer i sin helhet som standard" },
+  "aiReviewExpandAll": { "message": "Expandera alla" },
+  "aiReviewCollapseAll": { "message": "Dölj alla" }
 }

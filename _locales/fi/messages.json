@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Painikkeet ilmestyvät MR-sivulle. Aloituspaketti on käytössä ensimmäisen asennuksen yhteydessä."
   },
-  "welcomeStep3Title": {
-    "message": "Mukauta laajennuksen ponnahdusikkunan kautta"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klikkaa laajennuksen kuvaketta ottaaksesi painikkeet käyttöön/pois käytöstä, määrittääksesi version nousutiedoston, lisätäksesi mukautettuja työpainikkeita ja muuta."
-  },
+  "welcomeStep3Title": { "message": "Mukauta asetuksissa" },
+  "welcomeStep3Desc": { "message": "Ponnahdusikkunassa voit ottaa toimintoja nopeasti käyttöön tai poistaa ne käytöstä. Avaa ”Kaikki asetukset”, kun haluat määrittää toiminnot, versiot, Jiran, CI/CD:n ja tekoälyavusteisen koodikatselmoinnin." },
   "welcomeEnabledDefault": {
     "message": "Oletuksena käytössä"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Projektikohtaiset profiilit antavat sinun mukauttaa painikkeita eri repositorioille"
   },
-  "welcomeTip": {
-    "message": "Voit luoda projektikohtaisia profiileja ponnahdusasetuksissa. Tämä on hyödyllistä, kun eri projektit tarvitsevat eri version tiedostoja tai mukautettuja CI-töitä."
-  },
+  "welcomeTip": { "message": "Luo projektiprofiileja kohdassa ”Kaikki asetukset”, kun projektit tarvitsevat erilaisia versiotiedostoja, toimintopainikkeita tai CI-töitä." },
   "welcomeOpenSettings": {
     "message": "Avaa asetukset"
   },
@@ -689,8 +683,13 @@
     "message": "Salli Jira-sivuston käyttöoikeus"
   },
   "jiraAccessGranted": {
-    "message": "Sivuston käyttöoikeus myönnetty. Kirjaudu Jiraan tässä selaimessa."
+    "message": "Laajennuksella on lupa käyttää sivustoa $1."
   },
+  "jiraConnectionUnchecked": { "message": "Yhteyttä ei ole vielä tarkistettu." },
+  "jiraConnectionCheck": { "message": "Tarkista yhteys" },
+  "jiraConnectionChecking": { "message": "Tarkistetaan yhteyttä sivustoon $1…" },
+  "jiraConnectionConnected": { "message": "Sivuston $1 viimeisin tarkistus: kirjautuminen vahvistettu; API käytettävissä." },
+  "jiraConnectionSignIn": { "message": "Kirjaudu Jiraan" },
   "jiraUrlInvalid": {
     "message": "Syötä HTTPS-muotoinen Jira-perus-URL ilman tunnuksia/kyselyjä/fragmentteja."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick -haarat"
   },
+  "cherryPickProjectBranchesHint": { "message": "Määritä tämän projektin haarat. Jätä luettelo tyhjäksi, jos haluat käyttää yleisiä haaroja." },
+  "cherryPickNoBranches": { "message": "Haaroja ei ole määritetty." },
   "cherryPickBranchesHint": {
     "message": "Oletustavoitehaarat cherry-pickille. Voit lisätä tai poistaa haaroja modaalissa."
   },
@@ -1492,7 +1493,7 @@
     "message": "Kehotetta ei tallennettu. Käytä enintään 1 500 merkkiä ja poista epätavalliset ohjausmerkit."
   },
   "settingsSaveFailed": {
-    "message": "Asetuksia ei voitu tallentaa. Tee muutos yrittääksesi uudelleen."
+    "message": "Asetuksia ei voitu tallentaa. Yritä uudelleen."
   },
   "aiReviewPromptSessionHint": {
     "message": "Tässä tehdyt muutokset koskevat tätä vientiä. Määritä oletuskehotteesi laajennusasetuksissa."
@@ -2073,7 +2074,7 @@
     "message": "Luo nimettyjä painikkeita muuttaaksesi tunnisteita tai tyhjentääksesi muita MR-kenttiä. Vedä niitä painikelistassa muuttaaksesi niiden järjestystä."
   },
   "mrActionsProfileHint": {
-    "message": "Tämä projekti käyttää omaa toimintolistaa tallennuksen jälkeen. Poista kaikki merkinnät piilottaaksesi nämä painikkeet tälle projektille."
+    "message": "Luettelon muokkaaminen luo projektikohtaiset toiminnot. Poista kaikki kohteet piilottaaksesi nämä painikkeet tässä projektissa."
   },
   "mrActionAdd": {
     "message": "Lisää MR-toiminto"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Asetukset" },
+  "settingsActions": { "message": "MR:t ja commitit" },
+  "settingsActionsHint": { "message": "Yhdistämispyynnöt, commitit, versiot ja cherry-pick." },
+  "settingsCi": { "message": "CI/CD ja työt" },
+  "settingsAppearance": { "message": "GitLab-käyttöliittymä" },
+  "settingsData": { "message": "Tiedot ja ohjeet" },
+  "settingsSearch": { "message": "Hae asetuksia" },
+  "settingsScope": { "message": "Asetusten kohde" },
+  "settingsProjectValue": { "message": "Projektin arvo" },
+  "settingsUseGlobal": { "message": "Käytä yleistä arvoa" },
+  "settingsProjectInheritanceHint": { "message": "Muokkaa arvoa määrittääksesi sen tälle projektille. Palauta periytyminen käyttämällä yleistä arvoa." },
+  "settingsSharedPreferencesHint": { "message": "Käyttöliittymän kieli, äänet, työpöytäilmoitukset ja projektien yhteiset raporttiasetukset ovat yleisiä. Muokkaa niitä kohdassa Kaikki projektit." },
+  "settingsGlobal": { "message": "Kaikki projektit" },
+  "settingsGlobalHint": { "message": "Nämä asetukset koskevat kaikkia projekteja." },
+  "settingsProjectHint": { "message": "Tämä profiili ohittaa tämän projektin yhteiset asetukset." },
+  "settingsGlobalOnly": { "message": "Tässä osiossa käytetään kaikkien projektien yhteisiä asetuksia." },
+  "settingsQuick": { "message": "Pika-asetukset" },
+  "settingsNoResults": { "message": "Vastaavia asetuksia ei löytynyt." },
+  "settingsRemoveProfile": { "message": "Poista profiili" },
+  "settingsNoProject": { "message": "Avaa GitLab-projekti, jotta voit käyttää projektiprofiileja." },
+  "settingsAll": { "message": "Kaikki asetukset" },
+  "settingsMoveUp": { "message": "Siirrä ylös" },
+  "settingsMoveDown": { "message": "Siirrä alas" },
+  "settingsConnection": { "message": "Yhteys" },
+  "settingsJiraDisplay": { "message": "Jira GitLabissa" },
+  "settingsAdvanced": { "message": "Lisäasetukset" },
+  "settingsAutosaveHint": { "message": "Muutokset tallennetaan automaattisesti." },
+  "settingsSaving": { "message": "Tallennetaan…" },
+  "settingsLoadFailed": { "message": "Asetuksia ei voitu ladata. Yritä uudelleen ennen muokkaamista." },
+  "aiReviewShowFull": { "message": "Näytä kokonaan" },
+  "aiReviewShowLess": { "message": "Näytä vähemmän" },
+  "aiReviewExpandCommentsSetting": { "message": "Näytä katselmointikommentit oletuksena kokonaan" },
+  "aiReviewExpandAll": { "message": "Laajenna kaikki" },
+  "aiReviewCollapseAll": { "message": "Tiivistä kaikki" }
 }

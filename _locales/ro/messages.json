@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Butoanele apar pe pagina MR. Un set de bază este activat la prima instalare."
   },
-  "welcomeStep3Title": {
-    "message": "Personalizează prin fereastra extensiei"
-  },
-  "welcomeStep3Desc": {
-    "message": "Apasă pe pictograma extensiei pentru a activa/dezactiva butoane, a seta fișierul de versiune, a adăuga butoane de job personalizate și altele."
-  },
+  "welcomeStep3Title": { "message": "Personalizează din setări" },
+  "welcomeStep3Desc": { "message": "Folosește fereastra extensiei pentru a activa sau dezactiva rapid opțiuni. Deschide „Toate setările” pentru a configura acțiuni, versiuni, Jira, CI/CD și revizuirea cu AI." },
   "welcomeEnabledDefault": {
     "message": "Activat implicit"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profilurile pe proiect permit personalizarea butoanelor pentru diferite depozite"
   },
-  "welcomeTip": {
-    "message": "Poți crea profiluri pe proiect în setările din popup. Acest lucru e util când proiecte diferite au nevoie de fișiere de versiune diferite sau joburi CI personalizate."
-  },
+  "welcomeTip": { "message": "Creează profiluri de proiect în „Toate setările” când proiectele au nevoie de fișiere de versiune, butoane de acțiune sau joburi CI diferite." },
   "welcomeOpenSettings": {
     "message": "Deschide Setări"
   },
@@ -689,8 +683,13 @@
     "message": "Permite accesul site-ului Jira"
   },
   "jiraAccessGranted": {
-    "message": "Accesul la site a fost acordat. Conectează-te la Jira în acest browser."
+    "message": "Extensia are permisiunea de a accesa $1."
   },
+  "jiraConnectionUnchecked": { "message": "Conexiunea nu a fost încă verificată." },
+  "jiraConnectionCheck": { "message": "Verifică conexiunea" },
+  "jiraConnectionChecking": { "message": "Se verifică conexiunea la $1…" },
+  "jiraConnectionConnected": { "message": "Ultima verificare pentru $1: autentificat; API disponibil." },
+  "jiraConnectionSignIn": { "message": "Autentificare în Jira" },
   "jiraUrlInvalid": {
     "message": "Introdu un URL de bază HTTPS Jira, fără credențiale/interogări/fragmente."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick pentru branch-uri"
   },
+  "cherryPickProjectBranchesHint": { "message": "Setați ramurile pentru acest proiect. Lăsați lista goală pentru a utiliza ramurile globale." },
+  "cherryPickNoBranches": { "message": "Nu sunt configurate ramuri." },
   "cherryPickBranchesHint": {
     "message": "Branch-urile țintă implicite pentru cherry-pick. Poți adăuga sau elimina branch-uri în modal."
   },
@@ -1492,7 +1493,7 @@
     "message": "Promptul nu a fost salvat. Folosește maximum 1.500 de caractere și elimină caracterele de control ciudate."
   },
   "settingsSaveFailed": {
-    "message": "Setările nu au putut fi salvate. Fă o modificare pentru a încerca din nou."
+    "message": "Setările nu au putut fi salvate. Reîncercați."
   },
   "aiReviewPromptSessionHint": {
     "message": "Modificările de aici se aplică acestui export. Setează promptul tău implicit în setările extensiei."
@@ -2073,7 +2074,7 @@
     "message": "Creează butoane denumite pentru a schimba etichete sau a șterge alte câmpuri MR. Trage-le în lista de butoane pentru a le schimba ordinea."
   },
   "mrActionsProfileHint": {
-    "message": "Acest proiect folosește propria listă de acțiuni după salvare. Elimină toate intrările pentru a ascunde aceste butoane pentru acest proiect."
+    "message": "Editarea acestei liste creează acțiuni specifice proiectului. Eliminați toate intrările pentru a ascunde aceste butoane în acest proiect."
   },
   "mrActionAdd": {
     "message": "Adaugă acțiune MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Setări" },
+  "settingsActions": { "message": "MR-uri și commituri" },
+  "settingsActionsHint": { "message": "Cereri de îmbinare, commituri, versiuni și cherry-pick." },
+  "settingsCi": { "message": "CI/CD și joburi" },
+  "settingsAppearance": { "message": "Interfața GitLab" },
+  "settingsData": { "message": "Date și ajutor" },
+  "settingsSearch": { "message": "Caută setări" },
+  "settingsScope": { "message": "Domeniul setărilor" },
+  "settingsProjectValue": { "message": "Valoarea proiectului" },
+  "settingsUseGlobal": { "message": "Utilizați valoarea globală" },
+  "settingsProjectInheritanceHint": { "message": "Editați o valoare pentru a o seta pentru acest proiect. Utilizați valoarea globală pentru a restabili moștenirea." },
+  "settingsSharedPreferencesHint": { "message": "Limba interfeței, sunetul, notificările și setările rapoartelor între proiecte sunt globale. Editați-le în Toate proiectele." },
+  "settingsGlobal": { "message": "Toate proiectele" },
+  "settingsGlobalHint": { "message": "Aceste setări se aplică tuturor proiectelor." },
+  "settingsProjectHint": { "message": "Acest profil înlocuiește setările comune pentru acest proiect." },
+  "settingsGlobalOnly": { "message": "Această secțiune folosește setări comune pentru toate proiectele." },
+  "settingsQuick": { "message": "Setări rapide" },
+  "settingsNoResults": { "message": "Nu s-au găsit setări corespunzătoare." },
+  "settingsRemoveProfile": { "message": "Elimină profilul" },
+  "settingsNoProject": { "message": "Deschide un proiect GitLab pentru a folosi profilurile de proiect." },
+  "settingsAll": { "message": "Toate setările" },
+  "settingsMoveUp": { "message": "Mută în sus" },
+  "settingsMoveDown": { "message": "Mută în jos" },
+  "settingsConnection": { "message": "Conexiune" },
+  "settingsJiraDisplay": { "message": "Jira în GitLab" },
+  "settingsAdvanced": { "message": "Setări avansate" },
+  "settingsAutosaveHint": { "message": "Modificările se salvează automat." },
+  "settingsSaving": { "message": "Se salvează…" },
+  "settingsLoadFailed": { "message": "Setările nu au putut fi încărcate. Reîncercați înainte de editare." },
+  "aiReviewShowFull": { "message": "Afișează integral" },
+  "aiReviewShowLess": { "message": "Restrânge" },
+  "aiReviewExpandCommentsSetting": { "message": "Afișează implicit comentariile de revizuire integral" },
+  "aiReviewExpandAll": { "message": "Extinde tot" },
+  "aiReviewCollapseAll": { "message": "Restrânge tot" }
 }

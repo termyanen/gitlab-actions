@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Knapperne vises på MR-siden. Et start-sæt er aktiveret ved første installation."
   },
-  "welcomeStep3Title": {
-    "message": "Tilpas via udvidelses-popup"
-  },
-  "welcomeStep3Desc": {
-    "message": "Klik på udvidelsesikonet for at aktivere/deaktivere knapper, indstille fil til version bump, tilføje brugerdefinerede job-knapper og mere."
-  },
+  "welcomeStep3Title": { "message": "Tilpas i indstillingerne" },
+  "welcomeStep3Desc": { "message": "Brug pop op-vinduet til hurtigt at slå indstillinger til eller fra. Åbn ”Alle indstillinger” for at konfigurere handlinger, versioner, Jira, CI/CD og AI-gennemgang." },
   "welcomeEnabledDefault": {
     "message": "Aktiveret som standard"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profiler pr. projekt giver dig mulighed for at tilpasse knapper til forskellige repositories."
   },
-  "welcomeTip": {
-    "message": "Du kan oprette profiler pr. projekt i popup-indstillingerne. Dette er nyttigt, når forskellige projekter har brug for forskellige versionsfiler eller tilpassede CI-jobs."
-  },
+  "welcomeTip": { "message": "Opret projektprofiler under ”Alle indstillinger”, når projekterne har brug for forskellige versionsfiler, handlingsknapper eller CI-jobs." },
   "welcomeOpenSettings": {
     "message": "Åbn indstillinger"
   },
@@ -689,8 +683,13 @@
     "message": "Tillad adgang til Jira-websted"
   },
   "jiraAccessGranted": {
-    "message": "Adgang til websted er givet. Log ind på Jira i denne browser."
+    "message": "Udvidelsen har tilladelse til at tilgå $1."
   },
+  "jiraConnectionUnchecked": { "message": "Forbindelsen er ikke kontrolleret endnu." },
+  "jiraConnectionCheck": { "message": "Kontrollér forbindelsen" },
+  "jiraConnectionChecking": { "message": "Kontrollerer forbindelsen til $1…" },
+  "jiraConnectionConnected": { "message": "Seneste kontrol af $1: logget ind; API tilgængelig." },
+  "jiraConnectionSignIn": { "message": "Log ind på Jira" },
   "jiraUrlInvalid": {
     "message": "Indtast en HTTPS Jira-bases URL, uden login-oplysninger/spørgsmål/fragment."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick-grene"
   },
+  "cherryPickProjectBranchesHint": { "message": "Angiv grene for dette projekt. Lad listen være tom for at bruge de globale grene." },
+  "cherryPickNoBranches": { "message": "Ingen grene er angivet." },
   "cherryPickBranchesHint": {
     "message": "Standard målgrene for cherry-pick. Du kan tilføje eller fjerne grene i modalvinduet."
   },
@@ -1492,7 +1493,7 @@
     "message": "Prompt ikke gemt. Brug maksimalt 1.500 tegn og fjern usædvanlige kontroltegn."
   },
   "settingsSaveFailed": {
-    "message": "Indstillinger kunne ikke gemmes. Foretag en ændring for at prøve igen."
+    "message": "Indstillingerne kunne ikke gemmes. Prøv igen."
   },
   "aiReviewPromptSessionHint": {
     "message": "Ændringer her gælder for dette eksport. Sæt din standardprompt i udvidelsesindstillingerne."
@@ -2073,7 +2074,7 @@
     "message": "Opret navngivne knapper for at ændre mærkater eller rydde andre MR-felter. Træk dem i knaplisten for at ændre deres rækkefølge."
   },
   "mrActionsProfileHint": {
-    "message": "Dette projekt bruger sin egen handlingsliste efter gemning. Fjern alle poster for at skjule disse knapper for dette projekt."
+    "message": "Når du redigerer listen, oprettes projektspecifikke handlinger. Fjern alle poster for at skjule disse knapper for projektet."
   },
   "mrActionAdd": {
     "message": "Tilføj MR-handling"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Indstillinger" },
+  "settingsActions": { "message": "MR og commits" },
+  "settingsActionsHint": { "message": "Merge requests, commits, versioner og cherry-pick." },
+  "settingsCi": { "message": "CI/CD og jobs" },
+  "settingsAppearance": { "message": "GitLab-grænseflade" },
+  "settingsData": { "message": "Data og hjælp" },
+  "settingsSearch": { "message": "Søg i indstillinger" },
+  "settingsScope": { "message": "Indstillingernes omfang" },
+  "settingsProjectValue": { "message": "Projektværdi" },
+  "settingsUseGlobal": { "message": "Brug global værdi" },
+  "settingsProjectInheritanceHint": { "message": "Rediger en værdi for at tilsidesætte den for dette projekt. Brug den globale værdi for at gendanne nedarvning." },
+  "settingsSharedPreferencesHint": { "message": "Grænsefladesprog, lyd, skrivebordsnotifikationer og rapportindstillinger på tværs af projekter er globale. Rediger dem under Alle projekter." },
+  "settingsGlobal": { "message": "Alle projekter" },
+  "settingsGlobalHint": { "message": "Disse indstillinger gælder for alle projekter." },
+  "settingsProjectHint": { "message": "Denne profil tilsidesætter de fælles indstillinger for dette projekt." },
+  "settingsGlobalOnly": { "message": "Dette afsnit bruger fælles indstillinger for alle projekter." },
+  "settingsQuick": { "message": "Hurtige indstillinger" },
+  "settingsNoResults": { "message": "Ingen matchende indstillinger." },
+  "settingsRemoveProfile": { "message": "Fjern profil" },
+  "settingsNoProject": { "message": "Åbn et GitLab-projekt for at bruge projektprofiler." },
+  "settingsAll": { "message": "Alle indstillinger" },
+  "settingsMoveUp": { "message": "Flyt op" },
+  "settingsMoveDown": { "message": "Flyt ned" },
+  "settingsConnection": { "message": "Forbindelse" },
+  "settingsJiraDisplay": { "message": "Jira i GitLab" },
+  "settingsAdvanced": { "message": "Avancerede indstillinger" },
+  "settingsAutosaveHint": { "message": "Ændringer gemmes automatisk." },
+  "settingsSaving": { "message": "Gemmer…" },
+  "settingsLoadFailed": { "message": "Indstillingerne kunne ikke indlæses. Prøv igen, før du redigerer." },
+  "aiReviewShowFull": { "message": "Vis hele kommentaren" },
+  "aiReviewShowLess": { "message": "Vis mindre" },
+  "aiReviewExpandCommentsSetting": { "message": "Vis hele gennemgangskommentarer som standard" },
+  "aiReviewExpandAll": { "message": "Fold alle ud" },
+  "aiReviewCollapseAll": { "message": "Fold alle sammen" }
 }

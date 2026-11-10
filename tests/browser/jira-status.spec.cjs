@@ -39,6 +39,28 @@ test('expired Jira session shows sign-in guidance, pauses reads and recovers on 
   expect(await page.evaluate(() => state.authFailed)).toBe(false);
 });
 
+test('project details override upgrades status-only cache once and reuses complete results', async ({page}) => {
+  await mount(page);
+  await page.evaluate(() => reply({statuses:{'PROJ-1':{name:'Open',categoryKey:'new'}}}));
+  await expect(page.locator('.gl-jira-badge')).toHaveText('Open');
+  await expect(page.locator('.gl-jira-list-icon')).toHaveCount(0);
+  await page.evaluate(() => {
+    scope.dispose();
+    history.replaceState({}, '', '/team/other/-/merge_requests');
+    window.scope = Lifecycle.createLifecycle();
+    window.badges = Badges.createListJiraBadges(state, scope, () => {}, title=>title.match(/[A-Z]+-\d+/g)||[]);
+    badges.fetchAndRenderJiraStatuses('https://jira.test', true);
+  });
+  expect(await page.evaluate(() => pending.map(item=>item.message.showDetails))).toEqual([true]);
+  await page.evaluate(() => reply({statuses:{'PROJ-1':{name:'Open',categoryKey:'new',type:'Bug',typeIcon:'https://gitlab.test/bug.svg'}}}));
+  await expect(page.locator('.gl-jira-list-icon')).toHaveCount(1);
+  await page.evaluate(() => badges.fetchAndRenderJiraStatuses('https://jira.test', false));
+  await expect(page.locator('.gl-jira-list-icon')).toHaveCount(0);
+  await page.evaluate(() => badges.fetchAndRenderJiraStatuses('https://jira.test', true));
+  await expect(page.locator('.gl-jira-list-icon')).toHaveCount(1);
+  expect(await page.evaluate(() => pending.length)).toBe(0);
+});
+
 test('one forbidden Jira issue preserves other badges and does not mark the whole session expired', async ({page}) => {
   await mount(page,['PROJ-1','PROJ-2']);
   await page.evaluate(() => reply({statuses:{'PROJ-2':{name:'Done',categoryKey:'done'}},_failure:{_error:'403',_errorKind:'forbidden',_httpStatus:403}}));
@@ -119,4 +141,35 @@ test('commit Jira badges finish partially cached fields after the session recove
   await expect(page.locator('.gl-commit-jira-badge')).toHaveText(['1.0','Open']);
   await expect(page.getByRole('alert')).toHaveCount(0);
   await page.evaluate(() => scope.dispose());
+});
+
+for (const [name, globalSkip, overrides, expectedConfirm] of [
+  ['project requires confirmation', true, {skip_confirmations:false}, 1],
+  ['project skips confirmation', false, {skip_confirmations:true}, 0],
+  ['global inheritance', true, {}, 0],
+]) test(`commit Jira transitions use ${name}`, async ({page}) => {
+  await mount(page);
+  for (const [entry,name] of [['src/widgets/commit-actions/ui/jira.ts','Commits'],['src/widgets/jira-panel/ui/transitions.ts','Transitions']])
+    await page.addScriptTag({content:bundleForTest(entry,{globalName:name})});
+  await page.evaluate(({globalSkip,overrides,expectedConfirm}) => {
+    scope.dispose();
+    pending.length = 0;
+    history.replaceState({}, '', '/team/other/-/commits/main');
+    document.body.innerHTML = '<div class="commit"><span class="commit-row-message">PROJ-1 Work</span><div class="commit-sha-group"><span data-clipboard-text="abcdef1234567">abcdef</span></div></div><div id="sidebar" data-ticket="PROJ-1"><div id="gl-jira-sidebar-transitions"></div></div>';
+    chrome.storage = {sync:{get:(defaults,callback)=>callback({...defaults,jira_url:'https://jira.test',commits_jira_field:'status',skip_confirmations:globalSkip,projectProfiles:{'team/other':{overrides}}})}};
+    window.scope = Lifecycle.createLifecycle();
+    state.skipConfirmations = !!expectedConfirm; // Retained opposite policy from the previous project.
+    state.fetching = false;
+    Commits.startCommitJira(state, () => {}, scope);
+    reply({values:{'PROJ-1':{values:['Open'],categoryKey:'new'}}});
+    window.confirmations = 0;
+    window.confirm = () => { confirmations++; return false; };
+    const transitions = Transitions.createJiraTransitions(state,scope,()=>{},{initAssigneeEditor:()=>{},initFixVersionsEditor:()=>{}});
+    transitions.loadJiraTransitions(document.querySelector('#sidebar'),'PROJ-1','https://jira.test',[]);
+    reply({transitions:[{id:'9',name:'Done',statusName:'Done',statusCategoryKey:'done'}]});
+  }, {globalSkip,overrides,expectedConfirm});
+  await page.locator('.gl-jira-sidebar-transition').click();
+  expect(await page.evaluate(()=>confirmations)).toBe(expectedConfirm);
+  expect(await page.evaluate(()=>pending.map(item=>item.message.type))).toEqual(expectedConfirm ? [] : ['do-jira-transition']);
+  await page.evaluate(()=>scope.dispose());
 });

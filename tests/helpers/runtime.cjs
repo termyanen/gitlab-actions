@@ -31,7 +31,7 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '', exposeBi
         }
       }
       source += '\nObject.defineProperties(globalThis, {' + [...bindings].map(([name, writable]) => JSON.stringify(name) + ': {configurable: true, get: () => ' + name + (writable ? ', set: value => { ' + name + ' = value; }' : '') + '}').join(',') + '});';
-      input = {stdin: {contents: source, resolveDir: path.dirname(file), sourcefile: file, loader: 'ts'}};
+      input = {stdin: {contents: source, resolveDir: path.dirname(file), sourcefile: file, loader: file.endsWith('.tsx') ? 'tsx' : 'ts'}};
     }
     const result = buildSync({
       absWorkingDir: root,
@@ -41,6 +41,8 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '', exposeBi
       format: 'iife',
       globalName,
       platform: 'browser',
+      jsx: 'automatic',
+      define: {'process.env.NODE_ENV': JSON.stringify('production')},
       target: 'chrome' + JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'))).minimum_chrome_version,
       footer: { js: footer },
       logLevel: 'silent',
@@ -52,8 +54,6 @@ function bundleForTest(entry, { globalName = 'TestModule', footer = '', exposeBi
 
 function readRuntime(file) {
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'background.js') return bundleForTest('src/shared/api/background-proxy/index.ts', {globalName: 'ProxyModule'}) + bundleForTest('src/app/entrypoints/background.ts', {exposeBindings: true, footer: 'Object.assign(globalThis, ProxyModule, chains);'});
-  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'popup.js') return bundleForTest('src/pages/settings/ui/settings.ts', {exposeBindings: true, footer: 'Object.defineProperties(globalThis, { allData: {get: () => state.data, set: value => { state.data = value; }}, _autoSaveTimer: {get: () => state.autoSaveTimer} }); for (const key of Object.keys(SettingsConfigModule)) if (!(key in globalThis)) globalThis[key] = SettingsConfigModule[key]; startSettings();'}) .replace(/^/, bundleForTest('src/features/manage-settings/index.ts', {globalName: 'SettingsConfigModule'}));
-  if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'welcome.js') return bundleForTest('src/app/entrypoints/welcome.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content_proxy.js') return bundleForTest('src/app/entrypoints/content_proxy.ts');
   if (!process.env.EXTENSION_TEST_SOURCE_DIR && file === 'content.js') {
     return bundleForTest('src/widgets/mr-toolbar/index.ts');

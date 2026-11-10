@@ -1,3 +1,4 @@
+import { JIRA_MYSELF_PATH } from "../../../shared/config/jira";
 import {
   isRecord,
   isString,
@@ -116,6 +117,8 @@ export async function jiraRequest(
       response = await fetch(jiraUrl.replace(/\/+$/, "") + path, {
         method,
         credentials: "include",
+        // An identity check must confirm the current session, not a cached user.
+        ...(path === JIRA_MYSELF_PATH ? { cache: "no-store" as const } : {}),
         redirect: method === "GET" ? "follow" : "error",
         headers: {
           Accept: "application/json",

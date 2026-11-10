@@ -8,7 +8,9 @@ var vm = require('node:vm');
 var root = require('./helpers/extension.cjs').root;
 
 test('isolated regression adapters for current runtime modules parse', function() {
-  ['background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js', 'popup.js', 'welcome.js'].forEach(function(file) {
+  // React pages are ESM graphs verified by build/release and real-browser tests;
+  // they no longer have a legacy global/imperative DOM VM adapter.
+  ['background.js', 'content.js', 'content_proxy.js', 'review-workflow.js', 'review-export.js', 'review-import.js', 'review-import-ui.js', 'review-copy.js'].forEach(function(file) {
     assert.doesNotThrow(function() { new vm.Script(require('./helpers/runtime.cjs').readRuntime(file), { filename: file }); });
   });
 });
@@ -26,7 +28,7 @@ test('all supported locales have the same message keys', function() {
 });
 
 test('manifest references existing scripts, styles, popup and icons', function() {
-  var manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
+  var manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist/manifest.json')));
   var files = [manifest.background.service_worker, manifest.action.default_popup];
   manifest.content_scripts.forEach(function(entry) { files = files.concat(entry.js || [], entry.css || []); });
   Object.keys(manifest.icons).forEach(function(size) { files.push(manifest.icons[size]); });

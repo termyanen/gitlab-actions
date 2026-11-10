@@ -14,11 +14,12 @@ function moduleFor(entry, globals = {}) {
 
 test('GitLab response validation preserves legacy partial metadata, nulls and new fields', () => {
   const api = moduleFor('src/entities/merge-request/index.ts');
-  const value = { description: null, merge_error: null, head_pipeline: null, extension_field: { future: true } };
+  const value = { description: null, merge_error: null, head_pipeline: null, should_remove_source_branch: null, extension_field: { future: true } };
   assert.equal(api.readActiveMergeRequest(value), value);
   assert.throws(() => api.readActiveMergeRequest({ source_branch: 17 }), /Invalid/);
   assert.throws(() => api.readActiveMergeRequest({ head_pipeline: { id: '42' } }), /Invalid/);
   assert.throws(() => api.readActiveMergeRequest([]), /Invalid/);
+  assert.throws(() => api.readActiveMergeRequest({ should_remove_source_branch: 'false' }), /Invalid/);
 });
 
 test('invalid MR data cannot reach a version-file write', async () => {
@@ -163,16 +164,14 @@ test('delivery journal digests retain SHA-256 identities across block boundaries
   }
 });
 
-test('settings controls distinguish inputs, selects and textareas and reject a broken template', () => {
-  const controls = { input: { tagName: 'INPUT' }, select: { tagName: 'SELECT' }, text: { tagName: 'TEXTAREA' }, button: { tagName: 'BUTTON' }, bad: { tagName: 'DIV' } };
-  const api = moduleFor('src/pages/settings/ui/dom.ts', { document: { getElementById: id => controls[id] || null } });
-  assert.equal(api.inputById('input'), controls.input);
-  assert.equal(api.valueControlById('select'), controls.select);
-  assert.equal(api.textControlById('text'), controls.text);
-  assert.equal(api.buttonById('button'), controls.button);
-  assert.throws(() => api.inputById('select'), /Expected input/);
-  assert.throws(() => api.valueControlById('bad'), /Expected form control/);
-  assert.throws(() => api.byId('missing'), /missing/);
+test('extension templates reject a missing React mount instead of asserting it exists', () => {
+  // Settings fields now use typed React events and controlled drafts, rather
+  // than looking up arbitrary DOM controls and casting their value properties.
+  // The remaining template boundary is the checked extension-page mount node.
+  const api = moduleFor('src/shared/ui/dom/index.ts');
+  const root = {tagName:'DIV',nodeType:1};
+  assert.equal(api.requireElement(root), root);
+  assert.throws(() => api.requireElement(null), /Required extension UI element is missing/);
 });
 
 test('worker message validation retains legacy quick actions but rejects invalid optional fields', () => {

@@ -14,7 +14,7 @@ var root = require('./helpers/extension.cjs').root;
     var staging = fs.mkdtempSync(path.join(os.tmpdir(), 'gitlab-actions-package-'));
     try {
       var manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
-      var required = ['manifest.json', 'background.js', 'content_proxy.js', 'content.css', 'popup.html', 'popup.js', 'welcome.html', 'welcome.js'];
+      var required = ['manifest.json', 'background.js', 'content_proxy.js', 'content.css', 'popup.html', 'popup.js', 'quick-popup.html', 'quick-popup.js', 'settings.css', 'welcome.html', 'welcome.js'];
       Object.keys(manifest.icons).forEach(function(size) { required.push(manifest.icons[size]); });
       fs.readdirSync(path.join(root, '_locales'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => entry.name).forEach(function(locale) { required.push('_locales/' + locale + '/messages.json'); });
       required.concat(['pack.sh', 'package.json', 'tsconfig.json']).forEach(function(file) {
@@ -53,12 +53,32 @@ var root = require('./helpers/extension.cjs').root;
       }
       var entries = execFileSync('unzip', ['-Z', '-1', path.join(staging, archive)], { encoding: 'utf8' }).trim().split('\n');
       assert.ok(entries.includes('modules/content.js'), 'Packaged module entry is required');
+      assert.ok(entries.includes('THIRD_PARTY_NOTICES.txt'), 'Bundled React runtime licenses must ship');
       assert.ok(entries.some(file => file.startsWith('modules/chunks/')), 'Packaged lazy chunks are required');
-      required.forEach(function(file) { assert.ok(entries.includes(file), 'Missing packaged resource: ' + file); });
+      assert.ok(entries.some(file => file.startsWith('ui/chunks/')), 'Shared React UI chunks must ship');
+      const packagedManifest = JSON.parse(execFileSync('unzip', ['-p', path.join(staging, archive), 'manifest.json'], {encoding:'utf8'}));
+      const cssFiles = packagedManifest.content_scripts.flatMap(entry => entry.css || []);
+      assert.equal(cssFiles.length, 1);
+      assert.match(cssFiles[0], /^content-[a-f0-9]{16}\.css$/);
+      assert.ok(entries.includes(cssFiles[0]));
+      assert.equal(execFileSync('unzip', ['-p', path.join(staging, archive), cssFiles[0]], {encoding:'utf8'}), fs.readFileSync(path.join(staging,'content.css'),'utf8'));
+      assert.equal(entries.includes('content.css'),false,'Do not ship a competing stable CSS URL');
+      required.filter(file => file !== 'content.css').forEach(function(file) { assert.ok(entries.includes(file), 'Missing packaged resource: ' + file); });
+      if(builder==='pack.sh'){
+        // Rebuilding at the same extension version must still invalidate CSS.
+        fs.appendFileSync(path.join(staging,'content.css'),'\n/* Updated local toolbar layout */\n');
+        execFileSync(process.execPath,['scripts/build.mjs'],{cwd:staging,stdio:'pipe'});
+        const updated=JSON.parse(fs.readFileSync(path.join(staging,'dist/manifest.json'),'utf8'));
+        const next=updated.content_scripts.flatMap(entry=>entry.css||[])[0];
+        assert.notEqual(next,cssFiles[0]);
+        assert.equal(updated.version,packagedManifest.version);
+        assert.equal(fs.existsSync(path.join(staging,'dist',cssFiles[0])),false);
+        assert.equal(fs.readFileSync(path.join(staging,'dist',next),'utf8'),fs.readFileSync(path.join(staging,'content.css'),'utf8'));
+      }
       entries.forEach(function(file) {
         assert.equal(file.split('/').some(function(part) { return part.startsWith('.'); }), false, 'Hidden file must not ship: ' + file);
         assert.equal(/^(tests\/|node_modules\/|src\/|scripts\/|\.|docs\/|promo\/|package(?:-lock)?\.json$|pack\.sh$|(?:AGENTS|CONTRIBUTING|GEMINI|CLAUDE|ROADMAP)\.md$)/.test(file), false, 'Unexpected packaged file: ' + file);
-        assert.equal(/\.(?:ts|map)$/.test(file), false, 'Development source must not ship: ' + file);
+        assert.equal(/\.(?:tsx?|map)$/.test(file), false, 'Development source must not ship: ' + file);
       });
     } finally {
       fs.rmSync(staging, { recursive: true, force: true });

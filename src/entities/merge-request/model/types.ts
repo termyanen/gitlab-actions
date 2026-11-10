@@ -77,7 +77,7 @@ export interface ActiveMergeRequest extends MergeRequest {
   blocking_discussions_resolved?: boolean;
   squash?: boolean;
   force_remove_source_branch?: boolean;
-  should_remove_source_branch?: boolean;
+  should_remove_source_branch?: boolean | null;
   diff_head_sha?: string;
   head_pipeline?: {
     id?: number;

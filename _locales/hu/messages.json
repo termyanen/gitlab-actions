@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "A gombok megjelennek az MR oldalon. Egy kezdő készlet az első telepítéskor engedélyezve van."
   },
-  "welcomeStep3Title": {
-    "message": "Testreszabás a kiterjesztés felugró menüjéből"
-  },
-  "welcomeStep3Desc": {
-    "message": "Kattints a kiterjesztés ikonra, hogy engedélyezd/tiltsd a gombokat, állítsd be a verzió növelő fájlt, adj hozzá egyedi munkagombokat, és még sok mást."
-  },
+  "welcomeStep3Title": { "message": "Testreszabás a beállításokban" },
+  "welcomeStep3Desc": { "message": "A felugró ablakban gyorsan be- és kikapcsolhatja az opciókat. Az „Összes beállítás” alatt konfigurálhatja a műveleteket, verziókat, a Jirát, a CI/CD-t és az AI-alapú kódellenőrzést." },
   "welcomeEnabledDefault": {
     "message": "Alapértelmezés szerint engedélyezve"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "A projektenkénti profilok lehetővé teszik, hogy testreszabhasd a gombokat különböző repókhoz"
   },
-  "welcomeTip": {
-    "message": "Projektenkénti profilokat a felugró beállításokban hozhatsz létre. Ez hasznos, ha különböző projektekhez különböző verziófájlok vagy egyedi CI feladatok kellenek."
-  },
+  "welcomeTip": { "message": "Hozzon létre projektprofilokat az „Összes beállítás” alatt, ha a projektekhez eltérő verziófájlokra, műveletgombokra vagy CI-feladatokra van szükség." },
   "welcomeOpenSettings": {
     "message": "Beállítások megnyitása"
   },
@@ -689,8 +683,13 @@
     "message": "Engedélyezd a Jira oldal hozzáférését"
   },
   "jiraAccessGranted": {
-    "message": "Az oldalhozzáférés engedélyezve. Jelentkezz be a Jirába ezen a böngészőn."
+    "message": "A bővítmény hozzáférhet ehhez: $1."
   },
+  "jiraConnectionUnchecked": { "message": "A kapcsolat még nincs ellenőrizve." },
+  "jiraConnectionCheck": { "message": "Kapcsolat ellenőrzése" },
+  "jiraConnectionChecking": { "message": "Kapcsolat ellenőrzése: $1…" },
+  "jiraConnectionConnected": { "message": "$1 legutóbbi ellenőrzése: bejelentkezve; az API elérhető." },
+  "jiraConnectionSignIn": { "message": "Bejelentkezés a Jirába" },
   "jiraUrlInvalid": {
     "message": "Adj meg egy HTTPS Jira alap URL-t, hitelesítő adatok/lekérdezés/részlet nélkül."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick ágak"
   },
+  "cherryPickProjectBranchesHint": { "message": "Állítsa be a projekt ágait. A globális ágak használatához hagyja üresen a listát." },
+  "cherryPickNoBranches": { "message": "Nincsenek beállított ágak." },
   "cherryPickBranchesHint": {
     "message": "Alapértelmezett célágak a cherry-pickhez. Hozzáadhatsz vagy eltávolíthatsz ágakat a modalban."
   },
@@ -1492,7 +1493,7 @@
     "message": "A prompt nem lett mentve. Használj legfeljebb 1 500 karaktert, és távolítsd el a szokatlan vezérlőkaraktereket."
   },
   "settingsSaveFailed": {
-    "message": "A beállításokat nem sikerült menteni. Próbálj meg változtatni és újra."
+    "message": "A beállítások mentése sikertelen. Próbálja újra."
   },
   "aiReviewPromptSessionHint": {
     "message": "Az itt végzett módosítások erre az exportálásra vonatkoznak. Állítsd be az alapértelmezett promptodat a bővítmény beállításaiban."
@@ -2073,7 +2074,7 @@
     "message": "Hozz létre névvel ellátott gombokat címkék módosításához vagy más MR mezők törléséhez. Húzd őket a gomb listában a sorrendjük megváltoztatásához."
   },
   "mrActionsProfileHint": {
-    "message": "Ez a projekt a saját műveletlistáját használja mentés után. Töröld az összes bejegyzést, hogy elrejtsd ezeket a gombokat ennél a projektnél."
+    "message": "A lista szerkesztése projektspecifikus műveleteket hoz létre. Az összes bejegyzés eltávolításával elrejtheti ezeket a gombokat ebben a projektben."
   },
   "mrActionAdd": {
     "message": "MR művelet hozzáadása"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Beállítások" },
+  "settingsActions": { "message": "MR-ek és commitok" },
+  "settingsActionsHint": { "message": "Merge requestek, commitok, verziók és cherry-pick." },
+  "settingsCi": { "message": "CI/CD és feladatok" },
+  "settingsAppearance": { "message": "GitLab-felület" },
+  "settingsData": { "message": "Adatok és súgó" },
+  "settingsSearch": { "message": "Beállítások keresése" },
+  "settingsScope": { "message": "Beállítások hatóköre" },
+  "settingsProjectValue": { "message": "Projektérték" },
+  "settingsUseGlobal": { "message": "Globális érték használata" },
+  "settingsProjectInheritanceHint": { "message": "Módosítson egy értéket a projekthez tartozó felülíráshoz. A globális érték használatával visszaállíthatja az öröklést." },
+  "settingsSharedPreferencesHint": { "message": "A felület nyelve, a hang, az asztali értesítések és a projektek közötti jelentések beállításai globálisak. Az Összes projekt résznél módosíthatók." },
+  "settingsGlobal": { "message": "Minden projekt" },
+  "settingsGlobalHint": { "message": "Ezek a beállítások minden projektre érvényesek." },
+  "settingsProjectHint": { "message": "Ez a profil felülírja a projekt közös beállításait." },
+  "settingsGlobalOnly": { "message": "Ez a szakasz minden projektre érvényes közös beállításokat használ." },
+  "settingsQuick": { "message": "Gyorsbeállítások" },
+  "settingsNoResults": { "message": "Nincs megfelelő beállítás." },
+  "settingsRemoveProfile": { "message": "Profil eltávolítása" },
+  "settingsNoProject": { "message": "A projektprofilok használatához nyisson meg egy GitLab-projektet." },
+  "settingsAll": { "message": "Összes beállítás" },
+  "settingsMoveUp": { "message": "Mozgatás felfelé" },
+  "settingsMoveDown": { "message": "Mozgatás lefelé" },
+  "settingsConnection": { "message": "Kapcsolat" },
+  "settingsJiraDisplay": { "message": "Jira a GitLabban" },
+  "settingsAdvanced": { "message": "Speciális beállítások" },
+  "settingsAutosaveHint": { "message": "A módosítások automatikusan mentésre kerülnek." },
+  "settingsSaving": { "message": "Mentés…" },
+  "settingsLoadFailed": { "message": "A beállítások betöltése sikertelen. Szerkesztés előtt próbálja újra." },
+  "aiReviewShowFull": { "message": "Teljes megjelenítés" },
+  "aiReviewShowLess": { "message": "Összecsukás" },
+  "aiReviewExpandCommentsSetting": { "message": "A felülvizsgálati megjegyzések teljes megjelenítése alapértelmezés szerint" },
+  "aiReviewExpandAll": { "message": "Összes kibontása" },
+  "aiReviewCollapseAll": { "message": "Összes összecsukása" }
 }

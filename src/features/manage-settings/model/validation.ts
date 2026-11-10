@@ -1,3 +1,4 @@
+import { isProjectSettingKey } from "../../../shared/config/project-settings";
 import { isLanguage } from "../../../shared/i18n";
 import * as workflow from "../../../entities/review";
 import { validDisplayPreferences } from "../../../entities/settings";
@@ -12,7 +13,7 @@ import {
   MR_ACTION_TYPES,
   SETTINGS_FILE_MAX_BYTES,
 } from "./config";
-import { readJiraBaseUrl } from "./jira-url";
+import { readJiraBaseUrl } from "../../../shared/config/jira";
 export function createSettingsValidation(t: (key: string) => string) {
   function validateMrActions(actions: unknown) {
     if (!isUnknownArray(actions)) throw new Error(t("mrActionInvalid"));
@@ -23,6 +24,7 @@ export function createSettingsValidation(t: (key: string) => string) {
         typeof action.id !== "string" ||
         !/^[a-zA-Z0-9_-]{1,80}$/.test(action.id) ||
         ids.indexOf(action.id) !== -1 ||
+        (action.enabled !== undefined && typeof action.enabled !== "boolean") ||
         typeof action.label !== "string" ||
         !action.label.trim() ||
         typeof action.type !== "string" ||
@@ -69,14 +71,26 @@ export function createSettingsValidation(t: (key: string) => string) {
     if (!isRecord(snapshot)) throw new Error(t("settingsFileInvalid"));
     return snapshot;
   }
+  function validateTextRows(value: unknown, fields: string[]) {
+    if (
+      !isUnknownArray(value) ||
+      value.some(
+        (row) =>
+          !isRecord(row) ||
+          fields.some((field) => typeof row[field] !== "string"),
+      )
+    )
+      throw new Error(t("settingsFileInvalid"));
+  }
   function validateSharedSettings(
     settings: Record<string, unknown>,
   ): asserts settings is Settings {
     if (!validDisplayPreferences(settings))
       throw new Error(t("displayPreferencesInvalid"));
-    const job = { label: "", jobName: "" };
-    const mrAction = { id: "", label: "", type: "", labels: "" };
+    const job = { label: "", jobName: "", enabled: true };
+    const mrAction = { id: "", label: "", type: "", labels: "", enabled: true };
     const profileShape = {
+      cherry_pick_branches: [""],
       buttons: BUTTON_DEFAULTS,
       buttonOrder: [""],
       customJobs: [job],
@@ -100,13 +114,44 @@ export function createSettingsValidation(t: (key: string) => string) {
             throw new Error(t("settingsFileInvalid"));
           const profile = value[path];
           if (!isRecord(profile)) throw new Error(t("settingsFileInvalid"));
-          validateSettingsShape(profile, profileShape);
+          const overrides = profile.overrides;
+          if (overrides !== undefined) {
+            if (
+              !isRecord(overrides) ||
+              Object.keys(overrides).some(
+                (key) =>
+                  !isProjectSettingKey(key) || !Object.hasOwn(DEFAULTS, key),
+              )
+            )
+              throw new Error(t("settingsFileInvalid"));
+            validateSharedSettings({
+              ...DEFAULTS,
+              ...overrides,
+              projectProfiles: {},
+            });
+          }
+          validateSettingsShape(
+            Object.fromEntries(
+              Object.entries(profile).filter(([key]) => key !== "overrides"),
+            ),
+            profileShape,
+          );
+          if (profile.customJobs !== undefined)
+            validateTextRows(profile.customJobs, ["label", "jobName"]);
+          if (
+            profile.versionStrategy &&
+            !["patch", "minor", "major"].includes(
+              String(profile.versionStrategy),
+            )
+          )
+            throw new Error(t("settingsFileInvalid"));
           if (profile.mrActions) validateMrActions(profile.mrActions);
         });
       } else if (key === "jiraQuickActions") {
         if (!isUnknownArray(value)) throw new Error(t("settingsFileInvalid"));
         value.forEach(function (action) {
-          if (!isRecord(action)) throw new Error(t("settingsFileInvalid"));
+          if (!isRecord(action) || typeof action.label !== "string")
+            throw new Error(t("settingsFileInvalid"));
           // Custom Jira fields intentionally accept arbitrary JSON values.
           validateSettingsShape(action, {
             label: "",
@@ -139,12 +184,18 @@ export function createSettingsValidation(t: (key: string) => string) {
         });
       } else {
         let shape: unknown = DEFAULTS[key];
-        if (key === "customJobs") shape = [job];
+        if (key === "customJobs") {
+          shape = [job];
+          validateTextRows(value, ["label", "jobName"]);
+        }
         if (key === "mrActions") {
           shape = [mrAction];
           validateMrActions(value);
         }
-        if (key === "quickComments") shape = [{ label: "", text: "" }];
+        if (key === "quickComments") {
+          shape = [{ label: "", text: "" }];
+          validateTextRows(value, ["label", "text"]);
+        }
         if (key === "buttonOrder" || key === "cherry_pick_branches")
           shape = [""];
         validateSettingsShape(value, shape);

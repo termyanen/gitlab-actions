@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Các nút xuất hiện trên trang MR. Một bộ nút khởi đầu được kích hoạt khi cài đặt lần đầu."
   },
-  "welcomeStep3Title": {
-    "message": "Tùy chỉnh qua cửa sổ bật lên của tiện ích mở rộng"
-  },
-  "welcomeStep3Desc": {
-    "message": "Nhấp vào biểu tượng tiện ích mở rộng để bật/tắt các nút, đặt tệp tăng phiên bản, thêm nút công việc tùy chỉnh và nhiều hơn nữa."
-  },
+  "welcomeStep3Title": { "message": "Tùy chỉnh trong cài đặt" },
+  "welcomeStep3Desc": { "message": "Dùng cửa sổ bật lên để bật hoặc tắt nhanh các tùy chọn. Mở “Tất cả cài đặt” để cấu hình thao tác, phiên bản, Jira, CI/CD và đánh giá bằng AI." },
   "welcomeEnabledDefault": {
     "message": "Bật theo mặc định"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Hồ sơ theo dự án cho phép bạn tùy chỉnh nút cho các kho lưu trữ khác nhau"
   },
-  "welcomeTip": {
-    "message": "Bạn có thể tạo hồ sơ theo dự án trong cài đặt bật lên. Điều này hữu ích khi các dự án khác nhau cần các tệp phiên bản khác nhau hoặc các công việc CI tùy chỉnh."
-  },
+  "welcomeTip": { "message": "Tạo hồ sơ dự án trong “Tất cả cài đặt” khi các dự án cần tệp phiên bản, nút thao tác hoặc tác vụ CI khác nhau." },
   "welcomeOpenSettings": {
     "message": "Mở Cài đặt"
   },
@@ -689,8 +683,13 @@
     "message": "Cho phép truy cập trang Jira"
   },
   "jiraAccessGranted": {
-    "message": "Truy cập trang đã được cấp. Đăng nhập vào Jira trên trình duyệt này."
+    "message": "Tiện ích được phép truy cập $1."
   },
+  "jiraConnectionUnchecked": { "message": "Chưa kiểm tra kết nối." },
+  "jiraConnectionCheck": { "message": "Kiểm tra kết nối" },
+  "jiraConnectionChecking": { "message": "Đang kiểm tra kết nối đến $1…" },
+  "jiraConnectionConnected": { "message": "Lần kiểm tra gần nhất của $1: đã đăng nhập; API khả dụng." },
+  "jiraConnectionSignIn": { "message": "Đăng nhập vào Jira" },
   "jiraUrlInvalid": {
     "message": "Nhập URL cơ sở HTTPS của Jira, không kèm thông tin đăng nhập/truy vấn/đoạn."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Nhánh đích cho cherry-pick"
   },
+  "cherryPickProjectBranchesHint": { "message": "Đặt các nhánh cho dự án này. Để trống danh sách để sử dụng các nhánh chung." },
+  "cherryPickNoBranches": { "message": "Chưa cấu hình nhánh nào." },
   "cherryPickBranchesHint": {
     "message": "Các nhánh đích mặc định cho cherry-pick. Bạn có thể thêm hoặc xóa nhánh trong hộp thoại."
   },
@@ -1492,7 +1493,7 @@
     "message": "Nhắc nhở chưa được lưu. Sử dụng tối đa 1.500 ký tự và loại bỏ các ký tự điều khiển bất thường."
   },
   "settingsSaveFailed": {
-    "message": "Không thể lưu cài đặt. Thực hiện một thay đổi để thử lại."
+    "message": "Không thể lưu cài đặt. Hãy thử lại."
   },
   "aiReviewPromptSessionHint": {
     "message": "Các thay đổi ở đây áp dụng cho xuất này. Đặt gợi ý mặc định của bạn trong cài đặt tiện ích mở rộng."
@@ -2073,7 +2074,7 @@
     "message": "Tạo các nút có tên để thay đổi nhãn hoặc xóa các trường MR khác. Kéo chúng trong danh sách nút để thay đổi thứ tự."
   },
   "mrActionsProfileHint": {
-    "message": "Dự án này sử dụng danh sách hành động riêng sau khi lưu. Xóa tất cả các mục để ẩn các nút này cho dự án này."
+    "message": "Chỉnh sửa danh sách này sẽ tạo các hành động riêng cho dự án. Xóa mọi mục để ẩn các nút này trong dự án."
   },
   "mrActionAdd": {
     "message": "Thêm hành động MR"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Cài đặt" },
+  "settingsActions": { "message": "MR và commit" },
+  "settingsActionsHint": { "message": "Yêu cầu hợp nhất, commit, phiên bản và cherry-pick." },
+  "settingsCi": { "message": "CI/CD và tác vụ" },
+  "settingsAppearance": { "message": "Giao diện GitLab" },
+  "settingsData": { "message": "Dữ liệu và trợ giúp" },
+  "settingsSearch": { "message": "Tìm kiếm cài đặt" },
+  "settingsScope": { "message": "Phạm vi cài đặt" },
+  "settingsProjectValue": { "message": "Giá trị dự án" },
+  "settingsUseGlobal": { "message": "Dùng giá trị chung" },
+  "settingsProjectInheritanceHint": { "message": "Chỉnh sửa giá trị để đặt riêng cho dự án này. Dùng giá trị chung để khôi phục kế thừa." },
+  "settingsSharedPreferencesHint": { "message": "Ngôn ngữ giao diện, âm thanh, thông báo trên máy tính và báo cáo giữa các dự án là cài đặt chung. Chỉnh sửa trong Tất cả dự án." },
+  "settingsGlobal": { "message": "Tất cả dự án" },
+  "settingsGlobalHint": { "message": "Các cài đặt này áp dụng cho tất cả dự án." },
+  "settingsProjectHint": { "message": "Hồ sơ này ghi đè cài đặt chung cho dự án này." },
+  "settingsGlobalOnly": { "message": "Mục này sử dụng cài đặt chung cho tất cả dự án." },
+  "settingsQuick": { "message": "Cài đặt nhanh" },
+  "settingsNoResults": { "message": "Không tìm thấy cài đặt phù hợp." },
+  "settingsRemoveProfile": { "message": "Xóa hồ sơ" },
+  "settingsNoProject": { "message": "Mở một dự án GitLab để sử dụng hồ sơ dự án." },
+  "settingsAll": { "message": "Tất cả cài đặt" },
+  "settingsMoveUp": { "message": "Di chuyển lên" },
+  "settingsMoveDown": { "message": "Di chuyển xuống" },
+  "settingsConnection": { "message": "Kết nối" },
+  "settingsJiraDisplay": { "message": "Jira trong GitLab" },
+  "settingsAdvanced": { "message": "Cài đặt nâng cao" },
+  "settingsAutosaveHint": { "message": "Các thay đổi được lưu tự động." },
+  "settingsSaving": { "message": "Đang lưu…" },
+  "settingsLoadFailed": { "message": "Không thể tải cài đặt. Hãy thử lại trước khi chỉnh sửa." },
+  "aiReviewShowFull": { "message": "Hiển thị toàn bộ" },
+  "aiReviewShowLess": { "message": "Thu gọn" },
+  "aiReviewExpandCommentsSetting": { "message": "Mặc định hiển thị toàn bộ bình luận đánh giá" },
+  "aiReviewExpandAll": { "message": "Mở rộng tất cả" },
+  "aiReviewCollapseAll": { "message": "Thu gọn tất cả" }
 }

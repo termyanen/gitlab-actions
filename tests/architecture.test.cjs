@@ -136,7 +136,7 @@ test('architecture rejects CommonJS loads that would bypass the ESM graph', asyn
 
 test('architecture rejects source extensions not covered by the TypeScript configuration', async t => {
   const violations = await inspect(t, {
-    'features/a/view.tsx': 'export const view = <div/>;',
+    'features/a/view.jsx': 'export const view = <div/>;',
     'features/a/module.mts': 'export const value = 1;',
     'features/a/module.cts': 'export const value = 1;',
   });
@@ -201,4 +201,51 @@ test('architecture reports a missing build entry point', async t => {
     entryPoints: ['app/index.ts', 'app/missing.ts'],
   });
   assert.deepEqual(violations, ['app/missing.ts: entry point is outside the checked source graph']);
+});
+
+
+test('architecture follows TSX modules and permits React only in extension-owned UI', async t => {
+  const violations = await inspect(t, {
+    'app/entrypoints/popup.ts': 'import {Page} from "../../pages/settings";',
+    'app/entrypoints/welcome.ts': 'import {Welcome} from "../../pages/welcome";',
+    'pages/welcome/index.ts': 'export {Welcome} from "./ui/welcome";',
+    'pages/welcome/ui/welcome.tsx': 'import {Toggle} from "../../../shared/ui/settings"; export const Welcome = () => <Toggle/>;',
+    'features/check-jira-connection/index.ts': 'export {Check} from "./ui/check";',
+    'features/check-jira-connection/ui/check.tsx': 'export const Check = () => <div/>;',
+    'pages/settings/index.ts': 'export {Page} from "./ui/page";',
+    'pages/settings/ui/page.tsx': 'import {Check} from "../../../features/check-jira-connection"; import {useState} from "react"; import {Toggle} from "../../../shared/ui/settings"; export function Page() { const [value] = useState(false); return <Toggle checked={value}/>; }',
+    'shared/ui/settings/index.ts': 'export {Toggle} from "./toggle";',
+    'shared/ui/settings/toggle.tsx': 'import type {ReactNode} from "react"; export const Toggle = () => <input/>;',
+  }, {entryPoints: ['app/entrypoints/popup.ts', 'app/entrypoints/welcome.ts']});
+  assert.deepEqual(violations, []);
+});
+
+test('architecture rejects unapproved packages and JSX outside extension-owned UI', async t => {
+  const violations = await inspect(t, {
+    'entities/example/index.ts': 'import {useState} from "react";',
+    'pages/popup/ui/page.tsx': 'import {renderToString} from "react-dom/server"; import value from "another-library";',
+    'widgets/toolbar/ui/view.tsx': 'export const view = <button/>;',
+  });
+  assert.equal(violations.filter(v => v.includes('imports must be relative')).length, 3);
+  assert.ok(violations.some(v => v.includes('JSX belongs only')));
+});
+
+test('architecture prevents indirect and lazy React dependencies in content and worker graphs', async t => {
+  const violations = await inspect(t, {
+    'app/content/runtime.ts': 'import "../../shared/ui/settings";',
+    'app/entrypoints/background.ts': 'import("../../shared/ui/settings");',
+    'shared/ui/settings/index.ts': 'export {View} from "./view";',
+    'shared/ui/settings/view.tsx': 'export const View = () => <div/>;',
+  });
+  assert.equal(violations.filter(v => v.includes('non-UI runtime reaches React')).length, 2);
+});
+
+test('architecture checks TSX private imports and cycles rather than skipping React views', async t => {
+  const violations = await inspect(t, {
+    'pages/settings/ui/page.tsx': 'import "../../../shared/ui/settings/private"; import "./other"; export const Page = () => <div/>;',
+    'pages/settings/ui/other.tsx': 'import "./page";',
+    'shared/ui/settings/private.tsx': 'export const Private = () => <div/>;',
+  });
+  assert.ok(violations.some(v => v.includes('use public API')));
+  assert.ok(violations.some(v => v.includes('Circular runtime dependency:') && v.includes('page.tsx') && v.includes('other.tsx')));
 });

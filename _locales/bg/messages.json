@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Бутоните се появяват на страницата на MR. Начален набор е активиран при първата инсталация."
   },
-  "welcomeStep3Title": {
-    "message": "Персонализирай чрез изскачащото меню на разширението"
-  },
-  "welcomeStep3Desc": {
-    "message": "Кликни върху иконата на разширението, за да активираш/деактивираш бутоните, да зададеш файл за version bump, да добавиш персонализирани job бутони и още."
-  },
+  "welcomeStep3Title": { "message": "Персонализирайте в настройките" },
+  "welcomeStep3Desc": { "message": "Използвайте изскачащия прозорец за бързо включване и изключване на опции. Отворете „Всички настройки“, за да конфигурирате действия, версии, Jira, CI/CD и преглед с ИИ." },
   "welcomeEnabledDefault": {
     "message": "Активирани по подразбиране"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Профилите за всеки проект позволяват да персонализирате бутоните за различни репозитории"
   },
-  "welcomeTip": {
-    "message": "Можете да създавате профили за всеки проект в настройките на изскачащия прозорец. Това е полезно, когато различни проекти имат нужда от различни файлове за версии или персонализирани CI задачи."
-  },
+  "welcomeTip": { "message": "Създавайте профили на проекти във „Всички настройки“, когато проектите се нуждаят от различни файлове за версии, бутони за действия или CI задачи." },
   "welcomeOpenSettings": {
     "message": "Отвори настройки"
   },
@@ -689,8 +683,13 @@
     "message": "Разреши достъп до сайта на Jira"
   },
   "jiraAccessGranted": {
-    "message": "Достъп до сайта е предоставен. Влезте в Jira в този браузър."
+    "message": "Разширението има разрешение за достъп до $1."
   },
+  "jiraConnectionUnchecked": { "message": "Връзката все още не е проверена." },
+  "jiraConnectionCheck": { "message": "Провери връзката" },
+  "jiraConnectionChecking": { "message": "Проверка на връзката с $1…" },
+  "jiraConnectionConnected": { "message": "Последна проверка на $1: входът е потвърден; API е достъпен." },
+  "jiraConnectionSignIn": { "message": "Вход в Jira" },
   "jiraUrlInvalid": {
     "message": "Въведете HTTPS базов URL на Jira, без потребителски данни/заявки/фрагменти."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Избиране на клонове (cherry-pick)"
   },
+  "cherryPickProjectBranchesHint": { "message": "Задайте клонове за този проект. Оставете списъка празен, за да използвате общите клонове." },
+  "cherryPickNoBranches": { "message": "Няма зададени клонове." },
   "cherryPickBranchesHint": {
     "message": "По подразбиране целеви клонове за cherry-pick. Можеш да добавяш или премахваш клонове в модалния прозорец."
   },
@@ -1492,7 +1493,7 @@
     "message": "Подканата не е запазена. Използвайте максимум 1,500 знака и премахнете необичайните контролни символи."
   },
   "settingsSaveFailed": {
-    "message": "Настройките не могат да бъдат запазени. Направете промяна, за да опитате отново."
+    "message": "Настройките не могат да се запазят. Опитайте отново."
   },
   "aiReviewPromptSessionHint": {
     "message": "Промените тук се прилагат за този експорт. Задайте своята стандартна подсказка в настройките на разширението."
@@ -2073,7 +2074,7 @@
     "message": "Създай наименувани бутони за промяна на етикети или изчистване на други MR полета. Премествай ги в списъка с бутони, за да промениш реда им."
   },
   "mrActionsProfileHint": {
-    "message": "Този проект използва собствен списък с действия след запазване. Премахни всички записи, за да скриеш тези бутони за този проект."
+    "message": "Редактирането на този списък създава действия за проекта. Премахнете всички записи, за да скриете тези бутони за този проект."
   },
   "mrActionAdd": {
     "message": "Добави MR действие"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Настройки" },
+  "settingsActions": { "message": "MR и комити" },
+  "settingsActionsHint": { "message": "Заявки за сливане, къмити, версии и cherry-pick." },
+  "settingsCi": { "message": "CI/CD и задачи" },
+  "settingsAppearance": { "message": "Интерфейс на GitLab" },
+  "settingsData": { "message": "Данни и помощ" },
+  "settingsSearch": { "message": "Търсене в настройките" },
+  "settingsScope": { "message": "Обхват на настройките" },
+  "settingsProjectValue": { "message": "Стойност за проекта" },
+  "settingsUseGlobal": { "message": "Използване на общата стойност" },
+  "settingsProjectInheritanceHint": { "message": "Променете стойност, за да я зададете за този проект. Използвайте общата стойност, за да възстановите наследяването." },
+  "settingsSharedPreferencesHint": { "message": "Езикът на интерфейса, звукът, известията и настройките на отчета за всички проекти са общи. Променяйте ги в „Всички проекти“." },
+  "settingsGlobal": { "message": "Всички проекти" },
+  "settingsGlobalHint": { "message": "Тези настройки се прилагат за всички проекти." },
+  "settingsProjectHint": { "message": "Този профил заменя общите настройки за този проект." },
+  "settingsGlobalOnly": { "message": "Този раздел използва общи настройки за всички проекти." },
+  "settingsQuick": { "message": "Бързи настройки" },
+  "settingsNoResults": { "message": "Няма намерени съответстващи настройки." },
+  "settingsRemoveProfile": { "message": "Премахване на профила" },
+  "settingsNoProject": { "message": "Отворете проект в GitLab, за да използвате профили на проекти." },
+  "settingsAll": { "message": "Всички настройки" },
+  "settingsMoveUp": { "message": "Преместване нагоре" },
+  "settingsMoveDown": { "message": "Преместване надолу" },
+  "settingsConnection": { "message": "Връзка" },
+  "settingsJiraDisplay": { "message": "Jira в GitLab" },
+  "settingsAdvanced": { "message": "Разширени настройки" },
+  "settingsAutosaveHint": { "message": "Промените се запазват автоматично." },
+  "settingsSaving": { "message": "Запазване…" },
+  "settingsLoadFailed": { "message": "Настройките не могат да се заредят. Опитайте отново, преди да редактирате." },
+  "aiReviewShowFull": { "message": "Показване на целия текст" },
+  "aiReviewShowLess": { "message": "Свиване" },
+  "aiReviewExpandCommentsSetting": { "message": "Показване на целите коментари за преглед по подразбиране" },
+  "aiReviewExpandAll": { "message": "Разгъване на всички" },
+  "aiReviewCollapseAll": { "message": "Свиване на всички" }
 }

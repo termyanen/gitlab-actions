@@ -2,7 +2,10 @@ import { msg } from "../../../shared/i18n";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
 import type { JiraFailure } from "../model/failure";
 
-export function jiraFailureMessage(failure: JiraFailure): string {
+export function jiraFailureMessage(
+  failure: JiraFailure,
+  translate: (key: string) => string = msg,
+): string {
   const status =
     failure._httpStatus || Number(failure._error.match(/^(\d{3})\b/)?.[1]);
   const kind =
@@ -10,21 +13,21 @@ export function jiraFailureMessage(failure: JiraFailure): string {
     (status === 401 ? "auth" : status === 403 ? "forbidden" : "unknown");
   switch (kind) {
     case "auth":
-      return msg("jiraErrorAuth");
+      return translate("jiraErrorAuth");
     case "forbidden":
-      return msg("jiraErrorForbidden");
+      return translate("jiraErrorForbidden");
     case "permission":
-      return msg("jiraErrorPermission");
+      return translate("jiraErrorPermission");
     case "network":
-      return msg("jiraErrorNetwork");
+      return translate("jiraErrorNetwork");
     case "unavailable":
-      return msg("jiraErrorUnavailable");
+      return translate("jiraErrorUnavailable");
     case "not-found":
-      return msg("jiraErrorNotFound");
+      return translate("jiraErrorNotFound");
     case "invalid-response":
-      return msg("jiraErrorResponse");
+      return translate("jiraErrorResponse");
     case "unknown":
-      return msg("jiraErrorUnknown");
+      return translate("jiraErrorUnknown");
   }
 }
 

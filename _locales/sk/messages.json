@@ -568,12 +568,8 @@
   "welcomeStep2Desc": {
     "message": "Tlačidlá sa zobrazia na stránke MR. Začiatočná sada je aktivovaná pri prvej inštalácii."
   },
-  "welcomeStep3Title": {
-    "message": "Prispôsobte cez popup rozšírenia"
-  },
-  "welcomeStep3Desc": {
-    "message": "Kliknite na ikonu rozšírenia, aby ste povolili/zakázali tlačidlá, nastavili súbor pre verziu bump, pridali vlastné tlačidlá pre joby a viac."
-  },
+  "welcomeStep3Title": { "message": "Prispôsobte si nastavenia" },
+  "welcomeStep3Desc": { "message": "Vyskakovacie okno slúži na rýchle prepínanie možností. Otvorte „Všetky nastavenia“ a nastavte akcie, verzie, Jiru, CI/CD a AI revízie." },
   "welcomeEnabledDefault": {
     "message": "Predvolene povolené"
   },
@@ -598,9 +594,7 @@
   "welcomeHowList4": {
     "message": "Profily pre jednotlivé projekty vám umožňujú prispôsobiť tlačidlá pre rôzne repozitáre"
   },
-  "welcomeTip": {
-    "message": "Profily pre jednotlivé projekty môžete vytvoriť v nastaveniach v popup okne. Je to užitočné, keď rôzne projekty potrebujú rôzne súbory verzií alebo vlastné CI joby."
-  },
+  "welcomeTip": { "message": "V časti „Všetky nastavenia“ vytvorte profily projektov, ak projekty potrebujú rôzne súbory verzií, tlačidlá akcií alebo úlohy CI." },
   "welcomeOpenSettings": {
     "message": "Otvoriť nastavenia"
   },
@@ -689,8 +683,13 @@
     "message": "Povoliť prístup k stránke Jira"
   },
   "jiraAccessGranted": {
-    "message": "Prístup k stránke povolený. Prihláste sa do Jira v tomto prehliadači."
+    "message": "Rozšírenie má povolený prístup k $1."
   },
+  "jiraConnectionUnchecked": { "message": "Pripojenie zatiaľ nebolo overené." },
+  "jiraConnectionCheck": { "message": "Overiť pripojenie" },
+  "jiraConnectionChecking": { "message": "Overuje sa pripojenie k $1…" },
+  "jiraConnectionConnected": { "message": "Posledná kontrola $1: prihlásenie potvrdené; API je dostupné." },
+  "jiraConnectionSignIn": { "message": "Prihlásiť sa do Jira" },
   "jiraUrlInvalid": {
     "message": "Zadajte základnú HTTPS URL Jira, bez prihlasovacích údajov/dopytov/fragmentov."
   },
@@ -1210,6 +1209,8 @@
   "cherryPickBranches": {
     "message": "Cherry-pick vetvy"
   },
+  "cherryPickProjectBranchesHint": { "message": "Nastavte vetvy pre tento projekt. Ak chcete použiť globálne vetvy, nechajte zoznam prázdny." },
+  "cherryPickNoBranches": { "message": "Nie sú nastavené žiadne vetvy." },
   "cherryPickBranchesHint": {
     "message": "Predvolené cieľové vetvy pre cherry-pick. Vetvy môžete pridávať alebo odstraňovať v modálnom okne."
   },
@@ -1492,7 +1493,7 @@
     "message": "Výzva nebola uložená. Použite najviac 1 500 znakov a odstráňte nezvyčajné ovládacie znaky."
   },
   "settingsSaveFailed": {
-    "message": "Nastavenia sa nedali uložiť. Urob zmenu a skúsi to znova."
+    "message": "Nastavenia sa nepodarilo uložiť. Skúste to znova."
   },
   "aiReviewPromptSessionHint": {
     "message": "Zmeny tu sa použijú pri tomto exporte. Nastav si predvolený prompt v nastaveniach rozšírenia."
@@ -2073,7 +2074,7 @@
     "message": "Vytvorte pomenované tlačidlá na zmenu štítkov alebo vymazanie iných MR polí. Presuňte ich v zozname tlačidiel, aby ste zmenili poradie."
   },
   "mrActionsProfileHint": {
-    "message": "Tento projekt používa svoj vlastný zoznam akcií po uložení. Odstráňte všetky záznamy, aby sa tieto tlačidlá pre tento projekt skryli."
+    "message": "Úpravou tohto zoznamu vytvoríte akcie pre tento projekt. Odstránením všetkých položiek tieto tlačidlá v projekte skryjete."
   },
   "mrActionAdd": {
     "message": "Pridať MR akciu"
@@ -2238,5 +2239,40 @@
         "content": "$2"
       }
     }
-  }
+  },
+
+  "settingsTitle": { "message": "Nastavenia" },
+  "settingsActions": { "message": "MR a commity" },
+  "settingsActionsHint": { "message": "Merge requesty, commity, verzie a cherry-pick." },
+  "settingsCi": { "message": "CI/CD a úlohy" },
+  "settingsAppearance": { "message": "Rozhranie GitLabu" },
+  "settingsData": { "message": "Údaje a pomocník" },
+  "settingsSearch": { "message": "Hľadať nastavenia" },
+  "settingsScope": { "message": "Rozsah nastavení" },
+  "settingsProjectValue": { "message": "Hodnota projektu" },
+  "settingsUseGlobal": { "message": "Použiť globálnu hodnotu" },
+  "settingsProjectInheritanceHint": { "message": "Zmenou hodnoty ju nastavíte pre tento projekt. Použitím globálnej hodnoty obnovíte dedenie." },
+  "settingsSharedPreferencesHint": { "message": "Jazyk rozhrania, zvuk, oznámenia a nastavenia prehľadov naprieč projektmi sú globálne. Upravte ich v časti Všetky projekty." },
+  "settingsGlobal": { "message": "Všetky projekty" },
+  "settingsGlobalHint": { "message": "Tieto nastavenia platia pre všetky projekty." },
+  "settingsProjectHint": { "message": "Tento profil prepisuje spoločné nastavenia pre tento projekt." },
+  "settingsGlobalOnly": { "message": "Táto sekcia používa spoločné nastavenia pre všetky projekty." },
+  "settingsQuick": { "message": "Rýchle nastavenia" },
+  "settingsNoResults": { "message": "Nenašli sa žiadne zodpovedajúce nastavenia." },
+  "settingsRemoveProfile": { "message": "Odstrániť profil" },
+  "settingsNoProject": { "message": "Ak chcete používať profily projektov, otvorte projekt v GitLabe." },
+  "settingsAll": { "message": "Všetky nastavenia" },
+  "settingsMoveUp": { "message": "Posunúť nahor" },
+  "settingsMoveDown": { "message": "Posunúť nadol" },
+  "settingsConnection": { "message": "Pripojenie" },
+  "settingsJiraDisplay": { "message": "Jira v GitLabe" },
+  "settingsAdvanced": { "message": "Rozšírené nastavenia" },
+  "settingsAutosaveHint": { "message": "Zmeny sa ukladajú automaticky." },
+  "settingsSaving": { "message": "Ukladanie…" },
+  "settingsLoadFailed": { "message": "Nastavenia sa nepodarilo načítať. Pred úpravou to skúste znova." },
+  "aiReviewShowFull": { "message": "Zobraziť celé" },
+  "aiReviewShowLess": { "message": "Zbaliť" },
+  "aiReviewExpandCommentsSetting": { "message": "Predvolene zobrazovať celé komentáre k revízii" },
+  "aiReviewExpandAll": { "message": "Rozbaliť všetko" },
+  "aiReviewCollapseAll": { "message": "Zbaliť všetko" }
 }
