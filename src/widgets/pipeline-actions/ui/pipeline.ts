@@ -1,7 +1,9 @@
+import { getProjectSettings } from "../../../shared/api/project-settings";
 import type { Job } from "../../../entities/pipeline";
 import { readJob } from "../../../entities/pipeline";
 import { createSessionApi } from "../../../shared/api/gitlab";
-import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
+import { SEL } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { msg } from "../../../shared/i18n";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
 import type { Lifecycle } from "../../../shared/lib/lifecycle";
@@ -44,7 +46,7 @@ export function startPipelineActions(scope: Lifecycle = createLifecycle()) {
 
   if (isPipelinePage()) {
     try {
-      chrome.storage.sync.get(
+      getProjectSettings(
         { show_group_play: true },
         scope.guard(function (s: { show_group_play: boolean }) {
           if (chrome.runtime.lastError || s.show_group_play === false) return;

@@ -1,5 +1,10 @@
-import { VERSION_DEFAULTS } from "../../../entities/settings";
+import { getRepositorySettings } from "../../../entities/settings";
+import {
+  VERSION_DEFAULTS,
+  normalizeCherryPickBranches,
+} from "../../../entities/settings";
 import type { CherryPickSettings } from "../../../features/cherry-pick";
+import { currentProjectPath } from "../../../shared/api/project-settings";
 import { SEL } from "../../../shared/config/gitlab";
 import { msg } from "../../../shared/i18n";
 import { q, qAll, qUp } from "../../../shared/lib/dom";
@@ -39,8 +44,10 @@ export function startCommitCherryPick(
   }
 
   if (isCommitsPage() || isCommitDetailPage()) {
+    const projectPath = currentProjectPath();
+    if (!projectPath) return;
     try {
-      chrome.storage.sync.get(
+      getRepositorySettings(
         {
           show_cherry_pick: true,
           cherry_pick_branches: [],
@@ -53,17 +60,18 @@ export function startCommitCherryPick(
           versionCommitTemplate: VERSION_DEFAULTS.versionCommitTemplate,
         },
         scope.guard(function (
-          s: CherryPickSettings & { show_cherry_pick: boolean },
+          s: CherryPickSettings & {
+            show_cherry_pick: boolean;
+          },
         ) {
           if (chrome.runtime.lastError || s.show_cherry_pick === false) return;
 
-          const projectPath = (function () {
-            const m = window.location.pathname.match(
-              /^\/([^/]+(?:\/[^/]+)*?)\/-\//,
-            );
-            return m ? m[1] : null;
-          })();
-          if (!projectPath) return;
+          const settings: CherryPickSettings = {
+            ...s,
+            cherry_pick_branches: normalizeCherryPickBranches(
+              s.cherry_pick_branches,
+            ),
+          };
           const encodedProject = encodeURIComponent(projectPath);
 
           const { open: openCherryPickModal } = createCherryPickDialog(
@@ -144,7 +152,7 @@ export function startCommitCherryPick(
               btn.addEventListener("click", function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                openCherryPickModal(sha, commitMsg, s);
+                openCherryPickModal(sha, commitMsg, settings);
               });
               group.appendChild(btn);
             });
@@ -253,7 +261,7 @@ export function startCommitCherryPick(
               btn.addEventListener("click", function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                openCherryPickModal(sha, commitMsg, s);
+                openCherryPickModal(sha, commitMsg, settings);
               });
 
               container.appendChild(btn);
@@ -313,6 +321,7 @@ export function startCommitCherryPick(
             });
           }
         }),
+        projectPath,
       );
     } catch {
       /* Optional UI may be unavailable. */

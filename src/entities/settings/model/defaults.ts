@@ -1,3 +1,4 @@
+import { QUICK_SETTINGS_DEFAULTS } from "./quick-preferences";
 import { DISPLAY_DEFAULTS } from "./display-preferences";
 import type {
   CustomJob,
@@ -32,8 +33,7 @@ export const MR_DEFAULTS = {
   ...DISPLAY_DEFAULTS,
   ...BUTTON_DEFAULTS,
   ...VERSION_DEFAULTS,
-  sound_enabled: false,
-  notifications_enabled: true,
+  ...QUICK_SETTINGS_DEFAULTS,
   show_time_tracker: true,
   show_failed_job_view: true,
   skip_confirmations: false,

@@ -1,5 +1,5 @@
 import { LANGUAGES, isLanguage, type LanguageCode } from "../../../shared/i18n";
-import { readStorage } from "../../../shared/api/storage";
+import { readProjectSettings } from "../../../shared/api/storage";
 import {
   DEFAULT_FILTER,
   FILTER_FIELDS,
@@ -62,10 +62,10 @@ export async function instructionOptions<T extends InstructionOptions>(
   options?: T,
 ) {
   if (options?.instructionSettings) return options;
-  const values = await readStorage(
-    "sync",
+  const values = await readProjectSettings(
     instructionDefaults(),
     options?.signal,
+    options?.settingsProjectPath,
   );
   const normalized: Record<string, InstructionSetting> = {};
   INSTRUCTION_BLOCKS.forEach((block) => {
@@ -106,10 +106,10 @@ export async function applyResponseLanguage(
   text: string,
   options: InstructionOptions = {},
 ): Promise<string> {
-  const saved = await readStorage(
-    "sync",
+  const saved = await readProjectSettings(
     { ai_review_response_language: "auto" },
     options.signal,
+    options.settingsProjectPath,
   );
   const selected = normalizeResponseLanguage(saved.ai_review_response_language);
   const language = LANGUAGES.find(({ code }) => code === selected)?.english;
@@ -133,14 +133,14 @@ export function applyRepositoryInstructions(
     .join("\n\n");
 }
 
-export async function settings(signal?: AbortSignal) {
-  const saved = await readStorage(
-    "sync",
+export async function settings(signal?: AbortSignal, projectPath?: string) {
+  const saved = await readProjectSettings(
     {
       ai_review_file_filter: DEFAULT_FILTER,
       ai_review_repeat_prompt: DEFAULT_REPEAT_PROMPT,
     },
     signal,
+    projectPath,
   );
   return {
     filter: normalizeFilter(saved.ai_review_file_filter),

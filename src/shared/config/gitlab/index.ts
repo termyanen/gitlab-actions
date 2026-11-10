@@ -1,4 +1,5 @@
 export const SEL = {
+  projectId: "[data-project-id]",
   // MR list items
   mrItem:
     '[data-testid="issuable-item-wrapper"], .merge-request, li.issue, [data-testid="issuable-container"] > li, .issuable-list > li',
@@ -52,4 +53,10 @@ export const SEL = {
     '.pipeline-show-container, .linked-pipelines-column, [data-testid="linked-pipeline-container"]',
 };
 
-export { GITLAB_API_PREFIX, GITLAB_PAGE_SIZE } from "./api";
+/** Prefer the modern inner widget; preserve legacy mount fallbacks. */
+export const MR_WIDGET_SELECTORS = [
+  '[data-testid="mr-widget-content"].mr-widget-section',
+  '[data-testid="mr-widget-content"]',
+  ".mr-widget-content",
+  ".mr-widget-section",
+] as const;

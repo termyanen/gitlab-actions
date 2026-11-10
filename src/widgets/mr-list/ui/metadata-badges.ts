@@ -3,7 +3,8 @@ import {
   DISPLAY_DEFAULTS,
   parseSizeThresholds,
 } from "../../../entities/settings";
-import { GITLAB_PAGE_SIZE, SEL } from "../../../shared/config/gitlab";
+import { SEL } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { msg } from "../../../shared/i18n";
 import { insertAfterSafe, q, qUp } from "../../../shared/lib/dom";
 import { escHtml } from "../../../shared/lib/html";

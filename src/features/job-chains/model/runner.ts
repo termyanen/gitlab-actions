@@ -9,7 +9,7 @@ import {
 import { api } from "../../../shared/api/background-proxy";
 import { reportRuntimeError } from "../../../shared/api/runtime";
 import { NOTIFICATION_ICON } from "../../../shared/config/extension";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { errorMessage, reportError } from "../../../shared/lib/errors";
 import {
   decodeArray,

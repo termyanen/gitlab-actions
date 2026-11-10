@@ -1,4 +1,4 @@
-export { GITLAB_PAGE_SIZE as PAGE_SIZE } from "../../../shared/config/gitlab";
+export { GITLAB_PAGE_SIZE as PAGE_SIZE } from "../../../shared/config/gitlab-api";
 
 export const MAX_PAGES = 100;
 

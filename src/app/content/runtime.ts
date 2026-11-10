@@ -1,3 +1,4 @@
+import { getProjectSettings } from "../../shared/api/project-settings";
 import { createJiraState } from "../../entities/jira-issue";
 import { startPageLayout } from "../../features/page-layout";
 import { createSessionApi } from "../../shared/api/gitlab";
@@ -69,19 +70,12 @@ lifetime.onCleanup(
   }),
 );
 tracker.restoreActiveTasks();
-startPageLayout(lifetime);
 
 let route = "";
 let pageScope: Lifecycle | undefined;
 let reviewStarted = false;
 let paletteStarted = false;
 let paletteEnabled = false;
-chrome.storage.sync.get(
-  { show_cmd_palette: true },
-  lifetime.guard((settings: { show_cmd_palette: boolean }) => {
-    paletteEnabled = settings.show_cmd_palette;
-  }),
-);
 let toolbar: ReturnType<typeof startMrToolbar> | undefined;
 let standupOpen: (() => void) | undefined;
 const fail = (error: unknown) => console.error("[GitLab Actions]", error);
@@ -137,6 +131,7 @@ function mountRoute() {
   pageScope?.dispose();
   const scope = createLifecycle();
   pageScope = scope;
+  paletteEnabled = false;
   const mr = /\/-\/merge_requests\/\d+/.test(next);
   const list = /\/-\/merge_requests\/?$/.test(next);
   const commits =
@@ -181,12 +176,21 @@ function mountRoute() {
         node.classList.remove("gl-mr-ext-dimmed", "gl-mr-ext-own");
       });
   });
-  chrome.storage.sync.get(
-    { hide_right_sidebar: false },
-    scope.guard((settings: { hide_right_sidebar: boolean }) => {
-      if (mr && settings.hide_right_sidebar)
-        document.body.classList.add("gl-mr-ext-hide-right-sidebar");
-    }),
+  getProjectSettings(
+    { hide_right_sidebar: false, show_cmd_palette: true, collapse_bars: false },
+    scope.guard(
+      (settings: {
+        hide_right_sidebar: boolean;
+        show_cmd_palette: boolean;
+        collapse_bars: boolean;
+      }) => {
+        if (chrome.runtime.lastError) return;
+        startPageLayout(scope, settings.collapse_bars);
+        paletteEnabled = settings.show_cmd_palette;
+        if (mr && settings.hide_right_sidebar)
+          document.body.classList.add("gl-mr-ext-hide-right-sidebar");
+      },
+    ),
   );
   if (mr) {
     void import("../../widgets/mr-toolbar")
