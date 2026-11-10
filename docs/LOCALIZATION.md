@@ -5,6 +5,8 @@ The extension provides 27 interface locales. The shared catalogue in
 and AI response-language instructions. Chrome locale identifiers use underscores
 (`pt_BR`, `zh_CN`). Automatic UI language uses Chrome's locale resolution;
 Automatic AI response language follows the conversation independently.
+The settings, popup and welcome pages share the selected interface language.
+Welcome updates when that preference changes in an open settings tab.
 
 Supported locales: `en`, `ru`, `de`, `es`, `fr`, `ja`, `zh_CN`, `pt_BR`, `it`, `pl`, `ko`, `tr`, `nl`, `id`, `vi`, `cs`, `sv`, `ro`, `hi`, `fi`, `da`, `hu`, `el`, `sk`, `th`, `bg`, `ms`.
 

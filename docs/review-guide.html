@@ -12,15 +12,16 @@
 <main id="main"><div data-language="en">
 <header class="page-intro"><p class="eyebrow">GitLab MR Actions · Guide</p><h1>Review GitLab merge requests with AI</h1><p class="summary">What to click, what to give your AI, and how to check the result. For reviewers, authors and teams sharing one merge request.</p></header>
 <div class="reading-layout"><aside><nav aria-label="Contents"><p class="toc-title">Scenarios</p><ol><li><a href="#en-section-1">Choose your task</a></li>
-<li><a href="#en-section-2">Before starting</a></li>
-<li><a href="#en-section-3">Configure automatic instructions</a></li>
-<li><a href="#en-section-4">Review an MR from scratch</a></li>
-<li><a href="#en-section-5">Preview and publish results</a></li>
-<li><a href="#en-section-6">Fix selected feedback</a></li>
-<li><a href="#en-section-7">Reply after fixes</a></li>
-<li><a href="#en-section-8">Follow-up review: fixes and new commits</a></li>
-<li><a href="#en-section-9">Several reviewers or people making fixes</a></li>
-<li><a href="#en-section-10">Changed or missing data</a></li></ol></nav></aside><article><p>A guide for reviewers, MR authors and teammates joining an existing review. The workflow is <strong>review → publish findings → fix code → reply → recheck</strong>. Several people can review the same MR, each using their own AI tool.</p>
+<li><a href="#en-section-2">Settings scope</a></li>
+<li><a href="#en-section-3">Before starting</a></li>
+<li><a href="#en-section-4">Configure automatic instructions</a></li>
+<li><a href="#en-section-5">Review an MR from scratch</a></li>
+<li><a href="#en-section-6">Preview and publish results</a></li>
+<li><a href="#en-section-7">Fix selected feedback</a></li>
+<li><a href="#en-section-8">Reply after fixes</a></li>
+<li><a href="#en-section-9">Follow-up review: fixes and new commits</a></li>
+<li><a href="#en-section-10">Several reviewers or people making fixes</a></li>
+<li><a href="#en-section-11">Changed or missing data</a></li></ol></nav></aside><article><p>A guide for reviewers, MR authors and teammates joining an existing review. The workflow is <strong>review → publish findings → fix code → reply → recheck</strong>. Several people can review the same MR, each using their own AI tool.</p>
 <p>The extension prepares context for your AI and imports selected results into GitLab. It does not run an AI model or send data to an AI provider. You paste the task into your chosen tool, then paste its response back. Comments are sent under your current GitLab account and permissions.</p>
 <h2 id="en-section-1">Choose your task</h2>
 <p>Open <strong>AI review…</strong> and choose a tab. Every tab has the same main action: <strong>Copy task</strong>.</p>
@@ -60,7 +61,15 @@
 <p>For replies and rechecks, selecting any comment includes its entire thread. The summary counts discussions; Fix review findings counts selected comments. Clear every checkbox in a thread to exclude it.</p>
 <p>Use <strong>Select all discussions</strong> to include resolved and general threads too. The separate checkboxes in Import decide what you publish.</p>
 <p>Review dialogs close without confirmation by default. Enable <strong>Confirm closing review dialogs with unsaved work</strong> in the extension’s <strong>AI review</strong> settings if you want a prompt before discarding changed inputs, selections or unfinished imports. Cancel keeps your work in the open dialog. A fully completed import closes without prompting even with this setting enabled. Closing during publication stops further sending but does not undo comments already sent.</p>
-<h2 id="en-section-2">Before starting</h2>
+<h2 id="en-section-2">Settings scope</h2>
+<p>In extension settings, select <strong>All projects</strong> or a project before opening <strong>AI
+review</strong>. Visibility, the five prompts, automatic instructions, file filters,
+response language and close confirmation can be overridden for that project.
+Unchanged fields inherit shared values; <strong>Use global value</strong> restores inheritance.
+Existing settings and profiles retain their values. Remembered dialog choices such
+as including existing discussions remain global. Temporary edits inside a review
+dialog apply to that task and do not create a saved project profile.</p>
+<h2 id="en-section-3">Before starting</h2>
 <p>Open an MR and hover over the extension icons to find <strong>AI review…</strong> and <strong>Import AI review…</strong>. If they are missing, check that AI review is enabled in the extension settings. Reload the GitLab page after updating the extension.</p>
 <ul>
 <li><strong>Local repository first:</strong> compact export is the default. Open the task in an AI tool with the project available locally. Prompts instruct it to inspect local Git first and fetch missing commits through a verified configured remote using existing authentication. Review tasks use the specified revisions without changing your branch, with a separate worktree when needed. Fix tasks preserve the MR branch's later commits and uncommitted fixes. The default automatic instruction blocks also apply to saved custom prompts while those blocks are enabled; no prompt reset is needed. Enable <strong>Include code changes</strong> for fresh/repeat review when local source is unavailable. A diff may still omit dependencies or tests; the AI should request the specific missing material, not GitLab access by default.</li>
@@ -68,11 +77,11 @@
 <li><strong>File scope:</strong> use <strong>Advanced settings → Files to review</strong> for a temporary scope, such as <code>src/**</code>. Empty lists include everything. Extension and path inclusion are alternatives, while exclusions win, including on either side of a rename. A scoped review is not a review of all files.</li>
 <li><strong>Language and criteria:</strong> <strong>AI review</strong> settings have separate prompts for fixing feedback, fresh review, new findings, replies and repeat review. Choose <strong>AI response language</strong> for all tasks and import prompts: Automatic follows the AI conversation, or select any of the 27 supported interface locales. This is independent of the interface language and overrides conflicting language instructions in saved prompts. JSON keys, paths and code remain unchanged. Copy response format stays language-neutral. Set review criteria and style in the task prompts. The extension adds MR details and the required JSON format automatically.</li>
 </ul>
-<h2 id="en-section-3">Configure automatic instructions</h2>
+<h2 id="en-section-4">Configure automatic instructions</h2>
 <p>Open <strong>AI review → Automatic instructions (advanced)</strong> in extension settings. All 32 blocks start enabled and apply only to relevant tasks. Expand a block to edit its text, disable it while keeping the text, or clear the text to omit it. Reset restores its English default and enables that block. Each text supports up to 1,500 characters. <code>{language}</code> inserts the selected response language; <code>{selection}</code> inserts whether replies cover selected or unresolved discussions.</p>
 <p>The main task prompts remain independently editable and can contain similar instructions. The full task preview shows the resulting combination. MR identifiers, JSON examples and loading notices are generated from the current context; editing instructions does not disable file filters, targeting checks or publication validation. The format-only shortcut always copies the supported import format without task instructions.</p>
 <p>The <strong>Existing discussions in a new review</strong> block tells the AI to review the whole MR independently first, then remove findings that substantially repeat published discussions, including resolved ones. It applies to <strong>New review</strong> when <strong>Account for existing discussions</strong> is checked. Disabling the instruction block removes only that instruction; uncheck the option in New review to exclude the discussion summaries themselves.</p>
-<h2 id="en-section-4">Review an MR from scratch</h2>
+<h2 id="en-section-5">Review an MR from scratch</h2>
 <ol>
 <li>Open <strong>AI review…</strong> and choose the <strong>New review</strong> tab.</li>
 <li>Set file filters and the description/code options. Enable <strong>Account for existing discussions</strong> if the MR already has comments. Optionally edit the prompt for this copy.</li>
@@ -92,7 +101,7 @@
 </ol>
 <p>The automatic instruction asks the AI to review the whole MR independently first, then drop findings that repeat an already published problem, even when its discussion is resolved. This task does not ask it to verify fixes or reply to existing threads. Following the instruction depends on the model, so you still need to check for duplicates before publishing. If the summaries cannot be loaded, the task is prepared with a warning.</p>
 <p>To check <strong>whether earlier findings were fixed</strong>, use <strong>Follow-up review</strong>. To draft answers in existing threads, use <strong>Prepare replies</strong>.</p>
-<h2 id="en-section-5">Preview and publish results</h2>
+<h2 id="en-section-6">Preview and publish results</h2>
 <p>These steps apply to new findings, replies and repeat reviews.</p>
 <ol>
 <li>Click <strong>Paste AI response</strong> or open <strong>Import AI review…</strong>, paste the complete JSON response and click <strong>Check and preview</strong>.</li>
@@ -102,8 +111,12 @@
 <li>Choose <strong>Publish selected</strong> to send immediately, or <strong>Add to review</strong> to create your unpublished GitLab drafts. Submit those drafts using GitLab's own review controls when ready for teammates to see them.</li>
 <li>Check the outcome on every card. Some comments may succeed while others need corrections or another check.</li>
 </ol>
+<p>While sending, the counter shows processed comments out of the current selection (for example, 3 / 10), including failed attempts. After a partial failure, confirmed unsent comments remain selected: use <strong>Publish selected</strong> again to retry them. Published comments and drafts are excluded. Unconfirmed deliveries remain blocked until you check GitLab and validate the response again. Each attempt starts its own progress counter; completion totals cover the whole preview.</p>
+<p>Use <strong>Expand all / Collapse all</strong> above the list to change every comment in the current window without changing saved settings.</p>
+<p>Long comments initially show five lines. <strong>Show full comment</strong> expands one comment; <strong>Show less</strong> collapses it again. The wheel always scrolls the message list. Enable <strong>Show review comments in full by default</strong> in <strong>AI review</strong> settings to change the default globally or for one project.</p>
+<p>Successful cards keep their size and gain a green border. The completion summary counts published comments, review drafts, remaining comments, errors and unconfirmed deliveries separately. A full published count means all comments were published; drafts still need to be submitted in GitLab.</p>
 <p>Previewing and saving edits do not publish anything. For an open, resolvable thread, you can enable <strong>Resolve discussion after publishing</strong> on its reply; it is off by default. The extension publishes the reply first, checks the discussion again, then requests resolution using your GitLab permissions. The card shows the resolution result separately. If resolution fails or cannot be confirmed, the reply remains published: check the thread in GitLab without posting the reply again. Adding a draft never resolves a discussion, and this choice is not deferred until the draft is published. Approval, reopening and merging remain separate GitLab actions. An empty findings list does not approve the MR.</p>
-<h2 id="en-section-6">Fix selected feedback</h2>
+<h2 id="en-section-7">Fix selected feedback</h2>
 <ol>
 <li>Open <strong>AI review… → Fix review findings</strong> and click <strong>Refresh</strong> if discussions have changed.</li>
 <li>Click the <strong>Unresolved</strong> quick action to select all unresolved discussions. Uncheck work assigned to another person. Enable <strong>General comments</strong> separately when needed.</li>
@@ -116,7 +129,7 @@
 <p>The <strong>Prepare replies too</strong> checkbox is on by default in <strong>Fix review findings</strong>. Turn it off to request fixes and a normal summary without importable replies. It applies to this open window and keeps its value when switching tabs.</p>
 <p>For one finding, use its copy icon. If a thread has replies, choose <strong>Select this discussion</strong> inside the picker, then <strong>Copy task</strong>. Short code excerpts attached to feedback remain included regardless of the optional full-diff checkbox.</p>
 <p>Changing the status filter replaces the previous selection. Check the selected items before copying. Use <strong>Select all discussions</strong> only when you want the entire set of discussions.</p>
-<h2 id="en-section-7">Reply after fixes</h2>
+<h2 id="en-section-8">Reply after fixes</h2>
 <ol>
 <li>Confirm that your changes have been pushed to the MR and refresh the page.</li>
 <li>In <strong>AI review… → Prepare replies</strong>, select the discussions and click <strong>Copy task</strong>. Use <strong>Unresolved</strong> first if you want all open findings.</li>
@@ -126,7 +139,7 @@
 <p>Copy prepares replies only for selected published discussions. Resolved or general threads can also be selected if GitLab supports replying to them. File filters do not remove selected reply threads. With none selected, the button is disabled. Unpublished drafts are not reply targets.</p>
 <p>Import has no discussion picker. Under <strong>Advanced settings</strong>, its <strong>Reply prompt for all unresolved discussions</strong> includes all open threads, excluding general and resolved ones. Use Copy for a subset; the import preview still lets you decide what to publish.</p>
 <p>Do not describe unpushed local edits as already available to the reviewer. A useful reply states the actual fix and evidence; if partially fixed, unclear or no longer applicable, say so. Never claim tests passed unless they actually ran and passed.</p>
-<h2 id="en-section-8">Follow-up review: fixes and new commits</h2>
+<h2 id="en-section-9">Follow-up review: fixes and new commits</h2>
 <p>Replies from follow-up review should be short: normally 1–3 sentences with the verification result and one relevant fact or remaining problem. They should not retell the original finding, repeat the author’s reply, list unrelated tests or append a whole-MR summary to each thread. New defects are separate findings.</p>
 <ol>
 <li>Open <strong>AI review… → Follow-up review</strong> and select the discussions to verify. Use <strong>All</strong>, clear search and <strong>Select shown</strong> to include resolved and general discussions as well.</li>
@@ -140,7 +153,7 @@
 <p>With code inclusion enabled, the selected delta is attached without duplicating the full MR diff. Unavailable comparisons fall back to the current diff with a warning. No prior revision or the same head also uses the current full diff: target-branch changes may affect the MR.</p>
 <p>Selecting discussions does not restrict code review to the files those threads mention; file filters control code scope separately. A resolved status or a “fixed” reply is not proof. Findings outside the selected file scope must remain unverified.</p>
 <p><strong>Follow-up review with no discussions selected</strong> checks code only, without verifying old findings or replying. <strong>New review</strong> checks the entire current MR within the file scope, independently of a previous review.</p>
-<h2 id="en-section-9">Several reviewers or people making fixes</h2>
+<h2 id="en-section-10">Several reviewers or people making fixes</h2>
 <p>Each participant has their own AI, settings and comparison revision. Shared context lives in GitLab's published code and discussions. The extension does not store review history or assign findings to people.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
 <thead>
@@ -186,7 +199,7 @@
 </table></div>
 <p>Exact duplicate checks cannot guarantee detection of differently worded findings or simultaneous posts from different people. Review semantic duplicates yourself. Other people's unpublished drafts are not shared review context.</p>
 <p>Keep the reviewed SHA in your final review comment or original AI task if you want to find it later. The extension does not create a review-history record.</p>
-<h2 id="en-section-10">Changed or missing data</h2>
+<h2 id="en-section-11">Changed or missing data</h2>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
 <thead>
 <tr>
@@ -253,15 +266,16 @@
 </article></div></div><div data-language="ru" hidden>
 <header class="page-intro"><p class="eyebrow">GitLab MR Actions · Гайд</p><h1>Ревью MR с ИИ</h1><p class="summary">Что нажимать, что передавать ИИ и как проверять результат. Для ревьюеров, авторов и команд, работающих над одним MR.</p></header>
 <div class="reading-layout"><aside><nav aria-label="Оглавление"><p class="toc-title">Сценарии</p><ol><li><a href="#ru-section-1">Какой сценарий выбрать</a></li>
-<li><a href="#ru-section-2">Перед началом</a></li>
-<li><a href="#ru-section-3">Настройка автоматических инструкций</a></li>
-<li><a href="#ru-section-4">Ревьюер проверяет MR с нуля</a></li>
-<li><a href="#ru-section-5">Проверка и публикация результата ИИ</a></li>
-<li><a href="#ru-section-6">Автор MR или коллега исправляет замечания</a></li>
-<li><a href="#ru-section-7">Ответить что исправлено и как</a></li>
-<li><a href="#ru-section-8">Ревьюер проверяет исправления повторно</a></li>
-<li><a href="#ru-section-9">Несколько ревьюеров и несколько исполнителей</a></li>
-<li><a href="#ru-section-10">Если что-то изменилось или не загрузилось</a></li></ol></nav></aside><article><p>Мини-гайд для ревьюера, автора MR и коллег, которые подключаются к проверке позже. Обычный цикл: <strong>ревью → публикация замечаний → исправления → ответы → повторная проверка</strong>. Один MR могут проверять несколько человек, каждый со своим ИИ.</p>
+<li><a href="#ru-section-2">Область настроек</a></li>
+<li><a href="#ru-section-3">Перед началом</a></li>
+<li><a href="#ru-section-4">Настройка автоматических инструкций</a></li>
+<li><a href="#ru-section-5">Ревьюер проверяет MR с нуля</a></li>
+<li><a href="#ru-section-6">Проверка и публикация результата ИИ</a></li>
+<li><a href="#ru-section-7">Автор MR или коллега исправляет замечания</a></li>
+<li><a href="#ru-section-8">Ответить что исправлено и как</a></li>
+<li><a href="#ru-section-9">Ревьюер проверяет исправления повторно</a></li>
+<li><a href="#ru-section-10">Несколько ревьюеров и несколько исполнителей</a></li>
+<li><a href="#ru-section-11">Если что-то изменилось или не загрузилось</a></li></ol></nav></aside><article><p>Мини-гайд для ревьюера, автора MR и коллег, которые подключаются к проверке позже. Обычный цикл: <strong>ревью → публикация замечаний → исправления → ответы → повторная проверка</strong>. Один MR могут проверять несколько человек, каждый со своим ИИ.</p>
 <p>Расширение готовит текст для ИИ и размещает выбранные результаты в GitLab. Сам ИИ запускается отдельно: вы вставляете ему скопированное задание, а его ответ возвращаете в расширение. Комментарии публикуются от вашей текущей учётной записи GitLab с её правами.</p>
 <h2 id="ru-section-1">Какой сценарий выбрать</h2>
 <p>Откройте <strong>«Ревью с ИИ…»</strong> и выберите вкладку. Во всех вкладках основная кнопка одна — <strong>«Скопировать задание»</strong>.</p>
@@ -301,7 +315,15 @@
 <p>Для ответов и повторной проверки выбор хотя бы одного комментария включает всю его ветку. Сводка считает обсуждения; во вкладке «Исправить замечания» показано число выбранных комментариев. Чтобы исключить ветку, снимите все её галочки.</p>
 <p>Для всех обсуждений, включая решённые и общие, нажмите <strong>«Выбрать все обсуждения»</strong>. Галочки в импорте отдельно определяют, что публиковать.</p>
 <p>По умолчанию окна ревью закрываются без подтверждения. В настройках расширения, в разделе «Ревью с ИИ», можно включить <strong>«Подтверждать закрытие окон ревью с несохранёнными изменениями»</strong>. Тогда при изменённых полях, выборе комментариев или незавершённом импорте появится вопрос; отмена закрытия сохранит работу. Полностью завершённый импорт закрывается без вопроса даже при включённой настройке. Закрытие во время отправки останавливает дальнейшую отправку, но не отменяет уже отправленные комментарии.</p>
-<h2 id="ru-section-2">Перед началом</h2>
+<h2 id="ru-section-2">Область настроек</h2>
+<p>В настройках расширения выберите <strong>«Все проекты»</strong> или конкретный проект, затем
+откройте <strong>«AI-ревью»</strong>. Для проекта можно задать видимость кнопок, пять промптов,
+автоматические инструкции, фильтры файлов, язык ответа и подтверждение закрытия.
+Неизменённые поля наследуют общие значения; <strong>«Использовать общее»</strong> возвращает
+наследование. Прежние настройки и профили сохраняют свои значения. Запоминаемые
+параметры окна, например учёт существующих обсуждений, остаются общими. Временные
+правки внутри окна ревью действуют для текущего задания и не создают профиль.</p>
+<h2 id="ru-section-3">Перед началом</h2>
 <p>Откройте MR. Наведите курсор на иконки расширения: подсказки покажут <strong>«Ревью с ИИ…»</strong> и <strong>«Импортировать ревью ИИ…»</strong>. Если кнопок нет, проверьте включение функции в настройках расширения; после обновления расширения обновите страницу GitLab.</p>
 <ul>
 <li><strong>Сначала локальный репозиторий.</strong> По умолчанию экспорт компактный. Открывайте задание в ИИ, которому доступен проект на компьютере. Промпты предписывают сначала проверить локальный Git, а недостающие коммиты получить через проверенный настроенный remote с существующей авторизацией. Для ревью ИИ проверяет указанные версии без переключения вашей ветки, при необходимости в отдельном worktree. При исправлении сохраняет более поздние коммиты и незакоммиченные правки в ветке MR. Стандартные блоки автоматических инструкций применяются и к сохранённым пользовательским промптам, пока эти блоки включены; сбрасывать промпты не нужно. Если локальный код недоступен, включите <strong>«Включить изменения кода»</strong> для нового или повторного ревью. Diff может не содержать зависимостей и тестов: ИИ должен запросить конкретные недостающие данные, а не доступ к GitLab по умолчанию.</li>
@@ -309,11 +331,11 @@
 <li><strong>Область проверки.</strong> В <strong>«Дополнительные настройки» → «Файлы для ревью»</strong> можно задать пути и исключения для текущего копирования. Пустые списки включают всё. Например, <code>src/**</code> в путях ограничит проверку этой папкой. Расширения и пути включения работают как альтернативы, исключения имеют приоритет. Проверка части файлов не означает проверку всего MR.</li>
 <li><strong>Язык и стиль.</strong> В настройках <strong>«Ревью с ИИ»</strong> есть отдельные промпты для исправлений, ревью с нуля, новых замечаний, ответов и повторного ревью. В поле <strong>«Язык ответа ИИ»</strong> выберите один из 27 доступных вариантов языка для всех заданий и промптов импорта. Автоматический режим ориентируется на язык диалога с ИИ. Настройка не зависит от языка интерфейса и имеет приоритет над языковыми указаниями в сохранённых промптах. Имена полей JSON, пути и код не переводятся; копирование только формата не добавляет указание языка. Критерии и стиль задавайте в промптах. Адрес MR, версии и формат результата расширение добавляет само.</li>
 </ul>
-<h2 id="ru-section-3">Настройка автоматических инструкций</h2>
+<h2 id="ru-section-4">Настройка автоматических инструкций</h2>
 <p>Откройте <strong>«Ревью с ИИ → Автоматические инструкции (дополнительно)»</strong> в настройках расширения. Все 32 блока изначально включены и применяются к соответствующим задачам. Раскройте блок, чтобы изменить текст, отключить его с сохранением текста или очистить текст для исключения из задания. Сброс восстанавливает английский текст по умолчанию и включает блок. Лимит каждого текста — 1500 символов. <code>{language}</code> подставляет выбранный язык ответа, <code>{selection}</code> — выбранные или нерешённые обсуждения для ответа.</p>
 <p>Основные промпты задач редактируются отдельно и тоже могут содержать похожие инструкции. Итоговое сочетание видно в полном предпросмотре задания. Идентификаторы MR, JSON-примеры и сообщения о загрузке формируются из текущего контекста; изменение инструкций не отключает фильтры файлов, проверку привязок и проверки перед публикацией. Кнопка копирования только формата всегда выдаёт поддерживаемый формат импорта без инструкций задачи.</p>
 <p>Блок <strong>«Существующие обсуждения в новом ревью»</strong> задаёт правило для ИИ: сначала независимо проверить весь MR, затем убрать замечания, которые по сути уже опубликованы, включая решённые. Он применяется во вкладке <strong>«Новое ревью»</strong>, когда включена галочка <strong>«Учесть существующие обсуждения»</strong>. Отключение блока убирает только эту инструкцию; чтобы не передавать сами сводки обсуждений, снимите галочку во вкладке нового ревью.</p>
-<h2 id="ru-section-4">Ревьюер проверяет MR с нуля</h2>
+<h2 id="ru-section-5">Ревьюер проверяет MR с нуля</h2>
 <ol>
 <li>Откройте <strong>«Ревью с ИИ…»</strong> и выберите вкладку <strong>«Новое ревью»</strong>.</li>
 <li>Настройте файлы, описание и включение кода. Если в MR уже есть комментарии, включите галочку <strong>«Учесть существующие обсуждения»</strong>. При необходимости измените промпт для этого копирования.</li>
@@ -333,7 +355,7 @@
 </ol>
 <p>Автоматическая инструкция предлагает сначала независимо проверить весь MR, затем убрать находки, повторяющие уже опубликованную проблему, даже если обсуждение решено. Проверять исправление этих замечаний и отвечать в существующие ветки в этом сценарии не нужно. Следование инструкции зависит от модели, поэтому проверка повторов перед публикацией остаётся за вами. Если сводки не загрузились, задание будет подготовлено с предупреждением.</p>
 <p>Для проверки, <strong>исправлены ли прежние замечания</strong>, используйте вкладку <strong>«Повторное ревью»</strong>. Для подготовки ответов в существующие ветки — <strong>«Подготовить ответы»</strong>.</p>
-<h2 id="ru-section-5">Проверка и публикация результата ИИ</h2>
+<h2 id="ru-section-6">Проверка и публикация результата ИИ</h2>
 <p>Эти шаги одинаковы для новых замечаний, ответов и повторного ревью.</p>
 <ol>
 <li>Нажмите <strong>«Вставить ответ ИИ»</strong> в окне ревью или отдельную иконку <strong>«Импортировать ревью ИИ…»</strong>.</li>
@@ -343,9 +365,13 @@
 <li>Выберите <strong>«Опубликовать выбранные»</strong> для немедленной отправки либо <strong>«Добавить в ревью»</strong> для сохранения в свои черновики GitLab. Черновики затем нужно отправить штатной кнопкой завершения ревью в GitLab, чтобы коллеги их увидели.</li>
 <li>Посмотрите результат у каждой карточки: часть комментариев может отправиться, а часть потребовать исправления или повторной проверки.</li>
 </ol>
+<p>Во время отправки счётчик показывает обработанные замечания из выбранных (например, 3 / 10), включая попытки с ошибкой. После частичной ошибки подтверждённо неотправленные замечания остаются выбранными: нажмите <strong>«Опубликовать выбранные»</strong> ещё раз для повтора. Опубликованные замечания и черновики исключены. Неподтверждённые отправки заблокированы до проверки в GitLab и повторной проверки ответа. У каждой попытки свой счётчик прогресса; итог охватывает весь предпросмотр.</p>
+<p>Кнопка <strong>«Развернуть все / Свернуть все»</strong> над списком управляет всеми комментариями текущего окна и не меняет сохранённые настройки.</p>
+<p>Длинные комментарии сначала показывают пять строк. <strong>«Показать полностью»</strong> раскрывает отдельный комментарий, <strong>«Свернуть»</strong> возвращает превью. Колёсико прокручивает общий список. В разделе <strong>«Ревью с ИИ»</strong> можно включить <strong>«Показывать комментарии ревью полностью по умолчанию»</strong> для всех проектов или отдельно для проекта.</p>
+<p>Успешные карточки сохраняют размер и получают зелёную рамку. Итог отдельно показывает опубликованные замечания, черновики ревью, оставшиеся замечания, ошибки и неподтверждённые отправки. Полный счётчик публикаций означает, что опубликованы все замечания; черновики ещё нужно отправить в GitLab.</p>
 <p>Предпросмотр и сохранение правок ничего не публикуют. У ответа на открытое обсуждение, которое можно решить, есть галочка <strong>«Закрыть обсуждение после публикации»</strong> — по умолчанию выключена. Расширение сначала публикует ответ, повторно проверяет ветку и затем запрашивает закрытие с вашими правами GitLab. Результат закрытия отображается отдельно. Если закрытие не удалось или не подтверждено, ответ остаётся опубликованным: проверьте ветку в GitLab, не отправляя ответ повторно. Добавление черновика не закрывает обсуждение; галочка также не откладывает закрытие до публикации черновика. Approve, повторное открытие обсуждения и merge выполняются отдельно в GitLab по процессу команды.</p>
 <p>Если ИИ не нашёл проблем и вернул пустой список, публиковать нечего. Само отсутствие замечаний не создаёт одобрение MR.</p>
-<h2 id="ru-section-6">Автор MR или коллега исправляет замечания</h2>
+<h2 id="ru-section-7">Автор MR или коллега исправляет замечания</h2>
 <ol>
 <li>Откройте <strong>«Ревью с ИИ…» → «Исправить замечания»</strong>, нажмите <strong>«Обновить»</strong>, если обсуждения изменились.</li>
 <li>Нажмите быструю кнопку <strong>«Нерешённые»</strong>: она выбирает все нерешённые обсуждения. Снимите галочки с задач, которыми занимается другой человек. Общие комментарии включайте отдельно галочкой <strong>«Общие комментарии»</strong>.</li>
@@ -358,7 +384,7 @@
 <p>Галочка <strong>«Сразу подготовить ответы»</strong> во вкладке <strong>«Исправить замечания»</strong> включена по умолчанию. Снимите её, если нужны только исправления и обычный отчёт без ответов для импорта. Выбор действует в открытом окне и сохраняется при переключении вкладок.</p>
 <p>Для одного замечания используйте иконку рядом с ним. Если в ветке есть ответы, внутри окна нажмите <strong>«Выбрать это обсуждение»</strong>, затем <strong>«Скопировать задание»</strong>. Короткие фрагменты кода у замечаний сохраняются независимо от галочки включения diff.</p>
 <p>При смене фильтра статуса прежнее выделение сбрасывается. Перед копированием проверьте выбранные пункты; <strong>«Выбрать все обсуждения»</strong> используйте, когда действительно нужен весь набор обсуждений.</p>
-<h2 id="ru-section-7">Ответить что исправлено и как</h2>
+<h2 id="ru-section-8">Ответить что исправлено и как</h2>
 <ol>
 <li>Убедитесь, что исправления уже отправлены в MR. Обновите страницу.</li>
 <li>Откройте <strong>«Ревью с ИИ…» → «Подготовить ответы»</strong>, выберите нужные обсуждения и нажмите <strong>«Скопировать задание»</strong>. Для ответов на все открытые замечания сначала нажмите <strong>«Нерешённые»</strong>.</li>
@@ -368,7 +394,7 @@
 <p><strong>В окне копирования ответы готовятся только для выбранных опубликованных обсуждений.</strong> Можно выбрать и решённую или общую ветку, если GitLab позволяет адресовать в неё ответ. Файловые фильтры не исключают выбранные ветки. Без выбора кнопка недоступна; черновики не являются адресатами таких ответов.</p>
 <p>В окне импорта нет выбора исходных обсуждений. Там в дополнительных настройках кнопка <strong>«Промпт ответов на все нерешённые»</strong> берёт все открытые ветки, без общих и решённых. Если нужна часть обсуждений, готовьте задание из окна копирования. В обоих случаях окончательный набор отправляемых ответов выбирается в предпросмотре импорта.</p>
 <p>Ответ «сделано» должен подтверждаться опубликованным кодом. Нельзя описывать только локальные, ещё не отправленные изменения как уже доступные ревьюеру. Если исправлено частично, нужен вопрос или замечание неприменимо, ответ должен прямо это объяснять.</p>
-<h2 id="ru-section-8">Ревьюер проверяет исправления повторно</h2>
+<h2 id="ru-section-9">Ревьюер проверяет исправления повторно</h2>
 <p>Ответ повторного ревью должен быть коротким: обычно 1–3 предложения с результатом проверки и одним подтверждающим фактом или оставшейся проблемой. Не нужно пересказывать исходное замечание, повторять ответ автора, перечислять посторонние тесты или добавлять итог всего MR в каждую ветку. Новые проблемы оформляются отдельными замечаниями.</p>
 <ol>
 <li>Откройте <strong>«Ревью с ИИ…» → «Повторное ревью»</strong> и выберите обсуждения для проверки. Для решённых веток переключите фильтр; для всех — выберите <strong>«Все»</strong>, очистите поиск и нажмите <strong>«Выбрать показанные»</strong>.</li>
@@ -382,7 +408,7 @@
 <p>При включённом коде копируется разница выбранной и текущей версии без дублирования полного diff. Если сравнение недоступно, прикладывается текущий diff с предупреждением. Без прежней версии или при совпадающем SHA прикладывается полный текущий diff: могла измениться целевая ветка.</p>
 <p><strong>Повторное ревью проверяет только выбранные обсуждения и отдельно ищет новые проблемы в коде.</strong> Выбор веток не ограничивает проверку кода файлами из этих веток: её область задают файловые фильтры. Замечание вне выбранной области нельзя объявлять исправленным без проверки. Статус «решено» и ответ «исправлено» сами по себе не доказывают исправление.</p>
 <p>Во вкладке <strong>«Повторное ревью» без выбранных обсуждений</strong> ИИ получает задачу только на код: без проверки прежних замечаний и ответов на них. Это отличается от вкладки <strong>«Новое ревью»</strong>, которая проверяет весь текущий MR в выбранной области без привязки к прежнему ревью.</p>
-<h2 id="ru-section-9">Несколько ревьюеров и несколько исполнителей</h2>
+<h2 id="ru-section-10">Несколько ревьюеров и несколько исполнителей</h2>
 <p>У каждого участника свои ИИ, настройки и выбранная версия сравнения. Общий контекст — опубликованный код и обсуждения GitLab. Расширение не хранит историю проверок и не назначает замечания участникам.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Таблица сценариев"><table>
 <thead>
@@ -428,7 +454,7 @@
 </table></div>
 <p>Расширение распознаёт совпадающие комментарии, но не гарантирует обнаружение одинаковых по смыслу замечаний с разным текстом или одновременных публикаций разных участников. Ненужные дубли убираются в предпросмотре. Чужие неопубликованные черновики не следует считать общим контекстом команды.</p>
 <p>Чтобы позже выбрать правильную версию, можно оставить проверенный SHA в своём итоговом комментарии к ревью или сохранить исходное задание в чате с ИИ. Отдельная запись истории в расширении для этого не создаётся.</p>
-<h2 id="ru-section-10">Если что-то изменилось или не загрузилось</h2>
+<h2 id="ru-section-11">Если что-то изменилось или не загрузилось</h2>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Таблица сценариев"><table>
 <thead>
 <tr>

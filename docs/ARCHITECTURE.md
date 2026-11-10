@@ -16,7 +16,7 @@ with forwarding wrappers.
 | Layer | Responsibility in this extension | Existing examples |
 | --- | --- | --- |
 | `app` | Entry points, routes, lazy loading, message dispatch and composition of independent modules | `app/content/runtime.ts`, `app/content/review.ts`, `app/entrypoints/background.ts` |
-| `pages` | A complete extension-owned page and its form lifecycle | `pages/settings` |
+| `pages` | A complete extension-owned page and its form lifecycle | `pages/settings` (full workspace), `pages/popup` (quick controls), `pages/welcome` (onboarding) |
 | `widgets` | A cohesive UI mounted on GitLab, including its local presentation logic | `widgets/mr-toolbar`, `widgets/mr-list`, `widgets/jira-panel` |
 | `features` | A user operation or workflow and the behavior needed to perform it | `features/mr-actions`, `features/review-export`, `features/job-chains` |
 | `entities` | Domain contracts, state and domain rules used by operations/UI | `entities/merge-request`, `entities/pipeline`, `entities/settings`, `entities/review` |
@@ -38,7 +38,7 @@ Typical change locations:
 | A modal or panel | Extend its widget, or create a widget with an explicit mount/open/dispose contract. Wire route-aware lazy loading in `app/content/runtime.ts` or the relevant App composition. |
 | A background operation/message | Keep the handler in its owning feature. Update the message contract, validation in `app/background/messages.ts`, and dispatch in `app/entrypoints/background.ts`. Register worker listeners synchronously. |
 | A persisted preference | Contract/defaults/normalization in `entities/settings` when used by runtime; transfer defaults/validation in `features/manage-settings`; form and persistence in `pages/settings`; consumers, all supported locales and round-trip tests. See [configuration rules](CONFIGURATION.md). |
-| A GitLab selector or transport change | Shared GitLab configuration/adapter for the external contract; feature-specific request orchestration stays with the feature. Keep existing GitLab fallbacks. |
+| A GitLab selector or transport change | `shared/config/gitlab` owns DOM selectors; `shared/config/gitlab-api` owns REST protocol constants. Keep these public APIs separate so session transport does not load widget selectors at startup. Feature-specific orchestration stays with the feature; preserve existing fallbacks. |
 | A GitLab control or visual change | Read [the UI integration guide](GITLAB_UI.md), reuse the owning widget's native markup/token patterns and existing fallbacks, then add only the scoped CSS the behavior needs. |
 | A helper used twice | Keep it local unless its responsibility is independently reusable. Domain code belongs in the owning entity; only generic technical code belongs in Shared. |
 
@@ -63,8 +63,9 @@ listeners, fetch data, or compose unrelated slices as side effects of importing.
 Cross-slice imports use the target slice's root `index.ts`, `content.ts` or
 `background.ts`. Shared libraries/adapters/config units expose their own
 `index.ts`, for example `shared/lib/lifecycle/index.ts`; do not introduce one
-barrel for all Shared utilities. This repository uses relative ESM paths for
-both internal and external imports. Path aliases are not currently configured.
+barrel for all Shared utilities. This repository uses relative ESM paths for internal imports. React packages are
+the only external runtime imports permitted, and only in the extension-owned UI
+units listed by the checker. Path aliases are not currently configured.
 
 Inside a slice, import the implementation directly, not the slice's own public
 barrel. For example, from `features/example/model/run.ts`:
@@ -154,12 +155,14 @@ It rejects:
 - source modules unreachable from the build entry points in `scripts/entrypoints.mjs`;
 - wildcard exports and unresolvable/non-relative imports;
 - CommonJS `require` and external `import = require` loads;
-- JavaScript, JSX, `.tsx`, `.mts` and `.cts` runtime sources outside the current
-  `.ts` toolchain, and source symlinks that would hide dependencies from the graph;
+- unapproved external packages and React/JSX outside the settings/popup/welcome UI units;
+- transitive React dependencies from content, background and non-React entry points;
+- JavaScript, JSX, `.mts` and `.cts` runtime sources outside the current
+  `.ts`/`.tsx` toolchain, and source symlinks that would hide dependencies from the graph;
 - computed dynamic imports, except the single packaged content bootstrap;
 - blanket type suppressions, explicit `any` and unnamed numeric timer policies.
 
-Runtime `.ts` files (including ambient `.d.ts`) are covered. If another source
+Runtime `.ts`/`.tsx` files (including ambient `.d.ts`) are covered. If another source
 format becomes necessary, update TypeScript, lint, build and architecture coverage
 together. The source-symlink rule applies only within `src/`; the agent instruction
 and skill symlinks outside `src/` are unaffected.
@@ -196,3 +199,88 @@ lifecycle/rendering/cache changes as specified in CONTRIBUTING.
 The background to these rules is documented in the official FSD
 [layer reference](https://feature-sliced.design/docs/reference/layers) and
 [public API guide](https://feature-sliced.design/docs/reference/public-api).
+
+## Extension-page presentation
+
+`popup.html` remains the full settings page for existing links. The toolbar action
+opens `quick-popup.html`, with its own small entry bundle. The install guide uses
+`welcome.html` and the `pages/welcome` slice. All three use `settings.css`
+and the React presentation primitives in `shared/ui/settings`; no UI dependencies
+are loaded into content scripts or the service worker. A separate esbuild UI graph
+builds all three HTML entry modules and deduplicates React into `ui/chunks/`. Those chunks
+are extension-local assets, with no additional host access or web-accessible resources. The update notice is shared
+through `features/view-release-notes`.
+
+Every full-page control belongs to a `.settings-section[data-category]` in its
+owning form. Navigation hides sections without unmounting their editors, so drafts
+and typed draft/autosave state survives section changes. React owns rendered
+children; serialization reads the draft model, never DOM control values. Search is a navigation control,
+not a persisted preference. Searching preserves the selected shared/project scope.
+Scope changes must wait
+for acknowledged storage writes before replacing the form; errors retain drafts
+and expose a retry. Text-input blur events must not schedule a duplicate save. New controls must have labels and a category, and new
+copy belongs in all 27 locales. Keep limits beside their feature; do not collect
+unrelated settings into one advanced section.
+
+Project forms cover MR/commit tools, CI, Jira, AI, page/list appearance and
+confirmation preferences. Shared-only language/notification/report preferences are
+identified separately; Data & help still operates on the complete configuration.
+Drafts carry effective values and explicit override keys. Editing an inherited
+value creates only that override; returning to the global value removes it.
+Preserve legacy profile fields and absent/false/empty distinctions. Do not copy
+all inherited settings into a profile on an unrelated save. The quick popup writes
+only the one toggled global notification key, using entity defaults, rather than
+replacing a full form snapshot; its Jira summary resolves the active profile.
+
+Settings persistence merges edits against freshly read storage rather than writing
+a complete stale draft. The settings controller serializes read/merge/write work
+through the named `gitlab-mr-actions-settings` Web Lock shared by extension pages
+on the extension origin. This prevents unrelated profile/field changes in another
+settings window from being overwritten; same-field conflicts use the last completed
+save. Storage subscriptions reconcile all setting keys, including profiles and
+imports, while preserving pending edits. Import deliberately replaces the complete
+configuration. Preserve no-op legacy values and reject imported rows missing
+required properties rather than repairing malformed external data silently.
+
+`shared/config/project-settings` lists the supported project keys. The small
+`shared/api/project-settings` adapter captures the project before asynchronous
+storage reads and resolves requested overrides; the promise reader lives in
+`shared/api/storage`. Legacy version/button/job/action semantics remain in
+`entities/settings` through `getRepositorySettings`, avoiding domain settings in
+the shared bootstrap graph. Settings transfer validation rejects unsupported or
+malformed nested overrides. AI operations carry their original project context
+through asynchronous prompt, filter and instruction reads. Every new scoped
+setting must be wired through its actual consumer, not only its settings form.
+Do not bypass the existing runtime/lazy-loading budgets for a shared reader.
+
+
+React imports and automatic JSX runtime are allowed only in `pages/settings`,
+`pages/popup`, `pages/welcome`, `features/view-release-notes`, `features/check-jira-connection`, `shared/ui/settings`,
+`shared/lib/react-page` and `shared/lib/ui-language`. Entry points call page APIs;
+they do not import React themselves. Shared domain/settings and API modules stay
+usable without React. New React units require an explicit graph-policy change and
+fixtures; allowing arbitrary npm imports is not part of the UI migration.
+
+Keep feature-specific editors in `pages/settings/ui`, draft normalization and
+save coordination in its model, and generic fields/toggles/buttons/status in
+`shared/ui/settings`. The popup reuses the same controls and locale lifecycle,
+but must not import full settings/AI editors. The welcome guide owns its onboarding
+content in `pages/welcome` and uses the same shared controls and locale lifecycle;
+it must not import the settings or popup page implementation. React does not replace validation,
+stale-response guards, user-gesture permission requests or storage confirmation.
+
+Settings section IDs, order and locale keys live in `shared/config/settings-navigation`.
+Both popup shortcuts and full-page navigation consume that catalogue; update it
+once when adding a section. Notification defaults shared by both pages live in
+`entities/settings/model/quick-preferences.ts`; Jira display options belong in the
+full Jira settings section.
+
+`features/check-jira-connection` owns the shared, explicit session check in popup
+and settings. It loads the existing Jira response decoders only on request and
+uses the worker’s read-only identity operation. Results are not persisted; URL
+changes, permission revocation and unmount discard them. A successful identity
+read does not establish write permissions on every issue.
+
+The compact popup imports notification defaults through the lightweight
+`entities/settings/content.ts` API, so shared full-form default initialization
+does not pull unrelated display settings into its initial bundle.

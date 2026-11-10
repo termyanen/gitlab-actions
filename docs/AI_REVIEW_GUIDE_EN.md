@@ -25,6 +25,16 @@ Use **Select all discussions** to include resolved and general threads too. The 
 
 Review dialogs close without confirmation by default. Enable **Confirm closing review dialogs with unsaved work** in the extension’s **AI review** settings if you want a prompt before discarding changed inputs, selections or unfinished imports. Cancel keeps your work in the open dialog. A fully completed import closes without prompting even with this setting enabled. Closing during publication stops further sending but does not undo comments already sent.
 
+## Settings scope
+
+In extension settings, select **All projects** or a project before opening **AI
+review**. Visibility, the five prompts, automatic instructions, file filters,
+response language and close confirmation can be overridden for that project.
+Unchanged fields inherit shared values; **Use global value** restores inheritance.
+Existing settings and profiles retain their values. Remembered dialog choices such
+as including existing discussions remain global. Temporary edits inside a review
+dialog apply to that task and do not create a saved project profile.
+
 ## Before starting
 
 Open an MR and hover over the extension icons to find **AI review…** and **Import AI review…**. If they are missing, check that AI review is enabled in the extension settings. Reload the GitLab page after updating the extension.
@@ -78,6 +88,14 @@ These steps apply to new findings, replies and repeat reviews.
 4. Use the pencil button to change or extend the text, then **Save changes**. Its file location or discussion stays attached. **Add comment** creates your own general MR comment.
 5. Choose **Publish selected** to send immediately, or **Add to review** to create your unpublished GitLab drafts. Submit those drafts using GitLab's own review controls when ready for teammates to see them.
 6. Check the outcome on every card. Some comments may succeed while others need corrections or another check.
+
+While sending, the counter shows processed comments out of the current selection (for example, 3 / 10), including failed attempts. After a partial failure, confirmed unsent comments remain selected: use **Publish selected** again to retry them. Published comments and drafts are excluded. Unconfirmed deliveries remain blocked until you check GitLab and validate the response again. Each attempt starts its own progress counter; completion totals cover the whole preview.
+
+Use **Expand all / Collapse all** above the list to change every comment in the current window without changing saved settings.
+
+Long comments initially show five lines. **Show full comment** expands one comment; **Show less** collapses it again. The wheel always scrolls the message list. Enable **Show review comments in full by default** in **AI review** settings to change the default globally or for one project.
+
+Successful cards keep their size and gain a green border. The completion summary counts published comments, review drafts, remaining comments, errors and unconfirmed deliveries separately. A full published count means all comments were published; drafts still need to be submitted in GitLab.
 
 Previewing and saving edits do not publish anything. For an open, resolvable thread, you can enable **Resolve discussion after publishing** on its reply; it is off by default. The extension publishes the reply first, checks the discussion again, then requests resolution using your GitLab permissions. The card shows the resolution result separately. If resolution fails or cannot be confirmed, the reply remains published: check the thread in GitLab without posting the reply again. Adding a draft never resolves a discussion, and this choice is not deferred until the draft is published. Approval, reopening and merging remain separate GitLab actions. An empty findings list does not approve the MR.
 

@@ -37,7 +37,7 @@ regressions from legacy scripts to TypeScript exports without shipping test hook
 `type-boundaries.test.cjs` exercises malformed and legacy API responses, unknown
 errors, Jira message/authentication/partial-write results, durable task validation,
 invalid review rows, detached snapshots, version paths containing prototype names,
-SHA-256 journal identities and checked settings controls. Existing review regressions
+SHA-256 journal identities and checked extension-page mount nodes. Existing review regressions
 also verify partial discussion recovery and prevention of ambiguous write retries.
 `npm run check` enforces strict indexed/optional-property checks and the unsafe-value,
 unsafe-assertion and non-null assertion ESLint rules; tests alone do not run those gates.
@@ -73,6 +73,33 @@ rendering frames before GC so transient renderer references are not mistaken
 for leaks. These focused fixtures bundle production widget modules with a fake
 Chrome transport; `extension.spec.cjs` and the profiler use the installed
 production extension and real Chrome extension APIs.
+
+`toolbar-style-update.spec.cjs` installs the new toolbar with a legacy CSS fixture
+to reproduce the old-layout mismatch, then updates the same unpacked extension
+without changing its version or settings, then reopens the same persistent Chromium
+profile with its existing disk cache. It checks the generated manifest's CSS
+reference, group spacing, comment-row position and removal of the old clock
+pseudo-element. The installed-extension test also asserts computed toolbar layout
+under page CSP; checking only the presence of buttons is insufficient.
+
+`mr-toolbar-layout.spec.cjs` verifies the toolbar's separate metadata, warning,
+action and comment areas in light/dark themes and modern/legacy host shapes,
+including keyboard focus, narrow viewports, long labels, hidden/empty groups and
+live rerendering. Representative native medium/small button rules load after the
+extension CSS to catch host-specificity regressions; toolbar targets are compared
+with the native medium control while native small controls remain unchanged. A
+separate check covers missing host button CSS. These fixtures use theme-token
+fallbacks and sizing fragments, not complete historical GitLab stylesheets. Screenshots are written to `.reports/toolbar-*.png`;
+`docs/screenshots/1-mr-toolbar.png` is the light desktop fixture capture. The
+age formatter also checks invalid/future dates and all 27 supported locales.
+
+`mr-toolbar-mount.spec.cjs` covers late GitLab widget/project metadata, live
+button visibility/order/label changes, global/project settings, stale settings
+reads, focus and running-action preservation, hidden palette actions and storage
+listener cleanup. Its memory check compares 50 updates after 10 warm-up updates
+and records DOM/listener counters. `extension.spec.cjs` also toggles checkboxes
+in the real settings page while an MR fixture stays open, exercising Chrome
+storage events across extension/content contexts without reloading the MR.
 
 `jira-status.spec.cjs` covers expired sessions, read retries, partial forbidden
 responses, offline notices and commit badge recovery. `jira-errors.spec.cjs`
@@ -491,3 +518,68 @@ project inheritance and empty overrides, confirmation cancellation, command
 palette dispatch, API error recovery and a subsequent successful action. The
 Russian popup was inspected at 360 px in dark mode. No real MR was modified;
 live GitLab permissions and server-specific behavior still require a live check.
+
+### Settings redesign coverage
+
+The Chromium suite checks the pre-redesign static control inventory, categorized
+navigation, draft preservation, project/global scope, persisted profile removal,
+keyboard reordering, editor deletion autosave and shared popup toggles. All 27
+locales load in both surfaces; popup height and narrow full-page overflow are
+checked. Screenshots cover light/dark layouts. The inventory fixture records
+pre-redesign control IDs; extend it alongside intentional new settings.
+
+Settings recovery checks delay and fail storage writes, verify retained drafts,
+explicit retry, failed-load locking, global search from a project scope, and a
+save/reload round trip for all legacy switches and toolbar buttons. A two-page
+scenario checks quick-toggle synchronization with unrelated full-form edits.
+Import feedback expires after ten seconds without changing persisted data; stale
+success timers cannot hide errors or newer edits. Accordion chevrons retain native
+keyboard behavior in light/dark, narrow layouts and reduced-motion mode.
+
+React settings coverage uses pure draft/controller tests for validation, autosave,
+serialization and transfer; browser tests exercise the actual controlled inputs,
+all locales, stable list editors and permission request races. The build check
+verifies one shared React renderer, separate application/runtime size budgets,
+MIT notices and no React dependency reachable from content scripts or the worker.
+`browser/react-lifecycle.spec.cjs` verifies stable Chrome subscription counts across
+popup toggle/language renders and full-settings section/profile navigation. It
+dispatches `pagehide`, checks unmount and complete subscription cleanup, then
+delivers previously captured callbacks to verify that a closed view stays closed.
+Timing and heap observations are diagnostics, not machine-dependent test thresholds.
+
+Welcome browser checks preserve the pre-migration inventory of 113 localized text
+keys and 44 feature cards across all 27 locales, including live/automatic language
+selection. Both light/dark themes are checked at 1280px and 320px; reading text stays
+at least 16px with no horizontal overflow. Keyboard links, settings-read recovery,
+stale initial reads and subscription teardown are exercised on the packaged page.
+
+`browser/jira-connection.spec.cjs` exercises the shared session check through the
+production worker with local response fixtures: authenticated identity, login HTML,
+401/403/404/429/5xx, offline/malformed replies, missing host access, timeout, stale
+responses, URL changes, permission revocation, page teardown and all 27 locales.
+The probe only reads; it does not establish permissions to mutate a specific issue.
+
+`browser/mr-toolbar-mount.spec.cjs` covers delayed project metadata (inserted
+elements and attribute-only hydration), invalid ID placeholders, replacement of
+the MR widget during pending API reads, duplicate prevention and observer cleanup.
+
+
+Project cherry-pick branch regressions cover settings draft isolation, removal of
+an override, old and new export/import shapes, and rejection of malformed lists.
+`cherry-pick-profiles.spec.cjs` opens the actual dialog from commit-list and detail
+controls with exact/pattern profiles, empty overrides and unrelated projects.
+`settings-editors.spec.cjs` checks inheritance hints, autosave/reload, updated global
+lists, empty lists and long branch names in light/dark and narrow layouts. These
+fixtures never start a cherry-pick or contact a production GitLab server.
+
+
+`project-settings.test.cjs` covers scope policy, explicit false/empty overrides,
+legacy-profile preservation, reset-to-global behavior, nested import validation,
+project capture before delayed reads and distinct Jira-origin requests on import.
+The project-settings browser scenario in `settings-editors.spec.cjs` edits multiple
+categories, preserves unrelated profiles and global values, reloads saved settings,
+restores inheritance, keeps search in the selected scope, and checks light/dark
+layouts at desktop and narrow widths. Runtime integration checks must also verify
+that the owning GitLab feature reads the effective profile: a saved field alone is
+not evidence that an override is applied. No fixture should request production
+credentials or start writes on a real GitLab/Jira instance.
