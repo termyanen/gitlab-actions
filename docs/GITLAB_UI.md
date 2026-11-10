@@ -26,6 +26,11 @@ are private to their widgets. These are existing implementations, not proof that
 every control uses native GitLab styling or works in every theme/version. Do not
 copy their custom appearance into a new feature without a concrete reason.
 
+The MR toolbar uses GitLab’s default medium button size, matching the surrounding
+Merge control. Do not add `btn-sm` alongside a medium CSS fallback: GitLab’s
+higher-specificity small-button rule wins and shrinks the click target. Its scoped
+fallback preserves a 32px target when host button styles are unavailable.
+
 ## Choose the control before writing CSS
 
 1. Inspect the affected GitLab surface and the owning widget. If GitLab already

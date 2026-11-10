@@ -46,7 +46,7 @@
 <h2 id="en-section-5">4. Recipients</h2>
 <ul>
 <li><strong>Your GitLab instance:</strong> API reads and user-triggered changes, including publishing selected review comments and drafts.</li>
-<li><strong>Your configured Jira server:</strong> optional integration after you grant host access.</li>
+<li><strong>Your configured Jira server:</strong> optional integration after you grant host access. The URL can be shared or overridden for a project; each distinct configured origin requires its own grant.</li>
 <li><strong>Google Chrome Sync:</strong> preferences only, when enabled in your browser.</li>
 <li><strong>A destination you choose:</strong> copying places text on the clipboard; you decide whether to paste it into an AI tool or another application. There is no automatic AI recipient.</li>
 </ul>
@@ -79,7 +79,7 @@
 </tr>
 <tr>
   <td>Optional HTTPS host access</td>
-  <td>Requested for the configured Jira domain</td>
+  <td>Requested for explicitly configured global/project Jira origins</td>
 </tr>
 <tr>
   <td>Content scripts on HTTPS pages</td>
@@ -131,7 +131,7 @@ Jira requests use the existing browser session with permission for the configure
 <h2 id="ru-section-5">Получатели</h2>
 <ul>
 <li><strong>Ваш GitLab:</strong> API-запросы и действия пользователя, включая выбранные комментарии и черновики.</li>
-<li><strong>Настроенный сервер Jira:</strong> опциональная интеграция после предоставления доступа к домену.</li>
+<li><strong>Настроенный сервер Jira:</strong> опциональная интеграция после предоставления доступа к домену. Адрес может быть общим или заданным для проекта; для каждого настроенного сервера (домена и порта) требуется отдельное разрешение.</li>
 <li><strong>Google Chrome Sync:</strong> только настройки, если синхронизация включена.</li>
 <li><strong>Выбранное вами приложение:</strong> копирование помещает текст в буфер, после чего вы решаете, вставлять ли его в ИИ или другое приложение. Автоматического получателя среди ИИ-сервисов нет.</li>
 </ul>
@@ -164,7 +164,7 @@ Jira requests use the existing browser session with permission for the configure
 </tr>
 <tr>
   <td>Опциональный доступ к HTTPS-домену</td>
-  <td>Запрашивается для настроенного домена Jira</td>
+  <td>Запрашивается для явно настроенных общих или проектных серверов Jira (домен и порт)</td>
 </tr>
 <tr>
   <td>Скрипты на HTTPS-страницах</td>
