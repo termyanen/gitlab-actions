@@ -219,7 +219,11 @@ export function createListJiraBadges(
     const ticketsToFetch: string[] = [];
 
     allTickets.forEach(function (t) {
-      if (jiraState.cache[t] && now - jiraState.cache[t].ts < JIRA_CACHE_TTL) {
+      if (
+        jiraState.cache[t] &&
+        now - jiraState.cache[t].ts < JIRA_CACHE_TTL &&
+        (!showDetails || jiraState.cache[t].details)
+      ) {
         cachedStatuses[t] = jiraState.cache[t];
       } else {
         ticketsToFetch.push(t);
@@ -270,6 +274,7 @@ export function createListJiraBadges(
             jiraState.cache[t] = {
               ...value,
               ts: fetchedNow,
+              details: showDetails,
             };
           }
 

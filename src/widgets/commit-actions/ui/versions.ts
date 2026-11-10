@@ -1,3 +1,4 @@
+import { getRepositorySettings } from "../../../entities/settings";
 import { VERSION_DEFAULTS } from "../../../entities/settings";
 import { createSessionApi } from "../../../shared/api/gitlab";
 import { SEL } from "../../../shared/config/gitlab";
@@ -63,7 +64,7 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
 
   if (isCommitsPage()) {
     try {
-      chrome.storage.sync.get(
+      getRepositorySettings(
         {
           show_commit_version: false,
           versionFile: VERSION_DEFAULTS.versionFile,
@@ -87,8 +88,8 @@ export function startCommitVersions(scope: Lifecycle = createLifecycle()) {
 
           const versionFile = s.versionFile || "package.json";
           const versionPath = s.versionPath || "version";
-          const isToml = versionFile.indexOf(".toml") !== -1;
-          const isPlainText = versionFile.indexOf(".txt") !== -1;
+          const isToml = /\.toml$/i.test(versionFile);
+          const isPlainText = !isToml && !/\.json$/i.test(versionFile);
 
           // Cache keys are scoped by project + file + path so a settings change
           // never serves stale versions. SHA content is immutable — no TTL.

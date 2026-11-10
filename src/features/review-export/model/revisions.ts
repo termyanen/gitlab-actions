@@ -8,7 +8,7 @@ import {
   isFileDiff,
   isMergeRequest,
 } from "../../../entities/merge-request";
-import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab";
+import { GITLAB_PAGE_SIZE } from "../../../shared/config/gitlab-api";
 import { toError } from "../../../shared/lib/errors";
 import {
   isRecord,

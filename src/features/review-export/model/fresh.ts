@@ -157,7 +157,9 @@ export function createFreshReviewExporter(
     });
     const workflow = reviewWorkflow;
     const scope = workflow
-      ? options.fileFilter || (await workflow.settings(options.signal)).filter
+      ? options.fileFilter ||
+        (await workflow.settings(options.signal, options.settingsProjectPath))
+          .filter
       : null;
     let budget = EXISTING_TOTAL_CHARS,
       exhausted = false;
@@ -243,7 +245,7 @@ export function createFreshReviewExporter(
     context: ReviewContext,
     options: ExportOptions = {},
   ) {
-    options = options || {};
+    options = { ...options, settingsProjectPath: context.projectPath };
     if (reviewWorkflow)
       options = await reviewWorkflow.instructionOptions(options);
     const result = await prepareReviewContext(context, options);

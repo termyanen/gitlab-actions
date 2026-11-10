@@ -1,3 +1,4 @@
+import { getProjectSettings } from "../../../shared/api/project-settings";
 import type { JiraState } from "../../../entities/jira-issue";
 import { createJiraMatcher } from "../../../entities/jira-issue";
 import {
@@ -219,7 +220,7 @@ export function startMrList(
 
   if (isMrListPage()) {
     try {
-      chrome.storage.sync.get(
+      getProjectSettings(
         LIST_DEFAULTS,
         scope.guard(function (s: ListSettings) {
           if (chrome.runtime.lastError) return;
@@ -339,7 +340,7 @@ export function startMrList(
 
   if (_isMrDetailPage) {
     try {
-      chrome.storage.sync.get(
+      getProjectSettings(
         {
           jira_url: "",
           jira_ticket_regex: "",
@@ -353,7 +354,6 @@ export function startMrList(
           skip_confirmations: boolean;
         }) {
           if (chrome.runtime.lastError || !s.jira_url) return;
-          jiraState.url = s.jira_url;
           jiraState.showDetails = !!s.show_jira_details;
           jiraState.skipConfirmations = !!s.skip_confirmations;
           setJiraTicketRegex(s.jira_ticket_regex);

@@ -1,4 +1,4 @@
-import { GITLAB_API_PREFIX } from "../../config/gitlab";
+import { GITLAB_API_PREFIX } from "../../config/gitlab-api";
 import { isRecord } from "../../lib/validation";
 export interface ApiError extends Error {
   httpStatus?: number;

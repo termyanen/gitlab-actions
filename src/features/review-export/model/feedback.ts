@@ -23,7 +23,7 @@ export function createFeedbackExporter({
     snapshot: ReviewSnapshot,
     options: ExportOptions = {},
   ) {
-    options = options || {};
+    options = { ...options, settingsProjectPath: snapshot.context.projectPath };
     if (reviewWorkflow)
       options = await reviewWorkflow.instructionOptions(options);
     checkAbort(options.signal);
