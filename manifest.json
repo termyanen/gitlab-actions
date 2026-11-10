@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "minimum_chrome_version": "110",
   "name": "__MSG_extName__",
-  "version": "1.13.3",
+  "version": "2.0.1",
   "description": "__MSG_extDescription__",
   "homepage_url": "https://github.com/termyanen/gitlab-actions",
   "default_locale": "en",
