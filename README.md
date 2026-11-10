@@ -13,6 +13,12 @@ GitLab's UI requires multiple clicks and page reloads for common MR operations. 
 
 ### MR Detail Page — Action Buttons
 
+The toolbar separates MR age and warnings from actions, with quick comments in
+their own labelled row. Buttons share GitLab-style sizing and theme colors; force
+merge and pipeline cancellation use danger text. Your configured action order is
+preserved. MR age uses the selected interface language, with the creation date
+available on hover. Long labels wrap on narrow pages.
+
 | Button | What it does |
 |--------|-------------|
 | **Rebase** | Rebase branch without merging |
@@ -30,7 +36,7 @@ GitLab's UI requires multiple clicks and page reloads for common MR operations. 
 | **Custom Jobs** | Trigger any manually-configured CI job |
 | **MR Actions** | Named buttons to remove selected/all labels, add/replace labels, or clear assignees, reviewers or milestone |
 
-All buttons are configurable — show/hide, reorder via drag & drop. Per-project profiles let you override settings for specific repositories.
+All buttons are configurable — show/hide, reorder via drag & drop or keyboard-accessible arrow buttons. Per-project profiles let you override settings for specific repositories.
 
 Reviewers uses the team's `Reviewer:` / `Reviewers:` comment convention; it does
 not assign GitLab's native reviewer field. Keep the MR tab open until Ship,
@@ -38,28 +44,44 @@ rebase or auto-merge setup finishes. Once auto-merge is enabled, GitLab handles
 the merge when its conditions are met. Custom job chains have a separate
 background tracker described below.
 
-In settings, open **MR actions → Add MR action**, enter a button name and choose
+In settings, open **MR & commits → MR actions → Add MR action**, enter a button name and choose
 an action. For selected labels, enter exact names separated by commas or new
 lines; spaces inside names are preserved. **Remove specified labels** leaves
 other labels intact. **Clear all labels** removes every label. Adding/replacing
 labels may create missing project labels. Each button changes one field and
 uses the common confirmation preference. The MR page refreshes after success.
 Buttons also appear in the command palette and can be reordered with other
-buttons. Project profiles inherit global MR actions until saved, then use their
-own list; an empty project list hides them. Export/import includes these actions.
+buttons. Project profiles inherit global MR actions until their list is edited, then
+use their own list; an explicitly empty project list hides them. Use the global
+value to restore inheritance. Export/import includes these actions.
+In **MR & commits**, uncheck a custom job or MR-action button to hide it without
+deleting its definition. Recheck it to restore the button in its saved order.
+Visibility is saved per global/project list and included in exports. Saved changes
+to toolbar buttons, their order and quick comments apply immediately to open MR
+pages, including project overrides and imports; no page reload is needed. Running
+actions keep their state, and hidden buttons cannot be launched from stale palette entries.
 
-Use **Export settings** at the top of the extension popup to download a JSON file
+Open **All settings → Data & help → Export settings** to download a JSON file
 with all settings, project profiles, custom buttons, Jira actions and AI prompts
 and instructions. Share the file, then use **Import settings**, select it and click
 **Replace settings** on the other installation. Import replaces the full
 configuration; it validates the file before writing and requests access to the
-configured Jira site when needed. Browser permissions, sessions and caches are
+distinct Jira origins configured globally or in project profiles when needed. Browser permissions, sessions and caches are
 not transferred. The file includes configured URLs, usernames and comment or
-prompt text. The ↗ button opens settings in a separate browser tab.
+prompt text. The popup provides sound and desktop notification toggles, an inline editor for every settings
+section and **How it works**. Jira issue type/priority icons remain configurable
+under **Jira integration** in either editor. **All settings** opens the
+complete settings page in a browser tab.
+
+**How it works** opens the welcome guide, with section navigation, larger reading text,
+light/dark themes and a layout for narrow windows. It follows the interface language
+selected in settings, including changes made while the guide is open, across all 27 locales.
 
 <a id="copy-review-feedback-for-ai"></a>
 
 ### AI review: copy, fix, reply and recheck
+
+Long comments use five-line previews with per-comment expand/collapse controls. The mouse wheel scrolls the whole list. In AI review settings, enable full comments by default globally or per project.
 
 [AI review guide / Гайд по ревью с ИИ](https://termyanen.github.io/gitlab-actions/review-guide.html) — step-by-step scenarios for authors and reviewers.
 Source guides: [English](docs/AI_REVIEW_GUIDE_EN.md), [Русский](docs/AI_REVIEW_GUIDE_RU.md).
@@ -389,7 +411,10 @@ so identical answers to different threads remain independent.
   started in GitLab.
 - **Pipeline groups:** run remaining manual jobs from a group in the pipeline graph.
 - **Commit tools:** version badges use the configured version file; cherry-pick
-  commits to selected branches directly or through new MRs. With Smart fallback
+  commits to selected branches directly or through new MRs. Configure target branches
+  under **MR & commits → Cherry-pick branches** in **All projects** or a project
+  profile. An empty project list inherits the global branches; the editor previews
+  the effective list. With Smart fallback
   enabled, a verified version-file conflict can be replayed without that file,
   optionally bumping the target version in the same commit. Other conflicts,
   unsafe changes and uncertain request outcomes stop for inspection.
@@ -414,6 +439,16 @@ you explicitly apply the imported configuration.
 - **Quick actions** — configure each button to change one field or several: status, assignee, labels, Fix Version, affected versions, components, priority and due date. Add, remove or replace list values; advanced custom fields accept a Jira field ID and JSON value. Buttons without a status change work independently of workflow transitions. Existing status + assignee actions remain compatible.
 - **Attachments** — view images/videos in lightbox, download files
 - **Clickable Epic Link** — opens epic in Jira
+
+The site-access status names the configured Jira host and confirms the browser
+permission, not the Jira login state.
+**Open Jira** in settings or popup opens your configured address, including any
+installation path, in a new tab. **Check connection** in either interface performs
+a read-only Jira identity request using your browser session. It shows the result
+and check time, with **Sign in to Jira** for expired/missing sessions and distinct
+permission, network and response errors. This confirms sign-in and API availability
+at that time, not permission to modify every issue. Retry after signing in; results
+are not stored or polled, and changing the URL or revoking access clears them.
 
 When configured Jira is unavailable, the extension distinguishes sign-in/session
 problems, denied operations, missing site permission and connection/server errors.
@@ -456,19 +491,37 @@ builds contain no development server or source maps. Start with
 
 ## Configuration
 
-Click the extension icon to open settings:
+Click the extension icon for global sound and notification toggles,
+project context, the applicable Jira connection status and shortcuts. Choose **All settings** for the full workspace:
 
-- **Buttons** — toggle and reorder action buttons
-- **Version Bump** — file path, JSON field, strategy, commit template
-- **Custom Jobs** — add CI jobs to trigger manually
-- **MR List** — toggle list page enhancements
-- **Jira** — set Jira URL, ticket regex, quick actions
-- **Project Profiles** — per-project overrides for action buttons, jobs and version settings
-- **AI review** — show/hide copy controls and customize all five prompts and file filters, with independent resets
-- **Display rules and limits** — MR size thresholds, failed-job/log preview limits, reviewer-comment scan depth, and sensitive file patterns/exclusions
+- **MR & commits** — MR toolbar order, custom MR actions, quick comments,
+  reviewers, version files/strategies, commit-page version display and cherry-pick
+- **CI/CD & jobs** — custom job chains, grouped pipeline controls and failed-job/log preview limits
+- **Jira** — server URL and explicit site access, issue icons, standup enrichment, commit fields,
+  multi-field quick actions and advanced ticket matching
+- **AI review** — copy controls, all five prompts, automatic instructions, filters and response language
+- **GitLab interface** — MR list/detail enhancements, display thresholds and sensitive-file rules
+- **General** — interface language, notifications, sound and confirmations
+- **Data & help** — settings export/import; onboarding is linked in the sidebar
 
-The display policies are global and included in settings export/import. Existing
-defaults remain unchanged. Reload GitLab tabs after changing them. Incomplete
+Search matches translated section/setting text within the selected scope.
+**Settings scope** selects **All projects** or a project profile. Project profiles
+cover MR actions and lists, comments, commits/cherry-pick, versions, CI/CD, Jira,
+AI review, confirmations and GitLab appearance. Edit an inherited field to set a
+project value; **Use global value** restores inheritance. Existing settings and
+profiles keep their values, and saving an unrelated field does not copy all
+shared defaults into a profile. Interface language, sound, desktop notifications,
+cross-project report enrichment and remembered review-dialog choices stay global.
+Open settings from a GitLab MR, commit, branch or pipeline page to create its profile. Changes autosave; navigating within
+a form preserves drafts. The save status shows pending changes, writes
+and failures, with an explicit **Retry** button. Scope changes wait for a successful
+write; failed loads keep editing locked. Quick toggles stay synchronized between
+the popup and an open settings page, including while editing another setting. Empty profile fields show the inherited
+global values. Light/dark styling follows the browser/system theme. Successful save/import messages clear after 10 seconds; errors and unsaved-change warnings remain visible until resolved.
+
+Display policies support global defaults and project overrides, both included in
+settings export/import. Existing defaults remain unchanged. Reload GitLab tabs
+after changing non-toolbar settings. Incomplete
 file scans, thread counts and standup selections are marked explicitly. See
 [Configuration and operational limits](docs/CONFIGURATION.md) for defaults,
 accepted values, profile inheritance and fixed network/storage budgets.
@@ -505,7 +558,9 @@ Extension runtime lives in `src/` and uses strict TypeScript with FSD layers:
 `app → pages → widgets → features → entities → shared`. Imports between slices
 use their public APIs; CI checks layer direction, prohibits sibling-slice
 imports, detects runtime cycles and unreachable source modules, and rejects legacy JavaScript/blanket type
-suppressions. There are no runtime framework dependencies.
+suppressions. Settings, the compact popup and welcome page use React + TypeScript with shared controls.
+React is bundled locally in shared UI chunks; content scripts and the service
+worker remain framework-free. esbuild and FSD boundaries are unchanged.
 
 Use the [feature implementation and architecture guide](docs/ARCHITECTURE.md)
 to choose an owning module, wire content/background/settings behavior, define

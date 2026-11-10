@@ -37,7 +37,7 @@ Optional discussion resolution is sent to the same GitLab only when you explicit
 ## 4. Recipients
 
 - **Your GitLab instance:** API reads and user-triggered changes, including publishing selected review comments and drafts.
-- **Your configured Jira server:** optional integration after you grant host access.
+- **Your configured Jira server:** optional integration after you grant host access. The URL can be shared or overridden for a project; each distinct configured origin requires its own grant.
 - **Google Chrome Sync:** preferences only, when enabled in your browser.
 - **A destination you choose:** copying places text on the clipboard; you decide whether to paste it into an AI tool or another application. There is no automatic AI recipient.
 
@@ -53,7 +53,7 @@ The extension runs bundled JavaScript and does not download executable code or e
 | `alarms` | Wake the service worker to restore unfinished CI tasks |
 | `notifications` | Completion notifications for background jobs |
 | `tabs` | Read the active tab URL to identify the current project and locate matching GitLab tabs for user-triggered work |
-| Optional HTTPS host access | Requested for the configured Jira domain |
+| Optional HTTPS host access | Requested for explicitly configured global/project Jira origins |
 | Content scripts on HTTPS pages | Recognize self-hosted GitLab installations on different domains and provide GitLab features there |
 
 AI review adds no new extension permissions. The browser controls site access; you can restrict it through the extension's site-access settings.

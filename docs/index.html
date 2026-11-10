@@ -44,7 +44,7 @@
     "description": "Chrome extension for GitLab merge requests: one-click rebase, auto-merge, version bump, CI jobs, Jira integration. No tokens needed. AI-assisted review with your own tools.",
     "url": "https://termyanen.github.io/gitlab-actions",
     "downloadUrl": "https://chromewebstore.google.com/detail/gitlab-mr-actions/lbploihmpffiihpgeojdlpcclegbdeak",
-    "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-buttons-and-jira-badges.png",
+    "screenshot": "https://termyanen.github.io/gitlab-actions/screenshots/1-mr-toolbar.png",
     "image": "https://termyanen.github.io/gitlab-actions/og-image.png",
     "author": { "@type": "Person", "name": "Roman Termyanen", "url": "https://github.com/termyanen" },
     "softwareVersion": "1.13.3",
@@ -537,7 +537,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3 data-i18n="fCustomTitle">Fully Customizable</h3>
-        <p data-i18n="fCustomDesc">Enable buttons, reorder them, configure custom jobs and MR actions, and override supported settings per project. Export/import shares the configuration between installations.</p>
+        <p data-i18n="fCustomDesc">Edit a settings section directly below the popup menu, or open the full searchable workspace. Set shared defaults or project-specific MR, commit, CI/CD, Jira, AI and appearance preferences; project fields show their source and can return to the global value. Existing settings are preserved. Notification toggles stay global. Saved toolbar buttons and order update open MR pages without a reload. Export/import transfers all profiles.</p>
       </div>
       <!-- Quick Comments -->
       <div class="bento-card">
@@ -545,7 +545,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14a1 1 0 011 1v8a1 1 0 01-1 1h-5l-4 4v-4H3a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fQuickCommTitle">Quick Comments</h3>
-        <p data-i18n="fQuickCommDesc">One-click buttons that instantly post a general comment to the MR. Configure templates like LGTM, Needs fixes, or any custom text in settings.</p>
+        <p data-i18n="fQuickCommDesc">A separate Quick comments row posts general MR comments in one click. Configure templates like LGTM, Needs fixes, or any custom text in settings.</p>
       </div>
       <!-- Collapse & Hide -->
       <div class="bento-card">
@@ -585,7 +585,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 17v-3a2 2 0 012-2h1M15 17v-3a2 2 0 00-2-2h-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fCherryPickTitle">Cherry-pick to branches</h3>
-        <p data-i18n="fCherryPickDesc">Cherry-pick a commit to selected branches directly or through new MRs. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.</p>
+        <p data-i18n="fCherryPickDesc">Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.</p>
       </div>
       <!-- Version badge on commits -->
       <div class="bento-card">
@@ -621,7 +621,7 @@
       </div>
       <div class="feature-card">
         <h3 data-i18n="fAgeTitle">MR Age Badge</h3>
-        <p data-i18n="fAgeDesc">Show time since creation on the MR detail page. Enable the time tracker in settings.</p>
+        <p data-i18n="fAgeDesc">Show labelled, localized MR age in the toolbar header, separate from action buttons and warnings. Hover to see the creation date; enable the time tracker in settings.</p>
       </div>
       <div class="feature-card">
         <h3 data-i18n="fConfirmTitle">Skip Confirmations</h3>
@@ -713,7 +713,7 @@
     <div class="section-header">
       <div class="section-label" data-i18n="secJiraLabel">Jira Integration</div>
       <h2 data-i18n="secJiraTitle">Jira context without leaving GitLab</h2>
-      <p data-i18n="secJiraSub">Jira Server/Data Center statuses, assignees and workflow actions from the merge request page. Uses your signed-in browser session. Set the Jira URL and click “Allow Jira site access” in extension settings; the same button restores revoked access.</p>
+      <p data-i18n="secJiraSub">Jira Server/Data Center statuses, assignees and workflow actions from the merge request page. Uses your signed-in browser session. Set the Jira URL and click “Allow Jira site access” in extension settings; the same button restores revoked access. “Check connection” in settings or popup confirms your session and shows the last check time or an actionable error.</p>
     </div>
     <div class="bento">
       <div class="bento-card span-2">
@@ -728,7 +728,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10L8 14L16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fBadgesTitle">Status Badges</h3>
-        <p data-i18n="fBadgesDesc">Show Jira ticket statuses on MR lists and detail pages, with colors based on status categories and names. Configure the ticket-ID pattern and Jira HTTPS address in settings.</p>
+        <p data-i18n="fBadgesDesc">Show Jira ticket statuses on MR lists and detail pages, with colors based on status categories and names. Configure the ticket-ID pattern and Jira HTTPS address globally or per project.</p>
       </div>
       <div class="bento-card">
         <div class="bento-icon icon-orange">
@@ -871,7 +871,7 @@
         fDraftTitle: 'Draft Toggle & Copy MR',
         fDraftDesc: 'Mark or unmark MR as draft instantly. Copy MR title and link to clipboard for sharing in messengers and task trackers.',
         fCustomTitle: 'Fully Customizable',
-        fCustomDesc: "Enable buttons, reorder them, configure custom jobs and MR actions, and override supported settings per project. Export/import shares the configuration between installations.",
+        fCustomDesc: "Edit a settings section directly below the popup menu, or open the full searchable workspace. Set shared defaults or project-specific MR, commit, CI/CD, Jira, AI and appearance preferences; project fields show their source and can return to the global value. Existing settings are preserved. Notification toggles stay global. Saved toolbar buttons and order update open MR pages without a reload. Export/import transfers all profiles.",
         fCmdPaletteTitle: 'Command Palette (Cmd+K)',
         fCmdPaletteDesc: 'Press Cmd+K (Mac) or Ctrl+K (Win) on any GitLab page. Navigate, run MR actions, search files by name and open them in the repo. Keyboard navigation, contextual commands.',
         fStandupTitle: 'Daily Activity Report',
@@ -881,7 +881,7 @@
         fCommitVersionTitle: 'Version badge on commits',
         fCommitVersionDesc: "Show the configured version file’s value beside branch commits and highlight changes. A bounded local cache reuses results for the same project, file, field and commit.",
         fCherryPickTitle: 'Cherry-pick to branches',
-        fCherryPickDesc: "Cherry-pick a commit to selected branches directly or through new MRs. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.",
+        fCherryPickDesc: "Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.",
         fTrackerTitle: 'Background Job Tracker',
         fTrackerDesc: "Custom CI job chains run in the background with progress, cancellation and restart recovery. Keep a signed-in tab on the same GitLab open for API access. Cancellation stops later actions, not jobs already started.",
         fSensitiveTitle: 'Sensitive File Warning',
@@ -910,20 +910,20 @@
         fBranchesTitle: 'Branch Names',
         fBranchesDesc: 'Shows source and target branch names on each MR in the list. See at a glance where the code comes from and where it merges into.',
         fAgeTitle: 'MR Age Badge',
-        fAgeDesc: "Show time since creation on the MR detail page. Enable the time tracker in settings.",
+        fAgeDesc: "Show labelled, localized MR age in the toolbar header, separate from action buttons and warnings. Hover to see the creation date; enable the time tracker in settings.",
         fConfirmTitle: 'Skip Confirmations',
         fConfirmDesc: "Skip the extension’s MR action confirmations. Review close prompts, settings replacement and browser permission dialogs have separate controls.",
         fQuickCommTitle: 'Quick Comments',
-        fQuickCommDesc: 'One-click buttons that instantly post a general comment to the MR. Configure templates like LGTM, Needs fixes, or any custom text in settings.',
+        fQuickCommDesc: 'A separate Quick comments row posts general MR comments in one click. Configure templates like LGTM, Needs fixes, or any custom text in settings.',
         fUiTitle: 'UI Customization',
         fUiDesc: "Collapse top navigation bars, remembering their state for the tab session. A separate saved preference hides the MR’s right sidebar.",
 
         secJiraLabel: 'Jira Integration', secJiraTitle: 'Jira context without leaving GitLab',
-        secJiraSub: 'Jira Server/Data Center statuses, assignees and workflow actions from the merge request page. Uses your signed-in browser session. Set the Jira URL and click “Allow Jira site access” in extension settings; the same button restores revoked access.',
+        secJiraSub: 'Jira Server/Data Center statuses, assignees and workflow actions from the merge request page. Uses your signed-in browser session. Set the Jira URL and click “Allow Jira site access” in extension settings; the same button restores revoked access. “Check connection” in settings or popup confirms your session and shows the last check time or an actionable error.',
         fSidebarTitle: 'Full Ticket Sidebar',
         fSidebarDesc: 'Click any Jira badge to open a detailed sidebar: summary, status, resolution, type, priority, assignee, reporter, labels, epic link, sprint, components, versions, fix versions (editable, pick from the project\'s available versions), dates, and description with rendered wiki markup. Attachments with image/video lightbox. Read, post, and delete your own comments without leaving GitLab.',
         fBadgesTitle: 'Status Badges',
-        fBadgesDesc: "Show Jira ticket statuses on MR lists and detail pages, with colors based on status categories and names. Configure the ticket-ID pattern and Jira HTTPS address in settings.",
+        fBadgesDesc: "Show Jira ticket statuses on MR lists and detail pages, with colors based on status categories and names. Configure the ticket-ID pattern and Jira HTTPS address globally or per project.",
         fIconsTitle: 'Type & Priority Icons',
         fIconsDesc: 'Native Jira icons for issue type and priority displayed next to status badges. Enable in settings for additional context at a glance.',
         fTransTitle: 'Change Status & Assignee',
@@ -987,7 +987,7 @@
         fDraftTitle: 'Draft Toggle и Copy MR',
         fDraftDesc: 'Мгновенная отметка MR как черновика. Копирование заголовка и ссылки MR в буфер обмена для отправки в мессенджеры и трекеры задач.',
         fCustomTitle: 'Полная настройка',
-        fCustomDesc: "Включайте и переставляйте кнопки, настройте jobs и действия MR, переопределяйте поддерживаемые настройки для проектов. Экспорт и импорт переносят конфигурацию между установками.",
+        fCustomDesc: "Настраивайте раздел прямо под меню popup или откройте полную страницу с поиском. Задавайте общие значения или свои параметры MR, коммитов, CI/CD, Jira, AI-ревью и оформления для проекта. У проектного поля видно источник значения; можно вернуть общее. Прежние настройки сохраняются, переключатели уведомлений остаются общими. Сохранённые кнопки панели и их порядок обновляются на открытых MR без перезагрузки. Экспорт/импорт переносит все профили.",
         fCmdPaletteTitle: 'Командная палитра (Cmd+K)',
         fCmdPaletteDesc: 'Нажмите Cmd+K (Mac) или Ctrl+K (Win) на любой странице GitLab. Навигация, действия MR, поиск файлов по имени и открытие в репозитории.',
         fStandupTitle: 'Отчёт по дневной активности',
@@ -997,7 +997,7 @@
         fCommitVersionTitle: 'Бейдж версии у коммитов',
         fCommitVersionDesc: "Показывайте значение из настроенного файла версии рядом с коммитами ветки и выделяйте изменения. Ограниченный локальный кэш повторно использует результаты для того же проекта, файла, поля и коммита.",
         fCherryPickTitle: 'Cherry-pick в ветки',
-        fCherryPickDesc: "Перенесите коммит в выбранные ветки напрямую или через новые MR. Умный fallback позволяет перенести проверенные изменения без конфликтующего файла версии, при необходимости подняв версию. Небезопасные изменения и неизвестный результат требуют проверки.",
+        fCherryPickDesc: "Перенесите коммит в выбранные ветки напрямую или через новые MR. Задайте ветки для проекта или используйте общий список. Умный fallback позволяет перенести проверенные изменения без конфликтующего файла версии, при необходимости подняв версию. Небезопасные изменения и неизвестный результат требуют проверки.",
         fTrackerTitle: 'Трекер фоновых задач',
         fTrackerDesc: "Цепочки пользовательских CI-джоб работают в фоне: прогресс, отмена и восстановление после перезапуска. Для API нужна открытая вкладка того же GitLab с активной сессией. Отмена останавливает следующие действия, но не уже запущенные jobs.",
         fSensitiveTitle: 'Предупреждение о чувствительных файлах',
@@ -1026,20 +1026,20 @@
         fBranchesTitle: 'Названия веток',
         fBranchesDesc: 'Показывает исходную и целевую ветки на каждом MR в списке. Сразу видно, откуда и куда мерджится код.',
         fAgeTitle: 'Возраст MR',
-        fAgeDesc: "Показывайте время с момента создания на странице MR. Включите трекер времени в настройках.",
+        fAgeDesc: "Подписанное время с создания MR в заголовке панели, отдельно от кнопок и предупреждений. Единицы времени переведены, дата создания видна при наведении. Включите трекер времени в настройках.",
         fConfirmTitle: 'Пропуск подтверждений',
         fConfirmDesc: "Пропускайте подтверждения действий MR. Закрытие окон ревью, замена настроек и разрешения браузера управляются отдельно.",
         fQuickCommTitle: 'Быстрые комментарии',
-        fQuickCommDesc: 'Кнопки для мгновенной отправки общего комментария к MR. Настройте шаблоны типа LGTM, Needs fixes или любой текст.',
+        fQuickCommDesc: 'Отдельная строка «Быстрые комментарии» для отправки общих комментариев к MR одним нажатием. Настройте шаблоны типа LGTM, Needs fixes или любой текст.',
         fUiTitle: 'Настройка интерфейса',
         fUiDesc: "Сворачивайте верхние панели: состояние сохраняется на время сессии вкладки. Отдельная сохраняемая настройка скрывает правый сайдбар MR.",
 
         secJiraLabel: 'Интеграция с Jira', secJiraTitle: 'Контекст Jira без выхода из GitLab',
-        secJiraSub: 'Статусы задач, исполнители и переходы Jira Server/Data Center со страницы merge request. Используется текущая сессия браузера. Укажите URL Jira и нажмите «Разрешить доступ к Jira» в настройках расширения; та же кнопка восстановит отозванный доступ.',
+        secJiraSub: 'Статусы задач, исполнители и переходы Jira Server/Data Center со страницы merge request. Используется текущая сессия браузера. Укажите URL Jira и нажмите «Разрешить доступ к Jira» в настройках расширения; та же кнопка восстановит отозванный доступ. «Проверить подключение» в настройках или popup подтверждает сессию и показывает время проверки или понятную ошибку.',
         fSidebarTitle: 'Полный сайдбар тикета',
         fSidebarDesc: 'Клик по любому Jira-бейджу открывает сайдбар: тема, статус, резолюция, тип, приоритет, исполнитель, автор, метки, эпик, спринт, компоненты, версии, fix versions (редактируемо, выбор из доступных версий проекта), даты и описание с рендером wiki-разметки. Вложения с лайтбоксом для картинок и видео. Чтение, отправка и удаление своих комментариев без выхода из GitLab.',
         fBadgesTitle: 'Статусные бейджи',
-        fBadgesDesc: "Показывайте статусы Jira в списке и на странице MR; цвета зависят от категории и названия статуса. Настройте шаблон ID тикетов и HTTPS-адрес Jira.",
+        fBadgesDesc: "Показывайте статусы Jira в списке и на странице MR; цвета зависят от категории и названия статуса. Настройте шаблон ID тикетов и HTTPS-адрес Jira для всех проектов или отдельно для проекта.",
         fIconsTitle: 'Иконки типа и приоритета',
         fIconsDesc: 'Нативные иконки Jira для типа задачи и приоритета рядом со статусными бейджами. Включается в настройках.',
         fTransTitle: 'Смена статуса и исполнителя',
@@ -1104,9 +1104,9 @@
 
     // ── SCREENSHOTS ──
     var SCREENSHOTS = [
-      { file: 'screenshots/1-mr-buttons-and-jira-badges.png', en: 'Action buttons and Jira badges on MR page', ru: 'Кнопки действий и Jira-бейджи на странице MR' },
+      { file: 'screenshots/1-mr-toolbar.png', en: 'MR toolbar: actions, age and quick comments', ru: 'Панель MR: действия, время и быстрые комментарии' },
       { file: 'screenshots/2-jira-badges-and-sidebar.png', en: 'Jira badges on MR list and ticket sidebar', ru: 'Jira-бейджи в списке MR и сайдбар тикета' },
-      { file: 'screenshots/3-settings.png', en: 'Extension settings popup', ru: 'Попап с настройками расширения' },
+      { file: 'screenshots/3-settings.png', en: 'Settings workspace', ru: 'Страница настроек расширения' },
       { file: 'screenshots/4-tracker.png', en: 'Background job tracker panel', ru: 'Панель трекера фоновых задач' }
     ];
 

@@ -19,7 +19,8 @@ instruction files as pointers here, rather than maintaining competing rules.
 - Before adding or moving a feature, read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
   for the ownership map, wiring steps and cycle fixes. Extend an existing owner
   when appropriate; a helper or button does not automatically need a new slice.
-- Chrome Manifest V3 extension, TypeScript + esbuild, framework-free DOM UI.
+- Chrome Manifest V3 extension, TypeScript + esbuild. Settings, popup and welcome use React;
+  injected GitLab UI and the worker remain framework-free.
 - `src/app/entrypoints/` contains browser entry points; `src/app/` composes features.
 - FSD layers descend through `app → pages → widgets → features → entities → shared`.
   Sibling slices cannot import each other. Import through a slice's explicit
@@ -29,8 +30,10 @@ instruction files as pointers here, rather than maintaining competing rules.
   Do not bypass checks with dynamic imports, wildcard exports or test hooks.
 - Inside a slice, import implementation files directly rather than its own public
   barrel. Compose independent slices in a higher layer or inject a small capability.
-  Type-only imports still obey boundaries. Runtime sources use `.ts` and ESM;
-  CommonJS, alternative source extensions and symlinks inside `src/` are rejected.
+  Type-only imports still obey boundaries. Runtime sources use `.ts`/`.tsx` and ESM;
+  CommonJS, unconfigured source extensions and symlinks inside `src/` are rejected.
+  React imports/JSX are restricted to extension-owned UI units; the checker also
+  rejects transitive React dependencies from content and background entry points.
 - Root manifest, HTML, CSS, icons and `_locales/` are source assets. Root runtime
   JavaScript files are obsolete: edit `src/`, build, then load `dist/` in Chrome.
 - `scripts/` is Node tooling; `tests/` holds VM regressions and Chromium fixtures.
@@ -44,7 +47,8 @@ instruction files as pointers here, rather than maintaining competing rules.
   when an appropriate GitLab pattern already works in the supported contexts.
 - Custom CSS needs a concrete layout, missing-control or compatibility reason.
   Keep it scoped to extension UI; preserve selector/theme fallbacks and keyboard
-  behavior. Do not add a UI framework or copy GitLab's stylesheet to style a control.
+  behavior. Do not add a UI framework to injected GitLab controls or copy GitLab's stylesheet
+  to style a control. Extension-owned settings, popup and welcome use their shared React UI.
 - For UI PRs, name what was reused, explain new styles/fallbacks and record light/dark,
   keyboard and affected modern/legacy DOM checks. Report untested combinations;
   passing API fixtures does not certify styling on every GitLab version.
@@ -53,10 +57,16 @@ instruction files as pointers here, rather than maintaining competing rules.
 
 - Preserve settings keys/defaults, per-project overrides, import/export formats,
   localized strings and existing GitLab/Jira compatibility fallbacks.
+- React page components use controlled typed drafts, shared controls and explicit
+  save/error state. Keep parsing/serialization outside rendering. Do not reintroduce
+  HTML-string templates, DOM-value scraping or imperative child replacement inside
+  React trees. Hooks must obey rules-of-hooks/exhaustive-deps; effects own subscription
+  cleanup and ignore stale results.
 - Settings contracts live in `src/entities/settings/`; settings transfer validation
   lives in `src/features/manage-settings/`; settings UI lives in `src/pages/settings/`.
   Update all affected paths together when introducing a setting.
-- Put GitLab DOM selectors and API paths in `src/shared/config/gitlab/`; prefer
+- Put GitLab DOM selectors in `src/shared/config/gitlab/` and REST protocol
+  constants/paths in `src/shared/config/gitlab-api/`; prefer
   `data-testid` plus existing legacy fallbacks. Extension-owned markup can use
   local selectors. Name timing, retry, size and concurrency policies close to their
   owner; do not extract every literal or move feature-specific code into Shared.

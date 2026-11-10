@@ -1,6 +1,8 @@
 # Contributing
 
 GitLab MR Actions is a Manifest V3 extension built with TypeScript and esbuild.
+The settings page, popup and welcome page use React; GitLab-injected UI and background code keep
+their existing DOM/TypeScript implementation.
 Read [AGENTS.md](AGENTS.md) for architecture and behavioral constraints; the same
 rules apply to human contributions and agent-assisted changes.
 
@@ -36,6 +38,11 @@ npm run build
 
 Load `dist/` with **Load unpacked** at `chrome://extensions/`. Use `npm run dev`
 while editing, then reload the extension and the target page after a rebuild.
+The source stylesheet is `content.css`; the build writes `content-<hash>.css`
+and registers that exact filename in the generated manifest. Keep generated
+files together when updating an unpacked installation. A clean build removes old
+CSS hashes; watch mode retains earlier hashes until the next clean build so the
+currently registered manifest can still resolve its resources before reload.
 The extension requires Chrome 110+; tests use the pinned Playwright Chromium.
 
 ## Choose the right verification
@@ -107,14 +114,15 @@ constitute a release, and none of these external actions is performed by `npm ru
 
 ## Linting and formatting
 
-`npm run lint` checks runtime TS, Node scripts and root tool configurations with
+`npm run lint` checks runtime TS/TSX, Node scripts and root tool configurations with
 zero warnings allowed. Type-aware rules catch unhandled/misused promises, unsafe
 assignments/calls/member access/arguments/returns, narrowing assertions, non-null
 assertions, untyped Promise rejection callbacks and incomplete union switches.
+React rules-of-hooks and exhaustive-deps are errors, including in `.ts` hooks.
 Do not replace a missing catch with `void`; implement the error path appropriate
 to the operation.
 
-`npm run format` applies the pinned Prettier style to TS, Node scripts, tool
+`npm run format` applies the pinned Prettier style to TS/TSX, Node scripts, tool
 configurations, root JSON and `.github/` YAML (workflows and issue forms). `npm run format:check` checks those
 same files in CI. `.editorconfig` supplies encoding, indentation and line endings
 to editors. Formatting is intentionally separate from ESLint.
@@ -154,6 +162,20 @@ Changes to browser permissions or exposed resources follow
 [the permissions policy](docs/PERMISSIONS.md): justify the implemented use, minimum
 scope, optional/required choice, request timing, denial/revocation behavior and
 store disclosure impact.
+
+The UI uses only React and React DOM at runtime, with typed shared components and
+existing CSS. esbuild builds all three pages as ESM and shares the renderer in
+`ui/chunks/`; those files are not web-accessible resources and never join the
+GitLab content/worker graph. The production build selects production React and
+ships its MIT notices in `THIRD_PARTY_NOTICES.txt`. TSX, React hooks and FSD boundaries
+are checked in CI. Keep public barrels as `.ts` files with explicit exports.
+
+The requested React migration has a measurable size cost: the pinned renderer is
+about 221 KB minified/uncompressed, shared by the three UI entry bundles. The release
+test records actual UI/application/vendor totals in `.reports/react-ui-size.json`;
+its separate vendor budget does not replace the compact-popup application budget.
+Measure popup startup and memory as well as bytes when changing UI dependencies;
+passing a size check alone is not a latency guarantee.
 
 Prefer small public APIs and explicit contracts over a universal helper. A new
 runtime dependency needs measured bundle/startup impact; development dependencies
