@@ -183,7 +183,7 @@ export function ProfileForm({
       <Section meta={profileSections[3]}>
         <h2>{t("customJobButtons")}</h2>
         <p className="hint">{t("projectSpecificJobs")}</p>
-        <SettingInheritance settingKey="customJobs">
+        <SettingInheritance settingKey="customJobs" statusPosition="before">
           <CustomJobsEditor {...editorProps} />
         </SettingInheritance>
       </Section>
