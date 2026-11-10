@@ -442,7 +442,7 @@ you explicitly apply the imported configuration.
 
 The site-access status names the configured Jira host and confirms the browser
 permission, not the Jira login state.
-**Open Jira** in settings or popup opens your configured address, including any
+**Open Jira** in the Jira settings section (full page or inline popup) opens your configured address, including any
 installation path, in a new tab. **Check connection** in either interface performs
 a read-only Jira identity request using your browser session. It shows the result
 and check time, with **Sign in to Jira** for expired/missing sessions and distinct

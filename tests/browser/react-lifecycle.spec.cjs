@@ -82,7 +82,7 @@ for (const [surface, file, root, ready] of [
     try {
       await page.goto(`chrome-extension://${extensionId}/${file}`);
       await expect(page.locator("#" + ready)).toBeEnabled();
-      if (surface === "popup") await expect(page.locator(".jira-access-summary")).toBeVisible();
+      if (surface === "popup") await expect(page.locator(".jira-access-summary")).toHaveCount(0);
       const before = await page.evaluate(() => window.__reactLifecycle.counts);
       expect(before.storage).toBeGreaterThan(0);
       for (let cycle = 0; cycle < 10; cycle++) {

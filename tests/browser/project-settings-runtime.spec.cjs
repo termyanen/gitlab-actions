@@ -274,7 +274,7 @@ test("installed pipeline controls honor each project after SPA navigation", asyn
   );
 });
 
-test("popup Jira summary follows the active project, global fallback and an explicitly disabled URL", async () => {
+test("popup Jira section follows the active project, global fallback and an explicitly disabled URL", async () => {
   await settings(
     {
       jira_url: "https://jira.global.test",
@@ -291,14 +291,15 @@ test("popup Jira summary follows the active project, global fallback and an expl
             reply([{ url: "https://gitlab.test/team/a/-/commit/abcdef123" }]);
         });
         await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
-        await expect(page.locator(".jira-access-summary a")).toHaveAttribute(
+        await page.locator('[data-category="jira"]').click();
+        await expect(page.frameLocator("#popupSettingsEditor").locator(".jira-connection-actions > a")).toHaveAttribute(
           "href",
           "https://jira.project.test/jira",
         );
         await worker.evaluate(() =>
           chrome.storage.sync.set({ projectProfiles: { "team/a": {} } }),
         );
-        await expect(page.locator(".jira-access-summary a")).toHaveAttribute(
+        await expect(page.frameLocator("#popupSettingsEditor").locator(".jira-connection-actions > a")).toHaveAttribute(
           "href",
           "https://jira.global.test",
         );
@@ -307,7 +308,7 @@ test("popup Jira summary follows the active project, global fallback and an expl
             projectProfiles: { "team/a": { overrides: { jira_url: "" } } },
           }),
         );
-        await expect(page.locator(".jira-access-summary")).toHaveCount(0);
+        await expect(page.frameLocator("#popupSettingsEditor").locator(".jira-connection-actions > a")).toHaveCount(0);
       } finally {
         await page.close();
       }

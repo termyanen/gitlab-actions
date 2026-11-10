@@ -348,7 +348,7 @@ export function SettingsPage() {
               </SettingsButton>
             )}
           </div>
-          <p className="hint" id="scopeHint">
+          <p className="hint" id="scopeHint" hidden={isEmbeddedSettings()}>
             {t(global ? "settingsGlobalHint" : "settingsProjectHint")}
           </p>
           <SettingsButton

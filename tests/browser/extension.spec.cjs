@@ -742,7 +742,6 @@ test('popup preserves release notices and carries commit project context into se
       chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/commit-project/-/commit/abc123'}]);
     });
     await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
-    await expect(page.locator('.project-card')).toContainText('team/commit-project');
     await expect(page.locator('.update-banner')).toContainText('v9.9.9');
     await expect(page.getByRole('button', {name:'Jira integration', exact:true})).toBeVisible();
     await page.locator('.update-banner').getByRole('button', {name:'Close',exact:true}).click();
@@ -998,33 +997,18 @@ test('installed MR toolbar loads matching layout styles under the GitLab page CS
  expect(runtimeErrors).toEqual([]);
 });
 
-test('popup first reveal waits for Jira access state and keeps the project card below Jira', async () => {
+test('popup opens without Jira access checks or redundant scope cards', async () => {
   const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
   const page = await context.newPage();
   try {
     await worker.evaluate(() => chrome.storage.sync.set({language:'en',jira_url:'https://jira.fixture.test',projectProfiles:{'team/stable':{}}}));
     await page.addInitScript(() => {
       chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/stable/-/merge_requests/1'}]);
-      chrome.permissions.contains = (_request, callback) => { window.releaseJiraAccess = () => callback(true); };
+      chrome.permissions.contains = () => { throw new Error('Popup must not query Jira access'); };
     });
     await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
-    await expect.poll(() => page.evaluate(() => typeof window.releaseJiraAccess)).toBe('function');
-    await expect(page.locator('.project-card')).toBeHidden();
-    await page.evaluate(() => window.releaseJiraAccess());
-    await expect(page.locator('.project-card')).toBeVisible();
-    await expect(page.locator('.jira-access-summary')).toBeVisible();
-    const positions = await page.evaluate(async () => {
-      const samples=[];
-      for(let i=0;i<12;i++) {
-        await new Promise(requestAnimationFrame);
-        const project=document.querySelector('.project-card').getBoundingClientRect();
-        const jira=document.querySelector('.jira-access-summary').getBoundingClientRect();
-        samples.push({top:project.top,afterJira:project.top>=jira.bottom});
-      }
-      return samples;
-    });
-    expect(positions.every(sample=>sample.afterJira)).toBe(true);
-    expect(new Set(positions.map(sample=>sample.top)).size).toBe(1);
+    await expect(page.locator('.popup-shortcuts')).toBeVisible();
+    await expect(page.locator('.project-card, .jira-access-summary, details')).toHaveCount(0);
   } finally {
     await page.close();
     await worker.evaluate(async previous => { await chrome.storage.sync.clear(); await chrome.storage.sync.set(previous); }, previous);
@@ -1134,38 +1118,36 @@ test('compact inheritance icons and Jira removal controls leave room for labels'
   }
 });
 
-test('compact Jira and scope sections collapse with keyboard and persist independently', async () => {
-  await worker.evaluate(async () => chrome.storage.sync.set({ language: 'ru', jira_url: 'https://jira.fixture.test' }));
+test('compact scope selector switches global and project settings without extra cards', async () => {
+  const previous = await worker.evaluate(() => chrome.storage.sync.get(null));
   const page = await context.newPage();
-  await page.setViewportSize({ width: 410, height: 600 });
-  await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
-  const jira = page.locator('[data-popup-disclosure="jira"]');
-  const scope = page.locator('[data-popup-disclosure="scope"]');
-  await expect(jira).toHaveAttribute('open', '');
-  await expect(scope).toHaveAttribute('open', '');
-  for (const theme of ['light', 'dark']) {
-    await page.emulateMedia({ colorScheme: theme });
-    await jira.locator('summary').focus();
-    await page.keyboard.press('Enter');
-    await expect(jira).not.toHaveAttribute('open');
-    await expect(jira.locator('.jira-access-summary')).toBeHidden();
-    await expect(scope).toHaveAttribute('open', '');
-    await scope.locator('summary').click();
-    await expect(scope).not.toHaveAttribute('open');
-    await page.reload();
-    await expect(jira.locator('summary')).toBeVisible();
-    await expect(jira).not.toHaveAttribute('open');
-    await expect(scope).not.toHaveAttribute('open');
-    if (theme === 'dark') await page.screenshot({ path: '.reports/popup-disclosure-collapsed.png' });
-    await jira.locator('summary').click();
-    await scope.locator('summary').focus();
-    await page.keyboard.press('Space');
-    await expect(jira.locator('.jira-access-summary')).toBeVisible();
-    await expect(scope).toHaveAttribute('open', '');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  try {
+    await worker.evaluate(() => chrome.storage.sync.set({language:'en',reviewersJob:'global-job',projectProfiles:{'team/compact':{reviewersJob:'project-job'}}}));
+    await page.addInitScript(() => {
+      chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/compact/-/merge_requests/1'}]);
+    });
+    await page.setViewportSize({width:410,height:600});
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await page.locator('.popup-shortcuts [data-category="actions"]').click();
+    const editor = page.frameLocator('#popupSettingsEditor');
+    for (const theme of ['light','dark']) {
+      await page.emulateMedia({colorScheme:theme});
+      await expect(editor.locator('#profileScope')).toHaveValue('team/compact');
+      await expect(editor.locator('#profileReviewersJob')).toHaveValue('project-job');
+      await expect(editor.locator('#scopeHint')).toBeHidden();
+      await editor.locator('#profileScope').selectOption('default');
+      await expect(editor.locator('#reviewersJob')).toHaveValue('global-job');
+      await editor.locator('#profileScope').selectOption('team/compact');
+      await expect(editor.locator('#profileReviewersJob')).toHaveValue('project-job');
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await page.screenshot({path:`.reports/popup-compact-scope-${theme}.png`});
+    }
+    await page.locator('.popup-shortcuts [data-category="jira"]').click();
+    await expect(editor.locator('#profileScope')).toHaveValue('team/compact');
+  } finally {
+    await page.close();
+    await worker.evaluate(async previous => {await chrome.storage.sync.clear();await chrome.storage.sync.set(previous);},previous);
   }
-  await page.evaluate(() => { localStorage.removeItem('popup.disclosure.jira'); localStorage.removeItem('popup.disclosure.scope'); });
-  await page.close();
 });
 
 test('legacy partial profiles open the same effective settings in popup and full page', async () => {
@@ -1180,7 +1162,6 @@ test('legacy partial profiles open the same effective settings in popup and full
       chrome.tabs.query = (_query, callback) => callback([{url:'https://gitlab.test/team/legacy-app/-/merge_requests/42'}]);
     });
     await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
-    await expect(page.locator('.project-card')).toContainText('This profile overrides');
     await page.locator('.popup-shortcuts [data-category="actions"]').click();
     const editor = page.frameLocator('#popupSettingsEditor');
     await expect(editor.locator('#profileScope')).toHaveValue('legacy');

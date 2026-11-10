@@ -60,7 +60,9 @@ for(const file of ['quick-popup.html','popup.html#section=jira']){
   const page=await context.newPage();
   try{
    await page.goto(`chrome-extension://${id}/${file}`);
-   const panel=page.locator('.jira-connection-check'),status=panel.getByRole('status'),check=panel.getByRole('button');
+   if(file.startsWith('quick')) await page.locator('[data-category="jira"]').click();
+   const surface=file.startsWith('quick')?page.frameLocator('#popupSettingsEditor'):page;
+   const panel=surface.locator('.jira-connection-check'),status=panel.getByRole('status'),check=panel.getByRole('button');
    await expect(status).toHaveText(en.jiraConnectionUnchecked.message);
    expect(await worker.evaluate(()=>globalThis.__requests)).toEqual([]);
    await check.click();
@@ -83,9 +85,9 @@ for(const file of ['quick-popup.html','popup.html#section=jira']){
    await worker.evaluate(()=>{globalThis.__workerPermission=true;globalThis.__mode='ok';});
    await check.click();
    await expect(status).toContainText(en.jiraConnectionConnected.message.replace('$1','jira.fixture.test'));
-   await page.evaluate(()=>window.__permission(false));
+   await (file.startsWith('quick')?page.frames().find(frame=>frame.url().includes('embedded=1')):page).evaluate(()=>window.__permission(false));
    await expect(panel).toHaveCount(0);
-   await page.evaluate(()=>window.__permission(true));
+   await (file.startsWith('quick')?page.frames().find(frame=>frame.url().includes('embedded=1')):page).evaluate(()=>window.__permission(true));
    await expect(status).toHaveText(en.jiraConnectionUnchecked.message);
    expect(await worker.evaluate(()=>globalThis.__requests.every(req=>req.method==='GET'))).toBe(true);
   }finally{await page.close();}
@@ -96,7 +98,7 @@ test('connection checks ignore duplicate clicks, changed URLs, late timeout repl
  const page=await context.newPage();
  try{
   await page.clock.install();
-  await page.goto(`chrome-extension://${id}/quick-popup.html`);
+  await page.goto(`chrome-extension://${id}/popup.html#section=jira`);
   const panel=page.locator('.jira-connection-check'),status=panel.getByRole('status'),check=panel.getByRole('button');
   await expect(check).toBeEnabled();
   await worker.evaluate(()=>globalThis.__mode='pending');
@@ -119,9 +121,9 @@ test('connection checks ignore duplicate clicks, changed URLs, late timeout repl
   await check.click();
   await expect.poll(()=>worker.evaluate(()=>globalThis.__requests.length)).toBe(3);
   await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
-  await expect(page.locator('#popupRoot')).toBeEmpty();
+  await expect(page.locator('#settingsRoot')).toBeEmpty();
   await worker.evaluate(()=>globalThis.__finishPending());
-  await expect(page.locator('#popupRoot')).toBeEmpty();
+  await expect(page.locator('#settingsRoot')).toBeEmpty();
  }finally{await page.close();}
 });
 
@@ -135,8 +137,9 @@ test('connection messages and login actions work in all 27 locales',async()=>{
    await page.goto('about:blank');
    await worker.evaluate(language=>{globalThis.__mode='ok';return chrome.storage.sync.set({language});},language);
    await page.goto(`chrome-extension://${id}/quick-popup.html`);
+   await page.locator('[data-category="jira"]').click();
    const messages=JSON.parse(await fs.readFile(path.resolve(__dirname,`../../_locales/${language}/messages.json`),'utf8'));
-   const panel=page.locator('.jira-connection-check'),status=panel.getByRole('status');
+   const panel=page.frameLocator('#popupSettingsEditor').locator('.jira-connection-check'),status=panel.getByRole('status');
    await expect(status).toHaveText(messages.jiraConnectionUnchecked.message);
    await panel.getByRole('button',{name:messages.jiraConnectionCheck.message}).click();
    await expect(status).toContainText(messages.jiraConnectionConnected.message.replace('$1','jira.fixture.test'));
@@ -158,7 +161,8 @@ test('connection feedback stays readable in both themes and compact layouts',asy
     const popup=file.startsWith('quick');
     await page.setViewportSize({width:popup?410:360,height:900});
     await page.goto(`chrome-extension://${id}/${file}`);
-    const panel=page.locator('.jira-connection-check');
+    if(popup) await page.locator('[data-category="jira"]').click();
+    const panel=(popup?page.frameLocator('#popupSettingsEditor'):page).locator('.jira-connection-check');
     for(const mode of ['ok',401]){
      await worker.evaluate(mode=>globalThis.__mode=mode,mode);
      await panel.getByRole('button').click();

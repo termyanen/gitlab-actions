@@ -25,8 +25,6 @@ interface PopupState {
 }
 const storageKeys = [
   "language",
-  "projectProfiles",
-  "jira_url",
   ...quickSettings.map((setting) => setting.key),
 ];
 
