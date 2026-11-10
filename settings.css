@@ -160,8 +160,6 @@ summary { cursor: pointer; font-weight: 550; padding: 8px 0; }
 .popup-header { display: flex; align-items: center; gap: 8px; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .popup-header .settings-brand { font-size: 12px; }
 .popup-body { overflow-y: auto; min-height: 0; padding: 16px 20px; }
-.project-card { padding: 12px; background: var(--sidebar); border: 1px solid var(--border); border-radius: var(--radius); overflow-wrap: anywhere; font-size: 13px; }
-.project-card .hint { font-size: 11px; }
 .popup-shortcuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); padding: var(--space-4) 0; }
 .popup-shortcuts .settings-button { justify-content: flex-start; text-align: start; padding: var(--space-2); border-color: var(--border); min-width: 0; min-height: 40px; font-size: 13px; font-weight: 450; }
 .popup-shortcuts .settings-button span { min-width: 0; overflow-wrap: anywhere; }
@@ -170,8 +168,7 @@ summary { cursor: pointer; font-weight: 550; padding: 8px 0; }
 .popup-quick .hint { margin-bottom: 12px; font-size: 11px; }
 .popup-quick .toggle { font-size: 13px; padding: 10px 0; }
 .jira-connection-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.jira-access-summary { padding: 10px; background: var(--subtle); border-radius: var(--radius); margin-bottom: 14px; }
-.jira-access-summary, #jiraAccessStatus { overflow-wrap: anywhere; }
+#jiraAccessStatus { overflow-wrap: anywhere; }
 .popup-footer { flex-shrink: 0; border-top: 1px solid var(--border); padding: 12px 20px; }
 .popup-footer > button { width: 100%; }
 .primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
@@ -250,14 +247,14 @@ summary { cursor: pointer; font-weight: 550; padding: 8px 0; }
   .welcome-hero { padding-bottom: var(--space-5); margin-bottom: var(--space-6); }
 }
 /* Replace native disclosure triangles while retaining native details semantics. */
-:is(.settings-page details, :where(.quick-popup) details.popup-disclosure) > summary { display: flex; align-items: center; gap: var(--space-3); list-style: none; padding: 10px var(--space-2); border-radius: var(--radius); }
-:is(.settings-page details, :where(.quick-popup) details.popup-disclosure) > summary::-webkit-details-marker { display: none; }
-:is(.settings-page details, :where(.quick-popup) details.popup-disclosure) > summary::marker { content: ""; }
-:is(.settings-page details, :where(.quick-popup) details.popup-disclosure) > summary::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; margin-inline: 2px 4px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; color: var(--muted); transform: rotate(-45deg); transition: transform 150ms ease; }
-:is(.settings-page details, :where(.quick-popup) details.popup-disclosure)[open] > summary::before { transform: rotate(45deg); color: var(--accent-text); }
-:is(.settings-page details, :where(.quick-popup) details.popup-disclosure) > summary:hover { background: var(--subtle); }
+.settings-page details > summary { display: flex; align-items: center; gap: var(--space-3); list-style: none; padding: 10px var(--space-2); border-radius: var(--radius); }
+.settings-page details > summary::-webkit-details-marker { display: none; }
+.settings-page details > summary::marker { content: ""; }
+.settings-page details > summary::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; margin-inline: 2px 4px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; color: var(--muted); transform: rotate(-45deg); transition: transform 150ms ease; }
+.settings-page details[open] > summary::before { transform: rotate(45deg); color: var(--accent-text); }
+.settings-page details > summary:hover { background: var(--subtle); }
 @media (prefers-reduced-motion: reduce) {
-  :is(.settings-page details, :where(.quick-popup) details.popup-disclosure) > summary::before { transition: none; }
+  .settings-page details > summary::before { transition: none; }
 }
 
 .jira-connection-check { margin-top: var(--space-2); overflow-wrap: anywhere; }
@@ -281,10 +278,6 @@ summary { cursor: pointer; font-weight: 550; padding: 8px 0; }
 .quick-popup #popupRoot { max-height: none; }
 .quick-popup .popup-body { overflow: visible; }
 .embedded-settings { min-height: 0; overflow: hidden; }
-.quick-popup .jira-access-summary { padding: 8px 10px; margin: 0 0 12px; font-size: 12px; }
-.quick-popup .jira-access-summary p { margin: 0; }
-.quick-popup .jira-connection-check { margin-top: 4px; }
-.quick-popup .jira-connection-actions { margin-top: 6px; }
 
 /* One compact type/spacing scale for the popup and its embedded editor. */
 :is(.quick-popup, .embedded-settings) {
@@ -307,20 +300,18 @@ summary { cursor: pointer; font-weight: 550; padding: 8px 0; }
 }
 .quick-popup .popup-header, .quick-popup .popup-body, .quick-popup .popup-footer { padding: 12px 16px; }
 .quick-popup .popup-header .settings-brand { font-size: var(--compact-text); }
-.quick-popup .project-card { padding: 12px; font-size: var(--compact-text); }
 .quick-popup .popup-quick h2 { font-size: var(--compact-text); line-height: var(--compact-line); }
 .quick-popup .popup-quick .toggle { padding: 8px 0; font-size: var(--compact-text); }
 .quick-popup .popup-shortcuts .settings-button { min-height: 40px; padding: 9px 12px; font-size: var(--compact-text); line-height: var(--compact-line); font-weight: 500; }
 .quick-popup .popup-shortcuts { gap: 8px; padding: 12px 0; }
 :is(.quick-popup, .embedded-settings) .hint,
-.quick-popup .project-card .hint,
 .quick-popup .popup-quick .hint { font-size: var(--compact-caption); line-height: 18px; }
 .embedded-settings h1 { font-size: 20px; line-height: 28px; letter-spacing: -.2px; }
 .embedded-settings h2 { font-size: 16px; line-height: 24px; }
 .embedded-settings .page-heading { margin-bottom: 16px; }
 .embedded-settings .page-heading .hint { font-size: var(--compact-caption); }
 .embedded-settings .workspace-bar { position: static; min-height: 44px; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; padding: 8px 0; }
-.embedded-settings .scope-bar { padding: 12px; margin-bottom: 20px; }
+.embedded-settings .scope-bar { padding: 0; margin-bottom: 16px; border: 0; background: transparent; }
 .embedded-settings .field > label, .embedded-settings .btn-label { font-size: var(--compact-text); line-height: var(--compact-line); }
 .embedded-settings :is(input:not([type="checkbox"]):not([type="file"]), select, textarea) { font-size: var(--compact-text); line-height: var(--compact-line); min-height: var(--compact-control); }
 .embedded-settings .setting-inheritance-status { gap: 8px; font-size: var(--compact-caption); line-height: 18px; }
@@ -353,7 +344,3 @@ summary { cursor: pointer; font-weight: 550; padding: 8px 0; }
   .jqa-change > .jqa-row > [data-part="operation"] { grid-column: 1; grid-row: 2; }
   .jqa-change > .jqa-row > .remove-btn { grid-column: 2; grid-row: 1; justify-self: end; width: 32px; min-width: 32px; min-height: 32px; padding: 5px; line-height: 20px; }
 }
-
-.quick-popup .popup-disclosure > summary { font-size: var(--compact-text); font-weight: 600; cursor: pointer; overflow-wrap: anywhere; }
-.quick-popup .popup-disclosure > summary:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
-.quick-popup .popup-disclosure .jira-access-summary { margin-bottom: 0; }

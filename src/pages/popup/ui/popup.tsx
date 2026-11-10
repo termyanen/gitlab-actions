@@ -1,14 +1,9 @@
-import {
-  applyProjectSettings,
-  findSettingsProfileKey,
-} from "../../../shared/api/project-settings";
 import { categories } from "../../../shared/config/settings-navigation";
 import type { Category } from "../../../shared/config/settings-navigation";
-import { lazy, Suspense, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ReleaseNotice } from "../../../features/view-release-notes";
 import { reportRuntimeError } from "../../../shared/api/runtime";
 import { SETTINGS_PAGE, WELCOME_PAGE } from "../../../shared/config/extension";
-import { readJiraBaseUrl } from "../../../shared/config/jira";
 import { mountReactPage } from "../../../shared/lib/react-page";
 import { useUiLanguage } from "../../../shared/lib/ui-language";
 import {
@@ -20,14 +15,9 @@ import {
 } from "../../../shared/ui/settings";
 import { quickSettings, usePopup } from "../model/use-popup";
 
-import { PopupDisclosure } from "./disclosure";
-
-const JiraAccessSummary = lazy(() => import("./jira-summary"));
-
 function Popup() {
   const state = usePopup();
   const frame = useRef<HTMLIFrameElement>(null);
-  const [readyOrigin, setReadyOrigin] = useState<string>();
   const [editorUrl, setEditorUrl] = useState("");
   const [section, setSection] = useState<Category | null>(null);
   const selectSection = (category: Category) => {
@@ -70,19 +60,6 @@ function Popup() {
       </>
     );
   if (state.loading || (loading && !editorUrl)) return null;
-  const hasProfile = findSettingsProfileKey(
-    state.data.projectProfiles,
-    state.project || null,
-  );
-  const effective = applyProjectSettings(
-    { jira_url: "", ...state.data },
-    state.data.projectProfiles,
-    state.project || null,
-  );
-  const jira =
-    typeof effective.jira_url === "string"
-      ? readJiraBaseUrl(effective.jira_url)
-      : undefined;
   const statusKind =
     state.status === "settingsSaveFailed"
       ? "failed"
@@ -92,38 +69,14 @@ function Popup() {
           ? "saved"
           : "";
   return (
-    <div hidden={!!jira && readyOrigin !== jira.origin}>
+    <div>
       <header className="popup-header">
         <SettingsBrand />
       </header>
       <main className="popup-body">
         <ReleaseNotice language={language} t={t} />
-        {jira && (
-          <Suspense fallback={null}>
-            <PopupDisclosure
-              name="jira"
-              title={`Jira · ${new URL(jira.origin).host}`}
-            >
-              <JiraAccessSummary {...jira} t={t} onReady={setReadyOrigin} />
-            </PopupDisclosure>
-          </Suspense>
-        )}
-        <PopupDisclosure
-          name="scope"
-          className="project-card"
-          title={
-            <strong title={!state.project ? t("settingsNoProject") : undefined}>
-              {state.project || t("settingsGlobal")}
-            </strong>
-          }
-        >
-          <p className="hint">
-            {t(hasProfile ? "settingsProjectHint" : "settingsGlobalHint")}
-          </p>
-        </PopupDisclosure>
         <section className="popup-quick">
           <h2>{t("settingsQuick")}</h2>
-          {hasProfile && <p className="hint">{t("settingsGlobalHint")}</p>}
           {quickSettings.map((setting) => (
             <Toggle
               key={setting.key}
