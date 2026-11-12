@@ -220,7 +220,9 @@ export function createCherryPickDialog(
           escHtml(b.name) +
           "</span>" +
           (b.status === "error"
-            ? '<span class="gl-cherry-pick-error-text">' +
+            ? '<span class="gl-cherry-pick-error-text" title="' +
+              escHtml(b.error) +
+              '">' +
               escHtml(b.error) +
               "</span>"
             : "") +
