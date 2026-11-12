@@ -1,3 +1,4 @@
+import { handleTextMerge } from "../../features/cherry-pick/background";
 import { reportRuntimeError } from "../../shared/api/runtime";
 import { handleJiraMessage } from "../../features/jira-actions";
 import { createJobChains } from "../../features/job-chains";
@@ -15,6 +16,13 @@ chrome.runtime.onMessage.addListener((raw: unknown, sender, sendResponse) => {
   if (!message) {
     sendResponse({ _error: "Invalid extension message" });
     return;
+  }
+  if (message.type === "merge-cherry-pick-text") {
+    if (sender.id !== chrome.runtime.id) {
+      sendResponse({ code: "CP_MERGE_DENIED" });
+      return;
+    }
+    return handleTextMerge(message, sendResponse);
   }
   if (isJiraMessage(message)) return handleJiraMessage(message, sendResponse);
   if (message.type === "generate-standup")

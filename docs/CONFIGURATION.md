@@ -66,11 +66,16 @@ is authoritative: stale root package versions in the lockfile are synchronized
 to its newly bumped version without changing dependency versions. No lockfile
 is generated when none exists.
 
-For text files, differing surrounding context alone is not a conflict. When exact
-hunk application fails, a bounded three-way line comparison preserves independent
-changes from the source and target. Overlapping/ambiguous changes, unavailable
-baselines and excessive diff work still require manual resolution; this is not
-a complete replacement for Git's merge engine.
+For divergent text files, the extension merges the complete parent, source and
+target contents using packaged xdiff from libgit2 in a WebAssembly module. It
+runs locally in the extension worker, loads only when needed, and never commits
+conflict markers. This avoids refusing a clean merge merely because lines repeat.
+Native-Git fixtures cover line conflicts, independent edits, CRLF and missing
+terminal newlines. Custom Git merge drivers, attributes, renames and alternative
+diff-algorithm settings are not reproduced. Missing baselines, actual conflicts,
+binary data and resource limits stop the write. The existing version strategies,
+project inheritance and JSON/package-lock conflict rules remain independent of
+this text merge engine.
 
 ## Cherry-pick branch inheritance
 

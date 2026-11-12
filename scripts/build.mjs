@@ -1,3 +1,4 @@
+import { verifyXdiff } from "./xdiff.mjs";
 import { build, context } from "esbuild";
 import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
@@ -23,6 +24,17 @@ const assets = [
 ];
 
 async function copyAssets(outdir) {
+  await verifyXdiff();
+  await mkdir(join(outdir, "wasm"), { recursive: true });
+  await cp(
+    join(root, "vendor/xdiff/merge.wasm"),
+    join(outdir, "wasm/xdiff.wasm"),
+  );
+  // LGPL: ship the corresponding native sources and local adapter for rebuilding.
+  await cp(join(root, "vendor/xdiff"), join(outdir, "third-party/xdiff"), {
+    recursive: true,
+    filter: (path) => !path.endsWith(".wasm"),
+  });
   await mkdir(outdir, { recursive: true });
   for (const asset of assets) {
     if (asset === "manifest.json" || asset === "content.css") continue;
@@ -69,7 +81,8 @@ async function copyAssets(outdir) {
   );
   await writeFile(
     join(outdir, "THIRD_PARTY_NOTICES.txt"),
-    notices.join("\n\n"),
+    notices.join("\n\n") +
+      "\n\nxdiff from libgit2 1.9.4 (LGPL-2.1-or-later). Corresponding sources, license and rebuild instructions: third-party/xdiff/\n",
   );
 }
 

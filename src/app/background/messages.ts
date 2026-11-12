@@ -1,3 +1,5 @@
+import { isTextMergeRequest } from "../../features/cherry-pick/background";
+import type { TextMergeRequest } from "../../features/cherry-pick/background";
 import type { JiraQuickAction } from "../../entities/jira-issue";
 import type { JiraMessage } from "../../entities/jira-issue/background";
 import type { ChainMessage } from "../../features/job-chains";
@@ -15,7 +17,11 @@ import {
 } from "../../shared/lib/validation";
 
 type BackgroundMessage =
-  ChainMessage | StandupMessage | JiraMessage | { type: "open-options" };
+  | TextMergeRequest
+  | ChainMessage
+  | StandupMessage
+  | JiraMessage
+  | { type: "open-options" };
 const strings = arrayOf(isString);
 const maybeString = optional(isString);
 const maybeNumber = optional(isNumber);
@@ -45,6 +51,7 @@ function origin(value: unknown): value is string {
 }
 function validBackgroundMessage(value: unknown): value is BackgroundMessage {
   if (!isRecord(value)) return false;
+  if (value.type === "merge-cherry-pick-text") return isTextMergeRequest(value);
   if (value.type === "open-options" || value.type === "get-active-tasks")
     return true;
   if (value.type === "get-task-status" || value.type === "cancel-task")
@@ -106,6 +113,7 @@ export function isJiraMessage(
 ): message is JiraMessage {
   // Extra payload fields must not change routing: only the discriminant matters.
   return (
+    message.type !== "merge-cherry-pick-text" &&
     message.type !== "open-options" &&
     message.type !== "generate-standup" &&
     message.type !== "start-job-chain" &&

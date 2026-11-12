@@ -430,6 +430,10 @@ so identical answers to different threads remain independent.
   bumped package.json version. Automatic resolution refuses incompatible lockfile
   structures, and a
   lockfile changed by the source commit must also exist in the target.
+  Text files are merged locally by a lazily loaded xdiff WebAssembly module in
+  the extension worker. Repeated lines are supported; actual text conflicts stop
+  the write. See [configuration limits](docs/CONFIGURATION.md) and
+  [native source/build instructions](vendor/xdiff/README.md).
 
 See [configuration and limits](docs/CONFIGURATION.md) for defaults, inheritance,
 cache lifetimes and collection limits.

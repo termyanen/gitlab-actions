@@ -48,6 +48,12 @@ function element() {
 
 module.exports = function(options) {
   var env = harness.environment(options);
+  const sendMessage = env.context.chrome.runtime.sendMessage;
+  env.context.chrome.runtime.sendMessage = function(message, callback) {
+    if (message.type !== 'merge-cherry-pick-text') return sendMessage(message, callback);
+    try { callback({content:require('./xdiff.cjs').merge(message.parent,message.source,message.target)}); }
+    catch(error) { callback({code:error.code || 'CP_MERGE_FAILED'}); }
+  };
   var document = env.context.document;
   var query = document.querySelector;
   document.body = element();
