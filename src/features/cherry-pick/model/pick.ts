@@ -1,3 +1,4 @@
+import { mergeText } from "./merge-text";
 import {
   companionLockfile,
   mergeLockfile,
@@ -394,10 +395,9 @@ export function createCherryPicker(
             // Modified files: if the file in target is identical to the
             // commit's parent, copy the source content verbatim (exact
             // replay, works for any file type). If target diverged
-            // elsewhere in the file, strictly re-apply the commit's own
-            // hunks onto the target content — any context mismatch or
-            // ambiguity means a real divergence at the changed lines,
-            // so we refuse rather than guess
+            // elsewhere in the file, try the exact diff first. If only its
+            // surrounding context differs, compare both sides with the actual
+            // parent and merge disjoint line changes. Overlaps remain errors.
             return Promise.all([
               readOptionalFile(d.new_path, parentSha),
               readOptionalFile(d.new_path, commitBranch),
@@ -473,7 +473,11 @@ export function createCherryPicker(
               try {
                 patchedTarget = applyUnifiedDiff(targetText, d.diff);
               } catch {
-                throw new Error(divergedMsg);
+                try {
+                  patchedTarget = mergeText(parentText, sourceText, targetText);
+                } catch {
+                  throw new Error(divergedMsg);
+                }
               }
               return {
                 action: "update",
