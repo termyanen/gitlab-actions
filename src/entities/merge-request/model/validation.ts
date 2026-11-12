@@ -82,7 +82,8 @@ export const isFileDiff = objectOf<FileDiff>({
   renamed_file: optional(isBoolean),
   collapsed: optional(isBoolean),
   too_large: optional(isBoolean),
-  generated_file: optional(isBoolean),
+  // GitLab::Git::Diff defaults generated to nil when classification is absent.
+  generated_file: optional(nullable(isBoolean)),
   binary: optional(isBoolean),
   is_binary: optional(isBoolean),
   a_mode: optional(isString),

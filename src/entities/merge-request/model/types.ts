@@ -35,7 +35,7 @@ export interface FileDiff {
   renamed_file?: boolean;
   collapsed?: boolean;
   too_large?: boolean;
-  generated_file?: boolean;
+  generated_file?: boolean | null;
   binary?: boolean;
   is_binary?: boolean;
   a_mode?: string;
