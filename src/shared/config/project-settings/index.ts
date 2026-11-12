@@ -38,6 +38,7 @@ export const PROJECT_SETTING_KEYS = [
   "cherry_pick_create_mr",
   "cherry_pick_smart_fallback",
   "cherry_pick_bump_version",
+  "cherry_pick_target_version",
   "version_from_target",
   "commits_jira_field",
   "jira_url",

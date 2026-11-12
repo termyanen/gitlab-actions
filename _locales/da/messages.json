@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Forøg altid målgrenens version" },
+  "cherryPickTargetVersionHint": { "message": "Brug målversionen også uden konflikter. Har forrang frem for forøgelse kun ved reservemetoden." },
+  "cherryPickWriteUncertain": { "message": "Committet findes muligvis allerede. Kontrollér målgrenen, før du prøver igen." },
   "extName": {
     "message": "GitLab MR Actions — Automatisering, Jira, CI/CD og AI-gennemgang"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick til grene"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick til valgte grene direkte eller via nye MRs. Med Smart fallback aktiveret kan bekræftede version-fil-konflikter afspilles uden den fil, eventuelt med en version bump. Usikre ændringer stopper til gennemgang."
+    "message": "Cherry-pick til valgte grene direkte eller via nye MRs. Med Smart fallback aktiveret kan bekræftede version-fil-konflikter afspilles uden den fil, eventuelt med en version bump. Usikre ændringer stopper til gennemgang. “Forøg altid målgrenens version”: Brug målversionen også uden konflikter. Har forrang frem for forøgelse kun ved reservemetoden."
   },
   "mrDetailEnhancements": {
     "message": "MR-detaljforbedringer"

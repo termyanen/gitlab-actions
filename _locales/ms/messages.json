@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Sentiasa naikkan versi cabang sasaran" },
+  "cherryPickTargetVersionHint": { "message": "Gunakan versi sasaran walaupun tanpa konflik. Mengatasi kenaikan hanya semasa kaedah sandaran." },
+  "cherryPickWriteUncertain": { "message": "Commit mungkin sudah wujud. Semak cabang sasaran sebelum mencuba lagi." },
   "extName": {
     "message": "GitLab MR Actions — Automasi, Jira, CI/CD dan semakan AI"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick ke cawangan"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick terus ke cawangan yang dipilih atau melalui MR baru. Dengan fallback pintar diaktifkan, konflik fail versi yang disahkan boleh dimainkan semula tanpa fail itu, dengan pilihan menaikkan versi. Perubahan tidak selamat dihentikan untuk pemeriksaan."
+    "message": "Cherry-pick terus ke cawangan yang dipilih atau melalui MR baru. Dengan fallback pintar diaktifkan, konflik fail versi yang disahkan boleh dimainkan semula tanpa fail itu, dengan pilihan menaikkan versi. Perubahan tidak selamat dihentikan untuk pemeriksaan. “Sentiasa naikkan versi cabang sasaran”: Gunakan versi sasaran walaupun tanpa konflik. Mengatasi kenaikan hanya semasa kaedah sandaran."
   },
   "mrDetailEnhancements": {
     "message": "Penambahbaikan butiran MR"

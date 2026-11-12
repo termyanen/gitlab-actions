@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Mindig növelje a célág verzióját" },
+  "cherryPickTargetVersionHint": { "message": "Konfliktus nélkül is a célverziót használja. Elsőbbséget élvez a csak tartalék eljáráskor végzett növeléssel szemben." },
+  "cherryPickWriteUncertain": { "message": "A commit már létezhet. Újrapróbálás előtt ellenőrizze a célágat." },
   "extName": {
     "message": "GitLab MR Actions — Automatizálás, Jira, CI/CD és AI"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick ágakra"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick kiválasztott ágakra közvetlenül vagy új MR-eken keresztül. Ha az okos fallback engedélyezve van, a ellenőrzött verziófájl konfliktusok játszhatók újra fájl nélkül, opcionálisan verzió növeléssel. Nem biztonságos változtatások ellenőrzéshez megállnak."
+    "message": "Cherry-pick kiválasztott ágakra közvetlenül vagy új MR-eken keresztül. Ha az okos fallback engedélyezve van, a ellenőrzött verziófájl konfliktusok játszhatók újra fájl nélkül, opcionálisan verzió növeléssel. Nem biztonságos változtatások ellenőrzéshez megállnak. “Mindig növelje a célág verzióját”: Konfliktus nélkül is a célverziót használja. Elsőbbséget élvez a csak tartalék eljáráskor végzett növeléssel szemben."
   },
   "mrDetailEnhancements": {
     "message": "MR részletek fejlesztései"

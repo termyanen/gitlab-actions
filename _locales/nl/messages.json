@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Versie van de doelbranch altijd verhogen" },
+  "cherryPickTargetVersionHint": { "message": "Gebruik de doelversie ook zonder conflicten. Gaat voor verhogen alleen bij terugval." },
+  "cherryPickWriteUncertain": { "message": "De commit bestaat mogelijk al. Controleer de doelbranch voordat u het opnieuw probeert." },
   "extName": {
     "message": "GitLab MR Actions — automatisering, Jira, CI/CD en AI-review"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick naar branches"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick direct naar geselecteerde branches of via nieuwe MRs. Met ingeschakelde slimme fallback kunnen geverifieerde conflicten in het versiebestand worden afgespeeld zonder dat bestand, eventueel met een verhoging van de versie. Onveilige wijzigingen stoppen voor inspectie."
+    "message": "Cherry-pick direct naar geselecteerde branches of via nieuwe MRs. Met ingeschakelde slimme fallback kunnen geverifieerde conflicten in het versiebestand worden afgespeeld zonder dat bestand, eventueel met een verhoging van de versie. Onveilige wijzigingen stoppen voor inspectie. “Versie van de doelbranch altijd verhogen”: Gebruik de doelversie ook zonder conflicten. Gaat voor verhogen alleen bij terugval."
   },
   "mrDetailEnhancements": {
     "message": "Verbeteringen in MR-details"

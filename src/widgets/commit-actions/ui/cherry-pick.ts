@@ -54,6 +54,7 @@ export function startCommitCherryPick(
           cherry_pick_create_mr: true,
           cherry_pick_smart_fallback: true,
           cherry_pick_bump_version: false,
+          cherry_pick_target_version: false,
           versionFile: VERSION_DEFAULTS.versionFile,
           versionPath: VERSION_DEFAULTS.versionPath,
           versionStrategy: VERSION_DEFAULTS.versionStrategy,

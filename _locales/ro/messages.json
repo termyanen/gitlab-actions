@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Incrementează mereu versiunea ramurii țintă" },
+  "cherryPickTargetVersionHint": { "message": "Folosește versiunea țintă chiar și fără conflicte. Are prioritate față de incrementarea doar la soluția de rezervă." },
+  "cherryPickWriteUncertain": { "message": "Commitul poate exista deja. Verifică ramura țintă înainte de a reîncerca." },
   "extName": {
     "message": "GitLab MR Actions — Automatizare, Jira, CI/CD și revizuire AI"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick pe branch-uri"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick direct pe branch-urile selectate sau prin MRs noi. Cu Smart fallback activat, conflictele verificate ale fișierelor de versiune pot fi reluate fără acel fișier, opțional cu bump la versiune. Modificările nesigure se opresc pentru inspecție."
+    "message": "Cherry-pick direct pe branch-urile selectate sau prin MRs noi. Cu Smart fallback activat, conflictele verificate ale fișierelor de versiune pot fi reluate fără acel fișier, opțional cu bump la versiune. Modificările nesigure se opresc pentru inspecție. “Incrementează mereu versiunea ramurii țintă”: Folosește versiunea țintă chiar și fără conflicte. Are prioritate față de incrementarea doar la soluția de rezervă."
   },
   "mrDetailEnhancements": {
     "message": "Îmbunătățiri detalii MR"

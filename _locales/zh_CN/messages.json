@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "始终提升目标分支版本" },
+  "cherryPickTargetVersionHint": { "message": "即使没有冲突也使用目标版本。优先于仅在回退处理时提升版本的选项。" },
+  "cherryPickWriteUncertain": { "message": "提交可能已存在。请先检查目标分支，再重试。" },
   "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira, CI/CD & AI Review" },
   "extDescription": { "message": "GitLab 一键合并请求自动化：auto-merge、版本升级、Jira、CI/CD，使用自己的 AI 审查，无需 token。" },
 
@@ -419,7 +422,7 @@
   "commitsJiraField": { "message": "提交页面的 Jira 字段徽章" },
   "commitsJiraFieldHint": { "message": "在提交页面显示为徽章的 Jira 字段名称（如 fixVersions、status、labels、components）。需要配置 Jira URL。" },
   "cardCherryPickTitle": { "message": "Cherry-pick 到分支" },
-  "cardCherryPickDesc": { "message": "将提交直接或通过新 MR cherry-pick 到所选分支。启用智能回退后，可跳过存在已验证冲突的版本文件，并按需提升版本。无法确认安全的变更会停止以待检查。" },
+  "cardCherryPickDesc": { "message": "将提交直接或通过新 MR cherry-pick 到所选分支。启用智能回退后，可跳过存在已验证冲突的版本文件，并按需提升版本。无法确认安全的变更会停止以待检查。 “始终提升目标分支版本”: 即使没有冲突也使用目标版本。优先于仅在回退处理时提升版本的选项。" },
 
   "mrDetailEnhancements": { "message": "MR页面增强" },
   "showSensitiveWarning": { "message": "diff中敏感文件警告" },

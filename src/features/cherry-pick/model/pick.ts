@@ -1,3 +1,9 @@
+import {
+  companionLockfile,
+  mergeLockfile,
+  bumpLockfile,
+  mergeVersionJson,
+} from "./lockfile";
 import type { FileDiff } from "../../../entities/merge-request";
 import {
   readFileDiff,
@@ -56,9 +62,29 @@ export function createCherryPicker(
   settings: CherryPickSettings,
   shouldBump: () => boolean,
   msg: (key: string) => string,
+  useTargetVersion = () => settings.cherry_pick_target_version === true,
 ) {
   const api = createSessionApi(() => origin);
   const shortSha = sha.substring(0, 8);
+  async function writeCommit(operation: PickOperation, body: unknown) {
+    operation.commitUncertain = true;
+    try {
+      const result = await api(
+        "POST",
+        "/projects/" + encodedProject + "/repository/commits",
+        body,
+      );
+      operation.commitUncertain = false;
+      return result;
+    } catch (error) {
+      const status = errorStatus(error);
+      if (status !== undefined && status >= 400 && status < 500)
+        operation.commitUncertain = false;
+      if (operation.commitUncertain)
+        throw new Error(msg("cherryPickWriteUncertain"));
+      throw error;
+    }
+  }
   function readOptionalFile(filePath: string, ref: string) {
     return api(
       "GET",
@@ -99,7 +125,12 @@ export function createCherryPicker(
         return fetchCommitDiffs(page + 1, all);
       });
   }
-  function doFallbackCommit(commitBranch: string, requireFileChanges: boolean) {
+  function doFallbackCommit(
+    commitBranch: string,
+    requireFileChanges: boolean,
+    operation: PickOperation,
+    alwaysBump = false,
+  ) {
     return Promise.all([
       api(
         "GET",
@@ -110,6 +141,14 @@ export function createCherryPicker(
       const commitInfo = results[0];
       const diffs = results[1];
       const versionFile = settings.versionFile || "package.json";
+      const lockfile = companionLockfile(
+        versionFile,
+        settings.versionPath || "version",
+      );
+      const lockDiff = lockfile
+        ? diffs.find((d) => d.new_path === lockfile || d.old_path === lockfile)
+        : undefined;
+      const bump = alwaysBump || shouldBump();
 
       // A server that mishandles per_page/page params could return
       // overlapping pages; duplicate actions must never reach the
@@ -127,7 +166,7 @@ export function createCherryPicker(
       const hasVersionFile = diffs.some(function (d) {
         return d.new_path === versionFile || d.old_path === versionFile;
       });
-      if (!hasVersionFile)
+      if (!hasVersionFile && !lockDiff && !alwaysBump)
         throw new Error(
           msg("cherryPickFallbackNoVersionFile") ||
             "Smart fallback only handles version file conflicts. Conflict is in another file",
@@ -136,9 +175,13 @@ export function createCherryPicker(
       // A confirmed conflict can become a bump-only commit. Legacy
       // ambiguous errors also require verifiable non-version changes.
       const filtered = diffs.filter(function (d) {
-        return d.new_path !== versionFile && d.old_path !== versionFile;
+        return (
+          d.new_path !== versionFile &&
+          d.old_path !== versionFile &&
+          (!lockfile || (d.new_path !== lockfile && d.old_path !== lockfile))
+        );
       });
-      if (!filtered.length && (requireFileChanges || !shouldBump()))
+      if (!filtered.length && !lockDiff && (requireFileChanges || !bump))
         throw new Error("No files left after excluding " + versionFile);
 
       const parentSha = commitInfo.parent_ids && commitInfo.parent_ids[0];
@@ -151,70 +194,140 @@ export function createCherryPicker(
       const isToml = versionFile.indexOf(".toml") !== -1;
       const isPlainText = versionFile.indexOf(".txt") !== -1;
 
-      const versionOnlyCheck = Promise.all([
-        api(
-          "GET",
-          "/projects/" +
-            encodedProject +
-            "/repository/files/" +
-            encodeURIComponent(versionFile) +
-            "?ref=" +
-            parentSha,
-        ).then(readRepositoryFile),
-        api(
-          "GET",
-          "/projects/" +
-            encodedProject +
-            "/repository/files/" +
-            encodeURIComponent(versionFile) +
-            "?ref=" +
-            sha,
-        ).then(readRepositoryFile),
-      ]).then(function (pair) {
-        const parentVFile = pair[0];
-        const commitVFile = pair[1];
+      let targetLock: RepositoryFile | null | undefined;
+      let mergedLockContent: string | undefined;
+      const decodeContent = (file: RepositoryFile) =>
+        decodeURIComponent(escape(atob(file.content)));
+      const lockCheck =
+        lockDiff && lockfile
+          ? Promise.all([
+              readOptionalFile(lockfile, parentSha),
+              readOptionalFile(lockfile, sha),
+              readOptionalFile(lockfile, commitBranch),
+            ]).then(([before, after, target]) => {
+              if (
+                lockDiff.new_file ||
+                lockDiff.deleted_file ||
+                lockDiff.renamed_file ||
+                !before ||
+                !after ||
+                !target
+              )
+                throw new Error(
+                  msg("cherryPickFallbackVersionFileHasOtherChanges") +
+                    ": " +
+                    lockfile,
+                );
+              try {
+                mergedLockContent = mergeLockfile(
+                  decodeContent(before),
+                  decodeContent(after),
+                  decodeContent(target),
+                );
+              } catch {
+                throw new Error(
+                  msg("cherryPickFallbackVersionFileHasOtherChanges") +
+                    ": " +
+                    lockfile,
+                );
+              }
+              targetLock = target;
+            })
+          : Promise.resolve();
+      let mergedVersionFile: RepositoryFile | undefined;
+      const versionOnlyCheck = !hasVersionFile
+        ? Promise.resolve()
+        : Promise.all([
+            api(
+              "GET",
+              "/projects/" +
+                encodedProject +
+                "/repository/files/" +
+                encodeURIComponent(versionFile) +
+                "?ref=" +
+                parentSha,
+            ).then(readRepositoryFile),
+            api(
+              "GET",
+              "/projects/" +
+                encodedProject +
+                "/repository/files/" +
+                encodeURIComponent(versionFile) +
+                "?ref=" +
+                sha,
+            ).then(readRepositoryFile),
+          ]).then(async function (pair) {
+            const parentVFile = pair[0];
+            const commitVFile = pair[1];
 
-        const parentContent = decodeURIComponent(
-          escape(atob(parentVFile.content)),
-        );
-        const commitContent = decodeURIComponent(
-          escape(atob(commitVFile.content)),
-        );
-
-        if (isPlainText) {
-          // Plain text version files contain only the version — always safe
-          return;
-        }
-        if (isToml) {
-          const parentParsed = parseToml(parentContent);
-          const parentV = getNestedValue(parentParsed, vPath);
-          if (typeof parentV !== "string")
-            throw new Error("Version not found at " + vPath);
-          // Replace version in commit content with parent version and compare
-          const normalized = updateTomlVersion(commitContent, vPath, parentV);
-          if (normalized !== parentContent) {
-            throw new Error(
-              msg("cherryPickFallbackVersionFileHasOtherChanges") ||
-                "Version file contains changes beyond version — cannot safely skip it",
+            const parentContent = decodeURIComponent(
+              escape(atob(parentVFile.content)),
             );
-          }
-        } else {
-          // JSON — compare parsed objects to avoid formatting sensitivity
-          const parentJson: unknown = JSON.parse(parentContent);
-          const commitJson: unknown = JSON.parse(commitContent);
-          const parentVersion = getNestedValue(parentJson, vPath);
-          // Set version in commit JSON to parent's version, then compare objects
-          setNestedValue(commitJson, vPath, parentVersion);
-          if (JSON.stringify(parentJson) !== JSON.stringify(commitJson)) {
-            throw new Error(
-              msg("cherryPickFallbackVersionFileHasOtherChanges") ||
-                "Version file contains changes beyond version — cannot safely skip it",
+            const commitContent = decodeURIComponent(
+              escape(atob(commitVFile.content)),
             );
-          }
-        }
-      });
 
-      return versionOnlyCheck.then(function () {
+            if (alwaysBump && !isToml && !isPlainText) {
+              const target = await readOptionalFile(versionFile, commitBranch);
+              if (!target) throw new Error("Missing target " + versionFile);
+              try {
+                const merged = mergeVersionJson(
+                  parentContent,
+                  commitContent,
+                  decodeContent(target),
+                  vPath,
+                );
+                mergedVersionFile = {
+                  ...target,
+                  content: btoa(unescape(encodeURIComponent(merged))),
+                };
+              } catch {
+                throw new Error(
+                  msg("cherryPickFallbackVersionFileHasOtherChanges") +
+                    ": " +
+                    versionFile,
+                );
+              }
+              return;
+            }
+            if (isPlainText) {
+              // Plain text version files contain only the version — always safe
+              return;
+            }
+            if (isToml) {
+              const parentParsed = parseToml(parentContent);
+              const parentV = getNestedValue(parentParsed, vPath);
+              if (typeof parentV !== "string")
+                throw new Error("Version not found at " + vPath);
+              // Replace version in commit content with parent version and compare
+              const normalized = updateTomlVersion(
+                commitContent,
+                vPath,
+                parentV,
+              );
+              if (normalized !== parentContent) {
+                throw new Error(
+                  msg("cherryPickFallbackVersionFileHasOtherChanges") ||
+                    "Version file contains changes beyond version — cannot safely skip it",
+                );
+              }
+            } else {
+              // JSON — compare parsed objects to avoid formatting sensitivity
+              const parentJson: unknown = JSON.parse(parentContent);
+              const commitJson: unknown = JSON.parse(commitContent);
+              const parentVersion = getNestedValue(parentJson, vPath);
+              // Set version in commit JSON to parent's version, then compare objects
+              setNestedValue(commitJson, vPath, parentVersion);
+              if (JSON.stringify(parentJson) !== JSON.stringify(commitJson)) {
+                throw new Error(
+                  msg("cherryPickFallbackVersionFileHasOtherChanges") ||
+                    "Version file contains changes beyond version — cannot safely skip it",
+                );
+              }
+            }
+          });
+
+      return Promise.all([versionOnlyCheck, lockCheck]).then(function () {
         // Build actions from diffs, verifying target branch safety
         const filePromises = filtered.map(
           function (d): Promise<FileAction | null> {
@@ -380,98 +493,134 @@ export function createCherryPicker(
           const actions = rawActions.filter(function (a) {
             return a !== null;
           });
-          if (!actions.length && (requireFileChanges || !shouldBump()))
+          if (
+            lockfile &&
+            targetLock &&
+            mergedLockContent !== undefined &&
+            mergedLockContent !== decodeContent(targetLock)
+          ) {
+            actions.push({
+              action: "update",
+              file_path: lockfile,
+              content: btoa(unescape(encodeURIComponent(mergedLockContent))),
+              encoding: "base64",
+              ...(targetLock.last_commit_id === undefined
+                ? {}
+                : { last_commit_id: targetLock.last_commit_id }),
+            });
+          }
+          if (!actions.length && (requireFileChanges || !bump))
             throw new Error("No applicable file changes for target branch");
           // Optionally bump version in the same commit
-          if (!shouldBump()) {
+          if (!bump) {
             const commitMsg =
               (commitInfo.message || "") +
               "\n\n(cherry picked from commit " +
               sha +
               ")";
-            return api(
-              "POST",
-              "/projects/" + encodedProject + "/repository/commits",
-              {
-                branch: commitBranch,
-                commit_message: commitMsg,
-                actions: actions,
-                author_name: commitInfo.author_name,
-                author_email: commitInfo.author_email,
-              },
-            );
+            return writeCommit(operation, {
+              branch: commitBranch,
+              commit_message: commitMsg,
+              actions: actions,
+              author_name: commitInfo.author_name,
+              author_email: commitInfo.author_email,
+            });
           }
 
           const vFile = settings.versionFile || "package.json";
           const vPath = settings.versionPath || "version";
           const strategy = settings.versionStrategy || "patch";
 
-          return api(
-            "GET",
-            "/projects/" +
-              encodedProject +
-              "/repository/files/" +
-              encodeURIComponent(vFile) +
-              "?ref=" +
-              encodeURIComponent(commitBranch),
-          )
-            .then(readRepositoryFile)
-            .then(function (file) {
-              const rawContent = decodeURIComponent(escape(atob(file.content)));
-              let currentVersion: unknown;
-              let newContent: string;
-              let newVersion: string;
-              const isToml = vFile.indexOf(".toml") !== -1;
-              const isPlainText = vFile.indexOf(".txt") !== -1;
+          return (
+            mergedVersionFile
+              ? Promise.resolve(mergedVersionFile)
+              : readOptionalFile(vFile, commitBranch).then((file) => {
+                  if (!file) throw new Error("Missing target " + vFile);
+                  return file;
+                })
+          ).then(async function (file) {
+            const rawContent = decodeURIComponent(escape(atob(file.content)));
+            let currentVersion: unknown;
+            let newContent: string;
+            let newVersion: string;
+            const isToml = vFile.indexOf(".toml") !== -1;
+            const isPlainText = vFile.indexOf(".txt") !== -1;
 
-              if (isPlainText) {
-                newVersion = bumpVersion(rawContent.trim(), strategy);
-                newContent = newVersion + "\n";
-              } else if (isToml) {
-                const parsed = parseToml(rawContent);
-                currentVersion = getNestedValue(parsed, vPath);
-                if (typeof currentVersion !== "string" || !currentVersion)
-                  throw new Error("Version not found at " + vPath);
-                newVersion = bumpVersion(currentVersion, strategy);
-                newContent = updateTomlVersion(rawContent, vPath, newVersion);
-              } else {
-                const json: unknown = JSON.parse(rawContent);
-                currentVersion = getNestedValue(json, vPath);
-                if (typeof currentVersion !== "string" || !currentVersion)
-                  throw new Error("Version not found at " + vPath);
-                newVersion = bumpVersion(currentVersion, strategy);
-                setNestedValue(json, vPath, newVersion);
-                newContent = JSON.stringify(json, null, 2) + "\n";
+            if (isPlainText) {
+              newVersion = bumpVersion(rawContent.trim(), strategy);
+              newContent = newVersion + "\n";
+            } else if (isToml) {
+              const parsed = parseToml(rawContent);
+              currentVersion = getNestedValue(parsed, vPath);
+              if (typeof currentVersion !== "string" || !currentVersion)
+                throw new Error("Version not found at " + vPath);
+              newVersion = bumpVersion(currentVersion, strategy);
+              newContent = updateTomlVersion(rawContent, vPath, newVersion);
+            } else {
+              const json: unknown = JSON.parse(rawContent);
+              currentVersion = getNestedValue(json, vPath);
+              if (typeof currentVersion !== "string" || !currentVersion)
+                throw new Error("Version not found at " + vPath);
+              newVersion = bumpVersion(currentVersion, strategy);
+              setNestedValue(json, vPath, newVersion);
+              newContent = JSON.stringify(json, null, 2) + "\n";
+            }
+
+            if (lockfile) {
+              const lock =
+                targetLock === undefined
+                  ? await readOptionalFile(lockfile, commitBranch)
+                  : targetLock;
+              if (!lock && lockDiff)
+                throw new Error("Missing target " + lockfile);
+              if (lock) {
+                if (typeof currentVersion !== "string")
+                  throw new Error("Invalid package version");
+                const content = bumpLockfile(
+                  mergedLockContent ?? decodeContent(lock),
+                  currentVersion,
+                  newVersion,
+                );
+                const existing = actions.findIndex(
+                  (action) => action.file_path === lockfile,
+                );
+                if (existing !== -1) actions.splice(existing, 1);
+                actions.push({
+                  action: "update",
+                  file_path: lockfile,
+                  content: btoa(unescape(encodeURIComponent(content))),
+                  encoding: "base64",
+                  ...(lock.last_commit_id === undefined
+                    ? {}
+                    : { last_commit_id: lock.last_commit_id }),
+                });
               }
+            }
 
-              // Add version file update to the same actions array
-              actions.push({
-                action: "update",
-                file_path: vFile,
-                content: btoa(unescape(encodeURIComponent(newContent))),
-                encoding: "base64",
-                ...(file.last_commit_id === undefined
-                  ? {}
-                  : { last_commit_id: file.last_commit_id }),
-              });
-
-              const commitMsg =
-                (commitInfo.message || "") +
-                "\n\n(cherry picked from commit " +
-                sha +
-                ")";
-              return api(
-                "POST",
-                "/projects/" + encodedProject + "/repository/commits",
-                {
-                  branch: commitBranch,
-                  commit_message: commitMsg,
-                  actions: actions,
-                  author_name: commitInfo.author_name,
-                  author_email: commitInfo.author_email,
-                },
-              );
+            // Add version file update to the same actions array
+            actions.push({
+              action: "update",
+              file_path: vFile,
+              content: btoa(unescape(encodeURIComponent(newContent))),
+              encoding: "base64",
+              ...(file.last_commit_id === undefined
+                ? {}
+                : { last_commit_id: file.last_commit_id }),
             });
+
+            const commitMsg =
+              (commitInfo.message || "") +
+              "\n\n(cherry picked from commit " +
+              sha +
+              ")";
+            return writeCommit(operation, {
+              branch: commitBranch,
+              commit_message: commitMsg,
+              actions: actions,
+              author_name: commitInfo.author_name,
+              author_email: commitInfo.author_email,
+            });
+          });
         });
       }); // versionOnlyCheck.then
     });
@@ -496,6 +645,15 @@ export function createCherryPicker(
     return branchPromise
       .then(function () {
         if (operation.commitApplied) return;
+        if (operation.commitUncertain)
+          throw new Error(msg("cherryPickWriteUncertain"));
+        if (useTargetVersion()) {
+          return doFallbackCommit(commitBranch, false, operation, true).then(
+            () => {
+              operation.commitApplied = true;
+            },
+          );
+        }
         // Step 2: try cherry-pick
         return api(
           "POST",
@@ -526,7 +684,7 @@ export function createCherryPicker(
               (errorCode(cherryPickErr) !== "conflict" && !legacyFailure)
             )
               throw cherryPickErr;
-            return doFallbackCommit(commitBranch, legacyFailure);
+            return doFallbackCommit(commitBranch, legacyFailure, operation);
           })
           .then(function () {
             operation.commitApplied = true;

@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Zawsze zwiększaj wersję gałęzi docelowej" },
+  "cherryPickTargetVersionHint": { "message": "Używaj wersji docelowej także bez konfliktów. Ma pierwszeństwo przed zwiększaniem tylko przy trybie awaryjnym." },
+  "cherryPickWriteUncertain": { "message": "Commit może już istnieć. Sprawdź gałąź docelową przed ponowną próbą." },
   "extName": {
     "message": "GitLab MR Actions — automatyzacja MR, Jira, CI/CD i AI"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick do gałęzi"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick do wybranych gałęzi bezpośrednio lub przez nowe MR-y. Przy włączonym Smart fallback, zweryfikowane konflikty w plikach wersji mogą być odtwarzane bez tego pliku, opcjonalnie podbijając wersję. Niezabezpieczone zmiany zatrzymują się do sprawdzenia."
+    "message": "Cherry-pick do wybranych gałęzi bezpośrednio lub przez nowe MR-y. Przy włączonym Smart fallback, zweryfikowane konflikty w plikach wersji mogą być odtwarzane bez tego pliku, opcjonalnie podbijając wersję. Niezabezpieczone zmiany zatrzymują się do sprawdzenia. “Zawsze zwiększaj wersję gałęzi docelowej”: Używaj wersji docelowej także bez konfliktów. Ma pierwszeństwo przed zwiększaniem tylko przy trybie awaryjnym."
   },
   "mrDetailEnhancements": {
     "message": "Ulepszenia szczegółów MR"

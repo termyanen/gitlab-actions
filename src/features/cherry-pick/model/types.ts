@@ -3,6 +3,7 @@ export interface CherryPickSettings {
   cherry_pick_create_mr?: boolean;
   cherry_pick_smart_fallback?: boolean;
   cherry_pick_bump_version?: boolean;
+  cherry_pick_target_version?: boolean;
   versionFile?: string;
   versionPath?: string;
   versionStrategy?: string;
@@ -14,6 +15,7 @@ export interface PickOperation {
   branchCreated: boolean;
   commitApplied: boolean;
   mrAttempted: boolean;
+  commitUncertain?: boolean;
 }
 export interface BranchState {
   name: string;

@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Incrementar siempre la versión de la rama destino" },
+  "cherryPickTargetVersionHint": { "message": "Usar la versión destino incluso sin conflictos. Tiene prioridad sobre el incremento solo al resolver conflictos." },
+  "cherryPickWriteUncertain": { "message": "El commit podría existir ya. Comprueba la rama destino antes de reintentar." },
   "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira, CI/CD & AI Review" },
   "extDescription": { "message": "Automatiza merge requests de GitLab: auto-merge, version bump, Jira, CI/CD y revisión con tu IA. Sin tokens." },
 
@@ -419,7 +422,7 @@
   "commitsJiraField": { "message": "Campo Jira para insignias de commits" },
   "commitsJiraFieldHint": { "message": "Nombre del campo Jira para mostrar como insignias en la página de commits (ej. fixVersions, status, labels, components). Se requiere URL de Jira." },
   "cardCherryPickTitle": { "message": "Cherry-pick a ramas" },
-  "cardCherryPickDesc": { "message": "Aplica un commit a las ramas elegidas, directamente o mediante nuevos MR. El fallback inteligente permite omitir un archivo de versión con conflicto verificado y subir la versión opcionalmente. Los cambios no seguros requieren revisión." },
+  "cardCherryPickDesc": { "message": "Aplica un commit a las ramas elegidas, directamente o mediante nuevos MR. El fallback inteligente permite omitir un archivo de versión con conflicto verificado y subir la versión opcionalmente. Los cambios no seguros requieren revisión. “Incrementar siempre la versión de la rama destino”: Usar la versión destino incluso sin conflictos. Tiene prioridad sobre el incremento solo al resolver conflictos." },
 
   "mrDetailEnhancements": { "message": "Mejoras de la página MR" },
   "showSensitiveWarning": { "message": "Aviso de archivos sensibles en el diff" },

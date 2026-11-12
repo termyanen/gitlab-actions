@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Всегда повышать версию целевой ветки" },
+  "cherryPickTargetVersionHint": { "message": "Брать версию целевой ветки даже без конфликтов. Имеет приоритет над повышением только при фолбэке." },
+  "cherryPickWriteUncertain": { "message": "Коммит уже мог быть создан. Проверьте целевую ветку перед повтором." },
   "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira, CI/CD & AI Review" },
   "extDescription": { "message": "Автоматизация merge request GitLab в один клик: auto-merge, version bump, Jira, CI/CD и ревью с вашим ИИ. Без токенов." },
 
@@ -428,7 +431,7 @@
   "commitsJiraField": { "message": "Поле Jira для бейджей коммитов" },
   "commitsJiraFieldHint": { "message": "Имя поля Jira для отображения на странице коммитов (напр. fixVersions, status, labels, components). Требуется URL Jira." },
   "cardCherryPickTitle": { "message": "Cherry-pick в несколько веток" },
-  "cardCherryPickDesc": { "message": "Переносит коммит в выбранные ветки напрямую или через новые MR. При включённом умном fallback проверенные изменения можно перенести без конфликтующего файла версии, при необходимости подняв версию. Небезопасные изменения требуют проверки." },
+  "cardCherryPickDesc": { "message": "Переносит коммит в выбранные ветки напрямую или через новые MR. При включённом умном fallback проверенные изменения можно перенести без конфликтующего файла версии, при необходимости подняв версию. Небезопасные изменения требуют проверки. “Всегда повышать версию целевой ветки”: Брать версию целевой ветки даже без конфликтов. Имеет приоритет над повышением только при фолбэке." },
 
   "mrDetailEnhancements": { "message": "Улучшения страницы MR" },
   "showSensitiveWarning": { "message": "Предупреждение о чувствительных файлах" },

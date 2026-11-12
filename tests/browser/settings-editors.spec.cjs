@@ -387,3 +387,39 @@ test('creating a new project profile inherits existing CI buttons without materi
     await worker.evaluate(async previous => { await chrome.storage.sync.clear(); await chrome.storage.sync.set(previous); }, previous);
   }
 });
+
+test('target-version cherry-pick option persists and inherits in compact settings', async () => {
+  const previous=await worker.evaluate(()=>chrome.storage.sync.get(null));
+  const page=await context.newPage();
+  try {
+    await worker.evaluate(()=>chrome.storage.sync.set({language:'ru',cherry_pick_target_version:false,projectProfiles:{'team/release':{}}}));
+    await page.addInitScript(()=>{chrome.tabs.query=(_query,reply)=>reply([{url:'https://gitlab.test/team/release/-/commits/main'}]);});
+    await page.setViewportSize({width:410,height:650});
+    await page.goto(`chrome-extension://${extensionId}/quick-popup.html`);
+    await page.locator('[data-category="actions"]').click();
+    const editor=page.frameLocator('#popupSettingsEditor');
+    const toggle=editor.locator('#cherry_pick_target_version');
+    await expect(toggle).not.toBeChecked();
+    await toggle.check();
+    await expect.poll(()=>worker.evaluate(async()=> (await chrome.storage.sync.get('projectProfiles')).projectProfiles['team/release'].overrides?.cherry_pick_target_version)).toBe(true);
+    await editor.locator('#profileScope').selectOption('default');
+    await expect(toggle).not.toBeChecked();
+    await toggle.check();
+    await expect.poll(()=>worker.evaluate(async()=> (await chrome.storage.sync.get('cherry_pick_target_version')).cherry_pick_target_version)).toBe(true);
+    await editor.locator('#profileScope').selectOption('team/release');
+    await editor.locator('[data-setting="cherry_pick_target_version"] .inherit-reset').click();
+    await expect(toggle).toBeChecked();
+    for(const theme of ['light','dark']) {
+      await page.emulateMedia({colorScheme:theme});
+      await toggle.scrollIntoViewIfNeeded();
+      expect(await toggle.evaluate(node=>node.ownerDocument.documentElement.scrollWidth<=node.ownerDocument.documentElement.clientWidth)).toBe(true);
+      await editor.locator('[data-setting="cherry_pick_target_version"]').screenshot({path:`.reports/cherry-target-setting-${theme}.png`});
+    }
+    await page.reload();
+    await page.locator('[data-category="actions"]').click();
+    await expect(toggle).toBeChecked();
+  } finally {
+    await page.close();
+    await worker.evaluate(async data=>{await chrome.storage.sync.clear();await chrome.storage.sync.set(data);},previous);
+  }
+});

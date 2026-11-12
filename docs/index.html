@@ -585,7 +585,7 @@
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 17v-3a2 2 0 012-2h1M15 17v-3a2 2 0 00-2-2h-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 data-i18n="fCherryPickTitle">Cherry-pick to branches</h3>
-        <p data-i18n="fCherryPickDesc">Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.</p>
+        <p data-i18n="fCherryPickDesc">Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Optionally always bump the target branch version, even without conflicts. Keep package-lock root versions in sync with package.json; other conflicts stop the write. Unsafe changes and uncertain outcomes stop for inspection.</p>
       </div>
       <!-- Version badge on commits -->
       <div class="bento-card">
@@ -881,7 +881,7 @@
         fCommitVersionTitle: 'Version badge on commits',
         fCommitVersionDesc: "Show the configured version file’s value beside branch commits and highlight changes. A bounded local cache reuses results for the same project, file, field and commit.",
         fCherryPickTitle: 'Cherry-pick to branches',
-        fCherryPickDesc: "Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Unsafe changes and uncertain outcomes stop for inspection.",
+        fCherryPickDesc: "Cherry-pick a commit to selected branches directly or through new MRs. Set target branches per project or inherit the global list. Smart fallback can replay verified version-file conflicts without that file, optionally bumping the version. Optionally always bump the target branch version, even without conflicts. Keep package-lock root versions in sync with package.json; other conflicts stop the write. Unsafe changes and uncertain outcomes stop for inspection.",
         fTrackerTitle: 'Background Job Tracker',
         fTrackerDesc: "Custom CI job chains run in the background with progress, cancellation and restart recovery. Keep a signed-in tab on the same GitLab open for API access. Cancellation stops later actions, not jobs already started.",
         fSensitiveTitle: 'Sensitive File Warning',
@@ -997,7 +997,7 @@
         fCommitVersionTitle: 'Бейдж версии у коммитов',
         fCommitVersionDesc: "Показывайте значение из настроенного файла версии рядом с коммитами ветки и выделяйте изменения. Ограниченный локальный кэш повторно использует результаты для того же проекта, файла, поля и коммита.",
         fCherryPickTitle: 'Cherry-pick в ветки',
-        fCherryPickDesc: "Перенесите коммит в выбранные ветки напрямую или через новые MR. Задайте ветки для проекта или используйте общий список. Умный fallback позволяет перенести проверенные изменения без конфликтующего файла версии, при необходимости подняв версию. Небезопасные изменения и неизвестный результат требуют проверки.",
+        fCherryPickDesc: "Перенесите коммит в выбранные ветки напрямую или через новые MR. Задайте ветки для проекта или используйте общий список. Умный fallback позволяет перенести проверенные изменения без конфликтующего файла версии, при необходимости подняв версию. Отдельная опция всегда повышает версию целевой ветки, даже без конфликтов. Корневые версии в package-lock синхронизируются с package.json; другие конфликты останавливают запись. Небезопасные изменения и неизвестный результат требуют проверки.",
         fTrackerTitle: 'Трекер фоновых задач',
         fTrackerDesc: "Цепочки пользовательских CI-джоб работают в фоне: прогресс, отмена и восстановление после перезапуска. Для API нужна открытая вкладка того же GitLab с активной сессией. Отмена останавливает следующие действия, но не уже запущенные jobs.",
         fSensitiveTitle: 'Предупреждение о чувствительных файлах',

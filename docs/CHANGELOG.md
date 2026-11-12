@@ -4,6 +4,7 @@
 
 ### New features
 
+- **Cherry-pick target versions** — optionally always bump the destination version, including conflict-free transfers, with global/project settings and a dialog override. Synchronize package-lock root package versions with package.json; conflicting dependency or other non-version changes stop before writing. The option defaults to off.
 - **New settings workspace** — a searchable full settings page, compact popup and welcome guide share a GitLab-inspired design, light/dark themes and layouts for narrow windows. Open settings sections directly inside the popup; choose global or project settings with a compact selector. Jira connection checks stay in the Jira section. Quick controls provide sound and desktop notification preferences.
 - **Project-specific configuration** — override repository settings per project, including MR/CI actions, quick comments, Jira, AI instructions, display rules and cherry-pick target branches. Unspecified values inherit common settings, with controls to restore inheritance. Existing profiles and JSON settings imports remain supported.
 - **Live toolbar configuration** — change button visibility and order, custom button labels and quick comments without reloading the MR. Disable custom jobs and MR actions without deleting them. The toolbar separates actions, comments, age and warnings while preserving running actions.

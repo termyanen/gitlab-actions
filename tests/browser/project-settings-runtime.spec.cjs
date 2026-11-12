@@ -185,6 +185,7 @@ test("installed commits use project cherry-pick options and the legacy version f
       cherry_pick_create_mr: true,
       cherry_pick_smart_fallback: true,
       cherry_pick_bump_version: false,
+      cherry_pick_target_version: false,
       projectProfiles: {
         "team/a": {
           versionFile: "VERSION",
@@ -194,6 +195,7 @@ test("installed commits use project cherry-pick options and the legacy version f
             cherry_pick_create_mr: false,
             cherry_pick_smart_fallback: false,
             cherry_pick_bump_version: true,
+            cherry_pick_target_version: true,
           },
         },
         "team/b": { overrides: { show_cherry_pick: false } },
@@ -207,6 +209,7 @@ test("installed commits use project cherry-pick options and the legacy version f
           "9.8.7",
         );
         await page.locator(".gl-cherry-pick-btn").click();
+        await expect(page.locator(".gl-cherry-pick-target-version-checkbox")).toBeChecked();
         await expect(page.locator(".gl-cherry-pick-branch-name")).toHaveText([
           "release/project",
         ]);
@@ -219,6 +222,9 @@ test("installed commits use project cherry-pick options and the legacy version f
         await expect(
           page.locator(".gl-cherry-pick-bump-checkbox"),
         ).toBeChecked();
+        await expect(page.locator(".gl-cherry-pick-bump-checkbox")).toBeDisabled();
+        await page.locator(".gl-cherry-pick-target-version-checkbox").uncheck();
+        await expect(page.locator(".gl-cherry-pick-bump-checkbox")).toBeEnabled();
         await navigate(page, "team/b", "commits/main");
         await expect(page.locator(".gl-cherry-pick-overlay")).toHaveCount(0);
         await expect(page.locator(".gl-cherry-pick-btn")).toHaveCount(0);
