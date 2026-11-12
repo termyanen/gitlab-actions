@@ -650,3 +650,15 @@ for (const malformed of ['{bad', '{"version":"2.0.0","packages":{"":{"version":4
   const env=fixture({settings:{cherry_pick_target_version:true},targetFiles:{'package-lock.json':malformed}});
   assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
 });
+
+for(const targetMode of [false,true]) test('cherry-pick preserves independently changed hunk context, target mode='+targetMode,async function(){
+ const file='test/sagas/messages/messages.js';
+ const parentText='first\ncontext-one\ncontext-two\nold\nlast\n';
+ const sourceText='first\ncontext-one\ncontext-two\nnew\nlast\n';
+ const targetText='target-first\ncontext-one\ncontext-two\nold\nlast\n';
+ const env=fixture({conflict:true,parentFiles:{[file]:parentText},sourceFiles:{[file]:sourceText},targetFiles:{[file]:targetText},diffs:[diff('package.json'),diff(file,{diff:'@@ -1,5 +1,5 @@\n first\n context-one\n context-two\n-old\n+new\n last\n'})],settings:{cherry_pick_target_version:targetMode,cherry_pick_bump_version:true}});
+ const rows=await env.run();
+ assert.equal(rows[0].status,'success',rows[0].html);
+ assert.equal(env.files['cherry-pick-abcdef12-into-stable-1'][file],'target-first\ncontext-one\ncontext-two\nnew\nlast\n');
+ assert.equal(commits(env).length,1);
+});

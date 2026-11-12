@@ -66,6 +66,12 @@ is authoritative: stale root package versions in the lockfile are synchronized
 to its newly bumped version without changing dependency versions. No lockfile
 is generated when none exists.
 
+For text files, differing surrounding context alone is not a conflict. When exact
+hunk application fails, a bounded three-way line comparison preserves independent
+changes from the source and target. Overlapping/ambiguous changes, unavailable
+baselines and excessive diff work still require manual resolution; this is not
+a complete replacement for Git's merge engine.
+
 ## Cherry-pick branch inheritance
 
 Open **MR & commits → Cherry-pick branches**. Select **All projects** to edit the
