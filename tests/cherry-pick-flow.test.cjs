@@ -151,9 +151,9 @@ test('conflict with fallback disabled stops before replay or MR creation', async
 });
 
 test('fallback preserves unrelated target edits and original author, then creates an MR', async function() {
-  var env = fixture({ conflict: true, targetFiles: { 'app.txt': 'prefix\nold\nsuffix\n' } });
+  var env = fixture({ conflict: true, parentFiles: { 'app.txt': 'one\ntwo\nold\nfour\nfive\n' }, sourceFiles: { 'app.txt': 'one\ntwo\nnew\nfour\nfive\n' }, targetFiles: { 'app.txt': 'prefix\none\ntwo\nold\nfour\nfive\nsuffix\n' }, diffs: [diff('package.json'), diff('app.txt', {diff:'@@ -3 +3 @@\n-old\n+new\n'})] });
   assert.equal((await env.run())[0].status, 'success');
-  assert.equal(env.files['cherry-pick-abcdef12-into-stable-1']['app.txt'], 'prefix\nnew\nsuffix\n');
+  assert.equal(env.files['cherry-pick-abcdef12-into-stable-1']['app.txt'], 'prefix\none\ntwo\nnew\nfour\nfive\nsuffix\n');
   var body = commits(env)[0].body;
   assert.equal(body.author_name, 'Original Author');
   assert.equal(body.author_email, 'author@example.test');
@@ -452,9 +452,9 @@ test('changing to direct mode after MR creation fails applies the pick to the ne
 });
 
 test('legacy fallback preserves unrelated target edits when the exact patch still applies', async function() {
-  var env = fixture({ respond: legacyFailure, targetFiles: { 'app.txt': 'prefix\nold\nsuffix\n' } });
+  var env = fixture({ respond: legacyFailure, parentFiles: { 'app.txt': 'one\ntwo\nold\nfour\nfive\n' }, sourceFiles: { 'app.txt': 'one\ntwo\nnew\nfour\nfive\n' }, targetFiles: { 'app.txt': 'prefix\none\ntwo\nold\nfour\nfive\nsuffix\n' }, diffs: [diff('package.json'), diff('app.txt', {diff:'@@ -3 +3 @@\n-old\n+new\n'})] });
   assert.equal((await env.run())[0].status, 'success');
-  assert.equal(env.files['cherry-pick-abcdef12-into-stable-1']['app.txt'], 'prefix\nnew\nsuffix\n');
+  assert.equal(env.files['cherry-pick-abcdef12-into-stable-1']['app.txt'], 'prefix\none\ntwo\nnew\nfour\nfive\nsuffix\n');
   assert.deepEqual(commits(env)[0].body.actions.map(function(action) { return action.file_path; }), ['app.txt']);
 });
 
@@ -693,4 +693,16 @@ for(const patch of ['@@ -2 +2 @@\n-old\n+new\n','@@ -1,2 +1 @@\n-old\n+new\n']) 
  const env=fixture({conflict:true,targetFiles:{'app.txt':'different\n'},diffs:[diff('package.json'),diff('app.txt',{diff:patch})]});
  assert.match((await env.run())[0].html,/CP_PARENT_PATCH/);
  assertNoCommit(env);
+});
+
+for (const targetMode of [false,true]) test('native merge refuses adjacent target insertions that Git considers conflicting, target mode='+targetMode,async()=>{
+ const env=fixture({conflict:true,targetFiles:{'app.txt':'prefix\nold\nsuffix\n'},settings:{cherry_pick_target_version:targetMode}});
+ assert.match((await env.run())[0].html,/CP_OVERLAP/);
+ assertNoCommit(env);
+});
+
+test('unavailable WASM stops cherry-pick before any commit or MR',async()=>{
+ const env=fixture({conflict:true,targetFiles:{'app.txt':'different\n'}});
+ env.context.chrome.runtime.sendMessage=(_message,callback)=>callback({code:'CP_MERGE_FAILED'});
+ assert.match((await env.run())[0].html,/CP_MERGE_FAILED/);assertNoCommit(env);
 });

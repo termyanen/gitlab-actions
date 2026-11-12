@@ -207,3 +207,15 @@ See the [TypeScript index-access](https://www.typescriptlang.org/tsconfig/noUnch
 and [optional-property](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html)
 documentation. The chosen lint rules use [type information](https://typescript-eslint.io/getting-started/typed-linting/)
 without adopting an entire stricter preset in one unrelated change.
+
+## Native cherry-pick text merges
+
+`vendor/xdiff/` contains pinned libgit2 1.9.4 xdiff sources, a small WASI adapter,
+licenses and the reproducible prebuilt WASM asset. Normal builds verify checksums;
+they do not download a compiler. See [the native build instructions](vendor/xdiff/README.md)
+for WASI SDK 34.0 and `node scripts/xdiff.mjs --build`. Do not edit the binary by
+hand or replace it without source provenance, license/source packaging and tests.
+The content-side feature uses a validated worker message; native code runs only
+in the extension worker, with bounded inputs and a fresh instance per merge.
+Test engine upgrades against `git merge-file`, the full cherry-pick/version/lockfile
+fixtures, production Chrome CSP and repeated-operation performance.

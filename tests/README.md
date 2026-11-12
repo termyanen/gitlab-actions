@@ -586,3 +586,16 @@ layouts at desktop and narrow widths. Runtime integration checks must also verif
 that the owning GitLab feature reads the effective profile: a saved field alone is
 not evidence that an override is applied. No fixture should request production
 credentials or start writes on a real GitLab/Jira instance.
+
+### Native cherry-pick merging
+
+`xdiff-native.test.cjs` compares generated repeated-line cases with local
+`git merge-file` and checks the packaged native module and corresponding sources.
+`cherry-pick-three-way.test.cjs` covers CRLF, EOF, actual conflicts, repeated-line
+deletions and resource limits. Full cherry-pick fixtures retain version strategies,
+lockfile validation, project settings and no-write behavior on worker failures.
+`cherry-pick-wasm.spec.cjs` uses the installed extension worker and production CSP,
+checks lazy loading and recovery after a failed compile, and records round-trip
+timings in `.reports/xdiff-browser-performance.json`. These fixtures do not certify
+custom Git attributes/drivers or every server-side diff algorithm. For rebuilding
+the pinned native module, see [vendor/xdiff/README.md](../vendor/xdiff/README.md).

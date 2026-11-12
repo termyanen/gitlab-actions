@@ -24,6 +24,8 @@
 
 ### Technical
 
+- **Native text merging** — use a locally packaged xdiff WebAssembly engine for divergent cherry-pick files, preserving independent edits and reporting actual text conflicts without relying on unique lines. Version strategies and package-lock validation remain separate.
+
 - **TypeScript architecture** — reorganize runtime code into FSD modules with esbuild. Extension-owned settings, popup and welcome use shared React components; GitLab content scripts and the worker remain framework-free. Typed API/message validation, lifecycle cleanup and automated architecture, browser and performance checks cover the refactored workflows.
 - **Permissions and compatibility** — Chrome 110+ is required. The unused cookies permission is removed; alarms supports background task recovery. Jira continues to use explicit optional access and the browser session. Jira Server/Data Center is the primary target; Jira Cloud is not fully supported. Existing settings and defaults are preserved, with no manual reset required.
 - **Contributor and release tooling** — shared coding-agent instructions, PR/release procedures, documented module ownership and CI packaging checks accompany the new structure. Runtime size is reported alongside resource-retention checks.

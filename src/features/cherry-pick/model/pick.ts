@@ -395,9 +395,9 @@ export function createCherryPicker(
             // Modified files: if the file in target is identical to the
             // commit's parent, copy the source content verbatim (exact
             // replay, works for any file type). If target diverged
-            // elsewhere in the file, try the exact diff first. If only its
-            // surrounding context differs, compare both sides with the actual
-            // parent and merge disjoint line changes. Overlaps remain errors.
+            // elsewhere in the file, verify the source diff against its parent,
+            // then let packaged xdiff merge the three complete file versions.
+            // Never replay a hunk at a different matching occurrence in target.
             return Promise.all([
               readOptionalFile(d.new_path, parentSha),
               readOptionalFile(d.new_path, commitBranch),
@@ -410,7 +410,7 @@ export function createCherryPicker(
                   "?ref=" +
                   sha,
               ).then(readRepositoryFile),
-            ]).then(function (triple) {
+            ]).then(async function (triple) {
               const parentFile = triple[0];
               const targetFile = triple[1];
               const sourceFile = triple[2];
@@ -481,17 +481,17 @@ export function createCherryPicker(
                 throw new Error("Cannot verify commit diff for: " + d.new_path);
               }
               try {
-                patchedTarget = applyUnifiedDiff(targetText, d.diff);
-              } catch {
-                try {
-                  patchedTarget = mergeText(parentText, sourceText, targetText);
-                } catch (error) {
-                  const code =
-                    error instanceof TextMergeError
-                      ? error.code
-                      : "CP_MERGE_FAILED";
-                  throw new Error(divergedMsg + " [" + code + "]");
-                }
+                patchedTarget = await mergeText(
+                  parentText,
+                  sourceText,
+                  targetText,
+                );
+              } catch (error) {
+                const code =
+                  error instanceof TextMergeError
+                    ? error.code
+                    : "CP_MERGE_FAILED";
+                throw new Error(divergedMsg + " [" + code + "]");
               }
               return {
                 action: "update",

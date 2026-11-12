@@ -28,6 +28,26 @@ narrower architecture is possible.
 | `content_scripts.matches: https://*/*` | Automatically discover GitLab.com and self-hosted GitLab on arbitrary HTTPS domains. [Bootstrap](../src/app/entrypoints/content_proxy.ts) checks page markers before importing the feature runtime; styles are scoped to the GitLab host marker. | Broad content-script registration at installation, with browser site-access controls. The bootstrap and stylesheet can be delivered to non-GitLab HTTPS pages; detection does not make this declaration a narrow host grant. `activeTab` alone would require invocation on each relevant page and does not preserve automatic discovery. |
 | `web_accessible_resources` for `_locales/*/messages.json`, `modules/*.js`, `modules/chunks/*.js`, matched to HTTPS pages | Packaged locale data and split runtime modules loaded by content scripts. See [bootstrap](../src/app/entrypoints/content_proxy.ts), [i18n](../src/shared/i18n/index.ts) and [build](../scripts/build.mjs). | These files can be accessed by matching pages. Expose only files needed by the packaged content runtime; do not expose settings, credentials, development files or arbitrary extension resources. No remote executable code is loaded. |
 
+### Packaged native text merge
+
+`content_security_policy.extension_pages` includes `'wasm-unsafe-eval'` solely
+for `features/cherry-pick/model/merge-background.ts` to compile the packaged
+`wasm/xdiff.wasm` module on the first divergent-file cherry-pick. Chrome's
+[extension CSP documentation](https://developer.chrome.com/docs/extensions/reference/manifest/content-security-policy)
+requires this directive for WebAssembly. Ordinary JavaScript `eval`, inline code
+and remote scripts remain disallowed. No browser permission, host grant or
+web-accessible resource is added; this CSP change adds no site-access prompt.
+
+The content script sends bounded file texts through the extension runtime API;
+the background handler checks the sender extension ID and validates the payload.
+There is no page-message bridge, network/WASI import or file-content persistence.
+The module and corresponding LGPL sources remain private extension resources.
+Unavailable/blocked/invalid WASM fails the operation before a commit; a subsequent
+explicit attempt can reload the module. Native conflicts and limits use the
+existing localized cherry-pick error with a technical `CP_*` diagnostic code.
+The public browser APIs and Chrome Web Store permission justifications remain
+unchanged. No dashboard change is needed for a new permission.
+
 The manifest has no `cookies`, unconditional `host_permissions`, `activeTab`,
 `scripting`, `webRequest` or `debugger` permission. Content-script registration and optional host
 grants are separate capabilities; do not describe the extension as having no site

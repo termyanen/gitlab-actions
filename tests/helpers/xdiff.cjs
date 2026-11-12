@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('node:fs');
+const path=require('node:path');
+const vm=require('node:vm');
+const {bundleForTest,root}=require('./runtime.cjs');
+const moduleBytes=fs.readFileSync(path.join(root,'vendor/xdiff/merge.wasm'));
+const compiled=new WebAssembly.Module(moduleBytes);
+const context=vm.createContext({WebAssembly,TextEncoder,TextDecoder});
+vm.runInContext(bundleForTest('src/features/cherry-pick/model/merge-wasm.ts',{globalName:'NativeMerge'}),context);
+module.exports={merge:(parent,source,target)=>context.NativeMerge.mergeWithModule(compiled,parent,source,target)};

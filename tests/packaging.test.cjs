@@ -25,7 +25,7 @@ var root = require('./helpers/extension.cjs').root;
         fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.copyFileSync(path.join(root, file), destination);
       });
-      ['src', 'scripts'].forEach(function(directory) {
+      ['src', 'scripts', 'vendor'].forEach(function(directory) {
         fs.cpSync(path.join(root, directory), path.join(staging, directory), { recursive: true });
       });
       fs.symlinkSync(path.join(root, 'node_modules'), path.join(staging, 'node_modules'), 'dir');
@@ -53,7 +53,8 @@ var root = require('./helpers/extension.cjs').root;
       }
       var entries = execFileSync('unzip', ['-Z', '-1', path.join(staging, archive)], { encoding: 'utf8' }).trim().split('\n');
       assert.ok(entries.includes('modules/content.js'), 'Packaged module entry is required');
-      assert.ok(entries.includes('THIRD_PARTY_NOTICES.txt'), 'Bundled React runtime licenses must ship');
+      assert.ok(entries.includes('THIRD_PARTY_NOTICES.txt'), 'Bundled runtime licenses must ship');
+      for (const native of ['wasm/xdiff.wasm','third-party/xdiff/COPYING','third-party/xdiff/bridge.c','third-party/xdiff/xmerge.c','third-party/xdiff/README.md']) assert.ok(entries.includes(native), 'Missing native resource: '+native);
       assert.ok(entries.some(file => file.startsWith('modules/chunks/')), 'Packaged lazy chunks are required');
       assert.ok(entries.some(file => file.startsWith('ui/chunks/')), 'Shared React UI chunks must ship');
       const packagedManifest = JSON.parse(execFileSync('unzip', ['-p', path.join(staging, archive), 'manifest.json'], {encoding:'utf8'}));
