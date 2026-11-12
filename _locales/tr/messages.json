@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Hedef dalın sürümünü her zaman artır" },
+  "cherryPickTargetVersionHint": { "message": "Çakışma olmasa da hedef sürümü kullan. Yalnızca yedek yöntemde artırma seçeneğinden önceliklidir." },
+  "cherryPickWriteUncertain": { "message": "Commit zaten mevcut olabilir. Tekrar denemeden önce hedef dalı kontrol edin." },
   "extName": {
     "message": "GitLab MR Actions — Otomasyon, Jira, CI/CD ve AI incelemesi"
   },
@@ -1283,7 +1286,7 @@
     "message": "Dallara cherry-pick"
   },
   "cardCherryPickDesc": {
-    "message": "Seçilen dallara doğrudan veya yeni MR’lar üzerinden cherry-pick uygulayın. Akıllı yedek işlem etkinse doğrulanmış sürüm dosyası çakışmalarında bu dosya atlanır; isteğe bağlı olarak sürüm artırılır. Güvenli olmayan değişiklikler inceleme için durdurulur."
+    "message": "Seçilen dallara doğrudan veya yeni MR’lar üzerinden cherry-pick uygulayın. Akıllı yedek işlem etkinse doğrulanmış sürüm dosyası çakışmalarında bu dosya atlanır; isteğe bağlı olarak sürüm artırılır. Güvenli olmayan değişiklikler inceleme için durdurulur. “Hedef dalın sürümünü her zaman artır”: Çakışma olmasa da hedef sürümü kullan. Yalnızca yedek yöntemde artırma seçeneğinden önceliklidir."
   },
   "mrDetailEnhancements": {
     "message": "MR ayrıntı geliştirmeleri"

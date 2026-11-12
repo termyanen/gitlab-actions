@@ -82,6 +82,14 @@ export function createCherryPickDialog(
       escHtml(msg("cherryPickBumpVersion")) +
       "</span>" +
       "</label>" +
+      '<label class="gl-cherry-pick-mr-toggle gl-form-checkbox">' +
+      '<input type="checkbox" class="gl-cherry-pick-target-version-checkbox" title="' +
+      escHtml(msg("cherryPickTargetVersionHint")) +
+      '"' +
+      (settings.cherry_pick_target_version ? " checked" : "") +
+      "><span>" +
+      escHtml(msg("cherryPickTargetVersion")) +
+      "</span></label>" +
       '<div class="gl-cherry-pick-footer">' +
       '<button class="gl-button btn btn-default btn-md gl-cherry-pick-cancel" type="button">' +
       escHtml(msg("cherryPickClose")) +
@@ -123,6 +131,16 @@ export function createCherryPickDialog(
       modal.querySelector<HTMLInputElement>(".gl-cherry-pick-bump-checkbox"),
     );
 
+    const targetVersionCheckbox = requireElement(
+      modal.querySelector<HTMLInputElement>(
+        ".gl-cherry-pick-target-version-checkbox",
+      ),
+    );
+    const updateBumpAvailability = () => {
+      bumpCheckbox.disabled = targetVersionCheckbox.checked;
+    };
+    targetVersionCheckbox.addEventListener("change", updateBumpAvailability);
+    updateBumpAvailability();
     const picker = createCherryPicker(
       origin,
       encodedProject,
@@ -130,6 +148,7 @@ export function createCherryPickDialog(
       settings,
       () => bumpCheckbox.checked,
       msg,
+      () => targetVersionCheckbox.checked,
     );
     const branches: BranchState[] = [];
 

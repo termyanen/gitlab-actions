@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Luôn tăng phiên bản của nhánh đích" },
+  "cherryPickTargetVersionHint": { "message": "Dùng phiên bản đích ngay cả khi không có xung đột. Ưu tiên hơn tùy chọn chỉ tăng khi dùng phương án dự phòng." },
+  "cherryPickWriteUncertain": { "message": "Commit có thể đã tồn tại. Hãy kiểm tra nhánh đích trước khi thử lại." },
   "extName": {
     "message": "GitLab MR Actions — Tự động hóa, Jira, CI/CD và đánh giá AI"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick sang các nhánh"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick trực tiếp sang các nhánh được chọn hoặc thông qua các MR mới. Khi bật Smart fallback, các xung đột trong tệp phiên bản đã được xác minh có thể được phát lại mà không có tệp đó, tùy chọn tăng phiên bản. Các thay đổi không an toàn sẽ dừng để kiểm tra."
+    "message": "Cherry-pick trực tiếp sang các nhánh được chọn hoặc thông qua các MR mới. Khi bật Smart fallback, các xung đột trong tệp phiên bản đã được xác minh có thể được phát lại mà không có tệp đó, tùy chọn tăng phiên bản. Các thay đổi không an toàn sẽ dừng để kiểm tra. “Luôn tăng phiên bản của nhánh đích”: Dùng phiên bản đích ngay cả khi không có xung đột. Ưu tiên hơn tùy chọn chỉ tăng khi dùng phương án dự phòng."
   },
   "mrDetailEnhancements": {
     "message": "Cải tiến chi tiết MR"

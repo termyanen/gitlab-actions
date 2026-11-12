@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Sempre incrementar a versão da branch de destino" },
+  "cherryPickTargetVersionHint": { "message": "Usar a versão de destino mesmo sem conflitos. Tem prioridade sobre o incremento apenas no fallback." },
+  "cherryPickWriteUncertain": { "message": "O commit pode já existir. Verifique a branch de destino antes de tentar novamente." },
   "extName": {
     "message": "GitLab MR Actions — Automação, Jira, CI/CD e revisão com IA"
   },
@@ -1283,7 +1286,7 @@
     "message": "Selecionar galhos"
   },
   "cardCherryPickDesc": {
-    "message": "Selecione as filiais selecionadas diretamente ou por meio do novo MRs. Com o substituto inteligente ativado, os conflitos de arquivo de versão verificados podem ser reproduzidos sem esse arquivo, opcionalmente alterando a versão. Mudanças inseguras param para inspeção."
+    "message": "Selecione as filiais selecionadas diretamente ou por meio do novo MRs. Com o substituto inteligente ativado, os conflitos de arquivo de versão verificados podem ser reproduzidos sem esse arquivo, opcionalmente alterando a versão. Mudanças inseguras param para inspeção. “Sempre incrementar a versão da branch de destino”: Usar a versão de destino mesmo sem conflitos. Tem prioridade sobre o incremento apenas no fallback."
   },
   "mrDetailEnhancements": {
     "message": "MR melhorias de detalhes"

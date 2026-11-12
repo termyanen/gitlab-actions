@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Selalu naikkan versi cabang tujuan" },
+  "cherryPickTargetVersionHint": { "message": "Gunakan versi tujuan meskipun tanpa konflik. Diutamakan daripada kenaikan hanya saat fallback." },
+  "cherryPickWriteUncertain": { "message": "Commit mungkin sudah ada. Periksa cabang tujuan sebelum mencoba lagi." },
   "extName": {
     "message": "GitLab MR Actions — Otomatisasi, Jira, CI/CD & Tinjauan AI"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick ke cabang"
   },
   "cardCherryPickDesc": {
-    "message": "Terapkan cherry-pick langsung ke cabang yang dipilih atau melalui MR baru. Jika penanganan alternatif cerdas diaktifkan, konflik file versi yang sudah diverifikasi dapat diatasi dengan menerapkan ulang perubahan tanpa file tersebut, dengan opsi menaikkan versi. Perubahan yang tidak aman dihentikan untuk diperiksa."
+    "message": "Terapkan cherry-pick langsung ke cabang yang dipilih atau melalui MR baru. Jika penanganan alternatif cerdas diaktifkan, konflik file versi yang sudah diverifikasi dapat diatasi dengan menerapkan ulang perubahan tanpa file tersebut, dengan opsi menaikkan versi. Perubahan yang tidak aman dihentikan untuk diperiksa. “Selalu naikkan versi cabang tujuan”: Gunakan versi tujuan meskipun tanpa konflik. Diutamakan daripada kenaikan hanya saat fallback."
   },
   "mrDetailEnhancements": {
     "message": "Peningkatan detail MR"

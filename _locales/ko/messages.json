@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "대상 브랜치 버전을 항상 올리기" },
+  "cherryPickTargetVersionHint": { "message": "충돌이 없어도 대상 버전을 사용합니다. 대체 처리 시에만 버전을 올리는 옵션보다 우선합니다." },
+  "cherryPickWriteUncertain": { "message": "커밋이 이미 생성되었을 수 있습니다. 다시 시도하기 전에 대상 브랜치를 확인하세요." },
   "extName": {
     "message": "GitLab MR Actions — 병합 요청 자동화, Jira, CI/CD 및 AI 검토"
   },
@@ -1283,7 +1286,7 @@
     "message": "브랜치에 대한 Cherry-pick"
   },
   "cardCherryPickDesc": {
-    "message": "선택한 브랜치에 직접 또는 새 MR을 통해 체리픽합니다. 스마트 대체 처리를 켜면 확인된 버전 파일 충돌에 대해 해당 파일을 제외하고 변경을 적용하며, 선택적으로 버전도 올립니다. 안전하지 않은 변경은 검토를 위해 중단됩니다."
+    "message": "선택한 브랜치에 직접 또는 새 MR을 통해 체리픽합니다. 스마트 대체 처리를 켜면 확인된 버전 파일 충돌에 대해 해당 파일을 제외하고 변경을 적용하며, 선택적으로 버전도 올립니다. 안전하지 않은 변경은 검토를 위해 중단됩니다. “대상 브랜치 버전을 항상 올리기”: 충돌이 없어도 대상 버전을 사용합니다. 대체 처리 시에만 버전을 올리는 옵션보다 우선합니다."
   },
   "mrDetailEnhancements": {
     "message": "MR 세부 사항 개선"

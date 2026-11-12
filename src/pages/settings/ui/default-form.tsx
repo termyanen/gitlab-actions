@@ -165,6 +165,8 @@ export const defaultSections: readonly SectionMeta[] = [
       "cherryPickSmartFallbackHint",
       "cherryPickBumpVersion",
       "cherryPickBumpVersionHint",
+      "cherryPickTargetVersion",
+      "cherryPickTargetVersionHint",
       "cherryPickBranchAdd",
     ],
   },

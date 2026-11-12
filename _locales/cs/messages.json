@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Vždy zvýšit verzi cílové větve" },
+  "cherryPickTargetVersionHint": { "message": "Použít cílovou verzi i bez konfliktů. Má přednost před zvýšením pouze při náhradním postupu." },
+  "cherryPickWriteUncertain": { "message": "Commit už možná existuje. Před dalším pokusem zkontrolujte cílovou větev." },
   "extName": {
     "message": "GitLab MR Actions — Automatizace, Jira, CI/CD a AI review"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick do větví"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick do vybraných větví přímo nebo přes nové MR. S povoleným Smart fallback lze ověřené konflikty souborů verzí přehrát bez tohoto souboru, případně zvýšit verzi. Nezabezpečené změny se zastaví k inspekci."
+    "message": "Cherry-pick do vybraných větví přímo nebo přes nové MR. S povoleným Smart fallback lze ověřené konflikty souborů verzí přehrát bez tohoto souboru, případně zvýšit verzi. Nezabezpečené změny se zastaví k inspekci. “Vždy zvýšit verzi cílové větve”: Použít cílovou verzi i bez konfliktů. Má přednost před zvýšením pouze při náhradním postupu."
   },
   "mrDetailEnhancements": {
     "message": "Vylepšení detailů MR"

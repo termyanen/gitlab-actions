@@ -432,3 +432,12 @@ test("import rejects malformed project cherry-pick branches and preserves legacy
     assert.deepEqual(plain(imported.projectProfiles["team/repo"]), profile);
   }
 });
+
+test('cherry-pick target version defaults off and survives global/project export and import', () => {
+  assert.equal(settingsSnapshot({}).cherry_pick_target_version, false);
+  const snapshot = settingsSnapshot({cherry_pick_target_version:true,projectProfiles:{'team/release':{overrides:{cherry_pick_target_version:false}}}});
+  const restored = parseSettingsFile(file(snapshot));
+  assert.equal(restored.cherry_pick_target_version,true);
+  assert.equal(restored.projectProfiles['team/release'].overrides.cherry_pick_target_version,false);
+  assert.throws(()=>parseSettingsFile(file({cherry_pick_target_version:'true'})));
+});

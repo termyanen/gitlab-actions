@@ -506,3 +506,136 @@ test('invalid diff metadata still stops fallback before writes', async function(
   assert.match(rows[0].html, /Invalid FileDiff response/);
   assertNoCommit(env);
 });
+
+for (const conflict of [false, true]) for (const createMr of [false, true]) {
+  test('target-version mode writes one atomic commit, conflict=' + conflict + ', MR=' + createMr, async function() {
+    const env = fixture({ conflict, settings: { cherry_pick_target_version: true, cherry_pick_create_mr: createMr, cherry_pick_bump_version: false } });
+    assert.equal((await env.run())[0].status, 'success');
+    const branch = createMr ? 'cherry-pick-abcdef12-into-stable-1' : 'stable/1';
+    assert.equal(JSON.parse(env.files[branch]['package.json']).version, '2.0.1');
+    assert.equal(env.files[branch]['app.txt'], 'new\n');
+    assert.equal(env.requests.filter(r => r.path.endsWith('/cherry_pick')).length, 0);
+    assert.equal(commits(env).length, 1);
+  });
+}
+
+test('target-version mode also bumps when source does not change package.json', async function() {
+  const env = fixture({ diffs: [diff('app.txt')], settings: { cherry_pick_target_version: true, versionStrategy: 'minor' } });
+  assert.equal((await env.run())[0].status, 'success');
+  assert.equal(JSON.parse(env.files['cherry-pick-abcdef12-into-stable-1']['package.json']).version, '2.1.0');
+});
+
+function lockJson(version, modern, dependency = '5.0.0') {
+  return JSON.stringify({ name: 'fixture', version, lockfileVersion: modern ? 3 : 1,
+    ...(modern ? { packages: { '': { name: 'fixture', version }, 'node_modules/dependency': { version: dependency, integrity: 'preserve' } } } : { dependencies: { dependency: { version: dependency } } }) });
+}
+for (const modern of [false, true]) for (const targetMode of [false, true]) {
+  test('synchronizes only package root lockfile versions, modern=' + modern + ', target mode=' + targetMode, async function() {
+    const env = fixture({ conflict: true,
+      parentFiles: { 'package-lock.json': lockJson('1.0.0', modern) },
+      sourceFiles: { 'package-lock.json': lockJson('1.0.1', modern) },
+      targetFiles: { 'package-lock.json': lockJson('2.0.0', modern, '6.0.0') },
+      diffs: [diff('package.json'), diff('package-lock.json'), diff('app.txt')],
+      settings: { cherry_pick_target_version: targetMode, cherry_pick_bump_version: true }
+    });
+    assert.equal((await env.run())[0].status, 'success');
+    const lock = JSON.parse(env.files['cherry-pick-abcdef12-into-stable-1']['package-lock.json']);
+    assert.equal(lock.version, '2.0.1');
+    if (modern) { assert.equal(lock.packages[''].version, '2.0.1'); assert.equal(lock.packages['node_modules/dependency'].version, '6.0.0'); }
+    else assert.equal(lock.dependencies.dependency.version, '6.0.0');
+    assert.equal(commits(env).length, 1);
+    assert.equal(commits(env)[0].body.actions.length, 3);
+  });
+}
+
+test('fallback without bump retains both target package and lockfile versions', async function() {
+  const target = lockJson('2.0.0', true);
+  const env = fixture({ conflict:true, parentFiles:{'package-lock.json':lockJson('1.0.0',true)},sourceFiles:{'package-lock.json':lockJson('1.0.1',true)},targetFiles:{'package-lock.json':target},diffs:[diff('package.json'),diff('package-lock.json'),diff('app.txt')] });
+  assert.equal((await env.run())[0].status,'success');
+  assert.equal(env.files['cherry-pick-abcdef12-into-stable-1']['package-lock.json'],target);
+  assert.equal(commits(env)[0].body.actions.length,1);
+});
+
+for (const targetMode of [false,true]) test('refuses additional lockfile changes without partial writes, target mode='+targetMode, async function() {
+  const env = fixture({conflict:true,parentFiles:{'package-lock.json':lockJson('1.0.0',true)},sourceFiles:{'package-lock.json':lockJson('1.0.1',true,'7.0.0')},targetFiles:{'package-lock.json':lockJson('2.0.0',true,'6.0.0')},diffs:[diff('package.json'),diff('package-lock.json'),diff('app.txt')],settings:{cherry_pick_target_version:targetMode,cherry_pick_bump_version:true}});
+  assert.equal((await env.run())[0].status,'error');
+  assertNoCommit(env);
+});
+
+test('target-version mode updates an unchanged companion lockfile', async function() {
+  const env=fixture({targetFiles:{'package-lock.json':lockJson('2.0.0',true)},settings:{cherry_pick_target_version:true}});
+  assert.equal((await env.run())[0].status,'success');
+  assert.equal(JSON.parse(env.files['cherry-pick-abcdef12-into-stable-1']['package-lock.json']).packages[''].version,'2.0.1');
+});
+
+test('target-version mode refuses mismatched lockfile before any commit', async function() {
+  const env=fixture({targetFiles:{'package-lock.json':lockJson('9.0.0',true)},settings:{cherry_pick_target_version:true}});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+});
+
+test('target-version mode does not bump twice when MR creation is retried', async function() {
+  let attempts=0;
+  const env=fixture({settings:{cherry_pick_target_version:true},respond:req=>{
+    if(req.method==='POST'&&req.path===base+'/merge_requests'&&attempts++===0) return harness.response(500,{message:'MR failed'});
+  }});
+  assert.equal((await env.run())[0].status,'error');
+  assert.equal((await env.run())[0].status,'success');
+  assert.equal(commits(env).length,1);
+});
+
+test('uncertain target-version write cannot be blindly repeated', async function() {
+  const env=fixture({settings:{cherry_pick_target_version:true},respond:req=>{
+    if(req.method==='POST'&&req.path===base+'/repository/commits') return harness.response(502,{message:'Response lost'});
+  }});
+  assert.equal((await env.run())[0].status,'error');
+  assert.equal((await env.run())[0].status,'error');
+  assert.equal(commits(env).length,1);
+});
+
+test('target-version mode merges independent manifest and lockfile edits without losing target changes', async function() {
+  const env=fixture({settings:{cherry_pick_target_version:true},
+    parentFiles:{'package.json':'{"version":"1.0.0","scripts":{"test":"old"}}','package-lock.json':lockJson('1.0.0',true)},
+    sourceFiles:{'package.json':'{"version":"1.0.1","scripts":{"test":"new"}}','package-lock.json':lockJson('1.0.1',true,'7.0.0')},
+    targetFiles:{'package.json':'{"version":"2.0.0","scripts":{"test":"old"},"targetOnly":true}','package-lock.json':lockJson('2.0.0',true)},
+    diffs:[diff('package.json'),diff('package-lock.json'),diff('app.txt')]});
+  assert.equal((await env.run())[0].status,'success');
+  const files=env.files['cherry-pick-abcdef12-into-stable-1'];
+  assert.deepEqual(JSON.parse(files['package.json']),{version:'2.0.1',scripts:{test:'new'},targetOnly:true});
+  assert.equal(JSON.parse(files['package-lock.json']).packages['node_modules/dependency'].version,'7.0.0');
+  assert.equal(JSON.parse(files['package-lock.json']).packages[''].version,'2.0.1');
+  assert.equal(new Set(commits(env)[0].body.actions.map(action=>action.file_path)).size,3);
+});
+
+test('target-version mode refuses concurrent non-version manifest conflicts', async function() {
+  const env=fixture({settings:{cherry_pick_target_version:true},parentFiles:{'package.json':'{"version":"1.0.0","script":"old"}'},sourceFiles:{'package.json':'{"version":"1.0.1","script":"source"}'},targetFiles:{'package.json':'{"version":"2.0.0","script":"target"}'}});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+});
+
+test('lockfile dependency conflict is rejected even without a version conflict', async function() {
+  const env=fixture({settings:{cherry_pick_target_version:true},parentFiles:{'package-lock.json':lockJson('1.0.0',true)},sourceFiles:{'package-lock.json':lockJson('1.0.0',true,'7.0.0')},targetFiles:{'package-lock.json':lockJson('1.0.0',true,'8.0.0')},diffs:[diff('package-lock.json'),diff('app.txt')]});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+});
+
+for (const extra of [{new_file:true},{deleted_file:true},{renamed_file:true}]) test('lockfile structural change stops automatic resolution: '+JSON.stringify(extra), async function() {
+  const env=fixture({conflict:true,parentFiles:{'package-lock.json':lockJson('1.0.0',true)},sourceFiles:{'package-lock.json':lockJson('1.0.1',true)},targetFiles:{'package-lock.json':lockJson('2.0.0',true)},diffs:[diff('package.json'),diff('package-lock.json',extra),diff('app.txt')],settings:{cherry_pick_target_version:true}});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+});
+
+test('nested package.json synchronizes only its adjacent lockfile', async function() {
+  const env=fixture({settings:{cherry_pick_target_version:true,versionFile:'client/package.json'},parentFiles:{'client/package.json':'{"version":"1.0.0"}','client/package-lock.json':lockJson('1.0.0',true)},sourceFiles:{'client/package.json':'{"version":"1.0.1"}','client/package-lock.json':lockJson('1.0.1',true)},targetFiles:{'client/package.json':'{"version":"2.0.0"}','client/package-lock.json':lockJson('2.0.0',true),'package-lock.json':'do not read'},diffs:[diff('client/package.json'),diff('client/package-lock.json'),diff('app.txt')]});
+  assert.equal((await env.run())[0].status,'success');
+  const files=env.files['cherry-pick-abcdef12-into-stable-1'];
+  assert.equal(JSON.parse(files['client/package-lock.json']).version,'2.0.1');
+  assert.equal(files['package-lock.json'],'do not read');
+});
+
+test('lockfile-only version conflict preserves target package version and applies code', async function() {
+  const env=fixture({conflict:true,parentFiles:{'package-lock.json':lockJson('1.0.0',true)},sourceFiles:{'package-lock.json':lockJson('1.0.1',true)},targetFiles:{'package-lock.json':lockJson('2.0.0',true)},diffs:[diff('package-lock.json'),diff('app.txt')]});
+  assert.equal((await env.run())[0].status,'success');
+  assert.equal(JSON.parse(env.files['cherry-pick-abcdef12-into-stable-1']['package-lock.json']).version,'2.0.0');
+});
+
+for (const malformed of ['{bad', '{"version":"2.0.0","packages":{"":{"version":42}}}']) test('malformed lockfile stops before any commit: '+malformed, async function() {
+  const env=fixture({settings:{cherry_pick_target_version:true},targetFiles:{'package-lock.json':malformed}});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+});

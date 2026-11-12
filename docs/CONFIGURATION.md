@@ -47,6 +47,23 @@ are obtained from the active GitLab context. They are not tied to the author's
 repository. Jira defaults can be replaced in settings. New installs enable a small
 starter set of buttons and sound; updates do not reapply that starter preset.
 
+## Cherry-pick version selection
+
+`cherry_pick_target_version` defaults to `false`. Enable **Always bump the target
+branch version** under **MR & commits → Cherry-pick branches**, globally or for a
+project. The dialog also allows a per-operation choice. The enabled mode applies
+verified changes and bumps the destination version atomically, even without a
+conflict, using the configured patch/minor/major strategy. It overrides the
+fallback-only bump checkbox. With it off, successful native cherry-picks retain
+their existing behavior.
+
+For a configured `package.json` / `version`, the adjacent `package-lock.json`
+is synchronized at `version` and `packages[""].version` when present. Only these
+package-version conflicts are automatically resolved. Non-version changes use a
+three-way comparison; conflicting dependency or metadata changes stop the write.
+Added/deleted/renamed lockfiles and mismatched target package/lockfile versions
+require manual resolution. No lockfile is generated when none exists.
+
 ## Cherry-pick branch inheritance
 
 Open **MR & commits → Cherry-pick branches**. Select **All projects** to edit the

@@ -129,6 +129,7 @@ const BASE_DEFAULTS = {
   cherry_pick_create_mr: true,
   cherry_pick_smart_fallback: true,
   cherry_pick_bump_version: false,
+  cherry_pick_target_version: false,
   commits_jira_field: "fixVersions, status",
   jiraQuickActions: [] as JiraQuickAction[],
 };

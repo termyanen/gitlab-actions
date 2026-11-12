@@ -418,6 +418,16 @@ so identical answers to different threads remain independent.
   enabled, a verified version-file conflict can be replayed without that file,
   optionally bumping the target version in the same commit. Other conflicts,
   unsafe changes and uncertain request outcomes stop for inspection.
+  Enable **Always bump the target branch version** to use and increment the target
+  version even without conflicts, in one commit with the transferred changes.
+  This separate option defaults to off and can be overridden per project or in
+  the dialog; it takes priority over the fallback-only bump option. The configured
+  patch/minor/major strategy applies. For `package.json`, the adjacent
+  `package-lock.json` keeps its root `version` and `packages[""].version` in sync.
+  Dependency versions are never treated as package versions: conflicting changes
+  outside those fields stop the operation; compatible changes are preserved.
+  Automatic resolution refuses incompatible or inconsistent lockfiles, and a
+  lockfile changed by the source commit must also exist in the target.
 
 See [configuration and limits](docs/CONFIGURATION.md) for defaults, inheritance,
 cache lifetimes and collection limits.

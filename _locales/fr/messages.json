@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Toujours incrémenter la version de la branche cible" },
+  "cherryPickTargetVersionHint": { "message": "Utiliser la version cible même sans conflit. Prioritaire sur l’incrémentation uniquement en cas de repli." },
+  "cherryPickWriteUncertain": { "message": "Le commit existe peut-être déjà. Vérifiez la branche cible avant de réessayer." },
   "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira, CI/CD & AI Review" },
   "extDescription": { "message": "Automatisez les merge requests GitLab : auto-merge, version bump, Jira, CI/CD et revue avec votre IA. Sans token." },
 
@@ -419,7 +422,7 @@
   "commitsJiraField": { "message": "Champ Jira pour les badges de commits" },
   "commitsJiraFieldHint": { "message": "Nom du champ Jira à afficher en badges sur la page des commits (ex. fixVersions, status, labels, components). URL Jira requise." },
   "cardCherryPickTitle": { "message": "Cherry-pick vers des branches" },
-  "cardCherryPickDesc": { "message": "Applique un commit aux branches choisies, directement ou via de nouveaux MR. Le repli intelligent peut contourner un conflit vérifié du fichier de version et incrémenter la version si demandé. Les modifications non sûres nécessitent une vérification." },
+  "cardCherryPickDesc": { "message": "Applique un commit aux branches choisies, directement ou via de nouveaux MR. Le repli intelligent peut contourner un conflit vérifié du fichier de version et incrémenter la version si demandé. Les modifications non sûres nécessitent une vérification. “Toujours incrémenter la version de la branche cible”: Utiliser la version cible même sans conflit. Prioritaire sur l’incrémentation uniquement en cas de repli." },
 
   "mrDetailEnhancements": { "message": "Améliorations de la page MR" },
   "showSensitiveWarning": { "message": "Avertissement pour les fichiers sensibles" },

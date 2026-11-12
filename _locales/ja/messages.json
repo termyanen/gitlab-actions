@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "ターゲットブランチのバージョンを常に上げる" },
+  "cherryPickTargetVersionHint": { "message": "競合がなくてもターゲットのバージョンを使用します。フォールバック時のみの更新より優先されます。" },
+  "cherryPickWriteUncertain": { "message": "コミットは既に作成されている可能性があります。再試行前にターゲットブランチを確認してください。" },
   "extName": { "message": "GitLab MR Actions — Merge Request Automation, Jira, CI/CD & AI Review" },
   "extDescription": { "message": "GitLabのmerge requestを1クリックで自動化：auto-merge、version bump、Jira連携、CI/CD、自分のAIでレビュー。APIトークン不要。" },
 
@@ -419,7 +422,7 @@
   "commitsJiraField": { "message": "コミットページのJiraフィールドバッジ" },
   "commitsJiraFieldHint": { "message": "コミットページにバッジとして表示するJiraフィールド名（例：fixVersions、status、labels、components）。Jira URLが必要です。" },
   "cardCherryPickTitle": { "message": "ブランチへ Cherry-pick" },
-  "cardCherryPickDesc": { "message": "選択したブランチへ直接、または新しい MR 経由で cherry-pick します。Smart fallback が有効なら、検証済みのバージョンファイルの競合をそのファイルを除いて再現し、必要に応じてバージョンを上げます。安全性を確認できない変更は停止します。" },
+  "cardCherryPickDesc": { "message": "選択したブランチへ直接、または新しい MR 経由で cherry-pick します。Smart fallback が有効なら、検証済みのバージョンファイルの競合をそのファイルを除いて再現し、必要に応じてバージョンを上げます。安全性を確認できない変更は停止します。 “ターゲットブランチのバージョンを常に上げる”: 競合がなくてもターゲットのバージョンを使用します。フォールバック時のみの更新より優先されます。" },
 
   "mrDetailEnhancements": { "message": "MRページの拡張機能" },
   "showSensitiveWarning": { "message": "diffのセキュリティ警告" },

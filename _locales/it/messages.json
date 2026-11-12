@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Incrementa sempre la versione del branch di destinazione" },
+  "cherryPickTargetVersionHint": { "message": "Usa la versione di destinazione anche senza conflitti. Ha priorità sull’incremento solo in caso di fallback." },
+  "cherryPickWriteUncertain": { "message": "Il commit potrebbe già esistere. Controlla il branch di destinazione prima di riprovare." },
   "extName": {
     "message": "GitLab MR Actions — Automazione, Jira, CI/CD e revisione IA"
   },
@@ -1283,7 +1286,7 @@
     "message": "Scegli i rami"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick ai rami selezionati direttamente o tramite il nuovo MRs. Con il fallback intelligente abilitato, i conflitti dei file di versione verificati possono essere riprodotti senza quel file, eventualmente modificando la versione. Le modifiche non sicure vengono fermate per l'ispezione."
+    "message": "Cherry-pick ai rami selezionati direttamente o tramite il nuovo MRs. Con il fallback intelligente abilitato, i conflitti dei file di versione verificati possono essere riprodotti senza quel file, eventualmente modificando la versione. Le modifiche non sicure vengono fermate per l'ispezione. “Incrementa sempre la versione del branch di destinazione”: Usa la versione di destinazione anche senza conflitti. Ha priorità sull’incremento solo in caso di fallback."
   },
   "mrDetailEnhancements": {
     "message": "MR miglioramenti dei dettagli"

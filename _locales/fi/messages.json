@@ -1,4 +1,7 @@
 {
+  "cherryPickTargetVersion": { "message": "Korota aina kohdehaaran versiota" },
+  "cherryPickTargetVersionHint": { "message": "Käytä kohdeversiota myös ilman ristiriitoja. Ohittaa vain varamenetelmässä tehtävän korotuksen." },
+  "cherryPickWriteUncertain": { "message": "Commit saattaa jo olla olemassa. Tarkista kohdehaara ennen uutta yritystä." },
   "extName": {
     "message": "GitLab MR Actions — Automaatio, Jira, CI/CD ja tekoälykatselmointi"
   },
@@ -1283,7 +1286,7 @@
     "message": "Cherry-pick haaraan"
   },
   "cardCherryPickDesc": {
-    "message": "Cherry-pick valittuihin haaroihin suoraan tai uusien MR:ien kautta. Kun Smart-fallback on käytössä, vahvistetut version-tiedostojen konfliktit voidaan toistaa ilman kyseistä tiedostoa, tarvittaessa version nostaen. Turvattomat muutokset pysähtyvät tarkastusta varten."
+    "message": "Cherry-pick valittuihin haaroihin suoraan tai uusien MR:ien kautta. Kun Smart-fallback on käytössä, vahvistetut version-tiedostojen konfliktit voidaan toistaa ilman kyseistä tiedostoa, tarvittaessa version nostaen. Turvattomat muutokset pysähtyvät tarkastusta varten. “Korota aina kohdehaaran versiota”: Käytä kohdeversiota myös ilman ristiriitoja. Ohittaa vain varamenetelmässä tehtävän korotuksen."
   },
   "mrDetailEnhancements": {
     "message": "MR-tietojen parannukset"
