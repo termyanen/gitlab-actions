@@ -1,4 +1,4 @@
-import { mergeText } from "./merge-text";
+import { mergeText, TextMergeError } from "./merge-text";
 import {
   companionLockfile,
   mergeLockfile,
@@ -421,14 +421,16 @@ export function createCherryPicker(
                 d.new_path;
               // Cannot verify safety without a baseline from parent
               // (also covers renames — parent has no file at new_path)
-              if (!parentFile) throw new Error(divergedMsg);
+              if (!parentFile)
+                throw new Error(divergedMsg + " [CP_PARENT_MISSING]");
               // File missing in target — it was deleted there independently
-              if (!targetFile) throw new Error(divergedMsg);
+              if (!targetFile)
+                throw new Error(divergedMsg + " [CP_TARGET_MISSING]");
               // Legacy GitLab cannot distinguish conflicts from empty
               // cherry-picks. Require a real, not-yet-applied file change.
               if (requireFileChanges) {
                 if (parentFile.content === sourceFile.content)
-                  throw new Error(divergedMsg);
+                  throw new Error(divergedMsg + " [CP_UNCHANGED_SOURCE]");
                 if (targetFile.content === sourceFile.content) return null;
               }
               if (parentFile.content === targetFile.content) {
@@ -444,7 +446,7 @@ export function createCherryPicker(
               }
               // Binary or mode-only changes carry no text diff — with a
               // diverged target there is nothing safe to apply
-              if (!d.diff) throw new Error(divergedMsg);
+              if (!d.diff) throw new Error(divergedMsg + " [CP_DIFF_MISSING]");
               let parentText,
                 targetText,
                 sourceText,
@@ -460,9 +462,13 @@ export function createCherryPicker(
                 sourceText = decodeURIComponent(
                   escape(atob(sourceFile.content)),
                 );
+              } catch {
+                throw new Error(divergedMsg + " [CP_TEXT_DECODE]");
+              }
+              try {
                 patchedParent = applyUnifiedDiff(parentText, d.diff);
               } catch {
-                throw new Error(divergedMsg);
+                throw new Error(divergedMsg + " [CP_PARENT_PATCH]");
               }
               // Self-check: the diff applied to the commit's parent must
               // reproduce the commit's file byte-for-byte. If not, our
@@ -475,8 +481,12 @@ export function createCherryPicker(
               } catch {
                 try {
                   patchedTarget = mergeText(parentText, sourceText, targetText);
-                } catch {
-                  throw new Error(divergedMsg);
+                } catch (error) {
+                  const code =
+                    error instanceof TextMergeError
+                      ? error.code
+                      : "CP_MERGE_FAILED";
+                  throw new Error(divergedMsg + " [" + code + "]");
                 }
               }
               return {

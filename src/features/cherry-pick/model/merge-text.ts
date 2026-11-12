@@ -1,3 +1,12 @@
+export class TextMergeError extends Error {
+  constructor(
+    readonly code: string,
+    message: string,
+  ) {
+    super(message);
+  }
+}
+
 interface Edit {
   start: number;
   end: number;
@@ -9,7 +18,10 @@ const MAX_EDIT_DISTANCE = 2_048;
 
 function lines(text: string) {
   if (text.includes("\0"))
-    throw new Error("Binary content cannot be merged as text");
+    throw new TextMergeError(
+      "CP_BINARY",
+      "Binary content cannot be merged as text",
+    );
   return text.match(/[^\n]*\n|[^\n]+$/g) ?? [];
 }
 
@@ -29,7 +41,10 @@ function edits(base: string[], changed: string[]): Edit[] {
     const row = new Int32Array(2 * depth + 1).fill(-1);
     work += row.length;
     if (work > MAX_MERGE_WORK)
-      throw new Error("Text merge work limit exceeded");
+      throw new TextMergeError(
+        "CP_WORK_LIMIT",
+        "Text merge work limit exceeded",
+      );
     const previous = trace[depth - 1];
     for (let diagonal = -depth; diagonal <= depth; diagonal += 2) {
       let x =
@@ -44,7 +59,10 @@ function edits(base: string[], changed: string[]): Edit[] {
       let y = x - diagonal;
       while (x < base.length && y < changed.length && base[x] === changed[y]) {
         if (++work > MAX_MERGE_WORK)
-          throw new Error("Text merge work limit exceeded");
+          throw new TextMergeError(
+            "CP_WORK_LIMIT",
+            "Text merge work limit exceeded",
+          );
         x++;
         y++;
       }
@@ -101,7 +119,11 @@ function edits(base: string[], changed: string[]): Edit[] {
             position++;
           } else {
             const line = changed[index++];
-            if (line === undefined) throw new Error("Invalid merge alignment");
+            if (line === undefined)
+              throw new TextMergeError(
+                "CP_ALIGNMENT",
+                "Invalid merge alignment",
+              );
             current.lines.push(line);
           }
         }
@@ -110,7 +132,7 @@ function edits(base: string[], changed: string[]): Edit[] {
     }
     trace.push(row);
   }
-  throw new Error("Text merge edit limit exceeded");
+  throw new TextMergeError("CP_EDIT_LIMIT", "Text merge edit limit exceeded");
 }
 
 function requireUniqueRegions(changes: Edit[], base: string[]) {
@@ -134,14 +156,20 @@ function requireUniqueRegions(changes: Edit[], base: string[]) {
       let match = true;
       for (let index = 0; index < region.length; index++) {
         if (++work > MAX_MERGE_WORK)
-          throw new Error("Text merge work limit exceeded");
+          throw new TextMergeError(
+            "CP_WORK_LIMIT",
+            "Text merge work limit exceeded",
+          );
         if (base[position + index] !== region[index]) {
           match = false;
           break;
         }
       }
       if (match && ++matches > 1)
-        throw new Error("Ambiguous repeated text changes");
+        throw new TextMergeError(
+          "CP_REPEATED_TEXT",
+          "Ambiguous repeated text changes",
+        );
     }
   }
 }
@@ -203,7 +231,7 @@ export function mergeText(parent: string, source: string, target: string) {
       }
       // Touching edits, including insertions at an edited boundary, need manual review.
       if (change.start <= other.end && other.start <= change.end)
-        throw new Error("Overlapping text changes");
+        throw new TextMergeError("CP_OVERLAP", "Overlapping text changes");
     }
     if (!duplicate) combined.push(change);
   }

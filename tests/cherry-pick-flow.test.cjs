@@ -662,3 +662,15 @@ for(const targetMode of [false,true]) test('cherry-pick preserves independently 
  assert.equal(env.files['cherry-pick-abcdef12-into-stable-1'][file],'target-first\ncontext-one\ncontext-two\nnew\nlast\n');
  assert.equal(commits(env).length,1);
 });
+
+for (const example of [
+ {code:'CP_TARGET_MISSING',targetFiles:{'app.txt':undefined}},
+ {code:'CP_OVERLAP',targetFiles:{'app.txt':'different\n'}},
+ {code:'CP_PARENT_PATCH',targetFiles:{'app.txt':'different\n'},diffs:[diff('package.json'),diff('app.txt',{diff:'@@ -1 +1 @@\n-missing\n+new\n'})]}
+]) test('cherry-pick reports precise refusal stage without writing: '+example.code,async()=>{
+ const env=fixture({conflict:true,...example});
+ const rows=await env.run();
+ assert.equal(rows[0].status,'error');
+ assert.match(rows[0].html,new RegExp('\\['+example.code+'\\]'));
+ assertNoCommit(env);
+});
