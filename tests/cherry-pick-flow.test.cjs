@@ -478,3 +478,31 @@ test('legacy fallback supports verified creates and deletes with bump disabled',
     assertNoCommit(env);
   });
 });
+
+for (const bump of [false, true]) {
+  test('version conflict accepts GitLab generated_file null, bump=' + bump, async function() {
+    const packageFile = version => JSON.stringify({ name: 'eXpress', version, productName: 'eXpress' });
+    const env = fixture({
+      conflict: true,
+      parentFiles: { 'package.json': packageFile('3.80.2') },
+      sourceFiles: { 'package.json': packageFile('3.80.3') },
+      targetFiles: { 'package.json': packageFile('3.79.63') },
+      diffs: [diff('package.json', { generated_file: null }), diff('app.txt', { generated_file: null })],
+      settings: { cherry_pick_bump_version: bump }
+    });
+    const rows = await env.run();
+    assert.equal(rows[0].status, 'success', rows[0].html);
+    const files = env.files['cherry-pick-abcdef12-into-stable-1'];
+    assert.equal(JSON.parse(files['package.json']).version, bump ? '3.79.64' : '3.79.63');
+    assert.equal(files['app.txt'], 'new\n');
+    assert.equal(commits(env).length, 1);
+  });
+}
+
+test('invalid diff metadata still stops fallback before writes', async function() {
+  const env = fixture({ conflict: true, diffs: [diff('package.json', { generated_file: 'false' }), diff('app.txt')] });
+  const rows = await env.run();
+  assert.equal(rows[0].status, 'error');
+  assert.match(rows[0].html, /Invalid FileDiff response/);
+  assertNoCommit(env);
+});
