@@ -61,8 +61,10 @@ For a configured `package.json` / `version`, the adjacent `package-lock.json`
 is synchronized at `version` and `packages[""].version` when present. Only these
 package-version conflicts are automatically resolved. Non-version changes use a
 three-way comparison; conflicting dependency or metadata changes stop the write.
-Added/deleted/renamed lockfiles and mismatched target package/lockfile versions
-require manual resolution. No lockfile is generated when none exists.
+Added/deleted/renamed lockfiles require manual resolution. The target package.json
+is authoritative: stale root package versions in the lockfile are synchronized
+to its newly bumped version without changing dependency versions. No lockfile
+is generated when none exists.
 
 ## Cherry-pick branch inheritance
 

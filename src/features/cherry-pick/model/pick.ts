@@ -578,7 +578,6 @@ export function createCherryPicker(
                   throw new Error("Invalid package version");
                 const content = bumpLockfile(
                   mergedLockContent ?? decodeContent(lock),
-                  currentVersion,
                   newVersion,
                 );
                 const existing = actions.findIndex(

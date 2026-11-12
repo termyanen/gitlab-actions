@@ -426,7 +426,9 @@ so identical answers to different threads remain independent.
   `package-lock.json` keeps its root `version` and `packages[""].version` in sync.
   Dependency versions are never treated as package versions: conflicting changes
   outside those fields stop the operation; compatible changes are preserved.
-  Automatic resolution refuses incompatible or inconsistent lockfiles, and a
+  Stale root package versions in the target lockfile are synchronized from the
+  bumped package.json version. Automatic resolution refuses incompatible lockfile
+  structures, and a
   lockfile changed by the source commit must also exist in the target.
 
 See [configuration and limits](docs/CONFIGURATION.md) for defaults, inheritance,
