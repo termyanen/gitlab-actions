@@ -674,3 +674,23 @@ for (const example of [
  assert.match(rows[0].html,new RegExp('\\['+example.code+'\\]'));
  assertNoCommit(env);
 });
+
+for(const targetMode of [false,true]) test('parent diff uses exact coordinates for repeated hunks, target mode='+targetMode,async()=>{
+ const file='app.txt';
+ const env=fixture({conflict:true,
+  parentFiles:{[file]:'old\nseparator\nold\n'},
+  sourceFiles:{[file]:'new\nseparator\nold\n'},
+  targetFiles:{[file]:'old\nseparator\ntarget\n'},
+  diffs:[diff('package.json'),diff(file)],
+  settings:{cherry_pick_target_version:targetMode}
+ });
+ const rows=await env.run();
+ assert.equal(rows[0].status,'success',rows[0].html);
+ assert.equal(env.files['cherry-pick-abcdef12-into-stable-1'][file],'new\nseparator\ntarget\n');
+ assert.equal(commits(env).length,1);
+});
+for(const patch of ['@@ -2 +2 @@\n-old\n+new\n','@@ -1,2 +1 @@\n-old\n+new\n']) test('invalid original coordinates/counts refuse replay: '+patch,async()=>{
+ const env=fixture({conflict:true,targetFiles:{'app.txt':'different\n'},diffs:[diff('package.json'),diff('app.txt',{diff:patch})]});
+ assert.match((await env.run())[0].html,/CP_PARENT_PATCH/);
+ assertNoCommit(env);
+});

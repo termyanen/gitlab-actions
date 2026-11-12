@@ -1,9 +1,16 @@
 interface Hunk {
+  oldStart: number;
+  oldCount: number;
+  newCount: number;
   oldLines: string[];
   newLines: string[];
   lastSide: string;
 }
-export function applyUnifiedDiff(content: string, diffText: string) {
+export function applyUnifiedDiff(
+  content: string,
+  diffText: string,
+  position: "context" | "original" = "context",
+) {
   const srcLines = content.split("\n");
   let hadTrailingNewline = false;
   if (srcLines.length && srcLines[srcLines.length - 1] === "") {
@@ -20,9 +27,17 @@ export function applyUnifiedDiff(content: string, diffText: string) {
   for (const [i, line] of diffLines.entries()) {
     if (line === "" && i === diffLines.length - 1) break; // diff's own trailing newline
     if (line.indexOf("@@") === 0) {
-      if (!/^@@ -\d+(,\d+)? \+\d+(,\d+)? @@/.test(line))
-        throw new Error("Bad hunk header");
-      cur = { oldLines: [], newLines: [], lastSide: "" };
+      const header = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/.exec(line);
+      if (!header) throw new Error("Bad hunk header");
+      const oldCount = Number(header[2] ?? 1);
+      cur = {
+        oldStart: Number(header[1]) - (oldCount === 0 ? 0 : 1),
+        oldCount,
+        newCount: Number(header[4] ?? 1),
+        oldLines: [],
+        newLines: [],
+        lastSide: "",
+      };
       hunks.push(cur);
       continue;
     }
@@ -63,7 +78,22 @@ export function applyUnifiedDiff(content: string, diffText: string) {
   let hunkEnd = 0;
   for (const h of hunks) {
     let found = -1;
-    if (!h.oldLines.length) {
+    if (position === "original") {
+      // Only for the exact parent: coordinates disambiguate repeated context.
+      // Callers must still compare the result with the complete source file.
+      if (h.oldCount !== h.oldLines.length || h.newCount !== h.newLines.length)
+        throw new Error("Hunk line count mismatch");
+      if (
+        !Number.isSafeInteger(h.oldStart) ||
+        h.oldStart < pos ||
+        h.oldStart + h.oldLines.length > srcLines.length ||
+        !h.oldLines.every(
+          (line, index) => srcLines[h.oldStart + index] === line,
+        )
+      )
+        throw new Error("Original hunk context mismatch");
+      found = h.oldStart;
+    } else if (!h.oldLines.length) {
       // Pure addition with zero context — unambiguous only for an empty file
       if (!srcLines.length && hunks.length === 1) found = 0;
       else throw new Error("Ambiguous hunk position");

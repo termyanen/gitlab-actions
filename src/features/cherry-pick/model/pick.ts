@@ -466,7 +466,11 @@ export function createCherryPicker(
                 throw new Error(divergedMsg + " [CP_TEXT_DECODE]");
               }
               try {
-                patchedParent = applyUnifiedDiff(parentText, d.diff);
+                patchedParent = applyUnifiedDiff(
+                  parentText,
+                  d.diff,
+                  "original",
+                );
               } catch {
                 throw new Error(divergedMsg + " [CP_PARENT_PATCH]");
               }
