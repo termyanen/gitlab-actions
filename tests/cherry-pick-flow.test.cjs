@@ -568,10 +568,21 @@ test('target-version mode updates an unchanged companion lockfile', async functi
   assert.equal(JSON.parse(env.files['cherry-pick-abcdef12-into-stable-1']['package-lock.json']).packages[''].version,'2.0.1');
 });
 
-test('target-version mode refuses mismatched lockfile before any commit', async function() {
-  const env=fixture({targetFiles:{'package-lock.json':lockJson('9.0.0',true)},settings:{cherry_pick_target_version:true}});
-  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
-});
+for (const targetMode of [false,true]) for (const modern of [false,true]) {
+  test('stale target lockfile versions synchronize from package.json, target mode='+targetMode+', modern='+modern, async function() {
+    const original=JSON.parse(lockJson('9.0.0',modern,'6.5.4'));
+    if(modern) original.packages[''].version='1.2.3';
+    const env=fixture({conflict:true,targetFiles:{'package.json':'{"version":"3.76.12","targetOnly":true}','package-lock.json':JSON.stringify(original)},settings:{cherry_pick_target_version:targetMode,cherry_pick_bump_version:true}});
+    const rows=await env.run();
+    assert.equal(rows[0].status,'success',rows[0].html);
+    const files=env.files['cherry-pick-abcdef12-into-stable-1'];
+    assert.equal(JSON.parse(files['package.json']).version,'3.76.13');
+    const expected={...original,version:'3.76.13'};
+    if(modern) expected.packages={...original.packages,'':{...original.packages[''],version:'3.76.13'}};
+    assert.deepEqual(JSON.parse(files['package-lock.json']),expected);
+    assert.equal(commits(env).length,1);
+  });
+}
 
 test('target-version mode does not bump twice when MR creation is retried', async function() {
   let attempts=0;

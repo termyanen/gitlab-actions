@@ -20,10 +20,10 @@ function readLock(content: string) {
   return { json, root: isRecord(root) ? root : undefined };
 }
 
-export function bumpLockfile(content: string, previous: string, next: string) {
+export function bumpLockfile(content: string, next: string) {
   const { json, root } = readLock(content);
-  if (json.version !== previous || (root && root.version !== previous))
-    throw new Error("package-lock.json version does not match package.json");
+  // package.json is authoritative; stale package versions in the lockfile
+  // are synchronized without modifying dependency versions or metadata.
   json.version = next;
   if (root) root.version = next;
   return JSON.stringify(json, null, 2) + "\n";
