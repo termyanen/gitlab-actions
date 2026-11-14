@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Нет новых изменений для переноса. Версия не повышена." },
   "cherryPickTargetVersion": { "message": "Всегда повышать версию целевой ветки" },
   "cherryPickTargetVersionHint": { "message": "Брать версию целевой ветки даже без конфликтов. Имеет приоритет над повышением только при фолбэке." },
   "cherryPickWriteUncertain": { "message": "Коммит уже мог быть создан. Проверьте целевую ветку перед повтором." },

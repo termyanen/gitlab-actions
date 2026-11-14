@@ -97,5 +97,8 @@ export function mergeVersionJson(
   )
     throw new Error("Missing version at " + path);
   setNestedValue(after, path, version);
-  return JSON.stringify(mergeJson(before, after, destination), null, 2) + "\n";
+  const merged = mergeJson(before, after, destination);
+  return equalJson(merged, destination)
+    ? target
+    : JSON.stringify(merged, null, 2) + "\n";
 }

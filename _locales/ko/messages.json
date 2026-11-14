@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "적용할 새 변경 사항이 없습니다. 버전을 올리지 않았습니다." },
   "cherryPickTargetVersion": { "message": "대상 브랜치 버전을 항상 올리기" },
   "cherryPickTargetVersionHint": { "message": "충돌이 없어도 대상 버전을 사용합니다. 대체 처리 시에만 버전을 올리는 옵션보다 우선합니다." },
   "cherryPickWriteUncertain": { "message": "커밋이 이미 생성되었을 수 있습니다. 다시 시도하기 전에 대상 브랜치를 확인하세요." },

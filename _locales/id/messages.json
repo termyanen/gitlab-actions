@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Tidak ada perubahan baru untuk diterapkan. Versi tidak dinaikkan." },
   "cherryPickTargetVersion": { "message": "Selalu naikkan versi cabang tujuan" },
   "cherryPickTargetVersionHint": { "message": "Gunakan versi tujuan meskipun tanpa konflik. Diutamakan daripada kenaikan hanya saat fallback." },
   "cherryPickWriteUncertain": { "message": "Commit mungkin sudah ada. Periksa cabang tujuan sebelum mencoba lagi." },

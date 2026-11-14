@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Няма нови промени за прилагане. Версията не е увеличена." },
   "cherryPickTargetVersion": { "message": "Винаги увеличавай версията на целевия клон" },
   "cherryPickTargetVersionHint": { "message": "Използвай целевата версия и без конфликти. Има предимство пред увеличаването само при резервния метод." },
   "cherryPickWriteUncertain": { "message": "Комитът може вече да съществува. Проверете целевия клон, преди да опитате отново." },

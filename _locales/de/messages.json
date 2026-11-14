@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Keine neuen Änderungen zu übernehmen. Die Version wurde nicht erhöht." },
   "cherryPickTargetVersion": { "message": "Version des Zielbranches immer erhöhen" },
   "cherryPickTargetVersionHint": { "message": "Zielversion auch ohne Konflikte verwenden. Hat Vorrang vor der Erhöhung nur beim Fallback." },
   "cherryPickWriteUncertain": { "message": "Der Commit könnte bereits existieren. Prüfen Sie den Zielbranch vor einem erneuten Versuch." },

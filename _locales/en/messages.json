@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "No new changes to apply. The version was not increased." },
   "cherryPickTargetVersion": { "message": "Always bump the target branch version" },
   "cherryPickTargetVersionHint": { "message": "Use the target version even without conflicts. Overrides fallback-only bump." },
   "cherryPickWriteUncertain": { "message": "The commit may already exist. Check the target branch before retrying." },

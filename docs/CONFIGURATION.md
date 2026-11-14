@@ -49,6 +49,13 @@ starter set of buttons and sound; updates do not reapply that starter preset.
 
 ## Cherry-pick version selection
 
+Smart replay checks for effective changes before increasing the version. If the
+code and non-version package metadata are already present, it stops with “No new
+changes to apply” and creates no commit or MR; other selected branches continue.
+A version-only conflict cannot be converted into an artificial bump-only replay.
+This also covers already-created/deleted files and applied edits alongside later
+target changes. Native conflict-free cherry-picks retain GitLab's behavior.
+
 `cherry_pick_target_version` defaults to `false`. Enable **Always bump the target
 branch version** under **MR & commits → Cherry-pick branches**, globally or for a
 project. The dialog also allows a per-operation choice. The enabled mode applies

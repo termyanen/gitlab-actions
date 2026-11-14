@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Không có thay đổi mới để áp dụng. Phiên bản không được tăng." },
   "cherryPickTargetVersion": { "message": "Luôn tăng phiên bản của nhánh đích" },
   "cherryPickTargetVersionHint": { "message": "Dùng phiên bản đích ngay cả khi không có xung đột. Ưu tiên hơn tùy chọn chỉ tăng khi dùng phương án dự phòng." },
   "cherryPickWriteUncertain": { "message": "Commit có thể đã tồn tại. Hãy kiểm tra nhánh đích trước khi thử lại." },

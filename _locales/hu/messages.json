@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Nincsenek új alkalmazható módosítások. A verzió nem nőtt." },
   "cherryPickTargetVersion": { "message": "Mindig növelje a célág verzióját" },
   "cherryPickTargetVersionHint": { "message": "Konfliktus nélkül is a célverziót használja. Elsőbbséget élvez a csak tartalék eljáráskor végzett növeléssel szemben." },
   "cherryPickWriteUncertain": { "message": "A commit már létezhet. Újrapróbálás előtt ellenőrizze a célágat." },

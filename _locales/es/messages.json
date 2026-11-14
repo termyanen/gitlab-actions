@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "No hay cambios nuevos que aplicar. No se incrementó la versión." },
   "cherryPickTargetVersion": { "message": "Incrementar siempre la versión de la rama destino" },
   "cherryPickTargetVersionHint": { "message": "Usar la versión destino incluso sin conflictos. Tiene prioridad sobre el incremento solo al resolver conflictos." },
   "cherryPickWriteUncertain": { "message": "El commit podría existir ya. Comprueba la rama destino antes de reintentar." },

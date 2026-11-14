@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "適用する新しい変更はありません。バージョンは更新されませんでした。" },
   "cherryPickTargetVersion": { "message": "ターゲットブランチのバージョンを常に上げる" },
   "cherryPickTargetVersionHint": { "message": "競合がなくてもターゲットのバージョンを使用します。フォールバック時のみの更新より優先されます。" },
   "cherryPickWriteUncertain": { "message": "コミットは既に作成されている可能性があります。再試行前にターゲットブランチを確認してください。" },

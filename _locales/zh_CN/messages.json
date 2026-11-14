@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "没有需要应用的新更改。版本未提升。" },
   "cherryPickTargetVersion": { "message": "始终提升目标分支版本" },
   "cherryPickTargetVersionHint": { "message": "即使没有冲突也使用目标版本。优先于仅在回退处理时提升版本的选项。" },
   "cherryPickWriteUncertain": { "message": "提交可能已存在。请先检查目标分支，再重试。" },
