@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Inga nya ändringar att tillämpa. Versionen höjdes inte." },
   "cherryPickTargetVersion": { "message": "Höj alltid målgrenens version" },
   "cherryPickTargetVersionHint": { "message": "Använd målversionen även utan konflikter. Har företräde framför höjning enbart vid reservmetoden." },
   "cherryPickWriteUncertain": { "message": "Committen kan redan finnas. Kontrollera målgrenen innan du försöker igen." },

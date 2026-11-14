@@ -416,7 +416,8 @@ so identical answers to different threads remain independent.
   profile. An empty project list inherits the global branches; the editor previews
   the effective list. With Smart fallback
   enabled, a verified version-file conflict can be replayed without that file,
-  optionally bumping the target version in the same commit. Other conflicts,
+  optionally bumping the target version in the same commit. Smart replay refuses
+  a bump-only duplicate when no new code or package metadata remains to apply. Other conflicts,
   unsafe changes and uncertain request outcomes stop for inspection.
   Enable **Always bump the target branch version** to use and increment the target
   version even without conflicts, in one commit with the transferred changes.

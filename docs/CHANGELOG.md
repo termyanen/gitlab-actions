@@ -15,6 +15,8 @@
 
 ### Bug fixes
 
+- **Repeated cherry-picks** — smart replay does not create a version-only duplicate when code and package metadata are already applied; other selected branches continue.
+
 - **Daily activity** — use local-day boundaries, include GitLab's “pushed” events and retain earlier merges even if the MR was edited on a later day. Failed requests or invalid responses are reported as errors rather than empty activity.
 - **Jira operations** — fix Server/Data Center assignment when usernames differ from user keys. Keep unsent comment text after failures, distinguish inaccessible issues from expired sessions, and retain partial results of multi-step quick actions.
 - **Background job chains** — persist task checkpoints and resume tracking after extension service-worker restarts, without blindly replaying an already started job.

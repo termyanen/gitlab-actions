@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Brak nowych zmian do zastosowania. Wersja nie została zwiększona." },
   "cherryPickTargetVersion": { "message": "Zawsze zwiększaj wersję gałęzi docelowej" },
   "cherryPickTargetVersionHint": { "message": "Używaj wersji docelowej także bez konfliktów. Ma pierwszeństwo przed zwiększaniem tylko przy trybie awaryjnym." },
   "cherryPickWriteUncertain": { "message": "Commit może już istnieć. Sprawdź gałąź docelową przed ponowną próbą." },

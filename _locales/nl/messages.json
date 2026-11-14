@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Geen nieuwe wijzigingen om toe te passen. De versie is niet verhoogd." },
   "cherryPickTargetVersion": { "message": "Versie van de doelbranch altijd verhogen" },
   "cherryPickTargetVersionHint": { "message": "Gebruik de doelversie ook zonder conflicten. Gaat voor verhogen alleen bij terugval." },
   "cherryPickWriteUncertain": { "message": "De commit bestaat mogelijk al. Controleer de doelbranch voordat u het opnieuw probeert." },

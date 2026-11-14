@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "ไม่มีการเปลี่ยนแปลงใหม่ที่จะนำไปใช้ เวอร์ชันไม่ได้เพิ่มขึ้น" },
   "cherryPickTargetVersion": { "message": "เพิ่มเวอร์ชันของสาขาปลายทางเสมอ" },
   "cherryPickTargetVersionHint": { "message": "ใช้เวอร์ชันปลายทางแม้ไม่มีข้อขัดแย้ง มีลำดับความสำคัญเหนือการเพิ่มเวอร์ชันเฉพาะเมื่อใช้วิธีสำรอง" },
   "cherryPickWriteUncertain": { "message": "อาจมีคอมมิตนี้อยู่แล้ว ตรวจสอบสาขาปลายทางก่อนลองอีกครั้ง" },

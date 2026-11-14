@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Uygulanacak yeni değişiklik yok. Sürüm artırılmadı." },
   "cherryPickTargetVersion": { "message": "Hedef dalın sürümünü her zaman artır" },
   "cherryPickTargetVersionHint": { "message": "Çakışma olmasa da hedef sürümü kullan. Yalnızca yedek yöntemde artırma seçeneğinden önceliklidir." },
   "cherryPickWriteUncertain": { "message": "Commit zaten mevcut olabilir. Tekrar denemeden önce hedef dalı kontrol edin." },

@@ -213,11 +213,11 @@ test('retry reuses an MR created before its response was lost', async function()
   });
 });
 
-test('a version-only conflict becomes one bump-only commit', async function() {
+test('a version-only conflict cannot manufacture a bump-only replay', async function() {
   var env = fixture({ conflict: true, diffs: [diff('package.json')], settings: { cherry_pick_bump_version: true, cherry_pick_create_mr: false } });
-  assert.equal((await env.run())[0].status, 'success');
-  assert.equal(commits(env)[0].body.actions.length, 1);
-  assert.equal(JSON.parse(env.files['stable/1']['package.json']).version, '2.0.1');
+  assert.equal((await env.run())[0].status, 'error');
+  assertNoCommit(env);
+  assert.equal(JSON.parse(env.files['stable/1']['package.json']).version, '2.0.0');
 });
 
 test('a version-only conflict with bump disabled cannot create an empty commit', async function() {
@@ -705,4 +705,43 @@ test('unavailable WASM stops cherry-pick before any commit or MR',async()=>{
  const env=fixture({conflict:true,targetFiles:{'app.txt':'different\n'}});
  env.context.chrome.runtime.sendMessage=(_message,callback)=>callback({code:'CP_MERGE_FAILED'});
  assert.match((await env.run())[0].html,/CP_MERGE_FAILED/);assertNoCommit(env);
+});
+
+for (const targetMode of [false, true]) {
+ for (const createMr of [false, true]) {
+  test(`already applied code never produces a version-only replay: target=${targetMode}, MR=${createMr}`, async()=>{
+   const env=fixture({conflict:true,targetFiles:{'app.txt':'new\n','package-lock.json':lockJson('2.0.0',true)},settings:{cherry_pick_target_version:targetMode,cherry_pick_create_mr:createMr,cherry_pick_bump_version:true}});
+   assert.equal((await env.run())[0].status,'error');
+   assertNoCommit(env);
+   assert.equal(JSON.parse(env.files['stable/1']['package.json']).version,'2.0.0');
+   assert.equal(JSON.parse(env.files['stable/1']['package-lock.json']).version,'2.0.0');
+  });
+ }
+ test(`already applied edits with later target changes do not bump: target=${targetMode}`,async()=>{
+  const env=fixture({conflict:true,parentFiles:{'app.txt':'a\nb\nc\nd\ne\n'},sourceFiles:{'app.txt':'A\nb\nc\nd\ne\n'},targetFiles:{'app.txt':'A\nb\nc\nd\nE\n'},diffs:[diff('package.json'),diff('app.txt',{diff:'@@ -1,5 +1,5 @@\n-a\n+A\n b\n c\n d\n e\n'})],settings:{cherry_pick_target_version:targetMode,cherry_pick_bump_version:true}});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+ });
+ test(`already created/deleted files do not bump: target=${targetMode}`,async()=>{
+  const env=fixture({conflict:true,parentFiles:{'gone.txt':'gone\n'},sourceFiles:{'added.txt':'added\n','gone.txt':undefined},targetFiles:{'added.txt':'added\n','gone.txt':undefined},diffs:[diff('package.json'),diff('added.txt',{new_file:true}),diff('gone.txt',{deleted_file:true})],settings:{cherry_pick_target_version:targetMode,cherry_pick_bump_version:true}});
+  assert.equal((await env.run())[0].status,'error');assertNoCommit(env);
+ });
+}
+
+test('bulk target-version picks continue after an already applied target',async()=>{
+ const env=fixture({targetFiles:{'app.txt':'new\n'},existingBranches:{'stable/2':{'app.txt':'old\n','package.json':'{"version":"3.0.0","keep":"да"}'}},settings:{cherry_pick_branches:['stable/1','stable/2'],cherry_pick_target_version:true,cherry_pick_create_mr:false}});
+ assert.deepEqual((await env.run()).map(row=>row.status),['error','success']);
+ assert.equal(commits(env).length,1);
+ assert.equal(commits(env)[0].body.branch,'stable/2');
+ assert.equal(JSON.parse(env.files['stable/1']['package.json']).version,'2.0.0');
+ assert.equal(JSON.parse(env.files['stable/2']['package.json']).version,'3.0.1');
+});
+for (const changed of [false,true]) test(`manifest-only metadata changes are counted before bump: changed=${changed}`,async()=>{
+ const env=fixture({parentFiles:{'package.json':'{"version":"1.0.0","script":"old"}'},sourceFiles:{'package.json':'{"version":"1.0.1","script":"new"}'},targetFiles:{'package.json':JSON.stringify({version:'2.0.0',script:changed?'old':'new'})},diffs:[diff('package.json')],settings:{cherry_pick_target_version:true}});
+ assert.equal((await env.run())[0].status,changed?'success':'error');
+ if(changed)assert.equal(commits(env).length,1);else assertNoCommit(env);
+});
+for (const changed of [false,true]) test(`lockfile-only dependency changes are counted before bump: changed=${changed}`,async()=>{
+ const env=fixture({parentFiles:{'package-lock.json':lockJson('1.0.0',true,'6.0.0')},sourceFiles:{'package-lock.json':lockJson('1.0.1',true,'7.0.0')},targetFiles:{'package-lock.json':lockJson('2.0.0',true,changed?'6.0.0':'7.0.0')},diffs:[diff('package.json'),diff('package-lock.json')],settings:{cherry_pick_target_version:true}});
+ assert.equal((await env.run())[0].status,changed?'success':'error');
+ if(changed)assert.equal(commits(env).length,1);else assertNoCommit(env);
 });

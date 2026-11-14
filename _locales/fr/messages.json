@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Aucune nouvelle modification à appliquer. La version n’a pas été incrémentée." },
   "cherryPickTargetVersion": { "message": "Toujours incrémenter la version de la branche cible" },
   "cherryPickTargetVersionHint": { "message": "Utiliser la version cible même sans conflit. Prioritaire sur l’incrémentation uniquement en cas de repli." },
   "cherryPickWriteUncertain": { "message": "Le commit existe peut-être déjà. Vérifiez la branche cible avant de réessayer." },

@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Nie sú žiadne nové zmeny na použitie. Verzia sa nezvýšila." },
   "cherryPickTargetVersion": { "message": "Vždy zvýšiť verziu cieľovej vetvy" },
   "cherryPickTargetVersionHint": { "message": "Použiť cieľovú verziu aj bez konfliktov. Má prednosť pred zvýšením iba pri náhradnom postupe." },
   "cherryPickWriteUncertain": { "message": "Commit už môže existovať. Pred ďalším pokusom skontrolujte cieľovú vetvu." },

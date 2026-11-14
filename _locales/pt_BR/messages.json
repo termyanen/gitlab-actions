@@ -1,4 +1,5 @@
 {
+  "cherryPickNoApplicableChanges": { "message": "Não há novas alterações para aplicar. A versão não foi incrementada." },
   "cherryPickTargetVersion": { "message": "Sempre incrementar a versão da branch de destino" },
   "cherryPickTargetVersionHint": { "message": "Usar a versão de destino mesmo sem conflitos. Tem prioridade sobre o incremento apenas no fallback." },
   "cherryPickWriteUncertain": { "message": "O commit pode já existir. Verifique a branch de destino antes de tentar novamente." },

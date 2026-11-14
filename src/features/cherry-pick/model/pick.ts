@@ -173,8 +173,7 @@ export function createCherryPicker(
             "Smart fallback only handles version file conflicts. Conflict is in another file",
         );
 
-      // A confirmed conflict can become a bump-only commit. Legacy
-      // ambiguous errors also require verifiable non-version changes.
+      // Version changes alone must never turn an empty replay into a commit.
       const filtered = diffs.filter(function (d) {
         return (
           d.new_path !== versionFile &&
@@ -182,8 +181,6 @@ export function createCherryPicker(
           (!lockfile || (d.new_path !== lockfile && d.old_path !== lockfile))
         );
       });
-      if (!filtered.length && !lockDiff && (requireFileChanges || !bump))
-        throw new Error("No files left after excluding " + versionFile);
 
       const parentSha = commitInfo.parent_ids && commitInfo.parent_ids[0];
       if (!parentSha) throw new Error("Cannot determine parent commit");
@@ -236,6 +233,7 @@ export function createCherryPicker(
             })
           : Promise.resolve();
       let mergedVersionFile: RepositoryFile | undefined;
+      let versionFileHasChanges = false;
       const versionOnlyCheck = !hasVersionFile
         ? Promise.resolve()
         : Promise.all([
@@ -278,6 +276,7 @@ export function createCherryPicker(
                   decodeContent(target),
                   vPath,
                 );
+                versionFileHasChanges = merged !== decodeContent(target);
                 mergedVersionFile = {
                   ...target,
                   content: btoa(unescape(encodeURIComponent(merged))),
@@ -377,6 +376,7 @@ export function createCherryPicker(
                 const sourceFile = pair[0];
                 const targetFile = pair[1];
                 if (targetFile) {
+                  if (targetFile.content === sourceFile.content) return null;
                   throw new Error(
                     (msg("cherryPickFallbackDiverged") ||
                       "File already exists in target branch — cannot safely cherry-pick") +
@@ -431,8 +431,8 @@ export function createCherryPicker(
               if (requireFileChanges) {
                 if (parentFile.content === sourceFile.content)
                   throw new Error(divergedMsg + " [CP_UNCHANGED_SOURCE]");
-                if (targetFile.content === sourceFile.content) return null;
               }
+              if (targetFile.content === sourceFile.content) return null;
               if (parentFile.content === targetFile.content) {
                 return {
                   action: "update",
@@ -493,6 +493,7 @@ export function createCherryPicker(
                     : "CP_MERGE_FAILED";
                 throw new Error(divergedMsg + " [" + code + "]");
               }
+              if (patchedTarget === targetText) return null;
               return {
                 action: "update",
                 file_path: d.new_path,
@@ -527,8 +528,8 @@ export function createCherryPicker(
                 : { last_commit_id: targetLock.last_commit_id }),
             });
           }
-          if (!actions.length && (requireFileChanges || !bump))
-            throw new Error("No applicable file changes for target branch");
+          if (!actions.length && !versionFileHasChanges)
+            throw new Error(msg("cherryPickNoApplicableChanges"));
           // Optionally bump version in the same commit
           if (!bump) {
             const commitMsg =
