@@ -285,6 +285,43 @@ test('raw changes recover files omitted by display limits without losing already
   assert.equal(env.posts().length, 0);
 });
 
+test('a limited file list verifies six of nineteen comments, and one MR download verifies all nineteen', async function() {
+  var files = Array.from({ length: 18 }, function(_, i) {
+    var filename = 'examples/file-' + (i + 1) + '.txt';
+    return { old_path: filename, new_path: filename, diff: '@@ -0,0 +1,2 @@\n+first line\n+second line\n' };
+  });
+  var comments = files.map(function(file, i) {
+    return inline({ id: 'R' + (i + 1), path: file.new_path, line: 1, code: 'first line', body: 'Check the first line.' });
+  });
+  comments.push(inline({ id: 'R19', path: files[17].new_path, line: 2, code: 'second line', body: 'Check the second line.' }));
+  var listed = files.slice(0, 6);
+  var fullDiff = files.map(function(file) {
+    var filename = file.new_path;
+    return 'diff --git a/' + filename + ' b/' + filename + '\nnew file mode 100644\n--- /dev/null\n+++ b/' + filename + '\n' + file.diff;
+  }).join('');
+  var downloadAvailable = false, downloads = 0;
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response(listed, 200, { 'x-next-page': '' });
+    if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: listed });
+    if (url.pathname.endsWith('.diff')) {
+      downloads++;
+      return downloadAvailable ? new Response(fullDiff) : new Response(null, { status: 404 });
+    }
+    return defaults(url, init);
+  } });
+  var input = env.json(comments);
+  var limited = await env.api.prepare(env.context, input);
+  assert.deepEqual(Array.from(limited.items.filter(item => item.status === 'ready'), item => item.id), comments.slice(0, 6).map(item => item.id));
+
+  downloadAvailable = true;
+  downloads = 0;
+  var recovered = await env.api.prepare(env.context, input);
+  assert.deepEqual(Array.from(recovered.items, item => [item.status, item.position?.new_path, item.position?.new_line]),
+    comments.map(item => ['ready', item.path, item.line]));
+  assert.equal(downloads, 1);
+  assert.equal(env.posts().length, 0);
+});
+
 test('the downloadable MR diff recovers omitted files once, on the right side and revision', async function() {
   var patch = [
     'diff --git a/added file.js b/added file.js', 'new file mode 100644', '--- /dev/null', '+++ b/added file.js\t', '@@ -0,0 +1 @@', '+  added();',
