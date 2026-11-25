@@ -224,7 +224,7 @@ test('legacy changes fallback and relative-root legacy MR routes preserve exact 
     return defaults(url, init);
   } });
   var plan = await env.api.prepare(env.context, env.json());
-  assert.equal(plan.items[0].status, 'ready'); assert.ok(plan.warnings.some(function(w) { return /limited/.test(w); }));
+  assert.equal(plan.items[0].status, 'ready'); assert.equal(plan.warnings.length, 0);
   await send(env, plan);
   assert.ok(env.requests.every(function(r) { return r.url.pathname.indexOf('/gitlab/api/v4/') === 0; }));
 });
@@ -281,7 +281,70 @@ test('raw changes recover files omitted by display limits without losing already
   assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'ready']);
   assert.equal(plan.items[1].position.old_path, 'src/previous.js');
   assert.equal(plan.items[1].position.head_sha, HEAD);
-  assert.ok(plan.warnings.some(function(text) { return /limited/.test(text); }));
+  assert.equal(plan.warnings.length, 0);
+  assert.equal(env.posts().length, 0);
+});
+
+test('the downloadable MR diff recovers omitted files once, on the right side and revision', async function() {
+  var patch = [
+    'diff --git a/added file.js b/added file.js', 'new file mode 100644', '--- /dev/null', '+++ b/added file.js\t', '@@ -0,0 +1 @@', '+  added();',
+    'diff --git a/previous.js b/renamed.js', 'rename from previous.js', 'rename to renamed.js', '--- a/previous.js', '+++ b/renamed.js',
+    '@@ -1,2 +1,2 @@', '-removed();', '+replacement();', ' context();',
+    'diff --git "a/\\303\\251.js" "b/\\303\\251.js"', 'deleted file mode 100644', '--- "a/\\303\\251.js"', '+++ /dev/null', '@@ -1 +0,0 @@', '-deleted();', ''
+  ].join('\n');
+  var env = environment({ root: '/gitlab', handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: [] });
+    if (url.pathname.endsWith('.diff')) return new Response(patch);
+    return defaults(url, init);
+  } });
+  var comments = [inline(), inline({ id: 'added', path: 'added file.js', line: 1, code: '  added();' }),
+    inline({ id: 'old', path: 'previous.js', side: 'old', line: 1, code: 'removed();' }),
+    inline({ id: 'context', path: 'renamed.js', line: 2, code: 'context();' }),
+    inline({ id: 'deleted', path: 'é.js', side: 'old', line: 1, code: 'deleted();' }),
+    inline({ id: 'wrong', path: 'added file.js', line: 1, code: 'added();' }),
+    inline({ id: 'absent', path: 'absent.js', line: 1 })];
+  var plan = await env.api.prepare(env.context, env.json(comments));
+  assert.deepEqual(Array.from(plan.items, item => item.status), ['ready', 'ready', 'ready', 'ready', 'ready', 'invalid', 'invalid']);
+  assert.deepEqual(JSON.parse(JSON.stringify(plan.items[1].position)), position({ old_path: 'added file.js', new_path: 'added file.js', new_line: 1 }));
+  assert.deepEqual(JSON.parse(JSON.stringify(plan.items[2].position)), position({ old_path: 'previous.js', new_path: 'renamed.js', old_line: 1, new_line: null }));
+  assert.equal(plan.items[3].position.old_line, 2);
+  assert.equal(plan.items[4].position.new_path, 'é.js');
+  assert.deepEqual(env.requests.filter(r => r.url.pathname.endsWith('.diff')).map(r => r.url.href), [env.context.webUrl + '.diff']);
+  assert.equal(env.posts().length, 0);
+});
+
+test('an incomplete file list can still use the MR download; ambiguous paths and partial hunks stay blocked', async function() {
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response([], 200, { 'x-next-page': '', 'x-total': '1000' });
+    if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+    if (url.pathname.endsWith('.diff')) return new Response([
+      'diff --git a/source.js b/copied.js', 'copy from source.js', 'copy to copied.js',
+      'diff --git a/source.js b/source.js', '--- a/source.js', '+++ b/source.js', '@@ -1 +1 @@', '-old', '+new',
+      'diff --git a/partial.js b/partial.js', '--- a/partial.js', '+++ b/partial.js', '@@ -1,2 +1,2 @@', ' first', ''
+    ].join('\n'));
+    return defaults(url, init);
+  } });
+  var plan = await env.api.prepare(env.context, env.json([
+    inline({ path: 'source.js', line: 1, code: 'new' }),
+    inline({ id: 'old', path: 'source.js', side: 'old', line: 1, code: 'old' }),
+    inline({ id: 'partial', path: 'partial.js', line: 1, code: 'first' })
+  ]));
+  assert.deepEqual(Array.from(plan.items, item => item.status), ['ready', 'invalid', 'invalid']);
+  assert.match(plan.items[1].message, /More than one/);
+  assert.match(plan.items[2].message, /incomplete/);
+});
+
+test('a change of head during the MR download invalidates recovered positions', async function() {
+  var env = environment({ handler: function(url, init, defaults, state) {
+    if (url.pathname.endsWith('/diffs')) return response([]);
+    if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+    if (url.pathname.endsWith('.diff')) {
+      state.refs.head_sha = 'd'.repeat(40);
+      return new Response('diff --git a/src/new.js b/src/new.js\n--- a/src/new.js\n+++ b/src/new.js\n@@ -0,0 +3 @@\n+  changed();\n');
+    }
+    return defaults(url, init);
+  } });
+  await assert.rejects(env.api.prepare(env.context, env.json()), /changed while/);
   assert.equal(env.posts().length, 0);
 });
 
@@ -344,7 +407,7 @@ test('failed or unverifiable raw recovery leaves only the affected comments bloc
     var plan = await env.api.prepare(env.context, env.json([inline(), inline({ id: 'missing', path: 'missing.js' })]));
     assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'invalid']);
     assert.equal(plan.items[1].position, null);
-    assert.ok(plan.warnings.length > 0);
+    assert.ok(plan.warnings.length > 0 || /More than one file/.test(plan.items[1].message));
     await send(env, plan, ['missing']);
     assert.equal(env.posts().length, 0);
   }

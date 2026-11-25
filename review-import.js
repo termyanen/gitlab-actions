@@ -59,7 +59,9 @@
   function endpoint(context) { return '/projects/' + encodeURIComponent(context.projectPath) + '/merge_requests/' + context.iid; }
   async function boundedDiffText(response, maxBytes) {
     function tooLarge() {
-      return new Error(typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage('aiReviewImportDiffResponseTooLarge') || 'The additional diff exceeds the 16 MiB import limit. Only comments on verified lines can be imported.');
+      var error = new Error(typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage('aiReviewImportDiffResponseTooLarge') || 'The additional diff exceeds the 16 MiB import limit. Only comments on verified lines can be imported.');
+      error.diffTooLarge = true;
+      return error;
     }
     if (Number(header(response, 'Content-Length')) > maxBytes) {
       if (response.body && response.body.cancel) { try { await response.body.cancel(); } catch (e) { /* The request may already be closed. */ } }
@@ -93,6 +95,7 @@
     if (context.origin !== currentOrigin() || new URL(context.apiRoot).origin !== currentOrigin()) throw new Error('The current GitLab site has changed. Reopen the import.');
     assertCurrentPage(context);
     var write = payload !== undefined;
+    var download = !write && path === '.diff';
     var controller = new AbortController();
     var cancel;
     var timer;
@@ -103,14 +106,14 @@
     });
     try {
       return await Promise.race([timeout, (async function() {
-        var headers = { Accept: 'application/json' };
+        var headers = { Accept: download ? 'text/plain' : 'application/json' };
         if (write) {
           if (!options.csrfToken || typeof options.csrfToken !== 'string') throw new Error('Reload the GitLab page before sending comments.');
           headers['Content-Type'] = 'application/json';
           headers['X-CSRF-Token'] = options.csrfToken;
           headers['X-Requested-With'] = 'XMLHttpRequest';
         }
-        var response = await fetch(context.apiRoot + path, {
+        var response = await fetch(download ? context.webUrl + '.diff' : context.apiRoot + path, {
           method: write ? method || 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store', redirect: 'error',
           signal: controller.signal, headers: headers, body: write ? JSON.stringify(payload) : undefined
         });
@@ -121,6 +124,7 @@
         }
         if (response.redirected) throw new Error('GitLab redirected the request. Reload the page and sign in again.');
         var text = options.maxBytes ? await boundedDiffText(response, options.maxBytes) : await response.text();
+        if (download) return { data: text, response: response };
         var result;
         try { result = JSON.parse(text); } catch (e) { throw new Error('GitLab returned an unreadable response.'); }
         return { data: result, response: response };
@@ -290,52 +294,115 @@
       (data.diff_refs != null && !sameRefs(data.diff_refs, refs))) throw new Error('The merge request changed while the review was being checked. Check the review again.');
     return data.changes;
   }
+  // Git quotes unusual paths and may encode UTF-8 bytes as octal escapes.
+  function patchPath(token, prefix) {
+    if (token.startsWith('"')) {
+      if (!/^"(?:[^"\\]|\\(?:["\\]|[0-3][0-7]{2}))*"$/.test(token)) return null;
+      try {
+        token = decodeURIComponent(token.slice(1, -1).replace(/%/g, '%25').replace(/\\(["\\]|[0-3][0-7]{2})/g, function(_, escape) {
+          return escape.length === 1 ? escape : '%' + parseInt(escape, 8).toString(16).padStart(2, '0');
+        }));
+      } catch (error) { return null; }
+    }
+    return token.startsWith(prefix) ? token.slice(prefix.length) : null;
+  }
+
+  function downloadedChanges(patch, targets) {
+    if (!patch.startsWith('diff --git ') || !patch.endsWith('\n')) throw new Error('GitLab did not return a complete MR diff.');
+    var paths = new Set(targets.map(function(target) { return target.path; }));
+    var files = [];
+    patch.split(/^diff --git /m).slice(1).forEach(function(section) {
+      var hunk = section.indexOf('\n@@ ');
+      var header = hunk < 0 ? section : section.slice(0, hunk);
+      var markers = header.match(/\n--- ([^\n]+)\n\+\+\+ ([^\n]+)$/);
+      if (!markers) {
+        // A pure copy/rename has no hunk but its paths still count when checking uniqueness.
+        var rename = header.match(/\n(?:rename|copy) from ([^\n]+)\n(?:rename|copy) to ([^\n]+)\n/);
+        if (rename) {
+          var from = patchPath(rename[1], ''), to = patchPath(rename[2], '');
+          if (paths.has(from) || paths.has(to)) files.push({ old_path: from, new_path: to, diff: '' });
+        }
+        return;
+      }
+      var left = markers[1].replace(/\t$/, ''), right = markers[2].replace(/\t$/, '');
+      var oldToken = left === '/dev/null' ? right.replace(/^("?)b\//, '$1a/') : left;
+      var newToken = right === '/dev/null' ? left.replace(/^("?)a\//, '$1b/') : right;
+      if (section.slice(0, section.indexOf('\n')) !== oldToken + ' ' + newToken) return;
+      var oldPath = patchPath(oldToken, 'a/'), newPath = patchPath(newToken, 'b/');
+      if (oldPath && newPath && (paths.has(oldPath) || paths.has(newPath))) {
+        files.push({ old_path: oldPath, new_path: newPath, diff: section.slice(hunk + 1) });
+      }
+    });
+    return files;
+  }
+
+  function targetKey(target) { return target.side + ':' + target.path; }
+
+  function verifyTargets(result, targets, files) {
+    var parsed = new Map();
+    return targets.filter(function(target) {
+      var key = targetKey(target);
+      var matches = files.filter(function(file) { return file[target.side + '_path'] === target.path; });
+      if (!matches.length) return true;
+      var known = result.get(key);
+      if (matches.length !== 1 || (known && diffKey(known) !== diffKey(matches[0]))) {
+        result.set(key, { error: 'More than one file matches this path across the loaded merge request changes.' });
+        return false;
+      }
+      var file = matches[0];
+      if (!parsed.has(file)) parsed.set(file, verifiedDiff(file));
+      result.set(key, parsed.get(file));
+      return !!parsed.get(file).error;
+    });
+  }
+
   async function loadDiffs(context, options, warnings, targets, refs) {
+    var result = new Map();
+    var needed = Array.from(new Map(targets.map(function(target) { return [targetKey(target), target]; })).values());
     var files;
     try {
       files = await paginate(context, endpoint(context) + '/diffs', options, diffKey);
     } catch (error) {
       if (error.name === 'AbortError') throw error;
-      if (!unsupported(error)) { warning(warnings, 'File changes could not be fully loaded: ' + error.message); return []; }
-      try {
-        var legacy = (await request(context, endpoint(context) + '/changes', options)).data;
-        files = changeFiles(legacy, context, refs);
-        if (legacy.overflow) warning(warnings, 'GitLab limited the file changes. Only comments on verified lines can be imported.');
-      } catch (fallbackError) {
-        if (fallbackError.name === 'AbortError') throw fallbackError;
-        warning(warnings, 'File changes could not be loaded: ' + fallbackError.message); return [];
+      if (error.httpStatus === 401 || error.httpStatus === 403) { warning(warnings, error.message); return result; }
+      files = [];
+      if (unsupported(error)) {
+        try {
+          var legacy = (await request(context, endpoint(context) + '/changes', options)).data;
+          files = changeFiles(legacy, context, refs);
+        } catch (fallbackError) {
+          if (fallbackError.name === 'AbortError') throw fallbackError;
+          warning(warnings, 'File changes could not be loaded: ' + fallbackError.message); return result;
+        }
       }
     }
-    var result = files.map(verifiedDiff);
-    var needed = targets.filter(function(target) {
-      var matches = result.filter(function(file) { return file[target.side + '_path'] === target.path; });
-      return !matches.length || (matches.length === 1 && matches[0].error);
-    });
+    needed = verifyTargets(result, needed, files);
     if (!needed.length) return result;
+
+    var bounded = Object.assign({}, options, { maxBytes: MAX_RAW_DIFF_BYTES });
+    var recoveryError;
     try {
-      // One lazy request per check, shared by all missing/truncated files.
-      // /raw_diffs also has display limits; access_raw_diffs bypasses the
-      // database-backed limit and remains available on older API v4 servers.
-      var raw = (await request(context, endpoint(context) + '/changes?access_raw_diffs=true', Object.assign({}, options, { maxBytes: MAX_RAW_DIFF_BYTES }))).data;
-      var recoveredFiles = changeFiles(raw, context, refs);
-      needed.forEach(function(target) {
-        var matches = result.filter(function(file) { return file[target.side + '_path'] === target.path; });
-        if (matches.length > 1 || (matches.length === 1 && !matches[0].error)) return;
-        var candidates = recoveredFiles.filter(function(file) { return file[target.side + '_path'] === target.path; });
-        if (candidates.length !== 1 || (matches.length && diffKey(candidates[0]) !== diffKey(matches[0]))) return;
-        var recovered = verifiedDiff(candidates[0]);
-        if (recovered.error) return;
-        if (matches.length) result[result.indexOf(matches[0])] = recovered;
-        else result.push(recovered);
-      });
-      if (raw.overflow || needed.some(function(target) {
-        var matches = result.filter(function(file) { return file[target.side + '_path'] === target.path; });
-        return matches.length !== 1 || matches[0].error;
-      })) warning(warnings, 'GitLab limited the file changes. Only comments on verified lines can be imported.');
+      var raw = (await request(context, endpoint(context) + '/changes?access_raw_diffs=true', bounded)).data;
+      needed = verifyTargets(result, needed, changeFiles(raw, context, refs));
     } catch (error) {
       if (error.name === 'AbortError') throw error;
-      var message = typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage('aiReviewImportDiffRecoveryFailed', [error.message]);
-      warning(warnings, message || 'Additional file changes could not be loaded: ' + error.message);
+      if (!error.diffTooLarge && !unsupported(error)) { warning(warnings, error.message); return result; }
+      recoveryError = error;
+    }
+    if (needed.length) {
+      try {
+        var download = await request(context, '.diff', bounded);
+        needed = verifyTargets(result, needed, downloadedChanges(download.data, needed));
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        recoveryError = recoveryError || error;
+      }
+      if (needed.length) {
+        if (recoveryError) {
+          var message = typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage('aiReviewImportDiffRecoveryFailed', [recoveryError.message]);
+          warning(warnings, message || 'Additional file changes could not be loaded: ' + recoveryError.message);
+        } else warning(warnings, 'GitLab did not provide a verifiable diff for every requested file. Only comments on verified lines can be imported.');
+      }
     }
     return result;
   }
@@ -659,7 +726,7 @@
     if (stale) warning(warnings, replyNotice(true));
     if (hasReplies && input.head_sha == null) warning(warnings, replyNotice(false));
     var inlineTargets = !stale ? input.comments.filter(function(item) { return item.type !== 'reply' && item.path !== null && !itemError(item); }) : [];
-    var loaded = await Promise.all([inlineTargets.length ? loadDiffs(context, options, warnings, inlineTargets, meta.refs) : Promise.resolve([]), existingNotes(context, options)]);
+    var loaded = await Promise.all([inlineTargets.length ? loadDiffs(context, options, warnings, inlineTargets, meta.refs) : Promise.resolve(new Map()), existingNotes(context, options)]);
     var files = loaded[0];
     var existing = loaded[1];
     if (!existing.draftSupported) warning(warnings, 'This GitLab version does not provide draft comments through the API. Publishing comments remains available.');
@@ -693,14 +760,14 @@
           }
         }
       } else if (!error && source.path !== null) {
-        var matches = files.filter(function(file) { return file[source.side + '_path'] === source.path; });
-        if (matches.length !== 1) error = 'This file could not be uniquely found in the loaded merge request changes.';
-        else if (matches[0].error) error = matches[0].error;
+        var file = files.get(targetKey(source));
+        if (!file) error = 'GitLab did not include this file in the loaded merge request changes.';
+        else if (file.error) error = file.error;
         else {
-          var line = matches[0].lines[source.side].get(source.line);
+          var line = file.lines[source.side].get(source.line);
           if (!line) error = 'This line is not in the verified diff. Choose a line from the merge request changes.';
           else if (line.code !== source.code) error = 'The code on this line does not match the review. Ask the AI to check the exact line.';
-          else item.position = Object.assign({ position_type: 'text', old_path: matches[0].old_path, new_path: matches[0].new_path }, meta.refs, { old_line: line.old_line, new_line: line.new_line });
+          else item.position = Object.assign({ position_type: 'text', old_path: file.old_path, new_path: file.new_path }, meta.refs, { old_line: line.old_line, new_line: line.new_line });
         }
       }
       if (error) { item.status = 'invalid'; item.message = error; }

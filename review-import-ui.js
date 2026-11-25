@@ -86,6 +86,11 @@
     return item.status === 'ready' && (!result || result.status === 'failed' || result.status === 'skipped');
   }
 
+  function setCheckedStatus(state) {
+    var ready = state.plan.items.filter(function(item) { return selectable(state, item); }).length;
+    setStatus(state, state.t('aiReviewImportChecked', [ready, state.plan.items.length]));
+  }
+
   function editable(state, item) {
     var result = state.results.get(item.id) || item;
     return item.editable !== false && ['ready', 'invalid', 'failed', 'skipped'].indexOf(result.status) !== -1;
@@ -310,7 +315,7 @@
     if (state.controller) state.controller.abort();
     state.busy = '';
     state.editor = null;
-    setStatus(state, state.t('aiReviewImportChecked', [state.selected.size]));
+    setCheckedStatus(state);
     render(state);
   }
 
@@ -347,7 +352,7 @@
       state.input.value = JSON.stringify(plan.source, null, 2);
       state.editor = null;
       warnings(state, plan.warnings || []);
-      setStatus(state, state.t('aiReviewImportChecked', [state.selected.size]));
+      setCheckedStatus(state);
     }).catch(function(error) {
       if (!current(state) || state.run !== run || error.name === 'AbortError') return;
       editor.error = state.t('aiReviewImportEditError') + ': ' + error.message;
@@ -439,7 +444,7 @@
         (plan.headSha ? ' · ' + plan.headSha.slice(0, 12) : '');
       plan.items.forEach(function(item) { if (item.status === 'ready') state.selected.add(item.id); });
       warnings(state, plan.warnings || []);
-      setStatus(state, state.t('aiReviewImportChecked', [state.selected.size]));
+      setCheckedStatus(state);
     }).catch(function(error) {
       if (current(state) && state.run === run && error.name !== 'AbortError') setStatus(state, state.t('aiReviewImportError') + ': ' + error.message, true);
     }).then(function() {

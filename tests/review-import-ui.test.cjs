@@ -106,6 +106,7 @@ test('import starts with read-only actions and never publishes when previewing',
   assert.equal(env.button('aiReviewImportValidate').disabled, true);
   assert.equal(env.prompts.length + env.preparations.length + env.publications.length, 0);
   await env.preview([item('a'), item('b', 'invalid', { message: 'Line changed' }), item('c', 'duplicate')]);
+  assert.equal(env.document.querySelector('.gl-review-status').textContent, 'Ready to send: 1 of 3.');
   assert.deepEqual(env.checked(), ['a']);
   assert.equal(env.choose('b').disabled, true);
   assert.equal(env.choose('c').disabled, true);
@@ -117,6 +118,7 @@ test('publish sends only selected ready comments with current CSRF token and exp
   var env = await setup();
   await env.preview([item('a'), item('b')]);
   await env.change(env.choose('b'), false);
+  assert.equal(env.document.querySelector('.gl-review-status').textContent, 'Ready to send: 2 of 2.');
   var token = env.document.createElement('meta');
   token.setAttribute('name', 'csrf-token');
   token.setAttribute('content', 'current-csrf');

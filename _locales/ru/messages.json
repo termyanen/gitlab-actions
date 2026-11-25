@@ -556,7 +556,7 @@
   "aiReviewImportCopyFailed": {"message": "Буфер обмена недоступен. Выделите текст ниже и скопируйте вручную."},
   "aiReviewImportUnsafeRetry": {"message": "Не удалось подтвердить отправку. Перед повторной попыткой проверьте комментарии в GitLab."},
   "aiReviewImportPrompt": {"message": "Промпт для ИИ"},
-  "aiReviewImportChecked": {"message": "Готово к отправке: $1. Проверьте остальные комментарии.", "placeholders": {"1": {"content": "$1"}}},
+  "aiReviewImportChecked": {"message": "Готово к отправке: $1 из $2.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {"message": "Остановить отправку"},
   "aiReviewImportRecheck": {"message": "Проверить снова"},
   "aiReviewImportError": {"message": "Не удалось выполнить действие"},

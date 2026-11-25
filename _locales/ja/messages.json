@@ -546,7 +546,7 @@
   "aiReviewImportCopyFailed": {"message": "クリップボードを使用できません。下のテキストを選択し、手動でコピーしてください。"},
   "aiReviewImportUnsafeRetry": {"message": "送信結果を確認できませんでした。再試行する前にGitLabを確認してください。"},
   "aiReviewImportPrompt": {"message": "AI用プロンプト"},
-  "aiReviewImportChecked": {"message": "送信可能：$1件。その他のコメントを確認してください。", "placeholders": {"1": {"content": "$1"}}},
+  "aiReviewImportChecked": {"message": "送信可能：$2 件中 $1 件。", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {"message": "送信を停止"},
   "aiReviewImportRecheck": {"message": "再確認"},
   "aiReviewImportError": {"message": "操作を完了できませんでした"},

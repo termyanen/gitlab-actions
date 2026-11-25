@@ -556,7 +556,7 @@
   "aiReviewImportCopyFailed": {"message": "Clipboard unavailable. Select the text below and copy it manually."},
   "aiReviewImportUnsafeRetry": {"message": "Delivery could not be confirmed. Check GitLab before retrying."},
   "aiReviewImportPrompt": {"message": "Prompt for AI"},
-  "aiReviewImportChecked": {"message": "Ready: $1. Other comments need attention.", "placeholders": {"1": {"content": "$1"}}},
+  "aiReviewImportChecked": {"message": "Ready to send: $1 of $2.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {"message": "Stop sending"},
   "aiReviewImportRecheck": {"message": "Check again"},
   "aiReviewImportError": {"message": "Could not complete the operation"},

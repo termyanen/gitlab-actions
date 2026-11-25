@@ -546,7 +546,7 @@
   "aiReviewImportCopyFailed": {"message": "剪贴板不可用。请选择下方文本并手动复制。"},
   "aiReviewImportUnsafeRetry": {"message": "无法确认发送结果。重试前请先检查 GitLab。"},
   "aiReviewImportPrompt": {"message": "AI 提示词"},
-  "aiReviewImportChecked": {"message": "可发送：$1 条。其他评论需要检查。", "placeholders": {"1": {"content": "$1"}}},
+  "aiReviewImportChecked": {"message": "可发送：共 $2 条，其中 $1 条已就绪。", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {"message": "停止发送"},
   "aiReviewImportRecheck": {"message": "重新检查"},
   "aiReviewImportError": {"message": "无法完成操作"},

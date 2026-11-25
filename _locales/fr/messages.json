@@ -546,7 +546,7 @@
   "aiReviewImportCopyFailed": {"message": "Le presse-papiers est indisponible. Sélectionnez le texte ci-dessous et copiez-le manuellement."},
   "aiReviewImportUnsafeRetry": {"message": "L’envoi n’a pas pu être confirmé. Vérifiez GitLab avant de réessayer."},
   "aiReviewImportPrompt": {"message": "Instructions pour l’IA"},
-  "aiReviewImportChecked": {"message": "Prêts : $1. Les autres commentaires doivent être examinés.", "placeholders": {"1": {"content": "$1"}}},
+  "aiReviewImportChecked": {"message": "Prêts à envoyer : $1 sur $2.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {"message": "Arrêter l’envoi"},
   "aiReviewImportRecheck": {"message": "Vérifier à nouveau"},
   "aiReviewImportError": {"message": "Impossible de terminer l’opération"},
