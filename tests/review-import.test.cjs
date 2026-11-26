@@ -371,6 +371,44 @@ test('an incomplete file list can still use the MR download; ambiguous paths and
   assert.match(plan.items[2].message, /incomplete/);
 });
 
+test('a mixed-encoding git diff verifies UTF-8 files and rejects only files with invalid bytes', async function(t) {
+  var directory = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'review-import-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  var git = args => require('node:child_process').execFileSync('git', args, { cwd: directory });
+  git(['init', '-q']);
+  var utf8 = ['a.txt', 'c.txt', 'd.txt', 'f.txt', 'g.txt'];
+  var code = 'valid UTF-8: café, 界, \uFFFD';
+  utf8.forEach(name => fs.writeFileSync(path.join(directory, name), code + '\n'));
+  fs.writeFileSync(path.join(directory, 'b.txt'), Buffer.from('plain\ncaf\xe9\n', 'latin1'));
+  fs.writeFileSync(path.join(directory, 'e.txt'), Buffer.from('plain\n\xcf\xf0\xe8\xe2\xe5\xf2\n', 'latin1'));
+  git(['add', '--', ...utf8, 'b.txt', 'e.txt']);
+  var patch = git(['diff', '--cached', '--no-ext-diff', '--no-textconv', '--no-color', '--text']);
+  var comments = utf8.map(name => inline({ id: name, path: name, line: 1, code: code }));
+  for (var name of ['b.txt', 'e.txt']) comments.push(inline({ id: name, path: name, line: 1, code: 'plain' }));
+
+  for (var mode of ['stream', 'buffer']) {
+    var env = environment({ handler: function(url, init, defaults) {
+      if (url.pathname.endsWith('/diffs')) return response([]);
+      if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: [] });
+      if (!url.pathname.endsWith('.diff')) return defaults(url, init);
+      if (mode === 'buffer') return { ok: true, arrayBuffer: () => new Response(patch).arrayBuffer() };
+      return new Response(new ReadableStream({ start(controller) {
+        for (var i = 0; i < patch.length; i += 7) controller.enqueue(patch.subarray(i, i + 7));
+        controller.close();
+      } }));
+    } });
+    var plan = await env.api.prepare(env.context, env.json(comments));
+    assert.deepEqual(Array.from(plan.items.slice(0, 5), item => [item.status, item.position?.new_path]),
+      utf8.map(name => ['ready', name]));
+    for (var item of plan.items.slice(5)) {
+      assert.equal(item.status, 'invalid');
+      assert.equal(item.position, null);
+      assert.match(item.message, /UTF-8/);
+    }
+    assert.equal(env.posts().length, 0);
+  }
+});
+
 test('a change of head during the MR download invalidates recovered positions', async function() {
   var env = environment({ handler: function(url, init, defaults, state) {
     if (url.pathname.endsWith('/diffs')) return response([]);

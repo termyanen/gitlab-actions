@@ -57,7 +57,7 @@
   }
 
   function endpoint(context) { return '/projects/' + encodeURIComponent(context.projectPath) + '/merge_requests/' + context.iid; }
-  async function boundedDiffText(response, maxBytes) {
+  async function boundedDiffBody(response, maxBytes, asBytes) {
     function tooLarge() {
       var error = new Error(typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage('aiReviewImportDiffResponseTooLarge') || 'The additional diff exceeds the 16 MiB import limit. Only comments on verified lines can be imported.');
       error.diffTooLarge = true;
@@ -67,9 +67,8 @@
       if (response.body && response.body.cancel) { try { await response.body.cancel(); } catch (e) { /* The request may already be closed. */ } }
       throw tooLarge();
     }
-    if (response.body && response.body.getReader && typeof TextDecoder !== 'undefined') {
+    if (response.body && response.body.getReader && (asBytes || typeof TextDecoder !== 'undefined')) {
       var reader = response.body.getReader();
-      var decoder = new TextDecoder('utf-8', { fatal: true });
       var chunks = [], bytes = 0;
       try {
         while (true) {
@@ -77,13 +76,23 @@
           if (next.done) break;
           bytes += next.value.byteLength;
           if (bytes > maxBytes) throw tooLarge();
-          chunks.push(decoder.decode(next.value, { stream: true }));
+          chunks.push(next.value);
         }
-        chunks.push(decoder.decode());
-        return chunks.join('');
+        var buffer = new Uint8Array(bytes);
+        var offset = 0;
+        for (var chunk of chunks) {
+          buffer.set(chunk, offset);
+          offset += chunk.byteLength;
+        }
+        return asBytes ? buffer : new TextDecoder('utf-8', { fatal: true }).decode(buffer);
       } finally {
         try { await reader.cancel(); } catch (e) { /* The request may already be closed. */ }
       }
+    }
+    if (asBytes) {
+      var raw = new Uint8Array(await response.arrayBuffer());
+      if (raw.byteLength > maxBytes) throw tooLarge();
+      return raw;
     }
     var text = await response.text();
     if (text.length > maxBytes || new TextEncoder().encode(text).length > maxBytes) throw tooLarge();
@@ -123,10 +132,10 @@
           throw error;
         }
         if (response.redirected) throw new Error('GitLab redirected the request. Reload the page and sign in again.');
-        var text = options.maxBytes ? await boundedDiffText(response, options.maxBytes) : await response.text();
-        if (download) return { data: text, response: response };
+        var body = options.maxBytes ? await boundedDiffBody(response, options.maxBytes, download) : await response.text();
+        if (download) return { data: body, response: response };
         var result;
-        try { result = JSON.parse(text); } catch (e) { throw new Error('GitLab returned an unreadable response.'); }
+        try { result = JSON.parse(body); } catch (e) { throw new Error('GitLab returned an unreadable response.'); }
         return { data: result, response: response };
       })()]);
     } finally {
@@ -281,6 +290,7 @@
   function verifiedDiff(file) {
     var result = { old_path: file.old_path, new_path: file.new_path };
     try {
+      if (file.invalidUtf8) throw new Error('The downloaded diff for this file is not valid UTF-8.');
       if (file.too_large || typeof file.diff !== 'string' || !file.diff) throw new Error('GitLab did not provide the full text diff for this file.');
       result.lines = parseDiff(file.diff);
     } catch (error) { result.error = error.message; }
@@ -307,13 +317,33 @@
     return token.startsWith(prefix) ? token.slice(prefix.length) : null;
   }
 
+  // Git's file and hunk delimiters are ASCII even when the files use different encodings.
+  function findPatchLine(bytes, start, prefix) {
+    var firstByte = prefix.charCodeAt(0);
+    for (var pos = bytes.indexOf(firstByte, start); pos !== -1; pos = bytes.indexOf(firstByte, pos + 1)) {
+      if (pos && bytes[pos - 1] !== 10) continue;
+      var i = 1;
+      while (i < prefix.length && bytes[pos + i] === prefix.charCodeAt(i)) i++;
+      if (i === prefix.length) return pos;
+    }
+    return bytes.length;
+  }
+
   function downloadedChanges(patch, targets) {
-    if (!patch.startsWith('diff --git ') || !patch.endsWith('\n')) throw new Error('GitLab did not return a complete MR diff.');
+    var marker = 'diff --git ';
+    if (!patch.length || findPatchLine(patch, 0, marker) !== 0 || patch[patch.length - 1] !== 10) throw new Error('GitLab did not return a complete MR diff.');
     var paths = new Set(targets.map(function(target) { return target.path; }));
     var files = [];
-    patch.split(/^diff --git /m).slice(1).forEach(function(section) {
-      var hunk = section.indexOf('\n@@ ');
-      var header = hunk < 0 ? section : section.slice(0, hunk);
+    var decoder = new TextDecoder('utf-8', { fatal: true });
+    var start = 0;
+    while (start < patch.length) {
+      var end = findPatchLine(patch, start + marker.length, marker);
+      var section = patch.subarray(start + marker.length, end);
+      start = end;
+      var hunk = findPatchLine(section, 0, '@@ ');
+      var header;
+      try { header = decoder.decode(hunk === section.length ? section : section.subarray(0, hunk - 1)); }
+      catch (error) { continue; }
       var markers = header.match(/\n--- ([^\n]+)\n\+\+\+ ([^\n]+)$/);
       if (!markers) {
         // A pure copy/rename has no hunk but its paths still count when checking uniqueness.
@@ -322,17 +352,20 @@
           var from = patchPath(rename[1], ''), to = patchPath(rename[2], '');
           if (paths.has(from) || paths.has(to)) files.push({ old_path: from, new_path: to, diff: '' });
         }
-        return;
+        continue;
       }
       var left = markers[1].replace(/\t$/, ''), right = markers[2].replace(/\t$/, '');
       var oldToken = left === '/dev/null' ? right.replace(/^("?)b\//, '$1a/') : left;
       var newToken = right === '/dev/null' ? left.replace(/^("?)a\//, '$1b/') : right;
-      if (section.slice(0, section.indexOf('\n')) !== oldToken + ' ' + newToken) return;
+      if (header.slice(0, header.indexOf('\n')) !== oldToken + ' ' + newToken) continue;
       var oldPath = patchPath(oldToken, 'a/'), newPath = patchPath(newToken, 'b/');
       if (oldPath && newPath && (paths.has(oldPath) || paths.has(newPath))) {
-        files.push({ old_path: oldPath, new_path: newPath, diff: section.slice(hunk + 1) });
+        var file = { old_path: oldPath, new_path: newPath };
+        try { file.diff = decoder.decode(section.subarray(hunk)); }
+        catch (error) { file.invalidUtf8 = true; }
+        files.push(file);
       }
-    });
+    }
     return files;
   }
 
