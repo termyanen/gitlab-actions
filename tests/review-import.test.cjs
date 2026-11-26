@@ -224,7 +224,7 @@ test('legacy changes fallback and relative-root legacy MR routes preserve exact 
     return defaults(url, init);
   } });
   var plan = await env.api.prepare(env.context, env.json());
-  assert.equal(plan.items[0].status, 'ready'); assert.ok(plan.warnings.some(function(w) { return /limited/.test(w); }));
+  assert.equal(plan.items[0].status, 'ready'); assert.equal(plan.warnings.length, 0);
   await send(env, plan);
   assert.ok(env.requests.every(function(r) { return r.url.pathname.indexOf('/gitlab/api/v4/') === 0; }));
 });
@@ -281,7 +281,146 @@ test('raw changes recover files omitted by display limits without losing already
   assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'ready']);
   assert.equal(plan.items[1].position.old_path, 'src/previous.js');
   assert.equal(plan.items[1].position.head_sha, HEAD);
-  assert.ok(plan.warnings.some(function(text) { return /limited/.test(text); }));
+  assert.equal(plan.warnings.length, 0);
+  assert.equal(env.posts().length, 0);
+});
+
+test('a limited file list verifies six of nineteen comments, and one MR download verifies all nineteen', async function() {
+  var files = Array.from({ length: 18 }, function(_, i) {
+    var filename = 'examples/file-' + (i + 1) + '.txt';
+    return { old_path: filename, new_path: filename, diff: '@@ -0,0 +1,2 @@\n+first line\n+second line\n' };
+  });
+  var comments = files.map(function(file, i) {
+    return inline({ id: 'R' + (i + 1), path: file.new_path, line: 1, code: 'first line', body: 'Check the first line.' });
+  });
+  comments.push(inline({ id: 'R19', path: files[17].new_path, line: 2, code: 'second line', body: 'Check the second line.' }));
+  var listed = files.slice(0, 6);
+  var fullDiff = files.map(function(file) {
+    var filename = file.new_path;
+    return 'diff --git a/' + filename + ' b/' + filename + '\nnew file mode 100644\n--- /dev/null\n+++ b/' + filename + '\n' + file.diff;
+  }).join('');
+  var downloadAvailable = false, downloads = 0;
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response(listed, 200, { 'x-next-page': '' });
+    if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: listed });
+    if (url.pathname.endsWith('.diff')) {
+      downloads++;
+      return downloadAvailable ? new Response(fullDiff) : new Response(null, { status: 404 });
+    }
+    return defaults(url, init);
+  } });
+  var input = env.json(comments);
+  var limited = await env.api.prepare(env.context, input);
+  assert.deepEqual(Array.from(limited.items.filter(item => item.status === 'ready'), item => item.id), comments.slice(0, 6).map(item => item.id));
+
+  downloadAvailable = true;
+  downloads = 0;
+  var recovered = await env.api.prepare(env.context, input);
+  assert.deepEqual(Array.from(recovered.items, item => [item.status, item.position?.new_path, item.position?.new_line]),
+    comments.map(item => ['ready', item.path, item.line]));
+  assert.equal(downloads, 1);
+  assert.equal(env.posts().length, 0);
+});
+
+test('the downloadable MR diff recovers omitted files once, on the right side and revision', async function() {
+  var patch = [
+    'diff --git a/added file.js b/added file.js', 'new file mode 100644', '--- /dev/null', '+++ b/added file.js\t', '@@ -0,0 +1 @@', '+  added();',
+    'diff --git a/previous.js b/renamed.js', 'rename from previous.js', 'rename to renamed.js', '--- a/previous.js', '+++ b/renamed.js',
+    '@@ -1,2 +1,2 @@', '-removed();', '+replacement();', ' context();',
+    'diff --git "a/\\303\\251.js" "b/\\303\\251.js"', 'deleted file mode 100644', '--- "a/\\303\\251.js"', '+++ /dev/null', '@@ -1 +0,0 @@', '-deleted();', ''
+  ].join('\n');
+  var env = environment({ root: '/gitlab', handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: [] });
+    if (url.pathname.endsWith('.diff')) return new Response(patch);
+    return defaults(url, init);
+  } });
+  var comments = [inline(), inline({ id: 'added', path: 'added file.js', line: 1, code: '  added();' }),
+    inline({ id: 'old', path: 'previous.js', side: 'old', line: 1, code: 'removed();' }),
+    inline({ id: 'context', path: 'renamed.js', line: 2, code: 'context();' }),
+    inline({ id: 'deleted', path: 'é.js', side: 'old', line: 1, code: 'deleted();' }),
+    inline({ id: 'wrong', path: 'added file.js', line: 1, code: 'added();' }),
+    inline({ id: 'absent', path: 'absent.js', line: 1 })];
+  var plan = await env.api.prepare(env.context, env.json(comments));
+  assert.deepEqual(Array.from(plan.items, item => item.status), ['ready', 'ready', 'ready', 'ready', 'ready', 'invalid', 'invalid']);
+  assert.deepEqual(JSON.parse(JSON.stringify(plan.items[1].position)), position({ old_path: 'added file.js', new_path: 'added file.js', new_line: 1 }));
+  assert.deepEqual(JSON.parse(JSON.stringify(plan.items[2].position)), position({ old_path: 'previous.js', new_path: 'renamed.js', old_line: 1, new_line: null }));
+  assert.equal(plan.items[3].position.old_line, 2);
+  assert.equal(plan.items[4].position.new_path, 'é.js');
+  assert.deepEqual(env.requests.filter(r => r.url.pathname.endsWith('.diff')).map(r => r.url.href), [env.context.webUrl + '.diff']);
+  assert.equal(env.posts().length, 0);
+});
+
+test('an incomplete file list can still use the MR download; ambiguous paths and partial hunks stay blocked', async function() {
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/diffs')) return response([], 200, { 'x-next-page': '', 'x-total': '1000' });
+    if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+    if (url.pathname.endsWith('.diff')) return new Response([
+      'diff --git a/source.js b/copied.js', 'copy from source.js', 'copy to copied.js',
+      'diff --git a/source.js b/source.js', '--- a/source.js', '+++ b/source.js', '@@ -1 +1 @@', '-old', '+new',
+      'diff --git a/partial.js b/partial.js', '--- a/partial.js', '+++ b/partial.js', '@@ -1,2 +1,2 @@', ' first', ''
+    ].join('\n'));
+    return defaults(url, init);
+  } });
+  var plan = await env.api.prepare(env.context, env.json([
+    inline({ path: 'source.js', line: 1, code: 'new' }),
+    inline({ id: 'old', path: 'source.js', side: 'old', line: 1, code: 'old' }),
+    inline({ id: 'partial', path: 'partial.js', line: 1, code: 'first' })
+  ]));
+  assert.deepEqual(Array.from(plan.items, item => item.status), ['ready', 'invalid', 'invalid']);
+  assert.match(plan.items[1].message, /More than one/);
+  assert.match(plan.items[2].message, /incomplete/);
+});
+
+test('a mixed-encoding git diff verifies UTF-8 files and rejects only files with invalid bytes', async function(t) {
+  var directory = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'review-import-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  var git = args => require('node:child_process').execFileSync('git', args, { cwd: directory });
+  git(['init', '-q']);
+  var utf8 = ['a.txt', 'c.txt', 'd.txt', 'f.txt', 'g.txt'];
+  var code = 'valid UTF-8: café, 界, \uFFFD';
+  utf8.forEach(name => fs.writeFileSync(path.join(directory, name), code + '\n'));
+  fs.writeFileSync(path.join(directory, 'b.txt'), Buffer.from('plain\ncaf\xe9\n', 'latin1'));
+  fs.writeFileSync(path.join(directory, 'e.txt'), Buffer.from('plain\n\xcf\xf0\xe8\xe2\xe5\xf2\n', 'latin1'));
+  git(['add', '--', ...utf8, 'b.txt', 'e.txt']);
+  var patch = git(['diff', '--cached', '--no-ext-diff', '--no-textconv', '--no-color', '--text']);
+  var comments = utf8.map(name => inline({ id: name, path: name, line: 1, code: code }));
+  for (var name of ['b.txt', 'e.txt']) comments.push(inline({ id: name, path: name, line: 1, code: 'plain' }));
+
+  for (var mode of ['stream', 'buffer']) {
+    var env = environment({ handler: function(url, init, defaults) {
+      if (url.pathname.endsWith('/diffs')) return response([]);
+      if (url.pathname.endsWith('/changes')) return response({ overflow: true, changes: [] });
+      if (!url.pathname.endsWith('.diff')) return defaults(url, init);
+      if (mode === 'buffer') return { ok: true, arrayBuffer: () => new Response(patch).arrayBuffer() };
+      return new Response(new ReadableStream({ start(controller) {
+        for (var i = 0; i < patch.length; i += 7) controller.enqueue(patch.subarray(i, i + 7));
+        controller.close();
+      } }));
+    } });
+    var plan = await env.api.prepare(env.context, env.json(comments));
+    assert.deepEqual(Array.from(plan.items.slice(0, 5), item => [item.status, item.position?.new_path]),
+      utf8.map(name => ['ready', name]));
+    for (var item of plan.items.slice(5)) {
+      assert.equal(item.status, 'invalid');
+      assert.equal(item.position, null);
+      assert.ok(!item.canConvertToGeneral);
+      assert.match(item.message, /UTF-8/);
+    }
+    assert.equal(env.posts().length, 0);
+  }
+});
+
+test('a change of head during the MR download invalidates recovered positions', async function() {
+  var env = environment({ handler: function(url, init, defaults, state) {
+    if (url.pathname.endsWith('/diffs')) return response([]);
+    if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+    if (url.pathname.endsWith('.diff')) {
+      state.refs.head_sha = 'd'.repeat(40);
+      return new Response('diff --git a/src/new.js b/src/new.js\n--- a/src/new.js\n+++ b/src/new.js\n@@ -0,0 +3 @@\n+  changed();\n');
+    }
+    return defaults(url, init);
+  } });
+  await assert.rejects(env.api.prepare(env.context, env.json()), /changed while/);
   assert.equal(env.posts().length, 0);
 });
 
@@ -344,7 +483,7 @@ test('failed or unverifiable raw recovery leaves only the affected comments bloc
     var plan = await env.api.prepare(env.context, env.json([inline(), inline({ id: 'missing', path: 'missing.js' })]));
     assert.deepEqual(Array.from(plan.items, function(item) { return item.status; }), ['ready', 'invalid']);
     assert.equal(plan.items[1].position, null);
-    assert.ok(plan.warnings.length > 0);
+    assert.ok(plan.warnings.length > 0 || /More than one file/.test(plan.items[1].message));
     await send(env, plan, ['missing']);
     assert.equal(env.posts().length, 0);
   }
@@ -952,6 +1091,61 @@ test('revision retains edited text but cannot silently accept changed, deleted o
     var repeated = await env.api.revise(revised, [{ id: 'R1', body: 'Ещё одна правка без повторной проверки обсуждения' }]);
     assert.equal(repeated.items[0].status, 'invalid');
     assert.equal((await send(env, repeated, ['R1'])).items[0].status, 'skipped'); assert.equal(env.posts().length, 0);
+  }
+});
+
+test('only a missing file or missing diff line can become a general comment in the preview', async function() {
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+    if (url.pathname.endsWith('.diff')) return new Response('diff --git a/other.js b/other.js\n--- a/other.js\n+++ b/other.js\n@@ -1 +1 @@\n-old\n+new\n');
+    return defaults(url, init);
+  } });
+  var input = [
+    inline({ id: 'file', path: 'lost.js' }),
+    inline({ id: 'line', path: 'src/old.js', side: 'old', line: 70 }),
+    inline({ id: 'mismatch', code: 'different();' }),
+    inline({ id: 'valid' }),
+    general({ id: 'general' }),
+    inline({ id: 'bad-input', line: 0 })
+  ];
+  var plan = await env.api.prepare(env.context, env.json(input));
+  assert.deepEqual(Array.from(plan.items.filter(i => i.canConvertToGeneral), i => i.id), ['file', 'line']);
+  for (var id of ['mismatch', 'valid', 'general', 'bad-input']) {
+    plan.items.find(i => i.id === id).canConvertToGeneral = true;
+    await assert.rejects(env.api.revise(plan, [{ id: id, makeGeneral: true }]));
+  }
+  plan.source.comments[0].path = 'untrusted.js';
+  plan.items[0].body = 'Changed outside the editor';
+  var converted = await env.api.revise(plan, [{ id: 'file', makeGeneral: true }, { id: 'line', makeGeneral: true }]);
+  assert.equal(env.posts().length, 0);
+  assert.equal(converted.items.length, input.length);
+  assert.deepEqual(Array.from(converted.items, i => i.status), ['ready', 'ready', 'invalid', 'ready', 'ready', 'invalid']);
+  for (var [index, location] of [[0, 'lost.js:3'], [1, 'src/old.js:70']]) {
+    var source = converted.source.comments[index];
+    assert.equal(source.body, '    ' + location + '\n\n' + input[index].body);
+    assert.deepEqual([source.id, source.path, source.side, source.line, source.code], [input[index].id, null, null, null, null]);
+    assert.equal(converted.items[index].position, null);
+  }
+  await assert.rejects(env.api.revise(converted, [{ id: 'file', makeGeneral: true }]));
+  assert.equal((await send(env, converted, ['file'])).items[0].status, 'published');
+  assert.equal((await send(env, converted, ['line'], { mode: 'draft' })).items[0].status, 'draft');
+  assert.deepEqual(JSON.parse(env.posts()[0].init.body), { body: converted.items[0].body });
+  assert.deepEqual(JSON.parse(env.posts()[1].init.body), { note: converted.items[1].body });
+});
+
+test('a failed file lookup is not a missing anchor', async function() {
+  for (var failedEndpoint of ['/diffs', '/changes', '.diff']) {
+    var env = environment({ handler: function(url, init, defaults) {
+      if (url.pathname.endsWith(failedEndpoint)) return response({}, 403);
+      if (url.pathname.endsWith('/diffs')) return response([]);
+      if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+      return defaults(url, init);
+    } });
+    var plan = await env.api.prepare(env.context, env.json());
+    assert.equal(plan.items[0].status, 'invalid');
+    assert.ok(!plan.items[0].canConvertToGeneral);
+    await assert.rejects(env.api.revise(plan, [{ id: 'R1', makeGeneral: true }]));
+    assert.equal(env.posts().length, 0);
   }
 });
 
