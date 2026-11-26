@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Transformă în comentariu general" },
   "cherryPickNoApplicableChanges": { "message": "Nu există modificări noi de aplicat. Versiunea nu a fost incrementată." },
   "cherryPickTargetVersion": { "message": "Incrementează mereu versiunea ramurii țintă" },
   "cherryPickTargetVersionHint": { "message": "Folosește versiunea țintă chiar și fără conflicte. Are prioritate față de incrementarea doar la soluția de rezervă." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Solicitare pentru AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Gata: $1. Alte comentarii necesită atenție.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Gata: $1 / $2. Alte comentarii necesită atenție.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Oprește trimiterea"
   },

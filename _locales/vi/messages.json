@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Chuyển thành bình luận chung" },
   "cherryPickNoApplicableChanges": { "message": "Không có thay đổi mới để áp dụng. Phiên bản không được tăng." },
   "cherryPickTargetVersion": { "message": "Luôn tăng phiên bản của nhánh đích" },
   "cherryPickTargetVersionHint": { "message": "Dùng phiên bản đích ngay cả khi không có xung đột. Ưu tiên hơn tùy chọn chỉ tăng khi dùng phương án dự phòng." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Gợi ý cho AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Sẵn sàng: $1. Các nhận xét khác cần chú ý.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Sẵn sàng: $1 / $2. Các nhận xét khác cần chú ý.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Dừng gửi"
   },

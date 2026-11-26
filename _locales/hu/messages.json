@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Átalakítás általános hozzászólássá" },
   "cherryPickNoApplicableChanges": { "message": "Nincsenek új alkalmazható módosítások. A verzió nem nőtt." },
   "cherryPickTargetVersion": { "message": "Mindig növelje a célág verzióját" },
   "cherryPickTargetVersionHint": { "message": "Konfliktus nélkül is a célverziót használja. Elsőbbséget élvez a csak tartalék eljáráskor végzett növeléssel szemben." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Üzenet AI-nak"
   },
-  "aiReviewImportChecked": {
-    "message": "Készen: $1. Más kommentek figyelmet igényelnek.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Készen: $1 / $2. Más kommentek figyelmet igényelnek.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Küldés leállítása"
   },

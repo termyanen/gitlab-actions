@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Zmień na komentarz ogólny" },
   "cherryPickNoApplicableChanges": { "message": "Brak nowych zmian do zastosowania. Wersja nie została zwiększona." },
   "cherryPickTargetVersion": { "message": "Zawsze zwiększaj wersję gałęzi docelowej" },
   "cherryPickTargetVersionHint": { "message": "Używaj wersji docelowej także bez konfliktów. Ma pierwszeństwo przed zwiększaniem tylko przy trybie awaryjnym." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Wprowadź dane dla AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Gotowe: $1. Inne komentarze wymagają uwagi.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Gotowe: $1 / $2. Inne komentarze wymagają uwagi.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Zatrzymaj wysyłanie"
   },

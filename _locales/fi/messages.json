@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Muuta yleiseksi kommentiksi" },
   "cherryPickNoApplicableChanges": { "message": "Ei uusia muutoksia siirrettäväksi. Versiota ei korotettu." },
   "cherryPickTargetVersion": { "message": "Korota aina kohdehaaran versiota" },
   "cherryPickTargetVersionHint": { "message": "Käytä kohdeversiota myös ilman ristiriitoja. Ohittaa vain varamenetelmässä tehtävän korotuksen." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Kehote AI:lle"
   },
-  "aiReviewImportChecked": {
-    "message": "Valmis: $1. Muut kommentit tarvitsevat huomiota.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Valmis: $1 / $2. Muut kommentit tarvitsevat huomiota.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Lopeta lähettäminen"
   },

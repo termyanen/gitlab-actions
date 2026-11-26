@@ -90,6 +90,7 @@ export interface ImportItem extends ImportComment {
   message: string;
   position: NotePosition | null;
   editable: boolean;
+  canConvertToGeneral?: boolean;
   replyTo?: ReplyContext;
   existingUrl?: string;
   url?: never;
@@ -115,11 +116,14 @@ export interface InternalPlan {
   source: ReviewInput;
   outcomes: Record<string, ImportResultItem["status"]>;
 }
-export interface ImportEdit {
-  id: string;
-  body: string;
-  add?: boolean;
-}
+export type ImportEdit =
+  | {
+      id: string;
+      body: string;
+      add?: boolean;
+      makeGeneral?: never;
+    }
+  | { id: string; makeGeneral: true; body?: never; add?: never };
 export interface ImportResultItem {
   id: string;
   status:
@@ -155,6 +159,7 @@ export interface JournalEntry {
 }
 export interface ImportError extends Error {
   httpStatus?: number;
+  errorCode?: string;
   beforeSend?: boolean;
 }
 export interface DiffLine {

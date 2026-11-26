@@ -1,6 +1,6 @@
 import type { ReviewContext } from "../../../entities/review";
 import { emptyRecord } from "../../../shared/lib/records";
-import { loadDiffs } from "./diff";
+import { loadDiffs, targetKey } from "./diff";
 import {
   discussionFingerprint,
   existingNotes,
@@ -17,6 +17,7 @@ import type {
   ImportOptions,
   ImportPlan,
   InternalPlan,
+  VerifiedDiff,
 } from "./types";
 import {
   checkAbort,
@@ -75,7 +76,7 @@ export function createImportPlanner(
     const loaded = await Promise.all([
       inlineTargets.length
         ? loadDiffs(context, options, warnings, inlineTargets, meta.refs)
-        : Promise.resolve([]),
+        : Promise.resolve(new Map<string, VerifiedDiff | { error: string }>()),
       existingNotes(context, options),
     ]);
     const files = loaded[0];
@@ -144,16 +145,12 @@ export function createImportPlanner(
           }
         }
       } else if (!error && source.path !== null) {
-        const matches = files.filter(function (file) {
-          return (
-            file[source.side === "old" ? "old_path" : "new_path"] ===
-            source.path
-          );
-        });
-        const match = matches[0];
-        if (matches.length !== 1 || !match)
+        const match = files.get(targetKey(source));
+        if (!match) {
           error =
-            "This file could not be uniquely found in the loaded merge request changes.";
+            "GitLab did not include this file in the loaded merge request changes.";
+          item.canConvertToGeneral = true;
+        } else if (!("old_path" in match)) error = match.error;
         else if (match.error) error = match.error;
         else {
           const line =
@@ -161,10 +158,11 @@ export function createImportPlanner(
             typeof source.line === "number"
               ? match.lines?.[source.side].get(source.line)
               : undefined;
-          if (!line)
+          if (!line) {
             error =
               "This line is not in the verified diff. Choose a line from the merge request changes.";
-          else if (line.code !== source.code)
+            item.canConvertToGeneral = true;
+          } else if (line.code !== source.code)
             error =
               "The code on this line does not match the review. Ask the AI to check the exact line.";
           else
@@ -266,6 +264,10 @@ export function createImportPlanner(
     const edited = new Set<string>();
     const originals: ImportItem[] = [];
     edits.forEach(function (edit) {
+      const convert = edit && edit.makeGeneral === true;
+      const allowedKeys = convert
+        ? ["id", "makeGeneral"]
+        : ["id", "body", "add"];
       if (
         !edit ||
         typeof edit.id !== "string" ||
@@ -274,19 +276,27 @@ export function createImportPlanner(
         /[\x00-\x1f\x7f]/.test(edit.id) ||
         edited.has(edit.id) ||
         Object.keys(edit).some(function (key) {
-          return key !== "id" && key !== "body" && key !== "add";
+          return !allowedKeys.includes(key);
         }) ||
         (edit.add != null && typeof edit.add !== "boolean")
       )
         throw new Error(
           "Each edit needs a unique comment ID and text; its discussion and file location cannot be changed.",
         );
-      const invalidBody = bodyError(edit.body);
-      if (invalidBody) throw new Error(invalidBody);
       edited.add(edit.id);
       const item = internal.items.find(function (value) {
         return value.id === edit.id;
       });
+      if (convert && !item?.canConvertToGeneral)
+        throw new Error(
+          "Only a comment with a missing file or line can be converted to a general comment.",
+        );
+      const body =
+        convert && item
+          ? "    " + item.path + ":" + item.line + "\n\n" + item.body
+          : edit.body;
+      const invalidBody = bodyError(body);
+      if (invalidBody) throw new Error(invalidBody);
       if (edit.add === true) {
         if (
           item ||
@@ -312,7 +322,14 @@ export function createImportPlanner(
         const original = source.comments.find((value) => value.id === edit.id);
         if (!original)
           throw new Error("This comment is not in the checked source.");
-        original.body = edit.body;
+        original.body = body;
+        if (convert)
+          Object.assign(original, {
+            path: null,
+            side: null,
+            line: null,
+            code: null,
+          });
       }
     });
     if (source.comments.length > 200)
@@ -364,6 +381,7 @@ export function createImportPlanner(
         );
       warning(revised.warnings, replyNotice(true));
       revised.items.forEach(function (item) {
+        delete item.canConvertToGeneral;
         if (item.type !== "reply" && item.status === "ready") {
           item.status = "invalid";
           item.message =

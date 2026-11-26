@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Μετατροπή σε γενικό σχόλιο" },
   "cherryPickNoApplicableChanges": { "message": "Δεν υπάρχουν νέες αλλαγές για εφαρμογή. Η έκδοση δεν αυξήθηκε." },
   "cherryPickTargetVersion": { "message": "Να αυξάνεται πάντα η έκδοση του κλάδου προορισμού" },
   "cherryPickTargetVersionHint": { "message": "Χρήση της έκδοσης προορισμού ακόμη και χωρίς συγκρούσεις. Υπερισχύει της αύξησης μόνο κατά την εναλλακτική διαδικασία." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Παράθυρο για AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Έτοιμο: $1. Άλλα σχόλια χρειάζονται προσοχή.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Έτοιμο: $1 / $2. Άλλα σχόλια χρειάζονται προσοχή.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Σταμάτα την αποστολή"
   },

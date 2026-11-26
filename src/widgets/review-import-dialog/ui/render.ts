@@ -1,6 +1,6 @@
 import { rememberPreviewScroll } from "./scroll";
 import { createCommentPreviews } from "../../../shared/ui/review-comment";
-import type { ImportItem } from "../../../features/review-import";
+import type { ImportItem, ImportEdit } from "../../../features/review-import";
 import { element } from "../../../shared/ui/dom";
 import type { ImportDialogState } from "./types";
 const outcomeKeys: Record<string, string> = {
@@ -18,6 +18,7 @@ export function createImportRenderer(actions: {
   startEditor: (state: ImportDialogState, item?: ImportItem) => void;
   updateActions: (state: ImportDialogState) => void;
   saveEditor: (state: ImportDialogState) => void;
+  revisePreview: (state: ImportDialogState, edit: ImportEdit) => void;
   cancelEditor: (state: ImportDialogState) => void;
 }) {
   const { startEditor, updateActions, saveEditor, cancelEditor } = actions;
@@ -310,6 +311,14 @@ export function createImportRenderer(actions: {
             result.message,
           ),
         );
+      if (item.canConvertToGeneral && editable(state, item)) {
+        const convert = button(state, "aiReviewImportMakeGeneral", () => {
+          if (state.busy || state.editor) return;
+          actions.revisePreview(state, { id: item.id, makeGeneral: true });
+        });
+        convert.dataset.importConvert = item.id;
+        body.appendChild(convert);
+      }
       if (result.resolveStatus && result.resolveStatus !== "resolved") {
         const resolveKey =
           result.resolveStatus === "unknown"

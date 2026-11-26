@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Omzetten naar algemene opmerking" },
   "cherryPickNoApplicableChanges": { "message": "Geen nieuwe wijzigingen om toe te passen. De versie is niet verhoogd." },
   "cherryPickTargetVersion": { "message": "Versie van de doelbranch altijd verhogen" },
   "cherryPickTargetVersionHint": { "message": "Gebruik de doelversie ook zonder conflicten. Gaat voor verhogen alleen bij terugval." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Prompt voor AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Klaar: $1. Andere opmerkingen vereisen aandacht.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Klaar: $1 / $2. Andere opmerkingen vereisen aandacht.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Stop met verzenden"
   },

@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "일반 댓글로 전환" },
   "cherryPickNoApplicableChanges": { "message": "적용할 새 변경 사항이 없습니다. 버전을 올리지 않았습니다." },
   "cherryPickTargetVersion": { "message": "대상 브랜치 버전을 항상 올리기" },
   "cherryPickTargetVersionHint": { "message": "충돌이 없어도 대상 버전을 사용합니다. 대체 처리 시에만 버전을 올리는 옵션보다 우선합니다." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "AI용 프롬프트"
   },
-  "aiReviewImportChecked": {
-    "message": "준비 완료: $1. 다른 댓글도 확인이 필요합니다.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "준비 완료: $1 / $2. 다른 댓글도 확인이 필요합니다.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "전송 중지"
   },

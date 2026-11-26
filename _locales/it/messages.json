@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Converti in commento generale" },
   "cherryPickNoApplicableChanges": { "message": "Nessuna nuova modifica da applicare. La versione non è stata incrementata." },
   "cherryPickTargetVersion": { "message": "Incrementa sempre la versione del branch di destinazione" },
   "cherryPickTargetVersionHint": { "message": "Usa la versione di destinazione anche senza conflitti. Ha priorità sull’incremento solo in caso di fallback." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Richiedi AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Pronto: $1. Altri commenti richiedono attenzione.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Pronto: $1 / $2. Altri commenti richiedono attenzione.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Interrompere l'invio"
   },
