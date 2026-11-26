@@ -4,10 +4,11 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 
 ★ AI-GRANSKNING MED DINA EGNA VERKTYG
 
-• Fullständig MR-granskning — förbered en uppgift som omfattar alla commits i MR med konfigurerbara filfilter
+• Fullständig MR-granskning — förbered en uppgift för alla commits med filfilter och valfri kontext från befintliga diskussioner
 • Rätta och svara — kopiera valda synpunkter till din kodnings-AI och förbered svar som är redo att publiceras
 • Uppföljande granskning — kontrollera rättningar och ändringar sedan en vald revision, även efter force push
 • Redigerbar import — klistra in AI-kommentarer och svar som JSON, redigera texten och publicera valda poster eller spara granskningsutkast. Diskussioner kan även markeras som lösta efter att svaren publicerats
+• Granskningskontroller — fäll ihop långa kommentarer, expandera alla, följ publiceringen och skicka endast bekräftat osända poster igen utan att duplicera publicerade kommentarer eller utkast. För stora MR prövas fler diff-källor; saknade fil- eller radmål kan uttryckligen göras om till allmänna kommentarer
 • Egna instruktioner — anpassa promptar och automatiska instruktionsblock; välj svarsspråk
 • Manuell delning — använd valfritt AI-verktyg. Inga AI-API-nycklar i tillägget och ingen automatisk uppladdning av kod
 
@@ -15,8 +16,8 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 
 • Automatisk sammanslagning — gör rebase och aktivera sammanslagning efter lyckad pipeline med ett klick
 • Ship — hela releaseflödet: versionshöjning → pipeline → automatisk sammanslagning
-• Tvingad sammanslagning — slå samman utan att vänta på pipeline när CI inte behövs
-• Versionshöjning — höj versionen i package.json, pyproject.toml eller en annan fil: patch / minor / major
+• Tvingad merge — begär sammanfogning utan att invänta pipelinen; GitLabs behörigheter och mergeregler gäller fortfarande
+• Versionshöjning — patch / minor / major för konfigurerade versionsfiler i JSON, TOML eller vanlig text
 • Rebase — gör rebase av grenen med eller utan versionshöjning
 • Utkast / Klar — ändra MR-status utan att redigera titeln
 • Snabbkommentarer — publicera kommentarmallar i MR med ett klick
@@ -28,9 +29,9 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 • Kör om alla misslyckade jobb — starta om samtliga misslyckade jobb i den senaste pipelinen samtidigt
 • Egna jobbknappar — kör valfritt CI-jobb med ett klick eller kedja flera jobb, exempelvis bygge → driftsättning
 • Snabbvy för fel — se namn på misslyckade jobb och felloggrader direkt på MR-sidan
-• Bakgrundskörning — egna jobbkedjor fortsätter när du byter sida
+• Jobbkedjor i bakgrunden — återuppta övervakning efter worker-omstarter; behåll en inloggad flik på samma GitLab öppen för API-åtkomst
 
-★ JIRA-INTEGRATION UTAN API-TOKEN
+★ JIRA SERVER / DATA CENTER (webbläsarsession, valfri webbplatsåtkomst)
 
 • Jira-statusmärken — färgkodade ärendestatusar som Klart, Pågår, QA och Att göra; ärendenycklar hämtas från MR-titlar
 • Sidopanel för ärenden — klicka på ett märke för att se titel, status, ansvarig, prioritet, sprint, epic, etiketter, beskrivning och bilagor
@@ -39,6 +40,7 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 • Ikoner för typ och prioritet — Jiras egna ikoner i MR-listan och på detaljsidor
 • Jira-fält vid commits — visa Fix Version, status eller andra fält bredvid commits
 • Jira i dagsrapporter — ärendetitlar läggs automatiskt till i aktivitetssammanfattningar
+• Anslutningskontroll — visa konfigurerad Jira-domän, kontrollera sessionen och öppna inloggningslänken. Jira Cloud stöds inte fullt ut; fält och åtgärder beror på server och behörigheter
 
 ★ FÖRBÄTTRAD MR-LISTA
 
@@ -58,8 +60,8 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 • Kommandopalett (Cmd+K / Ctrl+K) — gå till MR, pipelines, grenar och ärenden eller starta åtgärder
 • Filsökning i paletten — hitta och öppna projektfiler efter namn
 • Daglig aktivitetsrapport — sammanfattning av skapade, sammanslagna, kommenterade och godkända MR; kopiera till Slack eller Jira
-• Cherry-pick till flera grenar — överför en commit till flera grenar samtidigt med automatisk MR-skapning
-• Reservväg för cherry-pick — vid konflikt appliceras committen automatiskt igen utan versionsfilen
+• Cherry-pick till flera grenar — överför en commit direkt eller skapa MR; välj gemensamma eller projektspecifika målgrenar
+• Smart cherry-pick — trevägssammanfogning av text med valfri höjning av målgrenens version, även utan konflikter. Synkroniserar rotpaketets versioner i package.json och package-lock.json; konflikter utanför versionerna stoppar åtgärden. Utan nya ändringar skapas ingen kopia som bara höjer versionen
 • Varning för känsliga filer — orange märke när MR berör .env, Dockerfile, CI-konfiguration eller autentiseringsuppgifter
 • Git-kommandon — kopiera git checkout och git fetch för MR-grenen
 • MR-ålder — se hur länge en merge request har varit öppen
@@ -67,7 +69,8 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 
 ★ ANPASSNING
 
-• Projektprofiler — olika knappar, versionsfiler och CI-jobb för varje repository
+• Projektprofiler — ärv gemensamma inställningar och anpassa MR, CI, Jira, AI, utseende och cherry-pick per repository; återställ arv utan att förlora andra inställningar
+• Inställningar — sökbar helsida och sektioner i den kompakta popupen, status för autosparande, JSON-import/export och ljust/mörkt tema. Verktygsfältets knappar ändras utan att MR laddas om
 • Dra och släpp för knappordning — ordna åtgärdsknapparna som du vill
 • Tabbredd i diffar — välj visning som 2, 4 eller 8 mellanslag
 • Fäll ihop övre fält / Dölj höger sidopanel — få större arbetsyta
@@ -80,9 +83,7 @@ Förenkla arbetet med merge requests i GitLab med automatisering via ett klick. 
 ✓ Ingen mellanliggande tjänst — GitLab- och Jira-anrop går direkt till dina konfigurerade servrar
 ✓ Stöder egenhostad GitLab via HTTPS och gitlab.com; se kompatibilitetsguiden för testade API-kontrakt
 ✓ Jira utan API-token — använder webbläsarsessionen
-✓ Separat konfiguration för varje projekt
-✓ Lättviktigt — bakgrundskontroller körs för åtgärder du startar; ingen telemetri eller automatisk uppladdning till AI
+✓ Gemensamma standardvärden och projektanpassningar; språk, ljud och skrivbordsaviseringar förblir globala
+✓ Ingen telemetri eller automatisk AI-uppladdning — du väljer vilket innehåll du kopierar och delar med ditt AI-verktyg
 ✓ Gränssnittet finns på 27 språk
 ✓ Öppen källkod
-
-För utvecklare som vill lägga mindre tid på att klicka i GitLab och mer tid på att skriva kod.

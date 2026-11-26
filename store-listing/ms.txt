@@ -4,10 +4,11 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 
 ★ ULASAN AI DENGAN ALAT ANDA SENDIRI
 
-• Ulasan MR penuh — sediakan tugas merangkumi semua commit MR, dengan penapis fail yang boleh dikonfigurasi
+• Semakan MR penuh — sediakan tugasan untuk semua commit dengan penapis fail dan konteks pilihan daripada perbincangan sedia ada
 • Baiki dan balas — salin maklum balas yang dipilih ke AI pengekodan anda dan sediakan balasan sedia untuk dipos
 • Semakan susulan — semak semula pembaikan dan perubahan sejak semakan terpilih, termasuk selepas force push
 • Import boleh sunting — tampal komen dan balasan AI sebagai JSON, sunting teks mereka, dan terbitkan item terpilih atau simpan draf semakan. Pilihan untuk menyelesaikan perbincangan selepas menerbitkan balasan
+• Kawalan semakan — runtuhkan komen panjang, kembangkan semua, pantau penerbitan dan hantar semula hanya item yang disahkan belum dihantar tanpa menduplikasi komen terbit atau draf. Bagi MR besar, sumber diff tambahan dicuba; sasaran fail atau baris yang tiada boleh ditukar secara jelas kepada komen umum
 • Arahan tersuai — sesuaikan arahan dan blok arahan automatik; pilih bahasa balasan
 • Perkongsian manual — guna alat AI pilihan anda. Tiada kunci API AI dalam sambungan dan tiada muat naik kod automatik
 
@@ -15,8 +16,8 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 
 • Gabung automatik — rebase dan dayakan "merge apabila pipeline berjaya" dalam satu klik
 • Hantar — aliran pelepasan penuh: naik versi → pipeline → gabung automatik, semua automatik
-• Paksa gabung — langkau pipeline dan gabungkan segera apabila CI tidak diperlukan
-• Tingkatkan versi — tingkatkan versi dalam package.json, pyproject.toml, atau mana-mana fail (patch / minor / major)
+• Merge paksa — minta penggabungan tanpa menunggu pipeline; kebenaran dan peraturan merge GitLab tetap terpakai
+• Peningkatan versi — patch / minor / major untuk fail versi JSON, TOML atau teks biasa yang dikonfigurasi
 • Rebase — rebase cawangan dengan atau tanpa peningkatan versi
 • Tukar Draf / Sedia — tukar status MR tanpa mengedit tajuk
 • Komen cepat — hantarkan komen template kepada MR dengan satu klik
@@ -28,9 +29,9 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 • Cuba semula semua kerja gagal — mulakan semula setiap kerja yang gagal dalam pipeline terbaru sekaligus
 • Butang kerja tersuai — aktifkan mana-mana kerja CI dengan satu klik; rantai pelbagai kerja (contoh: bina → laksanakan)
 • Paparan pantas kerja gagal — lihat nama kerja yang gagal dan bar log ralat terus di halaman MR
-• Pelaksanaan latar belakang — rangkaian kerja tersuai diteruskan selepas navigasi halaman
+• Rantaian job di latar belakang — pemantauan disambung selepas worker dimulakan semula; biarkan tab yang telah log masuk pada GitLab yang sama terbuka untuk akses API
 
-★ INTEGRASI JIRA (tanpa token API)
+★ JIRA SERVER / DATA CENTER (sesi pelayar, akses laman pilihan)
 
 • Lencana status Jira — status tiket berwarna (Selesai, Sedang Berjalan, QA, Perlu Dilakukan) diparse daripada tajuk MR
 • Bar sisi tiket penuh — klik mana-mana lencana untuk melihat ringkasan, status, pemegang tugas, keutamaan, pecutan, epik, label, penerangan, dan lampiran
@@ -39,6 +40,7 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 • Ikon jenis isu & keutamaan — ikon Jira asli pada senarai MR dan halaman terperinci
 • Lencana medan Jira pada komit — tunjukkan Versi Pembetulan, status, atau mana-mana medan di sebelah komit
 • Pemerkayaan Jira dalam laporan harian — tajuk tiket ditambah secara automatik pada ringkasan aktiviti
+• Semakan sambungan — lihat domain Jira yang dikonfigurasi, semak sesi dan buka pautan log masuk. Jira Cloud tidak disokong sepenuhnya; medan dan tindakan bergantung pada pelayan dan kebenaran
 
 ★ PENAMBAHBAIKAN SENARAI MR
 
@@ -58,8 +60,8 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 • Palet perintah (Cmd+K / Ctrl+K) — navigasi ke senarai MR, pipeline, cawangan, isu, atau tindakan pencetus
 • Carian fail dalam palet — cari dan buka mana-mana fail projek mengikut nama
 • Laporan aktiviti harian — ringkasan MR yang dibuat, digabungkan, dikomen, diluluskan. Salin ke Slack atau Jira
-• Pilih-cherry ke pelbagai cawangan — pilih-cherry sebarang komit ke beberapa cawangan sekaligus dengan penciptaan MR automatik
-• Pilih-cherry pintar sandaran — main semula komit secara automatik kecuali fail versi jika berlaku konflik
+• Cherry-pick ke beberapa branch — pindahkan commit terus atau cipta MR; pilih branch sasaran bersama atau khusus projek
+• Cherry-pick pintar — penggabungan teks tiga hala dengan peningkatan versi branch sasaran secara pilihan, walaupun tanpa konflik. Segerakkan versi pakej akar dalam package.json dan package-lock.json; konflik selain versi menghentikan operasi. Tanpa perubahan baharu, tiada pendua yang hanya menaikkan versi
 • Amaran fail sensitif — lencana oren apabila MR menyentuh .env, Dockerfile, konfigurasi CI, atau kelayakan
 • Butang arahan Git — salin arahan git checkout dan git fetch untuk cawangan MR
 • lencana umur MR — lihat berapa lama permintaan gabungan telah dibuka
@@ -67,7 +69,8 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 
 ★ PENYESUAIAN
 
-• Profil setiap projek — butang, fail versi, dan tugas CI yang berbeza untuk setiap repositori
+• Profil projek — warisi tetapan bersama dan sesuaikan MR, CI, Jira, AI, paparan serta cherry-pick mengikut repositori; pulihkan pewarisan tanpa kehilangan tetapan lain
+• Tetapan — halaman penuh dengan carian dan bahagian dalam popup padat, status simpanan automatik, import/eksport JSON serta tema cerah/gelap. Butang bar alat berubah tanpa memuat semula MR
 • Seret & lepas susunan butang — susun butang tindakan mengikut kesukaan anda
 • Lebar tab boleh dikonfigurasikan dalam perbezaan — tetapkan paparan tab kepada 2, 4, atau 8 ruang
 • Sembunyikan bar atas / Sembunyikan bar sisi kanan — maksimumkan kawasan kerja anda
@@ -80,9 +83,7 @@ Permudahkan aliran kerja merge request GitLab anda dengan automasi satu klik. Ga
 ✓ Tiada perkhidmatan perantara — permintaan GitLab dan Jira pergi terus ke pelayan yang anda telah konfigurasikan
 ✓ Menyokong GitLab sendiri yang HTTPS dan gitlab.com; lihat panduan keserasian untuk kontrak API yang diuji
 ✓ Integrasi Jira tanpa token API — menggunakan kuki sesi pelayar
-✓ Boleh dikonfigurasikan sepenuhnya bagi setiap projek — tiada had saiz-semuanya
-✓ Ringan — pemeriksaan latar dijalankan untuk tindakan yang anda mulakan; tiada telemetri atau muat naik AI automatik
+✓ Nilai lalai bersama dan tetapan projek; bahasa, bunyi dan pemberitahuan desktop kekal global
+✓ Tiada telemetri atau muat naik AI automatik — anda memilih kandungan untuk disalin dan dikongsi dengan alat AI anda
 ✓ Tersedia dalam 27 bahasa antara muka
 ✓ Sumber terbuka
-
-Dipercayai oleh pembangun yang ingin menghabiskan lebih sedikit masa mengklik melalui GitLab dan lebih banyak masa menulis kod.

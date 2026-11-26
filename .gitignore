@@ -16,3 +16,9 @@ extension.zip
 ROADMAP.md
 _metadata/
 promo/
+
+# Local credentials; commit only deliberately sanitized examples.
+.env
+.env.*
+!.env.example
+!.env.template

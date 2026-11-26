@@ -4,10 +4,11 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 
 ★ REVISIONE AI CON I TUOI STRUMENTI
 
-• Revisione completa MR: prepara un'attività che copra tutti i commit MR, con filtri di file configurabili
+• Revisione completa del MR — preparare un’attività per tutti i commit, con filtri dei file e contesto facoltativo delle discussioni esistenti
 • Correggi e rispondi: copia il feedback selezionato nella tua intelligenza artificiale di codifica e prepara risposte pronte per la pubblicazione
 • Revisione di follow-up: ricontrolla le correzioni e le modifiche rispetto a una revisione selezionata, anche dopo i push forzati
 • Importazione modificabile: incolla commenti e risposte AI come JSON, modifica il testo e pubblica gli elementi selezionati o salva le bozze delle revisioni. Facoltativamente, risolvi le discussioni dopo aver pubblicato le risposte
+• Controlli di revisione — comprimere i commenti lunghi, espanderli tutti, seguire la pubblicazione e reinviare solo elementi certamente non inviati, senza duplicare commenti pubblicati o bozze. Per MR grandi vengono provate altre fonti di diff; un file o una riga mancanti possono essere convertiti esplicitamente in un commento generale
 • Istruzioni personalizzate: personalizza prompt e blocchi di istruzioni automatici; scegli la lingua di risposta
 • Condivisione manuale: utilizza il tuo strumento AI preferito. Nessuna chiave AI API nell'estensione e nessun caricamento automatico del codice
 
@@ -15,8 +16,8 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 
 • Unione automatica: riorganizza e abilita "unisci quando la pipeline ha esito positivo" con un clic
 • Spedizione: flusso di rilascio completo: versione bump → pipeline → fusione automatica, tutto automatizzato
-• Forza l'unione: salta la pipeline e unisci immediatamente quando CI non è necessario
-• Version bump: incrementa la versione in package.json, pyproject.toml o qualsiasi file (patch/minore/maggiore)
+• Merge forzato — richiedere il merge senza attendere la pipeline; restano validi permessi e regole di merge di GitLab
+• Incremento versione — patch / minor / major per file di versione configurati in JSON, TOML o testo semplice
 • Rebase: ramo rebase con o senza bump versione
 • Alterna Bozza/Pronto: cambia lo stato MR senza modificare il titolo
 • Commenti rapidi: pubblica commenti sui modelli su MR con un clic
@@ -28,9 +29,9 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 • Riprova tutti i lavori non riusciti: riavvia contemporaneamente tutti i lavori non riusciti nell'ultima pipeline
 • Pulsanti di lavoro personalizzati: attiva qualsiasi lavoro CI con un clic; concatenare più lavori (ad esempio build → deploy)
 • Visualizzazione rapida dei lavori non riusciti: visualizza i nomi dei lavori non riusciti e le righe del registro degli errori direttamente nella pagina MR
-• Esecuzione in background: le catene di lavoro personalizzate continuano dopo la navigazione della pagina
+• Catene di job in background — riprendere il monitoraggio dopo il riavvio del worker; mantenere aperta una scheda autenticata sullo stesso GitLab per accedere all’API
 
-★ INTEGRAZIONE JIRA (nessun token API)
+★ JIRA SERVER / DATA CENTER (sessione del browser, accesso facoltativo al sito)
 
 • Badge di stato Jira: stati dei ticket con codice colore (Fatto, In corso, QA, Da fare) analizzati dai titoli MR
 • Barra laterale completa del ticket: fai clic su qualsiasi badge per visualizzare riepilogo, stato, assegnatario, priorità, sprint, epico, etichette, descrizione e allegati
@@ -39,6 +40,7 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 • Tipo di problema e icone di priorità: icone native Jira nell'elenco MR e nelle pagine dei dettagli
 • Badge del campo Jira sui commit: mostra la versione correzione, lo stato o qualsiasi campo accanto ai commit
 • Jira arricchimento nei report giornalieri: titoli dei ticket aggiunti automaticamente ai riepiloghi delle attività
+• Verifica connessione — visualizzare il dominio Jira configurato, verificare la sessione e aprire il link di accesso. Jira Cloud non è completamente supportato; campi e azioni dipendono dal server e dai permessi
 
 ★ MR MIGLIORAMENTI DELL'ELENCO
 
@@ -58,8 +60,8 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 • Pannello dei comandi (Cmd+K / Ctrl+K): consente di accedere all'elenco MR, alle pipeline, ai rami, ai problemi o alle azioni di attivazione
 • Ricerca file nella tavolozza: trova e apre qualsiasi file di progetto in base al nome
 • Rapporto attività quotidiana: riepilogo di MRs creato, unito, commentato, approvato. Copia in Slack o Jira
-• Scegli tra più rami: seleziona qualsiasi commit su più rami contemporaneamente con la creazione automaticaMR
-• Fallback intelligente: riproduzione automatica del commit escludendo il file di versione in caso di conflitto
+• Cherry-pick su più branch — trasferire un commit direttamente o creare MR; scegliere branch di destinazione comuni o specifici del progetto
+• Cherry-pick intelligente — merge del testo a tre vie con incremento facoltativo della versione di destinazione, anche senza conflitti. Sincronizza le versioni del pacchetto radice in package.json e package-lock.json; i conflitti non relativi alla versione interrompono l’operazione. Senza nuove modifiche non crea duplicati solo per incrementare la versione
 • Avviso file sensibili: badge arancione quando MR tocca le configurazioni .env, Dockerfile, CI o credenziali
 • Pulsanti di comando Git: copia i comandi git checkout e git fetch per il ramo MR
 • MR badge età: controlla da quanto tempo è aperta una richiesta di unione
@@ -67,7 +69,8 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 
 ★ PERSONALIZZAZIONE
 
-• Profili per progetto: pulsanti, file di versione e lavori CI diversi per ciascun repository
+• Profili di progetto — ereditare impostazioni comuni e personalizzare MR, CI, Jira, IA, aspetto e cherry-pick per repository; ripristinare l’ereditarietà senza perdere le altre impostazioni
+• Impostazioni — pagina completa con ricerca e sezioni nel popup compatto, stato del salvataggio automatico, importazione/esportazione JSON e temi chiaro/scuro. I pulsanti della barra si aggiornano senza ricaricare il MR
 • Ordine dei pulsanti trascina e rilascia: disponi i pulsanti di azione nel modo che preferisci
 • Larghezza della scheda configurabile nelle differenze: imposta la visualizzazione della scheda su 2, 4 o 8 spazi
 • Comprimi le barre superiori/Nascondi la barra laterale destra: massimizza l'area di lavoro
@@ -80,9 +83,7 @@ Semplifica il flusso di lavoro delle richieste di unione GitLab con l'automazion
 ✓ Nessun servizio intermediario: le richieste GitLab e Jira vanno direttamente ai server configurati
 ✓ Supporta HTTPS self-hosted GitLab e gitlab.com; consultare la guida alla compatibilità per i contratti API testati
 ✓ Integrazione Jira senza token API: utilizza i cookie di sessione del browser
-✓ Completamente configurabile per progetto: nessuna limitazione valida per tutti
-✓ Leggero: vengono eseguiti controlli in background per le azioni avviate; nessuna telemetria o caricamenti AI automatici
+✓ Valori comuni e personalizzazioni per progetto; lingua, suoni e notifiche desktop restano globali
+✓ Nessuna telemetria o invio automatico all’IA — scegli tu quali contenuti copiare e condividere con il tuo strumento di IA
 ✓ Interfaccia disponibile in 27 lingue
 ✓ Sorgente aperta
-
-Scelto dagli sviluppatori che vogliono dedicare meno tempo a fare clic su GitLab e più tempo a scrivere il codice.

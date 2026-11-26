@@ -4,10 +4,11 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 
 ★ AI REVIEW WITH YOUR OWN TOOLS
 
-• Full MR review — prepare a task covering all MR commits, with configurable file filters
+• Full MR review — prepare a task covering all MR commits with file filters and optional context from existing discussions
 • Fix and reply — copy selected feedback to your coding AI and prepare ready-to-post replies
 • Follow-up review — recheck fixes and changes since a selected revision, including after force pushes
 • Editable import — paste AI comments and replies as JSON, edit their text, and publish selected items or save review drafts. Optionally resolve discussions after publishing replies
+• Review controls — collapse long comments, expand all, track publication progress and retry confirmed unsent items without duplicating published comments or drafts. For large MRs, try additional diff sources; missing file or line targets can be explicitly converted to general comments
 • Custom instructions — customize prompts and automatic instruction blocks; choose the response language
 • Manual sharing — use your preferred AI tool. No AI API keys in the extension and no automatic code uploads
 
@@ -15,8 +16,8 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 
 • Auto-merge — rebase and enable "merge when pipeline succeeds" in one click
 • Ship — full release flow: version bump → pipeline → auto-merge, all automated
-• Force merge — skip pipeline and merge immediately when CI isn't needed
-• Version bump — increment version in package.json, pyproject.toml, or any file (patch / minor / major)
+• Force merge — request an immediate merge without waiting for the pipeline; GitLab permissions and merge rules still apply
+• Version bump — patch / minor / major for configured JSON, TOML or plain-text version files
 • Rebase — rebase branch with or without version bump
 • Draft / Ready toggle — switch MR status without editing the title
 • Quick comments — post template comments to MR with one click
@@ -28,9 +29,9 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 • Retry all failed jobs — restart every failed job in the latest pipeline at once
 • Custom job buttons — trigger any CI job with one click; chain multiple jobs (e.g. build → deploy)
 • Failed job quick view — see failed job names and error log lines directly on the MR page
-• Background execution — custom job chains continue after page navigation
+• Background job chains — resume tracking after worker restarts; keep a signed-in tab on the same GitLab site open for API access
 
-★ JIRA INTEGRATION (no API tokens)
+★ JIRA SERVER / DATA CENTER (browser session, optional site access)
 
 • Jira status badges — color-coded ticket statuses (Done, In Progress, QA, To Do) parsed from MR titles
 • Full ticket sidebar — click any badge to see summary, status, assignee, priority, sprint, epic, labels, description, and attachments
@@ -39,6 +40,7 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 • Issue type & priority icons — native Jira icons on MR list and detail pages
 • Jira field badges on commits — show Fix Version, status, or any field next to commits
 • Jira enrichment in daily reports — ticket titles added automatically to activity summaries
+• Connection check — view the configured Jira domain, check the session and open a sign-in link. Jira Cloud is not fully supported; fields and actions depend on server capabilities and permissions
 
 ★ MR LIST ENHANCEMENTS
 
@@ -58,8 +60,8 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 • Command palette (Cmd+K / Ctrl+K) — navigate to MR list, pipelines, branches, issues, or trigger actions
 • File search in palette — find and open any project file by name
 • Daily activity report — summary of MRs created, merged, commented, approved. Copy to Slack or Jira
-• Cherry-pick to multiple branches — cherry-pick any commit to several branches at once with auto-MR creation
-• Smart cherry-pick fallback — auto-replays commit excluding version file on conflict
+• Cherry-pick to multiple branches — transfer a commit directly or create MRs; choose shared or per-project target branches
+• Smart cherry-pick — three-way text merging with optional target-branch version bump, even without conflicts. Synchronize package.json and package-lock.json root package versions; conflicting non-version edits stop the operation. No bump-only duplicate when there are no new changes to apply
 • Sensitive file warning — orange badge when MR touches .env, Dockerfile, CI configs, or credentials
 • Git command buttons — copy git checkout and git fetch commands for the MR branch
 • MR age badge — see how long a merge request has been open
@@ -67,7 +69,8 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 
 ★ CUSTOMIZATION
 
-• Per-project profiles — different buttons, version files, and CI jobs for each repository
+• Project profiles — inherit shared settings and override repository-specific MR, CI, Jira, AI, appearance and cherry-pick options; restore inheritance without losing other settings
+• Settings workspace — searchable full page and inline sections in the compact popup, autosave feedback, JSON import/export and light/dark themes. Toolbar button changes apply without reloading the MR
 • Drag & drop button order — arrange action buttons the way you prefer
 • Configurable tab width in diffs — set tab display to 2, 4, or 8 spaces
 • Collapse top bars / Hide right sidebar — maximize your working area
@@ -80,9 +83,7 @@ Streamline your GitLab merge request workflow with one-click automation. Replace
 ✓ No intermediary service — GitLab and Jira requests go directly to your configured servers
 ✓ Supports HTTPS self-hosted GitLab and gitlab.com; see the compatibility guide for tested API contracts
 ✓ Jira integration without API tokens — uses browser session cookies
-✓ Fully configurable per project — no one-size-fits-all limitations
-✓ Lightweight — background checks run for actions you start; no telemetry or automatic AI uploads
+✓ Shared defaults and project overrides; language, sound and desktop notifications remain global
+✓ No telemetry or automatic AI uploads — you choose which content to copy and share with your AI tool
 ✓ Available in 27 interface languages
 ✓ Open source
-
-Trusted by developers who want to spend less time clicking through GitLab and more time writing code.

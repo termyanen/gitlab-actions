@@ -276,7 +276,7 @@
 ## 1.3.0
 
 ### New features
-- **Jira integration** — shows Jira ticket statuses as colored badges on the MR list page. Parses ticket IDs (e.g. `CCS-1111`) from MR titles and fetches status via Jira REST API using session cookies. Color-coded: green (Done), blue (In Progress), purple (QA), yellow (In Review), gray (To Do). Skeleton loaders while fetching.
+- **Jira integration** — shows Jira ticket statuses as colored badges on the MR list page. Parses ticket IDs (e.g. `PROJ-123`) from MR titles and fetches status via Jira REST API using session cookies. Color-coded: green (Done), blue (In Progress), purple (QA), yellow (In Review), gray (To Do). Skeleton loaders while fetching.
 - **Copy MR from list** — copy button in the controls bar of each MR on the list page. Copies title + link to clipboard with one click. Always visible, icon turns green on success.
 - **"Needs my review" toggle** — filter button on MR list page to show only MRs where you are assigned as a reviewer. Works via GitLab's `reviewer_username` parameter.
 - **"Your review" badge** — scans first 10 comments of each MR for "Reviewer(s): @you" pattern and shows an orange badge. For teams that assign reviewers via comments instead of GitLab's built-in feature. Results cached for 5 min.
