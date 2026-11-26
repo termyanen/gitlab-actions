@@ -599,3 +599,11 @@ checks lazy loading and recovery after a failed compile, and records round-trip
 timings in `.reports/xdiff-browser-performance.json`. These fixtures do not certify
 custom Git attributes/drivers or every server-side diff algorithm. For rebuilding
 the pinned native module, see [vendor/xdiff/README.md](../vendor/xdiff/README.md).
+
+### Public screenshot fixtures
+
+`node tests/fixtures/capture-public-screenshots.cjs` regenerates the Jira demo,
+task tracker and social preview image from fictional data. All HTTP requests are
+blocked; no existing screenshots or customer data are reused. Jira/sidebar and
+tracker controls use current runtime renderers; the surrounding host list is an
+illustrative fixture. Review the generated images before committing them.

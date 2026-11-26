@@ -4,10 +4,11 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 
 ★ PRZEGLĄD AI Z TWOIMI WŁASNYMI NARZĘDZIAMI
 
-• Pełny przegląd MR — przygotuj zadanie obejmujące wszystkie commity MR, z konfigurowalnymi filtrami plików
+• Pełny przegląd MR — zadanie obejmujące wszystkie commity, z filtrami plików i opcjonalnym kontekstem istniejących dyskusji
 • Napraw i odpowiedz — skopiuj wybrane uwagi do swojego AI do kodowania i przygotuj gotowe do wysłania odpowiedzi
 • Przegląd uzupełniający — sprawdź ponownie poprawki i zmiany od wybranej wersji, także po wymuszeniu push
 • Edytowalny import — wklej komentarze i odpowiedzi AI w formacie JSON, edytuj ich treść i opublikuj wybrane elementy lub zapisz wersje robocze przeglądu. Opcjonalnie zamknij dyskusje po opublikowaniu odpowiedzi
+• Obsługa przeglądu — zwijaj długie komentarze, rozwijaj wszystkie, śledź publikację i ponawiaj tylko potwierdzone niewysłane elementy, bez duplikowania opublikowanych komentarzy ani szkiców. Dla dużych MR sprawdzane są dodatkowe źródła diff; brakujący plik lub wiersz można jawnie zastąpić komentarzem ogólnym
 • Własne instrukcje — dostosuj polecenia i automatyczne bloki instrukcji; wybierz język odpowiedzi
 • Ręczne udostępnianie — używaj swojego ulubionego narzędzia AI. W rozszerzeniu nie ma kluczy API ani automatycznego przesyłania kodu
 
@@ -15,8 +16,8 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 
 • Auto-merge — rebase i włącz „merge when pipeline succeeds” jednym kliknięciem
 • Wysyłka — pełny przepływ wydania: podbicie wersji → pipeline → auto-merge, wszystko zautomatyzowane
-• Wymuszenie mergowania — pomiń pipeline i scalcuj od razu, gdy CI nie jest potrzebne
-• Podbicie wersji — zwiększ wersję w package.json, pyproject.toml lub dowolnym pliku (patch / minor / major)
+• Wymuszenie merge — żądanie scalenia bez czekania na pipeline; uprawnienia i reguły scalania GitLab nadal obowiązują
+• Podnoszenie wersji — patch / minor / major dla skonfigurowanych plików wersji JSON, TOML lub zwykłego tekstu
 • Rebase — zrób rebase gałęzi z podbiciem wersji lub bez
 • Przełącznik Szkic / Gotowe — zmień status MR bez edytowania tytułu
 • Szybkie komentarze — dodawaj szablonowe komentarze do MR jednym kliknięciem
@@ -28,9 +29,9 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 • Powtórz wszystkie nieudane zadania — uruchom ponownie wszystkie nieudane zadania w ostatnim pipeline naraz
 • Niestandardowe przyciski zadań — uruchamiaj dowolne zadanie CI jednym kliknięciem; łącz kilka zadań (np. build → deploy)
 • Szybki podgląd nieudanych zadań — zobacz nazwy nieudanych zadań i linie logów z błędami bezpośrednio na stronie MR
-• Wykonywanie w tle — niestandardowe łańcuchy zadań kontynuują działanie po przejściu na inną stronę
+• Łańcuchy zadań w tle — wznawianie śledzenia po restarcie workera; dostęp do API wymaga otwartej karty z aktywną sesją na tym samym GitLab
 
-★ INTEGRACJA Z JIRA (bez tokenów API)
+★ JIRA SERVER / DATA CENTER (sesja przeglądarki, opcjonalny dostęp do witryny)
 
 • Odznaki statusu Jira — statusy ticketów kodowane kolorami (Done, In Progress, QA, To Do) pobierane z tytułów MR
 • Pełny pasek boczny ticketów — kliknij dowolną odznakę, aby zobaczyć podsumowanie, status, przypisanego użytkownika, priorytet, sprint, epik, etykiety, opis i załączniki
@@ -39,6 +40,7 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 • Ikony typu i priorytetu ticketu — natywne ikony Jira na listach MR i stronach szczegółów
 • Odznaki pól Jira przy commitach — pokaż Fix Version, status lub dowolne pole obok commitów
 • Wzbogacenie Jira w raportach dziennych — tytuły ticketów dodawane automatycznie do podsumowań aktywności
+• Sprawdzanie połączenia — wyświetl skonfigurowaną domenę Jira, sprawdź sesję i otwórz link logowania. Jira Cloud nie jest w pełni obsługiwana; pola i działania zależą od serwera i uprawnień
 
 ★ ULEPSZENIA LISTY MR
 
@@ -58,8 +60,8 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 • Paleta poleceń (Cmd+K / Ctrl+K) — nawigacja do listy MR, pipeline’ów, branchy, issue’ów lub wywoływanie akcji
 • Wyszukiwanie plików w palecie — znajdź i otwórz dowolny plik projektu po nazwie
 • Codzienny raport aktywności — podsumowanie utworzonych, scalonych, skomentowanych i zatwierdzonych MR. Kopiuj do Slacka lub Jira
-• Cherry-pick do wielu branchy — cherry-pick dowolnego commita do kilku branchy naraz z automatycznym tworzeniem MR
-• Smart cherry-pick fallback — automatyczne powtórzenie commita z wyłączeniem pliku wersji przy konflikcie
+• Cherry-pick do wielu gałęzi — przenoś commit bezpośrednio lub twórz MR; wybieraj wspólne albo projektowe gałęzie docelowe
+• Inteligentny cherry-pick — trójstronne scalanie tekstu z opcjonalnym podnoszeniem wersji gałęzi docelowej, także bez konfliktów. Synchronizuje wersje pakietu głównego w package.json i package-lock.json; konflikty innych zmian zatrzymują operację. Bez nowych zmian nie powstaje duplikat podnoszący tylko wersję
 • Ostrzeżenie o wrażliwych plikach — pomarańczowa odznaka, gdy MR dotyka .env, Dockerfile, konfiguracji CI lub danych uwierzytelniających
 • Przyciski poleceń Git — kopiuj polecenia git checkout i git fetch dla gałęzi MR
 • Odznaka wieku MR — zobacz, jak długo merge request jest otwarty
@@ -67,7 +69,8 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 
 ★ PERSONALIZACJA
 
-• Profile per-projektowe — różne przyciski, pliki wersji i zadania CI dla każdego repozytorium
+• Profile projektów — dziedzicz wspólne ustawienia i nadpisuj opcje MR, CI, Jira, AI, wyglądu i cherry-pick dla repozytorium; przywracaj dziedziczenie bez utraty pozostałych ustawień
+• Ustawienia — pełna strona z wyszukiwaniem i sekcje wewnątrz kompaktowego okna, stan autozapisu, import/eksport JSON oraz jasny/ciemny motyw. Zmiany przycisków paska działają bez przeładowania MR
 • Przeciągnij i upuść kolejność przycisków — ustaw przyciski akcji tak, jak wolisz
 • Konfigurowalna szerokość tabulatora w diffach — ustaw wyświetlanie tabulatorów na 2, 4 lub 8 spacji
 • Zwiń górne paski / Ukryj prawy pasek boczny — maksymalizuj przestrzeń roboczą
@@ -80,9 +83,7 @@ Uprość swój przepływ pracy związaną z merge requestami w GitLab za pomocą
 ✓ Brak pośrednich usług — zapytania do GitLab i Jira trafiają bezpośrednio na Twoje skonfigurowane serwery
 ✓ Wspiera HTTPS w self-hosted GitLab i gitlab.com; sprawdź przewodnik zgodności dla przetestowanych kontraktów API
 ✓ Integracja z Jira bez tokenów API — korzysta z ciasteczek sesji przeglądarki
-✓ W pełni konfigurowalne dla każdego projektu — brak ograniczeń typu „jeden rozmiar dla wszystkich”
-✓ Lekki — sprawdzenia działają w tle dla akcji, które uruchamiasz; brak telemetrii ani automatycznego wysyłania AI
+✓ Wspólne wartości i ustawienia projektowe; język, dźwięk i powiadomienia pulpitu pozostają globalne
+✓ Bez telemetrii i automatycznego wysyłania do AI — sam wybierasz treści do skopiowania i udostępnienia swojemu narzędziu AI
 ✓ Interfejs dostępny w 27 językach
 ✓ Open source
-
-Zaufany przez deweloperów, którzy chcą spędzać mniej czasu klikania w GitLab, a więcej na pisaniu kodu.

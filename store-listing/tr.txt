@@ -4,10 +4,11 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 
 ★ KENDİ ARAÇLARINIZLA AI İNCELEMESİ
 
-• Tam MR incelemesi — tüm MR commit’lerini kapsayan bir görev hazırlayın, dosya filtrelerini özelleştirebilirsiniz
+• Tam MR incelemesi — dosya filtreleri ve mevcut tartışmalardan isteğe bağlı bağlamla tüm commitleri kapsayan bir görev hazırlayın
 • Düzelt ve yanıtla — seçilen geri bildirimleri kodlama AI’ınıza kopyalayın ve gönderilmeye hazır yanıtlar hazırlayın
 • Takip incelemesi — seçilen bir revizyondan sonraki düzeltmeleri ve değişiklikleri tekrar kontrol edin, force push’lar dahil
 • Düzenlenebilir içe aktarım — AI yorumlarını ve yanıtlarını JSON olarak yapıştır, metinlerini düzenle ve seçilen öğeleri yayınla veya inceleme taslaklarını kaydet. İstersen yanıtları yayınladıktan sonra tartışmaları çöz
+• İnceleme kontrolleri — uzun yorumları daraltın, tümünü genişletin, yayınlama ilerlemesini izleyin ve yayınlanmış yorumları ya da taslakları çoğaltmadan yalnızca gönderilmediği doğrulanmış öğeleri yeniden gönderin. Büyük MR’lerde ek diff kaynakları denenir; bulunamayan dosya veya satır hedefleri açık bir işlemle genel yoruma dönüştürülebilir
 • Özel talimatlar — istemleri ve otomatik talimat bloklarını özelleştir; yanıt dilini seç
 • Manuel paylaşım — tercih ettiğin AI aracını kullan. Eklentide AI API anahtarı yok ve otomatik kod yüklemesi yok
 
@@ -15,8 +16,8 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 
 • Otomatik birleştirme — rebase uygula ve "pipeline başarılı olunca birleştir"i tek tıkla etkinleştir
 • Yayınla — tam sürüm akışı: sürüm artır → pipeline → otomatik birleştirme, hepsi otomatik
-• Zorla birleştirme — pipeline atla ve CI gerekmediğinde hemen birleştir
-• Versiyon yükseltme — package.json, pyproject.toml veya herhangi bir dosyada versiyonu artır (patch / minor / major)
+• Zorla birleştirme — pipeline’ı beklemeden birleştirme isteyin; GitLab izinleri ve birleştirme kuralları geçerliliğini korur
+• Sürüm artırma — yapılandırılan JSON, TOML veya düz metin sürüm dosyaları için patch / minor / major
 • Rebase — versiyon yükseltmeli veya yükseltmesiz branch’i rebase et
 • Taslak / Hazır geçişi — başlığı değiştirmeden MR durumunu değiştir
 • Hızlı yorumlar — MR’ye şablon yorumları tek tıkla ekle
@@ -28,9 +29,9 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 • Tüm başarısız işleri tekrar dene — son pipeline’daki her başarısız işi bir kerede yeniden başlat
 • Özel iş butonları — herhangi bir CI işini tek tıkla başlat; birden fazla işi zincirle (örn. build → deploy)
 • Başarısız iş hızlı görünümü — başarısız iş isimlerini ve hata log satırlarını doğrudan MR sayfasında gör
-• Arka planda çalıştırma — özel iş zincirleri sayfa gezinmesinden sonra da devam eder
+• Arka plan iş zincirleri — worker yeniden başlatıldıktan sonra izleme sürer; API erişimi için aynı GitLab sitesinde oturum açılmış bir sekmeyi açık tutun
 
-★ JIRA ENTEGRASYONU (API token’ı yok)
+★ JIRA SERVER / DATA CENTER (tarayıcı oturumu, isteğe bağlı site erişimi)
 
 • Jira durum rozetleri — MR başlıklarından analiz edilen renk kodlu bilet durumları (Tamamlandı, Devam Ediyor, QA, Yapılacak)
 • Tam bilet yan paneli — herhangi bir rozete tıklayarak özet, durum, sorumlu, öncelik, sprint, epik, etiketler, açıklama ve ekleri görün
@@ -39,6 +40,7 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 • Sorun türü ve öncelik simgeleri — MR listesi ve detay sayfalarında yerel Jira simgeleri
 • Commit’lerde Jira alan rozetleri — Fix Version, durum veya herhangi bir alanı commit’lerin yanında göster
 • Günlük raporlarda Jira zenginleştirmesi — etkinlik özetlerine bilet başlıkları otomatik olarak eklendi
+• Bağlantı kontrolü — yapılandırılmış Jira alan adını görün, oturumu kontrol edin ve giriş bağlantısını açın. Jira Cloud tam olarak desteklenmez; alanlar ve işlemler sunucuya ve izinlere bağlıdır
 
 ★ MR LİSTE İYİLEŞTİRMELERİ
 
@@ -58,8 +60,8 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 • Komut paleti (Cmd+K / Ctrl+K) — MR listesine, işlem hatlarına, dallara, sorunlara veya tetikleyici eylemlere gidin
 • Palette dosya araması — isimle herhangi bir proje dosyasını bulun ve açın
 • Günlük faaliyet raporu — oluşturulan, birleştirilen, yorumlanan ve onaylanan MR'lerin özeti. Slack veya Jira’ya kopyalayın
-• Birden fazla dala cherry-pick — herhangi bir commit’i aynı anda birden fazla dala uygulayın; MR’lar otomatik oluşturulur
-• Akıllı cherry-pick yedek işlemi — çakışma durumunda sürüm dosyasını hariç tutarak commit’i otomatik olarak yeniden uygular
+• Birden çok dala cherry-pick — commiti doğrudan aktarın veya MR oluşturun; ortak ya da projeye özel hedef dallar seçin
+• Akıllı cherry-pick — çakışma olmasa bile hedef dalın sürümünü isteğe bağlı artıran üç yönlü metin birleştirme. package.json ve package-lock.json içindeki kök paket sürümleri eşitlenir; sürüm dışındaki çakışmalar işlemi durdurur. Yeni değişiklik yoksa yalnızca sürüm artıran bir kopya oluşturulmaz
 • Hassas dosya uyarısı — MR .env, Dockerfile, CI yapılandırmaları veya kimlik bilgilerine dokunduğunda turuncu rozet
 • Git komut düğmeleri — MR dalı için git checkout ve git fetch komutlarını kopyala
 • MR yaş rozeti — bir merge request’in ne kadar süredir açık olduğunu gör
@@ -67,7 +69,8 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 
 ★ ÖZELLEŞTİRME
 
-• Proje başına profiller — her depo için farklı düğmeler, versiyon dosyaları ve CI işleri
+• Proje profilleri — ortak ayarları devralın ve depo için MR, CI, Jira, AI, görünüm ve cherry-pick seçeneklerini değiştirin; diğer ayarları kaybetmeden devralmayı geri yükleyin
+• Ayarlar — aranabilir tam sayfa ve kompakt pencerede bölümler, otomatik kaydetme durumu, JSON içe/dışa aktarma ve açık/koyu temalar. Araç çubuğu düğmeleri MR yeniden yüklenmeden güncellenir
 • Düğme sırasını sürükle bırak — aksiyon düğmelerini istediğin şekilde düzenle
 • Diflerde ayarlanabilir sekme genişliği — sekmeleri 2, 4 veya 8 boşluk olarak ayarla
 • Üst barları daralt / Sağ kenar çubuğunu gizle — çalışma alanını maksimize et
@@ -80,9 +83,7 @@ GitLab merge request iş akışınızı tek tıkla otomasyonla kolaylaştırın.
 ✓ Aracı servis yok — GitLab ve Jira istekleri doğrudan yapılandırılmış sunucularınıza gider
 ✓ HTTPS self-hosted GitLab ve gitlab.com desteği; test edilmiş API sözleşmeleri için uyumluluk kılavuzuna bakın
 ✓ API token'ı olmadan Jira entegrasyonu — tarayıcı oturum çerezlerini kullanır
-✓ Proje başına tamamen yapılandırılabilir — tek beden herkese uymaz sınırlamalar yok
-✓ Hafif — başlattığınız eylemler için arka planda kontroller yapılır; telemetri veya otomatik AI yüklemeleri yok
+✓ Ortak varsayılanlar ve proje ayarları; dil, ses ve masaüstü bildirimleri genel kalır
+✓ Telemetri veya otomatik AI yüklemesi yok — AI aracınıza hangi içeriği kopyalayıp paylaşacağınızı siz seçersiniz
 ✓ Arayüz 27 dilde kullanılabilir.
 ✓ Açık kaynak
-
-GitLab’da tıklamakla zaman kaybetmek yerine daha çok kod yazmak isteyen geliştiriciler tarafından güveniliyor.

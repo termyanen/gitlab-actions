@@ -4,10 +4,11 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 
 ★ REVISÃO DA IA COM SUAS PRÓPRIAS FERRAMENTAS
 
-• Revisão completa de MR — prepare uma tarefa cobrindo todos os commits de MR, com filtros de arquivo configuráveis
+• Revisão completa do MR — preparar uma tarefa com todos os commits, filtros de arquivos e contexto opcional das discussões existentes
 • Corrigir e responder: copie o feedback selecionado para sua IA de codificação e prepare respostas prontas para postagem
 • Revisão de acompanhamento — verifique novamente as correções e alterações desde uma revisão selecionada, inclusive após forçar pushes
 • Importação editável — cole comentários e respostas de IA como JSON, edite seu texto e publique itens selecionados ou salve rascunhos de revisão. Opcionalmente, resolva as discussões após publicar as respostas
+• Controles de revisão — recolher comentários longos, expandir todos, acompanhar a publicação e reenviar apenas itens confirmados como não enviados, sem duplicar comentários publicados ou rascunhos. Em MRs grandes, são tentadas fontes adicionais de diff; um arquivo ou linha ausente pode ser convertido explicitamente em comentário geral
 • Instruções personalizadas — personalize prompts e blocos automáticos de instruções; escolha o idioma de resposta
 • Compartilhamento manual — use sua ferramenta de IA preferida. Nenhuma chave AI API na extensão e nenhum upload automático de código
 
@@ -15,8 +16,8 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 
 • Mesclagem automática — rebase e habilite a "mesclagem quando o pipeline for bem-sucedido" com um clique
 • Envio — fluxo de lançamento completo: aumento de versão → pipeline → mesclagem automática, tudo automatizado
-• Forçar mesclagem — ignore o pipeline e faça a mesclagem imediatamente quando CI não for necessário
-• Aumento de versão — incrementa a versão em package.json, pyproject.toml ou qualquer arquivo (patch / minor / major)
+• Merge forçado — solicitar o merge sem esperar pelo pipeline; as permissões e regras de merge do GitLab continuam valendo
+• Incremento de versão — patch / minor / major para arquivos de versão configurados em JSON, TOML ou texto simples
 • Rebase — branch de rebase com ou sem aumento de versão
 • Alternar Rascunho/Pronto — alterne o status MR sem editar o título
 • Comentários rápidos — publique comentários de modelo em MR com um clique
@@ -28,9 +29,9 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 • Tente novamente todos os trabalhos com falha — reinicie todos os trabalhos com falha no pipeline mais recente de uma só vez
 • Botões de trabalho personalizados — acione qualquer trabalho CI com um clique; encadear vários trabalhos (por exemplo, construir → implantar)
 • Visualização rápida de trabalhos com falha — veja nomes de trabalhos com falha e linhas de registro de erros diretamente na página MR
-• Execução em segundo plano — as cadeias de tarefas personalizadas continuam após a navegação na página
+• Cadeias de jobs em segundo plano — retomar o acompanhamento após reiniciar o worker; manter uma aba autenticada no mesmo GitLab para acesso à API
 
-★ INTEGRAÇÃO JIRA (sem tokens API)
+★ JIRA SERVER / DATA CENTER (sessão do navegador, acesso opcional ao site)
 
 • Selos de status Jira — status de tickets codificados por cores (Concluído, Em andamento, QA, A fazer) analisados a partir de títulos MR
 • Barra lateral completa do ticket: clique em qualquer selo para ver resumo, status, responsável, prioridade, sprint, épico, rótulos, descrição e anexos
@@ -39,6 +40,7 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 • Ícones de tipo e prioridade de problema — ícones Jira nativos na lista MR e páginas de detalhes
 • Jira emblemas de campo em commits — mostra versão de correção, status ou qualquer campo próximo aos commits
 • Jira enriquecimento em relatórios diários — títulos de tickets adicionados automaticamente a resumos de atividades
+• Verificação de conexão — mostrar o domínio Jira configurado, verificar a sessão e abrir o link de login. Jira Cloud não é totalmente compatível; campos e ações dependem do servidor e das permissões
 
 ★ MR MELHORIAS NA LISTA
 
@@ -58,8 +60,8 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 • Paleta de comandos (Cmd+K / Ctrl+K) — navegue até a lista MR, pipelines, ramificações, problemas ou ações de gatilho
 • Pesquisa de arquivos na paleta — encontre e abra qualquer arquivo de projeto por nome
 • Relatório de atividades diárias — resumo de MRs criado, mesclado, comentado, aprovado. Copie para Slack ou Jira
-• Selecionar múltiplas ramificações — selecione qualquer commit para diversas ramificações ao mesmo tempo com a criação de auto-MR
-• Reserva inteligente de seleção seletiva — commit de replays automáticos, excluindo arquivo de versão em caso de conflito
+• Cherry-pick para várias branches — transferir um commit diretamente ou criar MRs; escolher branches de destino comuns ou específicas do projeto
+• Cherry-pick inteligente — merge de texto de três vias com incremento opcional da versão de destino, mesmo sem conflitos. Sincroniza as versões do pacote raiz em package.json e package-lock.json; conflitos fora da versão interrompem a operação. Sem alterações novas, não cria duplicatas apenas para incrementar a versão
 • Aviso de arquivo confidencial — emblema laranja quando MR toca em configurações ou credenciais de .env, Dockerfile, CI
 • Botões de comando do Git — copie os comandos git checkout e git fetch para a ramificação MR
 • Crachá de idade MR — veja há quanto tempo uma solicitação de mesclagem está aberta
@@ -67,7 +69,8 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 
 ★ PERSONALIZAÇÃO
 
-• Perfis por projeto — diferentes botões, arquivos de versão e trabalhos CI para cada repositório
+• Perfis de projeto — herdar configurações comuns e personalizar MR, CI, Jira, IA, aparência e cherry-pick por repositório; restaurar a herança sem perder outras configurações
+• Configurações — página completa com busca e seções no popup compacto, estado do salvamento automático, importação/exportação JSON e temas claro/escuro. Os botões da barra mudam sem recarregar o MR
 • Arraste e solte a ordem dos botões: organize os botões de ação da maneira que preferir
 • Largura de tabulação configurável em diferenças — defina a exibição da tabulação para 2, 4 ou 8 espaços
 • Recolher barras superiores/Ocultar barra lateral direita — maximize sua área de trabalho
@@ -80,9 +83,7 @@ Simplifique seu fluxo de trabalho de solicitação de mesclagem GitLab com autom
 ✓ Sem serviço intermediário — as solicitações GitLab e Jira vão diretamente para seus servidores configurados
 ✓ Suporta HTTPS auto-hospedado GitLab e gitlab.com; consulte o guia de compatibilidade para contratos API testados
 ✓ Integração Jira sem tokens API — usa cookies de sessão do navegador
-✓ Totalmente configurável por projeto — sem limitações de tamanho único
-✓ Leve – verificações de antecedentes são executadas para ações que você inicia; sem telemetria ou uploads automáticos de IA
+✓ Padrões comuns e ajustes por projeto; idioma, som e notificações da área de trabalho continuam globais
+✓ Sem telemetria nem envios automáticos à IA — você escolhe o conteúdo a copiar e compartilhar com sua ferramenta de IA
 ✓ Interface disponível em 27 idiomas
 ✓ Código aberto
-
-Confiável por desenvolvedores que desejam gastar menos tempo clicando em GitLab e mais tempo escrevendo código.

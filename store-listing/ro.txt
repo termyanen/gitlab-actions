@@ -4,10 +4,11 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 
 ★ REVIZUIRE CU AI ÎN PROPRIILE INSTRUMENTE
 
-• Revizuire completă a MR — pregătește o sarcină pentru toate commiturile MR, cu filtre de fișiere configurabile
+• Revizuire MR completă — pregătește o sarcină pentru toate commiturile, cu filtre de fișiere și context opțional din discuțiile existente
 • Corectare și răspuns — copiază observațiile selectate în asistentul tău AI de programare și pregătește răspunsuri pentru publicare
 • Revizuire ulterioară — verifică din nou corecțiile și modificările de la o revizie aleasă, inclusiv după force push
 • Import editabil — lipește comentariile și răspunsurile AI ca JSON, modifică textele și publică elementele selectate sau salvează schițe de revizuire. Opțional, poți închide discuțiile după publicarea răspunsurilor
+• Controlul revizuirii — restrânge comentariile lungi, extinde-le pe toate, urmărește publicarea și retrimite doar elementele confirmate ca netrimise, fără duplicate ale comentariilor publicate sau ciornelor. Pentru MR mari se încearcă surse diff suplimentare; un fișier sau rând lipsă poate fi transformat explicit într-un comentariu general
 • Instrucțiuni proprii — personalizează prompturile și blocurile automate de instrucțiuni; alege limba răspunsurilor
 • Partajare manuală — folosește instrumentul AI preferat. Extensia nu cere chei API pentru AI și nu încarcă automat codul
 
@@ -15,8 +16,8 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 
 • Îmbinare automată — execută rebase și activează îmbinarea după reușita pipeline-ului cu un clic
 • Ship — întregul flux de lansare: creșterea versiunii → pipeline → îmbinare automată
-• Îmbinare forțată — îmbină fără să aștepți pipeline-ul atunci când CI nu este necesar
-• Creșterea versiunii — incrementează versiunea în package.json, pyproject.toml sau alt fișier: patch / minor / major
+• Îmbinare forțată — solicită îmbinarea fără a aștepta pipeline-ul; permisiunile și regulile de îmbinare GitLab rămân valabile
+• Incrementarea versiunii — patch / minor / major pentru fișiere de versiune configurate în JSON, TOML sau text simplu
 • Rebase — execută rebase pe ramură, cu sau fără creșterea versiunii
 • Schiță / Gata — schimbă starea MR fără să editezi titlul
 • Comentarii rapide — publică șabloane de comentarii în MR cu un clic
@@ -28,9 +29,9 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 • Reîncercarea tuturor joburilor eșuate — repornește simultan toate joburile eșuate din cel mai recent pipeline
 • Butoane de joburi personalizate — pornește orice job CI cu un clic sau înlănțuie mai multe joburi, de exemplu compilare → implementare
 • Vizualizare rapidă a erorilor — vezi numele joburilor eșuate și liniile de jurnal cu erori direct pe pagina MR
-• Execuție în fundal — lanțurile de joburi personalizate continuă după schimbarea paginii
+• Lanțuri de joburi în fundal — urmărirea se reia după repornirea workerului; păstrează o filă autentificată pe același GitLab pentru acces la API
 
-★ INTEGRARE JIRA FĂRĂ TOKENURI API
+★ JIRA SERVER / DATA CENTER (sesiunea browserului, acces opțional la site)
 
 • Insigne de stare Jira — stări colorate precum Finalizat, În lucru, QA și De făcut; cheile tichetelor sunt extrase din titlurile MR
 • Panoul lateral al tichetului — apasă o insignă pentru titlu, stare, responsabil, prioritate, sprint, epic, etichete, descriere și atașamente
@@ -39,6 +40,7 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 • Pictograme pentru tip și prioritate — pictogramele native Jira în lista MR și în paginile de detalii
 • Câmpuri Jira lângă commituri — afișează Fix Version, starea sau alt câmp lângă commituri
 • Jira în rapoartele zilnice — titlurile tichetelor sunt adăugate automat în rezumatele de activitate
+• Verificarea conexiunii — afișează domeniul Jira configurat, verifică sesiunea și deschide linkul de autentificare. Jira Cloud nu este complet acceptat; câmpurile și acțiunile depind de server și permisiuni
 
 ★ ÎMBUNĂTĂȚIRI ALE LISTEI MR
 
@@ -58,8 +60,8 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 • Paleta de comenzi (Cmd+K / Ctrl+K) — navighează la MR, pipeline-uri, ramuri și tichete sau pornește acțiuni
 • Căutare de fișiere — găsește și deschide fișierele proiectului după nume din paletă
 • Raport zilnic — rezumatul MR-urilor create, îmbinate, comentate și aprobate; copiază-l în Slack sau Jira
-• Cherry-pick în mai multe ramuri — aplică un commit în mai multe ramuri simultan, cu creare automată de MR
-• Recuperare cherry-pick — la conflict, reaplică automat commitul fără fișierul de versiune
+• Cherry-pick în mai multe ramuri — transferă un commit direct sau creează MR; alege ramuri țintă comune ori specifice proiectului
+• Cherry-pick inteligent — îmbinare de text în trei direcții cu incrementarea opțională a versiunii ramurii țintă, chiar fără conflicte. Sincronizează versiunile pachetului rădăcină din package.json și package-lock.json; conflictele din afara versiunilor opresc operația. Fără modificări noi nu creează un duplicat doar pentru incrementarea versiunii
 • Avertizare pentru fișiere sensibile — insignă portocalie când MR modifică .env, Dockerfile, configurații CI sau fișiere cu date de autentificare
 • Comenzi Git — copiază git checkout și git fetch pentru ramura MR
 • Vechimea MR — vezi de cât timp este deschisă cererea de îmbinare
@@ -67,7 +69,8 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 
 ★ PERSONALIZARE
 
-• Profiluri de proiect — butoane, fișiere de versiune și joburi CI diferite pentru fiecare depozit
+• Profiluri de proiect — moștenește setările comune și personalizează MR, CI, Jira, AI, aspectul și cherry-pick pentru depozit; restabilește moștenirea fără pierderea altor setări
+• Setări — pagină completă cu căutare și secțiuni în fereastra compactă, starea salvării automate, import/export JSON și teme deschisă/închisă. Butoanele se actualizează fără reîncărcarea MR
 • Ordinea butoanelor prin glisare — aranjează acțiunile după preferințe
 • Lățimea tabulatorului în diff — afișare echivalentă cu 2, 4 sau 8 spații
 • Restrângerea barelor de sus / Ascunderea panoului drept — mai mult spațiu de lucru
@@ -80,9 +83,7 @@ Simplifică lucrul cu cererile de îmbinare GitLab prin automatizare cu un singu
 ✓ Fără serviciu intermediar — cererile GitLab și Jira merg direct către serverele configurate
 ✓ Acceptă GitLab pe propriul server prin HTTPS și gitlab.com; contractele API testate sunt prezentate în ghidul de compatibilitate
 ✓ Jira fără tokenuri API — folosește sesiunea browserului
-✓ Configurare separată pentru fiecare proiect
-✓ Extensie ușoară — verificările de fundal vizează acțiunile pornite de tine; fără telemetrie sau încărcări automate către AI
+✓ Valori comune și personalizări pe proiect; limba, sunetul și notificările desktop rămân globale
+✓ Fără telemetrie sau încărcări automate către AI — alegi ce conținut copiezi și distribui instrumentului tău AI
 ✓ Interfață disponibilă în 27 de limbi
 ✓ Cod sursă deschis
-
-Pentru dezvoltatorii care vor să petreacă mai puțin timp apăsând butoane în GitLab și mai mult timp scriind cod.

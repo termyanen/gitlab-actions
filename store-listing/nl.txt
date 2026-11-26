@@ -4,10 +4,11 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 
 ★ AI-REVIEW MET JE EIGEN TOOLS
 
-• Volledige MR-review — bereid een taak voor die alle MR-commits dekt, met configureerbare bestandsfilters
+• Volledige MR-review — een taak voorbereiden voor alle commits, met bestandsfilters en optionele context van bestaande discussies
 • Repareren en antwoorden — kopieer geselecteerde feedback naar je codeer-AI en bereid kant-en-klare reacties voor om te plaatsen
 • Opvolging beoordeling — hercontroleer fixes en wijzigingen sinds een geselecteerde revisie, inclusief na force pushes
 • Bewerkbare import — plak AI-opmerkingen en antwoorden als JSON, bewerk hun tekst, en publiceer geselecteerde items of sla beoordelingsconcepten op. Optioneel discussies oplossen na het publiceren van antwoorden
+• Reviewbediening — lange opmerkingen inklappen, alles uitklappen, publicatie volgen en alleen bevestigd niet-verzonden items opnieuw versturen, zonder gepubliceerde opmerkingen of concepten te dupliceren. Voor grote MR’s worden extra diff-bronnen geprobeerd; een ontbrekend bestand of regeldoel kan expliciet worden omgezet naar een algemene opmerking
 • Aangepaste instructies — pas prompts en automatische instructieblokken aan; kies de taal van het antwoord
 • Handmatig delen — gebruik je favoriete AI-tool. Geen AI-API-sleutels in de extensie en geen automatische codeuploads
 
@@ -15,8 +16,8 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 
 • Automatisch samenvoegen — rebase en schakel 'samenvoegen wanneer de pipeline slaagt' in met één klik
 • Verzenden — volledige releaseflow: versie verhogen → pipeline → automatisch samenvoegen, volledig geautomatiseerd
-• Force merge — overslaan van de pipeline en onmiddellijk mergen wanneer CI niet nodig is
-• Versie verhoging — verhoog versie in package.json, pyproject.toml, of een bestand (patch / minor / major)
+• Geforceerde merge — een merge aanvragen zonder op de pipeline te wachten; GitLab-rechten en mergeregels blijven gelden
+• Versie verhogen — patch / minor / major voor ingestelde versiebestanden in JSON, TOML of platte tekst
 • Rebase — rebase tak met of zonder versie verhoging
 • Concept / Klaar schakelen — wijzig MR-status zonder de titel te bewerken
 • Snelle opmerkingen — plaats sjabloonreacties op MR met één klik
@@ -28,9 +29,9 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 • Alle mislukte taken opnieuw proberen — start alle mislukte taken in de laatste pipeline tegelijk opnieuw
 • Aangepaste taakknoppen — activeer elke CI-taak met één klik; koppel meerdere taken aan elkaar (bijv. build → deploy)
 • Snel overzicht van mislukte taken — zie namen van mislukte taken en foutlogregels direct op de MR-pagina
-• Achtergronduitvoering — aangepaste taakketens gaan door na pagina-navigatie
+• Jobketens op de achtergrond — volgen hervatten na een workerherstart; houd een aangemeld tabblad van dezelfde GitLab-site open voor API-toegang
 
-★ JIRA-INTEGRATIE (geen API-tokens)
+★ JIRA SERVER / DATA CENTER (browsersessie, optionele sitetoegang)
 
 • Jira-statusbadges — kleurgecodeerde ticketstatussen (Klaar, Bezig, QA, Te Doen) gelezen uit MR-titels
 • Volledige ticketzijbalk — klik op een badge om samenvatting, status, verantwoordelijke, prioriteit, sprint, epic, labels, beschrijving en bijlagen te zien
@@ -39,6 +40,7 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 • Issue-type- & prioriteitsiconen — native Jira-iconen op MR-lijst- en detailpagina’s
 • Jira-veldbadges bij commits — toon Fix Version, status of elk veld naast commits
 • Jira-verrijking in dagelijkse rapporten — tickettitels automatisch toegevoegd aan activiteitenoverzichten
+• Verbinding controleren — het ingestelde Jira-domein bekijken, de sessie controleren en de aanmeldlink openen. Jira Cloud wordt niet volledig ondersteund; velden en acties hangen af van servermogelijkheden en rechten
 
 ★ VERBETERINGEN VAN MR-LIJSTEN
 
@@ -58,8 +60,8 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 • Commandomenu (Cmd+K / Ctrl+K) — navigeer naar MR-lijst, pipelines, branches, issues, of start acties
 • Bestandszoekfunctie in menu — zoek en open elk projectbestand op naam
 • Dagelijks activiteitenrapport — overzicht van gemaakte, samengevoegde, gecommentarieerde, goedgekeurde MRs. Kopieer naar Slack of Jira
-• Cherry-pick naar meerdere branches — cherry-pick elke commit naar meerdere branches tegelijk met automatische MR-aanmaak
-• Slimme cherry-pick fallback — voert commit automatisch opnieuw uit exclusief versiebestand bij conflict
+• Cherry-pick naar meerdere branches — een commit rechtstreeks overnemen of MR’s maken; gedeelde of projectspecifieke doelbranches kiezen
+• Slimme cherry-pick — drieweg-tekstmerge met optionele verhoging van de doelbranchversie, ook zonder conflicten. Synchroniseert de versies van het hoofdpakket in package.json en package-lock.json; conflicten buiten versiewijzigingen stoppen de actie. Zonder nieuwe wijzigingen komt er geen duplicaat dat alleen de versie verhoogt
 • Waarschuwing voor gevoelige bestanden — oranje badge wanneer MR .env, Dockerfile, CI-configs of inloggegevens aanraakt
 • Git-commando knoppen — kopieer git checkout en git fetch commando's voor de MR-branch
 • MR leeftijdsbadge — zie hoe lang een merge request al openstaat
@@ -67,7 +69,8 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 
 ★ AANPASSING
 
-• Profielen per project — verschillende knoppen, versiebestanden en CI-taken voor elk repository
+• Projectprofielen — gedeelde instellingen overnemen en MR-, CI-, Jira-, AI-, weergave- en cherry-pickopties per repository aanpassen; overerving herstellen zonder andere instellingen te verliezen
+• Instellingen — doorzoekbare volledige pagina en secties in de compacte popup, status van automatisch opslaan, JSON-import/export en lichte/donkere thema’s. Werkbalkknoppen wijzigen zonder de MR opnieuw te laden
 • Sleep & plaats knopvolgorde — rangschik actiekoppen zoals je wilt
 • Configureerbare tabbreedte in diffs — stel tabweergave in op 2, 4 of 8 spaties
 • Vouw bovenste balken samen / Verberg rechterzijbalk — maximaliseer je werkruimte
@@ -80,9 +83,7 @@ Stroomlijn je GitLab merge request workflow met één-klik automatisering. Verva
 ✓ Geen tussenliggende dienst — GitLab- en Jira-verzoeken gaan rechtstreeks naar je geconfigureerde servers
 ✓ Ondersteunt HTTPS self-hosted GitLab en gitlab.com; zie de compatibiliteitsgids voor geteste API-contracten
 ✓ Jira-integratie zonder API-tokens — gebruikt browser-sessiecookies
-✓ Volledig configureerbaar per project — geen beperkingen voor iedereen
-✓ Lichtgewicht — achtergrondcontroles worden uitgevoerd voor acties die je start; geen telemetrie of automatische AI-upload
+✓ Gedeelde standaardwaarden en projectaanpassingen; taal, geluid en bureaubladmeldingen blijven globaal
+✓ Geen telemetrie of automatische AI-uploads — je kiest zelf welke inhoud je kopieert en deelt met je AI-tool
 ✓ Interface beschikbaar in 27 talen
 ✓ Open source
-
-Vertrouwd door ontwikkelaars die minder tijd willen besteden aan doorklikken in GitLab en meer tijd aan het schrijven van code.

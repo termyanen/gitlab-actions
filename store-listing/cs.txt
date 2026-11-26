@@ -4,10 +4,11 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 
 ★ AI REVIEW S VAŠIMI VLASTNÍMI NÁSTROJI
 
-• Kompletní review MR — připravte úkol pro všechny commity MR s nastavitelnými filtry souborů
+• Úplná revize MR — připravte úkol pro všechny commity s filtry souborů a volitelným kontextem existujících diskusí
 • Opravy a odpovědi — zkopírujte vybrané připomínky do své programovací AI a připravte odpovědi k publikování
 • Následné review — znovu prověřte opravy a změny od vybrané revize, včetně změn po force push
 • Upravitelný import — vložte komentáře a odpovědi AI jako JSON, upravte jejich text a publikujte vybrané položky nebo uložte koncepty review. Po publikování odpovědí můžete volitelně uzavřít diskuse
+• Ovládání revize — sbalte dlouhé komentáře, rozbalte všechny, sledujte publikování a opakujte jen prokazatelně neodeslané položky bez duplikování komentářů či konceptů. U velkých MR se zkoušejí další zdroje diff; chybějící cíl souboru nebo řádku lze výslovně převést na obecný komentář
 • Vlastní pokyny — přizpůsobte prompty i automatické bloky pokynů a vyberte jazyk odpovědí
 • Ruční sdílení — používejte svůj oblíbený AI nástroj. Rozšíření nevyžaduje API klíče k AI a kód nikam automaticky nenahrává
 
@@ -15,8 +16,8 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 
 • Automatické sloučení — jedním kliknutím proveďte rebase a povolte sloučení po úspěšném dokončení pipeline
 • Ship — celý proces vydání: zvýšení verze → pipeline → automatické sloučení
-• Vynucené sloučení — pokud CI nepotřebujete, slučte MR bez čekání na pipeline
-• Zvýšení verze — zvyšte verzi v package.json, pyproject.toml nebo jiném souboru: patch / minor / major
+• Vynucené sloučení — vyžádejte sloučení bez čekání na pipeline; oprávnění a pravidla slučování GitLabu nadále platí
+• Zvýšení verze — patch / minor / major pro nastavené soubory verzí JSON, TOML nebo prostého textu
 • Rebase — proveďte rebase větve se zvýšením verze nebo bez něj
 • Koncept / Připraveno — přepínejte stav MR bez úpravy názvu
 • Rychlé komentáře — publikujte šablony komentářů v MR jedním kliknutím
@@ -28,9 +29,9 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 • Opakování všech neúspěšných úloh — najednou restartujte všechny neúspěšné úlohy v nejnovější pipeline
 • Vlastní tlačítka úloh — spusťte libovolnou CI úlohu jedním kliknutím nebo zřetězte více úloh, například sestavení → nasazení
 • Rychlý přehled chyb — zobrazte názvy neúspěšných úloh a chybové řádky logu přímo na stránce MR
-• Běh na pozadí — vlastní řetězce úloh pokračují i po přechodu na jinou stránku
+• Řetězce úloh na pozadí — sledování se obnoví po restartu workeru; pro API ponechte otevřenou přihlášenou kartu stejného GitLabu
 
-★ INTEGRACE JIRA BEZ API TOKENŮ
+★ JIRA SERVER / DATA CENTER (relace prohlížeče, volitelný přístup k webu)
 
 • Odznaky stavu Jira — barevné stavy úkolů Hotovo, Probíhá, QA a K vyřízení; klíče úkolů se získávají z názvů MR
 • Postranní panel úkolu — kliknutím na odznak zobrazíte název, stav, řešitele, prioritu, sprint, epic, štítky, popis a přílohy
@@ -39,6 +40,7 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 • Ikony typu a priority — původní ikony Jira v seznamu MR i na stránkách podrobností
 • Pole Jira u commitů — zobrazte Fix Version, stav nebo jiné pole vedle commitů
 • Jira v denních přehledech — názvy úkolů se automaticky přidávají do souhrnů aktivity
+• Kontrola připojení — zobrazte nastavenou doménu Jira, ověřte relaci a otevřete odkaz k přihlášení. Jira Cloud není plně podporována; pole a akce závisí na serveru a oprávněních
 
 ★ VYLEPŠENÍ SEZNAMU MR
 
@@ -58,8 +60,8 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 • Paleta příkazů (Cmd+K / Ctrl+K) — přejděte na MR, pipeline, větve či úkoly nebo spusťte akci
 • Hledání souborů v paletě — najděte a otevřete libovolný soubor projektu podle názvu
 • Denní přehled aktivity — souhrn vytvořených, sloučených, komentovaných a schválených MR; zkopírujte ho do Slacku nebo Jira
-• Cherry-pick do více větví — přeneste commit do několika větví najednou s automatickým vytvořením MR
-• Obnovení cherry-pick — při konfliktu automaticky zopakujte aplikování commitu bez souboru s verzí
+• Cherry-pick do více větví — přeneste commit přímo nebo vytvořte MR; vyberte společné či projektové cílové větve
+• Chytrý cherry-pick — třícestné sloučení textu s volitelným zvýšením verze cílové větve i bez konfliktů. Synchronizuje verze kořenového balíčku v package.json a package-lock.json; konflikty mimo verze operaci zastaví. Bez nových změn nevznikne duplikát pouze se zvýšenou verzí
 • Upozornění na citlivé soubory — oranžový odznak, pokud MR mění .env, Dockerfile, konfiguraci CI nebo soubory přihlašovacích údajů
 • Příkazy Git — zkopírujte git checkout a git fetch pro větev MR
 • Stáří MR — zjistěte, jak dlouho je merge request otevřený
@@ -67,7 +69,8 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 
 ★ PŘIZPŮSOBENÍ
 
-• Profily projektů — různé sady tlačítek, soubory s verzí a CI úlohy pro každý repozitář
+• Profily projektů — dědí společná nastavení a přepisují volby MR, CI, Jira, AI, vzhledu a cherry-pick pro repozitář; dědičnost lze obnovit bez ztráty ostatních nastavení
+• Nastavení — plná stránka s vyhledáváním a sekce přímo v kompaktním okně, stav automatického ukládání, import/export JSON a světlý/tmavý motiv. Tlačítka panelu se mění bez obnovení MR
 • Pořadí tlačítek přetažením — uspořádejte akce podle sebe
 • Šířka tabulátoru v diffu — zobrazení jako 2, 4 nebo 8 mezer
 • Sbalení horních lišt / Skrytí pravého panelu — více pracovního prostoru
@@ -80,9 +83,7 @@ Zjednodušte práci s merge requesty v GitLabu pomocí automatizace jedním klik
 ✓ Bez zprostředkující služby — požadavky na GitLab a Jira směřují přímo na nastavené servery
 ✓ Podporuje vlastní GitLab přes HTTPS i gitlab.com; ověřené API kontrakty najdete v příručce kompatibility
 ✓ Jira bez API tokenů — používá relaci prohlížeče
-✓ Samostatné nastavení pro každý projekt
-✓ Nenáročné rozšíření — kontroly na pozadí se týkají vámi spuštěných akcí; bez telemetrie a automatického nahrávání do AI
+✓ Společné hodnoty a projektové úpravy; jazyk, zvuk a oznámení zůstávají globální
+✓ Bez telemetrie a automatického odesílání do AI — sami vybíráte obsah ke zkopírování a sdílení s nástrojem AI
 ✓ Rozhraní je dostupné ve 27 jazycích
 ✓ Otevřený zdrojový kód
-
-Pro vývojáře, kteří chtějí méně času klikat v GitLabu a více času psát kód.

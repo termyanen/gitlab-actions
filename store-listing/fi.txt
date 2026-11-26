@@ -4,10 +4,11 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 
 ★ TEKOÄLYKATSELMOINTI OMILLA TYÖKALUILLA
 
-• Koko MR:n katselmointi — valmistele kaikki MR:n commitit kattava tehtävä säädettävillä tiedostosuodattimilla
+• Koko MR:n katselmointi — valmistele tehtävä kaikille commiteille käyttäen tiedostosuodattimia ja haluttaessa olemassa olevien keskustelujen kontekstia
 • Korjaukset ja vastaukset — kopioi valittu palaute koodausavustajallesi ja valmistele julkaisuvalmiit vastaukset
 • Jatkokatselmointi — tarkista korjaukset ja muutokset valitusta revisiosta alkaen, myös force pushin jälkeen
 • Muokattava tuonti — liitä tekoälyn kommentit ja vastaukset JSON-muodossa, muokkaa tekstiä ja julkaise valitut kohdat tai tallenna katselmointiluonnokset. Voit myös merkitä keskustelut ratkaistuiksi vastausten julkaisemisen jälkeen
+• Katselmoinnin hallinta — supista pitkät kommentit, laajenna kaikki, seuraa julkaisua ja lähetä uudelleen vain varmasti lähettämättömät kohteet ilman julkaistujen kommenttien tai luonnosten kopioita. Suurille MR:ille kokeillaan muita diff-lähteitä; puuttuvan tiedosto- tai rivikohteen voi erikseen muuntaa yleiskommentiksi
 • Omat ohjeet — mukauta kehotteita ja automaattisia ohjeosia sekä valitse vastauskieli
 • Manuaalinen jakaminen — käytä haluamaasi tekoälytyökalua. Laajennukseen ei tarvita tekoälyn API-avaimia, eikä koodia lähetetä automaattisesti
 
@@ -15,8 +16,8 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 
 • Automaattinen yhdistäminen — suorita rebase ja ota yhdistäminen käyttöön pipelinen onnistuttua yhdellä napsautuksella
 • Ship — koko julkaisuketju: version korotus → pipeline → automaattinen yhdistäminen
-• Pakotettu yhdistäminen — yhdistä odottamatta pipelinea, kun CI:tä ei tarvita
-• Version korotus — korota versionumeroa package.json-, pyproject.toml- tai muussa tiedostossa: patch / minor / major
+• Pakotettu yhdistäminen — pyydä yhdistämistä odottamatta pipelinea; GitLabin oikeudet ja yhdistämissäännöt ovat edelleen voimassa
+• Version korotus — patch / minor / major määritetyille JSON-, TOML- tai tekstitiedostoille
 • Rebase — suorita haaran rebase version korotuksen kanssa tai ilman
 • Luonnos / Valmis — muuta MR:n tilaa muokkaamatta otsikkoa
 • Pikakommentit — julkaise mallikommentteja MR:ään yhdellä napsautuksella
@@ -28,9 +29,9 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 • Yritä kaikkia epäonnistuneita töitä uudelleen — käynnistä uusimman pipelinen kaikki epäonnistuneet työt kerralla
 • Omat työpainikkeet — käynnistä mikä tahansa CI-työ yhdellä napsautuksella tai ketjuta useita töitä, esimerkiksi koonti → käyttöönotto
 • Virheiden pikakatselu — näe epäonnistuneiden töiden nimet ja virhelokin rivit suoraan MR-sivulla
-• Taustasuoritus — omat työketjut jatkuvat sivulta toiselle siirtymisen jälkeen
+• Taustalla toimivat tehtäväketjut — seuranta jatkuu workerin uudelleenkäynnistyksen jälkeen; pidä API-käyttöä varten auki kirjautunut välilehti samassa GitLabissa
 
-★ JIRA-INTEGRAATIO ILMAN API-TUNNUKSIA
+★ JIRA SERVER / DATA CENTER (selainistunto, valinnainen sivuston käyttöoikeus)
 
 • Jiran tilamerkit — värikoodatut tehtävätilat, kuten Valmis, Työn alla, QA ja Tehtävä; tehtäväavaimet poimitaan MR-otsikoista
 • Tehtävän sivupaneeli — napsauta merkkiä nähdäksesi otsikon, tilan, vastuuhenkilön, prioriteetin, sprintin, epicin, tunnisteet, kuvauksen ja liitteet
@@ -39,6 +40,7 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 • Tyypin ja prioriteetin kuvakkeet — Jiran omat kuvakkeet MR-luettelossa ja tietosivuilla
 • Jira-kentät committien vieressä — näytä Fix Version, tila tai muu kenttä committien yhteydessä
 • Jira päiväraporteissa — tehtävien otsikot lisätään automaattisesti toimintayhteenvetoihin
+• Yhteyden tarkistus — näytä määritetty Jira-verkkotunnus, tarkista istunto ja avaa kirjautumislinkki. Jira Cloud ei ole täysin tuettu; kentät ja toiminnot riippuvat palvelimesta ja oikeuksista
 
 ★ MR-LUETTELON PARANNUKSET
 
@@ -58,8 +60,8 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 • Komentopaletti (Cmd+K / Ctrl+K) — siirry MR:iin, pipelineihin, haaroihin ja tehtäviin tai käynnistä toimintoja
 • Tiedostohaku — etsi ja avaa projektin tiedostoja nimellä paletista
 • Päivittäinen toimintaraportti — yhteenveto luoduista, yhdistetyistä, kommentoiduista ja hyväksytyistä MR:istä; kopioi Slackiin tai Jiraan
-• Cherry-pick useaan haaraan — siirrä commit useaan haaraan kerralla ja luo MR:t automaattisesti
-• Cherry-pickin palautuspolku — ristiriidan sattuessa commit sovelletaan automaattisesti uudelleen ilman versiotiedostoa
+• Cherry-pick useaan haaraan — siirrä commit suoraan tai luo MR:t; valitse yhteiset tai projektikohtaiset kohdehaarat
+• Älykäs cherry-pick — tekstin kolmisuuntainen yhdistäminen ja valinnainen kohdehaaran version korotus myös ilman ristiriitoja. Synkronoi juuripaketin versiot package.json- ja package-lock.json-tiedostoissa; muut ristiriidat pysäyttävät toiminnon. Ilman uusia muutoksia ei luoda pelkkää versionkorotuskopiota
 • Arkaluonteisten tiedostojen varoitus — oranssi merkki, jos MR muuttaa .env-, Dockerfile-, CI-asetus- tai tunnistetietotiedostoja
 • Git-komennot — kopioi MR-haaran git checkout- ja git fetch -komennot
 • MR:n ikä — näe, kuinka kauan yhdistämispyyntö on ollut avoinna
@@ -67,7 +69,8 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 
 ★ MUKAUTTAMINEN
 
-• Projektiprofiilit — eri painikkeet, versiotiedostot ja CI-työt kullekin tietovarastolle
+• Projektiprofiilit — peri yhteiset asetukset ja mukauta MR-, CI-, Jira-, AI-, ulkoasu- ja cherry-pick-valinnat tietovarastokohtaisesti; palauta periytyminen menettämättä muita asetuksia
+• Asetukset — haettava koko sivun näkymä ja osiot kompaktissa ponnahdusikkunassa, automaattitallennuksen tila, JSON-tuonti/vienti ja vaalea/tumma teema. Työkalupalkin painikkeet päivittyvät lataamatta MR:ää uudelleen
 • Painikkeiden järjestys vetämällä — järjestä toiminnot haluamallasi tavalla
 • Sarkainleveys diffeissä — valitse 2, 4 tai 8 välilyönnin levyinen esitys
 • Yläpalkkien pienentäminen / Oikean sivupaneelin piilottaminen — lisää työtilaa
@@ -80,9 +83,7 @@ Sujuvoita GitLabin yhdistämispyyntöjen käsittelyä yhden napsautuksen automaa
 ✓ Ei välityspalvelua — GitLab- ja Jira-pyynnöt menevät suoraan määrittämillesi palvelimille
 ✓ Tukee itse ylläpidettyä GitLabia HTTPS-yhteydellä ja gitlab.comia; testatut API-sopimukset on kuvattu yhteensopivuusoppaassa
 ✓ Jira ilman API-tunnuksia — käyttää selainistuntoa
-✓ Erilliset asetukset kullekin projektille
-✓ Kevyt — taustatarkistukset koskevat käynnistämiäsi toimintoja; ei telemetriaa eikä automaattista lähettämistä tekoälylle
+✓ Yhteiset oletukset ja projektikohtaiset asetukset; kieli, ääni ja työpöytäilmoitukset pysyvät yhteisinä
+✓ Ei telemetriaa tai automaattisia AI-lähetyksiä — valitset itse AI-työkalulle kopioitavan ja jaettavan sisällön
 ✓ Käyttöliittymä on saatavilla 27 kielellä
 ✓ Avoin lähdekoodi
-
-Kehittäjille, jotka haluavat käyttää vähemmän aikaa GitLabissa napsautteluun ja enemmän aikaa koodin kirjoittamiseen.

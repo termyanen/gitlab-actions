@@ -4,10 +4,11 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 
 ★ AI ÉRTÉKELÉS A SAJÁT ESZKÖZEIDDEL
 
-• Teljes MR értékelés — készíts feladatot az összes MR commit lefedésére, állítható fájlszűrőkkel
+• Teljes MR-ellenőrzés — feladat az összes commithoz, fájlszűrőkkel és a meglévő beszélgetések választható kontextusával
 • Javítás és válasz — másold ki a kiválasztott visszajelzést a kódoló AI-dnak, és készíts előre megírható válaszokat
 • Utánkövető ellenőrzés — nézd át újra a javításokat és változásokat egy kiválasztott verzió óta, beleértve a force push utánit is
 • Szerkeszthető import — illeszd be az AI kommenteket és válaszokat JSON-ként, szerkeszd a szöveget, és publikáld a kiválasztott elemeket, vagy mentsd el a felülvizsgálati piszkozatokat. Opcionálisan oldd meg a vitákat a válaszok publikálása után
+• Ellenőrzési vezérlők — hosszú megjegyzések összecsukása, összes kibontása, közzétételi folyamat követése és csak a biztosan el nem küldött elemek újraküldése, közzétett megjegyzések vagy piszkozatok duplázása nélkül. Nagy MR-eknél további diff-források is sorra kerülnek; a hiányzó fájl- vagy sorhivatkozás kifejezetten általános megjegyzéssé alakítható
 • Egyéni utasítások — testreszabhatod a promptokat és az automatikus utasításblokkokat; választhatod a válasz nyelvét
 • Manuális megosztás — használd a kedvenc AI eszközöd. A bővítmény nem tartalmaz AI API kulcsokat és nincs automatikus kód feltöltés
 
@@ -15,8 +16,8 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 
 • Automatikus összefűzés — rebase és a sikeres pipeline utáni egyesítés engedélyezése egy kattintással
 • Kiadás — teljes kiadási folyamat: verzió növelés → pipeline → automatikus összefűzés, mind automatizált
-• Erőltetett egyesítés — hagyd ki a pipeline-t és egyesíts rögtön, amikor nincs szükség CI-re
-• Verzió léptetés — növeld a verziót a package.json, pyproject.toml vagy bármely fájlban (patch / minor / major)
+• Kényszerített egyesítés — egyesítés kérése a pipeline megvárása nélkül; a GitLab jogosultságai és egyesítési szabályai továbbra is érvényesek
+• Verziónövelés — patch / minor / major a beállított JSON-, TOML- vagy egyszerű szöveges verziófájlokhoz
 • Rebase — rebázd az ágat verzió léptetéssel vagy anélkül
 • Piszkozat / Kész állapot váltása — módosítsd az MR státuszát cím szerkesztése nélkül
 • Gyors kommentek — posztolj sablon kommenteket az MR-hez egy kattintással
@@ -28,9 +29,9 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 • Minden sikertelen feladat újrapróbálása — indítsd újra egyszerre az összes sikertelen feladatot a legutóbbi pipeline-ban
 • Egyéni feladat gombok — indíts bármely CI feladatot egy kattintással; láncold össze a feladatokat (pl. build → deploy)
 • Sikertelen feladat gyors áttekintése — lásd a sikertelen feladatok nevét és hibanapló sorait közvetlenül az MR oldalon
-• Háttérben futó végrehajtás — az egyedi feladatláncok folytatódnak az oldal navigálása után
+• Háttérben futó feladatláncok — a követés folytatódik a worker újraindítása után; az API-hoz maradjon nyitva egy bejelentkezett lap ugyanazon GitLabon
 
-★ JIRA INTEGRÁCIÓ (API kulcsok nélkül)
+★ JIRA SERVER / DATA CENTER (böngészőmunkamenet, választható webhely-hozzáférés)
 
 • Jira státusz jelvények — színkódolt jegy állapotok (Kész, Folyamatban, QA, Teendő) az MR címekből beolvasva
 • Teljes jegy oldalsáv — kattints bármely jelvényre az összegzés, státusz, felelős, prioritás, sprint, epik, címkék, leírás és csatolmányok megtekintéséhez
@@ -39,6 +40,7 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 • Hibajelleg és prioritás ikonok — natív Jira ikonok az MR lista és részletező oldalain
 • Jira mező jelvények a commitokon — mutassa a Fix Version-t, státuszt, vagy bármely mezőt a commitok mellett
 • Jira kiegészítés a napi jelentésekben — a jegycímeket automatikusan hozzáadja a tevékenység összefoglalókhoz
+• Kapcsolatellenőrzés — a beállított Jira-domain megtekintése, munkamenet-ellenőrzés és bejelentkezési hivatkozás. A Jira Cloud támogatása nem teljes; a mezők és műveletek a szervertől és jogosultságoktól függenek
 
 ★ MR LISTA FEJLESZTÉSEK
 
@@ -58,8 +60,8 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 • Parancs paletta (Cmd+K / Ctrl+K) — navigálj az MR listához, pipeline-okhoz, branchekhez, issue-khoz, vagy indíts akciókat
 • Fájlkeresés a palettában — találj meg és nyiss meg bármilyen projektfájlt név alapján
 • Napi aktivitási jelentés — összegzés az elkészült, összefésült, kommentált, jóváhagyott MR-ekről. Másolás Slackbe vagy Jira-ba
-• Cherry-pick több branch-re — bármely commitot egyszerre több branch-be cherry-pickelve, automatikus MR létrehozással
-• Intelligens cherry-pick tartalékmegoldás — commit automatikus újrajátszása a verzió fájl kihagyásával konfliktus esetén
+• Cherry-pick több ágba — commit közvetlen átvitele vagy MR-ek létrehozása; közös vagy projektspecifikus célágak választása
+• Intelligens cherry-pick — háromutas szövegegyesítés a célág verziójának választható növelésével, konfliktus nélkül is. A package.json és package-lock.json gyökércsomag-verzióinak szinkronizálása; a verzión kívüli konfliktusok leállítják a műveletet. Új változás nélkül nem készül csak verziónövelést tartalmazó másolat
 • Érzékeny fájl figyelmeztetés — narancs jelvény, ha MR érinti az .env, Dockerfile, CI configokat vagy hitelesítő adatokat
 • Git parancsgombok — másold a git checkout és git fetch parancsokat az MR ághoz
 • MR életkor jelvény — lásd, mennyi ideje van nyitva egy merge request
@@ -67,7 +69,8 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 
 ★ TESTRESZABÁS
 
-• Projektenkénti profilok — külön gombok, verziófájlok és CI feladatok minden tárolóhoz
+• Projektprofilok — közös beállítások öröklése és MR-, CI-, Jira-, AI-, megjelenési és cherry-pick-beállítások felülírása tárolónként; az öröklés más beállítások elvesztése nélkül visszaállítható
+• Beállítások — kereshető teljes oldal és szakaszok a kompakt ablakban, automatikus mentés állapota, JSON-import/export és világos/sötét téma. Az eszköztár gombjai MR-újratöltés nélkül frissülnek
 • Gombok sorrendjének átrendezése — rendezd az akciógombokat a saját ízlésed szerint
 • Konfigurálható tabulátor szélesség a diffs-ben — állítsd a tab megjelenítést 2, 4 vagy 8 szóközre
 • Felső sávok összecsukása / Jobb oldali sáv elrejtése — maximalizáld a munkaterületet
@@ -80,9 +83,7 @@ Egyszerűsítsd a GitLab merge request folyamataidat egykattintásos automatizá
 ✓ Nincs köztes szolgáltatás — a GitLab és Jira kérések közvetlenül a beállított szervereidhez mennek
 ✓ Támogatja a HTTPS-sel saját hostolt GitLabot és a gitlab.com-ot; lásd a kompatibilitási útmutatót a tesztelt API-szerződésekhez
 ✓ Jira integráció API tokenek nélkül — a böngésző munkamenet cookie-jait használja
-✓ Teljesen konfigurálható projektenként — nincs mindenre alkalmazható korlátozás
-✓ Könnyű — a háttérellenőrzések csak a te általad indított műveleteknél futnak; nincs telemetria vagy automatikus AI feltöltés
+✓ Közös alapértékek és projektszintű felülírások; a nyelv, hang és asztali értesítések globálisak maradnak
+✓ Nincs telemetria vagy automatikus AI-feltöltés — te választod ki, mit másolsz és osztasz meg az AI-eszközöddel
 ✓ A felület 27 nyelven érhető el
 ✓ Nyílt forráskódú
-
-Megbízható azoknak a fejlesztőknek, akik kevesebb kattintással szeretnének dolgozni a GitLabon és több időt a kód írására fordítani.
