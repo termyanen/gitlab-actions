@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "เปลี่ยนเป็นความคิดเห็นทั่วไป" },
   "cherryPickNoApplicableChanges": { "message": "ไม่มีการเปลี่ยนแปลงใหม่ที่จะนำไปใช้ เวอร์ชันไม่ได้เพิ่มขึ้น" },
   "cherryPickTargetVersion": { "message": "เพิ่มเวอร์ชันของสาขาปลายทางเสมอ" },
   "cherryPickTargetVersionHint": { "message": "ใช้เวอร์ชันปลายทางแม้ไม่มีข้อขัดแย้ง มีลำดับความสำคัญเหนือการเพิ่มเวอร์ชันเฉพาะเมื่อใช้วิธีสำรอง" },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "พร้อมให้ AI ช่วย"
   },
-  "aiReviewImportChecked": {
-    "message": "พร้อม: $1 ความคิดเห็นอื่นๆ ต้องการความสนใจ",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "พร้อม: $1 / $2 ความคิดเห็นอื่นๆ ต้องการความสนใจ", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "หยุดส่ง"
   },

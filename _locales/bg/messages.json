@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Направи общ коментар" },
   "cherryPickNoApplicableChanges": { "message": "Няма нови промени за прилагане. Версията не е увеличена." },
   "cherryPickTargetVersion": { "message": "Винаги увеличавай версията на целевия клон" },
   "cherryPickTargetVersionHint": { "message": "Използвай целевата версия и без конфликти. Има предимство пред увеличаването само при резервния метод." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Подканване за AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Готово: $1. Други коментари изискват внимание.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Готово: $1 / $2. Други коментари изискват внимание.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Спри изпращането"
   },

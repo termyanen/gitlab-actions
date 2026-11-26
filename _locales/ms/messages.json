@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Jadikan komen umum" },
   "cherryPickNoApplicableChanges": { "message": "Tiada perubahan baharu untuk digunakan. Versi tidak dinaikkan." },
   "cherryPickTargetVersion": { "message": "Sentiasa naikkan versi cabang sasaran" },
   "cherryPickTargetVersionHint": { "message": "Gunakan versi sasaran walaupun tanpa konflik. Mengatasi kenaikan hanya semasa kaedah sandaran." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Minta untuk AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Sedia: $1. Komen lain memerlukan perhatian.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Sedia: $1 / $2. Komen lain memerlukan perhatian.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Hentikan penghantaran"
   },

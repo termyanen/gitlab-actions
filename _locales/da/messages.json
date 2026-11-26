@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Gør til generel kommentar" },
   "cherryPickNoApplicableChanges": { "message": "Ingen nye ændringer at anvende. Versionen blev ikke øget." },
   "cherryPickTargetVersion": { "message": "Forøg altid målgrenens version" },
   "cherryPickTargetVersionHint": { "message": "Brug målversionen også uden konflikter. Har forrang frem for forøgelse kun ved reservemetoden." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Prompt til AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Klar: $1. Andre kommentarer kræver opmærksomhed.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Klar: $1 / $2. Andre kommentarer kræver opmærksomhed.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Stop med at sende"
   },

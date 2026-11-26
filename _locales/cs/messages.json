@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "Změnit na obecný komentář" },
   "cherryPickNoApplicableChanges": { "message": "Nejsou žádné nové změny k použití. Verze nebyla zvýšena." },
   "cherryPickTargetVersion": { "message": "Vždy zvýšit verzi cílové větve" },
   "cherryPickTargetVersionHint": { "message": "Použít cílovou verzi i bez konfliktů. Má přednost před zvýšením pouze při náhradním postupu." },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "Výzva pro AI"
   },
-  "aiReviewImportChecked": {
-    "message": "Připraveno: $1. Další komentáře vyžadují pozornost.",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "Připraveno: $1 / $2. Další komentáře vyžadují pozornost.", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "Zastavit odesílání"
   },

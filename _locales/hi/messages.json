@@ -1,4 +1,5 @@
 {
+  "aiReviewImportMakeGeneral": { "message": "सामान्य टिप्पणी बनाएँ" },
   "cherryPickNoApplicableChanges": { "message": "लागू करने के लिए कोई नया बदलाव नहीं है। संस्करण नहीं बढ़ाया गया।" },
   "cherryPickTargetVersion": { "message": "लक्ष्य ब्रांच का संस्करण हमेशा बढ़ाएँ" },
   "cherryPickTargetVersionHint": { "message": "टकराव न होने पर भी लक्ष्य संस्करण लें। केवल फ़ॉलबैक पर संस्करण बढ़ाने से इसे प्राथमिकता मिलेगी।" },
@@ -1643,14 +1644,7 @@
   "aiReviewImportPrompt": {
     "message": "AI के लिए प्रॉम्प्ट"
   },
-  "aiReviewImportChecked": {
-    "message": "तैयार: $1. अन्य टिप्पणियों को ध्यान देने की आवश्यकता है।",
-    "placeholders": {
-      "1": {
-        "content": "$1"
-      }
-    }
-  },
+  "aiReviewImportChecked": {"message": "तैयार: $1 / $2. अन्य टिप्पणियों को ध्यान देने की आवश्यकता है।", "placeholders": {"1": {"content": "$1"}, "2": {"content": "$2"}}},
   "aiReviewImportStop": {
     "message": "भेजना बंद करें"
   },

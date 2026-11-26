@@ -24,6 +24,7 @@ export function createImportDialog(
       startEditor,
       updateActions,
       saveEditor,
+      revisePreview,
       cancelEditor,
     });
   const buildWindow = createImportWindow(
@@ -239,7 +240,9 @@ export function createImportDialog(
         );
       });
     state.list
-      .querySelectorAll<HTMLButtonElement>("[data-import-edit]")
+      .querySelectorAll<HTMLButtonElement>(
+        "[data-import-edit], [data-import-convert]",
+      )
       .forEach(function (edit) {
         edit.disabled = locked;
       });
@@ -280,28 +283,44 @@ export function createImportDialog(
     state.editorInput?.focus();
   }
 
+  function setCheckedStatus(state: ImportDialogState) {
+    if (!state.plan) return;
+    const ready = state.plan.items.filter((item) =>
+      selectable(state, item),
+    ).length;
+    setStatus(
+      state,
+      state.t("aiReviewImportChecked", [ready, state.plan.items.length]),
+    );
+  }
+
   function cancelEditor(state: ImportDialogState) {
     if (!current(state) || !state.editor) return;
     state.run++;
     if (state.controller) state.controller.abort();
     state.busy = "";
     state.editor = null;
-    setStatus(state, state.t("aiReviewImportChecked", [state.selected.size]));
+    setCheckedStatus(state);
     render(state);
   }
 
   function saveEditor(state: ImportDialogState) {
     if (!current(state) || state.busy || !state.editor || !state.plan) return;
-    const importer = getImporter();
-    if (!importer) return;
-    const plan = state.plan;
     const editor = state.editor;
     const edit: ImportEdit = { id: editor.id, body: editor.body };
     if (editor.add) edit.add = true;
+    revisePreview(state, edit);
+  }
+
+  function revisePreview(state: ImportDialogState, edit: ImportEdit) {
+    if (!current(state) || state.busy || !state.plan) return;
+    const importer = getImporter();
+    if (!importer) return;
+    const plan = state.plan;
     const run = ++state.run;
     const controller = (state.controller = new AbortController());
     state.busy = "revising";
-    editor.error = "";
+    if (state.editor) state.editor.error = "";
     setStatus(state, state.t("aiReviewImportChecking"));
     updateActions(state);
     Promise.resolve()
@@ -315,7 +334,7 @@ export function createImportDialog(
         if (!current(state) || state.run !== run) return;
         // Keep exclusions and confirmed outcomes. A fresh validation refusal
         // takes precedence over a previous retry error on an unchanged row.
-        state.results.delete(editor.id);
+        state.results.delete(edit.id);
         plan.items.forEach(function (item) {
           const previous = state.results.get(item.id);
           if (
@@ -345,7 +364,7 @@ export function createImportDialog(
               return (
                 selectable(state, item) &&
                 (state.selected.has(item.id) ||
-                  (editor.add && item.id === editor.id))
+                  ((edit.add || edit.makeGeneral) && item.id === edit.id))
               );
             })
             .map(function (item) {
@@ -355,10 +374,7 @@ export function createImportDialog(
         state.input.value = JSON.stringify(plan.source, null, 2);
         state.editor = null;
         warnings(state, plan.warnings || []);
-        setStatus(
-          state,
-          state.t("aiReviewImportChecked", [state.selected.size]),
-        );
+        setCheckedStatus(state);
       })
       .catch(function (error: unknown) {
         if (
@@ -367,9 +383,10 @@ export function createImportDialog(
           toError(error).name === "AbortError"
         )
           return;
-        editor.error =
+        const message =
           state.t("aiReviewImportEditError") + ": " + errorMessage(error);
-        setStatus(state, editor.error, true);
+        if (state.editor) state.editor.error = message;
+        setStatus(state, message, true);
       })
       .then(function () {
         if (!current(state) || state.run !== run) return;
@@ -506,10 +523,7 @@ export function createImportDialog(
           if (item.status === "ready") state.selected.add(item.id);
         });
         warnings(state, plan.warnings || []);
-        setStatus(
-          state,
-          state.t("aiReviewImportChecked", [state.selected.size]),
-        );
+        setCheckedStatus(state);
       })
       .catch(function (error: unknown) {
         if (

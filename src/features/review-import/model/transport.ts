@@ -6,7 +6,7 @@ import {
   decodeResponse,
   type Decoder,
 } from "../../../shared/lib/validation";
-import { MAX_PAGES, TIMEOUT } from "./limits";
+import { MAX_PAGES, MAX_RAW_DIFF_BYTES, TIMEOUT } from "./limits";
 import type { ImportError, ImportOptions } from "./types";
 import { abortError, checkAbort } from "./utils";
 import {
@@ -21,14 +21,20 @@ function header(response: Response, name: string) {
     : null;
 }
 
-async function boundedDiffText(response: Response, maxBytes: number) {
+async function boundedDiffBody(
+  response: Response,
+  maxBytes: number,
+  asBytes = false,
+) {
   function tooLarge() {
-    return new Error(
+    const error: ImportError = new Error(
       (typeof chrome !== "undefined" &&
         chrome.i18n &&
         chrome.i18n.getMessage("aiReviewImportDiffResponseTooLarge")) ||
         "The additional diff exceeds the 16 MiB import limit. Only comments on verified lines can be imported.",
     );
+    error.errorCode = "DIFF_TOO_LARGE";
+    return error;
   }
   if (Number(header(response, "Content-Length")) > maxBytes) {
     if (response.body && response.body.cancel) {
@@ -46,8 +52,7 @@ async function boundedDiffText(response: Response, maxBytes: number) {
     typeof TextDecoder !== "undefined"
   ) {
     const reader = response.body.getReader();
-    const decoder = new TextDecoder("utf-8", { fatal: true });
-    const chunks: string[] = [];
+    const chunks: Uint8Array[] = [];
     let bytes = 0;
     try {
       while (true) {
@@ -55,10 +60,17 @@ async function boundedDiffText(response: Response, maxBytes: number) {
         if (next.done) break;
         bytes += next.value.byteLength;
         if (bytes > maxBytes) throw tooLarge();
-        chunks.push(decoder.decode(next.value, { stream: true }));
+        chunks.push(next.value);
       }
-      chunks.push(decoder.decode());
-      return chunks.join("");
+      const buffer = new Uint8Array(bytes);
+      let offset = 0;
+      for (const chunk of chunks) {
+        buffer.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+      return asBytes
+        ? buffer
+        : new TextDecoder("utf-8", { fatal: true }).decode(buffer);
     } finally {
       try {
         await reader.cancel();
@@ -66,6 +78,11 @@ async function boundedDiffText(response: Response, maxBytes: number) {
         /* The request may already be closed. */
       }
     }
+  }
+  if (asBytes) {
+    const raw = new Uint8Array(await response.arrayBuffer());
+    if (raw.byteLength > maxBytes) throw tooLarge();
+    return raw;
   }
   const text = await response.text();
   if (
@@ -92,6 +109,7 @@ export async function request(
     throw new Error("The current GitLab site has changed. Reopen the import.");
   assertCurrentPage(context);
   const write = payload !== undefined;
+  const download = !write && path === ".diff";
   const controller = new AbortController();
   let cancel: () => void = () => {};
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -111,7 +129,9 @@ export async function request(
     return await Promise.race([
       timeout,
       (async function () {
-        const headers: Record<string, string> = { Accept: "application/json" };
+        const headers: Record<string, string> = {
+          Accept: download ? "text/plain" : "application/json",
+        };
         if (write) {
           if (!options.csrfToken || typeof options.csrfToken !== "string")
             throw new Error("Reload the GitLab page before sending comments.");
@@ -119,15 +139,18 @@ export async function request(
           headers["X-CSRF-Token"] = options.csrfToken;
           headers["X-Requested-With"] = "XMLHttpRequest";
         }
-        const response = await fetch(context.apiRoot + path, {
-          method: write ? method || "POST" : "GET",
-          credentials: "same-origin",
-          cache: "no-store",
-          redirect: "error",
-          signal: controller.signal,
-          headers: headers,
-          ...(write ? { body: JSON.stringify(payload) } : {}),
-        });
+        const response = await fetch(
+          download ? context.webUrl + ".diff" : context.apiRoot + path,
+          {
+            method: write ? method || "POST" : "GET",
+            credentials: "same-origin",
+            cache: "no-store",
+            redirect: "error",
+            signal: controller.signal,
+            headers: headers,
+            ...(write ? { body: JSON.stringify(payload) } : {}),
+          },
+        );
         if (!response.ok) {
           const error: ImportError = new Error(
             response.status === 401 || response.status === 403
@@ -141,9 +164,17 @@ export async function request(
           throw new Error(
             "GitLab redirected the request. Reload the page and sign in again.",
           );
-        const text = options.maxBytes
-          ? await boundedDiffText(response, options.maxBytes)
-          : await response.text();
+        const text =
+          download || options.maxBytes
+            ? await boundedDiffBody(
+                response,
+                options.maxBytes ?? MAX_RAW_DIFF_BYTES,
+                download,
+              )
+            : await response.text();
+        if (download) return { data: text, response };
+        if (typeof text !== "string")
+          throw new Error("GitLab returned an unreadable response.");
         let result: unknown;
         try {
           result = JSON.parse(text);
