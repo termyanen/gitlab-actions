@@ -577,6 +577,7 @@
   "aiReviewReplyVerifyPushed": {"message": "Les réponses sont liées aux discussions, pas à une version du code. Avant de publier, vérifiez que les corrections décrites ont été poussées dans ce MR."},
   "aiReviewImportEdit": {"message": "Modifier le texte"},
   "aiReviewImportAddComment": {"message": "Ajouter un commentaire"},
+  "aiReviewImportMakeGeneral": {"message": "Convertir en commentaire général"},
   "aiReviewImportSaveEdit": {"message": "Enregistrer les modifications"},
   "aiReviewImportCancelEdit": {"message": "Annuler"},
   "aiReviewImportEditorLabel": {"message": "Texte du commentaire"},

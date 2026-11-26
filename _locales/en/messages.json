@@ -587,6 +587,7 @@
   "aiReviewReplyVerifyPushed": {"message": "These replies are linked to discussions, not a code revision. Before publishing, verify that the described fixes have been pushed to this MR."},
   "aiReviewImportEdit": {"message": "Edit text"},
   "aiReviewImportAddComment": {"message": "Add comment"},
+  "aiReviewImportMakeGeneral": {"message": "Make general comment"},
   "aiReviewImportSaveEdit": {"message": "Save changes"},
   "aiReviewImportCancelEdit": {"message": "Cancel"},
   "aiReviewImportEditorLabel": {"message": "Comment text"},

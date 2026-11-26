@@ -587,6 +587,7 @@
   "aiReviewReplyVerifyPushed": {"message": "Ответы привязаны к обсуждениям, а не к версии кода. Перед публикацией убедитесь, что описанные исправления отправлены в этот MR."},
   "aiReviewImportEdit": {"message": "Редактировать текст"},
   "aiReviewImportAddComment": {"message": "Добавить комментарий"},
+  "aiReviewImportMakeGeneral": {"message": "Сделать общим комментарием"},
   "aiReviewImportSaveEdit": {"message": "Сохранить изменения"},
   "aiReviewImportCancelEdit": {"message": "Отмена"},
   "aiReviewImportEditorLabel": {"message": "Текст комментария"},

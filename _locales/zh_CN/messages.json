@@ -577,6 +577,7 @@
   "aiReviewReplyVerifyPushed": {"message": "回复关联讨论而非代码版本。发布前，请确认所述修复已推送到此 MR。"},
   "aiReviewImportEdit": {"message": "编辑文本"},
   "aiReviewImportAddComment": {"message": "添加评论"},
+  "aiReviewImportMakeGeneral": {"message": "转为普通评论"},
   "aiReviewImportSaveEdit": {"message": "保存更改"},
   "aiReviewImportCancelEdit": {"message": "取消"},
   "aiReviewImportEditorLabel": {"message": "评论文本"},

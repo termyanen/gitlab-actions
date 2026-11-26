@@ -562,6 +562,7 @@
   "aiReviewReplyVerifyPushed": {"message": "Antworten sind Diskussionen zugeordnet, keiner Codeversion. Prüfen Sie vor dem Veröffentlichen, ob die beschriebenen Korrekturen in diesen MR gepusht wurden."},
   "aiReviewImportEdit": {"message": "Text bearbeiten"},
   "aiReviewImportAddComment": {"message": "Kommentar hinzufügen"},
+  "aiReviewImportMakeGeneral": {"message": "In allgemeinen Kommentar umwandeln"},
   "aiReviewImportSaveEdit": {"message": "Änderungen speichern"},
   "aiReviewImportCancelEdit": {"message": "Abbrechen"},
   "aiReviewImportEditorLabel": {"message": "Kommentartext"},

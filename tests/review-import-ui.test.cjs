@@ -589,6 +589,29 @@ test('editing a reply checks the new body, preserves its target and exclusions, 
   assert.deepEqual(JSON.parse(env.preparations[1].text), source, 'revalidation uses the edited source, not the original AI text');
 });
 
+test('convert a missing anchor in one click without selecting other rows or publishing', async function() {
+  var env = await setup();
+  var missing = item('missing', 'invalid', { canConvertToGeneral: true });
+  var mismatch = item('mismatch', 'invalid', { message: 'The code on this line does not match the review.' });
+  await env.preview([missing, mismatch, item('excluded')]);
+  await env.change(env.choose('excluded'), false);
+  assert.equal(env.choose('mismatch').closest('article').querySelector('[data-import-convert]'), null);
+  var convert = env.choose('missing').closest('article').querySelector('[data-import-convert]');
+  assert.ok(convert);
+  convert.click();
+  await env.drain();
+  assert.deepEqual(env.revisions[0].edits, [{ id: 'missing', makeGeneral: true }]);
+  assert.equal(env.button('aiReviewImportPublish').disabled, true);
+  var updated = item('missing', 'ready', { type: 'comment', path: null, side: null, line: null, code: null, body: '    src/main.js:14\n\n' + missing.body });
+  await env.finishRevision([updated, mismatch, item('excluded')]);
+  assert.deepEqual(env.checked(), ['missing']);
+  var card = env.choose('missing').closest('article');
+  assert.equal(card.querySelector('[data-import-convert]'), null);
+  assert.ok(card.textContent.includes(messages.aiReviewGeneral.message));
+  assert.equal(JSON.parse(env.input.value).comments[0].body, updated.body);
+  assert.equal(env.publications.length, 0);
+});
+
 test('canceling a text edit leaves the preview and selection intact without revising or posting', async function() {
   var env = await setup();
   await env.preview([item('a'), item('b')]);

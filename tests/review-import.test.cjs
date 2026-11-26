@@ -403,6 +403,7 @@ test('a mixed-encoding git diff verifies UTF-8 files and rejects only files with
     for (var item of plan.items.slice(5)) {
       assert.equal(item.status, 'invalid');
       assert.equal(item.position, null);
+      assert.ok(!item.canConvertToGeneral);
       assert.match(item.message, /UTF-8/);
     }
     assert.equal(env.posts().length, 0);
@@ -1090,6 +1091,61 @@ test('revision retains edited text but cannot silently accept changed, deleted o
     var repeated = await env.api.revise(revised, [{ id: 'R1', body: 'Ещё одна правка без повторной проверки обсуждения' }]);
     assert.equal(repeated.items[0].status, 'invalid');
     assert.equal((await send(env, repeated, ['R1'])).items[0].status, 'skipped'); assert.equal(env.posts().length, 0);
+  }
+});
+
+test('only a missing file or missing diff line can become a general comment in the preview', async function() {
+  var env = environment({ handler: function(url, init, defaults) {
+    if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+    if (url.pathname.endsWith('.diff')) return new Response('diff --git a/other.js b/other.js\n--- a/other.js\n+++ b/other.js\n@@ -1 +1 @@\n-old\n+new\n');
+    return defaults(url, init);
+  } });
+  var input = [
+    inline({ id: 'file', path: 'lost.js' }),
+    inline({ id: 'line', path: 'src/old.js', side: 'old', line: 70 }),
+    inline({ id: 'mismatch', code: 'different();' }),
+    inline({ id: 'valid' }),
+    general({ id: 'general' }),
+    inline({ id: 'bad-input', line: 0 })
+  ];
+  var plan = await env.api.prepare(env.context, env.json(input));
+  assert.deepEqual(Array.from(plan.items.filter(i => i.canConvertToGeneral), i => i.id), ['file', 'line']);
+  for (var id of ['mismatch', 'valid', 'general', 'bad-input']) {
+    plan.items.find(i => i.id === id).canConvertToGeneral = true;
+    await assert.rejects(env.api.revise(plan, [{ id: id, makeGeneral: true }]));
+  }
+  plan.source.comments[0].path = 'untrusted.js';
+  plan.items[0].body = 'Changed outside the editor';
+  var converted = await env.api.revise(plan, [{ id: 'file', makeGeneral: true }, { id: 'line', makeGeneral: true }]);
+  assert.equal(env.posts().length, 0);
+  assert.equal(converted.items.length, input.length);
+  assert.deepEqual(Array.from(converted.items, i => i.status), ['ready', 'ready', 'invalid', 'ready', 'ready', 'invalid']);
+  for (var [index, location] of [[0, 'lost.js:3'], [1, 'src/old.js:70']]) {
+    var source = converted.source.comments[index];
+    assert.equal(source.body, '    ' + location + '\n\n' + input[index].body);
+    assert.deepEqual([source.id, source.path, source.side, source.line, source.code], [input[index].id, null, null, null, null]);
+    assert.equal(converted.items[index].position, null);
+  }
+  await assert.rejects(env.api.revise(converted, [{ id: 'file', makeGeneral: true }]));
+  assert.equal((await send(env, converted, ['file'])).items[0].status, 'published');
+  assert.equal((await send(env, converted, ['line'], { mode: 'draft' })).items[0].status, 'draft');
+  assert.deepEqual(JSON.parse(env.posts()[0].init.body), { body: converted.items[0].body });
+  assert.deepEqual(JSON.parse(env.posts()[1].init.body), { note: converted.items[1].body });
+});
+
+test('a failed file lookup is not a missing anchor', async function() {
+  for (var failedEndpoint of ['/diffs', '/changes', '.diff']) {
+    var env = environment({ handler: function(url, init, defaults) {
+      if (url.pathname.endsWith(failedEndpoint)) return response({}, 403);
+      if (url.pathname.endsWith('/diffs')) return response([]);
+      if (url.pathname.endsWith('/changes')) return response({ changes: [] });
+      return defaults(url, init);
+    } });
+    var plan = await env.api.prepare(env.context, env.json());
+    assert.equal(plan.items[0].status, 'invalid');
+    assert.ok(!plan.items[0].canConvertToGeneral);
+    await assert.rejects(env.api.revise(plan, [{ id: 'R1', makeGeneral: true }]));
+    assert.equal(env.posts().length, 0);
   }
 });
 

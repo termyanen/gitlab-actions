@@ -577,6 +577,7 @@
   "aiReviewReplyVerifyPushed": {"message": "返信はコードのバージョンではなくスレッドに紐付きます。公開前に、記載した修正がこの MR にプッシュ済みであることを確認してください。"},
   "aiReviewImportEdit": {"message": "本文を編集"},
   "aiReviewImportAddComment": {"message": "コメントを追加"},
+  "aiReviewImportMakeGeneral": {"message": "一般コメントに変更"},
   "aiReviewImportSaveEdit": {"message": "変更を保存"},
   "aiReviewImportCancelEdit": {"message": "キャンセル"},
   "aiReviewImportEditorLabel": {"message": "コメント本文"},

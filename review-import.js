@@ -392,12 +392,20 @@
   async function loadDiffs(context, options, warnings, targets, refs) {
     var result = new Map();
     var needed = Array.from(new Map(targets.map(function(target) { return [targetKey(target), target]; })).values());
+    function failedLookup(message) {
+      warning(warnings, message);
+      needed.forEach(function(target) {
+        var key = targetKey(target);
+        if (!result.has(key)) result.set(key, { error: message });
+      });
+      return result;
+    }
     var files;
     try {
       files = await paginate(context, endpoint(context) + '/diffs', options, diffKey);
     } catch (error) {
       if (error.name === 'AbortError') throw error;
-      if (error.httpStatus === 401 || error.httpStatus === 403) { warning(warnings, error.message); return result; }
+      if (error.httpStatus === 401 || error.httpStatus === 403) return failedLookup(error.message);
       files = [];
       if (unsupported(error)) {
         try {
@@ -405,7 +413,7 @@
           files = changeFiles(legacy, context, refs);
         } catch (fallbackError) {
           if (fallbackError.name === 'AbortError') throw fallbackError;
-          warning(warnings, 'File changes could not be loaded: ' + fallbackError.message); return result;
+          return failedLookup('File changes could not be loaded: ' + fallbackError.message);
         }
       }
     }
@@ -419,7 +427,7 @@
       needed = verifyTargets(result, needed, changeFiles(raw, context, refs));
     } catch (error) {
       if (error.name === 'AbortError') throw error;
-      if (!error.diffTooLarge && !unsupported(error)) { warning(warnings, error.message); return result; }
+      if (!error.diffTooLarge && !unsupported(error)) return failedLookup(error.message);
       recoveryError = error;
     }
     if (needed.length) {
@@ -428,12 +436,15 @@
         needed = verifyTargets(result, needed, downloadedChanges(download.data, needed));
       } catch (error) {
         if (error.name === 'AbortError') throw error;
-        recoveryError = recoveryError || error;
+        if (recoveryError && recoveryError.diffTooLarge && !error.diffTooLarge) warning(warnings, recoveryError.message);
+        recoveryError = error;
       }
       if (needed.length) {
         if (recoveryError) {
           var message = typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage('aiReviewImportDiffRecoveryFailed', [recoveryError.message]);
-          warning(warnings, message || 'Additional file changes could not be loaded: ' + recoveryError.message);
+          message = message || 'Additional file changes could not be loaded: ' + recoveryError.message;
+          if (!recoveryError.diffTooLarge && !unsupported(recoveryError)) return failedLookup(message);
+          warning(warnings, message);
         } else warning(warnings, 'GitLab did not provide a verifiable diff for every requested file. Only comments on verified lines can be imported.');
       }
     }
@@ -794,11 +805,17 @@
         }
       } else if (!error && source.path !== null) {
         var file = files.get(targetKey(source));
-        if (!file) error = 'GitLab did not include this file in the loaded merge request changes.';
+        if (!file) {
+          error = 'GitLab did not include this file in the loaded merge request changes.';
+          item.canConvertToGeneral = true;
+        }
         else if (file.error) error = file.error;
         else {
           var line = file.lines[source.side].get(source.line);
-          if (!line) error = 'This line is not in the verified diff. Choose a line from the merge request changes.';
+          if (!line) {
+            error = 'This line is not in the verified diff. Choose a line from the merge request changes.';
+            item.canConvertToGeneral = true;
+          }
           else if (line.code !== source.code) error = 'The code on this line does not match the review. Ask the AI to check the exact line.';
           else item.position = Object.assign({ position_type: 'text', old_path: file.old_path, new_path: file.new_path }, meta.refs, { old_line: line.old_line, new_line: line.new_line });
         }
@@ -839,11 +856,16 @@
     var edited = new Set();
     var originals = [];
     edits.forEach(function(edit) {
-      if (!edit || typeof edit.id !== 'string' || !edit.id.trim() || edit.id.length > 128 || /[\x00-\x1f\x7f]/.test(edit.id) || edited.has(edit.id) || Object.keys(edit).some(function(key) { return key !== 'id' && key !== 'body' && key !== 'add'; }) || (edit.add != null && typeof edit.add !== 'boolean')) throw new Error('Each edit needs a unique comment ID and text; its discussion and file location cannot be changed.');
-      var invalidBody = bodyError(edit.body);
-      if (invalidBody) throw new Error(invalidBody);
+      var convert = edit && edit.makeGeneral === true;
+      var allowedKeys = convert ? ['id', 'makeGeneral'] : ['id', 'body', 'add'];
+      if (!edit || typeof edit.id !== 'string' || !edit.id.trim() || edit.id.length > 128 || /[\x00-\x1f\x7f]/.test(edit.id) || edited.has(edit.id) || Object.keys(edit).some(function(key) { return !allowedKeys.includes(key); }) || (edit.add != null && typeof edit.add !== 'boolean')) throw new Error('Invalid review edit or duplicate comment ID.');
       edited.add(edit.id);
       var item = internal.items.find(function(value) { return value.id === edit.id; });
+      if (convert && !item?.canConvertToGeneral) throw new Error('Only a comment with a missing file or line can be converted to a general comment.');
+      // Keep the path literal in Markdown, including filenames containing backticks or mentions.
+      var body = convert ? '    ' + item.path + ':' + item.line + '\n\n' + item.body : edit.body;
+      var invalidBody = bodyError(body);
+      if (invalidBody) throw new Error(invalidBody);
       if (edit.add === true) {
         if (item || source.comments.some(function(value) { return value.id === edit.id; })) throw new Error('The new comment needs its own unique ID.');
         source.comments.push({ id: edit.id, type: 'comment', path: null, side: null, line: null, code: null, body: edit.body });
@@ -851,7 +873,9 @@
       } else {
         if (!item) throw new Error('This comment is not in the checked preview.');
         originals.push(item);
-        source.comments.find(function(value) { return value.id === edit.id; }).body = edit.body;
+        var original = source.comments.find(function(value) { return value.id === edit.id; });
+        original.body = body;
+        if (convert) Object.assign(original, { path: null, side: null, line: null, code: null });
       }
     });
     if (source.comments.length > 200) throw new Error('A review can contain at most 200 comments.');
@@ -879,6 +903,7 @@
       if (!source.comments.some(function(item) { return item.type === 'reply'; })) throw new Error('The merge request changed after the preview. Check the review again before editing comments.');
       warning(revised.warnings, replyNotice(true));
       revised.items.forEach(function(item) {
+        delete item.canConvertToGeneral;
         if (item.type !== 'reply' && item.status === 'ready') { item.status = 'invalid'; item.message = 'The merge request changed. Check this new finding again.'; }
       });
     }

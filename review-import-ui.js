@@ -142,6 +142,7 @@
       check.checked = state.resolveSelected.has(check.dataset.importResolve);
     });
     state.list.querySelectorAll('[data-import-edit]').forEach(function(edit) { edit.disabled = locked; });
+    state.list.querySelectorAll('[data-import-convert]').forEach(function(convert) { convert.disabled = locked; });
     if (state.editorInput) state.editorInput.readOnly = busy;
     if (state.saveEdit) state.saveEdit.disabled = busy;
     state.dialog.setAttribute('aria-busy', busy ? 'true' : 'false');
@@ -248,6 +249,14 @@
         body.appendChild(resolveLabel);
       }
       if (result.message) body.appendChild(element('p', 'gl-review-import-message gl-review-muted', result.message));
+      if (item.canConvertToGeneral && editable(state, item)) {
+        var convert = button(state, 'aiReviewImportMakeGeneral', function() {
+          if (!current(state) || state.busy || state.editor) return;
+          revisePreview(state, { id: item.id, makeGeneral: true });
+        });
+        convert.dataset.importConvert = item.id;
+        body.appendChild(convert);
+      }
       if (result.resolveStatus) {
         var resolveKey = result.resolveStatus === 'resolved' ? 'aiReviewImportResolveSuccess' : result.resolveStatus === 'unknown' ? 'aiReviewImportResolveUnknown' : 'aiReviewImportResolveFailed';
         body.appendChild(element('p', 'gl-review-import-message ' + (result.resolveStatus === 'resolved' ? 'gl-review-muted' : 'gl-review-error'), state.t(resolveKey)));
@@ -324,10 +333,14 @@
     var editor = state.editor;
     var edit = { id: editor.id, body: editor.body };
     if (editor.add) edit.add = true;
+    revisePreview(state, edit);
+  }
+
+  function revisePreview(state, edit) {
     var run = ++state.run;
     var controller = state.controller = new AbortController();
     state.busy = 'revising';
-    editor.error = '';
+    if (state.editor) state.editor.error = '';
     setStatus(state, state.t('aiReviewImportChecking'));
     updateActions(state);
     Promise.resolve().then(function() {
@@ -337,7 +350,7 @@
       if (!current(state) || state.run !== run) return;
       // Keep exclusions and confirmed outcomes. A fresh validation refusal
       // takes precedence over a previous retry error on an unchanged row.
-      state.results.delete(editor.id);
+      state.results.delete(edit.id);
       plan.items.forEach(function(item) {
         var previous = state.results.get(item.id);
         if (previous && (previous.status === 'failed' || previous.status === 'skipped') && item.status !== 'ready') state.results.delete(item.id);
@@ -347,7 +360,7 @@
         return canResolve(item) && selectable(state, item) && state.resolveSelected.has(item.id);
       }).map(function(item) { return item.id; }));
       state.selected = new Set(plan.items.filter(function(item) {
-        return selectable(state, item) && (state.selected.has(item.id) || editor.add && item.id === editor.id);
+        return selectable(state, item) && (state.selected.has(item.id) || (edit.add || edit.makeGeneral) && item.id === edit.id);
       }).map(function(item) { return item.id; }));
       state.input.value = JSON.stringify(plan.source, null, 2);
       state.editor = null;
@@ -355,8 +368,9 @@
       setCheckedStatus(state);
     }).catch(function(error) {
       if (!current(state) || state.run !== run || error.name === 'AbortError') return;
-      editor.error = state.t('aiReviewImportEditError') + ': ' + error.message;
-      setStatus(state, editor.error, true);
+      var message = state.t('aiReviewImportEditError') + ': ' + error.message;
+      if (state.editor) state.editor.error = message;
+      setStatus(state, message, true);
     }).then(function() {
       if (!current(state) || state.run !== run) return;
       state.busy = '';
